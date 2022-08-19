@@ -384,36 +384,36 @@ window.onload = function () {
 
 const targetDiv = document.getElementById('icon')
 
-axios.get('https://api.gitrows.com/@github/ibenzhou/startpage/data.json')
-.then(function(response){
-    console.log(response)
-    var data = response.data.data
-    console.log(data)
-    for (ii = 0; ii < data.length; ii++) {
-        var it = data[ii]
-        console.log(it)
-        var imgRender = document.createElement('img')
-        imgRender.setAttribute('src', it.icon)
-        imgRender.setAttribute('style', 'background-color:' + it.background)
-        var divRender = document.createElement('div')
-        divRender.append(imgRender)
-        var linkRender = document.createElement('a')
-        linkRender.append(divRender)
-        linkRender.setAttribute('href', it.url)
-        linkRender.setAttribute('target', '_blank')
+// axios.get('https://api.gitrows.com/@github/ibenzhou/startpage/data.json')
+// .then(function(response){
+//     console.log(response)
+//     var data = response.data.data
+//     console.log(data)
+//     for (ii = 0; ii < data.length; ii++) {
+//         var it = data[ii]
+//         console.log(it)
+//         var imgRender = document.createElement('img')
+//         imgRender.setAttribute('src', it.icon)
+//         imgRender.setAttribute('style', 'background-color:' + it.background)
+//         var divRender = document.createElement('div')
+//         divRender.append(imgRender)
+//         var linkRender = document.createElement('a')
+//         linkRender.append(divRender)
+//         linkRender.setAttribute('href', it.url)
+//         linkRender.setAttribute('target', '_blank')
     
-        var title = document.createTextNode(it.name)
-        var titleRender = document.createElement('h6')
-        titleRender.append(title)
+//         var title = document.createTextNode(it.name)
+//         var titleRender = document.createElement('h6')
+//         titleRender.append(title)
     
-        var listRender = document.createElement('li')
-        listRender.setAttribute('class', 'item')
-        listRender.append(linkRender)
-        listRender.append(titleRender)
+//         var listRender = document.createElement('li')
+//         listRender.setAttribute('class', 'item')
+//         listRender.append(linkRender)
+//         listRender.append(titleRender)
     
-        targetDiv.append(listRender)
-    }
-})
+//         targetDiv.append(listRender)
+//     }
+// })
 for (ii = 0; ii < member.length; ii++) {
     var it = member[ii]
 
