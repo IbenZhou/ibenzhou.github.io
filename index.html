@@ -4,78 +4,119 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="./assets/images/tree.svg" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waifu</title>
+    <title>ibenZhou</title>
+    <link rel="stylesheet" href="./src/css/style.css">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
 </head>
 
 <body>
     <div id="wrapper">
-        <div class="container text-center">
-            <div id="target-section" class="row">
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <!-- <div class="col">
-                Column
-              </div> -->
+        <div id="time">
+            <h1 id="clock">09:00</h1>
+            <ul id="date">
+                <!-- <li id="day"></li>
+                <li id="week"></li>
+                <li id="lunar">七月十九</li> -->
+            </ul>
+        </div>
+        <div id="search-section">
+            <button class="logo">
+                <svg t="1660619595466" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="8263" width="20" height="20">
+                    <path
+                        d="M917.077333 447.061333c0-0.256 0.170667-0.512 0.170667-0.768-0.085333-1.152-0.938667-2.048-1.194667-3.157333a20.992 20.992 0 0 0-2.602666-6.826667c-0.853333-1.28-2.048-2.133333-3.157334-3.2-1.194667-1.152-2.005333-2.645333-3.456-3.498666-0.64-0.384-1.408-0.256-2.090666-0.597334-0.554667-0.256-0.853333-0.853333-1.450667-1.066666l-469.333333-170.666667a21.205333 21.205333 0 0 0-27.050667 27.946667l85.333333 213.333333a21.162667 21.162667 0 0 0 11.946667 11.904l137.429333 54.4-390.826666 217.130667 105.6-105.6A21.162667 21.162667 0 0 0 362.666667 661.333333v-554.666666a21.290667 21.290667 0 0 0-13.397334-19.797334l-213.333333-85.333333A21.376 21.376 0 0 0 106.666667 21.333333v853.333334c0 0.597333 0.469333 1.066667 0.512 1.664a20.650667 20.650667 0 0 0 2.858666 9.344c0.725333 1.194667 1.92 1.92 2.858667 2.944 1.365333 1.450667 2.389333 3.242667 4.138667 4.266666l213.333333 128a21.418667 21.418667 0 0 0 22.144-0.042666l554.666667-341.333334a21.333333 21.333333 0 0 0 10.154666-18.176v-213.333333c0-0.341333-0.213333-0.597333-0.256-0.938667z"
+                        p-id="8264" fill="#1290d2"></path>
+                </svg>
+            </button>
+            <div class="input">
+                <input type="text" id="searchInput" placeholder="  Input to Search">
+            </div>
+            <button class="search" id="searchButton">
+                <svg t="1660621813141" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="9385" width="20" height="20">
+                    <path
+                        d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6c3.2 3.2 8.4 3.2 11.6 0l43.6-43.5c3.2-3.2 3.2-8.4 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
+                        p-id="9386" fill="#dbdbdb"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="shortcut-section">
+            <ul id="icon">
+                <!-- <li class="item">
+                    <a href="https://office.zhxi.co/apps/dashboard/#/" target="_blank">
+                        <div>
+                            <img src="https://office.zhxi.co/apps/theming/favicon/dashboard?v=18" alt="">
+                        </div>
+                    </a>
+                    <h6>Zhxi</h6>
+                </li> -->
 
+            </ul>
+        </div>
+        <div id="footer">
+            <div id="poem">
+                <!-- <p>Where there is a river, there is a city.</p> -->
             </div>
         </div>
-
     </div>
-
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="https://unpkg.com/gitrows@latest/dist/gitrows.min.js"></script> -->
+    <script>
+
+    </script>
+
+    <script src="./src/js/index.js"></script>
 
     <script>
-        var getData = function(url){
-            var res = axios.get(url)
-            return res
+        var getData = function (url) {
+            return axios.get(url)
         }
 
-        // var targeDiv = document.getElementById('target-section')
-        var colDiv = document.getElementsByClassName('col-3')
+        var poemUrl = 'https://v1.hitokoto.cn/?c=i'
 
-        for(let ii=0; ii<100; ii++){
-            getData('https://api.waifu.im/random/')
-            .then(function(response){
-                var imgUrl = response.data.images[0].url
-                console.log(imgUrl)
+        var poem = document.getElementById('poem')
 
-                var imgRender = document.createElement('img')
-                imgRender.setAttribute('src', imgUrl)
-                imgRender.setAttribute('class', 'card-img-top')
+        getData(poemUrl).then(function (res) {
+            // console.log(res)
+            var hitokoto = res.data.hitokoto
+            var poemNode = document.createTextNode(hitokoto)
+            var poemRender = document.createElement('p')
+            poemRender.append(poemNode)
+            poem.append(poemRender)
+        })
 
-                var cardRender = document.createElement('div')
-                cardRender.setAttribute('class', 'card mt-4')
-                cardRender.append(imgRender)
-
-                // var colRender = document.createElement('div')
-                // colRender.setAttribute('class', 'col-3')
-                // colRender.append(cardRender)
-
-                // targeDiv.append(colRender)
-
-                if(ii % 4 === 0){
-                    colDiv[0].append(cardRender)
-                } else if(ii % 4 === 1) {
-                    colDiv[1].append(cardRender)
-                } else if(ii % 4 === 2) {
-                    colDiv[2].append(cardRender)
-                } else {
-                    colDiv[3].append(cardRender)
-                }
+        poem.onclick = function () {
+            getData(poemUrl).then(function (res) {
+                // console.log(res)
+                var hitokoto = res.data.hitokoto
+                var poemNode = document.createTextNode(hitokoto)
+                var poemRender = document.createElement('p')
+                poemRender.append(poemNode)
+                poem.innerHTML = ''
+                poem.append(poemRender)
             })
         }
+
+
+
+        axios.get('https://api.gitrows.com/@github/ibenzhou/startpage/car.json')
+            .then(function (response) {
+                console.log(response)
+            })
+
+
     </script>
+
 </body>
 
 </html>
