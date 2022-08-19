@@ -12,7 +12,7 @@ var member = [
         "id": 2,
         "name": "阿虚",
         "url": "https://axutongxue.com/",
-        "icon": "../../assets/images/axu.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/axu.svg",
         "background": "#fff"
     },
     {
@@ -26,14 +26,14 @@ var member = [
         "id": 4,
         "name": "阿里网盘",
         "url": "https://www.aliyundrive.com/drive",
-        "icon": "../../assets/images/aliyundrive.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/aliyundrive.svg",
         "background": "#667cf0"
     },
     {
         "id": 5,
         "name": "Vmess",
         "url": "https://tr2.freeair888.club/v2ray%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7/",
-        "icon": "../../assets/images/vmess.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/vmess.svg",
         "background": "#fff"
     },
     {
@@ -47,21 +47,21 @@ var member = [
         "id": 7,
         "name": "Youtube",
         "url": "https://www.youtube.com/",
-        "icon": "../../assets/images/youtube.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/youtube.svg",
         "background": "#ff312e"
     },
     {
         "id": 8,
         "name": "BiliBili",
         "url": "https://www.bilibili.com/",
-        "icon": "../../assets/images/bilibili.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/bilibili.svg",
         "background": "#01affd"
     },
     {
         "id": 9,
         "name": "无名小站",
         "url": "https://www.btnull.re/",
-        "icon": "../../assets/images/noname.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/noname.svg",
         "background": "#9cdcf8"
     },
     {
@@ -75,28 +75,28 @@ var member = [
         "id": 11,
         "name": "豆瓣",
         "url": "https://www.douban.com/",
-        "icon": "../../assets/images/douban.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/douban.svg",
         "background": "#60cc72"
     },
     {
         "id": 12,
         "name": "Alvin999",
         "url": "https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7",
-        "icon": "../../assets/images/github.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/github.svg",
         "background": "#fff"
     },
     {
         "id": 13,
         "name": "ProjectHub",
         "url": "https://create.arduino.cc/projecthub",
-        "icon": "../../assets/images/arduino.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/arduino.svg",
         "background": "#fff"
     },
     {
         "id": 14,
         "name": "wallHaven",
         "url": "https://wallhaven.cc/",
-        "icon": "../../assets/images/wallhaven.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/wallhaven.svg",
         "background": "#053b5d"
     },
     {
@@ -131,28 +131,28 @@ var member = [
         "id": 19,
         "name": "一本通",
         "url": "http://ybt.ssoier.cn:8088/",
-        "icon": "../../assets/images/yibentong.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/yibentong.svg",
         "background": "#333"
     },
     {
         "id": 20,
         "name": "淘宝",
         "url": "https://www.taobao.com/",
-        "icon": "../../assets/images/taobao.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/taobao.svg",
         "background": "#ff5c02"
     },
     {
         "id": 21,
         "name": "幕布",
         "url": "https://mubu.com/login?next=/app",
-        "icon": "../../assets/images/mubu.jpg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/mubu.jpg",
         "background": "#fff"
     },
     {
         "id": 22,
         "name": "ES6教程",
         "url": "https://es6.ruanyifeng.com/",
-        "icon": "../../assets/images/es6.jpg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/es6.jpg",
         "background": "#fff"
     },
     {
@@ -173,7 +173,7 @@ var member = [
         "id": 25,
         "name": "JSON",
         "url": "http://jsonplaceholder.typicode.com/",
-        "icon": "../../assets/images/json.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/json.svg",
         "background": "#333"
     },
     {
@@ -194,7 +194,7 @@ var member = [
         "id": 28,
         "name": "小纸条",
         "url": "https://u.gitcafe.net/",
-        "icon": "../../assets/images/xiaozhitiao.png",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/xiaozhitiao.png",
         "background": "#fff"
     },
     {
@@ -215,21 +215,21 @@ var member = [
         "id": 31,
         "name": "weblab",
         "url": "https://weblab.zhxi.co/?output,html",
-        "icon": "../../assets/images/weblab.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/weblab.svg",
         "background": "#841617"
     },
     {
         "id": 32,
         "name": "新生大学",
         "url": "https://b.xinshengdaxue.com/",
-        "icon": "../../assets/images/gitbook.png",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/gitbook.png",
         "background": "#841617"
     },
     {
         "id": 33,
         "name": "腾讯文档",
         "url": "https://docs.qq.com/",
-        "icon": "../../assets/images/tenxundoc.png",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/tenxundoc.png",
         "background": "#fff"
     },
     {
@@ -271,42 +271,42 @@ var member = [
         "id": 39,
         "name": "不太灵",
         "url": "http://www.0bt0.com/",
-        "icon": "../../assets/images/butailing.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/butailing.svg",
         "background": "#ddd"
     },
     {
         "id": 40,
         "name": "QQ邮箱",
         "url": "https://mail.qq.com/",
-        "icon": "../../assets/images/QQmail.png",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/QQmail.png",
         "background": "#ddd"
     },
     {
         "id": 41,
         "name": "牛逼网站",
         "url": "https://www.nbwz.com/",
-        "icon": "../../assets/images/niubi.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/niubi.svg",
         "background": "#ddd"
     },
     {
         "id": 42,
         "name": "Z-library",
         "url": "https://find.looks.wang/index.html",
-        "icon": "../../assets/images/library.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/library.svg",
         "background": "#333"
     },
     {
         "id": 43,
         "name": "ioGames",
         "url": "https://iogames.space/",
-        "icon": "../../assets/images/ioGames.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/ioGames.svg",
         "background": "#ddd"
     },
     {
         "id": 44,
         "name": "noVip",
         "url": "https://www.novipnoad.com/",
-        "icon": "../../assets/images/block.svg",
+        "icon": "https://github.com/IbenZhou/ibenzhou.github.io/tree/main/assets/images/block.svg",
         "background": "#ddd"
     },
 ]
