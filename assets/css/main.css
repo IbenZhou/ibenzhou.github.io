@@ -1,0 +1,68 @@
+body{
+    background-color: #444;
+    color: aliceblue;
+}
+
+#title {
+    /* text-align: center; */
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+#workSpace {
+    height: 85vh;
+    background-color: rgba(5, 62, 97, 0.879);
+    position: relative;
+}
+
+.popWindow {
+    position: absolute;
+    top: 50%;
+    margin-top: -80px;
+    left: 50%;
+    margin-left: -150px;
+    height: 160px;
+    width: 300px;
+    background-color: rgb(18, 177, 185);
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px skyblue;
+}
+
+#over {
+    display: none;
+}
+
+#pause {
+    display: none;
+}
+
+button{
+    border-style: none;
+    height: 30px;
+    width: 100px;
+    border-radius: 5px;
+    background-color: #103f5e;
+    color: aliceblue;
+    font-size: 18px;
+    box-shadow: 1px 1px 10px green;
+}
+
+button:hover {
+    box-shadow: 1px 1px 10px rgb(2, 71, 2);
+    cursor: pointer;
+}
+
+button:active{
+    box-shadow: 1px 1px 10px green;
+}
+
+
+#pause button {
+    margin: 0 10px;
+}

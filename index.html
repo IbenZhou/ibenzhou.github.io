@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <link rel="shortcut icon" href="./assets/img/snake.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="title" class="section">
+            <h2 id="gameName">贪吃蛇</h2>
+        </div>
+
+        <div id="workSpace">
+            <div id="head"></div>
+            <div id="body"></div>
+            <div id="food"></div>
+            <div id="over" class="popWindow">
+                <h1>GAME OVER</h1>
+                <p class="score">Score: 45</p>
+                <button id="restart1">Restart</button>
+            </div>
+            <div id="pause" class="popWindow">
+                <h1>Pause</h1>
+                <p class="score">Score: 32</p>
+                <button id="restart2">Restart</button>
+                <button id="resume">Resume</button>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="./assets/js/config.js"></script>
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
