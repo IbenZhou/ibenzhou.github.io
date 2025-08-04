@@ -1,1339 +1,529 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Iben Zhou">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Computer Science Notes">
+<meta property="og:url" content="https://iben.fun/index.html">
+<meta property="og:site_name" content="Computer Science Notes">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Iben Zhou">
+<meta name="twitter:card" content="summary_large_image">
+  
   
   
   <title>Computer Science Notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Computer Science Notes">
-<meta property="og:url" content="http://iben.fun/index.html">
-<meta property="og:site_name" content="Computer Science Notes">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="Iben Zhou">
-<meta name="twitter:card" content="summary">
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
-    <link rel="alternate" href="/atom.xml" title="Computer Science Notes" type="application/atom+xml">
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"iben.fun","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+
 
   
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
-
 <meta name="generator" content="Hexo 7.3.0"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Computer Science Notes</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">especifically for CIE 9618, IG 0478 syllabus and APCSA</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
         
-      </nav>
-      <nav id="sub-nav">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
         
         
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://iben.fun"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-about/me" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/04/about/me/" class="article-date">
-  <time class="dt-published" datetime="2025-08-04T02:56:43.000Z" itemprop="datePublished">2025-08-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/04/about/me/">About me</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>I’m a teacher for teaching computer science. I found it is espming from a non-CS background, it’s hard to get into the field. I’m trying to help people to get into the field. I’m also trying to help people to get into the field. I’m also trying to help people to get into the field. I’m also trying to help people to get into the field. I’m also trying to help people to get into the field. I’m also trying to help people to get into the field. I’m also trying to help people to get into the field. I’m also trying to help people to get into the field.</p>
-<p>I’m good at 3 syllabs.</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-computer-science-9618/">A Level Computer Science - 9618</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-igcse-computer-science-0478/">IGCSE Computer Science - 0478</a></li>
-<li><a target="_blank" rel="noopener" href="https://apcentral.collegeboard.org/courses/ap-computer-science-a">AP Computer Science A</a></li>
-</ul>
-<p>During my teaching experience, I’ve found that APCSA class is the easist to teach, and easy to learn for students.</p>
-<p>But for Cambreidge International, I’ve found that IGCSE and A Level syllabus is harder for students. There are more difficult problems and more time consuming. But I’ve found that students are more interested in the material and are able to learn more quickly. </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://iben.fun/2025/08/04/about/me/" data-id="cmdwj41lr0000weqtchiq8oz1" data-title="About me" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/03/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2025-08-03T08:05:52.009Z" itemprop="datePublished">2025-08-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/03/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://iben.fun/2025/08/03/hello-world/" data-id="cmdvt49bn0000c1qtcx61011i" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-A Level/9618考点梳理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/" class="article-date">
-  <time class="dt-published" datetime="2025-07-03T07:41:53.487Z" itemprop="datePublished">2025-07-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/">剑桥国际 AS &amp; A Level 计算机科学 9618 考纲考点整理 (适用于 2024-2025 年考试)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="一、AS-Level-考点-试卷-1-和-2"><a href="#一、AS-Level-考点-试卷-1-和-2" class="headerlink" title="一、AS Level 考点 (试卷 1 和 2)"></a><strong>一、AS Level 考点 (试卷 1 和 2)</strong></h3><h4 id="1-信息表示-1-1-1-3"><a href="#1-信息表示-1-1-1-3" class="headerlink" title="1. 信息表示 (1.1 - 1.3)"></a><strong>1. 信息表示 (1.1 - 1.3)</strong></h4><p><strong>(1) 数据表示 (1.1)</strong></p>
-<ul>
-<li><strong>数制转换:</strong> <ul>
-<li>理解二进制数的大小以及二进制前缀 (kibi, mebi, gibi, tebi) 与十进制前缀 (kilo, mega, giga, tera) 的区别。</li>
-<li>掌握二进制、十进制、十六进制以及二进制编码的十进制数 (BCD) 的转换方法。</li>
-<li>掌握使用一补码和二补码表示二进制整数的方法，并进行整数在不同数制&#x2F;表示法之间的转换。</li>
-<li>掌握二进制数的加法和减法运算，包括正数和负数。</li>
-<li>理解溢出的概念，并描述其发生条件。</li>
-</ul>
-</li>
-<li><strong>字符编码:</strong> <ul>
-<li>理解字符数据在计算机内部的二进制表示方法。</li>
-<li>熟悉 ASCII (美国信息交换标准代码)、扩展 ASCII 和 Unicode 编码标准，但无需记忆具体字符代码。</li>
-</ul>
-</li>
-<li><strong>数制应用:</strong> <ul>
-<li>描述 BCD 和十六进制在实际应用中的使用场景。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 多媒体 (1.2)</strong></p>
-<ul>
-<li><strong>位图图像:</strong><ul>
-<li>理解位图图像数据的编码方式。</li>
-<li>掌握以下术语: 像素 (pixel)、文件头 (file header)、图像分辨率 (image resolution)、屏幕分辨率 (screen resolution)、颜色深度&#x2F;位深度 (colour depth&#x2F;bit depth)。</li>
-<li>能够进行位图图像文件大小的估算。</li>
-<li>理解更改位图图像元素 (如分辨率、颜色深度) 对图像质量和文件大小的影响。</li>
-</ul>
-</li>
-<li><strong>矢量图形:</strong><ul>
-<li>理解矢量图形的编码方式。</li>
-<li>掌握以下术语: 绘图对象 (drawing object)、属性 (property)、绘图列表 (drawing list)。</li>
-<li>能够根据任务需求选择使用位图图像或矢量图形，并说明理由。</li>
-</ul>
-</li>
-<li><strong>声音:</strong><ul>
-<li>理解声音的表示和编码方式。</li>
-<li>掌握以下术语: 采样 (sampling)、采样率 (sampling rate)、采样分辨率 (sampling resolution)、模拟数据 (analogue data) 和数字数据 (digital data)。</li>
-<li>理解更改采样率和分辨率对声音文件大小和准确性的影响。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(3) 压缩 (1.3)</strong></p>
-<ul>
-<li>理解压缩的必要性以及压缩的应用实例。</li>
-<li>理解有损压缩 (lossy compression) 和无损压缩 (lossless compression) 的概念，并能够根据具体情况选择合适的压缩方法。</li>
-<li>理解以下文件类型的压缩方法:<ul>
-<li>文本文件: 游程编码 (Run-Length Encoding, RLE)</li>
-<li>位图图像:  RLE 等</li>
-<li>矢量图形:  RLE 等</li>
-<li>声音文件:  RLE 等</li>
-</ul>
-</li>
-</ul>
-<h4 id="2-通信-2-1"><a href="#2-通信-2-1" class="headerlink" title="2. 通信 (2.1)"></a><strong>2. 通信 (2.1)</strong></h4><p><strong>(1) 网络，包括互联网 (2.1)</strong></p>
-<ul>
-<li><strong>网络基础:</strong><ul>
-<li>理解网络设备 (如路由器、交换机) 的用途和优势。</li>
-<li>理解局域网 (LAN) 和广域网 (WAN) 的特点。</li>
-<li>掌握以下网络模型:<ul>
-<li>客户端-服务器模型 (client-server model):  理解不同计算机在网络和子网模型中的角色，以及每个模型的优缺点，并能够根据具体情况选择合适的模型。</li>
-<li>对等网络模型 (peer-to-peer model):  同上。</li>
-</ul>
-</li>
-<li>理解瘦客户端 (thin-client) 和胖客户端 (thick-client) 的概念，以及两者之间的区别。</li>
-<li>理解以下网络拓扑结构:  总线型 (bus)、星型 (star)、网状 (mesh) 和混合型 (hybrid)，并理解数据包在给定拓扑结构中如何传输。</li>
-<li>能够根据具体情况选择合适的拓扑结构，并说明理由。</li>
-</ul>
-</li>
-<li><strong>云计算:</strong><ul>
-<li>理解云计算的概念，包括公共云和私有云的使用。</li>
-<li>理解云计算的优势和劣势。</li>
-</ul>
-</li>
-<li><strong>网络连接:</strong><ul>
-<li>理解无线网络和有线网络之间的区别，以及使用两者的影响。</li>
-<li>描述以下网络硬件的特点: 铜缆 (copper cable)、光纤电缆 (fibre-optic cable)、无线电波 (包括 WiFi)、微波 (microwaves)、卫星 (satellites)。</li>
-<li>描述支持局域网 (LAN) 的硬件，包括: 交换机 (switch)、服务器 (server)、网络接口卡 (NIC)、无线网络接口卡 (WNIC)、无线接入点 (WAP)、电缆 (cables)、网桥 (bridge)、中继器 (repeater)。</li>
-<li>描述路由器 (router) 在网络中的作用和功能。</li>
-<li>理解以太网 (Ethernet) 以及如何检测和避免冲突，包括载波侦听多路访问&#x2F;冲突检测 (CSMA&#x2F;CD)。</li>
-</ul>
-</li>
-<li><strong>数据流:</strong><ul>
-<li>理解比特流 (bit streaming) 的概念，包括实时 (real-time) 和点播 (on-demand) 两种方法。</li>
-<li>理解比特率 (bit rates) 和宽带速度 (broadband speed) 对比特流的重要性。</li>
-</ul>
-</li>
-<li><strong>互联网与万维网:</strong><ul>
-<li>理解万维网 (WWW) 和互联网 (internet) 之间的区别。</li>
-<li>描述支持互联网的硬件，包括调制解调器 (modems)、公共交换电话网络 (PSTN)、专用线路 (dedicated lines)、蜂窝网络 (cell phone network)。</li>
-</ul>
-</li>
-<li><strong>互联网协议:</strong><ul>
-<li>理解 IP 地址在数据传输中的作用，包括:<ul>
-<li>IPv4 和 IPv6 的 IP 地址格式。</li>
-<li>子网划分 (subnetting) 在网络中的作用。</li>
-<li>IP 地址与网络设备关联的方式。</li>
-<li>公共 IP 地址和私有 IP 地址之间的区别，以及对安全性的影响。</li>
-<li>静态 IP 地址和动态 IP 地址之间的区别。</li>
-</ul>
-</li>
-<li>理解统一资源定位符 (URL) 如何用于定位万维网上的资源，以及域名系统 (DNS) 的作用。</li>
-</ul>
-</li>
-</ul>
-<h4 id="3-硬件-3-1-3-2"><a href="#3-硬件-3-1-3-2" class="headerlink" title="3. 硬件 (3.1 - 3.2)"></a><strong>3. 硬件 (3.1 - 3.2)</strong></h4><p><strong>(1) 计算机及其组件 (3.1)</strong></p>
-<ul>
-<li>理解输入设备、输出设备、主存储器 (primary memory) 和辅助存储器 (secondary storage，包括可移动存储) 的必要性。</li>
-<li>理解嵌入式系统 (embedded systems)，包括其优缺点。</li>
-<li>描述以下硬件设备的主要操作:<ul>
-<li>激光打印机 (laser printer)、3D 打印机 (3D printer)、麦克风 (microphone)、扬声器 (speakers)、磁性硬盘 (magnetic hard disk)、固态 (闪存) 存储器 (solid state (flash) memory)、光盘读写器 (optical disc reader&#x2F;writer)、触摸屏 (touchscreen)、虚拟现实头戴设备 (virtual reality headset)。</li>
-</ul>
-</li>
-<li>理解缓冲区的使用 (use of buffers)。</li>
-<li>理解以下存储器类型的区别，以及它们在不同设备和系统中的使用:<ul>
-<li>随机存取存储器 (RAM) 和只读存储器 (ROM)。</li>
-<li>静态 RAM (SRAM) 和动态 RAM (DRAM):  理解使用 SRAM 和 DRAM 的原因，以及根据设备及其用途选择使用其中一种的原因。</li>
-</ul>
-</li>
-<li>理解以下可编程只读存储器 (PROM) 类型的区别:<ul>
-<li>可编程 ROM (PROM)</li>
-<li>可擦除可编程 ROM (EPROM)</li>
-<li>电可擦除可编程 ROM (EEPROM)</li>
-</ul>
-</li>
-<li>理解监控和控制系统的概念，包括:<ul>
-<li>监控与控制之间的区别。</li>
-<li>传感器的使用 (包括温度、压力、红外线、声音) 和执行器 (actuators)。</li>
-<li>反馈 (feedback) 的重要性。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 逻辑门和逻辑电路 (3.2)</strong></p>
-<ul>
-<li>掌握以下逻辑门符号:<ul>
-<li>NOT, AND, OR, NAND, NOR, XOR (EOR)</li>
-</ul>
-</li>
-<li>理解并定义以下逻辑门的功能:  NOT, AND, OR, NAND, NOR, XOR (EOR)。</li>
-<li>能够构建上述逻辑门的真值表 (truth table)，所有门电路 (除 NOT 门外) 只能有两个输入。</li>
-<li>能够根据以下内容构建逻辑电路 (logic circuit):<ul>
-<li>问题陈述 (problem statement)</li>
-<li>逻辑表达式 (logic expression)</li>
-<li>真值表 (truth table)</li>
-</ul>
-</li>
-<li>能够根据以下内容构建真值表:<ul>
-<li>问题陈述 (problem statement)</li>
-<li>逻辑电路 (logic circuit)</li>
-<li>逻辑表达式 (logic expression)</li>
-</ul>
-</li>
-<li>能够根据以下内容构建逻辑表达式:<ul>
-<li>问题陈述 (problem statement)</li>
-<li>逻辑电路 (logic circuit)</li>
-<li>真值表 (truth table)</li>
-</ul>
-</li>
-</ul>
-<h4 id="4-处理器基础-4-1-4-3"><a href="#4-处理器基础-4-1-4-3" class="headerlink" title="4. 处理器基础 (4.1 - 4.3)"></a><strong>4. 处理器基础 (4.1 - 4.3)</strong></h4><p><strong>(1) 中央处理器 (CPU) 架构 (4.1)</strong></p>
-<ul>
-<li>理解计算机系统的基本冯·诺依曼模型 (Von Neumann model) 和存储程序概念 (stored program concept)。</li>
-<li>理解寄存器的用途和作用，包括通用寄存器 (general purpose registers) 和专用寄存器 (special purpose registers) 之间的区别，包括:<ul>
-<li>程序计数器 (PC)</li>
-<li>内存数据寄存器 (MDR)</li>
-<li>内存地址寄存器 (MAR)</li>
-<li>累加器 (ACC)</li>
-<li>索引寄存器 (IX)</li>
-<li>当前指令寄存器 (CIR)</li>
-<li>状态寄存器 (Status Register)</li>
-</ul>
-</li>
-<li>理解算术逻辑单元 (ALU)、控制单元 (CU) 和系统时钟 (system clock)、立即存取存储器 (IAS) 的用途和作用。</li>
-<li>理解数据如何通过地址总线 (address bus)、数据总线 (data bus) 和控制总线 (control bus) 在计算机系统的各个组件之间传输。</li>
-<li>理解影响计算机系统性能的因素，包括:<ul>
-<li>处理器类型和核心数量。</li>
-<li>总线宽度 (bus width)。</li>
-<li>时钟速度 (clock speed)。</li>
-<li>缓存内存 (cache memory)。</li>
-</ul>
-</li>
-<li>理解不同端口如何提供与外围设备的连接，包括:<ul>
-<li>通用串行总线 (USB)</li>
-<li>高清多媒体接口 (HDMI)</li>
-<li>视频图形阵列 (VGA)</li>
-</ul>
-</li>
-<li>描述取指-执行 (F-E) 循环的各个阶段。</li>
-<li>描述并使用“寄存器传输”符号 (register transfer notation) 来描述 F-E 循环。</li>
-<li>理解中断 (interrupt) 的目的，包括:<ul>
-<li>中断的可能原因。</li>
-<li>中断的应用。</li>
-<li>使用中断服务程序 (ISR) 处理中断。</li>
-<li>中断在 F-E 循环期间被检测到时如何处理。</li>
-<li>中断的处理方式。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 汇编语言 (4.2)</strong></p>
-<ul>
-<li>理解汇编语言和机器代码 (machine code) 之间的关系。</li>
-<li>描述两遍汇编器 (two-pass assembler) 的各个汇编阶段。</li>
-<li>跟踪给定的简单汇编语言程序。</li>
-<li>将两遍汇编器过程应用于给定的简单汇编语言程序。</li>
-<li>理解指令的分组，包括以下组:<ul>
-<li>数据移动 (Data movement)</li>
-<li>数据输入输出 (Input and output of data)</li>
-<li>算术运算 (Arithmetic operations)</li>
-<li>无条件指令和条件指令 (Unconditional and conditional instructions)</li>
-<li>比较指令 (Compare instructions)</li>
-</ul>
-</li>
-<li>理解并能够使用不同的寻址方式 (addressing modes)，包括:<ul>
-<li>立即寻址 (immediate)</li>
-<li>直接寻址 (direct)</li>
-<li>间接寻址 (indirect)</li>
-<li>索引寻址 (indexed)</li>
-<li>相对寻址 (relative)</li>
-</ul>
-</li>
-<li>提供了指令集示例表格，包含以下指令:<ul>
-<li>LDM, LDD, LDI, LDX, LDR, MOV, STO, ADD, SUB, INC, DEC, JMP, CMP, CMI, JPE, JPN, IN, OUT, END</li>
-</ul>
-</li>
-<li>假设只有一个通用寄存器 (累加器) 可用，ACC 表示累加器，IX 表示索引寄存器，<address> 可以是绝对地址或符号地址，# 表示十进制数 (例如 #123)，B 表示二进制数 (例如 B01001010)，&amp; 表示十六进制数 (例如 &amp;4A)。</li>
-</ul>
-<p><strong>(3) 位操作 (4.3)</strong></p>
-<ul>
-<li>理解并执行二进制移位 (binary shifts)，包括:<ul>
-<li>逻辑移位 (logical)</li>
-<li>算术移位 (arithmetic)</li>
-<li>循环移位 (cyclic)</li>
-<li>左移 (left shift)</li>
-<li>右移 (right shift)</li>
-</ul>
-</li>
-<li>理解如何利用位操作来监控&#x2F;控制设备。</li>
-<li>执行位操作，包括:<ul>
-<li>测试和设置位 (test and set a bit) (使用位掩码 (bit masking))</li>
-</ul>
-</li>
-</ul>
-<h4 id="5-系统软件-5-1-5-2"><a href="#5-系统软件-5-1-5-2" class="headerlink" title="5. 系统软件 (5.1 - 5.2)"></a><strong>5. 系统软件 (5.1 - 5.2)</strong></h4><p><strong>(1) 操作系统 (5.1)</strong></p>
-<ul>
-<li>解释计算机系统为什么需要操作系统 (OS)。</li>
-<li>解释操作系统执行的关键管理任务，包括:<ul>
-<li>内存管理 (memory management)</li>
-<li>文件管理 (file management)</li>
-<li>安全管理 (security management)</li>
-<li>硬件管理 (硬件&#x2F;输入&#x2F;输出&#x2F;外围设备) (hardware management (input&#x2F;output&#x2F;peripherals))</li>
-<li>进程管理 (process management)</li>
-</ul>
-</li>
-<li>理解操作系统提供的典型实用软件 (utility software) 的必要性，包括:<ul>
-<li>磁盘格式化程序 (disk formatter)</li>
-<li>病毒检查器 (virus checker)</li>
-<li>碎片整理软件 (defragmentation software)</li>
-<li>磁盘内容分析&#x2F;磁盘修复软件 (disk contents analysis&#x2F;disk repair software)</li>
-<li>文件压缩 (file compression)</li>
-<li>备份软件 (back-up software)</li>
-</ul>
-</li>
-<li>理解程序库 (program libraries) 的概念，包括:<ul>
-<li>软件开发通常使用程序库中的现有代码构建。</li>
-<li>使用库文件 (包括动态链接库 (DLL) 文件) 构建的软件对开发者的好处。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 语言翻译器 (5.2)</strong></p>
-<ul>
-<li>理解以下翻译器的必要性:<ul>
-<li>汇编软件 (assembler software) 用于翻译汇编语言程序。</li>
-<li>编译器 (compiler) 用于翻译高级语言程序。</li>
-<li>解释器 (interpreter) 用于翻译和执行高级语言程序。</li>
-</ul>
-</li>
-<li>解释使用编译器或解释器的优缺点，并说明选择使用每种方法的原因。</li>
-<li>意识到高级语言程序可能是部分编译和部分解释的，例如 Java (控制台模式)。</li>
-<li>描述典型集成开发环境 (IDE) 的特点，包括:<ul>
-<li>编码特点，包括上下文敏感提示 (context-sensitive prompts)。</li>
-<li>初始错误检测特点，包括动态语法检查 (dynamic syntax checks)。</li>
-<li>展示特点，包括代码美化 (prettyprint)、展开和折叠代码块 (expand and collapse code blocks)。</li>
-<li>调试特点，包括单步执行 (single stepping)、断点 (breakpoints) (例如变量、表达式、报告窗口)。</li>
-</ul>
-</li>
-</ul>
-<h4 id="6-安全、隐私和数据完整性-6-1-6-2"><a href="#6-安全、隐私和数据完整性-6-1-6-2" class="headerlink" title="6. 安全、隐私和数据完整性 (6.1 - 6.2)"></a><strong>6. 安全、隐私和数据完整性 (6.1 - 6.2)</strong></h4><p><strong>(1) 数据安全 (6.1)</strong></p>
-<ul>
-<li>解释术语安全 (security)、隐私 (privacy) 和数据完整性 (data integrity) 之间的区别。</li>
-<li>理解数据安全性和计算机系统安全性的必要性。</li>
-<li>描述旨在保护计算机系统的安全措施，范围从独立 PC 到计算机网络，包括:<ul>
-<li>用户帐户 (user accounts)</li>
-<li>密码 (passwords)</li>
-<li>身份验证技术 (authentication techniques) (例如数字签名 (digital signatures) 和生物识别 (biometrics))</li>
-<li>防火墙 (firewall)</li>
-<li>防病毒软件 (anti-virus software)</li>
-<li>反间谍软件 (antispyware)</li>
-<li>加密 (encryption)</li>
-</ul>
-</li>
-<li>理解网络和互联网对计算机和数据安全构成的威胁。</li>
-<li>描述可用于限制威胁风险的方法，包括:<ul>
-<li>恶意软件 (malware) (病毒 (virus)、间谍软件 (spyware))</li>
-<li>黑客 (hackers)</li>
-<li>网络钓鱼 (phishing)</li>
-<li>网络欺诈 (pharming)</li>
-</ul>
-</li>
-<li>描述旨在保护数据安全的安全方法，包括:<ul>
-<li>加密 (encryption)</li>
-<li>访问权限 (access rights)</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 数据完整性 (6.2)</strong></p>
-<ul>
-<li>描述数据验证 (data validation) 和数据验证 (data verification) 如何帮助保护数据完整性。</li>
-<li>描述并使用数据验证的方法，包括:<ul>
-<li>范围检查 (range check)</li>
-<li>格式检查 (format check)</li>
-<li>长度检查 (length check)</li>
-<li>存在性检查 (presence check)</li>
-<li>存在性检查 (existence check)</li>
-<li>限制检查 (limit check)</li>
-<li>校验位 (check digit)</li>
-</ul>
-</li>
-<li>描述并使用数据验证的方法，包括:<ul>
-<li>数据输入期间:  视觉检查 (visual check)、双重输入 (double entry)</li>
-<li>数据传输期间:  奇偶校验 (parity check (byte and block))、校验和 (checksum)</li>
-</ul>
-</li>
-</ul>
-<h4 id="7-伦理和所有权-7-1"><a href="#7-伦理和所有权-7-1" class="headerlink" title="7. 伦理和所有权 (7.1)"></a><strong>7. 伦理和所有权 (7.1)</strong></h4><p><strong>(1) 伦理和所有权 (7.1)</strong></p>
-<ul>
-<li>理解作为计算机专业人员的伦理需求和目的。</li>
-<li>理解加入专业伦理团体 (例如英国计算机协会 (BCS)、电气与电子工程师协会 (IEEE)) 的重要性。</li>
-<li>理解在特定情况下采取伦理行为的需求，以及采取伦理或不伦理行为的影响。</li>
-<li>理解版权立法的必要性。</li>
-<li>理解不同类型的软件许可 (licensing) 并说明在特定情况下使用许可的原因，包括:<ul>
-<li>自由软件基金会 (Free Software Foundation)</li>
-<li>开源倡议 (Open Source Initiative)</li>
-<li>共享软件 (shareware)</li>
-<li>商业软件 (commercial software)</li>
-</ul>
-</li>
-<li>理解人工智能 (AI) 的概念。<ul>
-<li>理解 AI 的影响，包括社会、经济和环境问题。</li>
-<li>理解 AI 的应用。</li>
-</ul>
-</li>
-</ul>
-<h4 id="8-数据库-8-1-8-3"><a href="#8-数据库-8-1-8-3" class="headerlink" title="8. 数据库 (8.1 - 8.3)"></a><strong>8. 数据库 (8.1 - 8.3)</strong></h4><p><strong>(1) 数据库概念 (8.1)</strong></p>
-<ul>
-<li>理解使用基于文件的存储和检索数据方法的局限性。</li>
-<li>描述关系数据库 (relational database) 的特点，这些特点解决了基于文件的方法的局限性。</li>
-<li>理解并使用与关系数据库模型相关的术语，包括:<ul>
-<li>实体 (entity)</li>
-<li>表 (table)</li>
-<li>记录 (record)</li>
-<li>字段 (field)</li>
-<li>元组 (tuple)</li>
-<li>属性 (attribute)</li>
-<li>主键 (primary key)</li>
-<li>候选键 (candidate key)</li>
-<li>次键 (secondary key)</li>
-<li>外键 (foreign key)</li>
-<li>关系 (relationship) (一对多 (one-to-many)、一对一 (one-to-one)、多对多 (many-to-many))</li>
-<li>引用完整性 (referential integrity)</li>
-<li>索引 (indexing)</li>
-</ul>
-</li>
-<li>使用实体关系 (E-R) 图记录数据库设计。</li>
-<li>理解规范化的过程，包括:<ul>
-<li>第一范式 (1NF)</li>
-<li>第二范式 (2NF)</li>
-<li>第三范式 (3NF)</li>
-</ul>
-</li>
-<li>解释给定的数据库表集是或不是 3NF 的原因。</li>
-<li>根据数据库描述、给定数据集或给定表集生成规范化的数据库设计。</li>
-</ul>
-<p><strong>(2) 数据库管理系统 (DBMS) (8.2)</strong></p>
-<ul>
-<li>理解数据库管理系统 (DBMS) 提供的功能，这些功能解决了基于文件方法的问题，包括:<ul>
-<li>数据管理 (data management)，包括维护数据字典 (data dictionary)。</li>
-<li>数据建模 (data modelling)</li>
-<li>逻辑模式 (logical schema)</li>
-<li>数据完整性 (data integrity)</li>
-<li>数据安全性 (data security)，包括备份程序 (backup procedures) 和使用访问权限 (access rights) 授予个人&#x2F;用户组 (groups of users)。</li>
-</ul>
-</li>
-<li>理解 DBMS 中软件工具的实践使用，包括:<ul>
-<li>开发人员界面 (developer interface)</li>
-<li>查询处理器 (query processor)</li>
-</ul>
-</li>
-</ul>
-<p><strong>(3) 数据定义语言 (DDL) 和数据操作语言 (DML) (8.3)</strong></p>
-<ul>
-<li>理解 DBMS 使用其数据定义语言 (DDL) 执行所有数据库结构的创建&#x2F;修改。</li>
-<li>理解 DBMS 使用其数据操作语言 (DML) 执行所有查询和数据维护。</li>
-<li>理解 DDL 和 DML 的行业标准是结构化查询语言 (SQL)。</li>
-<li>理解给定的 SQL 语句。</li>
-<li>理解给定的 SQL (DDL) 语句，并能够使用 SQL 语句的子集编写简单的 SQL (DDL) 语句，包括:<ul>
-<li>创建数据库 (CREATE DATABASE)</li>
-<li>创建表定义 (CREATE TABLE)，包括创建具有适当数据类型的属性:<ul>
-<li>CHARACTER</li>
-<li>VARCHAR(n)</li>
-<li>BOOLEAN</li>
-<li>INTEGER</li>
-<li>REAL</li>
-<li>DATE TIME</li>
-</ul>
-</li>
-<li>更改表定义 (ALTER TABLE)</li>
-<li>向表中添加主键 (PRIMARY KEY (field))</li>
-<li>向表中添加外键 (FOREIGN KEY (field) REFERENCES Table (Field))</li>
-</ul>
-</li>
-<li>编写 SQL 脚本查询或修改存储在 (最多两个) 数据库表中的数据 (DML)，包括:<ul>
-<li>查询 (Queries):  SELECT… FROM, WHERE, ORDER BY, GROUP BY, INNER JOIN, SUM, COUNT, AVG</li>
-<li>数据维护 (Data maintenance):  INSERT INTO, DELETE FROM, UPDATE</li>
-</ul>
-</li>
-</ul>
-<h3 id="二、A-Level-考点-试卷-3-和-4"><a href="#二、A-Level-考点-试卷-3-和-4" class="headerlink" title="二、A Level 考点 (试卷 3 和 4)"></a><strong>二、A Level 考点 (试卷 3 和 4)</strong></h3><h4 id="9-数据表示-13-1-13-3"><a href="#9-数据表示-13-1-13-3" class="headerlink" title="9. 数据表示 (13.1 - 13.3)"></a><strong>9. 数据表示 (13.1 - 13.3)</strong></h4><p><strong>(1) 用户定义的数据类型 (13.1)</strong></p>
-<ul>
-<li>理解为什么需要用户定义的数据类型。</li>
-<li>定义并使用非复合类型，包括:<ul>
-<li>枚举 (enumerated)</li>
-<li>指针 (pointer)</li>
-</ul>
-</li>
-<li>定义并使用复合数据类型，包括:<ul>
-<li>集合 (set)</li>
-<li>记录 (record)</li>
-<li>类&#x2F;对象 (class&#x2F;object)</li>
-</ul>
-</li>
-<li>选择并设计适合给定问题的用户定义数据类型。</li>
-</ul>
-<p><strong>(2) 文件组织和访问 (13.2)</strong></p>
-<ul>
-<li>理解文件组织的方法，并选择适合的文件组织和文件访问方法用于给定问题，包括:<ul>
-<li>串行 (serial)</li>
-<li>顺序 (sequential) (使用键字段 (key field))</li>
-<li>随机 (random) (使用记录键 (record key))</li>
-</ul>
-</li>
-<li>理解文件访问的方法，包括:<ul>
-<li>串行文件和顺序文件的顺序访问 (sequential access)</li>
-<li>顺序文件和随机文件的直接访问 (direct access)</li>
-</ul>
-</li>
-<li>理解哈希算法 (hashing algorithms)。</li>
-<li>描述并使用不同的哈希算法来读取和写入数据到随机&#x2F;顺序文件。</li>
-</ul>
-<p><strong>(3) 浮点数、表示和操作 (13.3)</strong></p>
-<ul>
-<li>描述二进制浮点实数的格式。</li>
-<li>使用二补码形式。</li>
-<li>理解更改浮点表示中位数位 (mantissa) 和指数 (exponent) 的分配对浮点数的影响。</li>
-<li>将二进制浮点实数转换为十进制，反之亦然。</li>
-<li>规范化浮点数。</li>
-<li>理解规范化的原因。</li>
-<li>理解二进制表示只是对实际数字的近似值 (在某些情况下) 的后果。</li>
-<li>理解二进制表示可能导致舍入误差 (rounding errors)。</li>
-<li>理解下溢 (underflow) 和溢出 (overflow) 的发生原因。</li>
-</ul>
-<h4 id="10-通信和互联网技术-14-1-14-2"><a href="#10-通信和互联网技术-14-1-14-2" class="headerlink" title="10. 通信和互联网技术 (14.1 - 14.2)"></a><strong>10. 通信和互联网技术 (14.1 - 14.2)</strong></h4><p><strong>(1) 协议 (14.1)</strong></p>
-<ul>
-<li>理解协议对于计算机之间通信的重要性。</li>
-<li>理解协议实现可以被视为一个堆栈 (stack)，其中每一层都有自己的功能。</li>
-<li>理解 TCP&#x2F;IP 协议套件 (protocol suite)，包括:<ul>
-<li>四层 (应用层 (Application)、传输层 (Transport)、互联网层 (Internet)、链路层 (Link))。</li>
-<li>每层的用途和功能。</li>
-<li>当消息从互联网上的一个主机发送到另一个主机时应用层的作用。</li>
-</ul>
-</li>
-<li>理解以下协议 (protocols) 及其用途:<ul>
-<li>HTTP, FTP, POP3, IMAP, SMTP, BitTorrent (BitTorrent 协议提供点对点文件共享)</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 电路交换和分组交换 (14.2)</strong></p>
-<ul>
-<li>理解电路交换 (circuit switching) 的概念，包括:<ul>
-<li>优点 (benefits)</li>
-<li>缺点 (drawbacks)</li>
-<li>适用场景 (where it is applicable)</li>
-</ul>
-</li>
-<li>理解分组交换 (packet switching) 的概念，包括:<ul>
-<li>优点 (benefits)</li>
-<li>缺点 (drawbacks)</li>
-<li>适用场景 (where it is applicable)</li>
-</ul>
-</li>
-<li>理解路由器 (router) 在分组交换中的作用。</li>
-<li>解释分组交换如何用于通过网络传递消息，包括互联网。</li>
-</ul>
-<h4 id="11-硬件和虚拟机-15-1-15-2"><a href="#11-硬件和虚拟机-15-1-15-2" class="headerlink" title="11. 硬件和虚拟机 (15.1 - 15.2)"></a><strong>11. 硬件和虚拟机 (15.1 - 15.2)</strong></h4><p><strong>(1) 处理器、并行处理和虚拟机 (15.1)</strong></p>
-<ul>
-<li>理解精简指令集计算机 (RISC) 和复杂指令集计算机 (CISC) 处理器的概念。<ul>
-<li>RISC 和 CISC 之间的区别。</li>
-<li>理解 CISC 和 RISC 处理器的中断处理。</li>
-</ul>
-</li>
-<li>理解 RISC 处理器中流水线 (pipelining) 和寄存器 (registers) 的重要性&#x2F;使用。</li>
-<li>理解四种基本计算机架构的概念，包括:<ul>
-<li>SISD, SIMD, MISD, MIMD</li>
-</ul>
-</li>
-<li>理解大规模并行计算机 (massively parallel computers) 的特点。</li>
-<li>理解虚拟机的概念，包括:<ul>
-<li>给出虚拟机作用的例子。</li>
-<li>理解虚拟机的优缺点。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 布尔代数和逻辑电路 (15.2)</strong></p>
-<ul>
-<li>能够为逻辑电路 (包括半加器 (half adders) 和全加器 (full adders)) 制作真值表 (truth tables)，可能包括具有两个以上输入的逻辑门。</li>
-<li>理解触发器 (flip-flop) (SR, JK)。<ul>
-<li>绘制逻辑电路并为触发器生成真值表。</li>
-<li>理解触发器作为数据存储元素的作用。</li>
-</ul>
-</li>
-<li>理解布尔代数 (Boolean algebra)。<ul>
-<li>理解德摩根定律 (De Morgan’s laws)。</li>
-<li>使用德摩根定律执行布尔代数。</li>
-<li>使用布尔代数简化逻辑电路&#x2F;表达式。</li>
-</ul>
-</li>
-<li>理解卡诺图 (Karnaugh maps (K-map))。<ul>
-<li>理解使用卡诺图的好处。</li>
-<li>使用卡诺图解决逻辑问题。</li>
-</ul>
-</li>
-</ul>
-<h4 id="12-系统软件-16-1-16-2"><a href="#12-系统软件-16-1-16-2" class="headerlink" title="**12. 系统软件 (16.1 - 16.2)"></a>**12. 系统软件 (16.1 - 16.2)</h4><p><strong>(1) 操作系统的目的 (16.1)</strong></p>
-<ul>
-<li>理解操作系统 (OS) 如何最大化资源的使用。</li>
-<li>描述用户界面如何隐藏硬件的复杂性 (complexities) 免受用户的影响。</li>
-<li>理解进程管理 (process management) 的概念，包括:<ul>
-<li>多任务处理 (multi-tasking) 和进程 (process) 的概念。</li>
-<li>进程状态 (process states):  运行 (running), 就绪 (ready) 和阻塞 (blocked)。</li>
-<li>调度的必要性，以及不同调度程序 (scheduling routines) (包括轮询 (round robin), 最短作业优先 (shortest job first), 先来先服务 (first come first served), 最短剩余时间 (shortest remaining time)) 的功能和优势。</li>
-<li>操作系统的内核 (kernel) 如何充当中断处理程序 (interrupt handler) 以及中断处理如何用于管理低级调度。</li>
-</ul>
-</li>
-<li>理解虚拟内存 (virtual memory)、分页 (paging) 和分段 (segmentation) 的内存管理概念，包括:<ul>
-<li>分页、虚拟内存和分段的概念。</li>
-<li>分页和分段之间的区别。</li>
-<li>如何替换页面 (pages)。</li>
-<li>磁盘抖动 (disk thrashing) 的发生原因。</li>
-</ul>
-</li>
-</ul>
-<p><strong>(2) 翻译软件 (16.2)</strong></p>
-<ul>
-<li>理解解释器 (interpreter) 如何在不产生翻译版本的情况下执行程序。</li>
-<li>理解程序编译的各个阶段。</li>
-<li>理解如何使用语法图 (syntax diagrams) 或巴科斯-诺尔范式 (Backus-Naur Form (BNF) 符号) 来表达语言的语法。</li>
-<li>理解如何使用逆波兰表示法 (Reverse Polish Notation (RPN)) 来执行表达式的求值，包括:<ul>
-<li>词法分析 (lexical analysis)</li>
-<li>语法分析 (syntax analysis)</li>
-<li>代码生成 (code generation)</li>
-<li>优化 (optimisation)</li>
-</ul>
-</li>
-</ul>
-<h4 id="13-安全-17-1"><a href="#13-安全-17-1" class="headerlink" title="**13. 安全 (17.1)"></a>**13. 安全 (17.1)</h4><p><strong>(1) 加密、加密协议和数字证书 (17.1)</strong></p>
-<ul>
-<li>理解加密的工作原理，包括:<ul>
-<li>使用公钥 (public key)、私钥 (private key)、明文 (plain text)、密文 (cipher text)、加密 (encryption)、对称密钥密码学 (symmetric key cryptography) 和非对称密钥密码学 (asymmetric key cryptography)。</li>
-<li>如何使用密钥发送从公共到个人&#x2F;组织的私人消息。</li>
-<li>如何使用密钥发送经过验证的消息给公众。</li>
-<li>使用对称和 非对称密码学加密和解密数据。</li>
-<li>量子密码学的目的、优点和缺点。</li>
-</ul>
-</li>
-<li>意识到安全套接层 (SSL)&#x2F;传输层安全 (TLS) 的存在，包括:<ul>
-<li>SSL&#x2F;TLS 的目的。</li>
-<li>SSL&#x2F;TLS 在客户端-服务器通信中的使用。</li>
-<li>使用 SSL&#x2F;TLS 的合适情况。</li>
-</ul>
-</li>
-<li>理解数字证书 (digital certificate) 的概念，包括:<ul>
-<li>如何获取数字证书。</li>
-<li>如何使用数字证书生成数字签名 (digital signatures)。</li>
-</ul>
-</li>
-</ul>
-<h4 id="14-人工智能-18-1"><a href="#14-人工智能-18-1" class="headerlink" title="**14. 人工智能 (18.1)"></a>**14. 人工智能 (18.1)</h4><p><strong>(1) 人工智能 (AI) (18.1)</strong></p>
-<ul>
-<li>理解如何利用图表 (graphs) 来帮助人工智能 (AI)，包括:<ul>
-<li>图的目的和结构。</li>
-<li>使用 $\mathsf{A}^{\star}$ 和 Dijkstra 算法在图上执行搜索。</li>
-<li>不需要编写算法来设置、访问或执行对图的搜索。</li>
-</ul>
-</li>
-<li>理解人工神经网络 (artificial neural networks) 如何帮助机器学习 (machine learning)。</li>
-<li>理解深度学习 (Deep Learning)、机器学习 (Machine Learning) 和强化学习 (Reinforcement Learning) 以及使用这些方法的原因。</li>
-<li>理解机器学习类别，包括监督学习 (supervised learning) 和无监督学习 (unsupervised learning)。</li>
-<li>理解机器学习中的误差反向传播 (back propagation of errors) 和回归方法 (regression methods)。</li>
-</ul>
-<h4 id="15-计算思维和问题解决-19-1-19-2"><a href="#15-计算思维和问题解决-19-1-19-2" class="headerlink" title="**15. 计算思维和问题解决 (19.1 - 19.2)"></a>**15. 计算思维和问题解决 (19.1 - 19.2)</h4><p>**(1) 算法 (19.1)</p>
-<ul>
-<li>理解线性 (linear) 和二进制 (binary) 搜索方法。<ul>
-<li>编写算法实现线性搜索。</li>
-<li>编写算法实现二进制搜索。</li>
-<li>使用二进制搜索的必要条件。</li>
-<li>二进制搜索的性能如何根据数据项的数量变化。</li>
-</ul>
-</li>
-<li>理解插入排序 (insertion sort) 和冒泡排序 (bubble sort) 方法。<ul>
-<li>编写算法实现插入排序。</li>
-<li>编写算法实现冒泡排序。</li>
-<li>排序程序的性能可能取决于数据的初始顺序和数据项的数量。</li>
-</ul>
-</li>
-<li>理解并使用抽象数据类型 (ADT)。<ul>
-<li>编写算法在以下各项中查找一个项目:  链表 (linked list), 二叉树 (binary tree)。</li>
-<li>编写算法向以下各项插入一个项目:  栈 (stack), 队列 (queue), 链表 (linked list), 二叉树 (binary tree)。</li>
-<li>编写算法从以下各项中删除一个项目:  栈 (stack), 队列 (queue), 链表 (linked list)。</li>
-<li>描述以下 ADT 并展示如何从适当的内置类型或其他 ADT 实现它们:  栈 (stack), 队列 (queue), 链表 (linked list), 字典 (dictionary), 二叉树 (binary tree)。</li>
-</ul>
-</li>
-<li>理解可以通过使用标准 (例如完成任务所需的时间和使用的内存) 来比较执行相同任务的算法，包括:<ul>
-<li>使用大 O 符号 (Big O notation) 指定时间和空间复杂性。</li>
-</ul>
-</li>
-</ul>
-<p>**(2) 递归 (19.2)</p>
-<ul>
-<li>理解递归 (recursion) 的概念，包括:<ul>
-<li>递归的本质特征。</li>
-<li>递归在编程语言中的表达方式。</li>
-<li>编写和跟踪递归算法。</li>
-<li>使用递归的好处。</li>
-</ul>
-</li>
-<li>意识到编译器为了翻译递归编程代码必须执行的操作，包括:<ul>
-<li>使用栈 (stacks) 和回溯 (unwinding)。</li>
-</ul>
-</li>
-</ul>
-<h4 id="16-进一步编程-20-1-20-2"><a href="#16-进一步编程-20-1-20-2" class="headerlink" title="**16. 进一步编程 (20.1 - 20.2)"></a>**16. 进一步编程 (20.1 - 20.2)</h4><p>**(1) 编程范式 (20.1)</p>
-<ul>
-<li>理解编程范式的含义。</li>
-<li>理解以下编程范式的特点:<ul>
-<li><strong>低级编程 (Low-level):</strong><ul>
-<li>理解并能够编写使用各种寻址模式 (immediate, direct, indirect, indexed, relative) 的低级代码。</li>
-</ul>
-</li>
-<li><strong>命令式 (Imperative (Procedural)):</strong><ul>
-<li>假设对结构化编程 (Structural Programming) 有知识和理解 (参见 AS 内容部分 11.3 的详细信息)。</li>
-<li>理解并能够编写使用变量、构造、过程和函数 (procedures and functions) 的命令式 (procedural) 编程代码。参见 AS 内容。</li>
-</ul>
-</li>
-<li><strong>面向对象 (Object-Oriented):</strong><ul>
-<li>理解与面向对象编程 (OOP) 相关的术语 (包括对象 (objects), 属性&#x2F;属性 (properties&#x2F;attributes), 方法 (methods), 类 (classes), 继承 (inheritance), 多态 (polymorphism), 包含 (contain), 封装 (encapsulation), getters, setters, 实例 (instances))。</li>
-<li>理解如何通过设计合适的类来解决问题。</li>
-<li>理解并能够编写代码展示 OOP 的使用。</li>
-</ul>
-</li>
-<li><strong>声明式 (Declarative):</strong><ul>
-<li>理解并能够通过编写适当的基于给定信息的规则和事实 (facts and rules) 来解决问题。</li>
-<li>理解并能够编写代码使用规则和事实来满足目标。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>**(2) 文件处理和异常处理 (20.2)</p>
-<ul>
-<li>编写代码执行文件处理操作，包括:<ul>
-<li>打开 (以读取、写入、追加模式) 和关闭文件。</li>
-<li>从文件中读取记录并向文件中写入记录。</li>
-<li>对串行、顺序、随机文件执行文件处理操作。</li>
-</ul>
-</li>
-<li>理解异常 (exception) 的概念以及异常处理的重要性。<ul>
-<li>知道何时使用异常处理。</li>
-<li>编写程序代码使用异常处理。</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://iben.fun/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/" data-id="cmdwjecmw00026fqt899e4zga" data-title="剑桥国际 AS &amp; A Level 计算机科学 9618 考纲考点整理 (适用于 2024-2025 年考试)" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AS-Level/" rel="tag">AS Level</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-APCSA/AP CSA 课程学习方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/" class="article-date">
-  <time class="dt-published" datetime="2025-06-10T08:31:11.457Z" itemprop="datePublished">2025-06-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/">2025年AP CSA 课程学习方案</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <hr>
-<h3 id="第1周-编程思维速成与基础语法"><a href="#第1周-编程思维速成与基础语法" class="headerlink" title="第1周 - 编程思维速成与基础语法"></a><strong>第1周 - 编程思维速成与基础语法</strong></h3><p><strong>目标：</strong> 1节课完成Scratch到Java的核心转换<br><strong>课1-2：环境速通与逻辑迁移</strong>  </p>
-<ul>
-<li><strong>核心速讲</strong>（90分钟）：  <ul>
-<li>Scratch事件广播 → Java <code>main</code>方法入口  </li>
-<li>变量类型对比：Scratch”角色属性” → Java <code>int/String/double</code>  </li>
-<li>直接实战：温度转换程序（包含<code>Scanner</code>输入输出）  </li>
-<li>强制类型转换陷阱演示：<code>5/2=2</code> vs <code>5/2.0=2.5</code></li>
-</ul>
-</li>
-<li><strong>强化训练</strong>（30分钟）：  <ul>
-<li>真题类练习：修复缺失分号的编译错误代码  </li>
-<li>拓展：讲解 Java 程序结构</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="第2周-逻辑控制与模块化"><a href="#第2周-逻辑控制与模块化" class="headerlink" title="第2周 - 逻辑控制与模块化"></a><strong>第2周 - 逻辑控制与模块化</strong></h3><p><strong>目标：</strong> 掌握条件&#x2F;循环与方法抽象<br><strong>课3：条件与循环实战</strong>  </p>
-<ul>
-<li>真题高频考点：  </li>
-<li><code>if-else</code>链在适用场景中的应用</li>
-<li>for loop 及 while loop 在不同场景中的应用</li>
-<li>循环边界陷阱：<code>&lt;=length</code>导致的<code>ArrayIndexOutOfBounds</code>  </li>
-<li>嵌套循环真题：打印数字金字塔（分析缩进与循环变量关系）</li>
-</ul>
-<p><strong>课4：方法抽象化训练</strong>  </p>
-<ul>
-<li>方法（函数）的设计原则：  </li>
-<li>高内聚低耦合：将猜数字游戏拆分为<code>generateAnswer()</code>&#x2F;<code>validateInput()</code>  </li>
-<li>真题模式：追踪<code>String</code>参数传递时的不可变性  </li>
-<li>递归思维：用AP常考的<code>reverseString</code>案例理解栈结构</li>
-</ul>
-<hr>
-<h3 id="第3周-面向对象基础"><a href="#第3周-面向对象基础" class="headerlink" title="第3周 - 面向对象基础"></a><strong>第3周 - 面向对象基础</strong></h3><p><strong>目标：</strong> 建立类与对象的核心认知<br><strong>课5：类与对象速成</strong>  </p>
-<ul>
-<li>真题类设计：  </li>
-<li>经典<code>Student</code>类：属性私有化+构造方法重载  </li>
-<li>对象交互：模拟<code>Course</code>类注册学生（渗透<code>ArrayList</code>预知识）  </li>
-<li>内存模型：用绘图解析<code>new</code>关键字产生的堆栈变化</li>
-</ul>
-<p><strong>课6：封装与继承实战</strong>  </p>
-<ul>
-<li>封装陷阱：  <ul>
-<li>通过真题暴露直接操作public变量的风险  </li>
-<li>设计<code>BankAccount</code>的<code>withdraw</code>方法验证余额</li>
-</ul>
-</li>
-<li>继承真题模式：  <ul>
-<li><code>Animal→Dog</code>重写<code>makeSound()</code>的@Override注解必要性</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="第4周-数据处理基础"><a href="#第4周-数据处理基础" class="headerlink" title="第4周 - 数据处理基础"></a><strong>第4周 - 数据处理基础</strong></h3><p><strong>目标：</strong> 掌握数组与集合操作<br><strong>课7：数组与算法</strong>  </p>
-<ul>
-<li>真题高频题型：  <ul>
-<li>数组遍历：寻找最大值&#x2F;反转数组  </li>
-<li>二维数组：矩阵对角线求和（注意<code>arr.length</code>与<code>arr[i].length</code>区别）</li>
-</ul>
-</li>
-<li>排序预热：手写选择排序与<code>Arrays.sort()</code>对比</li>
-</ul>
-<p><strong>课8：ArrayList进阶</strong>  </p>
-<ul>
-<li>动态集合操作：  <ul>
-<li>真题中的<code>remove</code>陷阱：循环删除时的索引偏移  </li>
-<li>类型擦除实验：尝试向<code>ArrayList&lt;Integer&gt;</code>添加String</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="第5周-核心算法思维"><a href="#第5周-核心算法思维" class="headerlink" title="第5周 - 核心算法思维"></a><strong>第5周 - 核心算法思维</strong></h3><p><strong>目标：</strong> 掌握AP要求的算法模式<br><strong>课9：搜索与递归</strong>  </p>
-<ul>
-<li>二分查找真题变体：  <ul>
-<li>含重复元素时的边界处理  </li>
-<li>递归实现与循环实现的得分点差异</li>
-</ul>
-</li>
-<li>递归调试：用调用栈图分析<code>factorial(5)</code>的执行过程</li>
-</ul>
-<p><strong>课10：排序算法应用</strong>  </p>
-<ul>
-<li>AP重点算法：  <ul>
-<li>插入排序模拟（FRQ常考手写实现）  </li>
-<li>稳定性实验：对<code>Student</code>对象按成绩排序</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="第6周-文件处理"><a href="#第6周-文件处理" class="headerlink" title="第6周 - 文件处理"></a><strong>第6周 - 文件处理</strong></h3><p><strong>目标：</strong> 掌握基本的文件读写方法<br><strong>课11：文件基础</strong></p>
-<ul>
-<li>文件的基本读入方法</li>
-<li>文件读入后的基本数据处理</li>
-<li>文件和其他章节内容的结合</li>
-<li>文件写入的基本操作</li>
-<li>文件写入的实际案例</li>
-</ul>
-<p>**课12：文件写入进阶  </p>
-<ul>
-<li>文件读写的基本考察方式</li>
-<li>关于文件读写的模拟练习</li>
-</ul>
-<hr>
-<h3 id="第7-8周-真题训练"><a href="#第7-8周-真题训练" class="headerlink" title="第7-8周 - 真题训练"></a><strong>第7-8周 - 真题训练</strong></h3><p><strong>目标：</strong> 深度适应考试模式（最后2周共4次课）<br><strong>课13-14：MCQ 方法论</strong>  </p>
-<ul>
-<li>题型破解技巧：  <ul>
-<li>代码追踪题：用变量跟踪表法（每行标注变量值变化）  </li>
-<li>继承多态题：画UML简图快速判断输出结果  </li>
-<li>时间复杂度题：识别循环嵌套层数判断大O</li>
-</ul>
-</li>
-<li>高频错题集：  <ul>
-<li><code>==</code>与<code>equals()</code>的区别实验  </li>
-<li><code>substring</code>索引越界陷阱</li>
-</ul>
-</li>
-</ul>
-<p><strong>课15-16：FRQ手写训练</strong>  </p>
-<ul>
-<li>FRQ 答题策略：  <ul>
-<li>类&#x2F;方法设计题：快速搭建代码骨架（先写方法签名再填充）  </li>
-<li>数组&#x2F;字符串处理题：边界值测试用例设计  </li>
-<li>递归题：先写基线条件再找递归关系</li>
-</ul>
-</li>
-<li>真题重构：  <ul>
-<li>对比官方满分答案与常见错误答案的差异</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://iben.fun/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/" data-id="cmdwjs1260000b0qt5jyf5zu2" data-title="2025年AP CSA 课程学习方案" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AP-CSA/" rel="tag">AP CSA</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-IGCSE/0478 Paper 1 高频考点" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/" class="article-date">
-  <time class="dt-published" datetime="2025-05-09T08:46:24.400Z" itemprop="datePublished">2025-05-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/">0478 Computer Science 2025 May Paper 1 考点预测</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>最近的 Syllabus 是从 2023 年开始执行，回顾近 2 年试卷，有效试卷共15 套，统计所有和定义相关的考点出现频率来预测绷瓷考试中可能出现的考点</p>
-</blockquote>
-<ol>
-<li><p>必考考点</p>
-<ul>
-<li><p>Number system conversion</p>
-</li>
-<li><p>Binary addition</p>
-</li>
-<li><p>two’s complement</p>
-</li>
-<li><p>The usage of Hexadecimal</p>
-</li>
-<li><p>File size calculation</p>
-</li>
-<li><p>[[Diagram]]</p>
-</li>
-</ul>
-</li>
-<li><p>历年出现频率较高的考点</p>
-<ul>
-<li><p>Transmission method（11 次）- 着重关注几种方法的定义及优缺点分析</p>
-</li>
-<li><p>Input &amp; Output devices（10 次）- 掌握常见的设备名称</p>
-</li>
-<li><p>Microprocess（9 次）- 该考点一般是和 sensor 结合起来考查，背答题模板</p>
-</li>
-<li><p>Packet（9 次）- 着重掌握 packet 结构，packet header 考察频率较高，<strong>定义</strong></p>
-</li>
-<li><p>Compression（8 次）- 考察 Compression 的优缺点分析，重点关注两种 Compression 的定义和优劣势分析，另外重点掌握 RLE</p>
-</li>
-<li><p>Expert system（8 次）- 背答题模板</p>
-</li>
-<li><p>F-E cycle（7 次）- 该考点的知识点比较多，需要掌握整个流程，中间的 register 的名称和作用都要清楚</p>
-</li>
-<li><p>Secondary storage（7 次）- 掌握定义 + 常见设备名称 + 结合 Primary storage 进行优劣势分析</p>
-</li>
-<li><p>Parity check（7 次）- 重点掌握定义</p>
-</li>
-<li><p>Router（6 次）- 掌握基本定义，重点关注其在不同场景中的角色和作用</p>
-</li>
-<li><p>URL（6 次）- 定义+结构</p>
-</li>
-<li><p>AI（6 次）- 答题模板</p>
-</li>
-<li><p>Cookies（5 次）- 重点掌握其基本结构，对比两种不同类型的 cookies 的不同和具体使用场景</p>
-</li>
-<li><p>ARQ（5 次）- 定义</p>
-</li>
-<li><p>Operating system（5 次）- OS 的基本管理功能（process，memory，multitasking，file，interrupt…)</p>
-</li>
-<li><p>Performance factor（5 次）- 重点掌握集中影响 CPU 性能的常见因素</p>
-</li>
-<li><p>Robotics（5 次）- 定义+优缺点分析</p>
-</li>
-<li><p>Automated system（5 次）- 定义+优缺点分析</p>
-</li>
-<li><p>Encryption（5 次）- 定义，重点关着 symmetric 和 asymmetric 定义原理和异同</p>
-</li>
-<li><p>Firewall（5 次）- 定义 + 使用场景</p>
-</li>
-<li><p>Programming language（5 次）- 对比 High-level language 和 Low-level language 的优劣势</p>
-</li>
-<li><p>IDE（5 次）- 掌握 IDE 的基本功能，以及在 programming 的过程中提供的便利</p>
-</li>
-<li><p>Interpreter &amp; Compiler（5 次）- 重点关注定义 + 两者异同对别 + 优劣势分析</p>
-</li>
-<li><p>Machine learning（5 次）- 定义</p>
-</li>
-</ul>
-</li>
-<li><p>前两年出现频率过低的考点，重点关注</p>
-<ul>
-<li><p>Mac address</p>
-</li>
-<li><p>IPv4 &amp; IPv6 address - 两者的基本结构 + 区别</p>
-</li>
-<li><p>World Wide Web</p>
-</li>
-<li><p>Embedded system - 定义 + 特征</p>
-</li>
-<li><p>NIC</p>
-</li>
-<li><p>Instruction set</p>
-</li>
-<li><p>Security threats - 掌握常见的额类型以及对应防范的方法</p>
-</li>
-<li><p>Proxy-server</p>
-</li>
-<li><p>Firmware &#x2F; BIOS &#x2F; Bootloader &#x2F; Bootstrap</p>
-</li>
-</ul>
-</li>
-<li><p>学有余力的同学把以下知识点一并掌握</p>
-<ul>
-<li><p>Data interception</p>
-</li>
-<li><p>digital currency &#x2F; ledger</p>
-</li>
-<li><p>HTML</p>
-</li>
-<li><p>HTTP &#x2F; HTTPS (SSL)</p>
-</li>
-<li><p>DNS</p>
-</li>
-<li><p>Inference engine</p>
-</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://iben.fun/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/" data-id="cmdwjcwyk00016fqt6pp4cmmx" data-title="0478 Computer Science 2025 May Paper 1 考点预测" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IG-CSE/" rel="tag">IG CSE</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AP-CSA/" rel="tag">AP CSA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AS-Level/" rel="tag">AS Level</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IG-CSE/" rel="tag">IG CSE</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AP-CSA/" style="font-size: 10px;">AP CSA</a> <a href="/tags/AS-Level/" style="font-size: 10px;">AS Level</a> <a href="/tags/IG-CSE/" style="font-size: 10px;">IG CSE</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">July 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">June 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2025/08/04/about/me/">About me</a>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
           </li>
+          
         
-          <li>
-            <a href="/2025/08/03/hello-world/">Hello World</a>
-          </li>
         
-          <li>
-            <a href="/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/">剑桥国际 AS &amp; A Level 计算机科学 9618 考纲考点整理 (适用于 2024-2025 年考试)</a>
-          </li>
-        
-          <li>
-            <a href="/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/">2025年AP CSA 课程学习方案</a>
-          </li>
-        
-          <li>
-            <a href="/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/">0478 Computer Science 2025 May Paper 1 考点预测</a>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
           </li>
         
       </ul>
     </div>
   </div>
+</nav>
 
   
-</aside>
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
+          
+        </div>
+
         
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
+
       
-      &copy; 2025 Iben Zhou<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
     </div>
   </div>
-</footer>
+</div>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/08/04/about/me/" target="_self">
+          About me
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/04/about/me/" target="_self">
+        <div>
+          I’m a teacher for teaching computer science. I found it is espming from a non-CS background, it’s hard to get into the field. I’m trying to help people to get into the field. I’m also trying to help p
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-08-04 10:56" pubdate>
+              2025-08-04
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/08/03/hello-world/" target="_self">
+          Hello World
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/03/hello-world/" target="_self">
+        <div>
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-08-03 16:05" pubdate>
+              2025-08-03
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/" target="_self">
+          剑桥国际 AS &amp; A Level 计算机科学 9618 考纲考点整理 (适用于 2024-2025 年考试)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/" target="_self">
+        <div>
+          一、AS Level 考点 (试卷 1 和 2)1. 信息表示 (1.1 - 1.3)(1) 数据表示 (1.1)  数制转换:  理解二进制数的大小以及二进制前缀 (kibi, mebi, gibi, tebi) 与十进制前缀 (kilo, mega, giga, tera) 的区别。 掌握二进制、十进制、十六进制以及二进制编码的十进制数 (BCD) 的转换方法。 掌握使用一补码和二补码表示二进
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-07-03 15:41" pubdate>
+              2025-07-03
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AS-Level/">#AS Level</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/" target="_self">
+          2025年AP CSA 课程学习方案
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/" target="_self">
+        <div>
+          第1周 - 编程思维速成与基础语法目标： 1节课完成Scratch到Java的核心转换课1-2：环境速通与逻辑迁移    核心速讲（90分钟）：   Scratch事件广播 → Java main方法入口   变量类型对比：Scratch”角色属性” → Java int/String/double   直接实战：温度转换程序（包含Scanner输入输出）   强制类型转换陷阱演示：5/2=2
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-10 16:31" pubdate>
+              2025-06-10
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/AP-CSA/">#AP CSA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/" target="_self">
+          0478 Computer Science 2025 May Paper 1 考点预测
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/" target="_self">
+        <div>
+          最近的 Syllabus 是从 2023 年开始执行，回顾近 2 年试卷，有效试卷共15 套，统计所有和定义相关的考点出现频率来预测绷瓷考试中可能出现的考点   必考考点  Number system conversion  Binary addition  two’s complement  The usage of Hexadecimal  File size calculation  [[
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-09 16:46" pubdate>
+              2025-05-09
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IG-CSE/">#IG CSE</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     
 
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+    <script  src="/js/img-lazyload.js" ></script>
+  
 
 
 
 
-<script src="/js/script.js"></script>
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-  </div>
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
