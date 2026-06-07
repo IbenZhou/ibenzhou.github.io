@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6.2 Data Integrity — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>6.2 Data Integrity</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#integrity-methods">Integrity Methods</a></li>
+<li><a href="#validation-verification">Validation &amp; verification</a></li>
+<li><a href="#validation-methods">Validation methods</a></li>
+<li><a href="#verification-methods">Verification methods</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="integrity-methods">Integrity Methods</h2>
+<h2 id="validation-verification">Validation &amp; verification</h2>
+<h3 id="what-is-validation">What is validation?</h3>
+<ul>
+<li>Validation is an <strong>automated process</strong> where <strong>a computer checks</strong> if a user input is <strong>sensible</strong> and meets the program&rsquo;s requirements</li>
+<li>There are <strong>seven categories</strong> of validation which can be carried out on <strong>fields</strong> and <strong>data types,</strong> these are<ul>
+<li><strong>Range check</strong></li>
+<li><strong>Format check</strong></li>
+<li><strong>Length check</strong></li>
+<li><strong>Presence check</strong></li>
+<li><strong>Existence check</strong></li>
+<li><strong>Limit check</strong></li>
+<li><strong>Check digit</strong></li>
+</ul>
+</li>
+<li>There can be occasions where <strong>more than one type of validation will be used</strong> on a field</li>
+<li>An example of this could be a password field which could have a <strong>length</strong>, <strong>presence</strong> and <strong>type</strong> check on it
+<img alt="input-validation" src="images/input-validation.png" /></li>
+</ul>
+<h3 id="what-is-verification">What is verification?</h3>
+<ul>
+<li>Verification is the <strong>act of checking data is accurate</strong> when being <strong>transferred</strong> or <strong>entered</strong> into a system</li>
+<li>Verification methods include:<ul>
+<li><strong>Parity check (transfer)</strong></li>
+<li><strong>Checksum (transfer)</strong></li>
+<li><strong>Double entry checking (entry)</strong></li>
+<li><strong>Visual checks (entry)</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="validation-methods">Validation methods</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Validation type</strong></th>
+<th><strong>Definition</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Range check</strong></td>
+<td>Ensures a number falls within a set range</td>
+<td>Validating that a percentage is between 0 and 100</td>
+</tr>
+<tr>
+<td><strong>Limit check</strong></td>
+<td>Checks that a value does not exceed a maximum limit</td>
+<td>Ensuring no more than 5 items can be bought in a special offer</td>
+</tr>
+<tr>
+<td><strong>Length check</strong></td>
+<td>Checks the length of a string</td>
+<td>Confirming a PIN is exactly 4 digits long</td>
+</tr>
+<tr>
+<td><strong>Type check</strong></td>
+<td>Checks that the input is of the correct data type</td>
+<td>Ensuring age is entered as a whole number</td>
+</tr>
+<tr>
+<td><strong>Presence check</strong></td>
+<td>Checks that data has been entered and the field is not blank</td>
+<td>Making sure a registration form is not submitted with blank fields</td>
+</tr>
+<tr>
+<td><strong>Existence check</strong></td>
+<td>Checks that a referenced value exists in a database or list</td>
+<td>Confirming a student ID entered exists in the school records</td>
+</tr>
+<tr>
+<td><strong>Format check</strong></td>
+<td>Ensures data is in the correct format (e.g. patterns)</td>
+<td>Making sure an email address contains &lsquo;@&rsquo; and a domain like &lsquo;.com&rsquo;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-a-check-digit">What is a check digit?</h3>
+<ul>
+<li>A check digit is the <strong>last digit</strong> included in a code or sequence, used to <strong>detect errors</strong> in <strong>numeric data entry</strong></li>
+<li>Examples of errors that a check digit can help to identify are:<ul>
+<li><strong>Incorrect digits entered</strong></li>
+<li><strong>Omitted or extra digits</strong></li>
+<li><strong>Phonetic errors</strong></li>
+</ul>
+</li>
+<li>Added to the <strong>end of a numerical sequence</strong> they ensure <strong>validity</strong> of the data</li>
+<li>Calculated using <strong>standardised algorithms</strong> to ensure widespread <strong>compatibility</strong></li>
+<li>Examples of where check digits can be used include:<ul>
+<li><strong>ISBN book numbers</strong></li>
+<li><strong>Barcodes</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="isbn-book-numbers">ISBN book numbers</h4>
+<ul>
+<li>Each book has a <strong>unique</strong> ISBN number that <strong>identifies</strong> the book</li>
+<li>A standard ISBN number may be ten digits, for example, 965-448-765-9</li>
+<li>The check digit value is the <strong>final digit</strong> (9 in this example).</li>
+<li>This number is chosen specifically so that when the algorithm is completed the result is a whole number (an integer) with no remainder parts</li>
+<li>A check digit algorithm is performed on the ISBN number and <strong>if the result is a whole number,</strong> then the <strong>ISBN is valid</strong></li>
+</ul>
+<h4 id="barcodes">Barcodes</h4>
+<ul>
+<li>Barcodes consist of <strong>black and white lines</strong> which can be scanned using barcode scanners</li>
+<li>Barcode scanners <strong>shine a laser</strong> on the black and white lines which <strong>reflect light</strong> into the scanner</li>
+<li>The scanner reads the <strong>distance between these lines as numbers</strong> and can identify the item</li>
+<li>Barcodes also use a <strong>set of digits</strong> to <strong>uniquely identify each item</strong></li>
+<li>The <strong>final digit</strong> on a barcode is usually the <strong>check digit</strong>, this can be used to <strong>validate</strong> and <strong>authenticate</strong> an item</li>
+</ul>
+<h2 id="verification-methods">Verification methods</h2>
+<h3 id="what-is-a-parity-check">What is a parity check?</h3>
+<ul>
+<li>A parity check determines whether <strong>bits in a transmission</strong> have been <strong>corrupted</strong></li>
+<li>Every byte transmitted has <strong>one of its bits</strong> allocated as a <strong>parity bit</strong></li>
+<li>The sender and receiver must <strong>agree</strong> before transmission whether they are using <strong>odd</strong> or <strong>even parity</strong></li>
+<li>If <strong>odd parity</strong> is used then there must be an <strong>odd number of 1’s in the byte</strong>, including the parity bit</li>
+<li>If <strong>even parity</strong> is used then there must be an <strong>even number of 1’s in the byte</strong>, including the parity bit</li>
+<li>The <strong>value of the parity bit</strong> is determined by <strong>counting the number of 1’s in the byte</strong>, including the parity bit</li>
+<li>If the number of 1’s <strong>does not match the agreed parity</strong> then an <strong>error has occurred</strong></li>
+<li>Parity checks <strong>only check that an error has occurred</strong>, they do not reveal where the error(s) occurred</li>
+</ul>
+<h4 id="even-parity">Even parity</h4>
+<ul>
+<li>Below is an arbitrary binary string</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>EVEN</strong>  <br><strong>Parity bit</strong></th>
+<th><strong>Byte</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If an <strong>even parity bit</strong> is used then <strong>all bits</strong> in the byte, including the parity bit, must <strong>add up to an even number</strong><ul>
+<li>There are four 1’s in the byte</li>
+<li>This means the parity bit must be 0 otherwise the whole byte, including the parity bit, would add up to five which is an odd number</li>
+</ul>
+</li>
+</ul>
+<h4 id="odd-parity">Odd parity</h4>
+<ul>
+<li>Below is an arbitrary binary string</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>ODD</strong>  <br><strong>Parity bit</strong></th>
+<th><strong>Byte</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If an <strong>odd parity bit</strong> is used then <strong>all bits</strong> in the byte, including the parity bit, must <strong>add up to an odd number</strong><ul>
+<li>There are four 1’s in the byte. This means the parity bit must be a 1 otherwise the whole byte, including the parity bit, would add up to four which is an even number</li>
+</ul>
+</li>
+<li>The table below shows a number of examples of the agreed parity between a sender and receiver and the parity bit used for each byte</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Example #</strong></th>
+<th><strong>Agreed parity</strong></th>
+<th><strong>Parity bit</strong></th>
+<th><strong>Main bit string</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th><strong>Total number of 1’s</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#1</td>
+<td>ODD</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>5</strong></td>
+</tr>
+<tr>
+<td>#2</td>
+<td>EVEN</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td>#3</td>
+<td>EVEN</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>#4</td>
+<td>ODD</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>5</strong></td>
+</tr>
+<tr>
+<td>#5</td>
+<td>ODD</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>5</strong></td>
+</tr>
+<tr>
+<td>#6</td>
+<td>EVEN</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>4</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Example #1: The agreed parity is <strong>odd</strong>. All of the 1’s in the main bit string are added <strong>(5)</strong>. As this number is <strong>odd already</strong> the <strong>parity bit</strong> is set to <strong>0</strong> so the whole byte <strong>stays odd</strong></li>
+<li>Example #2: The agreed parity is <strong>even</strong>. All of the 1’s in the main bit string are added <strong>(1)</strong>. As this number is <strong>odd</strong> the <strong>parity bit</strong> is set to <strong>1</strong> to make the <strong>total number of 1’s even</strong> <strong>(2)</strong></li>
+<li>Example #6: The agreed parity is <strong>even</strong>. All of the 1’s in the main bit string are added <strong>(4)</strong>. As this number is <strong>even already</strong> the <strong>parity bit</strong> is set to <strong>0</strong> so the whole byte <strong>stays even</strong></li>
+<li>When using parity bits, an <strong>error</strong> occurs when the number of <strong>total bits does not match the agreed parity</strong></li>
+<li>Bits can be <strong>flipped</strong> or <strong>changed</strong> due to <strong>interference</strong> on a wire or wirelessly due to <strong>weather</strong> or <strong>other signals</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Example #</strong></th>
+<th><strong>Agreed parity</strong></th>
+<th><strong>Parity bit</strong></th>
+<th><strong>Main bit string</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th><strong>Total number of 1’s</strong></th>
+<th><strong>Error</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#1</td>
+<td>ODD</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>6</strong></td>
+<td><strong>Error</strong></td>
+</tr>
+<tr>
+<td>#2</td>
+<td>EVEN</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>2</strong></td>
+<td><strong>No error</strong></td>
+</tr>
+<tr>
+<td>#3</td>
+<td>EVEN</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>7</strong></td>
+<td><strong>Error</strong></td>
+</tr>
+<tr>
+<td>#4</td>
+<td>ODD</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>5</strong></td>
+<td><strong>No error</strong></td>
+</tr>
+<tr>
+<td>#5</td>
+<td>ODD</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>6</strong></td>
+<td><strong>Error</strong></td>
+</tr>
+<tr>
+<td>#6</td>
+<td>EVEN</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>3</strong></td>
+<td><strong>Error</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Parity checks are <strong>quick</strong> and <strong>easy to implement</strong> but <strong>fail to detect bit swaps</strong> that cause the parity to remain the same</li>
+</ul>
+<h3 id="what-are-parity-byte-block-checks">What are parity byte &amp; block checks?</h3>
+<ul>
+<li>Parity blocks and parity bytes can be used to <strong>check an error has occurred</strong> and <strong>where the error is located</strong></li>
+<li>Parity checks on their own <strong>do not pinpoint where errors in data exist</strong>, only that an error has occurred</li>
+<li>A parity block consists of <strong>a block of data</strong> with the number of 1’s totalled <strong>horizontally</strong> and <strong>vertically</strong></li>
+<li>A parity byte is also sent with the data which contains the <strong>parity bits</strong> from the <strong>vertical parity calculation</strong></li>
+<li>Below is a parity block with a parity byte at the bottom and a parity bit column in the second column</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>ODD</strong></th>
+<th><strong>Parity bit</strong></th>
+<th><strong>Bit 2</strong></th>
+<th><strong>Bit 3</strong></th>
+<th><strong>Bit 4</strong></th>
+<th><strong>Bit 5</strong></th>
+<th><strong>Bit 6</strong></th>
+<th><strong>Bit 7</strong></th>
+<th><strong>Bit 8</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Byte 1</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>Byte 2</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><strong>Byte 3</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>Byte 4</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>Byte 5</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>Byte 6</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Byte 7</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Byte 8</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td><strong>Parity byte</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The above table uses <strong>odd parity</strong></li>
+<li>Each <strong>byte row</strong> calculates the <strong>horizontal parity</strong> as a parity bit <strong>as normal</strong></li>
+<li>Each <strong>bit column</strong> calculates the <strong>vertical parity</strong> for each row, the <strong>parity byte</strong></li>
+<li>It is <strong>calculated before transmission</strong> and <strong>sent with the parity block</strong></li>
+<li>Each <strong>parity bit tracks if a flip error</strong> occurred in a byte while the <strong>parity byte</strong> calculates if an <strong>error occurred in a bit column</strong></li>
+<li>By <strong>cross referencing</strong> both <strong>horizontal and vertical</strong> parity values the <strong>error can be pinpointed</strong></li>
+<li>In the above example the <strong>byte 3 / bit 5 cell</strong> is the error and <strong>should be a 0 instead</strong></li>
+<li>The error could be <strong>fixed automatically or a retransmission request could be sent</strong> to the sender</li>
+</ul>
+<h3 id="what-is-a-checksum">What is a checksum?</h3>
+<ul>
+<li>A checksum is a value that can be used to determine if data has been <strong>corrupted or altered</strong></li>
+<li>It indicates whether data <strong>differs from its original form</strong> but <strong>does not</strong> specify where</li>
+<li>Checksums are <strong>calculated using an algorithm</strong> and the value is <strong>added to the transmission</strong></li>
+<li>The receiving device <strong>re-calculates</strong> the checksum and <strong>compares</strong> to the original</li>
+<li>If the <strong>checksums do not match</strong>, it is assumed an error has occurred</li>
+</ul>
+<h3 id="what-is-double-entry-checking">What is double entry checking?</h3>
+<ul>
+<li>Double entry checking involves <strong>entering the data twice</strong> in separate input boxes and then comparing the data to ensure they both match</li>
+<li>If they do not, an error message is shown</li>
+</ul>
+<h3 id="what-is-a-visual-check">What is a visual check?</h3>
+<ul>
+<li>A visual check involves the user <strong>visually checking the data on the screen</strong></li>
+<li>A popup or message then <strong>asks if the data is correct</strong> before proceeding</li>
+<li>If it isn’t the <strong>user then enters the data again</strong></li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

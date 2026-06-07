@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10.3 File Handling — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>10.3 File Handling</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#file-operations">File operations</a></li>
+<li><a href="#programming-file-operations">Programming file-operations</a></li>
+<li><a href="#exception-handling">Exception handling</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="file-operations">File operations</h2>
+<h3 id="what-are-file-processing-operations">What are file-processing operations?</h3>
+<ul>
+<li>File-processing involves <strong>interacting with external files</strong> stored on secondary storage (e.g. hard drives, SSDs)</li>
+<li>In programming, files must be properly <strong>opened</strong>, <strong>read/written</strong>, and <strong>closed</strong> to ensure data is handled correctly</li>
+<li>Different <strong>types of file access</strong> are also used</li>
+</ul>
+<h4 id="common-file-operations">Common file operations</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Open</code></td>
+<td>The file is opened in a specific <strong>mode</strong>:  <br>• <code>read</code> – to read data  <br>• <code>write</code> – to overwrite data  <br>• <code>append</code> – to add new data to the end</td>
+</tr>
+<tr>
+<td><code>Read</code></td>
+<td>Data (e.g. lines or records) is read from the file into memory</td>
+</tr>
+<tr>
+<td><code>Write</code></td>
+<td>Data is written to the file (overwriting or appending depending on mode)</td>
+</tr>
+<tr>
+<td><code>Close</code></td>
+<td>Ends access to the file and ensures all data is saved properly</td>
+</tr>
+</tbody>
+</table>
+<h4 id="types-of-file-access">Types of file access</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Access type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Serial access</strong></td>
+<td>Records are <strong>stored one after another</strong>, and accessed in the <strong>order they were added</strong>. Often used for logging</td>
+</tr>
+<tr>
+<td><strong>Sequential access</strong></td>
+<td>Records are <strong>read from the beginning to the end</strong>, in order. Common for batch processing and text files</td>
+</tr>
+<tr>
+<td><strong>Random access</strong></td>
+<td>Records can be <strong>accessed directly</strong> using a <strong>key or file position</strong>. Common in databases or indexed files</td>
+</tr>
+</tbody>
+</table>
+<h2 id="programming-file-operations">Programming file-operations</h2>
+<h3 id="pseudocode">Pseudocode</h3>
+<h4 id="basic-file-operations">Basic file operations</h4>
+<div class="highlight"><pre><span></span><code><span class="n">OPEN</span><span class="w"> </span><span class="n">filename</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">mode</span><span class="w">      </span><span class="c1">// mode: READ, WRITE, APPEND</span>
+<span class="n">READ</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">filename</span><span class="w">   </span><span class="c1">// Read one record</span>
+<span class="n">WRITE</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">filename</span><span class="w">    </span><span class="c1">// Write one record</span>
+<span class="n">CLOSE</span><span class="w"> </span><span class="n">filename</span><span class="w">              </span><span class="c1">// Always close the file</span>
+</code></pre></div>
+
+<h4 id="serial-access-eg-logging-events">Serial access (e.g. logging events)</h4>
+<ul>
+<li>Data is written <strong>one after another</strong> (no specific order)</li>
+<li>Often used with <strong>APPEND</strong> mode
+<strong>Example</strong>: Writing logs serially</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">LogRecord</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">timestamp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">ENDTYPE</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">LogRecord</span>
+<span class="n">SET</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="na">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;System started&quot;</span>
+<span class="n">SET</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="na">timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;12:00&quot;</span>
+<span class="n">OPEN</span><span class="w"> </span><span class="s">&quot;logfile.txt&quot;</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">APPEND</span>
+<span class="n">WRITE</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="s">&quot;logfile.txt&quot;</span>
+<span class="n">CLOSE</span><span class="w"> </span><span class="s">&quot;logfile.txt&quot;</span>
+</code></pre></div>
+
+<h4 id="sequential-access-eg-reading-through-all-records">Sequential access (e.g. reading through all records)</h4>
+<ul>
+<li>Records are <strong>read in order</strong> from start to end</li>
+<li>Common for reports or summaries
+<strong>Example</strong>: Reading student grades sequentially</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Student</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">ENDTYPE</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Student</span>
+<span class="n">OPEN</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">READ</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="nf">EOF</span><span class="p">(</span><span class="s">&quot;students.txt&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">READ</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">student</span><span class="p">.</span><span class="na">name</span><span class="p">,</span><span class="w"> </span><span class="n">student</span><span class="p">.</span><span class="na">grade</span>
+<span class="n">ENDWHILE</span>
+<span class="n">CLOSE</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span>
+</code></pre></div>
+
+<h4 id="random-access-eg-accessing-specific-records-by-key">Random access (e.g. accessing specific records by key)</h4>
+<ul>
+<li>Accesses records <strong>directly using a key</strong> (e.g. record number or unique ID)</li>
+<li>Requires <strong>indexed files</strong> or fixed-length records
+<strong>Example</strong>: Update a student’s grade by record position</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Student</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">ENDTYPE</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Student</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">recordNumber</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">SET</span><span class="w"> </span><span class="n">recordNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w">    </span><span class="c1">// go directly to the 5th record</span>
+<span class="n">OPEN</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">RANDOM</span>
+<span class="n">SEEK</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">recordNumber</span>
+<span class="n">READ</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span>
+<span class="n">SET</span><span class="w"> </span><span class="n">student</span><span class="p">.</span><span class="na">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">90</span><span class="w">  </span><span class="c1">// update grade</span>
+<span class="n">SEEK</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">recordNumber</span>
+<span class="n">WRITE</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span>
+<span class="n">CLOSE</span><span class="w"> </span><span class="s">&quot;students.txt&quot;</span>
+</code></pre></div>
+
+<h4 id="summary">Summary</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OPEN</code></td>
+<td>Opens a file in a specified mode</td>
+<td><code>OPEN "file.txt" FOR READ</code></td>
+</tr>
+<tr>
+<td><code>READ</code></td>
+<td>Reads one record</td>
+<td><code>READ student FROM "file.txt"</code></td>
+</tr>
+<tr>
+<td><code>WRITE</code></td>
+<td>Writes one record</td>
+<td><code>WRITE student TO "file.txt"</code></td>
+</tr>
+<tr>
+<td><code>CLOSE</code></td>
+<td>Closes the file</td>
+<td><code>CLOSE "file.txt"</code></td>
+</tr>
+<tr>
+<td><code>SEEK</code></td>
+<td>Moves to a specific record (random access)</td>
+<td><code>SEEK "file.txt", 5</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="python">Python</h3>
+<h4 id="basic-file-operations_1">Basic file operations</h4>
+<div class="highlight"><pre><span></span><code><span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;filename.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span> <span class="ow">or</span> <span class="s2">&quot;w&quot;</span> <span class="ow">or</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>  <span class="c1"># Open for read, write, or append</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>                         <span class="c1"># Read one line</span>
+<span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>                               <span class="c1"># Write one line</span>
+<span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                   <span class="c1"># Close the file</span>
+</code></pre></div>
+
+<h4 id="serial-access-eg-logging-events_1">Serial access (e.g. logging events)</h4>
+<p><strong>Example</strong>: Appending log entries to a file (serial write)</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;System started&quot;</span>
+<span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;logfile.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="sequential-access-eg-reading-through-all-records_1">Sequential access (e.g. reading through all records)</h4>
+<p><strong>Example</strong>: Reading through each student line by line</p>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;students.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">grade</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">, Grade: </span><span class="si">{</span><span class="n">grade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="random-access-eg-accessing-specific-records-by-key_1">Random access (e.g. accessing specific records by key)</h4>
+<p><strong>Example</strong>: Update a student’s grade by index (record number)</p>
+<div class="highlight"><pre><span></span><code><span class="n">record_number</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># 5th record (0-indexed)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;students.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="n">name</span><span class="p">,</span> <span class="n">grade</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="n">record_number</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">records</span><span class="p">[</span><span class="n">record_number</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">,90</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># Update grade to 90</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;students.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="summary_1">Summary</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Python Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open</td>
+<td><code>open("file.txt", "r")</code></td>
+</tr>
+<tr>
+<td>Read</td>
+<td><code>file.readline()</code> / <code>for line in file:</code></td>
+</tr>
+<tr>
+<td>Write</td>
+<td><code>file.write("text")</code></td>
+</tr>
+<tr>
+<td>Close</td>
+<td><code>file.close()</code> or use <code>with open(...)</code></td>
+</tr>
+<tr>
+<td>Random access</td>
+<td><code>lines = file.readlines()</code> + list indexing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="java">Java</h3>
+<h4 id="basic-file-operations_2">Basic file operations</h4>
+<div class="highlight"><pre><span></span><code><span class="n">BufferedReader</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedReader</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileReader</span><span class="p">(</span><span class="s">&quot;filename.txt&quot;</span><span class="p">));</span>
+<span class="n">String</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="na">readLine</span><span class="p">();</span>
+<span class="n">reader</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="n">BufferedWriter</span><span class="w"> </span><span class="n">writer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedWriter</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileWriter</span><span class="p">(</span><span class="s">&quot;filename.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">));</span><span class="w"> </span><span class="c1">// true = append</span>
+<span class="n">writer</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="s">&quot;Some text&quot;</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="na">newLine</span><span class="p">();</span>
+<span class="n">writer</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+</code></pre></div>
+
+<h4 id="serial-access-eg-logging-events_2">Serial access (e.g. logging events)</h4>
+<p><strong>Example</strong>: Appending log entries to a file (serial write)</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.time.LocalTime</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.time.format.DateTimeFormatter</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SerialAccessExample</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;System started&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocalTime</span><span class="p">.</span><span class="na">now</span><span class="p">().</span><span class="na">format</span><span class="p">(</span><span class="n">DateTimeFormatter</span><span class="p">.</span><span class="na">ofPattern</span><span class="p">(</span><span class="s">&quot;HH:mm&quot;</span><span class="p">));</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timestamp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">message</span><span class="p">;</span>
+<span class="w">        </span><span class="n">BufferedWriter</span><span class="w"> </span><span class="n">writer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedWriter</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileWriter</span><span class="p">(</span><span class="s">&quot;logfile.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">));</span>
+<span class="w">        </span><span class="n">writer</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">log</span><span class="p">);</span>
+<span class="w">        </span><span class="n">writer</span><span class="p">.</span><span class="na">newLine</span><span class="p">();</span>
+<span class="w">        </span><span class="n">writer</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="sequential-access-eg-reading-through-all-records_2">Sequential access (e.g. reading through all records)</h4>
+<p><strong>Example</strong>: Reading through each student line by line</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.*</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SequentialAccessExample</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BufferedReader</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedReader</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileReader</span><span class="p">(</span><span class="s">&quot;students.txt&quot;</span><span class="p">));</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">line</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="na">readLine</span><span class="p">())</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parts</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
+<span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parts</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">;</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Name: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, Grade: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">grade</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">reader</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="random-access-eg-accessing-specific-records-by-key_2">Random access (e.g. accessing specific records by key)</h4>
+<p><strong>Example</strong>: Update a student’s grade by index (record number)</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.*</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RandomAccessExample</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">records</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">recordNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="c1">// 5th line (0-indexed)</span>
+<span class="w">        </span><span class="n">BufferedReader</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedReader</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileReader</span><span class="p">(</span><span class="s">&quot;students.txt&quot;</span><span class="p">));</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">line</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="na">readLine</span><span class="p">())</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">records</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">reader</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">        </span><span class="c1">// Update the grade</span>
+<span class="w">        </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">records</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">recordNumber</span><span class="p">).</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">updatedRecord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parts</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;,90&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">records</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">recordNumber</span><span class="p">,</span><span class="w"> </span><span class="n">updatedRecord</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// Overwrite the file</span>
+<span class="w">        </span><span class="n">BufferedWriter</span><span class="w"> </span><span class="n">writer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedWriter</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileWriter</span><span class="p">(</span><span class="s">&quot;students.txt&quot;</span><span class="p">));</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">writer</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+<span class="w">            </span><span class="n">writer</span><span class="p">.</span><span class="na">newLine</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">writer</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="summary_2">Summary</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Java Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open (read)</td>
+<td><code>BufferedReader reader = new BufferedReader(...)</code></td>
+</tr>
+<tr>
+<td>Read</td>
+<td><code>reader.readLine()</code> or <code>while ((line = ...) != null)</code></td>
+</tr>
+<tr>
+<td>Write</td>
+<td><code>BufferedWriter writer = new BufferedWriter(...)</code></td>
+</tr>
+<tr>
+<td>Append</td>
+<td><code>new FileWriter("file.txt", true)</code></td>
+</tr>
+<tr>
+<td>Close</td>
+<td><code>reader.close()</code> / <code>writer.close()</code></td>
+</tr>
+<tr>
+<td>Random access</td>
+<td><code>RandomAccessFile</code> (complex) or simulate with <code>List</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="exception-handling">Exception handling</h2>
+<h3 id="what-is-exception-handling">What is exception handling?</h3>
+<ul>
+<li>An exception is an <strong>unexpected event</strong> that disrupts normal program execution</li>
+<li>Exception handling is <strong>how a program detects and responds to these errors</strong>, allowing it to <strong>recover</strong> or <strong>shut down cleanly</strong></li>
+</ul>
+<h4 id="why-use-exception-handling">Why use exception handling?</h4>
+<ul>
+<li>Prevents programs from <strong>crashing unexpectedly</strong></li>
+<li>Allows for <strong>user-friendly error messages</strong></li>
+<li>Makes programs more <strong>robust</strong> and <strong>reliable</strong></li>
+<li>Handles problems caused by:<ul>
+<li>Division by zero</li>
+<li>File not found or end-of-file errors</li>
+<li>Hardware or device failures (e.g. printers, lost connections)</li>
+<li>Invalid input from users</li>
+</ul>
+</li>
+</ul>
+<h4 id="causes-of-exceptions">Causes of exceptions</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Cause</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Programming errors</td>
+<td>Uninitialised variables, logic errors</td>
+</tr>
+<tr>
+<td>User errors</td>
+<td>Entering text instead of a number</td>
+</tr>
+<tr>
+<td>Hardware failure</td>
+<td>Lost connection to printer, disk error</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pseudocode_1">Pseudocode</h3>
+<div class="highlight"><pre><span></span><code><span class="n">TRY</span>
+<span class="w">    </span><span class="c1">// Code that might cause an error</span>
+<span class="w">    </span><span class="n">OPEN</span><span class="w"> </span><span class="s">&quot;data.txt&quot;</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">READ</span>
+<span class="w">    </span><span class="n">READ</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="s">&quot;data.txt&quot;</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">userInput</span>
+<span class="n">EXCEPT</span>
+<span class="w">    </span><span class="c1">// Code to handle the error</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;An error occurred during file processing or division.&quot;</span>
+<span class="w">    </span><span class="n">CLOSE</span><span class="w"> </span><span class="s">&quot;data.txt&quot;</span>
+<span class="n">ENDTRY</span>
+</code></pre></div>
+
+<h4 id="key-terms">Key terms</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Keyword</strong></th>
+<th><strong>Purpose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TRY</code></td>
+<td>Starts a block of code that may raise an error</td>
+</tr>
+<tr>
+<td><code>EXCEPT</code></td>
+<td>Executes if an error occurs in the <code>TRY</code> block</td>
+</tr>
+<tr>
+<td><code>ENDTRY</code></td>
+<td>Marks the end of the exception handling structure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="python_1">Python</h3>
+<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">user_input</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a number: &quot;</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">user_input</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: File not found.&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Cannot divide by zero.&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;An unexpected error occurred:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>  <span class="c1"># file might not have opened</span>
+</code></pre></div>
+
+<h3 id="java_1">Java</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ExceptionHandlingExample</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BufferedReader</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BufferedReader</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileReader</span><span class="p">(</span><span class="s">&quot;data.txt&quot;</span><span class="p">));</span>
+<span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="na">readLine</span><span class="p">();</span>
+<span class="w">            </span><span class="n">Scanner</span><span class="w"> </span><span class="n">scanner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter a number: &quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">userInput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scanner</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">userInput</span><span class="p">;</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Result: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FileNotFoundException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Error: File not found.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">ArithmeticException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Error: Cannot divide by zero.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">IOException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Error reading from file.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;An unexpected error occurred: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reader</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">reader</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">IOException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Ignore closing error</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

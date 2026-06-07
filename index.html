@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iben.fun</title>
+<meta name="description" content="计算机科学 · 玄学 · AI 工具 — 一个教师的书房">
+<style>
+  /* ---- Reset ---- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ---- Paper texture via SVG filter ---- */
+  html {
+    --paper: #f7f2e9;
+    --paper-light: #fdfaf5;
+    --ink: #2c2416;
+    --ink-faded: #8c8273;
+    --ink-light: #b8ae9e;
+    --cinnabar: #c44b3a;
+    --cinnabar-dim: #9e382b;
+    --jade: #4a6741;
+    --jade-light: #7a9e6e;
+    --indigo: #2d4a6e;
+    --indigo-light: #5b7ea8;
+    --border: #e8e0d3;
+    --border-subtle: #efe8db;
+    background: var(--paper);
+    scroll-behavior: smooth;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+    color: var(--ink);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Subtle paper noise overlay */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: .04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  body {
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh; position: relative; z-index: 1;
+  }
+
+  /* ---- Top decorative rule ---- */
+  .top-rule {
+    width: 64px; height: 2px; background: var(--cinnabar);
+    margin-top: 5rem; margin-bottom: 2.5rem;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center; max-width: 480px; padding: 0 1.5rem;
+  }
+  header .title {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", "STSong", serif;
+    font-size: 2.4rem; font-weight: 700; letter-spacing: .08em;
+    color: var(--ink); line-height: 1.4;
+  }
+  header .subtitle {
+    font-size: .95rem; color: var(--ink-faded);
+    margin-top: .75rem; letter-spacing: .04em;
+  }
+
+  /* ---- Nav Cards Grid ---- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 960px; width: 100%;
+    padding: 4rem 1.5rem 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .cards { grid-template-columns: 1fr; max-width: 420px; gap: 1.5rem; }
+    header .title { font-size: 1.8rem; }
+  }
+
+  /* ---- Card ---- */
+  .card {
+    background: var(--paper-light);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2.25rem 1.75rem 1.75rem;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: all .3s ease;
+    position: relative;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44,36,22,.08);
+    border-color: var(--ink-light);
+  }
+
+  /* Card accent line */
+  .card::before {
+    content: ""; display: block;
+    width: 28px; height: 3px;
+    margin-bottom: 1.5rem;
+    border-radius: 0;
+  }
+  .card.cs::before      { background: var(--indigo); }
+  .card.metaphysics::before { background: var(--cinnabar); }
+  .card.ai::before       { background: var(--jade); }
+
+  /* Card icon mark — Chinese character in a subtle circle */
+  .card .mark {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+    font-size: 2.8rem; font-weight: 700;
+    line-height: 1; margin-bottom: .75rem;
+    opacity: .85;
+    transition: opacity .3s;
+  }
+  .card:hover .mark { opacity: 1; }
+  .card.cs .mark      { color: var(--indigo); }
+  .card.metaphysics .mark { color: var(--cinnabar); }
+  .card.ai .mark       { color: var(--jade); }
+
+  .card h2 {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+    font-size: 1.2rem; font-weight: 700;
+    margin-bottom: .5rem; letter-spacing: .05em;
+  }
+  .card .desc {
+    font-size: .88rem; color: var(--ink-faded);
+    line-height: 1.75; flex: 1;
+  }
+  .card .arrow {
+    display: inline-block; margin-top: 1.25rem;
+    font-size: .85rem; color: var(--ink-light);
+    letter-spacing: .06em;
+    transition: color .3s, transform .3s;
+  }
+  .card:hover .arrow {
+    color: var(--ink-faded);
+    transform: translateX(4px);
+  }
+
+  /* ---- Seal Stamp ---- */
+  .seal {
+    text-align: center; padding: 1rem 0 4rem;
+  }
+  .seal svg { width: 48px; height: 48px; opacity: .5; }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center; padding: 2rem 1.5rem 3rem;
+    font-size: .82rem; color: var(--ink-light);
+    letter-spacing: .04em; line-height: 2;
+  }
+  footer span { color: var(--cinnabar-dim); }
+  .beian { margin-top: .25rem; }
+  .beian a {
+    font-size: .75rem; color: var(--ink-light); text-decoration: none;
+    letter-spacing: .02em; transition: color .2s;
+  }
+  .beian a:hover { color: var(--ink-faded); }
+</style>
+</head>
+<body>
+
+<div class="top-rule"></div>
+
+<header>
+  <h1 class="title">iben.fun</h1>
+  <p class="subtitle">一位教师的数字书房 · 计算、思辨与工具</p>
+</header>
+
+<div class="cards">
+
+  <!-- CS Card -->
+  <a href="cs/" class="card cs">
+    <div class="mark">计</div>
+    <h2>计算机科学</h2>
+    <p class="desc">
+      A-Level 9618 · AP CSA · IG 0478<br>
+      考纲梳理、知识点整理、真题分析
+    </p>
+    <span class="arrow">进入 →</span>
+  </a>
+
+  <!-- Metaphysics Card -->
+  <a href="metaphysics/" class="card metaphysics">
+    <div class="mark">玄</div>
+    <h2>玄 学</h2>
+    <p class="desc">
+      《易经》义理 · 风水堪舆 · 术数笔记<br>
+      以理性之眼观照传统智慧
+    </p>
+    <span class="arrow">进入 →</span>
+  </a>
+
+  <!-- AI Tools Card -->
+  <a href="ai/" class="card ai">
+    <div class="mark">器</div>
+    <h2>AI 工具箱</h2>
+    <p class="desc">
+      AI 工具推荐 · 使用技巧 · 效率工作流<br>
+      让工具为你所用
+    </p>
+    <span class="arrow">进入 →</span>
+  </a>
+
+</div>
+
+<!-- Seal stamp -->
+<div class="seal">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="rough">
+        <feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+    <rect x="12" y="12" width="76" height="76" rx="2" fill="none"
+          stroke="#c44b3a" stroke-width="2.5" filter="url(#rough)"/>
+    <text x="50" y="62" text-anchor="middle"
+          font-family="'Noto Serif SC','Songti SC',serif"
+          font-size="32" font-weight="700" fill="#c44b3a"
+          filter="url(#rough)" letter-spacing="8">藏</text>
+  </svg>
+</div>
+
+<footer>
+  静观自得 · <span>iben.fun</span>
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">蜀ICP备2023035345号</a>
+  </div>
+</footer>
+
+</body>
+</html>

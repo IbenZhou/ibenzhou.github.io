@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14.1 protocols — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>14.1 protocols</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#need-for-protocols">Need for protocols</a></li>
+<li><a href="#tcpip">TCP/IP</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="need-for-protocols">Need for protocols</h2>
+<h3 id="what-is-a-protocol">What is a protocol?</h3>
+<ul>
+<li>A protocol is a set of rules that define how computers <strong>communicate over a network</strong></li>
+<li>They ensure that data is <strong>sent</strong>, <strong>received</strong>, and <strong>understood</strong> correctly by all devices, regardless of their manufacturer or operating system</li>
+<li>Without protocols:<ul>
+<li>Devices would <strong>not know how</strong> to structure or interpret data</li>
+<li>Data could be <strong>lost</strong>, <strong>corrupted</strong>, or <strong>misrouted</strong></li>
+<li>Communication between <strong>different hardware and software</strong> systems would break down</li>
+</ul>
+</li>
+<li><strong>Protocols are essential</strong> to guarantee:<ul>
+<li>Reliable data transfer</li>
+<li>Consistent formatting and addressing</li>
+<li>Error checking and correction</li>
+<li>Security during transmission</li>
+</ul>
+</li>
+<li><strong>Examples</strong> of protocols include:<ul>
+<li>TCP, IP, HTTP, FTP, SMTP</li>
+</ul>
+</li>
+</ul>
+<h4 id="protocol-stacks">Protocol stacks</h4>
+<ul>
+<li>The protocol stack is a way of <strong>organising network protocols into layers</strong>, where each layer is responsible for a specific function<ul>
+<li>Each layer <strong>handles its own task independently</strong></li>
+<li>Layers <strong>communicate with the layers directly above and below</strong></li>
+<li>The <strong>stacked model</strong> makes the network easier to design, update, and troubleshoot</li>
+</ul>
+</li>
+<li>Makes communication <strong>modular</strong> and <strong>efficient</strong></li>
+<li>Allows different technologies to <strong>work together</strong> using standardised rules</li>
+<li>An example of a protocol stack is <strong>TCP/IP</strong></li>
+</ul>
+<h2 id="tcpip">TCP/IP</h2>
+<h3 id="what-is-tcpip">What is TCP/IP?</h3>
+<ul>
+<li>TCP/IP, or the Transmission Control Protocol/Internet Protocol, is a <strong>suite of communication protocols</strong> used to interconnect network devices on the internet</li>
+<li>This model splits the various protocols into four layers:<ul>
+<li><strong>Application</strong></li>
+<li><strong>Transport</strong></li>
+<li><strong>Internet</strong></li>
+<li><strong>Link</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="application-layer">Application layer</h4>
+<ul>
+<li>This is the layer where the <strong>communication process begins</strong></li>
+<li>The application layer <strong>interacts directly with software applications</strong>, such as web browsers and email clients</li>
+<li>The application layer <strong>prepares data for transmission</strong> over the network by converting it into a format that can be sent and received over the network (known as encapsulation)</li>
+</ul>
+<h4 id="transport-layer">Transport layer</h4>
+<ul>
+<li>The transport layer <strong>receives data from the application layer</strong></li>
+<li>The transport layer is <strong>responsible for end-to-end communication</strong> between the source and destination</li>
+<li>The transport layer <strong>breaks the data it receives down into smaller units</strong> called packets</li>
+<li>Each packet is <strong>assigned a sequence number</strong> (so the data can be reassembled in the correct order at the destination)</li>
+<li>Each packet is also <strong>labelled with a header</strong> containing information (e.g. the packet number)</li>
+</ul>
+<h4 id="internet-layer">Internet layer</h4>
+<ul>
+<li>The internet layer <strong>receives packets from the transport layer</strong></li>
+<li>It <strong>adds a header to each packet</strong>, including the sender&rsquo;s <strong>IP address</strong> and the receiver&rsquo;s IP address</li>
+<li>The internet layer is responsible for <strong>routing each packet across the network</strong> using the IP addresses in the headers</li>
+</ul>
+<h4 id="link-layer">Link layer</h4>
+<ul>
+<li>Also known as the <strong>network interface layer</strong></li>
+<li>The link layer <strong>receives packets from the Internet layer</strong> and prepares them for transmission over the physical network</li>
+<li>The link layer <strong>translates the digital packets</strong> into an electrical, optical, or wireless signal that can be sent over the network</li>
+<li>Once the signal reaches the receiving end, the network layer <strong>translates it back</strong> into digital packets
+<img alt="TCP IP stack layers" src="images/tcp-ip-stack-computer-science-revision-notes.webp" /></li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

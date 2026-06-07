@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13.1 User-defined Data Types — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>13.1 User-defined Data Types</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#what-are-user-defined-data-types">What are user-defined data types?</a></li>
+<li><a href="#non-composite">Non-composite</a></li>
+<li><a href="#composite">Composite</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="what-are-user-defined-data-types">What are user-defined data types?</h2>
+<ul>
+<li>A user-defined data type is a <strong>custom data structure</strong> created by the programmer to match the specific needs of a program<ul>
+<li>It is built using [[10.1 Data Types &amp; Records#Primitive data types|Primitive data Types]] such as <code>INTEGER</code>, <code>STRING</code>, <code>BOOLEAN</code>, etc</li>
+<li>It helps represent <strong>real-world entities</strong> more accurately than built-in types alone</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Non-composite</strong></td>
+<td>Made up of a <strong>single data item</strong> (e.g. enumerated types like <code>Day = (Mon, Tue, ...)</code>)</td>
+</tr>
+<tr>
+<td><strong>Composite</strong></td>
+<td>Made up of <strong>multiple data items</strong>, often of different types (e.g. records/structures)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="non-composite">Non-composite</h2>
+<h3 id="what-is-an-enumerated-data-type">What is an enumerated data type?</h3>
+<ul>
+<li>An enumerated data type is a type of <strong>non-composite, user-defined data type</strong> that consists of a <strong>list of named, fixed values</strong></li>
+<li>It allows the programmer to define a variable that can only take one of a <strong>limited set of values</strong></li>
+<li>Making code <strong>clearer</strong>, <strong>more readable</strong>, and <strong>easier to validate</strong></li>
+<li>An enumerated data type should be used:<ul>
+<li>When a variable should only hold <strong>predefined values</strong></li>
+<li>To improve <strong>code readability</strong> and <strong>reduce errors</strong></li>
+<li>To <strong>restrict input</strong> to a known, fixed list
+<strong>Pseudocode</strong>
+```Java、
+TYPE <identifier> = (value1, value2, value3, … )</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">**</span><span class="n">Example</span> <span class="n">code</span><span class="o">**</span>
+<span class="err">```</span><span class="n">java</span>
+<span class="kr">TYPE</span> <span class="n">DayType</span> <span class="o">=</span> <span class="p">(</span><span class="n">Monday</span><span class="p">,</span> <span class="n">Tuesday</span><span class="p">,</span> <span class="n">Wednesday</span><span class="p">,</span> <span class="n">Thursday</span><span class="p">,</span> <span class="n">Friday</span><span class="p">,</span> <span class="n">Saturday</span><span class="p">,</span> <span class="n">Sunday</span><span class="p">)</span>
+<span class="n">DECLARE</span> <span class="n">Today</span> <span class="p">:</span> <span class="n">DayType</span>
+<span class="n">Today</span> <span class="err">←</span> <span class="n">Monday</span>
+<span class="kr">IF</span> <span class="n">Today</span> <span class="o">=</span> <span class="n">Saturday</span> <span class="kr">OR</span> <span class="n">Today</span> <span class="o">=</span> <span class="n">Sunday</span> <span class="kr">THEN</span>
+    <span class="n">OUTPUT</span> <span class="s">&quot;It&#39;s the weekend!&quot;</span>
+<span class="kr">ELSE</span>
+    <span class="n">OUTPUT</span> <span class="s">&quot;It&#39;s a weekday.&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<ul>
+<li><code>DayType</code> is the enumerated type</li>
+<li><code>Today</code> can only be one of the seven values listed in <code>DayType</code></li>
+<li>This makes it easy to check against valid options and avoids invalid assignments</li>
+</ul>
+<h3 id="what-is-a-pointer-data-type">What is a pointer data type?</h3>
+<ul>
+<li>A pointer is a special type of variable that <strong>stores the memory address</strong> of another variable or data item, rather than the data itself</li>
+<li>Pointers are used to demonstrate <strong>dynamic data structures</strong>, such as <strong>linked lists</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">^&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>The <code>^</code> indicates the data type is a pointer</li>
+<li><code>&lt;data type&gt;</code> indicates the type of data stored in the memory location
+<strong>Example code</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Node</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Next</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">Node</span>
+<span class="n">ENDTYPE</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">StartPtr</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">Node</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">NewNode</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">Node</span>
+<span class="c1">// Create a new node</span>
+<span class="n">NEW</span><span class="p">(</span><span class="n">NewNode</span><span class="p">)</span>
+<span class="n">NewNode</span><span class="o">^</span><span class="p">.</span><span class="na">Data</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">10</span>
+<span class="n">NewNode</span><span class="o">^</span><span class="p">.</span><span class="na">Next</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">NULL</span>
+<span class="c1">// Initialise the list</span>
+<span class="n">StartPtr</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">NewNode</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th><strong>Line</strong></th>
+<th><strong>What It Does</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TYPE Node</code></td>
+<td>Defines a new <strong>record type</strong> called <code>Node</code></td>
+</tr>
+<tr>
+<td><code>DECLARE Next : ^Node</code></td>
+<td>Declares a <strong>pointer</strong> to another <code>Node</code>, used to link to the next item</td>
+</tr>
+<tr>
+<td><code>NEW(NewNode)</code></td>
+<td>Allocates memory for a new node and assigns the pointer to <code>NewNode</code></td>
+</tr>
+<tr>
+<td><code>NewNode^.</code></td>
+<td>Accesses the <strong>contents of the memory</strong> the pointer is pointing to</td>
+</tr>
+<tr>
+<td><code>NULL</code></td>
+<td>A special value used to indicate the <strong>end of a linked list</strong> (no further nodes)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="use-of-pointers-in-dynamic-structures">Use of pointers in dynamic structures</h3>
+<ul>
+<li><strong>Linked lists</strong>: Each node uses a pointer to link to the next</li>
+<li><strong>Stacks and queues</strong>: Implemented using pointers to track top/front positions</li>
+<li><strong>Memory efficiency</strong>: Allows storage to be reused and allocated at runtime</li>
+</ul>
+<h2 id="composite">Composite</h2>
+<h3 id="what-are-records">What are records?</h3>
+<ul>
+<li>A record is a <strong>composite user-defined data type</strong> that allows you to group together multiple <strong>related fields</strong>, each of which can have <strong>different data types</strong></li>
+<li>Records are used to represent <strong>real-world entities</strong>, such as a student, product, or customer, in a single structure</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Composite type</td>
+<td>Stores <strong>multiple values</strong> of different types in one structure</td>
+</tr>
+<tr>
+<td>Custom fields</td>
+<td>Each field has a <strong>name</strong> and a <strong>specific data type</strong></td>
+</tr>
+<tr>
+<td>Access via dot notation</td>
+<td>Use the format <code>RecordName.FieldName</code> to access data</td>
+</tr>
+<tr>
+<td>Reusable</td>
+<td>Once defined, the record type <strong>can be used to declare multiple variables</strong> of that type</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">RecordTypeName</span><span class="o">&gt;</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">FieldName1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">DataType1</span><span class="o">&gt;</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">FieldName2</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">DataType2</span><span class="o">&gt;</span>
+<span class="p">...</span>
+<span class="n">ENDTYPE</span>
+</code></pre></div>
+
+<p><strong>Example code</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Student</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span>
+<span class="n">ENDTYPE</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">S1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Student</span>
+<span class="n">S1</span><span class="p">.</span><span class="na">Name</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Ali&quot;</span>
+<span class="n">S1</span><span class="p">.</span><span class="na">Age</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">17</span>
+<span class="n">S1</span><span class="p">.</span><span class="na">Enrolled</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">S1</span><span class="p">.</span><span class="na">Name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">S1</span><span class="p">.</span><span class="na">Age</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; years old.&quot;</span>
+</code></pre></div>
+
+<ul>
+<li>Groups <strong>related data</strong> together for easy access</li>
+<li>Makes programs <strong>easier to manage and read</strong></li>
+<li>Ideal for <strong>arrays of records</strong> (e.g. a list of students)</li>
+</ul>
+<h3 id="what-are-sets">What are sets?</h3>
+<ul>
+<li>A set is an <strong>unordered collection</strong> of <strong>unique elements</strong></li>
+<li>Sets are useful for situations where <strong>duplication is not allowed</strong>, and where <strong>membership testing</strong> is common</li>
+<li>Features of a set include:<ul>
+<li><strong>No duplicate values</strong></li>
+<li><strong>Order is not important</strong></li>
+<li><strong>Can perform operations like union, intersection, and difference</strong></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">TYPE</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">identifier</span><span class="p">&gt;</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">SET</span><span class="w"> </span><span class="nx">OF</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">data</span><span class="w"> </span><span class="k">type</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p><strong>Example code</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kr">TYPE</span> <span class="n">ColourSet</span> <span class="o">=</span> <span class="kt">SET</span> <span class="kr">OF</span> <span class="n">STRING</span>
+<span class="n">DEFINE</span> <span class="n">Colours</span> <span class="p">(</span><span class="s">&quot;Red&quot;</span><span class="p">,</span> <span class="s">&quot;Green&quot;</span><span class="p">,</span> <span class="s">&quot;Blue&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="n">ColourSet</span>
+<span class="kr">IF</span> <span class="s">&quot;Green&quot;</span> <span class="n">ISIN</span> <span class="n">Colours</span> <span class="kr">THEN</span>
+    <span class="n">OUTPUT</span> <span class="s">&quot;Green is in the set&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<ul>
+<li>This creates a set named <code>Colours</code> containing <code>"Red"</code>, <code>"Green"</code>, and <code>"Blue"</code> using the user-defined set type <code>ColourSet</code></li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

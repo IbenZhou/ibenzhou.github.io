@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13.3 Floating-point Numbers, Representation &Manipulation — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>13.3 Floating-point Numbers, Representation &Manipulation</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#floating-point-basics">Floating-Point Basics</a></li>
+<li><a href="#floating-point-binary">Floating-point binary</a></li>
+<li><a href="#normalising-floating-point-numbers">Normalising floating-point numbers</a></li>
+<li><a href="#denary-to-floating-point-binary">Denary to floating-point binary</a></li>
+<li><a href="#floating-point-binary-to-denary">Floating-point binary to denary</a></li>
+<li><a href="#approximation-rounding">Approximation &amp; rounding</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="floating-point-basics">Floating-Point Basics</h2>
+<h2 id="floating-point-binary">Floating-point binary</h2>
+<h3 id="what-is-floating-point-binary">What is floating-point binary?</h3>
+<ul>
+<li>Floating-point binary is a <strong>method of representing real numbers in binary</strong>, including fractions and very large or very small values</li>
+<li>Uses <strong>scientific notation in base-2</strong></li>
+<li>Unlike fixed-point (where the binary point is fixed), the binary point can “float” using a <strong>mantissa</strong> and an <strong>exponent</strong></li>
+</ul>
+<h4 id="why-use-floating-point">Why use floating-point?</h4>
+<ul>
+<li>Can represent a <strong>much wider range</strong> of numbers</li>
+<li>Provides <strong>more precision</strong> for fractional values</li>
+<li>Makes <strong>efficient use</strong> of limited storage (e.g. 8-bit, 16-bit representations)</li>
+</ul>
+<h4 id="components-of-floating-point">Components of floating-point</h4>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mantissa</strong></td>
+<td>- Holds the significant digits of the number<br>    <br>- The <strong>first bit</strong> is the sign (0 = +, 1 = −)<br>    <br>- The remaining bits are the fraction</td>
+</tr>
+<tr>
+<td><strong>Exponent</strong></td>
+<td>- Shows how far to move the binary point (positive = right, negative = left)<br>    <br>- Stored in <strong>two’s complement</strong> (unbiased)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-in-decimal">Example in decimal</h4>
+<p><code>3.14 × 10³</code></p>
+<ul>
+<li>Mantissa = 3.14</li>
+<li>Exponent = 3</li>
+</ul>
+<h4 id="example-in-binary">Example in binary</h4>
+<p><code>110.01₂ = 0.11001 × 2³</code></p>
+<ul>
+<li>Mantissa = <code>011001…</code> (sign 0, fraction 11001 padded to available bits)</li>
+<li>Exponent = <code>0011</code> (+3 in two’s complement)</li>
+</ul>
+<h4 id="positive-floating-point-representation">Positive floating-point representation</h4>
+<ul>
+<li>Sign bit = 0</li>
+<li>Fraction part stored in the remaining mantissa bits</li>
+<li>Exponent shifts the binary point</li>
+</ul>
+<h4 id="negative-floating-point-representation">Negative floating-point representation</h4>
+<ul>
+<li>Sign bit = 1</li>
+<li>Fraction part stored in the remaining mantissa bits</li>
+<li>Exponent is in two’s complement</li>
+<li>Example:<ul>
+<li><code>−6.25 = -(110.01₂) = -(0.11001 × 2³) = 1.00111 × 2³</code></li>
+<li>Mantissa = <code>100111000000</code></li>
+<li>Exponent = <code>0011</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="normalising-floating-point-numbers">Normalising floating-point numbers</h2>
+<ul>
+<li>A floating-point number is <strong>normalised</strong> when the mantissa begins with:<ul>
+<li><code>01</code> for positive numbers</li>
+<li><code>10</code> for negative numbers</li>
+</ul>
+</li>
+</ul>
+<h4 id="why-normalise">Why normalise?</h4>
+<table>
+<thead>
+<tr>
+<th>Reason</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Consistency</strong></td>
+<td>All numbers follow the same structure</td>
+</tr>
+<tr>
+<td><strong>Precision</strong></td>
+<td>Leading zeros removed so mantissa makes full use of available bits</td>
+</tr>
+<tr>
+<td><strong>Easier processing</strong></td>
+<td>Arithmetic and comparisons are simpler</td>
+</tr>
+</tbody>
+</table>
+<h4 id="steps-to-normalise-a-floating-point-number">Steps to normalise a floating-point number</h4>
+<ol>
+<li>Shift the binary point until the mantissa begins with <code>01</code> (positive) or <code>10</code> (negative)</li>
+<li>Adjust the exponent by the number of shifts:<ul>
+<li>Moving left → increase exponent</li>
+<li>Moving right → decrease exponent</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<ul>
+<li>Before normalisation:<ul>
+<li>Mantissa = <code>00011</code></li>
+<li>Exponent = <code>0010</code> (+2)</li>
+</ul>
+</li>
+<li>Process:<ul>
+<li>Shift binary point 2 places right → mantissa = <code>01100</code></li>
+<li>Decrease exponent by 2 → exponent = <code>0000</code></li>
+</ul>
+</li>
+<li>After normalisation:<ul>
+<li>Mantissa = <code>01100</code></li>
+<li>Exponent = <code>0000</code></li>
+</ul>
+</li>
+<li>Remember: <strong>mantissa sign = first bit</strong>, not two’s complement</li>
+<li>Only the <strong>exponent</strong> uses two’s complement</li>
+<li>In CIE questions, always write mantissas as <code>0.xxxxx × 2ⁿ</code>, not <code>1.xxxxx × 2ⁿ</code> (that’s IEEE)</li>
+</ul>
+<h2 id="denary-to-floating-point-binary">Denary to floating-point binary</h2>
+<h3 id="how-do-you-convert-denary-to-floating-point-binary">How do you convert denary to floating-point binary?</h3>
+<ul>
+<li>For the following conversions we are assuming:<ul>
+<li>12-bit <strong>mantissa</strong> (bit 0 is the sign: 0 = +, 1 = -)</li>
+<li>4-bit <strong>exponent</strong> (in two’s complement, <strong>unbiased</strong>)
+1. <strong>Convert the number into binary</strong> (split into integer part + fractional part)</li>
+<li>Example: 5 = <code>101₂</code>, 0.25 = <code>0.01₂</code>, so 5.25 = <code>101.01₂</code>
+2. <strong>Normalise the binary</strong> into the form <code>0.xxxxx × 2ⁿ</code></li>
+<li>Move the binary point until there is one non-zero digit to the right of it</li>
+<li>Count how many places the binary point moved = the exponent
+3. <strong>Build the mantissa (12 bits):</strong></li>
+<li>First bit = sign (0 for +, 1 for −)</li>
+<li>Next 11 bits = binary digits after the binary point</li>
+<li>Pad with zeros on the right if needed
+4. <strong>Convert the exponent to 4-bit two’s complement</strong> (unbiased)</li>
+<li>Positive exponents are normal binary</li>
+<li>Negative exponents use two’s complement
+5. <strong>Write the final floating-point number</strong> as (Mantissa | Exponent)</li>
+</ul>
+</li>
+</ul>
+<h4 id="example-525">Example: +5.25</h4>
+<ul>
+<li><strong>Step 1: Convert to binary</strong><ul>
+<li>5.25 = <code>101.01₂</code></li>
+</ul>
+</li>
+<li><strong>Step 2: Normalise</strong><ul>
+<li><code>101.01₂ = 0.10101 × 2³</code></li>
+</ul>
+</li>
+<li><strong>Step 3: Build mantissa (12 bits)</strong><ul>
+<li>Sign = 0 (positive)</li>
+<li>Fraction = <code>10101</code> → pad → <code>10101000000</code></li>
+<li>Mantissa = <code>010101000000</code></li>
+</ul>
+</li>
+<li><strong>Step 4: Exponent</strong><ul>
+<li>+3 = <code>0011</code></li>
+</ul>
+</li>
+<li><strong>Final representation:</strong><br />
+    Mantissa = <code>010101000000</code><br />
+    Exponent = <code>0011</code></li>
+</ul>
+<h4 id="example-525_1">Example: −5.25</h4>
+<ul>
+<li><strong>Step 1: Convert the magnitude</strong><ul>
+<li>First, convert <strong>+5.25</strong> to binary → <code>101.01₂</code> → <code>0101.01₂</code></li>
+<li>Then, invert each bit <code>0101.01₂</code>  → <code>1010.10₂</code></li>
+<li>Add 1 to the last bit  <code>1010.10₂</code> → <code>1010.11₂</code></li>
+<li>Normalise: <code>1010.11₂ = 1.01011 × 2³</code></li>
+</ul>
+</li>
+<li><strong>Step 2: Build the mantissa (12 bits)</strong><ul>
+<li>Fraction: <code>1.01011</code> → pad → <code>101011000000</code></li>
+<li>Mantissa = <code>101011000000</code></li>
+</ul>
+</li>
+<li><strong>Step 3: Exponent</strong><ul>
+<li>Exponent is the same as for +5.25 → +3 = <code>0011</code></li>
+</ul>
+</li>
+<li><strong>Final representation:</strong><br />
+    Mantissa = <code>101011000000</code><br />
+    Exponent = <code>0011</code></li>
+</ul>
+<h4 id="summary-table">Summary table</h4>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Binary</th>
+<th>Normalised</th>
+<th>Mantissa (12-bit)</th>
+<th>Exponent (4-bit)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+5.25</td>
+<td><code>101.01</code></td>
+<td><code>0.10101 × 2³</code></td>
+<td><code>010101000000</code></td>
+<td><code>0011</code></td>
+</tr>
+<tr>
+<td>−5.25</td>
+<td><code>−101.01</code></td>
+<td><code>1.01011 × 2³</code></td>
+<td><code>101011000000</code></td>
+<td><code>0011</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="floating-point-binary-to-denary">Floating-point binary to denary</h2>
+<h3 id="how-do-you-convert-floating-point-binary-to-denary">How do you convert floating-point binary to denary?</h3>
+<ul>
+<li>For the following conversions we are assuming:<ul>
+<li>12-bit <strong>mantissa</strong> (sign + 11 fraction bits)</li>
+<li>4-bit <strong>exponent</strong> (two’s complement, <strong>unbiased</strong>)
+1. <strong>Read the exponent (4 bits)</strong></li>
+<li>Convert from two’s complement into denary</li>
+<li>Positive values = normal binary</li>
+<li>Negative values = two’s complement
+2. <strong>Check the mantissa sign</strong></li>
+<li>First bit = sign (0 = +, 1 = −)</li>
+<li>Remember: the rest of the mantissa is <strong>just the fraction</strong>, not in two’s complement
+3. <strong>Restore the fraction</strong></li>
+<li>Write it as <code>0.&lt;fraction bits&gt;</code> in binary</li>
+<li>Example: mantissa <code>010101000000</code> → fraction bits <code>10101000000</code> → <code>0.10101₂</code>
+4. <strong>Apply the exponent</strong></li>
+<li>Shift the binary point <strong>right</strong> if exponent is positive, <strong>left</strong> if exponent is negative</li>
+<li>Multiply the fraction by <code>2^(exponent)</code>
+5. <strong>Apply the sign</strong></li>
+<li>If the sign bit was 1, make the final result negative</li>
+</ul>
+</li>
+</ul>
+<h4 id="convert-the-following-to-denary">Convert the following to denary (+)</h4>
+<div class="highlight"><pre><span></span><code>Mantissa: 010101000000
+Exponent: 0011
+</code></pre></div>
+
+<ul>
+<li><strong>Step 1: Exponent</strong><ul>
+<li><code>0011₂ = +3</code></li>
+</ul>
+</li>
+<li><strong>Step 2: Mantissa sign</strong><ul>
+<li>First bit = 0 → positive</li>
+</ul>
+</li>
+<li><strong>Step 3: Restore fraction</strong><ul>
+<li>Fraction bits = <code>10101000000</code></li>
+<li>Fraction = <code>0.10101₂</code></li>
+</ul>
+</li>
+<li><strong>Step 4: Apply exponent</strong><ul>
+<li><code>0.10101 × 2³ = 101.01₂ = 5.25₁₀</code></li>
+</ul>
+</li>
+<li><strong>Step 5: Apply sign</strong><ul>
+<li>Positive → stays <code>+5.25</code></li>
+</ul>
+</li>
+<li><strong>Final result:</strong> <code>+5.25</code></li>
+</ul>
+<h4 id="convert-the-following-to-denary-">Convert the following to denary (-)</h4>
+<div class="highlight"><pre><span></span><code><span class="nl">Mantissa</span><span class="p">:</span><span class="w"> </span><span class="mi">110101000000</span>
+<span class="nl">Exponent</span><span class="p">:</span><span class="w"> </span><span class="mo">0011</span>
+</code></pre></div>
+
+<ul>
+<li><strong>Step 1: Exponent</strong><ul>
+<li><code>0011₂ = +3</code></li>
+</ul>
+</li>
+<li><strong>Step 2: Mantissa sign</strong><ul>
+<li>First bit = 1 → negative</li>
+</ul>
+</li>
+<li><strong>Step 3: Restore fraction</strong><ul>
+<li>Fraction bits = <code>10101000000</code><ul>
+<li>Fraction = <code>0.10101₂</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Step 4: Apply exponent</strong><ul>
+<li><code>0.10101 × 2³ = 101.01₂ = 5.25₁₀</code></li>
+</ul>
+</li>
+<li><strong>Step 5: Apply sign</strong><ul>
+<li>Negative → <code>−5.25</code></li>
+</ul>
+</li>
+<li><strong>Final result:</strong> <code>−5.25</code></li>
+<li>Always handle <strong>sign first</strong> (0 = +, 1 = −)</li>
+<li>The mantissa fraction is <strong>never in two’s complement</strong> for CIE</li>
+<li>Only the exponent uses two’s complement</li>
+<li>Show the normalisation step (<code>0.xxxxx × 2ⁿ</code>) if the question asks to “show your working”</li>
+</ul>
+<h4 id="summary-table_1">Summary table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Mantissa</strong></th>
+<th><strong>Exponent</strong></th>
+<th><strong>Result (Denary)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>010101000000</code></td>
+<td><code>0011</code></td>
+<td>+5.25</td>
+</tr>
+<tr>
+<td><code>101011000000</code></td>
+<td><code>0011</code></td>
+<td>−5.25</td>
+</tr>
+</tbody>
+</table>
+<p>Numbers are stored in two different computer systems by using floating-point representation.
+<strong>System 1 uses:</strong></p>
+<ul>
+<li>10 bits for the mantissa</li>
+<li>6 bits for the exponent</li>
+<li>
+<p>two’s complement form for both the mantissa and the exponent.
+<strong>System 2 uses:</strong></p>
+</li>
+<li>
+<p>8 bits for the mantissa</p>
+</li>
+<li>8 bits for the exponent</li>
+<li>two’s complement form for both the mantissa and the exponent.</li>
+</ul>
+<h4 id="quiz">Quiz</h4>
+<p>Calculate the normalised floating-point representation of 113.75 and show how it would be represented in each of these two systems.
+Show your working. <strong>[4]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>conversion of 113.75 to binary seen <code>1110001.11</code> [1 mark]</li>
+<li>exponent for normalisation 7 converted to binary <code>111</code> <strong>OR</strong> evidence of binary [1 mark]</li>
+<li>point moved 7 places <strong>OR</strong> evidence of finding exponent = 7 [1 mark]</li>
+<li>system 1 answer [1 mark]</li>
+<li>system 2 answer showing correct version from system 1 [1 mark]
+<strong>System 1</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Mantissa</th>
+<th>Exponent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0111000111</code></td>
+<td><code>000111</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>System 2</strong></p>
+<table>
+<thead>
+<tr>
+<th>Mantissa</th>
+<th>Exponent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>01110001</code></td>
+<td><code>00000111</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="approximation-rounding">Approximation &amp; rounding</h2>
+<ul>
+<li>In computing, <strong>real numbers</strong> are often stored using <strong>floating-point binary</strong>, which has a <strong>limited number of bits</strong> for the mantissa and exponent</li>
+<li>This means not all real numbers can be represented <strong>exactly</strong>, only <strong>approximated</strong></li>
+<li>Some decimal values cannot be <strong>precisely represented</strong> in binary</li>
+<li><strong>Example</strong>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nl">Decimal</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="w">  </span>
+<span class="nl">Binary</span><span class="p">:</span><span class="w"> </span><span class="mf">0.000110011001100</span><span class="p">...</span><span class="w"> </span><span class="p">(</span><span class="n">recurring</span><span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>Because memory is limited (e.g. 32 or 64 bits), the binary value must be <strong>truncated or rounded</strong>, which introduces <strong>small errors</strong></li>
+<li><strong>Consequence</strong>:<ul>
+<li>Calculations using approximated values may <strong>accumulate errors</strong></li>
+<li>Final results may be <strong>slightly inaccurate</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="underflow">Underflow</h4>
+<ul>
+<li>Underflow occurs when a number is <strong>too close to zero</strong> to be stored in the available number of bits</li>
+<li><strong>Example</strong>:<ul>
+<li>A very small number like <code>1.2 × 10⁻⁴⁰</code></li>
+<li>The exponent is too negative to be stored</li>
+<li>Result: <strong>Stored as 0</strong></li>
+</ul>
+</li>
+<li><strong>Consequence:</strong><ul>
+<li>Loss of precision</li>
+<li>Can affect accuracy in scientific or financial calculations</li>
+</ul>
+</li>
+</ul>
+<h4 id="overflow">Overflow</h4>
+<ul>
+<li><strong>Overflow</strong> occurs when a number is <strong>too large</strong> to fit in the allocated bits for the exponent or mantissa</li>
+<li><strong>Example:</strong><ul>
+<li>A calculation produces <code>1.2 × 10⁵⁰</code>, but the maximum representable number is <code>1.2 × 10³⁸</code></li>
+</ul>
+</li>
+<li><strong>Consequence:</strong><ul>
+<li>Program may crash or return an <strong>infinity</strong>, <strong>error</strong>, or <strong>wraparound value</strong></li>
+<li>Can be especially dangerous in loops or financial applications</li>
+</ul>
+</li>
+</ul>
+<h3 id="summary-table_2">Summary table</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Issue</strong></th>
+<th><strong>Cause</strong></th>
+<th><strong>Effect</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rounding error</strong></td>
+<td>Real number can’t be exactly represented in binary</td>
+<td>Slight inaccuracies in results</td>
+</tr>
+<tr>
+<td><strong>Underflow</strong></td>
+<td>Number too small to be stored (exponent too negative)</td>
+<td>Value becomes 0</td>
+</tr>
+<tr>
+<td><strong>Overflow</strong></td>
+<td>Number too large to be stored (exponent too positive)</td>
+<td>Incorrect result or program error</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

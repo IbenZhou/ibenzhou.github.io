@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.2 Assembly Language Basics — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>4.2 Assembly Language Basics</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#assembly-language-basics">Assembly Language Basics</a></li>
+<li><a href="#machine-code-vs-assembly">Machine code vs assembly</a></li>
+<li><a href="#assembly-process">Assembly Process</a></li>
+<li><a href="#two-pass-assembler">Two-pass assembler</a></li>
+<li><a href="#program-tracing">Program tracing</a></li>
+<li><a href="#instruction-groups">Instruction Groups</a></li>
+<li><a href="#categories-of-instructions">Categories of instructions</a></li>
+<li><a href="#addressing-modes">Addressing Modes</a></li>
+<li><a href="#addressing-methods">Addressing methods</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="assembly-language-basics">Assembly Language Basics</h2>
+<h2 id="machine-code-vs-assembly">Machine code vs assembly</h2>
+<h3 id="what-is-machine-code">What is machine code?</h3>
+<ul>
+<li><strong>Machine code</strong> is a first-generation language</li>
+<li>Instructions are <strong>directly executable by the processor</strong></li>
+<li>Written in <strong>binary code</strong>
+<img alt="Diagram showing programming language abstraction levels: machine code (binary), assembly, high-level compiled (C, C++), and interpreted (Python, JavaScript)." src="images/39794_2025-04-04-0pu-kleki.png" />
+Levels of Abstraction of Programming Languages</li>
+</ul>
+<h3 id="what-is-assembly">What is assembly?</h3>
+<ul>
+<li><strong>Assembly code</strong> is a second-generation language</li>
+<li>The code is written using <strong>mnemonics</strong>, abbreviated text commands such as <strong>LDA (Load), STA(Store)</strong></li>
+<li>Using this language programmers can write <strong>human-readable programs</strong> that correspond <strong>almost exactly to machine code</strong></li>
+<li><strong>One assembly language instruction</strong> translates to <strong>one machine code instruction</strong></li>
+<li><strong>Needs to be translated</strong> into machine code for the computer to be able to execute it</li>
+<li>Each type of computer CPU has a <strong>specific</strong> <strong>instruction set</strong></li>
+</ul>
+<h4 id="instruction-set">Instruction set</h4>
+<ul>
+<li>An instruction set is a list of <strong>all the commands</strong> that can be <strong>processed by a CPU</strong></li>
+<li>Each command has a <strong>binary code</strong> which is the <strong>machine code</strong></li>
+<li>In assembly the binary code is written using mnemonics and split into an <strong>opcode</strong> and <strong>operand</strong></li>
+<li>The <strong>opcode</strong> is the <strong>part of an instruction</strong> that tells the CPU what <strong>operation</strong> to perform</li>
+<li>It&rsquo;s short for <strong>&ldquo;operation code&rdquo;</strong></li>
+<li>Example operations: <em>LDA</em> (load), <em>STA</em> (store), <em>ADD</em>, <em>INP</em>, <em>OUT</em>, <em>BRZ</em>, <em>BRA</em></li>
+<li>The <strong>operand</strong> is the <strong>data</strong> or <strong>memory address</strong> the opcode will work with</li>
+<li>It gives the <strong>extra detail</strong> the CPU needs to complete the instruction</li>
+<li>Often used to specify a <strong>memory address</strong>, a <strong>value</strong>, or a <strong>label</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Opcode</strong></th>
+<th><strong>Operand</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LDM</code></td>
+<td><code>#n</code></td>
+<td>Immediate addressing. Load the number <code>n</code> to the accumulator (ACC).</td>
+</tr>
+<tr>
+<td><code>LDD</code></td>
+<td></td>
+<td>Direct addressing. Load the contents of the location at the given address to ACC.</td>
+</tr>
+<tr>
+<td><code>LDI</code></td>
+<td></td>
+<td>Indirect addressing. Use the value at the given address as a new address. Load contents to ACC.</td>
+</tr>
+<tr>
+<td><code>LDX</code></td>
+<td></td>
+<td>Indexed addressing. Use<br><code>+ index register</code> to get the final address. Load to ACC.</td>
+</tr>
+<tr>
+<td><code>LDR</code></td>
+<td><code>#n</code></td>
+<td>Immediate addressing. Load the number <code>n</code> to the index register (IX).</td>
+</tr>
+<tr>
+<td><code>MOV</code></td>
+<td></td>
+<td>Move the contents of ACC to the given register (e.g. IX).</td>
+</tr>
+<tr>
+<td><code>STO</code></td>
+<td></td>
+<td>Store the contents of ACC at the given memory address.</td>
+</tr>
+<tr>
+<td><code>ADD</code></td>
+<td></td>
+<td>Add the contents of the given address to ACC.</td>
+</tr>
+<tr>
+<td><code>SUB</code></td>
+<td></td>
+<td>Subtract the contents of the given address from ACC.</td>
+</tr>
+<tr>
+<td><code>INC</code></td>
+<td></td>
+<td>Increment the contents of the register (ACC or IX) by 1.</td>
+</tr>
+<tr>
+<td><code>DEC</code></td>
+<td></td>
+<td>Decrement the contents of the register (ACC or IX) by 1.</td>
+</tr>
+<tr>
+<td><code>JMP</code></td>
+<td></td>
+<td>Unconditional jump to the given address.</td>
+</tr>
+<tr>
+<td><code>CMP</code></td>
+<td></td>
+<td>Compare the contents of ACC with the contents of the given address.</td>
+</tr>
+<tr>
+<td><code>CMP</code></td>
+<td><code>#n</code></td>
+<td>Compare the contents of ACC with the number <code>n</code>.</td>
+</tr>
+<tr>
+<td><code>CMI</code></td>
+<td></td>
+<td>Indirect addressing. Compare ACC with the contents at the address stored in</td>
+</tr>
+<tr>
+<td><code>JPE</code></td>
+<td></td>
+<td>Jump to<br>if the previous compare result was <strong>true</strong> (equal).</td>
+</tr>
+<tr>
+<td><code>JPN</code></td>
+<td></td>
+<td>Jump to<br>if the previous compare result was <strong>false</strong> (not equal).</td>
+</tr>
+<tr>
+<td><code>IN</code></td>
+<td></td>
+<td>Take input from the keyboard and store its ASCII value in ACC.</td>
+</tr>
+<tr>
+<td><code>OUT</code></td>
+<td></td>
+<td>Output to the screen the character stored in ACC.</td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td></td>
+<td>End the program and return control to the operating system</td>
+</tr>
+</tbody>
+</table>
+<h2 id="assembly-process">Assembly Process</h2>
+<h2 id="two-pass-assembler">Two-pass assembler</h2>
+<h3 id="what-is-a-two-pass-assembler">What is a two-pass assembler?</h3>
+<ul>
+<li>A two-pass assembler <strong>translates assembly language into machine code</strong> in two stages</li>
+<li>It produces an <strong>object program</strong> that can be <strong>stored</strong>, <strong>loaded</strong>, and <strong>run later</strong></li>
+<li>To execute this program, another utility called a <strong>loader</strong> is needed</li>
+<li>The assembler scans the source code <strong>twice</strong>:<ul>
+<li>In the <strong>first pass</strong>, it identifies all <strong>labels</strong> and records their memory addresses</li>
+<li>In the <strong>second pass</strong>, it replaces those labels with the correct <strong>memory addresses</strong> in the machine code</li>
+</ul>
+</li>
+<li>This <strong>ensures the final machine code is accurate</strong> and ready to be executed</li>
+</ul>
+<h4 id="example">Example</h4>
+<ul>
+<li>The following program loads the value of <code>A</code> (5), adds the value of <code>B</code> (3), stores the result (8) in <code>C</code>, then halts:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>LOAD A
+        ADD B
+        STORE C
+        HALT
+A:      DATA 5
+B:      DATA 3
+C:      DATA 0
+</code></pre></div>
+
+<ul>
+<li><strong>Pass 1:</strong><ul>
+<li>The assembler reads each line and assigns memory addresses to labels (e.g. A, B, C), but <strong>does not translate the instructions yet</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Instruction</th>
+<th>Label</th>
+<th>Add to symbol table</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00</code></td>
+<td>LOAD A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>01</code></td>
+<td>ADD B</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>02</code></td>
+<td>STORE C</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>03</code></td>
+<td>HALT</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>04</code></td>
+<td>DATA 5</td>
+<td><code>A</code></td>
+<td><strong>A</strong> = <code>04</code></td>
+</tr>
+<tr>
+<td><code>05</code></td>
+<td>DATA 3</td>
+<td><code>B</code></td>
+<td><strong>B</strong> = <code>05</code></td>
+</tr>
+<tr>
+<td><code>06</code></td>
+<td>DATA 0</td>
+<td><code>C</code></td>
+<td><strong>C</strong> = <code>06</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Symbol table created:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td><code>04</code></td>
+</tr>
+<tr>
+<td>B</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>C</td>
+<td><code>06</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Pass 2:</strong><ul>
+<li>The assembler replaces labels with their corresponding memory addresses and outputs machine code</li>
+<li>In this example we assume the following opcodes for simplicity:</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Mnemonic</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOAD</td>
+<td>01</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>02</td>
+</tr>
+<tr>
+<td>STORE</td>
+<td>03</td>
+</tr>
+<tr>
+<td>HALT</td>
+<td>00</td>
+</tr>
+<tr>
+<td>DATA</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Now generate the object (machine) code:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Assembly</th>
+<th>Machine code</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00</code></td>
+<td>LOAD A</td>
+<td><code>01 04</code></td>
+<td>LOAD from address 04</td>
+</tr>
+<tr>
+<td><code>01</code></td>
+<td>ADD B</td>
+<td><code>02 05</code></td>
+<td>ADD value at address 05</td>
+</tr>
+<tr>
+<td><code>02</code></td>
+<td>STORE C</td>
+<td><code>03 06</code></td>
+<td>STORE into address 06</td>
+</tr>
+<tr>
+<td><code>03</code></td>
+<td>HALT</td>
+<td><code>00 00</code></td>
+<td>Stop program</td>
+</tr>
+<tr>
+<td><code>04</code></td>
+<td>DATA 5</td>
+<td><code>00 05</code></td>
+<td>Data value 5</td>
+</tr>
+<tr>
+<td><code>05</code></td>
+<td>DATA 3</td>
+<td><code>00 03</code></td>
+<td>Data value 3</td>
+</tr>
+<tr>
+<td><code>06</code></td>
+<td>DATA 0</td>
+<td><code>00 00</code></td>
+<td>Data value 0 (placeholder)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Final object program:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="mf">01</span><span class="w"> </span><span class="mf">04</span>
+<span class="mf">02</span><span class="w"> </span><span class="mf">05</span>
+<span class="mf">03</span><span class="w"> </span><span class="mf">06</span>
+<span class="mf">00</span><span class="w"> </span><span class="mf">00</span>
+<span class="mf">00</span><span class="w"> </span><span class="mf">05</span>
+<span class="mf">00</span><span class="w"> </span><span class="mf">03</span>
+<span class="mf">00</span><span class="w"> </span><span class="mf">00</span>
+</code></pre></div>
+
+<h2 id="program-tracing">Program tracing</h2>
+<h3 id="what-is-a-trace-table">What is a trace table?</h3>
+<ul>
+<li>A <strong>trace table</strong> is a table used to <strong>manually track the values of variables</strong> as a program runs</li>
+<li>It helps to follow the flow of a program <strong>line by line</strong>, checking whether the logic works as expected</li>
+<li>Trace tables are used to:<ul>
+<li><strong>Understand how a program works</strong></li>
+<li><strong>Debug errors</strong> in the logic</li>
+<li><strong>Predict outputs</strong> before running the program</li>
+<li><strong>Check variable values</strong> at each step</li>
+</ul>
+</li>
+</ul>
+<h4 id="example_1">Example</h4>
+<ul>
+<li>An assembly program that loads the value from <code>A</code> (4) into the accumulator, adds the value from <code>B</code> (2), stores the result (6) into <code>C</code>, and halts</li>
+</ul>
+<div class="highlight"><pre><span></span><code>LOAD A
+        ADD B
+        STORE C
+        HALT
+A:      DATA 4
+B:      DATA 2
+C:      DATA 0
+</code></pre></div>
+
+<ul>
+<li>To trace the program, assumptions must be made:<ul>
+<li><strong>Accumulator (ACC)</strong>: Used for calculations<ul>
+<li>Memory is addressed from 00 onwards</li>
+<li>Simple instructions:<ul>
+<li><code>LOAD X</code> → ACC = memory[X]</li>
+<li><code>ADD X</code> → ACC = ACC + memory[X]</li>
+<li><code>STORE X</code> → memory[X] = ACC</li>
+<li><code>HALT</code> → Stop
+<strong>Trace table</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Instruction</th>
+<th>ACC (Accumulator)</th>
+<th>Memory[A]</th>
+<th>Memory[B]</th>
+<th>Memory[C]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>(Start)</td>
+<td>0</td>
+<td>4</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>LOAD A</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ADD B</td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>STORE C</td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+<td>6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>HALT</td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Final outcome:</strong></p>
+<ul>
+<li><strong>ACC = 6</strong></li>
+<li><strong>C = 6</strong></li>
+<li>The program has successfully added A and B, then stored the result in C</li>
+</ul>
+<h2 id="instruction-groups">Instruction Groups</h2>
+<h2 id="categories-of-instructions">Categories of instructions</h2>
+<h3 id="what-are-the-categories-of-instructions">What are the categories of instructions?</h3>
+<ul>
+<li>Assembly language instructions can be grouped into:<ul>
+<li><strong>Data movement</strong></li>
+<li><strong>Input and output of data</strong></li>
+<li><strong>Arithmetic operations</strong></li>
+<li><strong>Unconditional and conditional instructions</strong></li>
+<li><strong>Compare instructions</strong></li>
+</ul>
+</li>
+<li>For each category, a table containing the instruction (Opcode and Operand), and an explanation is given</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Category</strong></th>
+<th><strong>Opcode</strong></th>
+<th><strong>Operand</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Movement</strong></td>
+<td><code>LOAD</code></td>
+<td><code>A</code></td>
+<td>Loads the value stored at memory location <code>A</code> into the accumulator.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>STORE</code></td>
+<td><code>B</code></td>
+<td>Stores the value from the accumulator into memory location <code>B</code>.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>MOV</code></td>
+<td><code>A, B</code></td>
+<td>Copies the value from register/memory <code>A</code> to register/memory <code>B</code>.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>CLEAR</code></td>
+<td><code>ACC</code></td>
+<td>Clears the accumulator (sets it to 0).</td>
+</tr>
+<tr>
+<td></td>
+<td><code>DATA</code></td>
+<td><code>5</code></td>
+<td>Declares a constant or data value (e.g. <code>DATA 5</code> stores the value 5).</td>
+</tr>
+<tr>
+<td><strong>Input and Output of Data</strong></td>
+<td><code>IN</code></td>
+<td></td>
+<td>Takes input from a user or input device and stores it in the accumulator.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>OUT</code></td>
+<td></td>
+<td>Outputs the value in the accumulator to a screen or output device.</td>
+</tr>
+<tr>
+<td><strong>Arithmetic Operations</strong></td>
+<td><code>ADD</code></td>
+<td><code>A</code></td>
+<td>Adds the value at memory location <code>A</code> to the accumulator.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>SUB</code></td>
+<td><code>B</code></td>
+<td>Subtracts the value at memory location <code>B</code> from the accumulator.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>INC</code></td>
+<td></td>
+<td>Increments the accumulator by 1.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>DEC</code></td>
+<td></td>
+<td>Decrements the accumulator by 1.</td>
+</tr>
+<tr>
+<td><strong>Unconditional and Conditional</strong></td>
+<td><code>JMP</code></td>
+<td><code>LABEL</code></td>
+<td>Unconditionally jumps to the instruction at <code>LABEL</code>.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>JZ</code></td>
+<td><code>LABEL</code></td>
+<td>Jumps to <code>LABEL</code> if the accumulator is zero.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>JNZ</code></td>
+<td><code>LABEL</code></td>
+<td>Jumps to <code>LABEL</code> if the accumulator is <strong>not</strong> zero.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>JC</code></td>
+<td><code>LABEL</code></td>
+<td>Jumps to <code>LABEL</code> if the carry flag is set.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>HLT</code></td>
+<td></td>
+<td>Stops the program (halts execution).</td>
+</tr>
+<tr>
+<td><strong>Compare Instructions</strong></td>
+<td><code>CMP</code></td>
+<td><code>A</code></td>
+<td>Compares the accumulator with the value at memory location <code>A</code>.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>TEST</code></td>
+<td><code>A</code></td>
+<td>Performs a logical AND between accumulator and <code>A</code>; sets flags, no output.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="addressing-modes">Addressing Modes</h2>
+<h2 id="addressing-methods">Addressing methods</h2>
+<h3 id="what-is-an-addressing-method">What is an addressing method?</h3>
+<ul>
+<li>An addressing method is a way in which <strong>an instruction in assembly language or machine code</strong> can <strong>access data stored in memory</strong></li>
+<li>There are five main addressing methods:<ul>
+<li><strong>Immediate</strong></li>
+<li><strong>Direct</strong></li>
+<li><strong>Indirect</strong></li>
+<li><strong>Indexed</strong></li>
+<li><strong>Relative</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Addressing mode</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Example instruction</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Immediate</strong></td>
+<td>The <strong>operand is a constant value</strong> included directly in the instruction</td>
+<td><code>MOV AX, 1234h</code></td>
+<td>Moves the <strong>immediate value</strong> <code>1234h</code> into the <code>AX</code> register</td>
+</tr>
+<tr>
+<td><strong>Direct</strong></td>
+<td>The <strong>exact memory address</strong> of the operand is given in the instruction</td>
+<td><code>MOV AX, [1234h]</code></td>
+<td>Moves the value <strong>stored at memory location</strong> <code>1234h</code> into the <code>AX</code> register</td>
+</tr>
+<tr>
+<td><strong>Indirect</strong></td>
+<td>A <strong>register contains the memory address</strong> of the operand</td>
+<td><code>MOV AX, [BX]</code></td>
+<td>If <code>BX = 2000h</code>, this moves the value <strong>at memory location</strong> <code>2000h</code> into <code>AX</code></td>
+</tr>
+<tr>
+<td><strong>Indexed</strong></td>
+<td>Uses a <strong>base register and an index</strong> to calculate the memory address</td>
+<td><code>MOV AX, [BX + SI]</code></td>
+<td>If <code>BX = 0050h</code> and <code>SI = 1000h</code>, this moves the value <strong>at</strong> <code>1050h</code> into the <code>AX</code> register</td>
+</tr>
+<tr>
+<td><strong>Relative</strong></td>
+<td>The operand is an <strong>offset</strong> relative to the <strong>current instruction address</strong></td>
+<td><code>JMP +5</code></td>
+<td>Tells the program to <strong>jump forward 5 instructions</strong> from the current line<br>Used in branching</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2. Communication — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>2. Communication</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#network-types">Network Types</a></li>
+<li><a href="#network-models">Network Models</a></li>
+<li><a href="#network-topologies">Network Topologies</a></li>
+<li><a href="#cloud-computing">Cloud computing</a></li>
+<li><a href="#transmission-media">Transmission Media</a></li>
+<li><a href="#network-hardware">Network Hardware</a></li>
+<li><a href="#bit-streaming">Bit streaming</a></li>
+<li><a href="#the-internet">The Internet</a></li>
+<li><a href="#ip-addressing">IP addressing</a></li>
+<li><a href="#locating-resources-on-the-world-wide-web">Locating Resources on the World Wide Web</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="network-types">Network Types</h2>
+<h3 id="purpose-benefits-of-networking">Purpose &amp; benefits of networking</h3>
+<h3 id="what-is-a-network">What is a network?</h3>
+<ul>
+<li>A network is two or more <strong>interconnected devices</strong> (such as computers, printers, and servers) designed to:<ul>
+<li><strong>share resources</strong></li>
+<li><strong>exchange data</strong></li>
+<li><strong>communicate with each other</strong></li>
+</ul>
+</li>
+<li>The purpose of a network is to enable <strong>data</strong> and <strong>resource</strong> sharing, <strong>communication</strong>, and <strong>collaboration</strong></li>
+</ul>
+<h3 id="advantages-and-disadvantages-of-networks">Advantages and disadvantages of networks</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Devices (e.g. printers) can be <strong>shared</strong>, reducing costs</td>
+<td><strong>Expensive setup</strong> – cabling and servers can cost a lot</td>
+</tr>
+<tr>
+<td><strong>Software licences</strong> for networks are cheaper than for individual computers</td>
+<td><strong>Difficult to manage</strong> – large networks need skilled administration</td>
+</tr>
+<tr>
+<td>Users can <strong>share files and data</strong> easily</td>
+<td>If the <strong>server fails</strong>, the whole network can be affected</td>
+</tr>
+<tr>
+<td>Access to <strong>reliable, central data</strong> (e.g. from a file server)</td>
+<td><strong>Malware or hacking</strong> can affect the entire network</td>
+</tr>
+<tr>
+<td>Files can be <strong>backed up centrally</strong> each day</td>
+<td><strong>Security risks</strong> increase if connected to a larger WAN</td>
+</tr>
+<tr>
+<td>Users can <strong>communicate</strong> via email or messaging</td>
+<td></td>
+</tr>
+<tr>
+<td>A <strong>network manager</strong> can control access rights and internet usage</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="lans-wans">LANs &amp; WANs</h3>
+<h3 id="what-is-a-local-area-network-lan">What is a local area network (LAN)?</h3>
+<ul>
+<li>A local area network (LAN) is a network which has a <strong>small geographical area</strong> (under 1 mile)</li>
+<li>All of the hardware is <strong>owned by the company/organisation/household using it</strong></li>
+<li>LANs will use unshielded twisted pair (<strong>UTP</strong>) cable, fibre optic cable or wireless connections (<strong>Wi-Fi</strong>)
+<img alt="lan" src="images/lan.png" /></li>
+</ul>
+<h4 id="advantages-and-disadvantages-of-lans">Advantages and disadvantages of LANs</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Allows <strong>centralised</strong> management of updates, backups and software installations</td>
+<td>If <strong>hardware fails</strong>, the network may not function properly or even at all</td>
+</tr>
+<tr>
+<td>Can <strong>secure</strong> its devices with the use of firewalls, antivirus software and other security features to prevent unauthorised access</td>
+<td>Networks are more <strong>prone to attacks</strong> than standalone computers</td>
+</tr>
+<tr>
+<td>Allows users on the network to <strong>share resources</strong> such as printers and other peripherals</td>
+<td>Access to data and peripherals can be slow depending on <strong>network traffic</strong></td>
+</tr>
+<tr>
+<td>Allows the users of the network to <strong>collaborate</strong> and <strong>share files and folders</strong></td>
+<td>Require <strong>maintenance</strong> to ensure that software is up to date, upgrades and backups which can be costly</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wireless-local-area-network-wlan">Wireless Local Area Network (WLAN)</h3>
+<ul>
+<li>A wireless local area network is a local area network where devices connect to the network <strong>wirelessly</strong> instead of using cables</li>
+<li>Extra hardware, <strong>wireless access points</strong> (<strong>WAPs</strong>) or <strong>hotspots</strong> are connected to the network so that users can connect using Wi-Fi</li>
+</ul>
+<h4 id="advantages-and-disadvantages-of-wlans">Advantages and disadvantages of WLANs</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Allows users to connect anywhere that is in the range of a <strong>Wireless Access Point (WAP)</strong> without the need for additional hardware or wiring.</td>
+<td><strong>Limited</strong> in their coverage and can be further affected by walls and other structures</td>
+</tr>
+<tr>
+<td>Can be used in a <strong>variety of environments</strong> both indoors and out making them highly flexible</td>
+<td><strong>Bandwidth</strong> speeds can become an issue in high traffic areas</td>
+</tr>
+<tr>
+<td>Additional wireless access points can be added relatively easily resulting in additional users being able to use the network or <strong>increased network coverage</strong></td>
+<td><strong>Interference</strong> from other devices which can affect performance and connectivity</td>
+</tr>
+<tr>
+<td>Access to <strong>peripherals</strong> such as printers</td>
+<td>Vulnerable to <strong>security threats</strong> due to wireless signals being intercepted</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wide-area-network-wan">Wide Area Network (WAN)</h3>
+<ul>
+<li>A wide area network (WAN) is a network which has a <strong>large geographical area</strong> (over 1 mile)</li>
+<li>They are a <strong>collection of LANs joined together</strong></li>
+<li>The computers on a WAN are <strong>connected via routers</strong></li>
+<li>The hardware used to connect the networks together is <strong>not all owned by the company/organisation/household using it</strong>.</li>
+<li>For example, telephone lines <strong>owned by telecommunication companies</strong></li>
+<li>WANs will use <strong>fibre optic</strong> cable, <strong>telephone lines</strong> and <strong>satellite</strong> to connect the LANs together
+<img alt="wan" src="images/wan.png" /></li>
+</ul>
+<h2 id="network-models">Network Models</h2>
+<h3 id="client-server-peer-to-peer">Client-server &amp; peer-to-peer</h3>
+<h3 id="what-is-a-client-server-network">What is a client-server network?</h3>
+<ul>
+<li>A client-server network is when <strong>powerful and reliable ‘server’ computers</strong> control the network and <strong>‘serve’ the clients</strong> with services such as files, email, web access, etc</li>
+<li>Clients <strong>connect to the servers</strong> to access network services</li>
+<li>In this setup, the server <strong>hosts</strong>, <strong>delivers</strong> and <strong>manages</strong> most of the resources and services to be consumed by the clients</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Easier <strong>central management</strong></td>
+<td><strong>Single point of failure</strong> - if the server goes down, services could be unavailable</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong>: new clients can be added easily</td>
+<td>It can be <strong>expensive</strong> to set up and maintain - often need dedicated teams of people to maintain them</td>
+</tr>
+<tr>
+<td><strong>Higher reliability</strong> as resources are managed centrally</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A client-server network is typically used by <strong>larger organisations</strong> where <strong>centralised control is needed</strong>, and reliability and security are paramount
+<img alt="Diagram showing three clients each connecting to a file, web, and email server, illustrating client-server network architecture." src="images/client-server-network-computer-science-revision-notes.webp" />
+Client computers connected to different servers</li>
+</ul>
+<h4 id="when-to-use-a-client-server-network">When to use a client-server network</h4>
+<ul>
+<li>The choice between client-server and peer-to-peer depends on the <strong>specific needs and resources</strong> of the network in question</li>
+<li><strong>Security</strong>, <strong>cost</strong>, <strong>ease of setup</strong>, and <strong>maintenance</strong> requirements should be considered</li>
+</ul>
+<h3 id="peer-to-peer">Peer-to-peer</h3>
+<ul>
+<li>This is the <strong>simplest</strong> type of network</li>
+<li>In this setup, all <strong>computers in the network share equal responsibility,</strong> and there is no central server</li>
+<li>All <strong>machines have equal status</strong></li>
+<li>Each machine is the <strong>responsibility of that machine’s user</strong> in terms of security, backup, etc.</li>
+<li><strong>Data is often spread around the network,</strong> with each user being responsible for their data</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Easy to set up</strong> and less expensive than client-server as no administrative staff are needed</td>
+<td><strong>Lack of central control</strong> can lead to security issues and vulnerabilities</td>
+</tr>
+<tr>
+<td><strong>No dependency</strong> on a central server</td>
+<td><strong>Not suitable for large networks</strong> as it can have performance issues</td>
+</tr>
+<tr>
+<td><strong>Data can be shared directly</strong> between systems without the need for a central server</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>A peer-to-peer network is typically used in <strong>home networks</strong>, by <strong>small businesses</strong>, or for <strong>specific applications</strong> like file sharing
+<img alt="Peer to peer network example setup" src="images/peer-to-peer-network-computer-science-revision-notes.webp" />
+Peer to peer network example setup
+The Internet uses a client-server model.
+Describe the role of clients and servers on the Internet <strong>[2]</strong>
+Answer</p>
+</li>
+<li>
+<p>Web pages/files are saved on servers [1 mark]</p>
+</li>
+<li>Clients send requests to the web servers [1 mark]</li>
+<li>Web servers process the requests [1 mark]<ul>
+<li>…and return the results to the client [1 mark]<ul>
+<li>the client displays the results to the user [1 mark]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="thin-client-thick-client">Thin-client &amp; thick-client</h3>
+<h3 id="what-is-a-thin-client">What is a thin-client?</h3>
+<ul>
+<li>A <strong>thin client</strong> relies on a <strong>permanent connection</strong> to a server to function</li>
+<li>Can be <strong>hardware</strong> (a device) or <strong>software</strong> (an app or program)</li>
+<li>Depends on the <strong>processing power</strong> of another computer or server</li>
+<li><strong>Cannot function</strong> without being connected to a networked computer or server</li>
+<li>The server can be part of a <strong>LAN</strong> (local area network) or a <strong>WAN</strong> (wide area network)</li>
+<li>Examples of thin-clients include:<ul>
+<li><strong>Cloud-based apps</strong> like Google Docs or Microsoft 365</li>
+<li><strong>Remote desktop software</strong> (e.g. Chrome Remote Desktop, Citrix)</li>
+<li><strong>Supermarket</strong> <strong>POS</strong> <strong>systems</strong> connected to a central server for prices, stock, and payments</li>
+</ul>
+</li>
+</ul>
+<h3 id="thick-client">Thick-client</h3>
+<ul>
+<li>Works <strong>independently</strong> without needing constant connection to a server</li>
+<li>Can be a <strong>hardware device</strong> or <strong>software</strong> installed on a local machine</li>
+<li>Uses the <strong>processing power of its own device</strong> to run applications</li>
+<li>May connect to a network for updates or data sharing, but <strong>can function offline</strong></li>
+<li>Often used where <strong>performance, speed or offline access</strong> is important</li>
+<li>Examples of thick-clients include:<ul>
+<li><strong>Installed software</strong> like Adobe Photoshop or Microsoft Word</li>
+<li><strong>Standalone games</strong> installed and played on a PC or console</li>
+<li><strong>School or office PCs</strong> running full applications locally</li>
+<li><strong>Laptops</strong> that can run applications without an internet connection</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Thin-client</th>
+<th>Thick-client</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dependence on server</strong></td>
+<td>Needs a <strong>permanent connection</strong> to a server to function</td>
+<td>Can work <strong>independently</strong> of a server</td>
+</tr>
+<tr>
+<td><strong>Processing power</strong></td>
+<td>Uses the <strong>server’s processing power</strong></td>
+<td>Uses its own <strong>local processing power</strong></td>
+</tr>
+<tr>
+<td><strong>Functionality when offline</strong></td>
+<td><strong>Does not work</strong> without a connection</td>
+<td>Can <strong>function offline</strong></td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Google Docs, Microsoft 365, Remote Desktop, supermarket POS systems</td>
+<td>Microsoft Word, Adobe Photoshop, standalone games, school laptops</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td><strong>Centralised control</strong>, low-cost devices, shared environments</td>
+<td><strong>Performance</strong>, flexibility, offline access</td>
+</tr>
+<tr>
+<td><strong>Network type</strong></td>
+<td>Part of a <strong>LAN</strong> or <strong>WAN</strong></td>
+<td>May connect to a network, but <strong>not reliant</strong> on it</td>
+</tr>
+</tbody>
+</table>
+<h2 id="network-topologies">Network Topologies</h2>
+<h3 id="what-is-a-network-topology">What is a network topology?</h3>
+<ul>
+<li>A network topology is the <strong>physical structure of the network</strong></li>
+<li>It defines <strong>how the network hardware will be arranged</strong> to create the network</li>
+<li>Topologies to understand for the exam are:<ul>
+<li><strong>Star topology</strong></li>
+<li><strong>Bus topology</strong></li>
+<li><strong>Mesh topology</strong></li>
+<li><strong>Hybrid topology</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="bus">Bus</h3>
+<h3 id="what-is-a-bus-topology">What is a bus topology?</h3>
+<ul>
+<li>A bus topology is all <strong>devices connected by one single ‘bus’ cable</strong>, terminated at each end</li>
+<li>The terminators <strong>stop the signal bouncing back</strong> and <strong>causing errors</strong></li>
+<li>A bus topology works by each device:<ul>
+<li><strong>‘Listening’</strong> to electrical signals</li>
+<li><strong>Checking</strong> data packets for their specific address</li>
+<li><strong>Ignoring</strong> data packets it does not recognise</li>
+</ul>
+</li>
+<li>A bus topology has been replaced by much more <strong>efficient network topologies</strong> such as the <strong>star topology</strong>
+<img alt="Diagram of a bus network with five computer nodes connected in a line between two terminators, each node has a monitor and keyboard." src="images/bus-topology.png" /></li>
+</ul>
+<h4 id="bus-topology-advantages-vs-disadvantages">Bus topology - advantages vs disadvantages</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Easy and cheap</strong> to set up – only one cable is needed</td>
+<td><strong>Low security</strong> – data is visible to all devices</td>
+</tr>
+<tr>
+<td><strong>Does not rely</strong> on other network hardware (e.g. central server or switch)</td>
+<td><strong>Slow data transfer</strong> – prone to data collisions</td>
+</tr>
+<tr>
+<td></td>
+<td>If the cable breaks, the <strong>whole network is affected</strong> (central point of failure)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="star">Star</h3>
+<h3 id="what-is-a-star-topology">What is a star topology?</h3>
+<ul>
+<li>A star topology <strong>has a central switch</strong> which all other devices connect to</li>
+<li>A switch is an i <strong>ntelligent devic</strong> e which <strong>ensures that traffic only goes to the intended device</strong></li>
+<li>
+<p>A star topology is commonly seen in most <strong>homes</strong>, <strong>businesses</strong>, <strong>organisations</strong> and <strong>schools</strong>
+<img alt="Diagram of four computers with keyboards connected to a central server, illustrating a network configuration with dashed lines." src="images/star-topology.png" /></p>
+</li>
+<li>
+<p>Traffic (packets) on a star topology is <strong>handled differently depending on the device</strong> used as the central node</p>
+<ul>
+<li>A <strong>hub</strong> will send traffic to all devices on the network, if the address in the packet matches a device it will be accepted, otherwise it is ignored</li>
+<li>A <strong>switch</strong> will only send traffic to devices on the network where the address in the packet is a match</li>
+</ul>
+</li>
+</ul>
+<h4 id="star-topology-advantages-vs-disadvantages">Star topology - advantages vs disadvantages</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>If <strong>one cable fails</strong>, the rest of the network still works</td>
+<td>The <strong>central switch is a single point of failure</strong></td>
+</tr>
+<tr>
+<td>A problem with <strong>one device</strong> (e.g. a school computer) won’t affect others</td>
+<td>If the <strong>switch stops working</strong>, <strong>all devices lose connection</strong> to the network and its resources</td>
+</tr>
+<tr>
+<td>More <strong>reliable</strong> than other topologies like bus or ring</td>
+<td>Can be <strong>expensive</strong> to install due to the switch and extra cabling (not mentioned but useful add-on)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mesh">Mesh</h3>
+<h3 id="what-is-a-mesh-topology">What is a mesh topology?</h3>
+<ul>
+<li>A mesh topology allows <strong>all computers to be connected to all other computers</strong></li>
+<li>This is known as a <strong>full mesh</strong> network topology</li>
+<li>
+<p>LANs can make use of mesh networks however, they are <strong>more commonly seen in</strong> IoT devices such as <strong>wearable technology</strong> and <strong>smart home</strong> devices
+<img alt="Four computers arranged in a square, connected by lines forming a mesh network, indicating full interconnectivity among the devices." src="images/full-mesh.png" /></p>
+</li>
+<li>
+<p>Traffic (packets) on a mesh topology can follow two different methods:</p>
+<ul>
+<li><strong>Routing</strong> - devices are given routing logic (act like a router) to ensure packets are sent to the correct device in the shortest route</li>
+<li><strong>Flooding</strong> - all packets are sent to all devices using no routing logic, this can lead to network flooding causing performance issues</li>
+</ul>
+</li>
+</ul>
+<h4 id="mesh-topology-advantages-vs-disadvantages">Mesh topology - advantages vs disadvantages</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>If <strong>one cable fails</strong>, the network still works – data can use an <strong>alternate route</strong></td>
+<td>Requires <strong>lots of hardware, cables, and switches</strong></td>
+</tr>
+<tr>
+<td>Provides <strong>high fault tolerance</strong> – multiple paths for data to travel</td>
+<td><strong>High cost</strong> to set up due to the amount of equipment needed</td>
+</tr>
+<tr>
+<td>Very <strong>reliable</strong> – good for critical systems</td>
+<td><strong>Hard to scale</strong> – adding new devices is more complex than in a star topology</td>
+</tr>
+<tr>
+<td></td>
+<td>A <strong>partial mesh topology</strong> is often used as a more practical and cost-effective alternative</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hybrid">Hybrid</h3>
+<h3 id="what-is-a-hybrid-topology">What is a hybrid topology?</h3>
+<ul>
+<li>A hybrid topology is a <strong>mix of two of more different</strong> network topologies</li>
+<li>For example, bus &amp; star, star &amp; mesh etc</li>
+<li>A typical use of a hybrid topology would be when there is a <strong>need to join different networks</strong> together</li>
+<li>Imagine a large education trust takes over three schools: <strong>School A</strong>, <strong>School B</strong>, and <strong>School C</strong>.<ul>
+<li><strong>School A</strong> uses a <strong>bus topology</strong> to connect classroom computers with a simple shared cable</li>
+<li><strong>School B</strong> uses a <strong>star topology</strong> to link all devices to a central switch in the IT room</li>
+<li><strong>School C</strong> uses a <strong>mesh topology</strong> to make sure every building (e.g. science block, library) stays connected, even if one cable fails</li>
+</ul>
+</li>
+<li>When the trust wants to connect all three schools into a single network, it uses a <strong>hybrid topology</strong></li>
+<li>This allows:<ul>
+<li>Each school to <strong>keep its own existing setup</strong> (bus, star, or mesh)</li>
+<li>The schools to be <strong>linked together efficiently</strong></li>
+<li><strong>Easy expansion</strong>, such as adding a new school or admin office without changing everything</li>
+<li>The network to be more <strong>flexible and reliable</strong>, using the strengths of each topology</li>
+</ul>
+</li>
+</ul>
+<h4 id="hybrid-topology-advantages-vs-disadvantages">Hybrid topology - advantages vs disadvantages</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Combines</strong> the strengths of multiple topologies (e.g. reliability of mesh, simplicity of bus)</td>
+<td><strong>Complex to design</strong> – needs careful planning to combine different topologies</td>
+</tr>
+<tr>
+<td><strong>Flexible</strong> – different parts of the network can be optimised for different needs</td>
+<td><strong>Expensive</strong> – more hardware and maintenance may be needed</td>
+</tr>
+<tr>
+<td><strong>Scalable</strong> – new segments (e.g. a new site or building) can be added without changing the whole setup</td>
+<td><strong>Troubleshooting can be harder</strong> – different parts use different systems and rules</td>
+</tr>
+<tr>
+<td><strong>Reliable</strong> – failures in one part don’t necessarily affect the rest of the network</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="cloud-computing">Cloud computing</h2>
+<h3 id="what-is-cloud-computing">What is cloud computing?</h3>
+<ul>
+<li>Cloud computing is when <strong>software, services or files are hosted entirely on remote servers</strong></li>
+<li>Accessed <strong>through the internet</strong></li>
+<li>The two most common cloud computing examples are:<ul>
+<li><strong>Cloud storage</strong></li>
+<li><strong>Cloud software</strong>
+<img alt="3-3-data-storage-cloud-storage" src="images/3-3-data-storage-cloud-storage.png" /></li>
+</ul>
+</li>
+</ul>
+<h4 id="cloud-storage">Cloud storage</h4>
+<ul>
+<li>Cloud storage is <strong>long-term storage of data</strong> that resides in a <strong>remote location</strong></li>
+<li>Accessible onlyvia the <strong>Internet</strong> (WAN)</li>
+<li>Data is stored on <strong>remote servers</strong> in data centres</li>
+<li>Storage is usually on <strong>HDDs</strong> (magnetic) but increasingly <strong>SSDs</strong> (solid state)</li>
+<li>Examples include: Google Drive, Dropbox, OneDrive</li>
+</ul>
+<h4 id="cloud-software">Cloud software</h4>
+<ul>
+<li>Cloud software is <strong>hosted and managed remotely</strong></li>
+<li>The user <strong>accesses the software online</strong> (on demand)</li>
+<li>The provider handles:<ul>
+<li><strong>Maintenance</strong></li>
+<li><strong>Upgrades</strong></li>
+<li><strong>Security</strong></li>
+</ul>
+</li>
+<li>Typically paid for via a <strong>monthly fee</strong> or <strong>yearly subscription</strong></li>
+<li>
+<p>Examples include: Google Docs, Microsoft 365, Adobe Creative Cloud
+A company uses cloud computing.
+Define cloud computing. <strong>[1]</strong>
+Answer</p>
+</li>
+<li>
+<p>Accessing a service/files/software on a remote server [1 mark]</p>
+</li>
+</ul>
+<h3 id="benefits-and-drawbacks-of-cloud-computing">Benefits and drawbacks of cloud computing</h3>
+<h3 id="cloud-storage_1">Cloud storage</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Accessibility</strong> – access files from anywhere with an internet connection</td>
+<td><strong>Needs a reliable internet connection</strong> – slow or no connection can stop access to files</td>
+</tr>
+<tr>
+<td>Easy to <strong>share and collaborate</strong> with others</td>
+<td><strong>Can be expensive</strong> – especially for large amounts of data or long-term use</td>
+</tr>
+<tr>
+<td>Works on <strong>any device</strong> with internet access</td>
+<td><strong>Ongoing costs</strong> – often requires a monthly or annual subscription</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong> – storage can be increased or decreased as needed</td>
+<td>May need to pay for <strong>extra data transfer</strong> (upload/download limits)</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong> – data is backed up across multiple servers</td>
+<td><strong>Security risks</strong> – data sent over the internet could be intercepted</td>
+</tr>
+<tr>
+<td><strong>Security features</strong> – encryption, multi-factor authentication</td>
+<td><strong>Less control</strong> – provider manages security, but you’re still responsible for protecting user data</td>
+</tr>
+<tr>
+<td>No need to <strong>buy expensive storage</strong> <strong>hardware</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>No need to <strong>hire specialist IT staff</strong> – support is handled by the provider</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Eco-friendly</strong> – centralised data centres are more efficient than millions of local servers</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cloud-software_1">Cloud software</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Accessible anywhere</strong> – use the software on any device with an internet connection</td>
+<td><strong>Needs internet access</strong> – won’t work properly offline</td>
+</tr>
+<tr>
+<td><strong>No installation needed</strong> – runs through a browser or app</td>
+<td><strong>Performance depends on internet speed</strong> – slow connections can affect usability</td>
+</tr>
+<tr>
+<td><strong>Automatic updates</strong> – provider handles all software updates and patches</td>
+<td><strong>Ongoing costs</strong> – usually requires a monthly or yearly subscription</td>
+</tr>
+<tr>
+<td><strong>Maintenance is handled</strong> – no need for specialist IT staff to manage or fix the software</td>
+<td><strong>Data privacy concerns</strong> – your data is stored on the provider’s servers</td>
+</tr>
+<tr>
+<td><strong>Scalable</strong> – easy to upgrade or downgrade your software plan</td>
+<td><strong>Less control</strong> – provider decides when updates or changes are made</td>
+</tr>
+<tr>
+<td><strong>Security included</strong> – providers manage security features like firewalls and encryption</td>
+<td><strong>Legal responsibility</strong> – you’re still responsible for how personal data is stored, even if it’s hosted</td>
+</tr>
+<tr>
+<td>Often works <strong>across multiple devices</strong> – laptops, tablets, phones</td>
+<td>Some features may be <strong>limited</strong> compared to full versions installed on a local device</td>
+</tr>
+</tbody>
+</table>
+<h3 id="public-private-clouds">Public &amp; private clouds</h3>
+<h3 id="what-is-the-difference-between-a-public-and-a-private-cloud">What is the difference between a public and a private cloud?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Public Cloud</strong></th>
+<th><strong>Private Cloud</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ownership</strong></td>
+<td>Servers are owned and managed by a <strong>third-party provider</strong></td>
+<td>Servers are owned and managed <strong>by the company itself</strong></td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>Services are shared with <strong>other organisations or users</strong></td>
+<td>Access is <strong>restricted</strong> to that company or organisation</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Google Drive, Microsoft 365, Dropbox</td>
+<td>Company intranet, internal company cloud servers</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td><strong>Cheaper</strong> – shared infrastructure reduces cost</td>
+<td><strong>More expensive</strong> – company pays for hardware, maintenance, and staff</td>
+</tr>
+<tr>
+<td><strong>Control</strong></td>
+<td><strong>Less control</strong> over data and security settings</td>
+<td><strong>More control</strong> – company manages its own data and security</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Relies on <strong>provider’s security measures</strong></td>
+<td>Can apply <strong>custom security policies</strong> and have full oversight</td>
+</tr>
+</tbody>
+</table>
+<p>Give <strong>two</strong> benefits and <strong>one</strong> drawback of using cloud computing. <strong>[3]</strong>
+Answer
+1 mark each from:
+<strong>Public</strong></p>
+<ul>
+<li>Computing services offered by 3rd party provider over the public Internet [1 mark]</li>
+<li>
+<p>Public is open/available to anyone with the appropriate equipment/software/credentials [1 mark]
+<strong>Private</strong></p>
+</li>
+<li>
+<p>Computing services offered either over the Internet or a private internal network [1 mark]</p>
+</li>
+<li>Only available to select users not the general public [1 mark]</li>
+<li>Private is a dedicated/bespoke system only accessible for/from the organisation [1 mark]</li>
+</ul>
+<h2 id="transmission-media">Transmission Media</h2>
+<h3 id="wired-vs-wireless">Wired vs wireless</h3>
+<h3 id="what-is-a-wired-network">What is a wired network?</h3>
+<ul>
+<li>A wired network is a network where <strong>physical cables</strong> are used to join devices together and <strong>transmit data</strong></li>
+<li>Computers can be connected to networks using many different types of wires to transmit data</li>
+<li>The most common types of cables in a wired network are:<ul>
+<li><strong>Ethernet</strong></li>
+<li><strong>Fibre optic</strong></li>
+<li><strong>Copper</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="advantages-disadvantages-of-wired-networks">Advantages &amp; disadvantages of wired networks</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Speed</strong> - Fast data transfer</td>
+<td><strong>Portability</strong> - Can&rsquo;t move easily, location is limited by physical cable</td>
+</tr>
+<tr>
+<td><strong>Security</strong> - Better physical security</td>
+<td><strong>Cost</strong> - Need more cables to add a new device</td>
+</tr>
+<tr>
+<td><strong>Range</strong> - High (up to 100m), less susceptible to interference</td>
+<td><strong>Safety</strong> - Cables can be trip hazards, need routing along walls, under floors</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-a-wireless-network">What is a wireless network?</h3>
+<ul>
+<li>A wireless network is a network where connections are made <strong>using radio waves</strong> to transmit data <strong>through the air</strong></li>
+<li>The most common types of wireless connections are:<ul>
+<li><strong>Wi-Fi</strong></li>
+<li><strong>Bluetooth</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="what-is-wi-fi">What is Wi-Fi?</h4>
+<p><img alt="wifi" src="images/wifi.png" /></p>
+<ul>
+<li>Wireless fidelity (<strong>Wi-Fi</strong>) is a common <strong>standard</strong> for wireless networks</li>
+<li>Wi-Fi is common in most homes and offices to connect devices such as <strong>laptops</strong>, <strong>tablets</strong> &amp; <strong>smart phones</strong></li>
+<li>Using Wi-Fi, devices communicate with a wireless access point (<strong>WAP</strong>), which can be a standalone device or built into a <strong>router</strong> or <strong>switch</strong></li>
+</ul>
+<h4 id="what-is-bluetooth">What is Bluetooth?</h4>
+<p><img alt="bluetooth" src="images/bluetooth.png" /></p>
+<ul>
+<li>Bluetooth is another common <strong>standard</strong> for wireless networks</li>
+<li>Bluetooth is common in most homes and offices to connect devices such as <strong>headphones</strong>, <strong>controllers</strong>, <strong>keyboards</strong> &amp; <strong>mice</strong></li>
+<li>Bluetooth is used typically for a <strong>direct connection</strong> between <strong>two devices</strong></li>
+</ul>
+<h3 id="advantages-and-disadvantages-of-wireless-networks">Advantages and disadvantages of wireless networks</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Portability</strong> - Easy to move around, location is only limited by range</td>
+<td><strong>Speed</strong> - Slower data transfer than wired</td>
+</tr>
+<tr>
+<td><strong>Cost</strong> - Less expensive to setup and add new devices</td>
+<td><strong>Security</strong> - Less secure than wired</td>
+</tr>
+<tr>
+<td><strong>Compatibility</strong> - Most devices are manufactured with a built in wireless adapter</td>
+<td><strong>Range</strong> - Relies on signal strength to the WAP, signals can be obstructed (up to 90m)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="types-of-media">Types of media</h3>
+<h3 id="what-is-transmission-media">What is transmission media?</h3>
+<ul>
+<li>Transmission media is the <strong>type of cable</strong> used in wired connections</li>
+<li>Wired connections offer a <strong>higher bandwidth</strong> than wireless connections</li>
+<li>The main options for transmission media are:<ul>
+<li><strong>Twisted pair</strong></li>
+<li><strong>Coaxial</strong></li>
+<li><strong>Fibre-optic</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="twisted-pair">Twisted pair</h4>
+<ul>
+<li>Carries electrical signals between devices on a local area network (<strong>LAN</strong>)</li>
+<li>Common in <strong>offices and homes</strong> to connect devices such a <strong>desktop computers</strong> &amp; <strong>servers</strong></li>
+<li>Allow <strong>duplex</strong> communication</li>
+<li>Slower <strong>transfer rate</strong> compared to coaxial and fibre-optic</li>
+<li>Can suffer from <strong>external interference</strong> (electromagnetic radiation)</li>
+<li><strong>Low cost</strong>
+<img alt="utp-cable" src="images/utp-cable.png" /></li>
+</ul>
+<h4 id="coaxial">Coaxial</h4>
+<ul>
+<li><strong>Used in telecommunication to transmit voice signals</strong>, forming the traditional landline phone network</li>
+<li>Adapted to deliver <strong>network traffic</strong> on a wide area network (<strong>WAN</strong>) making the <strong>internet possible</strong></li>
+<li><strong>Degrades over time</strong> which <strong>limits their range</strong> compared to fibre optic</li>
+<li><strong>Suffers from interference</strong> which can <strong>disrupt data quality</strong></li>
+<li>Transmits data at a much <strong>slower rate</strong>, and has a much <strong>lower bandwidth</strong> compared to fibre optic
+<img alt="copper-cable" src="images/copper-cable.png" /></li>
+</ul>
+<h4 id="fibre-optic">Fibre optic</h4>
+<ul>
+<li>Uses <strong>light to transmit data</strong> on a wide area network (<strong>WAN</strong>)</li>
+<li>Transmits data at <strong>high speed</strong> and has a <strong>higher bandwidth</strong> compared to copper cables</li>
+<li><strong>Does not suffer from interference</strong> which makes them the <strong>most secure option</strong> to send <strong>sensitive data</strong></li>
+<li>Can <strong>cover a long distance</strong> without any <strong>degradation</strong>, they can span cities and countries
+<img alt="fibre-optic-cable" src="images/fibre-optic-cable.png" /></li>
+</ul>
+<h4 id="quick-comparison">Quick comparison</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Twisted pair</strong></th>
+<th><strong>Coaxial cable</strong></th>
+<th><strong>Fibre optic</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Used for</strong></td>
+<td>LAN connections in homes/offices</td>
+<td>Voice signals (telecoms), early WAN/internet</td>
+<td>High-speed WANs, internet infrastructure</td>
+</tr>
+<tr>
+<td><strong>Data transfer method</strong></td>
+<td>Electrical signals</td>
+<td>Electrical signals</td>
+<td>Light signals</td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Slower than coaxial and fibre</td>
+<td>Slower than fibre</td>
+<td><strong>Fastest</strong></td>
+</tr>
+<tr>
+<td><strong>Bandwidth</strong></td>
+<td>Low to medium</td>
+<td><strong>Lower than fibre</strong></td>
+<td><strong>Highest</strong></td>
+</tr>
+<tr>
+<td><strong>Signal degradation</strong></td>
+<td>Moderate</td>
+<td>Degrades over time</td>
+<td><strong>Minimal degradation</strong> – works over long distances</td>
+</tr>
+<tr>
+<td><strong>Interference</strong></td>
+<td>Prone to electromagnetic interference</td>
+<td>Also suffers from interference</td>
+<td><strong>No interference</strong> – more secure</td>
+</tr>
+<tr>
+<td><strong>Communication</strong></td>
+<td>Allows <strong>duplex communication</strong></td>
+<td>Supports duplex (but lower quality)</td>
+<td>Full duplex</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td><strong>Cheap</strong></td>
+<td>Medium cost</td>
+<td><strong>Expensive</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="network-hardware">Network Hardware</h2>
+<h3 id="lan-hardware">LAN hardware</h3>
+<h3 id="hub">Hub</h3>
+<ul>
+<li>A hub is a networking device which is used to <strong>connect multiple devices in a network</strong></li>
+<li>Hubs are &rdquo; <strong>dumb</strong> &rdquo; devices that pass on anything received on one connection to <strong>all other connections</strong></li>
+<li>Because all data is sent to all devices, it can lead to <strong>network inefficiencies</strong> and <strong>security issues</strong></li>
+<li>
+<p>Hubs allow <strong>multiple</strong> other devices to be connected to them
+<img alt="hub" src="images/hub.png" /></p>
+</li>
+<li>
+<p>Hubs are generally <strong>much cheaper</strong> than switches, but:</p>
+</li>
+<li>When a hub receives a data packet, it will <strong>broadcast it to every device</strong> on the network</li>
+<li>This creates two potential issues:<ul>
+<li>As the information is being broadcast to every device, it will make <strong>unnecessary traffic</strong>, especially if there are a large number of devices</li>
+<li>As every device will receive the data packet, <strong>security may be a concern</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="switch">Switch</h3>
+<ul>
+<li>A network switch is a networking device that <strong>connects devices on a computer network</strong> and uses <strong>packet switching</strong> to receive, process and forward data to the destination device</li>
+<li>
+<p>Unlike a hub, a switch <strong>only sends data to the device it was intended for</strong>, which improves network efficiency
+<img alt="switch" src="images/switch.png" /></p>
+</li>
+<li>
+<p>This is done by each switch having a <strong>lookup table</strong></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Port</strong></th>
+<th><strong>Mac address</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>DF-42-B2-11-4D-E3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>11-14-F2-1D-C3-C6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>00-4B-17-7C-A2-C9</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>When a switch receives a data packet, it <strong>examines the destination MAC address</strong> and <strong>looks up that address in its lookup table</strong></li>
+<li>Once it has found the matching MAC address, it will then <strong>forward the data packet to the corresponding port</strong>
+<img alt="switch" src="images/switch.png" /></li>
+</ul>
+<h3 id="server">Server</h3>
+<ul>
+<li>A <strong>server</strong> is a powerful computer that provides <strong>services or resources</strong> to other devices on a network (called clients)</li>
+<li>Can <strong>manage and store files</strong>, <strong>host websites</strong>, <strong>control access to printers</strong>, or <strong>run applications</strong></li>
+<li>Often kept in <strong>dedicated rooms</strong> or data centres due to their importance and high uptime requirements</li>
+<li>Designed to handle <strong>multiple requests at once</strong> and stay on <strong>24/7</strong></li>
+<li>Servers usually run <strong>specialist operating systems</strong> (e.g. Windows Server, Linux)</li>
+<li>Can be part of a <strong>LAN</strong> (local server) or accessed remotely over a <strong>WAN</strong> (cloud server)</li>
+<li>Examples include: <strong>file server, print server, web server, mail server</strong></li>
+</ul>
+<h3 id="network-interface-card-nic">Network Interface Card (NIC)</h3>
+<ul>
+<li>Historically a card <strong>inserted into a slot on the motherboard</strong> but now more likely to be <strong>built into the motherboard</strong>, that <strong>enables a device to connect to a network</strong></li>
+<li>NICs have a <strong>built-in ethernet port</strong> and can be connected to a network via an <strong>ethernet cable</strong></li>
+<li>It provides a <strong>dedicated, full-time connection to a network</strong>, converting the computer&rsquo;s data into a network-friendly format</li>
+<li>Every NIC has a <strong>unique identifier called</strong> a <strong>MAC address</strong>, used to identify the device on the network</li>
+<li>The primary function of a NIC is to <strong>send and receive data packets</strong> between the computer or device and the network
+    <img alt="nic-" src="images/nic-.png" /></li>
+</ul>
+<h3 id="wireless-network-interface-card-wnic">Wireless Network Interface Card (WNIC)</h3>
+<ul>
+<li>Allows a device to connect to a <strong>wireless network (Wi-Fi)</strong></li>
+<li>Often <strong>built into the motherboard</strong> of modern laptops, tablets, and smartphones</li>
+<li>Uses <strong>radio waves</strong> to send and receive data to/from a <strong>wireless router or access point</strong></li>
+<li>Provides a <strong>dedicated connection</strong> to the network, without needing physical cables</li>
+<li>Supports standard wireless protocols like <strong>Wi-Fi 4, 5, or 6</strong> depending on the model</li>
+<li>Has a unique <strong>MAC address</strong> used to identify the device on the network</li>
+<li>Converts the device’s data into a <strong>wireless signal</strong> suitable for network transmission</li>
+</ul>
+<h3 id="wireless-access-point-wap">Wireless Access Point (WAP)</h3>
+<ul>
+<li>Allows <strong>wireless devices</strong> to connect to a <strong>wired network</strong></li>
+<li>Acts like a <strong>bridge</strong> between the wired and wireless parts of a network</li>
+<li>Commonly found in <strong>homes, schools, and offices</strong> as part of a Wi-Fi setup</li>
+<li>Often <strong>built into wireless routers</strong>, but can also be a <strong>separate device</strong> in larger networks</li>
+<li>Uses <strong>radio signals</strong> to send and receive data from wireless devices (e.g. laptops, phones)</li>
+<li>Extends the <strong>range of the wireless network</strong>, especially in large buildings</li>
+<li>Supports communication using standard <strong>Wi-Fi protocols</strong> (e.g. 802.11ac, 802.11ax)
+<img alt="wap-" src="images/wap-.png" /></li>
+</ul>
+<h3 id="bridge">Bridge</h3>
+<ul>
+<li>Connects <strong>two separate network segments</strong> together</li>
+<li>Often used to join <strong>two LANs</strong> so they act as one larger network</li>
+<li>Operates at the <strong>data link layer (Layer 2)</strong> of the OSI model</li>
+<li>Can <strong>filter traffic</strong> by checking MAC addresses to decide if data should cross the bridge</li>
+<li>Helps <strong>reduce network traffic</strong> by only forwarding necessary data</li>
+<li>Commonly used in older or more complex network setups</li>
+</ul>
+<h3 id="repeater">Repeater</h3>
+<ul>
+<li>Used to <strong>boost or regenerate signals</strong> in a network</li>
+<li>Helps extend the range of a <strong>wired or wireless signal</strong></li>
+<li>Receives a weak signal and <strong>retransmits it at full strength</strong></li>
+<li>Used when data needs to travel <strong>long distances</strong> without losing quality</li>
+<li>Often used in <strong>Wi-Fi range extenders</strong> to improve coverage in large buildings</li>
+<li>Operates at the <strong>physical layer (Layer 1)</strong> of the OSI model</li>
+</ul>
+<h3 id="router">Router</h3>
+<h3 id="what-is-the-role-of-a-router">What is the role of a router?</h3>
+<ul>
+<li>A router is a network hardware device that routes data from a local area network (<strong>LAN</strong>) to another network connection - <strong>it joins two networks together</strong></li>
+<li>Routers <strong>analyse data packets</strong> and <strong>determine the best path</strong> for the packet to reach its destination<ul>
+<li>The <strong>header</strong> contains information about the packet</li>
+<li>The <strong>payload</strong> is the actual data being sent</li>
+<li>The <strong>IP address</strong> of both the sender and intended recipient is stored in the header of the data packet</li>
+</ul>
+</li>
+<li>The router can <strong>often feature additional functionalities</strong> such as wireless networking, built-in firewalls for enhanced security, and network switch capabilities</li>
+<li>A router being used to <strong>connect a LAN to a WAN</strong> will have a public <strong>IP address</strong>, which has been assigned to it by an Internet Service Provider</li>
+<li>
+<p>It is this public IP address that other routers use to <strong>identify and direct packets</strong> to the network
+<img alt="Diagram showing data packets travelling between four networks labelled A to D, connected by routers, with icons for devices and arrows indicating flow." src="images/3-4-network-hardware--router-1.png" />
+Multiple networks connected by routers, represented by the blue circular objects</p>
+</li>
+<li>
+<p>If the <strong>data packet</strong> is coming into the LAN, the router will send the data packet to the specific device within its LAN that the packet is meant for</p>
+</li>
+<li>If the packet is being sent from a device within the LAN, it will <strong>read the header</strong> of the packet to <strong>determine the intended destination</strong> IP address<ul>
+<li>It might have to <strong>travel through several routers</strong> before it gets to its destination</li>
+<li>Each pass from router to router is called a <strong>hop</strong></li>
+<li>It will then <strong>forward</strong> the packet to its destination</li>
+</ul>
+</li>
+<li>The network access device or ‘ <strong>home hub</strong> ’ used in your home network will have a router <strong>built into it</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A router receives incoming data packets from one network and analyses the packet header to determine the destination IP address</td>
+</tr>
+<tr>
+<td>2</td>
+<td>It then looks up the IP address in a routing table (routing table of known networks) to determine the next network where the packet should be sent</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The router then forwards the packet to the appropriate network or device</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Every router <strong>repeats this process</strong> the data packet passes through until it reaches its destination</li>
+<li>In addition to routing data between networks, routers can also perform other functions such as:<ul>
+<li><strong>Assigning IP addresses to devices within the LAN</strong></li>
+<li><strong>Filtering incoming traffic based on certain criteria, such as IP address, port number, or protocol type</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="ethernet">Ethernet</h3>
+<h4 id="what-is-ethernet">What is Ethernet?</h4>
+<ul>
+<li>Ethernet is a <strong>protocol</strong> that controls<ul>
+<li><strong>Wiring</strong></li>
+<li><strong>Data transmission</strong></li>
+<li><strong>Data encapsulation</strong></li>
+</ul>
+</li>
+<li>A wired networking <strong>standard</strong> used in a <strong>Local Area Networks (LANs)</strong></li>
+<li>Data is transmitted in <strong>frames</strong></li>
+<li>Uses <strong>CSMA/CD</strong> to help detect and avoid data collisions
+<img alt="ethernet-cables" src="images/ethernet-cables.png" /></li>
+</ul>
+<h4 id="ethernet-frames">Ethernet frames</h4>
+<ul>
+<li>Data is <strong>transmitted across the network</strong> in structured units called frames</li>
+<li>Each frame typically includes:<ul>
+<li><strong>Preamble</strong> – A sequence of bits used to <strong>synchronise communication</strong> between devices</li>
+<li><strong>Destination MAC Address</strong> – The <strong>unique ID</strong> of the device the data is being sent to</li>
+<li><strong>Source MAC Address</strong> – The <strong>unique ID</strong> of the device sending the data</li>
+<li><strong>EtherType / Length</strong> – Indicates the <strong>type of data</strong> or the <strong>size</strong> of the payload</li>
+<li><strong>Payload</strong> – The <strong>actual data</strong> being sent (e.g. a web page, file, or message)</li>
+<li><strong>FCS (Frame Check Sequence)</strong> – Used for <strong>error detection</strong> to check if data arrived correctly</li>
+</ul>
+</li>
+</ul>
+<h3 id="csmacd">CSMA/CD</h3>
+<h3 id="what-is-csmacd">What is CSMA/CD?</h3>
+<ul>
+<li>CSMA/CD is a protocol used to <strong>detect and prevent collisions</strong> in a <strong>bus topology</strong></li>
+<li>Stands for <strong>Carrier Sense Multiple Access with Collision Detection</strong></li>
+<li>Devices <strong>check if the channel is free</strong> before sending data</li>
+<li>If the <strong>channel is busy</strong>, the device <strong>waits</strong></li>
+<li>If the <strong>channel is free</strong>, the device <strong>transmits the data</strong></li>
+<li>Since all devices share the same cable, <strong>two can send data at the same time</strong>, causing a <strong>collision</strong></li>
+<li>
+<p>When a collision happens:</p>
+<ul>
+<li>Devices <strong>detect it</strong></li>
+<li>A <strong>jamming signal</strong> is sent to alert other devices</li>
+<li>Both devices <strong>stop transmitting</strong></li>
+<li>Each device waits for a <strong>random amount of time</strong>, then <strong>tries again</strong>
+Ethernet uses Carrier Sense Multiple Access/Collision Detection (CSMA/CD).
+Describe CSMA/CD. <strong>[4]</strong>
+<strong>Answer</strong>
+1 mark per point to max 4</li>
+</ul>
+</li>
+<li>
+<p>A workstation / node (wishing to transmit) listens to the communication channel [1 mark]</p>
+<ul>
+<li>the data is only sent when the channel is free [1 mark]</li>
+</ul>
+</li>
+<li>As there is more than one computer connected to the same transmission medium [1 mark]<ul>
+<li>two workstations can start to transmit at the same time, causing a collision [1 mark]</li>
+</ul>
+</li>
+<li>If a collision happens, the workstations send a jamming signal to abort transmission [1 mark]<ul>
+<li>and each waits a random amount of time before attempting to resend [1 mark]</li>
+</ul>
+</li>
+</ul>
+<h2 id="bit-streaming">Bit streaming</h2>
+<h3 id="what-is-bit-streaming">What is bit streaming?</h3>
+<ul>
+<li>Bit streaming is the <strong>continuous flow of data (bits)</strong> sent over the internet or a network</li>
+<li>Commonly used for <strong>real-time services</strong> like <strong>video, audio, or live broadcasts</strong></li>
+<li>Data is sent in <strong>small chunks</strong> so it can be <strong>played back immediately</strong></li>
+<li>Reduces the need to <strong>download the entire file before use</strong></li>
+<li>Bit streaming can be categorised into two types<strong>:</strong><ul>
+<li><strong>Real-time</strong></li>
+<li><strong>On-demand</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="real-time-vs-on-demand">Real-time vs on-demand</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Real-time streaming</strong></th>
+<th><strong>On-demand streaming</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What is it?</strong></td>
+<td>Watching something <strong>live as it happens</strong></td>
+<td>Watching something <strong>whenever you choose</strong></td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Live sports, live news, online gaming, video calls</td>
+<td>Netflix, YouTube, Amazon Prime</td>
+</tr>
+<tr>
+<td><strong>Timing</strong></td>
+<td><strong>Streamed and watched at the same time</strong></td>
+<td><strong>You choose when to watch</strong></td>
+</tr>
+<tr>
+<td><strong>Delays (latency)</strong></td>
+<td>Needs <strong>low delay</strong> to feel live</td>
+<td>Can handle <strong>small delays</strong> thanks to buffering</td>
+</tr>
+<tr>
+<td><strong>Internet needed</strong></td>
+<td>Needs a <strong>strong and steady connection</strong></td>
+<td>Can adjust quality based on your connection (adaptive bitrate)</td>
+</tr>
+<tr>
+<td><strong>Playback controls</strong></td>
+<td>Usually <strong>no pause or rewind</strong> during live events</td>
+<td>You can <strong>pause, rewind, or skip</strong> as needed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="factors-affecting-bit-streaming">Factors affecting bit streaming</h3>
+<h3 id="what-factors-can-affect-bit-streaming">What factors can affect bit streaming?</h3>
+<ul>
+<li>There are <strong>two</strong> main factors to consider when using bit streaming, they are:<ul>
+<li><strong>Bit rate</strong></li>
+<li><strong>Broadband speeds</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="bit-rate">Bit rate</h4>
+<ul>
+<li>Bit rate is the <strong>amount of data able to be transmitted in a specified unit of time</strong> (usually seconds)</li>
+<li>Streaming platforms will <strong>adjust bit rates</strong> based on network performance</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Higher bit rate</th>
+<th>Lower bit rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Quality</strong></td>
+<td>Allows for <strong>higher quality</strong> content (HD / 4K)</td>
+<td><strong>Lower quality</strong> – more pixelation or blurriness</td>
+</tr>
+<tr>
+<td><strong>Visual &amp; audio clarity</strong></td>
+<td><strong>Sharper and clearer</strong> images and sound</td>
+<td>May look <strong>blurry</strong>, especially during fast movement</td>
+</tr>
+<tr>
+<td><strong>Bandwidth usage</strong></td>
+<td>Uses <strong>more network bandwidth</strong></td>
+<td>Uses <strong>less bandwidth</strong></td>
+</tr>
+<tr>
+<td><strong>Buffering</strong></td>
+<td>May require a <strong>larger buffer</strong> to maintain quality</td>
+<td><strong>Smaller buffer</strong> can be enough, but more frequent buffering likely on poor connections</td>
+</tr>
+</tbody>
+</table>
+<h4 id="broadband-speeds">Broadband speeds</h4>
+<ul>
+<li>Broadband speeds affects <strong>how well data can be streamed</strong></li>
+<li>Faster speeds = <strong>better quality</strong> and <strong>smoother playback</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Aspect</strong></th>
+<th><strong>High-speed broadband</strong></th>
+<th><strong>Slow/restricted broadband</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Network capacity</strong></td>
+<td>Handles <strong>higher bit rates</strong></td>
+<td>Can’t support <strong>high bit rates</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>Allows <strong>multiple devices</strong> to stream smoothly</td>
+<td><strong>Limited bandwidth</strong> affects overall network performance</td>
+</tr>
+<tr>
+<td></td>
+<td>Supports <strong>HD/4K quality</strong></td>
+<td>May force streams to use <strong>lower resolution</strong></td>
+</tr>
+<tr>
+<td><strong>User experience</strong></td>
+<td><strong>Smoother streaming</strong> with minimal buffering</td>
+<td><strong>Frequent buffering</strong> and interruptions</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Clear visuals and audio</strong></td>
+<td><strong>Pixelation and lower sound quality</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>Ideal for <strong>real-time content</strong> (e.g. gaming, video calls)</td>
+<td>Struggles with <strong>live or interactive services</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-internet">The Internet</h2>
+<h3 id="internet-vs-www">Internet vs WWW</h3>
+<h3 id="what-is-the-internet">What is the Internet?</h3>
+<ul>
+<li>The Internet is a <strong>global network of networks</strong> (Interconnected Network)</li>
+<li>The Internet is the most well-known Wide Area Network (<strong>WAN</strong>)</li>
+<li>The Internet is the <strong>infrastructure</strong> used to <strong>provide connectivity</strong> to the World Wide Web (WWW)</li>
+<li><strong>Uses protocols</strong> like <strong>TCP/IP</strong> to transfer data between devices and networks</li>
+</ul>
+<h3 id="what-is-the-world-wide-web-www">What is the World Wide Web (WWW)?</h3>
+<ul>
+<li>The world wide web, or simply <strong>the web</strong>, is a <strong>collection of websites</strong> and <strong>web pages</strong> that are <strong>accessed using the Internet</strong></li>
+<li>It was created in 1989 by <strong>Tim Berners-Lee</strong>, who envisioned it as a way to <strong>share</strong> and <strong>access</strong> information <strong>on a global scale</strong></li>
+<li>The web consists of <strong>interconnected documents</strong> and <strong>multimedia files</strong> that are stored on <strong>web servers</strong> around the world</li>
+<li><strong>Web pages</strong> are accessed using a web <strong>browser</strong>, which communicates with web <strong>servers</strong> to retrieve and display the content</li>
+<li><strong>Uses protocols</strong> like <strong>HTTP and HTTPS</strong> to request and deliver web content</li>
+</ul>
+<h3 id="internet-hardware">Internet hardware</h3>
+<h3 id="modem">Modem</h3>
+<ul>
+<li><strong>Modem</strong> stands for <strong>modulator-demodulator</strong></li>
+<li>Converts <strong>digital signals</strong> from a computer into <strong>analogue signals</strong> to send over telephone or cable lines</li>
+<li>Also <strong>converts analogue signals back into digital</strong> so the computer can understand them</li>
+<li>Allows devices to <strong>connect to the internet</strong> through technologies like:<ul>
+<li><strong>DSL</strong></li>
+<li><strong>Cable</strong></li>
+<li><strong>Dial-up</strong></li>
+</ul>
+</li>
+<li>Used to <strong>send and receive data</strong> over long distances via traditional communication lines</li>
+</ul>
+<h3 id="public-switched-telephone-network-pstn">Public Switched Telephone Network (PSTN)</h3>
+<ul>
+<li>Developed soon after the <strong>invention of the telephone</strong> in the late 1800s</li>
+<li>Originally built to handle <strong>voice communication</strong> over copper wires</li>
+<li>As the demand for other forms of communication grew, the PSTN was <strong>adapted to enable internet access</strong></li>
+<li>Used to <strong>connect computers/devices and LANs</strong> between <strong>towns</strong> and <strong>cities</strong></li>
+<li>Traditional <strong>copper telephone lines</strong> are being slowly replaced with <strong>fibre optic cables</strong><ul>
+<li>Fibre gives access to <strong>higher bandwidth</strong> and <strong>faster data transfer speeds</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="dedicated-lines">Dedicated lines</h3>
+<ul>
+<li>Dedicated lines (e.g. <strong>T1</strong>, <strong>T3</strong>, and <strong>fibre-optic</strong>) provide <strong>exclusive, high-speed connections</strong> between two points</li>
+<li>Unlike the <strong>PSTN</strong>, these connections are <strong>always active</strong> and <strong>not shared</strong> with other users<ul>
+<li><strong>Faster</strong> and <strong>more reliable</strong></li>
+<li>Ideal for <strong>businesses</strong> and <strong>organisations</strong> needing consistent, high-bandwidth internet</li>
+<li>Better for activities like <strong>video conferencing</strong>, <strong>cloud computing</strong>, and <strong>large file transfers</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Connection type</strong></th>
+<th><strong>Speed</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T1 Line</strong></td>
+<td>Up to <strong>1.54 Mbps</strong></td>
+</tr>
+<tr>
+<td><strong>T3 Line</strong></td>
+<td>Up to <strong>45 Mbps</strong></td>
+</tr>
+<tr>
+<td><strong>Fibre-Optic</strong></td>
+<td>Speeds in the <strong>gigabits</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cellular-networks">Cellular networks</h3>
+<ul>
+<li>Provide <strong>wireless communication</strong> for mobile phones and other portable devices</li>
+<li>The network is made up of <strong>cells</strong>, each served by a <strong>cell tower (base station)</strong></li>
+<li>Devices connect to the <strong>nearest tower</strong> to send and receive signals</li>
+<li>As a user moves, their device <strong>automatically switches</strong> to the next closest tower (handover)</li>
+<li>Used for <strong>voice calls</strong>, <strong>text messaging</strong>, and <strong>mobile data (internet access)</strong></li>
+<li>Support different generations of mobile technology:<ul>
+<li><strong>2G</strong> – Basic calls and texts</li>
+<li><strong>3G</strong> – Mobile internet and video calling</li>
+<li><strong>4G</strong> – Fast internet browsing and streaming</li>
+<li><strong>5G</strong> – Very high-speed internet, low latency (great for gaming and real-time apps)</li>
+</ul>
+</li>
+</ul>
+<h2 id="ip-addressing">IP addressing</h2>
+<h3 id="what-is-an-ip-address">What is an IP address?</h3>
+<ul>
+<li>An IP (Internet Protocol) address is a <strong>unique identifier</strong> given to devices which communicate over the Internet (<strong>WAN</strong>)</li>
+<li>IP addresses are <strong>dynamic</strong>, they can change</li>
+<li>IP addresses make it possible to <strong>deliver data to the right device</strong></li>
+<li>A device connecting to a network <strong>will be given an IP address</strong>, if it moves to a different network then <strong>the IP address will change</strong></li>
+</ul>
+<h4 id="ipv4">IPv4</h4>
+<ul>
+<li>Internet Protocol version 4 is represented as <strong>4 blocks of denary numbers</strong> between <strong>0</strong> and <strong>255</strong>, separated by <strong>full stops</strong></li>
+<li>
+<p>Each block is <strong>one byte</strong> (8 bits), each address is <strong>4 bytes</strong> (32 bits)
+<img alt="ipv4" src="images/ipv4.png" /></p>
+</li>
+<li>
+<p>IPv4 provides over <strong>4 billion unique addresses</strong> (2 <sup>32</sup>), however, with over <strong>7 billion</strong> people and <strong>countless devices per person</strong>, a solution was needed</p>
+</li>
+</ul>
+<h4 id="ipv6">IPv6</h4>
+<ul>
+<li>Internet Protocol version 6 is represented as <strong>8 blocks of 4 hexadecimal digits</strong>, separated by <strong>colons</strong></li>
+<li>
+<p>Each block is <strong>2 bytes</strong> (16 bits), each address is <strong>16 bytes</strong> (128 bits)
+<img alt="-ipv6" src="images/-ipv6.png" /></p>
+</li>
+<li>
+<p>IPv6 could provide over <strong>one</strong> <strong>billion unique addresses</strong> for <strong>every person</strong> on the planet (2 <sup>128</sup>)</p>
+</li>
+</ul>
+<h3 id="subnetting">Subnetting</h3>
+<ul>
+<li>Subnetting is the process of <strong>dividing a larger network into smaller, more manageable parts</strong>, called <strong>subnets</strong> (short for sub-networks)</li>
+<li>Each subnet works like a <strong>mini-network</strong> within the main network, allowing devices to communicate more efficiently</li>
+<li>Benefits of subnetting include:<ul>
+<li><strong>Reduces network traffic</strong> – less data is broadcast across the whole network</li>
+<li><strong>Improves speed and performance</strong> – data stays within its <strong>local subnet</strong></li>
+<li><strong>Increases security</strong> – limits access so <strong>not all devices can reach all parts</strong> of the network</li>
+<li><strong>Easier to manage and maintain</strong> – changes can be made to <strong>one subnet</strong> without affecting the rest</li>
+<li><strong>Improves organisation</strong> – helps group devices by <strong>department or function</strong></li>
+</ul>
+</li>
+<li>It&rsquo;s commonly used in <strong>larger networks</strong>, like schools or businesses, to reduce traffic, keep data local, and make management easier</li>
+</ul>
+<h3 id="public-vs-private-ip-addresses">Public vs private IP addresses</h3>
+<ul>
+<li>Public IP addresses are assigned to devices that need a <strong>constant connection to the internet</strong></li>
+<li>Examples:<ul>
+<li><strong>Web servers</strong></li>
+<li><strong>Email servers</strong></li>
+</ul>
+</li>
+<li><strong>Globally unique</strong> – no two devices can have the same public IP</li>
+<li>Allows devices to be <strong>directly accessed</strong> from anywhere on the internet</li>
+<li>Private IP addresses are assigned to devices on a <strong>Local Area Network (LAN)</strong> by a <strong>router</strong></li>
+<li><strong>Not routable on the internet</strong> – improves <strong>network security</strong></li>
+<li>Used for items in a home or office, such as:<ul>
+<li><strong>Laptops</strong></li>
+<li><strong>Phones</strong></li>
+<li><strong>Printers</strong></li>
+</ul>
+</li>
+<li>Allows <strong>internal communication</strong> without <strong>exposing devices to the public</strong> internet</li>
+</ul>
+<h3 id="static-vs-dynamic-ip-addresses">Static vs dynamic IP addresses</h3>
+<ul>
+<li>Static IP addresses are <strong>fixed IP addresses</strong> that <strong>do not change</strong></li>
+<li>
+<p>Assigned to devices that need a <strong>consistent address</strong>
+    Commonly used for:</p>
+<ul>
+<li><strong>Websites</strong></li>
+<li><strong>Remote access services</strong></li>
+<li><strong>Email or file servers</strong></li>
+<li><strong>No management required</strong> once set</li>
+<li>Allows <strong>reliable access</strong> from anywhere on the network or internet</li>
+<li>Dynamic IP addresses are <strong>temporarily assigned</strong> when a device connects to the network</li>
+<li>Comes from a <strong>pool of available IP addresses</strong></li>
+<li>Managed automatically by a <strong>DHCP server (Dynamic Host Configuration Protocol)</strong></li>
+<li>Ideal for devices where a <strong>fixed address isn&rsquo;t needed</strong></li>
+<li>e.g. laptops, smartphones, or guest devices
+Computers on the Internet have IP addresses.
+Describe the format of an IP address. <strong>[3]</strong>
+<strong>Answer</strong>
+<strong>IPv4</strong></li>
+</ul>
+</li>
+<li>
+<p>Four groups of denary or hexadecimal digits [1 mark]</p>
+</li>
+<li>Numbers between 0 and 255 / 0 and FF [1 mark]</li>
+<li>Each is stored in 1 byte / 8 bits [1 mark]</li>
+<li>The whole number is stored in 32 bits / 4 bytes [1 mark]</li>
+<li>Separated by full stops [1 mark]</li>
+<li>
+<p>Correct example [1 mark]
+OR
+<strong>IPv6</strong></p>
+</li>
+<li>
+<p>Eight groups of (Hexadecimal) digits [1 mark]</p>
+</li>
+<li>Numbers between 0 and FFFF [1 mark]</li>
+<li>Each is stored in 2 bytes/16 bits [1 mark]</li>
+<li>The whole number is stored in 128 bits / 16 bytes [1 mark]</li>
+<li>Separated by colons [1 mark]</li>
+<li>The first instance of multiple groups of zero can be replaced by a double colon [1 mark]</li>
+<li>Correct example [1 mark]</li>
+</ul>
+<h2 id="locating-resources-on-the-world-wide-web">Locating Resources on the World Wide Web</h2>
+<h3 id="url">URL</h3>
+<h3 id="what-is-a-url">What is a URL?</h3>
+<ul>
+<li>A <strong>Uniform Resource Locator</strong> (URL) is a <strong>unique identifier</strong> for a web page, known as the <strong>website address</strong></li>
+<li>It is <strong>text-based</strong> to make it easier to remember</li>
+<li>A user <strong>enters a URL</strong> into a web browser to view a web page</li>
+<li>An example of a URL is:</li>
+<li>A URL can typically be split into three parts:<ul>
+<li><strong>Protocol</strong></li>
+<li><strong>Domain name</strong></li>
+<li><strong>Web page/file name</strong></li>
+</ul>
+</li>
+<li>Using the example about the URL would be split as follows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Protocol</strong></td>
+<td>https</td>
+<td>Communication method to transfer data between client and server</td>
+</tr>
+<tr>
+<td><strong>Domain name</strong></td>
+<td><a href="http://www.savemyexams.com/">www.savemyexams.com</a></td>
+<td>Name of the server where the resource is located</td>
+</tr>
+<tr>
+<td><strong>Web page/file name</strong></td>
+<td>/a-level/computer-science/</td>
+<td>Location of the file or resources on the server</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dns">DNS</h3>
+<h3 id="what-is-the-domain-name-system-dns">What is the Domain Name System (DNS)?</h3>
+<ul>
+<li>The <strong>DNS</strong> is like the <strong>Internet’s phone book</strong></li>
+<li>It <strong>translates domain names</strong> (like <code>www.google.com</code>) into <strong>IP addresses</strong> (like <code>142.250.180.68</code>)</li>
+<li>Computers use IP addresses to <strong>find and connect to servers</strong></li>
+<li>When you type a URL into your <strong>browser</strong>:<ul>
+<li>DNS <strong>finds the matching</strong> IP address<ul>
+<li>Your device <strong>connects to that server</strong> to load the website</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Without DNS, users would have to <strong>remember the IP address</strong> of every website they visit</li>
+<li>When a <strong>domain is registered</strong> or its server <strong>IP address changes</strong>, the DNS must be updated<ul>
+<li>This update is called <strong>DNS propagation</strong>, and it may take some time to spread across the internet</li>
+</ul>
+</li>
+</ul>
+<h4 id="what-happens-when-you-type-a-url-into-a-web-browser">What happens when you type a URL into a web browser?</h4>
+<ol>
+<li>The user enters a <strong>URL</strong> into the address bar of the <strong>web browser</strong></li>
+<li>The browser checks its <strong>cache</strong> to see if it already knows the IP address for the website</li>
+<li>If not found, it sends the domain name to a <strong>DNS</strong> server, which stores an <strong>index</strong> of domain names and their matching IP addresses</li>
+<li>If the DNS server finds the IP address, it sends it back to the <strong>web browser</strong></li>
+<li>If it does not find the IP address, it passes the request on to a <strong>higher-level DNS server</strong></li>
+<li>This may involve contacting:<ul>
+<li>A <strong>root server</strong>, which points to the correct <strong>Top-Level Domain (TLD) server</strong> (e.g..com,.org),<ul>
+<li>The <strong>TLD server</strong>, which points to the <strong>authoritative DNS server</strong> for the domain</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The <strong>authoritative DNS server</strong> responds with the correct IP address</li>
+<li>The web browser then sends a <strong>request</strong> to the web server at that IP address</li>
+<li>The <strong>web server</strong> processes the request and sends back the website’s data (such as HTML, images, CSS, and JavaScript)</li>
+<li>Finally, the <strong>web browser renders</strong> the content and displays the website to the user
+<img alt="Flowchart depicting DNS resolution process: computer connects to DNS resolver, root, TLD, authoritative DNS servers, accesses web server." src="images/44828_dns.png" /></li>
+</ol>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

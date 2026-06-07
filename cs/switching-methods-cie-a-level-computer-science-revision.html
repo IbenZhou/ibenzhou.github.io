@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switching Methods  CIE A Level Computer Science Revision — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Switching Methods  CIE A Level Computer Science Revision</h1>
+    
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#packetising">Packetising</a></li>
+<li><a href="#circuit-packet-switching">Circuit &amp; packet switching</a></li>
+<li><a href="#what-is-packet-switching">What is packet switching?</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="packetising">Packetising</h2>
+<h3 id="what-is-packetising">What is packetising?</h3>
+<ul>
+<li>Packetising is the process of <strong>dividing a large message into smaller</strong>, manageable units called <strong>packets</strong></li>
+<li>Each packet can be <strong>transmitted individually</strong> across a network</li>
+</ul>
+<h4 id="structure-of-a-packet">Structure of a packet</h4>
+<ul>
+<li>Each packet typically contains:<ul>
+<li><strong>Header</strong> – contains control information such as:<ul>
+<li><strong>Source IP address</strong> – who sent the packet</li>
+<li><strong>Destination IP address</strong> – where it&rsquo;s going</li>
+<li><strong>Sequence number</strong> – used to reassemble packets in the correct order</li>
+<li><strong>Protocol</strong> – e.g. TCP or UDP</li>
+<li><strong>Packet length</strong> – the size of the packet</li>
+<li><strong>Checksum</strong> – used for error checking</li>
+</ul>
+</li>
+<li><strong>Payload</strong> – the actual data being sent</li>
+<li><strong>Footer (trailer)</strong> – may include extra error-checking or control information</li>
+</ul>
+</li>
+</ul>
+<h3 id="packet-transmission-reassembly">Packet transmission &amp; reassembly</h3>
+<ul>
+<li>Once packetised and encapsulated with headers, <strong>packets are transmitted independently</strong></li>
+<li>They may travel along <strong>different routes</strong> through the network</li>
+<li>At the destination, packets are <strong>reassembled</strong> into the original message using sequence numbers</li>
+</ul>
+<h2 id="circuit-packet-switching">Circuit &amp; packet switching</h2>
+<h2 id="what-is-packet-switching">What is packet switching?</h2>
+<ul>
+<li>Packet switching is a communication method where <strong>data is broken into packets</strong> and sent across a shared network</li>
+<li>Each packet may <strong>take a different path to the destination</strong> and is reassembled on arrival</li>
+</ul>
+<h4 id="benefits">Benefits:</h4>
+<ul>
+<li><strong>Efficient</strong> use of network <strong>bandwidth</strong></li>
+<li>More <strong>reliable</strong> – only lost or corrupted packets need to be resent</li>
+<li><strong>Lower cost</strong> – network resources are shared</li>
+</ul>
+<h4 id="drawbacks">Drawbacks:</h4>
+<ul>
+<li><strong>Not ideal</strong> for <strong>real-time applications</strong> like VoIP or video calls</li>
+<li>Packets can <strong>arrive out of order</strong> and require reassembly</li>
+<li>Network congestion may lead to <strong>packet delay or loss</strong></li>
+</ul>
+<h3 id="what-is-circuit-switching">What is circuit switching?</h3>
+<ul>
+<li>Circuit switching is another communication method where <strong>data is broken into packets</strong> and sent across a shared network</li>
+<li>Circuit switching sets up a <strong>dedicated communication path</strong> between two devices for the duration of a session (like a traditional phone call)</li>
+</ul>
+<h4 id="benefits_1">Benefits:</h4>
+<ul>
+<li>Ideal for <strong>real-time communication</strong> – steady and continuous data flow</li>
+<li><strong>No delays</strong> once the circuit is established</li>
+<li>Data arrives <strong>in order</strong></li>
+</ul>
+<h4 id="drawbacks_1">Drawbacks:</h4>
+<ul>
+<li><strong>Less efficient</strong> – resources remain reserved even when not in use</li>
+<li><strong>Higher cost</strong> due to dedicated lines</li>
+<li><strong>Less scalable</strong> and <strong>flexible</strong> for large networks</li>
+</ul>
+<h3 id="packet-switching-vs-circuit-switching">Packet switching vs circuit switching</h3>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Feature</b></p></th><th colspan="1" rowspan="1"><p><b>Packet switching</b></p></th><th colspan="1" rowspan="1"><p><b>Circuit switching</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>Definition</b></p></td><td colspan="1" rowspan="1"><p>Data is split into packets and sent independently over shared routes</p></td><td colspan="1" rowspan="1"><p>A dedicated path is set up for the duration of the communication</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Transmission</b></p></td><td colspan="1" rowspan="1"><p>Data is sent in individual packets</p></td><td colspan="1" rowspan="1"><p>Data is sent in a continuous stream</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Efficiency</b></p></td><td colspan="1" rowspan="1"><p>High – uses bandwidth as needed, paths shared among many users</p></td><td colspan="1" rowspan="1"><p>Low – resources are tied up for each communication, even when idle</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Reliability</b></p></td><td colspan="1" rowspan="1"><p>Robust – packets can be rerouted if a failure occurs</p></td><td colspan="1" rowspan="1"><p>Less robust – if the path fails, the call is dropped and must be re-established</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Scalability</b></p></td><td colspan="1" rowspan="1"><p>Highly scalable – handles large volumes of data and users</p></td><td colspan="1" rowspan="1"><p>Less scalable – more users require more physical paths</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Use Cases</b></p></td><td colspan="1" rowspan="1"><p>Best for emails, web pages, file downloads</p></td><td colspan="1" rowspan="1"><p>Best for real-time communication (voice calls, video conferencing)</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Data Order</b></p></td><td colspan="1" rowspan="1"><p>May arrive out of order – requires reassembly</p></td><td colspan="1" rowspan="1"><p>Always arrives in order</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>Cost</b></p></td><td colspan="1" rowspan="1"><p>Lower – due to shared infrastructure</p></td><td colspan="1" rowspan="1"><p>Higher – due to reserved bandwidth and infrastructure</p></td></tr></tbody></table>
+
+<p>Try to avoid talking about the speed of data transmission in an answer to a question on packet or circuit switching. This will not get you a mark in the exam and, in some questions, is explicitly stated as not worthy of a mark. It is better to talk about higher bit rates or <strong>bandwidth</strong> (the number of bits sent per second) or the efficiency of the transmission</p>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Iben Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第1周 - 编程思维速成与基础语法目标： 1节课完成Scratch到Java的核心转换课1-2：环境速通与逻辑迁移    核心速讲（90分钟）：   Scratch事件广播 → Java main方法入口   变量类型对比：Scratch”角色属性” → Java int&#x2F;String&#x2F;double   直接实战：温度转换程序（包含Scanner输入输出）   强制类型转换陷阱演示：5&#x2F;2&#x3D;2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2025年AP CSA 课程学习方案">
+<meta property="og:url" content="https://iben.fun/2025/06/10/APCSA/AP%20CSA%20%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Computer Science Notes">
+<meta property="og:description" content="第1周 - 编程思维速成与基础语法目标： 1节课完成Scratch到Java的核心转换课1-2：环境速通与逻辑迁移    核心速讲（90分钟）：   Scratch事件广播 → Java main方法入口   变量类型对比：Scratch”角色属性” → Java int&#x2F;String&#x2F;double   直接实战：温度转换程序（包含Scanner输入输出）   强制类型转换陷阱演示：5&#x2F;2&#x3D;2">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-10T08:31:11.457Z">
+<meta property="article:modified_time" content="2025-08-04T03:24:39.028Z">
+<meta property="article:author" content="Iben Zhou">
+<meta property="article:tag" content="AP CSA">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>2025年AP CSA 课程学习方案 - Computer Science Notes</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"iben.fun","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Computer Science Notes</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">2025年AP CSA 课程学习方案</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-10 16:31" pubdate>
+          2025年6月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          995 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2025年AP CSA 课程学习方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <hr>
+<h3 id="第1周-编程思维速成与基础语法"><a href="#第1周-编程思维速成与基础语法" class="headerlink" title="第1周 - 编程思维速成与基础语法"></a><strong>第1周 - 编程思维速成与基础语法</strong></h3><p><strong>目标：</strong> 1节课完成Scratch到Java的核心转换<br><strong>课1-2：环境速通与逻辑迁移</strong>  </p>
+<ul>
+<li><strong>核心速讲</strong>（90分钟）：  <ul>
+<li>Scratch事件广播 → Java <code>main</code>方法入口  </li>
+<li>变量类型对比：Scratch”角色属性” → Java <code>int/String/double</code>  </li>
+<li>直接实战：温度转换程序（包含<code>Scanner</code>输入输出）  </li>
+<li>强制类型转换陷阱演示：<code>5/2=2</code> vs <code>5/2.0=2.5</code></li>
+</ul>
+</li>
+<li><strong>强化训练</strong>（30分钟）：  <ul>
+<li>真题类练习：修复缺失分号的编译错误代码  </li>
+<li>拓展：讲解 Java 程序结构</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="第2周-逻辑控制与模块化"><a href="#第2周-逻辑控制与模块化" class="headerlink" title="第2周 - 逻辑控制与模块化"></a><strong>第2周 - 逻辑控制与模块化</strong></h3><p><strong>目标：</strong> 掌握条件&#x2F;循环与方法抽象<br><strong>课3：条件与循环实战</strong>  </p>
+<ul>
+<li>真题高频考点：  </li>
+<li><code>if-else</code>链在适用场景中的应用</li>
+<li>for loop 及 while loop 在不同场景中的应用</li>
+<li>循环边界陷阱：<code>&lt;=length</code>导致的<code>ArrayIndexOutOfBounds</code>  </li>
+<li>嵌套循环真题：打印数字金字塔（分析缩进与循环变量关系）</li>
+</ul>
+<p><strong>课4：方法抽象化训练</strong>  </p>
+<ul>
+<li>方法（函数）的设计原则：  </li>
+<li>高内聚低耦合：将猜数字游戏拆分为<code>generateAnswer()</code>&#x2F;<code>validateInput()</code>  </li>
+<li>真题模式：追踪<code>String</code>参数传递时的不可变性  </li>
+<li>递归思维：用AP常考的<code>reverseString</code>案例理解栈结构</li>
+</ul>
+<hr>
+<h3 id="第3周-面向对象基础"><a href="#第3周-面向对象基础" class="headerlink" title="第3周 - 面向对象基础"></a><strong>第3周 - 面向对象基础</strong></h3><p><strong>目标：</strong> 建立类与对象的核心认知<br><strong>课5：类与对象速成</strong>  </p>
+<ul>
+<li>真题类设计：  </li>
+<li>经典<code>Student</code>类：属性私有化+构造方法重载  </li>
+<li>对象交互：模拟<code>Course</code>类注册学生（渗透<code>ArrayList</code>预知识）  </li>
+<li>内存模型：用绘图解析<code>new</code>关键字产生的堆栈变化</li>
+</ul>
+<p><strong>课6：封装与继承实战</strong>  </p>
+<ul>
+<li>封装陷阱：  <ul>
+<li>通过真题暴露直接操作public变量的风险  </li>
+<li>设计<code>BankAccount</code>的<code>withdraw</code>方法验证余额</li>
+</ul>
+</li>
+<li>继承真题模式：  <ul>
+<li><code>Animal→Dog</code>重写<code>makeSound()</code>的@Override注解必要性</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="第4周-数据处理基础"><a href="#第4周-数据处理基础" class="headerlink" title="第4周 - 数据处理基础"></a><strong>第4周 - 数据处理基础</strong></h3><p><strong>目标：</strong> 掌握数组与集合操作<br><strong>课7：数组与算法</strong>  </p>
+<ul>
+<li>真题高频题型：  <ul>
+<li>数组遍历：寻找最大值&#x2F;反转数组  </li>
+<li>二维数组：矩阵对角线求和（注意<code>arr.length</code>与<code>arr[i].length</code>区别）</li>
+</ul>
+</li>
+<li>排序预热：手写选择排序与<code>Arrays.sort()</code>对比</li>
+</ul>
+<p><strong>课8：ArrayList进阶</strong>  </p>
+<ul>
+<li>动态集合操作：  <ul>
+<li>真题中的<code>remove</code>陷阱：循环删除时的索引偏移  </li>
+<li>类型擦除实验：尝试向<code>ArrayList&lt;Integer&gt;</code>添加String</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="第5周-核心算法思维"><a href="#第5周-核心算法思维" class="headerlink" title="第5周 - 核心算法思维"></a><strong>第5周 - 核心算法思维</strong></h3><p><strong>目标：</strong> 掌握AP要求的算法模式<br><strong>课9：搜索与递归</strong>  </p>
+<ul>
+<li>二分查找真题变体：  <ul>
+<li>含重复元素时的边界处理  </li>
+<li>递归实现与循环实现的得分点差异</li>
+</ul>
+</li>
+<li>递归调试：用调用栈图分析<code>factorial(5)</code>的执行过程</li>
+</ul>
+<p><strong>课10：排序算法应用</strong>  </p>
+<ul>
+<li>AP重点算法：  <ul>
+<li>插入排序模拟（FRQ常考手写实现）  </li>
+<li>稳定性实验：对<code>Student</code>对象按成绩排序</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="第6周-文件处理"><a href="#第6周-文件处理" class="headerlink" title="第6周 - 文件处理"></a><strong>第6周 - 文件处理</strong></h3><p><strong>目标：</strong> 掌握基本的文件读写方法<br><strong>课11：文件基础</strong></p>
+<ul>
+<li>文件的基本读入方法</li>
+<li>文件读入后的基本数据处理</li>
+<li>文件和其他章节内容的结合</li>
+<li>文件写入的基本操作</li>
+<li>文件写入的实际案例</li>
+</ul>
+<p>**课12：文件写入进阶  </p>
+<ul>
+<li>文件读写的基本考察方式</li>
+<li>关于文件读写的模拟练习</li>
+</ul>
+<hr>
+<h3 id="第7-8周-真题训练"><a href="#第7-8周-真题训练" class="headerlink" title="第7-8周 - 真题训练"></a><strong>第7-8周 - 真题训练</strong></h3><p><strong>目标：</strong> 深度适应考试模式（最后2周共4次课）<br><strong>课13-14：MCQ 方法论</strong>  </p>
+<ul>
+<li>题型破解技巧：  <ul>
+<li>代码追踪题：用变量跟踪表法（每行标注变量值变化）  </li>
+<li>继承多态题：画UML简图快速判断输出结果  </li>
+<li>时间复杂度题：识别循环嵌套层数判断大O</li>
+</ul>
+</li>
+<li>高频错题集：  <ul>
+<li><code>==</code>与<code>equals()</code>的区别实验  </li>
+<li><code>substring</code>索引越界陷阱</li>
+</ul>
+</li>
+</ul>
+<p><strong>课15-16：FRQ手写训练</strong>  </p>
+<ul>
+<li>FRQ 答题策略：  <ul>
+<li>类&#x2F;方法设计题：快速搭建代码骨架（先写方法签名再填充）  </li>
+<li>数组&#x2F;字符串处理题：边界值测试用例设计  </li>
+<li>递归题：先写基线条件再找递归关系</li>
+</ul>
+</li>
+<li>真题重构：  <ul>
+<li>对比官方满分答案与常见错误答案的差异</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AP-CSA/" class="print-no-link">#AP CSA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2025年AP CSA 课程学习方案</div>
+      <div>https://iben.fun/2025/06/10/APCSA/AP CSA 课程学习方案/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Iben Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/03/A%20Level/9618%E8%80%83%E7%82%B9%E6%A2%B3%E7%90%86/" title="剑桥国际 AS &amp; A Level 计算机科学 9618 考纲考点整理 (适用于 2024-2025 年考试)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">剑桥国际 AS &amp; A Level 计算机科学 9618 考纲考点整理 (适用于 2024-2025 年考试)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/09/IGCSE/0478%20Paper%201%20%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/" title="0478 Computer Science 2025 May Paper 1 考点预测">
+                        <span class="hidden-mobile">0478 Computer Science 2025 May Paper 1 考点预测</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      蜀ICP备2023035345号
+    </a>
+  </span>
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

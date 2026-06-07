@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20.2 Object-Oriented Programming — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>20.2 Object-Oriented Programming</h1>
+    <p>Part 4: Practical</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#classes-object-oriented-programming">Classes (Object-Oriented Programming)</a></li>
+<li><a href="#programming-classes-oop">Programming classes (OOP)</a></li>
+<li><a href="#objects-oop">Objects (OOP)</a></li>
+<li><a href="#programming-objects-oop">Programming objects (OOP)</a></li>
+<li><a href="#methods-oop">Methods (OOP)</a></li>
+<li><a href="#programming-methods-oop">Programming methods (OOP)</a></li>
+<li><a href="#attributes-oop">Attributes (OOP)</a></li>
+<li><a href="#programming-attributes-oop">Programming attributes (OOP)</a></li>
+<li><a href="#inheritance-oop">Inheritance (OOP)</a></li>
+<li><a href="#programming-inheritance">Programming inheritance</a></li>
+<li><a href="#encapsulation-oop">Encapsulation (OOP)</a></li>
+<li><a href="#programming-encapsulation-oop">Programming encapsulation (OOP)</a></li>
+<li><a href="#polymorphism-oop">Polymorphism (OOP)</a></li>
+<li><a href="#programming-polymorphism-oop">Programming polymorphism (OOP)</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="classes-object-oriented-programming">Classes (Object-Oriented Programming)</h2>
+<h3 id="what-is-a-class">What is a class?</h3>
+<ul>
+<li>A <strong>class</strong> is a <strong>blueprint</strong> used to create <strong>objects</strong> in Object-Oriented Programming (OOP)</li>
+<li>It <strong>defines a structure for attributes</strong> (data) and <strong>methods</strong> (behaviour)</li>
+</ul>
+<h4 id="key-terms">Key terms</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Term</strong></th>
+<th><strong>Definition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Object</strong></td>
+<td>An instance of a class with its own <strong>state and behaviour</strong></td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td>A variable defined in a class (also called a <strong>class variable</strong>)</td>
+</tr>
+<tr>
+<td><strong>Instance Variable</strong></td>
+<td>Attribute stored inside an individual object</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>A function defined within a class; describes object <strong>behaviour</strong></td>
+</tr>
+<tr>
+<td><strong>Instantiation</strong></td>
+<td>The process of <strong>creating an object</strong> from a class</td>
+</tr>
+<tr>
+<td><strong>Identifier</strong></td>
+<td>The name used to <strong>refer to an object</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="example">Example</h4>
+<ul>
+<li>A <code>Student</code> class could contain:<ul>
+<li>Attributes: <code>name</code>, <code>dateOfBirth</code>, <code>gender</code></li>
+<li>Each <code>Student</code> object (e.g. <code>John</code>, <code>06/10/2015</code>, <code>Male</code>) has its own values</li>
+</ul>
+</li>
+</ul>
+<h4 id="prebuilt-vs-custom-classes">Prebuilt vs custom classes</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Prebuilt classes</strong></th>
+<th><strong>Custom classes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provided by the language</td>
+<td>Defined by the programmer</td>
+</tr>
+<tr>
+<td>E.g. <code>String</code>, <code>Date</code>, <code>Random</code>, <code>Scanner</code> in Java</td>
+<td>E.g. <code>Animal</code>, <code>Student</code>, <code>Book</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Below is a visual representation of both a <strong>class</strong> and <strong>objects</strong> that have been <strong>instantiated</strong></li>
+<li>In the image, the identifiers are P1 and P2
+<img alt="Example of a class and objects" src="images/classesandobjects.png" />
+<strong><em>Example of a class and objects</em></strong></li>
+</ul>
+<h2 id="programming-classes-oop">Programming classes (OOP)</h2>
+<h3 id="how-do-you-program-a-class">How do you program a class?</h3>
+<ul>
+<li>In this example we will:<ul>
+<li>Define a class for a car sales program where the following is required:<ul>
+<li>Name of Manufacturer</li>
+<li>Model of Car</li>
+<li>Price</li>
+<li>Mileage</li>
+<li>Whether the car is preowned</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Instantiate two objects for the car sales program ensuring that they have appropriate identifiers</li>
+<li>List two methods that would be useful for a car object</li>
+</ul>
+<h4 id="pseudocode">Pseudocode</h4>
+<p><img alt="classes" src="images/classes.png" />
+<strong><em>Pseudocode for creating classes, a constructor, and functions</em></strong></p>
+<h4 id="java">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">//creating a class called cars</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Cars</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">//creating class attributes for a car</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">Manufacturer</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">Model</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Price</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Mileage</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">PreOwned</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//Constructor - This is used to create the objects. More on this in the object chapter)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Cars</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">manufacturer</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mileage</span><span class="p">,</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">preOwned</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">Manufacturer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manufacturer</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">Model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">Price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">Mileage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mileage</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">PreOwned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">preOwned</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to make the car go faster.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Accelerate</span><span class="p">(){</span>
+<span class="w">        </span><span class="c1">//code to be executed which will make the car go faster</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//Method to honk horn</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">honkHorn</span><span class="p">(){</span>
+<span class="w">        </span><span class="c1">// code to be executed which will honk the car horn</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="python">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">#creating a class called cars</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cars</span><span class="p">:</span>
+    <span class="c1"># constructor - This is used to create the objects. More on this in the object chapter)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manufacturer</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">mileage</span><span class="p">,</span> <span class="n">preOwned</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Manufacturer</span> <span class="o">=</span> <span class="n">manufacturer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Price</span> <span class="o">=</span> <span class="n">price</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mileage</span> <span class="o">=</span> <span class="n">mileage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PreOwned</span> <span class="o">=</span> <span class="n">preOwned</span>
+    <span class="c1">#method to make the car go faster.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Accelerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># code to be executed which will make the car go faster</span>
+    <span class="c1"># method to honk horn</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">honkHorn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># code to be executed which will honk the car horn</span>
+</code></pre></div>
+
+<p>A computer game is being designed that will include different vehicles. A prototype for the game is being developed using object‑oriented programming.
+The class <code>Vehicle</code> stores data about the vehicles. Each vehicle has an identification name, a maximum speed, a current speed and a horizontal position. The value <code>IncreaseAmount</code> is added to the current speed each time the vehicle increases its speed.
+<img alt="Class diagram for &quot;Vehicle&quot; showing attributes: ID, MaxSpeed, CurrentSpeed, IncreaseAmount, HorizontalPosition, and methods: Constructor, Get/Set functions." src="images/61821_2025-06-03-0i0-kleki.png" />
+Write program code to declare the class <code>Vehicle</code>. All attributes must be private.
+You only need to declare the class and its constructor. Do not declare any other methods.
+Use your programming language’s appropriate constructor.
+If you are writing program code in Python, include attribute declarations using comments. <strong>[5]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>Class header (and close where appropriate) [1 mark]</li>
+<li>5 (private) attribute declarations including data types [1 mark]</li>
+<li>Constructor header (and close where appropriate) taking 3 parameters (min) [1 mark]</li>
+<li>Assigning <code>ID, MaxSpeed</code> and <code>IncreaseAmount</code> to parameters [1 mark]</li>
+<li>Assigning <code>CurrentSpeed</code> and <code>HorizontalPosition</code> to 0 [1 mark]
+Example program code:
+<strong>VB.NET</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">Class</span><span class="w"> </span><span class="nv">Vehicle</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">ID</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">String</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">MaxSpeed</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">CurrentSpeed</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">IncreaseAmount</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">HorizontalPosition</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Sub</span><span class="w"> </span><span class="nv">New</span><span class="ss">(</span><span class="nv">IDP</span>,<span class="w"> </span><span class="nv">MaxSpeedP</span>,<span class="w"> </span><span class="nv">IncreaseAmountP</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">IDP</span>
+<span class="w">    </span><span class="nv">MaxSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">MaxSpeedP</span>
+<span class="w">    </span><span class="nv">CurrentSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="nv">IncreaseAmount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">IncreaseAmountP</span>
+<span class="w">    </span><span class="nv">HorizontalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="k">End</span><span class="w"> </span><span class="nv">Sub</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Class</span>
+</code></pre></div>
+
+<p><strong>Java</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">Vehicle</span><span class="p">{</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">ID</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">MaxSpeed</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">CurrentSpeed</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">IncreaseAmount</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">HorizontalPosition</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">Vehicle</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">IDP</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">MaxSpeedP</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">IncreaseAmountP</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IDP</span><span class="p">;</span>
+<span class="w">    </span><span class="n">MaxSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaxSpeedP</span><span class="p">;</span>
+<span class="w">    </span><span class="n">IncreaseAmount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IncreaseAmountP</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CurrentSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HorizontalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}}</span>
+</code></pre></div>
+
+<p><strong>Python</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Vehicle</span><span class="p">:</span>
+  <span class="c1">#self.__ID string</span>
+  <span class="c1">#self.__MaxSpeed integer</span>
+  <span class="c1">#self.__CurrentSpeed integer</span>
+  <span class="c1">#self.__IncreaseAmount integer</span>
+  <span class="c1">#self.__HorizontalPosition</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">IDP</span><span class="p">,</span> <span class="n">MaxSpeedP</span><span class="p">,</span> <span class="n">IncreaseAmountP</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__ID</span> <span class="o">=</span> <span class="n">IDP</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__MaxSpeed</span> <span class="o">=</span> <span class="n">MaxSpeedP</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__IncreaseAmount</span> <span class="o">=</span> <span class="n">IncreaseAmountP</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__CurrentSpeed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__HorizontalPosition</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+
+<h2 id="objects-oop">Objects (OOP)</h2>
+<h3 id="what-is-an-object">What is an object?</h3>
+<ul>
+<li>An <strong>object</strong> is a representation of a real-world entity eg teacher, aeroplane, mobile phone, cat etc</li>
+<li>A <strong>class</strong> is like a blueprint that describes the properties and behaviours of objects, while an <strong>object</strong> is a specific instance created based on that blueprint with its own unique values for the properties</li>
+<li>A constructor is a special <strong>method</strong> within a class that is automatically called when an <strong>object</strong> of that class is created (<strong>instantiated</strong>)</li>
+<li><strong>Constructors</strong> typically define the initial values of <strong>instance variables</strong> and perform any necessary setup to prepare the <strong>object</strong> for use
+<img alt="Example of 2 objects belonging to a class" src="images/objectsand-classes.png" />
+<strong><em>Example of 2 objects belonging to a class</em></strong></li>
+</ul>
+<h2 id="programming-objects-oop">Programming objects (OOP)</h2>
+<h3 id="how-do-you-program-an-object">How do you program an object?</h3>
+<h4 id="pseudocode_1">Pseudocode</h4>
+<p><img alt="Pseudocode for the class 'person' and instantiating two objects" src="images/objects.png" />
+<strong><em>Pseudocode for the class &lsquo;person&rsquo; and instantiating two objects</em></strong></p>
+<h4 id="java_1">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">//creating the person class</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Person</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="c1">// creating 4 attributes for the person class</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">firstName</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">surname</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">dateOfBirth</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">hobbies</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Constructor -This creates objects of the person class</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Person</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">firstName</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">surname</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">dateOfBirth</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">hobbies</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">firstName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firstName</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">surname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">surname</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">dateOfBirth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dateOfBirth</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">hobbies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hobbies</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="c1">//Creating Objects (Instances) of the person class</span>
+<span class="n">Person</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Bob&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;06/10/1981&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">“</span><span class="n">E</span><span class="w"> </span><span class="n">Sports</span><span class="err">”</span><span class="p">);</span>
+<span class="n">Person</span><span class="w"> </span><span class="n">person2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jess&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;05/04/1980&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">“</span><span class="n">Astronomy</span><span class="err">”</span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="python_1">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">#creating the person class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
+        <span class="c1">#Constructor -This creates objects of the person class     </span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">firstName</span><span class="p">,</span> <span class="n">surname</span><span class="p">,</span> <span class="n">dateOfBirth</span><span class="p">,</span> <span class="n">hobbies</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="n">firstName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surname</span> <span class="o">=</span> <span class="n">surname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dateOfBirth</span> <span class="o">=</span> <span class="n">dateOfBirth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hobbies</span> <span class="o">=</span> <span class="n">hobbies</span>
+<span class="c1">#Creating Objects (Instances) of the person class</span>
+<span class="n">person1</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Jones&quot;</span><span class="p">,</span> <span class="s2">&quot;06/10/1981&quot;</span><span class="p">,</span> <span class="s2">&quot;E Sports&quot;</span><span class="p">)</span>
+<span class="n">person2</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s2">&quot;Jess&quot;</span><span class="p">,</span> <span class="s2">&quot;Jones&quot;</span><span class="p">,</span> <span class="s2">&quot;05/04/1980&quot;</span><span class="p">,</span> <span class="s2">&quot;Astronomy&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="methods-oop">Methods (OOP)</h2>
+<h3 id="what-is-a-method">What is a method?</h3>
+<ul>
+<li><strong>Methods</strong> are fundamental in <strong>object-oriented programming (OOP)</strong> and are functions associated with <strong>objects</strong> or <strong>classes</strong> that define the behaviour and actions that objects can perform</li>
+<li>There are two main types of methods:<ul>
+<li><strong>A function</strong><ul>
+<li>A function performs a task and returns a value</li>
+</ul>
+</li>
+<li><strong>A procedure</strong><ul>
+<li>A procedure performs a task buts does nor return a value</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>For example, there are many different types of aircraft which all differ in design, but all require a ‘take off’ and ‘landing’ method</li>
+<li>
+<p>An example of an aircraft <strong>class</strong> with both <strong>attributes</strong> and <strong>methods</strong> is shown below:
+<img alt="Example class for &quot;aircraft&quot; containing several methods" src="images/aircraftclass.png" />
+<strong><em>Example class for &ldquo;aircraft&rdquo; containing several methods</em></strong></p>
+</li>
+<li>
+<p>Each <strong>object</strong> that is created from the aircraft class will have:</p>
+<ul>
+<li>A manufacturer value to determine the company that created the aircraft</li>
+<li>A model name for the type of aircraft</li>
+<li>A value for passenger capacity to determine how many people it can carry</li>
+<li>A speed value to determine its maximum speed</li>
+</ul>
+</li>
+<li>Any <strong>objects</strong> that are created for the aircraft class also have access to the following Methods:<ul>
+<li>A take off method to get the plane airborne</li>
+<li>A land method to land the plane safely</li>
+<li>A bank left method to allow the plane to turn to the left</li>
+<li>A bank right method to allow the plane to tur to the right</li>
+</ul>
+</li>
+<li>As you can imagine, for an aircraft there would be many more methods that could be implemented such emergency landing and altitude cruising actions</li>
+<li>Once <strong>objects</strong> have been created, they can use the <strong>methods</strong> from within their <strong>class</strong> by using the dot (.) notation</li>
+<li>As these methods are associated with objects, they are called instance methods</li>
+<li>For example if an <strong>object</strong> has been created as below:<ul>
+<li>jumboJet = new aircraft (“Boeing”, ”747”, 416, 547)</li>
+</ul>
+</li>
+<li>It can use methods by doing the following:<ul>
+<li>Objectname.Methodname:<ul>
+<li>For example: jumboJet.Takeoff()</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In some OOP languages there are both instance methods and static methods<ul>
+<li>Instance methods</li>
+<li>Instance methods are associated with individual instances (objects) of a class. They operate on the specific data and properties of an object (see above on the Jumbo Jet object example)</li>
+<li>Static methods</li>
+<li>Static methods are associated with a class itself and can be called without creating an instance (object) of the class</li>
+</ul>
+</li>
+</ul>
+<h3 id="public-and-private-methods">Public and private methods</h3>
+<ul>
+<li>When declaring <strong>methods</strong>, it is important to determine how they can be accessed:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Public Methods</strong></th>
+<th><strong>Private Methods</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accessible and can be <strong>invoked</strong> by any code within the same class or from any external classes</td>
+<td>Private methods are only accessible within the same class and cannot beinvoked by external code or other classes</td>
+</tr>
+<tr>
+<td>Changes to public methods may have an impact on other parts of the codebase, so they should be carefully designed, documented, and backward compatible whenever possible</td>
+<td>Changes to private methods have a localized impact since they are only used internally within the class, providing flexibility to modify or refactor them without affecting other parts of the program</td>
+</tr>
+<tr>
+<td>Public methods are used when you want to provide access to certain functionalities or behaviours of an object or class to other parts of your program</td>
+<td>Private methods are used when you have internal implementation details that should not be accessed or used by external code. They are meant to be used only within the class itself for organizing and managing the code internally</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If a method does not specify the keyword public or private then its default value is set to public.</li>
+</ul>
+<h2 id="programming-methods-oop">Programming methods (OOP)</h2>
+<h3 id="how-do-you-program-a-method">How do you program a method?</h3>
+<h4 id="pseudocode_2">Pseudocode</h4>
+<p><img alt="pseudocode for creating methods" src="images/methods-pseudo.png" />
+<strong><em>Pseudocode for creating methods</em></strong></p>
+<h4 id="java_2">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">//Creating a public method called BankLeft</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bankLeft</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="c1">// Code to make the aircraft bank left</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="c1">//Creating a private Method called BankLeft</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bankLeft</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="c1">// Code to make the aircraft bank left</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+
+<h4 id="python_2">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">#Creating a public method called BankLeft</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bank_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to make the aircraft bank left</span>
+<span class="c1">#Creating a private method called BankLeft</span>
+</code></pre></div>
+
+<ul>
+<li>In Python, there is no explicit <strong>access modifier</strong> for methods like &ldquo;private&rdquo; in Java</li>
+<li>By convention, methods with a single leading underscore _ are considered private and should not be accessed directly from outside the class</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">_def</span> <span class="n">_bank_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to make the aircraft bank left</span>
+</code></pre></div>
+
+<ul>
+<li>It&rsquo;s important to note that even though the method is marked as private, it can still be accessed and <strong>invoked</strong> from outside the class</li>
+<li>However, as a rule, other developers should treat it as private and avoid accessing it directly</li>
+</ul>
+<h2 id="attributes-oop">Attributes (OOP)</h2>
+<h3 id="what-is-an-attribute">What is an attribute?</h3>
+<ul>
+<li>In object-oriented programming (OOP), an attribute refers to <strong>a data member or a property associated with</strong> an <strong>object</strong> or a <strong>class</strong></li>
+<li>They define the <strong>state of an object</strong> and can have different values for different instances of the same class</li>
+<li>Attributes can be of <strong>various data types</strong>, such as integers, strings, Booleans, or even other objects</li>
+<li>Attributes can have <strong>different access rights</strong></li>
+<li>The example below shows a Car class object with an attribute called manufacturer</li>
+<li>It has a private access meaning that it can be accessed only by instances of the Car class</li>
+<li>The data that this attribute will hold must be of the String data type</li>
+<li>
+<p>The image below gives a visual representation of an object of this class being instantiated with a data value of “Ford”:
+<img alt="An example instance of an object" src="images/objectford.png" />
+<strong><em>An example instance of an object</em></strong></p>
+</li>
+<li>
+<p>In most cases each class has many different attributes</p>
+</li>
+<li>
+<p>Below is an example of an object of class &ldquo;person&rdquo;:
+<img alt="Example of an object of class &quot;person&quot;" src="images/objectperson.png" />
+<strong><em>Example of an object of class &ldquo;person&rdquo;</em></strong></p>
+</li>
+<li>
+<p>Attributes declared within methods (local variables) cannot have access modifiers because they are local to the method and have a limited scope</p>
+</li>
+<li>Local variables are only accessible within the block or method in which they are declared. They are not part of the class&rsquo;s state and cannot be accessed from other methods or classes</li>
+</ul>
+<h2 id="programming-attributes-oop">Programming attributes (OOP)</h2>
+<h3 id="how-do-you-program-attributes">How do you program attributes?</h3>
+<h4 id="pseudocode_3">Pseudocode</h4>
+<p><img alt="Example of a created class, &quot;Person&quot;, containing several attributes" src="images/attributes-psuedo.png" />
+<strong><em>Example of a created class, &ldquo;Person&rdquo;, containing several attributes</em></strong></p>
+<h4 id="java_3">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Person</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Attributes for the person class</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">gender</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">occupation</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isMarried</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="python_3">Python</h4>
+<ul>
+<li>In Python attributes are defined using the <code>self</code> keyword followed by the attribute name and its initial value</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">:</span>
+   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute1</span><span class="p">,</span> <span class="n">attribute2</span><span class="p">):</span>
+      <span class="c1"># Define attributes</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">attribute1</span> <span class="o">=</span> <span class="n">attribute1</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">attribute2</span> <span class="o">=</span> <span class="n">attribute2</span>
+</code></pre></div>
+
+<h2 id="inheritance-oop">Inheritance (OOP)</h2>
+<h3 id="what-is-inheritance">What is inheritance?</h3>
+<ul>
+<li><strong>Inheritance</strong> is a key concept in <strong>object-oriented programming (OOP)</strong> that allows a <strong>class</strong> to inherit the properties and behaviours (methods and attributes) of another class</li>
+<li><strong>Inheritance</strong> promotes code reuse by allowing <strong>derived classes</strong> to inherit and utilise the existing code from the <strong>base class</strong>. This avoids duplicating code and promotes better organization and maintainability</li>
+<li><strong>Inheritance</strong> establishes an <strong>&ldquo;IS-A&rdquo; relationship</strong> between the base class and the derived class</li>
+<li>For example, if you have a base class called Vehicle and a derived class called Car, you can say that &ldquo;a Car is a Vehicle.&rdquo;</li>
+<li>The car class <strong>inherits</strong> the properties and behaviours associated with being a vehicle</li>
+<li>
+<p>Inheritance involves two main entities:</p>
+<ul>
+<li>The <strong>base class</strong> (also known as the parent class or superclass) and the derived class (also known as the child class or subclass)</li>
+<li>The <strong>derived class</strong> inherits the characteristics of the base class, meaning it can access and use the methods and attributes defined in the base class
+<img alt="Example of a base class and derived classes" src="images/inheritance-diagram.png" />
+<strong><em>Example of a base class and derived classes</em></strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Base Class</strong>: The base class serves as the blueprint or template from which the derived class inherits</p>
+<ul>
+<li>It defines common properties and behaviours that can be shared among multiple derived classes</li>
+</ul>
+</li>
+<li><strong>Derived Class</strong>: The derived class inherits the attributes and methods of the base class<ul>
+<li>It can add additional attributes and methods</li>
+</ul>
+</li>
+<li>If a car object was to be created, it may have the following attributes:<ul>
+<li>Manufacturer - The company that makes the car</li>
+<li>Make -The model of the car</li>
+<li>Cost – The price of the car to purchase</li>
+<li>IsInsured – Whether or not the car is insured</li>
+<li>EngineCapacity – The size of the engine for the car</li>
+</ul>
+</li>
+<li>It may also have access to the following <strong>methods</strong>:<ul>
+<li><code>TurnEngineOn()</code> – To start the car engine</li>
+<li><code>TurnEngineOff()</code> – To turn off the car engine</li>
+<li><code>SteerLeft()</code> – To turn the car to the left</li>
+<li><code>SteerRight()</code> – To steer the car to the left</li>
+<li><code>GearChange()</code> – To change the gear of the car</li>
+<li><code>UnlockDoors()</code> – To unlock the doors to the car</li>
+</ul>
+</li>
+<li>The above <strong>methods</strong> are only a select few and there could be many more added for extra functionality</li>
+<li>In the following code, the <strong>super keyword</strong> is used in inheritance to refer to the superclass (Base class: Vehicles) and access its members (methods, attributes, or constructors) from within the subclass (Derived Class: Cars)</li>
+</ul>
+<h2 id="programming-inheritance">Programming inheritance</h2>
+<h3 id="how-do-you-program-inheritance">How do you program inheritance?</h3>
+<h3 id="pseudocode_4">Pseudocode</h3>
+<p><img alt="Pseudocode for a class created using inheritance (part 1)" src="images/inheritance-pseudo-1.png" /> <img alt="Pseudocode for a class created using inheritance (part 2)" src="images/inheritance-pseudo-2.png" />
+<strong><em>Pseudocode for a class created using inheritance</em></strong></p>
+<h4 id="java_4">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">//vehicle class created</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Vehicle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="c1">//attributes created for the vehicle class</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">manufacturer</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">make</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">cost</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//constructor to create objects of type vehicle</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Vehicle</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">manufacturer</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">make</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">cost</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">manufacturer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">manufacturer</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">make</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cost</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to start the engine of the car</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">turnEngineOn</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">//code to turn the engine on</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to stop the engine of the car</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">turnEngineOff</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">//code to turn the engine off</span>
+<span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to steer the car to the left</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">steerLeft</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// code to steer the vehicle left</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to steer the car to the right</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">steerRight</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// code to steer the vehicle right</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">//Derived Class (Car)</span>
+<span class="c1">//the Car class uses the keyword &#39;extends&#39; to inherit from the Vehicle class</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Car</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Vehicle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isInsured</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">engineCapacity</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Constructor to create objects of type Car</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Car</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">manufacturer</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">make</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">cost</span><span class="p">,</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isInsured</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w">   </span><span class="n">engineCapacity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="c1">//the super keyword is used to inherit the attributes from the base class</span>
+<span class="w">         </span><span class="kd">super</span><span class="p">(</span><span class="n">manufacturer</span><span class="p">,</span><span class="w"> </span><span class="n">make</span><span class="p">,</span><span class="w"> </span><span class="n">cost</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">isInsured</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isInsured</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">engineCapacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">engineCapacity</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to change gear </span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">gearChange</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">//code to change the gear of the car</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//method to unlock the vehicle doors</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">unlockDoors</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">//code to unlock the doors of the car</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="python_4">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">#Base class (Vehicle)</span>
+<span class="c1">#Vehicle class created</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Vehicle</span><span class="p">:</span>
+     <span class="c1">#attributes created for the Vehicle class </span>
+   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manufacturer</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manufacturer</span> <span class="o">=</span> <span class="n">manufacturer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make</span> <span class="o">=</span> <span class="n">make</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+     <span class="c1">#method to start the engine of the car   </span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">turn_engine_on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to turn the engine on</span>
+    <span class="c1">#method to stop the engine of the car</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">turn_engine_off</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to turn the engine off</span>
+        <span class="c1">#method to steer the car to the left</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">steer_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to steer the vehicle left</span>
+        <span class="c1">#method to steer the car to the right</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">steer_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to steer the vehicle right</span>
+<span class="c1">#Derived Class (Car)</span>
+<span class="c1">#the Car class uses the keyword parent class name in parenthesis to inherit from the Vehicle class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Car</span><span class="p">(</span><span class="n">Vehicle</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manufacturer</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">is_insured</span><span class="p">,</span> <span class="n">engine_capacity</span><span class="p">):</span>
+           <span class="c1">#the super keyword is used to inherit the attributes from the base class</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">manufacturer</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_insured</span> <span class="o">=</span> <span class="n">is_insured</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine_capacity</span> <span class="o">=</span> <span class="n">engine_capacity</span>
+    <span class="c1">#method to change gear</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gear_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to change the gear of the car</span>
+        <span class="c1">#method to steer the car to the right</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unlock_doors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Code to unlock the doors of the car</span>
+</code></pre></div>
+
+<p>The child class <code>Helicopter</code> inherits from the parent class <code>Vehicle</code>. A helicopter also has a vertical position and changes the vertical position when it increases speed.
+<img alt="Diagram of a Helicopter class with attributes VerticalPosition, VerticalChange, MaxHeight, and methods Constructor, GetVerticalPosition, IncreaseSpeed." src="images/12657_2025-06-03-0ia-kleki.png" />
+Write program code to declare the class <code>Helicopter</code>. You only need to declare the class and its constructor. You do not need to declare the other methods.
+Use your programming language’s appropriate constructor.
+All attributes must be private.
+If you are writing in Python, include attribute declarations using comments. <strong>[5]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>Class header (and end where appropriate) inheriting from Vehicle [1 mark]</li>
+<li>3 (private) attribute declarations with data types [1 mark]</li>
+<li>Constructor (and end where appropriate) with (min) 5 parameters [1 mark]</li>
+<li>Calling parent constructor with appropriate parameters [1 mark]</li>
+<li>Initialising <code>VerticalPosition</code> to 0 and <code>VerticalChange</code> and <code>MaxHeight</code> to attributes [1 mark]
+Example program code:
+<strong>VB.NET</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">Class</span><span class="w"> </span><span class="nv">Helicopter</span>
+<span class="w">  </span><span class="nv">Inherits</span><span class="w"> </span><span class="nv">Vehicle</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">VerticalPosition</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">VerticalChange</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Private</span><span class="w"> </span><span class="nv">MaxHeight</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span>
+<span class="w">  </span><span class="nv">Sub</span><span class="w"> </span><span class="nv">New</span><span class="ss">(</span><span class="nv">IDP</span>,<span class="w"> </span><span class="nv">MaxSpeedP</span>,<span class="w"> </span><span class="nv">IncreaseAmountP</span>,<span class="w"> </span><span class="nv">VertChangeP</span>,<span class="w"> </span><span class="nv">MaxHeightP</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">MyBase</span>.<span class="nv">New</span><span class="ss">(</span><span class="nv">IDP</span>,<span class="w"> </span><span class="nv">MaxSpeedP</span>,<span class="w"> </span><span class="nv">IncreaseAmountP</span><span class="ss">)</span>
+<span class="w">    </span><span class="nv">VerticalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="nv">VerticalChange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VertChangeP</span>
+<span class="w">    </span><span class="nv">MaxHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">MaxHeightP</span>
+<span class="w">  </span><span class="k">End</span><span class="w"> </span><span class="nv">Sub</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Class</span>
+</code></pre></div>
+
+<p><strong>Java</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">Helicopter</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Vehicle</span><span class="p">{</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">VerticalPosition</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">VerticalChange</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">MaxHeight</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">Helicopter</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">IDP</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">MaxSpeedP</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">IncreaseAmountP</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">VertChangeP</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">MaxHeightP</span><span class="p">){</span>
+<span class="w">    </span><span class="kd">super</span><span class="p">(</span><span class="n">IDP</span><span class="p">,</span><span class="w"> </span><span class="n">MaxSpeedP</span><span class="p">,</span><span class="w"> </span><span class="n">IncreaseAmountP</span><span class="p">);</span>
+<span class="w">    </span><span class="n">VerticalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">VerticalChange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VertChangeP</span><span class="p">;</span>
+<span class="w">    </span><span class="n">MaxHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaxHeightP</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}}</span>
+</code></pre></div>
+
+<p><strong>Python</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Helicopter</span><span class="p">(</span><span class="n">Vehicle</span><span class="p">):</span>
+  <span class="c1">#VerticalPosition Integer</span>
+  <span class="c1">#VerticalChange Integer</span>
+  <span class="c1">#MaxHeight Integer</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">IDP</span><span class="p">,</span> <span class="n">MaxSpeedP</span><span class="p">,</span> <span class="n">IncreaseAmountP</span><span class="p">,</span> <span class="n">VertChangeP</span><span class="p">,</span> <span class="n">MaxHeightP</span><span class="p">):</span>
+    <span class="n">Vehicle</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">IDP</span><span class="p">,</span> <span class="n">MaxSpeedP</span><span class="p">,</span> <span class="n">IncreaseAmountP</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__VerticalPosition</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__VerticalChange</span> <span class="o">=</span> <span class="n">VertChangeP</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__MaxHeight</span> <span class="o">=</span> <span class="n">MaxHeightP</span>
+</code></pre></div>
+
+<h2 id="encapsulation-oop">Encapsulation (OOP)</h2>
+<h3 id="what-is-encapsulation">What is encapsulation?</h3>
+<ul>
+<li>In A Level Computer Science, encapsulation refers to the <strong>practice of grouping data</strong> (attributes) <strong>and methods</strong> (functions) <strong>within a class</strong></li>
+<li>Using encapsulation ensures that data remains secure and is not accidentally modified or misused by controlling access to them using access modifiers (e.g., public, private)</li>
+<li>It also helps to organize code by keeping related data and methods together within an <strong>object</strong></li>
+<li>Encapsulation promotes code reusability, which means the same object or class can be used in different parts of a program without rewriting the code</li>
+<li><strong>Encapsulation</strong> uses a concept called <strong>“Abstraction”</strong> which reduces complexity by hiding the implementation details of the object, making it easier to understand and work with</li>
+<li>Programmers can use <strong>methods</strong> and <strong>classes</strong> from other parts of the program without having to understand how that it has been constructed internally</li>
+</ul>
+<h3 id="encapsulation-in-classes">Encapsulation in classes</h3>
+<ul>
+<li>Private variables are only accessible within the class itself, and external code cannot access them directly.</li>
+<li><strong>Encapsulation</strong> hides how things work inside a class from the outside. External code can interact with the class using public methods without needing to understand its internal details
+<img alt="Encapsulation in classes" src="images/encapsulation-in-classes-public-private.png" />
+<strong><em>Encapsulation in classes</em></strong></li>
+</ul>
+<h3 id="encapsulation-in-methods">Encapsulation in methods</h3>
+<p><img alt="Encapsulation in methods" src="images/encapsulation-in-methods-1.png" />
+<strong><em>Encapsulation in methods</em></strong></p>
+<ul>
+<li>When determining whether a method or attribute is public or private, if neither keyword appears, then assume it is public</li>
+</ul>
+<h2 id="programming-encapsulation-oop">Programming encapsulation (OOP)</h2>
+<h3 id="what-is-a-get-method">What is a get method?</h3>
+<ul>
+<li>The &ldquo;get&rdquo; method is a common naming convention for a type of method that is <strong>used to retrieve the value of an object&rsquo;s private</strong> <strong>attributes</strong> (instance variables)</li>
+<li>These methods are also known as &ldquo;getter&rdquo; methods or &ldquo;accessor&rdquo; methods</li>
+<li>The main purpose of a get method is to provide controlled access to the internal state (data) of an object without allowing direct modification</li>
+<li><strong>Attributes</strong> are often declared as private to achieve <strong>encapsulation</strong>, so cannot be accessed directly from outside the class</li>
+<li>External code can use the public get methods to read the values of these private attributes (also known as instance variables)</li>
+</ul>
+<h4 id="pseudocode_5">Pseudocode</h4>
+<p><img alt="Pseudocode for a get method" src="images/get-methods-pseudocode.png" />
+<strong><em>Pseudocode for a get method</em></strong></p>
+<h4 id="java_5">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">//creating a class called NumberUpdater</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">NumberUpdater</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//setting the private attribute to the value of 10</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//creating a get method that will return the value store in the number attribute</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getNumber</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">number</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="python_5">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">#creating a class called NumberUpdater</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NumberUpdater</span><span class="p">:</span>
+    <span class="c1">#setting the private attribute to the value of 10 </span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__number</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="c1">#creating a get method that will return the value stored in the number attribute</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__number</span>
+</code></pre></div>
+
+<h3 id="what-is-a-set-method">What is a set method?</h3>
+<ul>
+<li>The &ldquo;set&rdquo; method is a common naming convention for a type of method that is used to <strong>set the value of object&rsquo;s private instance variables</strong></li>
+<li>Setter methods, also known as “setter” methods or “mutator” methods</li>
+<li>Generally additional code is written within the method to allow controlled access by enforcing certain conditions or validations before updating the attribute</li>
+</ul>
+<h4 id="pseudocode_6">Pseudocode</h4>
+<p><img alt="Pseudocode for a &quot;setter&quot; method" src="images/set-methods-pseudocode.png" />
+<strong><em>Pseudocode for a &ldquo;setter&rdquo; method</em></strong></p>
+<h4 id="java_6">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">//creating a class called NumberUpdater</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">NumberUpdater</span><span class="w">  </span>
+<span class="w">        </span><span class="c1">//setting attribute value to 10</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oldnumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//creating a set method</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setNumber</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">newnumber</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="c1">//if the new number is less than zero</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newnumber</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="c1">//oldnumber is kept the same </span>
+<span class="w">         </span><span class="n">oldnumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oldnumber</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">//oldnumber is updated with the new number value</span>
+<span class="w">               </span><span class="n">oldnumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newnumber</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="python_6">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="o">//</span><span class="n">creating</span> <span class="n">a</span> <span class="k">class</span><span class="w"> </span><span class="nc">called</span> <span class="n">NumberUpdater</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NumberUpdater</span><span class="p">:</span>
+     <span class="o">//</span><span class="n">setting</span> <span class="n">attribute</span> <span class="n">value</span> <span class="n">to</span> <span class="mi">10</span>
+   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__oldnumber</span> <span class="o">=</span> <span class="mi">10</span>
+     <span class="o">//</span><span class="n">creating</span> <span class="n">a</span> <span class="nb">set</span> <span class="n">method</span> 
+   <span class="k">def</span><span class="w"> </span><span class="nf">setNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newnumber</span><span class="p">):</span>
+       <span class="o">//</span><span class="k">if</span> <span class="n">the</span> <span class="n">new</span> <span class="n">number</span> <span class="ow">is</span> <span class="n">less</span> <span class="n">than</span> <span class="n">zero</span> 
+       <span class="k">if</span> <span class="n">newnumber</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                  <span class="o">//</span><span class="n">oldnumber</span> <span class="ow">is</span> <span class="n">kept</span> <span class="n">the</span> <span class="n">same</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__oldnumber</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__oldnumber</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="o">//</span><span class="n">oldnumber</span> <span class="ow">is</span> <span class="n">updated</span> <span class="k">with</span> <span class="n">the</span> <span class="n">new</span> <span class="n">number</span> <span class="n">value</span>   
+                 <span class="bp">self</span><span class="o">.</span><span class="n">__oldnumber</span> <span class="o">=</span> <span class="n">newnumber</span>
+</code></pre></div>
+
+<p>A computer game is being designed that will include different vehicles. A prototype for the game is being developed using object‑oriented programming.
+The class <code>Vehicle</code> stores data about the vehicles. Each vehicle has an identification name, a maximum speed, a current speed and a horizontal position. The value <code>IncreaseAmount</code> is added to the current speed each time the vehicle increases its speed.
+<img alt="Class diagram for &quot;Vehicle&quot; showing attributes: ID, MaxSpeed, CurrentSpeed, IncreaseAmount, HorizontalPosition, and methods: Constructor, Get/Set functions." src="images/61821_2025-06-03-0i0-kleki.png" />
+Write program code for the get methods <code>GetCurrentSpeed()</code>,
+<code>GetIncreaseAmount()</code>, <code>GetMaxSpeed()</code> and <code>GetHorizontalPosition()</code> <strong>[3]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>1 get function header (and end where appropriate) with no parameter … [1 mark]</li>
+<li>…returning attribute (without overwriting) [1 mark]</li>
+<li>3 further correct get methods [1 mark]
+Example program code:
+<strong>VB.NET</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">Function</span><span class="w"> </span><span class="nv">GetCurrentSpeed</span><span class="ss">()</span>
+<span class="w">  </span><span class="k">Return</span><span class="w"> </span><span class="nv">CurrentSpeed</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Function</span>
+<span class="nv">Function</span><span class="w"> </span><span class="nv">GetIncreaseAmount</span><span class="ss">()</span>
+<span class="w">  </span><span class="k">Return</span><span class="w"> </span><span class="nv">IncreaseAmount</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Function</span>
+<span class="nv">Function</span><span class="w"> </span><span class="nv">GetHorizontalPosition</span><span class="ss">()</span>
+<span class="w">  </span><span class="k">Return</span><span class="w"> </span><span class="nv">HorizontalPosition</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Function</span>
+<span class="nv">Function</span><span class="w"> </span><span class="nv">GetMaxSpeed</span><span class="ss">()</span>
+<span class="w">  </span><span class="k">Return</span><span class="w"> </span><span class="nv">MaxSpeed</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Function</span>
+</code></pre></div>
+
+<p><strong>Java</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="nf">GetCurrentSpeed</span><span class="p">(){</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">CurrentSpeed</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="nf">GetIncreaseAmount</span><span class="p">(){</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">IncreaseAmount</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="nf">GetHorizontalPosition</span><span class="p">(){</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">HorizontalPosition</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="nf">GetMaxSpeed</span><span class="p">(){</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">MaxSpeed</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Python</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">GetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CurrentSpeed</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">GetIncreaseAmount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__IncreaseAmount</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">GetHorizontalPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__HorizontalPosition</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">GetMaxSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MaxSpeed</span>
+</code></pre></div>
+
+<h2 id="polymorphism-oop">Polymorphism (OOP)</h2>
+<h3 id="what-is-polymorphism">What is polymorphism?</h3>
+<ul>
+<li>In A Level Computer Science<strong>,</strong> polymorphism is a <strong>concept in programming</strong> that allows <strong>objects</strong> to take on <strong>different forms or behaviours</strong></li>
+<li>Different <strong>objects</strong> can share the same name or behaviour but can work in different ways</li>
+<li>It helps make code more <strong>flexible</strong>, <strong>reusable</strong>, and <strong>easier</strong> to maintain</li>
+<li>It allows <strong>flexibility</strong> and <strong>reusability</strong> in programming, making it easier to write and manage code</li>
+<li>
+<p><strong>Objects</strong> can be treated as belonging to a common group, even if they belong to different <strong>classes</strong>, making your code more versatile and adaptable to changes
+<img alt="Method Overloading Example 1" src="images/method-overloading.png" />
+<strong><em>Method Overloading Example 1</em></strong></p>
+</li>
+<li>
+<p>In the example above, all three <strong>classes</strong> all have a <strong>method</strong> named <code>move()</code>. <strong>Polymorphism</strong> allows methods to be declared with the same name but execute different code (in this case printing different messages)</p>
+</li>
+<li>
+<p>The <strong>override</strong> keyword Is used to provide a new <strong>implementation</strong> for a method that is already defined in the parent class (<strong>base class</strong>)
+<img alt="Method Overloading Example 2" src="images/method-overloading2.png" />
+<strong><em>Method Overloading Example 2</em></strong></p>
+</li>
+<li>
+<p>In the above example both the Motorcycle class and the Car class both <strong>inherit</strong> from the base class &lsquo;Cars&rsquo;</p>
+</li>
+<li><strong>Objects</strong> from the Motorcycle Class and the Car class can call the <code>startEngines()</code> <strong>method</strong> which will output <code>"Engines Started!"</code></li>
+<li>If either of the object types call the <code>displayInfo()</code> method, the program will execute the method from the objects class as it <strong>overrides</strong> the Vehicle class method</li>
+<li>For example<ul>
+<li>If a motorcycle object calls the <code>displayInfo()</code> method,<code>"I am a Motorcycle!"</code> will be output</li>
+<li>If a Car object calls the <code>displayInfo()</code> method, <code>"I am a Car!"</code> will be output</li>
+</ul>
+</li>
+</ul>
+<h3 id="treating-objects-as-common-groups">Treating objects as common groups</h3>
+<ul>
+<li><strong>Polymorphism</strong> also allows objects of different classes to be treated as objects of a common <strong>superclass</strong> or <strong>base class</strong></li>
+<li>For example:<ul>
+<li><code>Vehicle vehicle1 = new Car()</code></li>
+<li><code>Vehicle vehicle2 = new Motorcycle()</code></li>
+</ul>
+</li>
+<li>This allows an array of type Vehicle to store both Motorcycle and Car objects rather than in separate data structures<ul>
+<li>If the <code>vehicle1.displayInfo()</code> method is called, it will still output &ldquo;I am a Car!&rdquo;</li>
+<li>If the <code>vehicle2.displayInfo()</code> method is called, it will still output &ldquo;I am a Motorcycle!&rdquo;</li>
+</ul>
+</li>
+<li>This flexibility provided by <strong>polymorphism</strong> are essential for creating more maintainable and modular code</li>
+</ul>
+<h2 id="programming-polymorphism-oop">Programming polymorphism (OOP)</h2>
+<h3 id="how-do-you-program-polymorphism">How do you program polymorphism?</h3>
+<h4 id="run-time-polymorphism">Run-time polymorphism</h4>
+<ul>
+<li>This happens when a <strong>subclass overrides a method</strong> defined in a <strong>superclass</strong>, and the correct version is chosen at <strong>run-time</strong>, not compile-time</li>
+</ul>
+<h3 id="example-scenario-animal-dog-and-cat">Example scenario: Animal, dog, and cat</h3>
+<h4 id="step-by-step-logic-pseudocode">Step-by-step logic (pseudocode)</h4>
+<ol>
+<li><strong>Define a superclass</strong> called <code>Animal</code> with a method <code>speak()</code> that does nothing</li>
+<li><strong>Create subclasses</strong> called <code>Dog</code> and <code>Cat</code> that inherit from <code>Animal</code></li>
+<li>In each subclass, <strong>override</strong> the <code>speak()</code> method to provide a specific output</li>
+<li>Write a function <code>make_sound(animal)</code> that <strong>accepts an object</strong> of type <code>Animal</code> and calls its <code>speak()</code> method</li>
+<li>Create instances of <code>Dog</code> and <code>Cat</code>, and pass them to <code>make_sound()</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">CLASS</span> <span class="n">Animal</span>
+    <span class="n">METHOD</span> <span class="n">speak</span><span class="p">()</span>
+        <span class="o">//</span> <span class="n">Empty</span> <span class="n">method</span> <span class="p">(</span><span class="n">acts</span> <span class="n">as</span> <span class="n">a</span> <span class="n">placeholder</span><span class="p">)</span>
+<span class="n">CLASS</span> <span class="n">Dog</span> <span class="n">EXTENDS</span> <span class="n">Animal</span>
+    <span class="n">METHOD</span> <span class="n">speak</span><span class="p">()</span>
+        <span class="n">OUTPUT</span> <span class="s">&quot;Woof&quot;</span>
+<span class="n">CLASS</span> <span class="n">Cat</span> <span class="n">EXTENDS</span> <span class="n">Animal</span>
+    <span class="n">METHOD</span> <span class="n">speak</span><span class="p">()</span>
+        <span class="n">OUTPUT</span> <span class="s">&quot;Meow&quot;</span>
+<span class="kr">PROCEDURE</span> <span class="n">make_sound</span><span class="p">(</span><span class="n">animal</span> <span class="p">:</span> <span class="n">Animal</span><span class="p">)</span>
+    <span class="n">CALL</span> <span class="n">animal</span><span class="p">.</span><span class="n">speak</span><span class="p">()</span>
+<span class="o">//</span> <span class="n">Create</span> <span class="n">objects</span>
+<span class="n">DECLARE</span> <span class="n">myDog</span> <span class="p">:</span> <span class="n">Dog</span>
+<span class="n">DECLARE</span> <span class="n">myCat</span> <span class="p">:</span> <span class="n">Cat</span>
+<span class="kt">SET</span> <span class="n">myDog</span> <span class="kr">TO</span> <span class="kr">NEW</span> <span class="n">Dog</span><span class="p">()</span>
+<span class="kt">SET</span> <span class="n">myCat</span> <span class="kr">TO</span> <span class="kr">NEW</span> <span class="n">Cat</span><span class="p">()</span>
+<span class="o">//</span> <span class="n">Demonstrate</span> <span class="n">polymorphism</span>
+<span class="n">CALL</span> <span class="n">make_sound</span><span class="p">(</span><span class="n">myDog</span><span class="p">)</span>  <span class="o">//</span> <span class="n">Outputs</span><span class="p">:</span> <span class="n">Woof</span>
+<span class="n">CALL</span> <span class="n">make_sound</span><span class="p">(</span><span class="n">myCat</span><span class="p">)</span>  <span class="o">//</span> <span class="n">Outputs</span><span class="p">:</span> <span class="n">Meow</span>
+</code></pre></div>
+
+<ul>
+<li><code>Animal</code> is a <strong>base class</strong> with a <code>speak()</code> method</li>
+<li><code>Dog</code> and <code>Cat</code> are <strong>subclasses</strong> that override the <code>speak()</code> method</li>
+<li><code>make_sound()</code> takes an <code>Animal</code> object but <strong>calls the correct version</strong> of <code>speak()</code> depending on whether it’s a <code>Dog</code> or a <code>Cat</code></li>
+<li>This demonstrates <strong>run-time polymorphism</strong> – the method call is resolved based on the actual type of the object</li>
+</ul>
+<h4 id="python_7">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># Placeholder method</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Woof&quot;</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cat</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Meow&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_sound</span><span class="p">(</span><span class="n">animal</span><span class="p">):</span>
+    <span class="n">animal</span><span class="o">.</span><span class="n">speak</span><span class="p">()</span>
+<span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">()</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">()</span>
+<span class="n">make_sound</span><span class="p">(</span><span class="n">dog</span><span class="p">)</span>  <span class="c1"># Outputs: Woof</span>
+<span class="n">make_sound</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>  <span class="c1"># Outputs: Meow</span>
+</code></pre></div>
+
+<ul>
+<li>This shows <strong>method overriding</strong></li>
+<li>The <code>make_sound()</code> function relies on <strong>dynamic method binding</strong></li>
+</ul>
+<h4 id="java_7">Java</h4>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">Animal</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">speak</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Empty default method</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">speak</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Woof&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">class</span> <span class="nc">Cat</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">speak</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Meow&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">makeSound</span><span class="p">(</span><span class="n">Animal</span><span class="w"> </span><span class="n">animal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">animal</span><span class="p">.</span><span class="na">speak</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Dog</span><span class="w"> </span><span class="n">dog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">();</span>
+<span class="w">        </span><span class="n">Cat</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Cat</span><span class="p">();</span>
+<span class="w">        </span><span class="n">makeSound</span><span class="p">(</span><span class="n">dog</span><span class="p">);</span><span class="w"> </span><span class="c1">// Outputs: Woof</span>
+<span class="w">        </span><span class="n">makeSound</span><span class="p">(</span><span class="n">cat</span><span class="p">);</span><span class="w"> </span><span class="c1">// Outputs: Meow</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>Recognise use of a <strong>superclass reference</strong> (<code>Animal animal</code>) pointing to a <strong>subclass object</strong></li>
+<li>Polymorphism occurs when <code>animal.speak()</code> dynamically calls the correct overridden method</li>
+</ul>
+<p>The child class <code>Helicopter</code> inherits from the parent class <code>Vehicle</code>. A helicopter also has a vertical position and changes the vertical position when it increases speed.
+<img alt="Diagram of a Helicopter class with attributes VerticalPosition, VerticalChange, MaxHeight, and methods Constructor, GetVerticalPosition, IncreaseSpeed." src="images/12657_2025-06-03-0ia-kleki.png" />
+The <code>Helicopter</code> method <code>IncreaseSpeed()</code> overrides the method from the parent
+class and:</p>
+<ul>
+<li>adds the amount of vertical change to the vertical position</li>
+<li>adds <code>IncreaseAmount</code> to the current speed</li>
+<li>
+<p>adds the updated current speed to the horizontal position.
+The vertical position of a helicopter cannot exceed its maximum height.
+The current speed of a helicopter cannot exceed its maximum speed.
+Write program code for the method <code>IncreaseSpeed()</code> <strong>[4]</strong>
+Answer</p>
+</li>
+<li>
+<p>Method header (overriding where required) with no parameter [1 mark]</p>
+</li>
+<li>Adding vertical change to vertical position … [1 mark]</li>
+<li>…limiting to maximum height [1 mark]</li>
+<li>Repeating/calling/using the code from original for horizontal increase (in every case) [1 mark]
+Example program code:
+<strong>VB.NET</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">Overrides</span><span class="w"> </span><span class="nv">Sub</span><span class="w"> </span><span class="nv">IncreaseSpeed</span><span class="ss">()</span>
+<span class="w">  </span><span class="nv">VerticalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">VerticalPosition</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">VerticalChange</span>
+<span class="w">  </span><span class="k">If</span><span class="w"> </span><span class="nv">VerticalPosition</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">MaxHeight</span><span class="w"> </span><span class="k">Then</span>
+<span class="w">    </span><span class="nv">VerticalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">MaxHeight</span>
+<span class="w">  </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
+<span class="w">  </span><span class="nv">Me</span>.<span class="nv">SetCurrentSpeed</span><span class="ss">(</span><span class="nv">GetCurrentSpeed</span><span class="ss">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">GetIncreaseAmount</span><span class="ss">())</span>
+<span class="w">  </span><span class="k">If</span><span class="w"> </span><span class="nv">Me</span>.<span class="nv">GetCurrentSpeed</span><span class="ss">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">Me</span>.<span class="nv">GetMaxSpeed</span><span class="ss">()</span><span class="w"> </span><span class="k">Then</span>
+<span class="w">    </span><span class="nv">Me</span>.<span class="nv">SetCurrentSpeed</span><span class="ss">(</span><span class="nv">Me</span>.<span class="nv">GetMaxSpeed</span><span class="ss">())</span>
+<span class="w">  </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
+<span class="w">  </span><span class="nv">Me</span>.<span class="nv">SetHorizontalPosition</span><span class="ss">(</span><span class="nv">Me</span>.<span class="nv">GetHorizontalPosition</span><span class="ss">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Me</span>.<span class="nv">GetCurrentSpeed</span><span class="ss">())</span>
+<span class="k">End</span><span class="w"> </span><span class="nv">Sub</span>
+</code></pre></div>
+
+<p><strong>Java</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">IncreaseSpeed</span><span class="p">(){</span>
+<span class="w">  </span><span class="n">VerticalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VerticalPosition</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">VerticalChange</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">VerticalPosition</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MaxHeight</span><span class="p">){</span>
+<span class="w">    </span><span class="n">VerticalPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaxHeight</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">super</span><span class="p">.</span><span class="na">SetCurrentSpeed</span><span class="p">(</span><span class="kd">super</span><span class="p">.</span><span class="na">GetCurrentSpeed</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">GetIncreaseAmount</span><span class="p">());</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="kd">super</span><span class="p">.</span><span class="na">GetCurrentSpeed</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">GetMaxSpeed</span><span class="p">()){</span>
+<span class="w">    </span><span class="kd">super</span><span class="p">.</span><span class="na">SetCurrentSpeed</span><span class="p">(</span><span class="kd">super</span><span class="p">.</span><span class="na">GetMaxSpeed</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">super</span><span class="p">.</span><span class="na">SetHorizontalPosition</span><span class="p">(</span><span class="kd">super</span><span class="p">.</span><span class="na">GetHorizontalPosition</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">GetCurrentSpeed</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Python</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">IncreaseSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">__VerticalPosition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__VerticalPosition</span> <span class="o">+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__VerticalChange</span>
+  <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__VerticalPosition</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MaxHeight</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__VerticalPosition</span> <span class="o">=</span> <span class="n">MaxHeight</span>
+  <span class="n">Vehicle</span><span class="o">.</span><span class="n">SetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span>
+<span class="n">Vehicle</span><span class="o">.</span><span class="n">GetIncreaseAmount</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">Vehicle</span><span class="o">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">GetMaxSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+    <span class="n">Vehicle</span><span class="o">.</span><span class="n">SetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">GetMaxSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">));</span>
+<span class="n">Vehicle</span><span class="o">.</span><span class="n">SetHorizontalPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">GetHorizontalPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span>
+<span class="n">Vehicle</span><span class="o">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+</code></pre></div>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

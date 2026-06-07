@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.3 Bit Manipulation — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>4.3 Bit Manipulation</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#bitwise-operations">Bitwise Operations</a></li>
+<li><a href="#binary-shifts">Binary shifts</a></li>
+<li><a href="#device-control-bit-masking">Device control &amp; bit masking</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="bitwise-operations">Bitwise Operations</h2>
+<h2 id="binary-shifts">Binary shifts</h2>
+<h3 id="what-are-binary-shifts">What are binary shifts?</h3>
+<ul>
+<li>A binary shift is an operation that <strong>moves all the bits in a binary number left or right</strong> by a certain number of positions</li>
+<li>Often used in programming and computer systems for <strong>fast multiplication or division by powers of 2</strong>, or for manipulating individual bits</li>
+<li>There are three main types of binary shift:<ul>
+<li><strong>Logical</strong></li>
+<li><strong>Arithmetic</strong></li>
+<li><strong>Cyclic</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="logical">Logical</h3>
+<ul>
+<li><strong>Moves bits left or right</strong> and <strong>fills the gap with 0s</strong></li>
+<li>Used for <strong>unsigned binary numbers</strong> or raw bit manipulation</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Left</td>
+<td>All bits shift left, a <code>0</code> fills the rightmost bit</td>
+</tr>
+<tr>
+<td>Right</td>
+<td>All bits shift right, a <code>0</code> fills the leftmost bit</td>
+</tr>
+</tbody>
+</table>
+<h4 id="left">Left</h4>
+<ul>
+<li>The following number is shifted by <strong>two</strong> places to the left</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Original</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Left shift by 2</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Original number:</strong> 0000 1110 = <strong>14</strong></li>
+<li><strong>Left shift (2) result:</strong> 0011 1000 = <strong>56</strong></li>
+<li>Each left shift has <strong>doubled</strong> the number:<ul>
+<li><strong>Original value</strong> = <strong>14</strong></li>
+<li><strong>Left shift 1</strong> - Doubled the number to 28</li>
+<li><strong>Left shift 2</strong> - Doubled the number to 56</li>
+</ul>
+</li>
+</ul>
+<h4 id="right">Right</h4>
+<ul>
+<li>The following number is shifted by <strong>three</strong> places to the right</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Original</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Right shift by 3</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Original number:</strong> 1100 1000 = <strong>200</strong></li>
+<li><strong>Right shift (3) result:</strong> 0001 1001 = <strong>25</strong></li>
+<li>Each right shift has <strong>halved</strong> the number:<ul>
+<li><strong>Original value</strong> = <strong>200</strong></li>
+<li><strong>Right shift 1</strong> - Halved the number to 100</li>
+<li><strong>Right shift 2</strong> - Halved the number to 50</li>
+<li><strong>Right shift 3</strong> - Halved the number to 25</li>
+</ul>
+</li>
+</ul>
+<h3 id="arithmetic">Arithmetic</h3>
+<ul>
+<li><strong>Moves bits</strong>, but <strong>preserves the sign bit</strong> (used for signed binary numbers in two&rsquo;s complement)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Left</td>
+<td>Same as logical left (shift left, 0 in)</td>
+</tr>
+<tr>
+<td>Right</td>
+<td>Shift right, <strong>copy the sign bit (MSB)</strong> into the new leftmost bit</td>
+</tr>
+</tbody>
+</table>
+<h4 id="right_1">Right</h4>
+<ul>
+<li>The following number is shifted by <strong>three</strong> places to the right</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Original</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Right shift by 3</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Original number</strong>: 1110 1000= <strong>−24</strong></li>
+<li><strong>Right shift (3)</strong> <strong>result</strong>: 1111 1101 = <strong>−3</strong></li>
+<li>Each arithmetic right shift <strong>divides the number by 2</strong>, rounding <strong>towards negative infinity</strong> (preserving the sign bit)<ul>
+<li><strong>Original value</strong> = <strong>−24</strong></li>
+<li><strong>Right shift 1</strong> → 1111 0100 = <strong>−12</strong></li>
+<li><strong>Right shift 2</strong> → 1111 1010 = <strong>−6</strong></li>
+<li><strong>Right shift 3</strong> → 1111 1101 = <strong>−3</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="cyclic">Cyclic</h3>
+<ul>
+<li><strong>Rotates</strong> the bits around, nothing is lost, no 0s added</li>
+<li>The bit that falls off one end is <strong>reused</strong> at the other end</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Left</td>
+<td>Leftmost bit moves to the rightmost position</td>
+</tr>
+<tr>
+<td>Right</td>
+<td>Rightmost bit moves to the leftmost position</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The following number is shifted by <strong>three</strong> places to the left and right</li>
+</ul>
+<h4 id="left-and-right">Left and Right</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Original</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Cyclic left (×3)</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Cyclic right (×3)</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The 3 leftmost bits 101 wrap around to the right side</li>
+<li>The 3 rightmost bits 001 wrap around to the left side</li>
+<li><strong>Original</strong>: 1011 0001 = <strong>177</strong></li>
+<li><strong>Cyclic left (3)</strong>: 1000 1101 = <strong>141</strong></li>
+<li><strong>Cyclic right (3)</strong>: 0011 0110 = <strong>54</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Shift type</strong></th>
+<th><strong>Left shift</strong></th>
+<th><strong>Right shift</strong></th>
+<th><strong>Used for</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logical Shift</td>
+<td>Shift bits left, fill with <code>0</code></td>
+<td>Shift bits right, fill with <code>0</code></td>
+<td>Unsigned numbers, raw bits</td>
+</tr>
+<tr>
+<td>Arithmetic Shift</td>
+<td>Same as logical left</td>
+<td>Shift bits right, <strong>preserve sign bit</strong></td>
+<td>Signed numbers (two&rsquo;s complement)</td>
+</tr>
+<tr>
+<td>Cyclic Shift</td>
+<td>Rotate bits left (no loss)</td>
+<td>Rotate bits right (no loss)</td>
+<td>Bit rotation, encryption, checksums</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Cyclic shifts <strong>do not</strong> preserve the sign bit and are not equivalent to multiplying or dividing by powers of two</li>
+</ul>
+<h2 id="device-control-bit-masking">Device control &amp; bit masking</h2>
+<h3 id="what-is-device-control">What is device control?</h3>
+<ul>
+<li>In computer systems and embedded devices, <strong>each bit</strong> in a byte can be used to represent the <strong>state of a device or feature</strong> (e.g. turning a light on, checking if a sensor is active, or flagging an error)</li>
+<li>You can <strong>control or monitor</strong> these bits using <strong>bitwise operations</strong> and <strong>bit masking</strong></li>
+</ul>
+<h3 id="what-is-bit-masking">What is bit masking?</h3>
+<ul>
+<li>Bit masking uses binary patterns (masks) to <strong>test</strong>, <strong>set</strong>, <strong>clear</strong>, or <strong>toggle</strong> specific bits <strong>without affecting the others</strong></li>
+</ul>
+<h4 id="bitwise-and-operation">Bitwise AND operation (&amp;)</h4>
+<ul>
+<li>Used to <strong>test</strong> if a specific bit is set to 1</li>
+<li>Only returns 1 when <strong>both</strong> the binary value <strong>and</strong> the mask have 1 in the same position</li>
+<li>Useful for <strong>checking</strong> the status of a device</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Binary</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Check if a <strong>heater (Bit 5)</strong> and <strong>light (Bit 4)</strong> are both ON</li>
+<li>Apply a mask with 1s at those positions</li>
+<li>If the result is <strong>not 0</strong>, the devices are <strong>ON</strong></li>
+</ul>
+<h4 id="bitwise-or-operation">Bitwise OR operation (|)</h4>
+<ul>
+<li>Used to <strong>set</strong> specific bits to 1</li>
+<li>Returns 1 if <strong>either</strong> the binary value <strong>or</strong> the mask has 1</li>
+<li>This is useful to <strong>turn on a device</strong> (set a bit to 1) without changing the others</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Binary</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Turn ON the <strong>alarm system (Bit 6)</strong> and <strong>door lock (Bit 5)</strong> by ORing with a mask that has 1s at those positions</li>
+</ul>
+<h4 id="bitwise-xor-operation">Bitwise XOR operation (^)</h4>
+<ul>
+<li>Used to <strong>toggle</strong> (flip) specific bits</li>
+<li>Returns 1 if the bits are <strong>different</strong></li>
+<li>Can be used for <strong>switching</strong> a device from ON to OFF or vice versa</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Binary</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Mask</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Toggle the <strong>fan (Bit 5)</strong> and <strong>heating system (Bit 4)</strong> with a mask that has 1s in those positions</li>
+</ul>
+<h4 id="summary">Summary</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Symbol</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Example Use</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bitwise AND</td>
+<td><code>&amp;</code></td>
+<td>Test a bit</td>
+<td>Check if a sensor is active</td>
+</tr>
+<tr>
+<td>Bitwise OR</td>
+<td><code>\|</code></td>
+<td>Set a bit</td>
+<td>Turn ON a device</td>
+</tr>
+<tr>
+<td>Bitwise XOR</td>
+<td><code>^</code></td>
+<td>Toggle a bit</td>
+<td>Flip device state (ON ↔ OFF)</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

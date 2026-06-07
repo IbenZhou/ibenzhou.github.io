@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7. Ethics & Ownership — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>7. Ethics & Ownership</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#professional-ethics">Professional Ethics</a></li>
+<li><a href="#ethics-as-a-computing-professional">Ethics as a computing professional</a></li>
+<li><a href="#ethical-bodies">Ethical bodies</a></li>
+<li><a href="#ethical-conduct">Ethical conduct</a></li>
+<li><a href="#legal-frameworks">Legal Frameworks</a></li>
+<li><a href="#copyright">Copyright</a></li>
+<li><a href="#software-licensing">Software licensing</a></li>
+<li><a href="#artificial-intelligence-ai">Artificial Intelligence (AI)</a></li>
+<li><a href="#understanding-ai">Understanding AI</a></li>
+<li><a href="#what-is-artificial-intelligence">What is artificial intelligence?</a></li>
+<li><a href="#impact-of-ai">Impact of AI</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="professional-ethics">Professional Ethics</h2>
+<h2 id="ethics-as-a-computing-professional">Ethics as a computing professional</h2>
+<h3 id="what-are-ethics">What are ethics?</h3>
+<ul>
+<li>Ethics are a set of principles that help us decide what is <strong>right or wrong</strong></li>
+<li>They guide <strong>how we behave and make decisions</strong>, especially in situations where there isn&rsquo;t a clear answer</li>
+<li>In computing, an <strong>ethical issue</strong> is when technology creates a situation that challenges a person’s <strong>morals and values</strong></li>
+<li>These issues can be difficult because:<ul>
+<li>Technology moves fast, but <strong>laws take time to catch up</strong></li>
+<li>There may be <strong>no single “correct” answer</strong></li>
+<li>Choices can have <strong>serious consequences</strong> for both individuals and society</li>
+</ul>
+</li>
+</ul>
+<h4 id="computer-ethics">Computer ethics</h4>
+<ul>
+<li>Computer ethics are a set of <strong>principles that guide how computers and technology should be used responsibly and fairly</strong></li>
+<li>They help <strong>prevent misuse</strong> and <strong>protect people’s rights</strong> in a digital world</li>
+<li>The three key areas of computer ethics are:<ul>
+<li><strong>Intellectual property rights</strong><ul>
+<li>It is <strong>unethical to copy or use software, music, or digital content</strong> without permission from the owner</li>
+<li>Example: Downloading and using paid software without a licence</li>
+</ul>
+</li>
+<li><strong>Privacy</strong><ul>
+<li>Users have the right to keep their <strong>personal information safe</strong></li>
+<li>It is <strong>unethical (and illegal)</strong> to access someone’s personal data without their permission (e.g. <strong>hacking</strong>)</li>
+</ul>
+</li>
+<li><strong>Impact on society</strong><ul>
+<li>Computers affect <strong>how we work and live</strong></li>
+<li>Ethical concerns include <strong>job losses due to automation</strong>, <strong>social media effects</strong>, and <strong>digital addiction</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The internet has made <strong>plagiarism</strong> easier, this is when someone <strong>copies another person’s work and claims it as their own</strong></li>
+<li>It’s <strong>not wrong to use someone’s idea</strong>, but you <strong>must give credit</strong></li>
+<li>This is done through:<ul>
+<li><strong>Footnotes</strong></li>
+<li><strong>References or citations</strong> at the end of a document</li>
+</ul>
+</li>
+<li><strong>Anti-plagiarism software</strong> exists to scan and detect copied content from websites</li>
+</ul>
+<h2 id="ethical-bodies">Ethical bodies</h2>
+<h3 id="what-is-an-ethical-body">What is an ethical body?</h3>
+<ul>
+<li>An ethical body is an organisation that publishes a <strong>code of conduct</strong> which its members are expected to follow</li>
+<li>Being a member of an ethical body shows a commitment to <strong>professional integrity</strong> and maintaining <strong>high ethical standards</strong> in your work</li>
+<li>Examples of ethical bodies include:<ul>
+<li><strong>British Computer Society (BCS)</strong></li>
+<li><strong>Institute of Electrical and Electronics Engineers (IEEE)</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="british-computer-society-bcs">British Computer Society (BCS)</h4>
+<ul>
+<li>The <strong>professional body for IT and computing</strong> in the UK</li>
+<li>Promotes <strong>ethical behaviour</strong>, <strong>good practice</strong>, and <strong>high standards</strong> in tech-related jobs</li>
+<li>Members follow a <strong>Code of Conduct</strong> to ensure responsible use of technology</li>
+</ul>
+<h4 id="institute-of-electrical-and-electronics-engineers-ieee">Institute of Electrical and Electronics Engineers (IEEE)</h4>
+<ul>
+<li>A global organisation for <strong>engineers, developers, and computer scientists</strong></li>
+<li>Sets <strong>technical standards</strong> and encourages <strong>ethical and professional behaviour</strong> in tech fields</li>
+<li>Known for publishing <strong>research</strong> and <strong>codes of ethics</strong></li>
+</ul>
+<h4 id="benefits-of-being-a-member-of-an-ethical-body">Benefits of being a member of an ethical body</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Benefit</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Clear ethical guidelines</strong></td>
+<td>Members follow a written code, so they don’t have to decide what is ethical on their own</td>
+</tr>
+<tr>
+<td><strong>Trusted by clients and colleagues</strong></td>
+<td>Clients and staff know the member is working to recognised standards</td>
+</tr>
+<tr>
+<td><strong>Professional reputation</strong></td>
+<td>Being part of an ethical body shows you are reputable and serious about your work</td>
+</tr>
+<tr>
+<td><strong>Recognised skills and knowledge</strong></td>
+<td>Entry may require qualifications or passing a test, showing you meet high standards</td>
+</tr>
+<tr>
+<td><strong>Help and support</strong></td>
+<td>Members can get advice (e.g. legal help) when needed</td>
+</tr>
+<tr>
+<td><strong>Training and development</strong></td>
+<td>Access to training courses helps members keep their skills up to date</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ethical-conduct">Ethical conduct</h2>
+<h3 id="example-1-software-development-team">Example 1: Software development team</h3>
+<ul>
+<li>A <strong>project manager</strong> leading a team of developers should:<ul>
+<li><strong>Treat all team members fairly</strong>, listen to their ideas, and avoid favouritism<ul>
+<li>This helps team members feel <strong>valued</strong>.</li>
+</ul>
+</li>
+<li><strong>Respect work-life balance</strong> by avoiding unrealistic deadlines<ul>
+<li>This supports better <strong>teamwork</strong> and helps get the <strong>best work</strong> out of them</li>
+</ul>
+</li>
+<li>Encourage <strong>collaboration</strong> and clear communication to avoid conflict<ul>
+<li>A team that works well together creates a <strong>better product</strong> for the client</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-2-it-support-company-owner">Example 2: IT support company owner</h3>
+<ul>
+<li>
+<p>An <strong>IT company owner</strong> managing technicians who visit clients should:</p>
+<ul>
+<li>Provide <strong>fair pay</strong> and ongoing <strong>training</strong> to keep staff skilled and motivated<ul>
+<li>Staff feel <strong>valued</strong>, which improves performance</li>
+</ul>
+</li>
+<li>Promote <strong>ethical behaviour</strong> with clients (e.g. don’t overcharge or mislead)<ul>
+<li>Builds <strong>trust</strong> within the team and with clients, leading to <strong>better service</strong></li>
+</ul>
+</li>
+<li>Create a culture of <strong>respect and teamwork</strong>, even under pressure<ul>
+<li>Helps staff support each other and deliver a <strong>high-quality solution</strong> to clients
+Aisha manages a team of software developers.
+Explain the reasons why it is important that Aisha acts ethically in relation to her team members.<strong>[2]</strong>
+<strong>Answer</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>To make sure the team members feel valued [1 mark]</p>
+</li>
+<li>To get the best work out of the team [1 mark]</li>
+<li>To enable them to work well together [1 mark]</li>
+<li>To enable them to create the best product for the client [1 mark]</li>
+</ul>
+<h2 id="legal-frameworks">Legal Frameworks</h2>
+<h2 id="copyright">Copyright</h2>
+<h3 id="what-is-the-copyright-designs-patents-act">What is the Copyright Designs &amp; Patents Act?</h3>
+<ul>
+<li>This protects the <strong>intellectual property</strong> of an individual or a company</li>
+<li>It makes it <strong>illegal</strong> to copy, modify or distribute software or other intellectual property without the relevant <strong>permission</strong></li>
+<li>If <strong>original work</strong> is original, copyright will be <strong>automatically applied</strong> and will not expire until 25 - 70 years from the death of the creator depending on the type of work</li>
+<li>If an individual believes that their work has been copied it is their responsibility to take action under the <strong>Copyright Designs and Patents Act</strong></li>
+<li>Many sites online offer free downloads of copyrighted <strong>software/videos</strong> which prevents the intellectual copyright holder from earning their income on the work they have created<ul>
+<li>E.g. If someone downloaded videos from Netflix and shared them with others, they would be breaching the act</li>
+</ul>
+</li>
+<li>The act covers videos and audio where <strong>peer-to-peer streaming</strong> prevents a copyright owner from receiving an income</li>
+</ul>
+<h3 id="what-is-prohibited-under-the-copyright-designs-patents-act">What is Prohibited Under the Copyright, Designs &amp; Patents Act?</h3>
+<h4 id="primary-breaches">Primary breaches:</h4>
+<ul>
+<li><strong>Copying</strong> an original work</li>
+<li><strong>Issuing</strong> the copy of the original work to the public</li>
+<li><strong>Renting/lending</strong> the copy of the original work to the public</li>
+<li><strong>Performing</strong>, <strong>showing</strong> or <strong>playing</strong> the original work in public</li>
+<li><strong>Making</strong> an adaptation of the original work</li>
+</ul>
+<h4 id="secondary-breaches">Secondary breaches:</h4>
+<ul>
+<li><strong>Importing</strong> a copy of original work</li>
+<li><strong>Possessing</strong> or dealing with a copy of the original work</li>
+<li><strong>Providing</strong> means to make copies of the original work</li>
+<li><strong>Permitting</strong> the use of premises for making copies of the original work</li>
+<li><strong>Provision</strong> of props/equipment for a performance of a copy of the original work</li>
+</ul>
+<h4 id="case-study">Case Study</h4>
+<p><a href="https://www.bbc.co.uk/news/entertainment-arts-65480293">Ed Sheeran Vs Marvin Gaye (External link to</a> <a href="http://bbc.co.uk/">bbc.co.uk</a><a href="https://www.bbc.co.uk/news/entertainment-arts-65480293">)</a></p>
+<ul>
+<li>A case was brought against Ed Sheeran about his song &lsquo;Thinking Out Loud&rsquo;</li>
+<li>Ed Sheeran won his case which ruled that he did not copy ‘Let’s Get It On’ by Marvin Gaye whilst composing ‘Thinking Out Loud’</li>
+<li>The heirs of Gaye’s co-writer argued that Sheeran owed them money for infringement of copyright</li>
+<li>Sheeran said that if he was found guilty he would give up his music career</li>
+<li>The songs were said to have a similar chord progression but it was argued that these are the base of all modern songs and should be free to use</li>
+<li>Sheeran won a high court battle in London in 2022 over the copyright of his 2017 song ‘Shape of You’</li>
+<li>In 2015 Gaye’s heirs won a $5.3m judgement from a lawsuit claiming that Robin Thicke’s ‘Blurred Lines’ copied Gaye’s ‘Got to Give it Up’</li>
+</ul>
+<h4 id="examiner-tips-and-tricks">Examiner Tips and Tricks</h4>
+<ul>
+<li>Make sure that you specify that the Copyright Design and Patents Act covers original work and is automatically applied from the creation of the work, then talk about what this means for the distribution of the work. For example:<ul>
+<li><em>The work was protected by the Copyright Designs and Patents act when it was created. Therefore if anyone wishes to distribute it they have to gain the owner’s permission, if they just posted it to the internet then this would be in breach of the act.</em></li>
+</ul>
+</li>
+<li>Also when referring to the name of the act, ensure you use its full name (The Copyright, Designs and Patents Act). It&rsquo;s not called the Copyright Act. If you use a shortened version it may cost you marks in the exam</li>
+</ul>
+<h2 id="software-licensing">Software licensing</h2>
+<h3 id="commercial">Commercial</h3>
+<ul>
+<li>Users must <strong>pay</strong> for the software</li>
+<li>The developer earns an <strong>income</strong> from each purchase</li>
+<li>The software is <strong>copyrighted</strong>, so:<ul>
+<li>Users <strong>cannot legally edit, copy, or resell</strong> the program</li>
+<li>The developer <strong>retains full control</strong> over the product</li>
+<li>Legal action can be taken against <strong>piracy or illegal distribution</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="shareware">Shareware</h3>
+<ul>
+<li>Software is <strong>free to try</strong>, often with time or feature limitations</li>
+<li>Users must <strong>pay</strong> to unlock the <strong>full version</strong></li>
+<li>The software is <strong>copyrighted</strong>, so:<ul>
+<li>Users <strong>cannot edit or redistribute</strong> the program legally</li>
+<li>The developer <strong>retains control</strong></li>
+</ul>
+</li>
+<li>This model encourages users to try before buying, increasing the chance of a sale</li>
+</ul>
+<h3 id="freeware">Freeware</h3>
+<ul>
+<li>Software is <strong>free to use and download</strong></li>
+<li>It is still <strong>copyrighted</strong>:<ul>
+<li>Users <strong>cannot legally edit, copy, or sell</strong> the software</li>
+<li>The developer <strong>keeps ownership and control</strong></li>
+</ul>
+</li>
+<li>Although free, users must still follow the licence conditions</li>
+</ul>
+<h4 id="open-source-initiative-osi">Open Source Initiative (OSI)</h4>
+<ul>
+<li>The Open Source Initiative promotes software that is <strong>freely available and open to everyone</strong></li>
+<li><strong>Open source software</strong> comes with a licence that:<ul>
+<li>Allows users to <strong>view, edit, and share</strong> the source code</li>
+<li>Encourages <strong>collaboration and improvement</strong> by the community</li>
+</ul>
+</li>
+<li>Open source does <strong>not always mean free</strong>, some open-source software is paid, but users can still see and change the code</li>
+<li>Developers must still <strong>credit the original authors</strong> when modifying or sharing the software</li>
+<li>Example: <strong>Linux</strong>, <strong>Firefox</strong>, <strong>Apache Web Server</strong></li>
+</ul>
+<h4 id="free-software-foundation-fsf">Free Software Foundation (FSF)</h4>
+<ul>
+<li>The Free Software Foundation promotes <strong>freedom</strong>, not just free price</li>
+<li>It supports software that gives users four essential freedoms:<ol>
+<li><strong>Freedom to run</strong> the program for any purpose</li>
+<li><strong>Freedom to study</strong> how the program works, and change it</li>
+<li><strong>Freedom to redistribute</strong> copies</li>
+<li><strong>Freedom to improve</strong> the program and share improvements</li>
+</ol>
+</li>
+<li>This type of software is often referred to as <strong>free software</strong> or <strong>libre software</strong>, and it usually provides access to the <strong>source code</strong></li>
+<li>The FSF supports <strong>user rights</strong>, <strong>transparency</strong>, and <strong>collaboration</strong></li>
+<li>Example: <strong>GNU/Linux</strong>, <strong>LibreOffice</strong>, <strong>GIMP</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Commercial</strong></th>
+<th><strong>Shareware</strong></th>
+<th><strong>Freeware</strong></th>
+<th><strong>Open Source (OSI)</strong></th>
+<th><strong>Free Software (FSF)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cost to use</strong></td>
+<td>Must be paid for</td>
+<td>Free trial, then pay for full version</td>
+<td>Free to use</td>
+<td>Often free, but not always</td>
+<td>Always free to use</td>
+</tr>
+<tr>
+<td><strong>Access to source code</strong></td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Can be edited or modified</strong></td>
+<td>No – protected by copyright</td>
+<td>No – protected by copyright</td>
+<td>No – cannot edit or change</td>
+<td>Yes – with conditions under OSI licences</td>
+<td>Yes – full freedom to modify</td>
+</tr>
+<tr>
+<td><strong>Redistribution allowed</strong></td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes (under licence terms)</td>
+<td>Yes (freedom to share and improve)</td>
+</tr>
+<tr>
+<td><strong>Copyrighted</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Developer control</strong></td>
+<td>Developer retains full control</td>
+<td>Developer retains control</td>
+<td>Developer retains control</td>
+<td>Shared control between developers and users</td>
+<td>Users have full control</td>
+</tr>
+<tr>
+<td><strong>Focus</strong></td>
+<td>Developer income and protection</td>
+<td>Try before you buy</td>
+<td>Free use only</td>
+<td>Collaboration and transparency</td>
+<td>Software freedom and user rights</td>
+</tr>
+</tbody>
+</table>
+<p>A game will be released under a licence.
+Tick one or more boxes in each row to identify the licence(s) each statement describes.<strong>[4]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Free Software Foundation</th>
+<th>Open Source Initiative</th>
+<th>Shareware</th>
+<th>Commercial Software</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The user can edit the source code</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>The user must always pay before being<br><br>able to use the software</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>The user can redistribute the software</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>The user always gets a trial period</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Answer
+<strong>1 mark</strong> for each correct column</p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Free Software Foundation</th>
+<th>Open Source Initiative</th>
+<th>Shareware</th>
+<th>Commercial Software</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The user can edit the source code</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>The user must always pay before being<br><br>able to use the software</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>The user can redistribute the software</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>The user always gets a trial period</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="artificial-intelligence-ai">Artificial Intelligence (AI)</h2>
+<h2 id="understanding-ai">Understanding AI</h2>
+<h2 id="what-is-artificial-intelligence">What is artificial intelligence?</h2>
+<ul>
+<li>Artificial intelligence (<strong>AI</strong>) is a machine that can <strong>simulate intelligent behaviours</strong> similar to that of a <strong>human</strong></li>
+<li>AI is a system that can:<ul>
+<li><strong>Learn</strong> - acquire new information</li>
+<li><strong>Decide</strong> - analyse and make choices</li>
+<li><strong>Act autonomously</strong> - take actions without human input</li>
+</ul>
+</li>
+<li>There are two main types of AI:<ul>
+<li><strong>Weak AI</strong>, also known as <strong>narrow AI</strong>, is designed to perform a specific task or set of tasks</li>
+<li><strong>Strong AI</strong>, also known as artificial general intelligence (<strong>AGI</strong>), is designed to perform any intellectual task that a human can do</li>
+</ul>
+</li>
+</ul>
+<h4 id="advantages-and-disadvantages-of-ai">Advantages and disadvantages of AI</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Increased efficiency</td>
+<td>Job losses</td>
+</tr>
+<tr>
+<td>Increased accuracy</td>
+<td>Potential for biased decision making</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>Ethical concerns over its use</td>
+</tr>
+</tbody>
+</table>
+<h4 id="characteristics-of-ai">Characteristics of AI</h4>
+<ul>
+<li>AI shares <strong>three</strong> common characteristics:<ul>
+<li><strong>Collection of data</strong></li>
+<li><strong>Rules for using data</strong></li>
+<li><strong>Ability to reason</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Collection of data</strong></th>
+<th><strong>Rules for using data</strong></th>
+<th><strong>Ability to reason</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI systems require <strong>large amounts of data</strong> to perform tasks<br><br>The data is processed using <strong>rules or algorithms</strong> that enable the system to make decisions and predictions</td>
+<td>AI systems can use <strong>logical reasoning</strong> to evaluate information and <strong>make decisions</strong> based on that information</td>
+<td>It can <strong>change its own rules</strong> and <strong>data</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="impact-of-ai">Impact of AI</h2>
+<h3 id="social">Social</h3>
+<h4 id="workforce">Workforce</h4>
+<ul>
+<li>AI adoption is expected to significantly <strong>change employment structures</strong>:<ul>
+<li><strong>Automation</strong> may replace some roles, leading to <strong>unemployment</strong> or <strong>job role changes</strong></li>
+<li>At the same time, <strong>new jobs will emerge</strong> that require AI knowledge or human–AI collaboration</li>
+<li>To support this shift, <strong>reskilling and upskilling programmes</strong> are essential, ensuring the workforce is prepared for AI-driven transformations</li>
+</ul>
+</li>
+</ul>
+<h3 id="education-accessibility">Education &amp; Accessibility</h3>
+<ul>
+<li>The rise of AI introduces concerns around <strong>equal access</strong>:<ul>
+<li>Those with better <strong>technology, education, and internet access</strong> may benefit more from AI, creating a <strong>digital divide</strong></li>
+<li>To prevent <strong>social disparities</strong>, it is important to ensure <strong>equal access to AI education, tools, and training</strong> for all communities</li>
+</ul>
+</li>
+</ul>
+<h3 id="healthcare">Healthcare</h3>
+<ul>
+<li>AI has the potential to transform healthcare, but raises important <strong>ethical and safety concerns</strong>:<ul>
+<li>AI can improve <strong>diagnosis, treatment planning</strong>, and <strong>patient monitoring</strong></li>
+<li>However, AI systems are <strong>not infallible</strong> – a wrong diagnosis or treatment recommendation can have <strong>serious consequences</strong></li>
+<li>It is vital to determine the <strong>extent of human oversight</strong></li>
+<li>Decisions made <strong>solely by AI</strong> in critical situations can be risky</li>
+<li>The question of <strong>who is responsible</strong> when something goes wrong (the developer, the AI system, or the healthcare provider) creates <strong>complex legal and ethical challenges</strong></li>
+<li>Clear <strong>guidelines and regulations</strong> are needed to define responsibility and ensure patient safety</li>
+</ul>
+</li>
+</ul>
+<h3 id="economic">Economic</h3>
+<h4 id="employment-industry">Employment &amp; industry</h4>
+<ul>
+<li>AI adoption can significantly reshape entire industries, leading to:<ul>
+<li><strong>Job displacement</strong> in sectors that rely heavily on routine or manual work</li>
+<li><strong>Increased productivity</strong> and efficiency in areas such as manufacturing, logistics, and finance</li>
+<li>A growing demand for <strong>AI-related roles</strong>, such as data scientists and machine learning engineers</li>
+</ul>
+</li>
+<li>To minimise negative effects, <strong>governments and businesses must invest in retraining and upskilling programmes</strong> to help workers transition into new roles</li>
+</ul>
+<h4 id="business-innovation">Business &amp; innovation</h4>
+<ul>
+<li>AI can be a catalyst for <strong>economic growth</strong> by:<ul>
+<li>Enabling <strong>new business models</strong>, such as personalised services or automated customer support</li>
+<li>Supporting <strong>faster innovation cycles</strong> by improving R&amp;D processes.</li>
+<li>Reducing operational costs through automation and predictive analytics</li>
+</ul>
+</li>
+<li>However, <strong>small businesses may struggle</strong> to compete with large companies that have more resources to invest in AI</li>
+<li>Potentially widening <strong>economic inequalities</strong> between organisations</li>
+</ul>
+<h4 id="market-dynamics-inequality">Market dynamics &amp; inequality</h4>
+<ul>
+<li>The deployment of AI can:<ul>
+<li><strong>Concentrate wealth and power</strong> in large tech companies that control key AI tools and data</li>
+<li>Create <strong>monopolistic advantages</strong>, leading to reduced market competition</li>
+<li>Require policymakers to consider <strong>new economic models</strong> and <strong>regulation</strong> to ensure fair access to AI technologies and prevent deepening income inequality</li>
+</ul>
+</li>
+</ul>
+<h3 id="environmental">Environmental</h3>
+<h4 id="energy-consumption">Energy consumption</h4>
+<ul>
+<li>AI systems, especially large-scale models, require vast computing power, which can:<ul>
+<li>Lead to <strong>high electricity usage</strong> and significant <strong>carbon emissions</strong></li>
+<li><strong>Strain power grids</strong> if deployed at scale without renewable energy support</li>
+</ul>
+</li>
+<li>Efforts must be made to:<ul>
+<li>Optimise AI models to be more <strong>energy-efficient</strong></li>
+<li>Encourage the use of <strong>green data centres</strong> powered by <strong>renewable energy</strong> sources</li>
+</ul>
+</li>
+</ul>
+<h4 id="climate-modelling-sustainability">Climate modelling &amp; sustainability</h4>
+<ul>
+<li>AI can be a <strong>powerful tool for environmental protection</strong>:<ul>
+<li>Helps in <strong>climate modelling</strong>, predicting weather patterns and analysing environmental data</li>
+<li>Aids in <strong>optimising energy use</strong>, improving efficiency in smart grids and buildings</li>
+<li>Supports <strong>sustainable agriculture</strong> by analysing soil, weather, and crop data to reduce waste and overuse of resources</li>
+</ul>
+</li>
+<li>However, the <strong>positive environmental applications of AI must be weighed against its resource demands</strong>, ensuring that the net impact supports climate goals</li>
+</ul>
+<h4 id="e-waste-and-hardware-lifespan">E-waste and hardware lifespan</h4>
+<ul>
+<li>AI adoption drives demand for <strong>specialised hardware</strong> (e.g. GPUs, TPUs), which:<ul>
+<li>Can shorten the <strong>lifespan of devices</strong> due to rapid advancements in AI capability</li>
+<li>Increases the volume of <strong>electronic waste</strong>, adding pressure to recycling systems</li>
+</ul>
+</li>
+<li>
+<p>Sustainable practices in <strong>hardware design</strong>, <strong>recycling</strong>, and <strong>component reuse</strong> are essential to reduce AI’s environmental footprint
+Aisha manages a team of software developers.
+The team are developing a computer game where the user plays a board game (such as chess) against the computer.
+Describe how the computer would use Artificial Intelligence (AI) to play the board game.<strong>[3]</strong>
+<strong>Answer</strong></p>
+</li>
+<li>
+<p>The rules / past moves / decision making algorithms of the game will be stored [1 mark]</p>
+</li>
+<li>The AI program is trained, by playing many times [1 mark]</li>
+<li>AI will look (ahead) at possible moves [1 mark]</li>
+<li>… and/or analyse the pattern of past choices [1 mark]</li>
+<li>… and choose the move most likely to be successful [1 mark]</li>
+<li>Computer could learn how to improve // learn from previous mistakes [1 mark]</li>
+<li>… by storing the positive/negative result of choices [1 mark]</li>
+<li>… and changing its future choices [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

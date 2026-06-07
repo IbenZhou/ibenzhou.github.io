@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.1 Data Representation — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>1.1 Data Representation</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#binary-prefixes">Binary prefixes</a></li>
+<li><a href="#number-systems">Number Systems</a></li>
+<li><a href="#number-bases">Number bases</a></li>
+<li><a href="#binary-coded-decimal-bcd">Binary Coded Decimal (BCD)</a></li>
+<li><a href="#binary-arithmetic">Binary Arithmetic</a></li>
+<li><a href="#binary-addition">Binary addition</a></li>
+<li><a href="#overflow">Overflow</a></li>
+<li><a href="#binary-subtraction">Binary subtraction</a></li>
+<li><a href="#uses-of-number-systems">Uses of Number Systems</a></li>
+<li><a href="#applications-of-binary-coded-decimal-bcd">Applications of Binary Coded Decimal (BCD)</a></li>
+<li><a href="#applications-of-hexadecimal">Applications of hexadecimal</a></li>
+<li><a href="#character-encoding">Character Encoding</a></li>
+<li><a href="#character-sets">Character sets</a></li>
+<li><a href="#ascii">ASCII</a></li>
+<li><a href="#extended-ascii">Extended ASCII</a></li>
+<li><a href="#unicode">UNICODE</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="binary-prefixes">Binary prefixes</h2>
+<h3 id="what-is-a-binary-prefix">What is a binary prefix?</h3>
+<ul>
+<li>A binary prefix is a unit <span style="color: red">prefix</span> used to <strong>indicate multiples of bytes in binary</strong></li>
+<li>Consider the word <strong>kilobyte</strong>, &ldquo;kilo&rdquo; is the <strong>prefix</strong></li>
+<li><strong>Bytes</strong> are the <span style="color: green">smallest</span> u<span style="color: red"></span><span style="color: red"></span>nit <span style="color: red">of</span> data that can be stored in a computer so there needs to be a way of expressing bytes in larger multiples</li>
+</ul>
+<h4 id="denary-prefixes">Denary prefixes</h4>
+<ul>
+<li>A common way of expressing multiples of bytes is to use denary prefixes:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Denary unit</th>
+<th>Equivalent size (bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 kilobyte (1 KB)</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>1 megabyte (1 MB)</td>
+<td>1,000,000</td>
+</tr>
+<tr>
+<td>1 gigabyte (1 GB)</td>
+<td>1,000,000,000</td>
+</tr>
+<tr>
+<td>1 terabyte (1 TB)</td>
+<td>1,000,000,000,000</td>
+</tr>
+<tr>
+<td>1 petabyte (1 PB)</td>
+<td>1,000,000,000,000,000</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>This system relies on the assumption that <strong>1 kilo = 1000</strong></li>
+<li>This assumption is based on the <strong>denary (base 10)</strong> number system<ul>
+<li><strong>E.g. a 1 GB hard drive can store 1 x 10</strong> <sup><b>9</b></sup> <strong>bytes</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="binary-prefixes_1">Binary prefixes</h4>
+<ul>
+<li>However, computers use the <strong>binary (base 2)</strong> number system so the denary system is technically inaccurate when describing storage</li>
+<li>To be precise, expressing multiples of bytes is done using binary prefixes:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Binary unit</th>
+<th>Number of bytes (base 2)</th>
+<th>Equivalent size (base 10)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 kibibyte (1 KiB)</td>
+<td>2 10</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>1 mebibyte (1 MiB)</td>
+<td>2 20</td>
+<td>1,048,576</td>
+</tr>
+<tr>
+<td>1 gibibyte (1 GiB)</td>
+<td>2 30</td>
+<td>1,073,741,824</td>
+</tr>
+<tr>
+<td>1 tebibyte (1 TiB)</td>
+<td>2 40</td>
+<td>1,099,511,627,776</td>
+</tr>
+<tr>
+<td>1 pebibyte (1 PiB)</td>
+<td>2 50</td>
+<td>1,125,899,906,842,624</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Notice the prefixes change depending on the system being used, e.g. <strong>kilo</strong> (denary) vs <strong>kibi</strong> (binary)</li>
+</ul>
+<h4 id="why-does-it-matter">Why does it matter?</h4>
+<ul>
+<li>The importance of the system being used depends on how precise you need to be</li>
+<li>Identifying the <strong>total amount of memory (RAM)</strong> available to a computer must be accurate (use binary prefixes)<ul>
+<li><strong>E.g. 16 GiB RAM can store 16 x 2</strong> <sup><b>30</b></sup> <strong>bytes of data (17,179,869,184 bytes)</strong></li>
+</ul>
+</li>
+<li>when describing <strong>storage space</strong>, a rough estimate is acceptable (use denary prefixes)<ul>
+<li><strong>E.g. a 16 GB memory stick can store 16 x 10</strong> <sup><b>9</b></sup> <strong>bytes of data (16,000,000,000 bytes)</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="number-systems">Number Systems</h2>
+<h2 id="number-bases">Number bases</h2>
+<h3 id="what-is-a-number-base">What is a number base?</h3>
+<ul>
+<li>A number base is the number of <strong>different digits or symbols</strong> a number system uses to represent values</li>
+<li>Each place in a number represents a <strong>power of the base</strong>, starting from the right</li>
+</ul>
+<h3 id="denary">Denary</h3>
+<ul>
+<li>Denary is a number system that is made up of <strong>10 digits (0-9)</strong></li>
+<li>Denary is referred to as a <strong>base-10</strong> number system</li>
+<li>Each digit has a weight factor of <strong>10 raised to a power</strong>, the rightmost digit is 1s (10 <sup>0</sup>), the next digit to the left 10s (10 <sup>1</sup>) and so on</li>
+<li>Humans use the denary system for <strong>counting</strong>, <strong>measuring</strong> and <strong>performing maths calculations</strong></li>
+<li>
+<p>Using combinations of the 10 digits we can represent any number
+<img alt="Diagram showing denary number 3268 with column headings" src="images/1-1-number-systems-number-systems-1-ib-computer-science-revision.webp" /></p>
+</li>
+<li>
+<p>In this example, (3 x 1000) + (2 x 100) + (6 x 10) + (8 x 1) = 3268</p>
+</li>
+<li>To represent a bigger number we <strong>add more digits</strong></li>
+</ul>
+<h3 id="binary">Binary</h3>
+<ul>
+<li>Binary is a number system that is made up of <strong>two digits (1 and 0)</strong></li>
+<li>Binary is referred to as a <strong>base-2</strong> number system</li>
+<li>Each digit has a weight factor of <strong>2 raised to a power</strong>, the rightmost digit is 1s (2 <sup>0</sup>), the next digit to the left 2s (2 <sup>1</sup>) and so on</li>
+<li>Each time a new digit is added, the <strong>column value is multiplied by 2</strong></li>
+<li>
+<p>Using <strong>combinations of the 2 digits</strong> we can represent any number
+<img alt="Diagram showing binary 1101 using binary column headings" src="images/uCiRLNB9_1-1-number-systems-number-systems-2-ib-psychology-revision.webp" /></p>
+</li>
+<li>
+<p>In this example, <strong>Binary 1100</strong> = <strong>(1 x 8) + (1 x 4) = 12</strong></p>
+</li>
+<li>To represent bigger numbers we add more <strong>binary digits</strong> (bits)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>32,768</strong></th>
+<th><strong>16,384</strong></th>
+<th><strong>8,192</strong></th>
+<th><strong>4,096</strong></th>
+<th><strong>2,048</strong></th>
+<th><strong>1,024</strong></th>
+<th><strong>512</strong></th>
+<th><strong>256</strong></th>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 15</td>
+<td>2 14</td>
+<td>2 13</td>
+<td>2 12</td>
+<td>2 11</td>
+<td>2 10</td>
+<td>2 9</td>
+<td>2 8</td>
+<td>2 7</td>
+<td>2 6</td>
+<td>2 5</td>
+<td>2 4</td>
+<td>2 3</td>
+<td>2 2</td>
+<td>2 1</td>
+<td>2 0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hexadecimal">Hexadecimal</h3>
+<ul>
+<li>Hexadecimal is a number system that is made up of <strong>16 digits</strong>, 10 numbers (<strong>0-9</strong>) and 6 letters (<strong>A-F</strong>)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>0</strong></th>
+<th><strong>1</strong></th>
+<th><strong>2</strong></th>
+<th><strong>3</strong></th>
+<th><strong>4</strong></th>
+<th><strong>5</strong></th>
+<th><strong>6</strong></th>
+<th><strong>7</strong></th>
+<th><strong>8</strong></th>
+<th><strong>9</strong></th>
+<th><strong>10</strong></th>
+<th><strong>11</strong></th>
+<th><strong>12</strong></th>
+<th><strong>13</strong></th>
+<th><strong>14</strong></th>
+<th><strong>15</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Hexadecimal is referred to as a <strong>base-16</strong> number system</li>
+<li>Each digit has a weight factor of <strong>16 raised to a power</strong>, the rightmost digit is 1s (16 <sup>0</sup>), the next digit to the left 16s (16 <sup>1</sup>)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>16s</strong></th>
+<th><strong>1s</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>3</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>1 x16</td>
+<td>3 x 1</td>
+<td>= 19</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A quick comparison table demonstrates a <strong>relationship</strong> between <strong>hexadecimal and a binary</strong> <strong>nibble</strong></li>
+<li>One hexadecimal digit can represent <strong>four bits</strong> of binary data</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Denary</strong></th>
+<th><strong>Binary</strong></th>
+<th><strong>Hexadecimal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><strong>0000</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td><strong>0001</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>0010</strong></td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>0011</strong></td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>0100</strong></td>
+<td><strong>4</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>0101</strong></td>
+<td><strong>5</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>0110</strong></td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>0111</strong></td>
+<td><strong>7</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>1000</strong></td>
+<td><strong>8</strong></td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>1001</strong></td>
+<td><strong>9</strong></td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>1010</strong></td>
+<td><strong>A</strong></td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>1011</strong></td>
+<td><strong>B</strong></td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>1100</strong></td>
+<td><strong>C</strong></td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>1101</strong></td>
+<td><strong>D</strong></td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>1110</strong></td>
+<td><strong>E</strong></td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>1111</strong></td>
+<td><strong>F</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="binary-to-denary-denary-to-binary">Binary to denary &amp; denary to binary</h3>
+<ul>
+<li>Binary numbers can be converted into denary and vice-versa</li>
+<li>
+<p>For example the 8-bit binary number <strong>01101001</strong> can be converted into denary using the following method:
+<img alt="Binary to decimal conversion: binary 01101001 equals decimal 105. Bit values shown from 128 to 1 with corresponding binary digits." src="images/binary-to-decimal.png" />
+Binary to denary conversion</p>
+</li>
+<li>
+<p>Therefore the 8-bit binary number <strong>01101001</strong> is <strong>105</strong> as a denary value</p>
+</li>
+<li>To convert the denary number <strong>101</strong> to binary, we firstly write out binary number system</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Then we start at the left and look for the highest number that is less than or equal to <strong>101</strong> and if so, place a 1 in that column</li>
+<li>Otherwise, place a 0 in the column</li>
+<li><strong>128</strong> is bigger than <strong>101</strong> and therefore we place a 0 in that column</li>
+<li><strong>64</strong> is smaller than <strong>101</strong> so we place a 1 in that column<ul>
+<li><strong>101 - 64 = 37</strong></li>
+<li>This now means we have <strong>37</strong> left to find</li>
+</ul>
+</li>
+<li><strong>32</strong> is smaller than <strong>37</strong> so we place a 1 in that column<ul>
+<li><strong>37 - 32 = 5</strong></li>
+<li>This now means we have <strong>5</strong> left to find</li>
+</ul>
+</li>
+<li><strong>16</strong> is bigger than <strong>5</strong> and therefore we place a 0 in that column</li>
+<li><strong>8</strong> is bigger than <strong>5</strong> and therefore we place a 0 in that column</li>
+<li><strong>4</strong> is smaller than <strong>5</strong> so we place a <strong>1</strong> in that column<ul>
+<li><strong>5 - 1 = 1</strong></li>
+<li>This now means we have <strong>1</strong> left to find</li>
+</ul>
+</li>
+<li><strong>2</strong> is bigger than <strong>1</strong> and therefore we place a 0 in that column</li>
+<li><strong>1</strong> is equal to the number we have left so we place a 1 in that column</li>
+<li>64 + 32 + 4 + 1 = <strong>101</strong><ul>
+<li>Therefore the denary number <strong>101</strong> in binary is <strong>01100101</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hexadecimal-to-denary-denary-to-hexadecimal">Hexadecimal to denary &amp; denary to hexadecimal</h3>
+<ul>
+<li>To convert the denary number <strong>163</strong> to hexadecimal, start by <strong>dividing the denary value by 16</strong> and recording the <strong>whole times</strong> the number goes in and the <strong>remainder</strong></li>
+<li>163 ➗16 = 10 remainder 3</li>
+<li>In hexadecimal the <strong>whole number = digit 1</strong> and the <strong>remainder = digit 2</strong></li>
+<li>Digit 1 = 10 (A)</li>
+<li>Digit 2 = 3</li>
+<li>Denary <strong>163</strong> is <strong>A3</strong> in hexadecimal</li>
+<li>To convert the hexadecimal number <strong>79</strong> to denary, start by <strong>multiplying the first hexadecimal digit by 16</strong></li>
+<li>7 ✖ 16 = 112</li>
+<li><strong>Add digit 2</strong> to the result</li>
+<li>112 + 9 = 121</li>
+<li>Hexadecimal <strong>79</strong> is <strong>121</strong> in denary</li>
+</ul>
+<h3 id="binary-to-hexadecimal-hexadecimal-to-binary">Binary to hexadecimal &amp; hexadecimal to binary</h3>
+<ul>
+<li>To convert the binary number <strong>10110111</strong> to <strong>hexadecimal</strong>, first split the 8 bit number into 2 binary <strong>nibbles</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>8</strong></th>
+<th style="text-align: center;"><strong>4</strong></th>
+<th style="text-align: center;"><strong>2</strong></th>
+<th style="text-align: center;"><strong>1</strong></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>8</strong></th>
+<th style="text-align: center;"><strong>4</strong></th>
+<th style="text-align: center;"><strong>2</strong></th>
+<th style="text-align: center;"><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>For each nibble, convert the binary to it’s denary value</li>
+<li>(1 x 8) + (1 x 2) + (1 x 1) = <strong>11 (B)</strong></li>
+<li>(1 x 4) + (1 x 2) + (1 x 1) = <strong>7</strong></li>
+<li>Join them together to make a 2 digit hexadecimal number</li>
+<li>Binary <strong>10110111</strong> is <strong>B7</strong> in hexadecimal</li>
+<li>To convert the hexadecimal number <strong>5F</strong> to binary, first <strong>split the digits apart</strong> and convert each to a <strong>binary nibble</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>= 5</strong></td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>= 15 (F)</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Join the 2 binary nibbles together to create an 8 bit binary number</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>Hexadecimal <strong>5F</strong> is <strong>01011111</strong> in binary
+Convert the positive binary integer 1010 0010 into hexadecimal. <strong>[1]</strong>
+Answer</p>
+</li>
+<li>
+<p>A2 [1 mark]</p>
+</li>
+</ul>
+<h2 id="binary-coded-decimal-bcd">Binary Coded Decimal (BCD)</h2>
+<h3 id="what-is-binary-coded-decimal">What is Binary Coded Decimal?</h3>
+<ul>
+<li>Binary coded decimal is a number system that uses <strong>4 bit codes to represent each denary digit</strong> (0-9)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>BCD</th>
+<th>Denary digit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>2</td>
+</tr>
+<tr>
+<td>0011</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0100</td>
+<td>4</td>
+</tr>
+<tr>
+<td>0101</td>
+<td>5</td>
+</tr>
+<tr>
+<td>0110</td>
+<td>6</td>
+</tr>
+<tr>
+<td>0111</td>
+<td>7</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>8</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To represent the denary number <strong>2500</strong> in <strong>BCD</strong> format would be:<ul>
+<li><strong>2500</strong> = 0010 0101 0000 0000</li>
+</ul>
+</li>
+<li>BCD can be stored in a computer as <strong>either half a byte</strong> (4 bits) or as <strong>two 4 bit codes</strong> joined to from a byte (8 bits)</li>
+</ul>
+<h4 id="four-single-bytes">Four single bytes</h4>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>0</th>
+<th>0</th>
+<th>0</th>
+<th>0</th>
+<th>0</th>
+<th>1</th>
+<th>0</th>
+<th><strong>= 2</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><strong>= 5</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 0</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="two-bytes">Two bytes</h4>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>0</th>
+<th>1</th>
+<th>0</th>
+<th>0</th>
+<th>1</th>
+<th>0</th>
+<th>1</th>
+<th><strong>= 2, 5</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 0, 0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>One&rsquo;s &amp; two&rsquo;s complement</p>
+<h3 id="what-is-ones-complement">What is one&rsquo;s complement?</h3>
+<ul>
+<li>One&rsquo;s complement is a method of representing <strong>both positive and negative numbers</strong></li>
+<li>To turn a positive binary number in to a negative the <strong>positive binary number is inverted</strong> (0 becomes 1 and 1 becomes 0)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>0</th>
+<th>0</th>
+<th>1</th>
+<th>0</th>
+<th>0</th>
+<th>0</th>
+<th><strong>= 72</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><strong>= -72</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The issue with one&rsquo;s complement is that it can have <strong>two representations for 0</strong> (positive and negative)
+Be careful not to confuse one’s complement with two’s complement. In one’s complement, you just invert the bits to get the negative version, you don’t treat the MSB as negative like you would in two’s complement. That’s a different system!</li>
+</ul>
+<h3 id="what-is-twos-complement">What is two&rsquo;s complement?</h3>
+<ul>
+<li>Two&rsquo;s complement is another method of representing <strong>both positive and negative numbers</strong></li>
+<li>To turn a positive binary number into a negative:<ul>
+<li>Positive binary number is <strong>inverted</strong></li>
+<li><strong>&lsquo;1&rsquo; is added</strong> to the right most bit</li>
+</ul>
+</li>
+<li>Using two&rsquo;s complement the <strong>leftmost bit</strong> is designated the <strong>most significant bit</strong> (<strong>MSB</strong>)</li>
+<li>To represent negative numbers this bit <strong>must equal 1</strong>, turning the column value into a <strong>negative</strong></li>
+<li>Working with <strong>8 bits</strong>, the <strong>128</strong> column becomes <strong>-128</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>-128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 72</strong></td>
+</tr>
+<tr>
+<td><strong>invert</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>add 1</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td><strong>+</strong></td>
+</tr>
+<tr>
+<td><strong>result</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= -72</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>8 bit two&rsquo;s complement</strong> can represent values between 0111 1111 (<strong>+127</strong>) and 1000 0000 (<strong>-128</strong>)</p>
+<ul>
+<li>An alternative way of thinking about this is:<ul>
+<li>Starting from the right, keep all the bits the same <strong>up to and including</strong> the first 1<ul>
+<li>Flip the rest of the digits</li>
+<li>0101 1000 becomes&hellip;</li>
+<li>1010 1000</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="key-reasons-to-use-twos-complement">Key reasons to use two&rsquo;s complement</h4>
+<ul>
+<li><strong>Consistency</strong><ul>
+<li>You <strong>don’t need</strong> different rules for signed and unsigned numbers<ul>
+<li>Whether you&rsquo;re adding +37 and +58, or −37 and +58, or −37 and −58, the <strong>binary addition process is the same</strong></li>
+<li>Two’s complement works for <strong>any combination</strong> of positive and negative values</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Hardware simplicity</strong><ul>
+<li><strong>CPUs</strong> are built to do simple binary addition<ul>
+<li>Two’s complement means:</li>
+<li>The same <strong>adder circuit</strong> can handle everything</li>
+</ul>
+</li>
+<li>No special logic is needed to detect signs or subtract manually</li>
+</ul>
+</li>
+<li>
+<p><strong>It still works, up to a point</strong></p>
+<ul>
+<li>As long as the <strong>sum doesn&rsquo;t exceed the max value (+127 in 8-bit)</strong>, you can add two positive numbers with two’s complement without any issues
+Convert the denary number 649 into Binary Coded Decimal (BCD) <strong>[1]</strong>
+Answer</li>
+</ul>
+</li>
+<li>
+<p>0110 0100 1001 [1 mark]</p>
+</li>
+</ul>
+<h2 id="binary-arithmetic">Binary Arithmetic</h2>
+<h2 id="binary-addition">Binary addition</h2>
+<h3 id="what-is-binary-addition">What is binary addition?</h3>
+<ul>
+<li>Binary addition involves <strong>summing numbers in base-2</strong>, which uses only the digits 0 and 1</li>
+<li>Like denary addition, start from the <strong>rightmost digit</strong> and move towards the left</li>
+<li><strong>Carrying over</strong> occurs when the sum of a column is greater than 1, passing the excess to the next left column</li>
+</ul>
+<h3 id="example-addition">Example addition</h3>
+<p><img alt="binary-addition" src="images/binary-addition.png" />
+Add the following two binary integers using binary addition. Show your working. <strong>[2]</strong>
+1 0 0 1 1 0 1 0 + 0 0 1 0 1 1 1 1
+Answer</p>
+<table>
+<thead>
+<tr>
+<th>carry</th>
+<th></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>+</strong></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>1 mark for working [1 mark]</p>
+<ul>
+<li>1 mark for answer [1 mark]</li>
+</ul>
+<h2 id="overflow">Overflow</h2>
+<h3 id="what-is-an-overflow">What is an overflow?</h3>
+<ul>
+<li>Overflow occurs when the sum of two binary numbers <strong>exceeds the given number of bits</strong></li>
+<li>In <strong>signed number</strong> representations, the leftmost bit often serves as the sign bit; overflow can flip this, incorrectly changing the sign of the result</li>
+<li>Overflow generally leads to <strong>incorrect or unpredictable results</strong> as the extra bits are truncated or wrapped around
+<img alt="overflow" src="images/overflow.png" /></li>
+</ul>
+<h2 id="binary-subtraction">Binary subtraction</h2>
+<ul>
+<li>To carry out subtraction, the number being subtracted is <strong>converted into its negative equivalent</strong> using two&rsquo;s complement</li>
+<li>The two numbers are then <strong>added together</strong></li>
+</ul>
+<h4 id="example">Example</h4>
+<ul>
+<li>48 - 12</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>** -128**</th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 48</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 12</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>find two&rsquo;s complement of -12</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 12</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>invert</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>add 1</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>result</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= -12</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Add 48 and -12</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>-128</strong></td>
+<td><strong>64</strong></td>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 48</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= -12</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>carries</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>result</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 36</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>48 - 12 = <strong>36</strong></li>
+<li>The <strong>additional overflow bit is ignored</strong> leaving a result of 0010 0100, denary equivalent of <strong>36</strong>, which is the <strong>correct answer</strong></li>
+<li>In <strong>two&rsquo;s complement</strong> arithmetic, the <strong>overflow bit</strong> does not contribute to the actual value of the operation but is more of a <strong>by-product</strong> of the method</li>
+</ul>
+<h2 id="uses-of-number-systems">Uses of Number Systems</h2>
+<h2 id="applications-of-binary-coded-decimal-bcd">Applications of Binary Coded Decimal (BCD)</h2>
+<h3 id="what-are-the-uses-of-binary-coded-decimal-bcd">What are the uses of binary-coded decimal (BCD)?</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Why BCD is used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Electronic calculators</strong></td>
+<td>Keeps numbers in decimal format for easier display and accuracy</td>
+</tr>
+<tr>
+<td><strong>Digital clocks and watches</strong></td>
+<td>Time is naturally decimal (e.g. 12:45), so BCD makes display logic simpler</td>
+</tr>
+<tr>
+<td><strong>Banking and financial systems</strong></td>
+<td>Avoids rounding errors when doing decimal calculations, especially with money</td>
+</tr>
+<tr>
+<td><strong>Old digital systems / embedded systems</strong></td>
+<td>Simpler to implement with hardware that displays digits individually</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Binary coded decimal is commonly used in systems that need to <strong>display decimal numbers clearly</strong> and accurately</li>
+<li>BCD is ideal for applications like digital clocks, calculators, and financial systems <strong>where decimal precision matters</strong></li>
+<li>Using BCD <strong>avoids rounding errors</strong> that can occur in binary-based arithmetic, especially with money and time</li>
+<li>It’s still found in older or embedded systems where <strong>simple hardware-based decimal</strong> output is needed</li>
+</ul>
+<h2 id="applications-of-hexadecimal">Applications of hexadecimal</h2>
+<h3 id="why-is-hexadecimal-used">Why is hexadecimal used?</h3>
+<ul>
+<li>In Computer Science hexadecimal is often preferred when working with <strong>large values</strong></li>
+<li>It takes <strong>fewer digits to represent a given value</strong> in hexadecimal than in binary<ul>
+<li>1 hexadecimal digit corresponds 4 bits and can represent 16 unique values (0-F)</li>
+</ul>
+</li>
+<li>It is <strong>beneficial</strong> to use hexadecimal over binary because:<ul>
+<li>The more bits there are in a binary number, the <strong>harder it makes for a human to read</strong></li>
+<li>Numbers with more bits are more <strong>prone to errors</strong> when being copied</li>
+</ul>
+</li>
+<li>Examples of where hexadecimal can be seen:<ul>
+<li><strong>MAC addresses</strong></li>
+<li><strong>Colour codes</strong></li>
+<li><strong>URLs</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="mac-addresses">MAC addresses</h4>
+<ul>
+<li>A typical MAC address consists of <strong>12 hexadecimal digits</strong>, equivalent to <strong>48 digits</strong> in binary<ul>
+<li><strong>AA:BB:CC:DD:EE:FF</strong></li>
+<li><strong>10101010:10111011:11001100:11011101:11101110:11111111</strong></li>
+</ul>
+</li>
+<li><strong>Writing down</strong> or <strong>performing calculations</strong> with 48 binary digits makes it <strong>very easy to make a mistake</strong>
+<img alt="Example of a MAC addresses displayed in a windows command prompt" src="images/xaPxjdos_computer-mac-address.png" /></li>
+</ul>
+<h4 id="colour-codes">Colour codes</h4>
+<ul>
+<li>A typical hexadecimal colour code consists of <strong>6 hexadecimal digits</strong>, equivalent to <strong>24 digits</strong> in binary<ul>
+<li><strong>#66FF33</strong> (green)</li>
+<li><strong>01000010:11111111:00110011</strong>
+<img alt="Example colour palette with colours and their hexadecimal codes" src="images/hexcolours.png" /></li>
+</ul>
+</li>
+</ul>
+<h4 id="urls">URL&rsquo;s</h4>
+<ul>
+<li>A URL can only contain <strong>standard characters</strong> (a-z and A-Z), <strong>numbers</strong> (0-9) and some <strong>special symbols</strong> which is enough for basic web browsing</li>
+<li>If a URL needs to include a character <strong>outside of this set</strong>, they are converted into a <strong>hexadecimal code</strong></li>
+<li>Hexadecimal codes included in a URL are prefixed with a <strong>%</strong> sign</li>
+</ul>
+<h2 id="character-encoding">Character Encoding</h2>
+<h2 id="character-sets">Character sets</h2>
+<h3 id="what-is-a-character-set">What is a character set?</h3>
+<ul>
+<li>A character set is <strong>all the characters and symbols</strong> that can be <strong>represented</strong> by a computer system</li>
+<li>Each character is given a <strong>unique</strong> binary code</li>
+<li>Character sets are <strong>ordered logically</strong>, the code for ‘B’ is one more than the code for ‘A’</li>
+<li>A character set provides a <strong>standard</strong> for computers to communicate and send/receive information</li>
+<li>Without a character set, one system might interpret 01000001 differently from another</li>
+<li>The number of characters that can be represented is determined by the <strong>number of bits used</strong> by the character set</li>
+<li>Two common character sets are:<ul>
+<li>American Standard Code for Information Interchange (<strong>ASCII</strong>)</li>
+<li>Universal Character Encoding (<strong>UNICODE</strong>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="ascii">ASCII</h2>
+<h3 id="what-is-ascii">What is ASCII?</h3>
+<ul>
+<li>ASCII is a character set and was an accepted standard for information interchange</li>
+<li>ASCII uses <strong>7 bits</strong>, providing 2 <sup>7</sup> unique codes (128) or a maximum of <strong>128 characters</strong> it can represent</li>
+<li>This is enough to represent the letters, numbers, and symbols from a <strong>standard keyboard</strong></li>
+<li>The <strong>sixth bit</strong> changes from 1 to 0 when <strong>comparing uppercase and lowercase characters</strong><ul>
+<li><strong>a</strong> 0110 0001</li>
+<li><strong>A</strong> 0100 0001</li>
+<li><strong>b</strong> 0110 0010</li>
+<li><strong>B</strong> 0100 0010</li>
+</ul>
+</li>
+<li>This made conversion between the two much easier</li>
+<li>
+<p>This speeds up the overall usability of the character set
+<img alt="A table showing letters with corresponding ASCII codes and binary values, separated into lowercase and uppercase sections." src="images/-ascii-table.png" />
+Part of the ASCII code table</p>
+</li>
+<li>
+<p>ASCII <strong>only</strong> represents basic characters needed for <strong>English</strong>, limiting its use for other languages</p>
+</li>
+</ul>
+<h2 id="extended-ascii">Extended ASCII</h2>
+<h4 id="what-is-extended-ascii">What is extended ASCII?</h4>
+<ul>
+<li>Extended ASCII uses an <strong>8th bit</strong>, providing 256 unique codes (2 <sup>8</sup> = 256) or a maximum of <strong>256 characters</strong> it can represent</li>
+<li>Extended ASCII provides <strong>essential characters</strong> such as mathematical operators and more recent symbols such as ©</li>
+<li>This allows for <strong>non-English characters</strong> and for drawing characters to be included</li>
+</ul>
+<h2 id="unicode">UNICODE</h2>
+<h3 id="what-is-unicode">What is UNICODE?</h3>
+<ul>
+<li>UNICODE is a <strong>character set</strong> and was created as a solution to the limitations of ASCII</li>
+<li>UNICODE uses a minimum of <strong>16 bits</strong>, providing 2 <sup>16</sup> unique codes (65,536) or a minimum of <strong>65,536 characters</strong> it can represent</li>
+<li>UNICODE can represent characters from <strong>all the major languages</strong> around the world</li>
+<li>UNICODE was designed to <strong>create a universal standard</strong> that covered all languages and all writing systems</li>
+<li>The <strong>first 128 characters</strong> in the UNICODE character set are the same as ASCII</li>
+</ul>
+<h4 id="ascii-vs-unicode">ASCII vs UNICODE</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>ASCII</strong></th>
+<th><strong>UNICODE</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Number of bits</strong></td>
+<td>7-bits</td>
+<td>16-bits</td>
+</tr>
+<tr>
+<td><strong>Number of characters</strong></td>
+<td>128 characters</td>
+<td>65,536 characters</td>
+</tr>
+<tr>
+<td><strong>Uses</strong></td>
+<td>Used to represent characters in the English language.</td>
+<td>Used to represent characters across the world.</td>
+</tr>
+<tr>
+<td><strong>Benefits</strong></td>
+<td>It uses a lot less storage space than UNICODE.</td>
+<td>It can represent more characters than ASCII.<br>It can support all common characters across the world.<br>It can represent special characters such as emoji&rsquo;s.</td>
+</tr>
+<tr>
+<td><strong>Drawbacks</strong></td>
+<td>It can only represent 128 characters.<br>It cannot store special characters such as emoji&rsquo;s.</td>
+<td>It uses a lot more storage space than ASCII.</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

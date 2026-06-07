@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11. Programming — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>11. Programming</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#pseudocode-basics">Pseudocode Basics</a></li>
+<li><a href="#variables-constants">Variables &amp; Constants</a></li>
+<li><a href="#arithmetic-logical-operators">Arithmetic &amp; logical operators</a></li>
+<li><a href="#selection">Selection</a></li>
+<li><a href="#selection_1">Selection</a></li>
+<li><a href="#what-is-selection">What is selection?</a></li>
+<li><a href="#if-statements">If statements</a></li>
+<li><a href="#case-statements">Case statements</a></li>
+<li><a href="#iteration">Iteration</a></li>
+<li><a href="#what-is-iteration">What is iteration?</a></li>
+<li><a href="#count-controlled-loops">Count-controlled loops</a></li>
+<li><a href="#condition-controlled-loops">Condition-controlled loops</a></li>
+<li><a href="#when-to-use-each-type-of-loop">When to use each type of loop</a></li>
+<li><a href="#procedures-functions">Procedures &amp; Functions</a></li>
+<li><a href="#what-are-functions-and-procedures">What are functions and procedures?</a></li>
+<li><a href="#procedures">Procedures</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#parameter-passing">Parameter passing</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="pseudocode-basics">Pseudocode Basics</h2>
+<h2 id="variables-constants">Variables &amp; Constants</h2>
+<h3 id="what-is-a-variable">What is a variable?</h3>
+<ul>
+<li>A variable is an <strong>identifier</strong> that <strong>can change</strong> in the lifetime of a program</li>
+<li>Identifiers should be:<ul>
+<li>In <strong>mixed case</strong> (Pascal case)</li>
+<li>Only <strong>contain letters</strong> (A-Z, a-z)</li>
+<li>Only <strong>contain digits</strong> (0-9)</li>
+<li><strong>Start with a capital</strong> letter and not a digit</li>
+</ul>
+</li>
+<li>A variable can be <strong>associated a datatype</strong> when it is declared</li>
+<li>When a variable is declared, <strong>memory is allocated</strong> based on the data type indicated
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>To declare a variable, use the <code>DECLARE</code> keyword followed by the <strong>name</strong> and <strong>data type</strong>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">IsLoggedIn</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Temperature</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">DOB</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">DATE</span>
+</code></pre></div>
+
+<ul>
+<li>You can then <strong>assign a value</strong> using the assignment operator <code>←</code>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Age</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">18</span>
+<span class="n">Name</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Alice&quot;</span>
+<span class="n">IsLoggedIn</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+</code></pre></div>
+
+<h3 id="what-is-a-constant">What is a constant?</h3>
+<ul>
+<li>A constant is an <strong>identifier set once in the lifetime of a program</strong></li>
+<li>Constants are generally named in <strong>all uppercase characters</strong></li>
+<li>Constants <strong>aid</strong> the <strong>readability</strong> and <strong>maintainability</strong>
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">CONSTANT</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>To declare a constant, use the <code>CONSTANT</code> keyword:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">CONSTANT</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mf">3.14159</span>
+<span class="n">CONSTANT</span><span class="w"> </span><span class="n">MaxScore</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">CONSTANT</span><span class="w"> </span><span class="n">SchoolName</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Meridian Academy&quot;</span>
+</code></pre></div>
+
+<ul>
+<li>Constants are <strong>not reassigned</strong> during execution – they are fixed values used throughout the algorithm</li>
+</ul>
+<h4 id="example">Example</h4>
+<ul>
+<li>
+<p>You are writing a program to calculate the area of a circle using the formula:
+<code>Area ← π × radius²</code></p>
+</li>
+<li>
+<p><code>π</code> is a <strong>constant</strong> (it never changes)</p>
+</li>
+<li><code>radius</code> and <code>area</code> are <strong>variables</strong> (they change depending on the input)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">CONSTANT</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mf">3.14159</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Radius</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Area</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the radius of the circle:&quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">Radius</span>
+<span class="n">Area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Radius</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Radius</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The area of the circle is: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Area</span>
+</code></pre></div>
+
+<h3 id="variables-and-constants-in-different-languages">Variables and constants in different languages</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Python</strong></th>
+<th><strong>VB.NET</strong></th>
+<th><strong>Java</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Declare variable</strong></td>
+<td>Just assign it (no keyword needed)</td>
+<td><code>Dim radius As Double</code></td>
+<td><code>double radius;</code></td>
+</tr>
+<tr>
+<td><strong>Assign variable</strong></td>
+<td><code>radius = 5</code></td>
+<td><code>radius = 5</code></td>
+<td><code>radius = 5;</code></td>
+</tr>
+<tr>
+<td><strong>Declare constant</strong></td>
+<td>Convention: use UPPERCASE (<code>PI = 3.14</code>) (not enforced)</td>
+<td><code>Const Pi As Double = 3.14159</code></td>
+<td><code>final double PI = 3.14159;</code></td>
+</tr>
+<tr>
+<td><strong>Reassign constant?</strong></td>
+<td>Yes (not truly constant unless enforced)</td>
+<td>Cannot change once set</td>
+<td>Cannot change once set</td>
+</tr>
+<tr>
+<td><strong>Use in calc.</strong></td>
+<td><code>area = PI * radius * radius</code></td>
+<td><code>area = Pi * radius * radius</code></td>
+<td><code>area = PI * radius * radius;</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="arithmetic-logical-operators">Arithmetic &amp; logical operators</h2>
+<h3 id="arithmetic-operators">Arithmetic operators</h3>
+<ul>
+<li>Arithmetic operators are used to perform basic <strong>maths operations</strong> in a program</li>
+<li>These include adding, subtracting, multiplying and dividing values</li>
+</ul>
+<h4 id="common-arithmetic-operators">Common arithmetic operators</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operator</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Result</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>Addition</td>
+<td><code>5 + 3</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>Concatenation</td>
+<td><code>"John" + " " + "Doe"</code></td>
+<td><code>"John Doe"</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Subtraction</td>
+<td><code>10 - 4</code></td>
+<td><code>6</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>Multiplication</td>
+<td><code>3 * 5</code></td>
+<td><code>15</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Division</td>
+<td><code>10 / 2</code></td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>Exponentiation (power of)</td>
+<td><code>3 ^ 3</code></td>
+<td><code>27</code></td>
+</tr>
+<tr>
+<td><code>MOD</code></td>
+<td>Modulus (remainder after division)</td>
+<td><code>10 MOD 3</code></td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="operator-precedence-bodmas-bidmas">Operator precedence (BODMAS / BIDMAS)</h3>
+<ul>
+<li>Arithmetic operators follow <strong>operator precedence</strong></li>
+<li>Multiplication and division happen before addition and subtraction unless brackets are used</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">result</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w">          </span><span class="c1">// gives 14</span>
+<span class="n">result</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="c1">// gives 20</span>
+</code></pre></div>
+
+<h3 id="logical-operators">Logical operators</h3>
+<ul>
+<li>Logical operators are used to <strong>compare values</strong></li>
+<li>They return either <strong>TRUE</strong> or <strong>FALSE</strong> and are commonly used in conditions and loops</li>
+</ul>
+<h4 id="common-logical-operators">Common logical operators</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operator</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Result</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>=</code></td>
+<td>Equal to</td>
+<td><code>5 = 6</code></td>
+<td><code>FALSE</code></td>
+</tr>
+<tr>
+<td><code>&lt;&gt;</code></td>
+<td>Not equal to</td>
+<td><code>5 != 7</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>Greater than</td>
+<td><code>5 &gt; 10</code></td>
+<td><code>FALSE</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>Less than</td>
+<td><code>5 &lt; 10</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>Greater than or equal to</td>
+<td><code>5 &gt;= 10</code></td>
+<td><code>FALSE</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>Less than or equal to</td>
+<td><code>5 &lt;= 10</code></td>
+<td><code>TRUE</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-code">Example code</h4>
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">y</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">10</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="c1">// FALSE</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="c1">// TRUE</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">y</span><span class="w">          </span><span class="c1">// TRUE</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">y</span><span class="w">          </span><span class="c1">// FALSE</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="c1">// TRUE</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="c1">// FALSE</span>
+</code></pre></div>
+
+<h2 id="selection">Selection</h2>
+<h2 id="selection_1">Selection</h2>
+<h2 id="what-is-selection">What is selection?</h2>
+<ul>
+<li>Selection is when the <strong>flow of a program is changed,</strong> depending on a <strong>set of conditions</strong></li>
+<li>The outcome of this condition will then determine <strong>which lines or block of code is run next</strong></li>
+<li>Selection is used for <strong>validation</strong>, <strong>calculation</strong> and making sense of a <strong>user&rsquo;s choices</strong></li>
+<li>There are two ways to write selection statements:<ul>
+<li><strong>if</strong>&hellip; <strong>then</strong>&hellip; <strong>else</strong>&hellip;</li>
+<li><strong>case</strong>&hellip;</li>
+</ul>
+</li>
+</ul>
+<h2 id="if-statements">If statements</h2>
+<h3 id="what-is-an-if-statement">What is an if statement?</h3>
+<ul>
+<li>An If statements allow you to <strong>execute a set of instructions if a condition is true</strong></li>
+<li>They have the following syntax:
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// Without an ELSE clause</span>
+<span class="n">IF</span><span class="w"> </span><span class="o">&lt;</span><span class="n">condition</span><span class="o">&gt;</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDIF</span>
+<span class="c1">// With an ELSE clause</span>
+<span class="n">IF</span><span class="w"> </span><span class="o">&lt;</span><span class="n">condition</span><span class="o">&gt;</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ELSE</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<h3 id="nested-if-statements">Nested if statements</h3>
+<ul>
+<li>Nested if statements are <strong>an if statement within an if statement</strong></li>
+<li>Nested means to be &rsquo; <strong>stored inside the other</strong> &lsquo;</li>
+</ul>
+<h4 id="example-code_1">Example code</h4>
+<div class="highlight"><pre><span></span><code><span class="n">IF</span><span class="w"> </span><span class="n">Player2Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Player1Score</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Player2Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">HighScore</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is champion and highest scorer&quot;</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is the new champion&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is still the champion&quot;</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Player1Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">HighScore</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is also the highest scorer&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<h3 id="if-statements-in-different-languages">If statements in different languages</h3>
+<p>python</p>
+<div class="highlight"><pre><span></span><code><span class="n">weather</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">weather</span> <span class="o">==</span> <span class="s2">&quot;sunny&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">weather</span> <span class="o">==</span> <span class="s2">&quot;rainy&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Take an umbrella with you.&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">weather</span> <span class="o">==</span> <span class="s2">&quot;snowy&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wear warm clothes!&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>VB.net</p>
+<div class="highlight"><pre><span></span><code><span class="k">Module</span><span class="w"> </span><span class="nn">WeatherCheck</span>
+<span class="w">    </span><span class="k">Sub</span><span class="w"> </span><span class="nf">Main</span><span class="p">()</span>
+<span class="w">        </span><span class="k">Dim</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span>
+<span class="w">        </span><span class="k">If</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sunny&quot;</span><span class="w"> </span><span class="k">Then</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ElseIf</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span><span class="w"> </span><span class="k">Then</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Take an umbrella with you.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ElseIf</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;snowy&quot;</span><span class="w"> </span><span class="k">Then</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Wear warm clothes!&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">Else</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span><span class="w"> </span><span class="c">&#39; Keeps the console open</span>
+<span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<span class="k">End</span><span class="w"> </span><span class="k">Module</span>
+</code></pre></div>
+
+<p>java</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WeatherCheck</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Scanner</span><span class="w"> </span><span class="n">scanner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">weather</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scanner</span><span class="p">.</span><span class="na">nextLine</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weather</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;sunny&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weather</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;rainy&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Take an umbrella with you.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weather</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;snowy&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Wear warm clothes!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">scanner</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="case-statements">Case statements</h2>
+<h4 id="what-is-a-case-statement">What is a case statement?</h4>
+<ul>
+<li>A case statement <strong>can mean less code</strong> but it only useful when comparing <strong>multiple values of the same variable</strong></li>
+<li><strong>If</strong> statements are <strong>more flexible</strong> and are generally used more in languages such as Python</li>
+<li>The format of a CASE statement is:
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">CASE</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">value</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">statement1</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="o">&lt;</span><span class="n">statement2</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="p">...</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">value</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">statement1</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="o">&lt;</span><span class="n">statement2</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="p">...</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="n">ENDCASE</span>
+</code></pre></div>
+
+<p>An <code>OTHERWISE</code> clause can be the last clause</p>
+<div class="highlight"><pre><span></span><code><span class="n">CASE</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">value</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">statement1</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="o">&lt;</span><span class="n">statement2</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="p">...</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">value</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">statement1</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="o">&lt;</span><span class="n">statement2</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="p">...</span>
+<span class="w">  </span><span class="n">OTHERWISE</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">statement1</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="o">&lt;</span><span class="n">statement2</span><span class="o">&gt;</span>
+<span class="w">              </span><span class="p">...</span>
+<span class="n">ENDCASE</span>
+</code></pre></div>
+
+<h4 id="example-code_2">Example code</h4>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter a direction (N, S, E, W):&quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">Direction</span>
+<span class="n">CASE</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">Direction</span>
+<span class="w">    </span><span class="s">&quot;N&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;You are heading North&quot;</span>
+<span class="w">    </span><span class="s">&quot;S&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;You are heading South&quot;</span>
+<span class="w">    </span><span class="s">&quot;E&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;You are heading East&quot;</span>
+<span class="w">    </span><span class="s">&quot;W&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;You are heading West&quot;</span>
+<span class="w">    </span><span class="nl">OTHERWISE</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Invalid direction entered&quot;</span>
+<span class="n">ENDCASE</span>
+</code></pre></div>
+
+<h3 id="case-statements-in-different-languages">Case statements in different languages</h3>
+<p>Python</p>
+<div class="highlight"><pre><span></span><code><span class="n">weather</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
+<span class="k">match</span> <span class="n">weather</span><span class="p">:</span>
+    <span class="k">case</span> <span class="s2">&quot;sunny&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">)</span>
+    <span class="k">case</span> <span class="s2">&quot;rainy&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Take an umbrella with you.&quot;</span><span class="p">)</span>
+    <span class="k">case</span> <span class="s2">&quot;snowy&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wear warm clothes!&quot;</span><span class="p">)</span>
+    <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>VB.NET</p>
+<div class="highlight"><pre><span></span><code><span class="k">Module</span><span class="w"> </span><span class="nn">WeatherCheck</span>
+<span class="w">    </span><span class="k">Sub</span><span class="w"> </span><span class="nf">Main</span><span class="p">()</span>
+<span class="w">        </span><span class="k">Dim</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span>
+<span class="w">        </span><span class="k">Select</span><span class="w"> </span><span class="k">Case</span><span class="w"> </span><span class="n">weather</span>
+<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="s">&quot;sunny&quot;</span>
+<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span>
+<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Take an umbrella with you.&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="s">&quot;snowy&quot;</span>
+<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Wear warm clothes!&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="k">Else</span>
+<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Select</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span><span class="w"> </span><span class="c">&#39; Keeps the console open</span>
+<span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<span class="k">End</span><span class="w"> </span><span class="k">Module</span>
+</code></pre></div>
+
+<p>Java</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WeatherCheck</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Scanner</span><span class="w"> </span><span class="n">scanner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">weather</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scanner</span><span class="p">.</span><span class="na">nextLine</span><span class="p">();</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">weather</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="s">&quot;sunny&quot;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Take an umbrella with you.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="s">&quot;snowy&quot;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Wear warm clothes!&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="k">default</span><span class="p">:</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">scanner</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="iteration">Iteration</h2>
+<h2 id="what-is-iteration">What is iteration?</h2>
+<ul>
+<li>Iteration is <strong>repeating a line or a block of code</strong> using a loop</li>
+<li>Iteration can be:<ul>
+<li><strong>Count-controlled</strong></li>
+<li><strong>Condition-controlled</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="count-controlled-loops">Count-controlled loops</h2>
+<h3 id="what-is-a-count-controlled-loop">What is a count-controlled loop?</h3>
+<ul>
+<li>A count-controlled loop is when the code is repeated <strong>a fixed number of times</strong> (e.g. using a FOR loop)</li>
+<li>A count-controlled loop can be written as:
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">FOR</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statements</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">NEXT</span><span class="w"> </span>
+<span class="c1">// with steps</span>
+<span class="n">FOR</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">STEP</span><span class="w"> </span><span class="o">&lt;</span><span class="n">increment</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statements</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">NEXT</span>
+</code></pre></div>
+
+<ul>
+<li>In a <strong>FOR loop</strong>, the <strong>increment</strong> must be an <strong>expression that evaluates to an integer</strong><ul>
+<li>The loop <strong>starts</strong> at <code>value1</code></li>
+<li>The identifier is updated by the <strong>increment</strong> value on each iteration</li>
+<li>The loop continues until the identifier <strong>passes value2</strong></li>
+</ul>
+</li>
+<li>The increment can be <strong>positive</strong> or <strong>negative</strong>, depending on the direction you want the loop to count</li>
+</ul>
+<h4 id="nested-count-controlled-loops">Nested count-controlled loops</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; x &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; = &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">j</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+</code></pre></div>
+
+<ul>
+<li>The <strong>outer loop</strong> runs <code>i</code> from 1 to 3</li>
+<li>For <strong>each value of</strong> <code>i</code>, the <strong>inner loop</strong> runs <code>j</code> from 1 to 3</li>
+<li>It outputs all combinations of <code>i × j</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="mi">1</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="mi">1</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="mi">1</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="mi">2</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">...</span>
+<span class="mi">3</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span>
+</code></pre></div>
+
+<h3 id="count-controlled-loops-in-different-languages">Count-controlled loops in different languages</h3>
+<p>Print the numbers 1 to 5 in different languages
+Python</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+
+<p>VB.net</p>
+<div class="highlight"><pre><span></span><code><span class="k">For</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">To</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="nv">Console</span>.<span class="nv">WriteLine</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>
+<span class="k">Next</span>
+</code></pre></div>
+
+<p>Java</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="condition-controlled-loops">Condition-controlled loops</h2>
+<h3 id="what-is-a-condition-controlled-loop">What is a condition controlled loop?</h3>
+<ul>
+<li>A condition controlled loop is when the code is repeated <strong>until a condition is met</strong></li>
+<li>There are two types of condition controlled loops:<ul>
+<li><strong>Post-condition (REPEAT)</strong></li>
+<li><strong>Pre-condition (WHILE)</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="post-condition-loops-repeat">Post-condition loops (REPEAT)</h4>
+<ul>
+<li>A post-condition loop <strong>is executed at least once</strong></li>
+<li>The condition must be an <strong>expression</strong> that evaluates to a <strong>Boolean</strong> (True/False)</li>
+<li>The condition is tested <strong>after the statements are executed</strong> and only stops once the condition is evaluated to True</li>
+<li>It can be written as:
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">REPEAT</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">UNTIL</span><span class="w"> </span>
+</code></pre></div>
+
+<h4 id="pre-condition-loops-while">Pre-condition loops (WHILE)</h4>
+<ul>
+<li>The condition must be an <strong>expression</strong> that evaluates to a <strong>Boolean</strong> (True/False)</li>
+<li>The condition is tested and statements are <strong>only executed if the condition evaluates to True</strong></li>
+<li>After statements have been executed the condition is <strong>tested again</strong></li>
+<li>The loop ends when the condition <strong>evaluates to False</strong></li>
+<li>It can be written as:
+Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">WHILE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">condition</span><span class="o">&gt;</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDWHILE</span>
+</code></pre></div>
+
+<h4 id="nested-condition-controlled-loops">Nested condition-controlled loops</h4>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">    </span><span class="n">Username</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">    </span><span class="n">WHILE</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter a username: &quot;</span>
+<span class="w">        </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Username</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Username cannot be blank.&quot;</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">ENDWHILE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Username accepted: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Username</span>
+<span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+</code></pre></div>
+
+<ul>
+<li>Ask the user to <strong>enter up to 3 usernames</strong></li>
+<li>For each one, keep asking <strong>until a non-empty name</strong> is entered</li>
+<li><strong>Outer WHILE</strong> runs 3 times (for 3 usernames)</li>
+<li><strong>Inner WHILE</strong> ensures that each username is <strong>not blank</strong></li>
+</ul>
+<h3 id="condition-controlled-loops-in-different-languages">Condition-controlled loops in different languages</h3>
+<p>task: Keep asking the user to enter a password until they type <code>"admin"</code>
+Python</p>
+<div class="highlight"><pre><span></span><code><span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">while</span> <span class="n">password</span> <span class="o">!=</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the password: &quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">password</span> <span class="o">!=</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Incorrect, try again.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Access granted!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>VB.net</p>
+<div class="highlight"><pre><span></span><code><span class="k">Module</span><span class="w"> </span><span class="nn">PasswordCheck</span>
+<span class="w">    </span><span class="k">Sub</span><span class="w"> </span><span class="nf">Main</span><span class="p">()</span>
+<span class="w">        </span><span class="k">Dim</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">        </span><span class="k">While</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;Enter the password: &quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span>
+<span class="w">            </span><span class="k">If</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"> </span><span class="k">Then</span>
+<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Incorrect, try again.&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
+<span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">While</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Access granted!&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span><span class="w"> </span><span class="c">&#39; Keeps the console open</span>
+<span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<span class="k">End</span><span class="w"> </span><span class="k">Module</span>
+</code></pre></div>
+
+<p>Java</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PasswordCheck</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Scanner</span><span class="w"> </span><span class="n">scanner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">password</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter the password: &quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scanner</span><span class="p">.</span><span class="na">nextLine</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">password</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Incorrect, try again.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Access granted!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">scanner</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="when-to-use-each-type-of-loop">When to use each type of loop</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Loop type</strong></th>
+<th><strong>When to use</strong></th>
+<th><strong>Example scenario</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Count-controlled loop</strong> (<code>FOR</code>)</td>
+<td>When you know <strong>in advance</strong> how many times you want the loop to run</td>
+<td>Repeating an action 5 times, generating a multiplication table</td>
+</tr>
+<tr>
+<td><strong>Pre-condition loop</strong> (<code>WHILE</code>)</td>
+<td>When you want to <strong>check a condition before</strong> running the loop. It may run <strong>0 or more</strong> times</td>
+<td>Keep asking for a valid password before granting access</td>
+</tr>
+<tr>
+<td><strong>Post-condition loop</strong> (<code>REPEAT ... UNTIL</code>)</td>
+<td>When you want the loop to run <strong>at least once</strong>, and then stop when a condition becomes true</td>
+<td>Ask the user for input and validate it after first run</td>
+</tr>
+</tbody>
+</table>
+<h2 id="procedures-functions">Procedures &amp; Functions</h2>
+<h2 id="what-are-functions-and-procedures">What are functions and procedures?</h2>
+<ul>
+<li>Functions and proceduresare a type of <strong>sub program</strong>, a <strong>sequence of instructions</strong> that <strong>perform a specific task</strong> or <strong>set of tasks</strong></li>
+<li>Procedures and functions are <strong>defined at the start of the code</strong></li>
+<li>Sub programs are often used to <strong>simplify</strong> a program by <strong>breaking it into smaller, more manageable parts</strong></li>
+<li>Sub programs can be used to:<ul>
+<li><strong>Avoid duplicating code</strong> and can be reused throughout a program</li>
+<li><strong>Improve</strong> the <strong>readability</strong> and <strong>maintainability</strong> of code</li>
+<li>Perform <strong>calculations</strong>, to <strong>retrieve data</strong>, or to <strong>make decisions</strong> based on input</li>
+</ul>
+</li>
+<li><strong>Parameters</strong> are <strong>values</strong> that are <strong>passed into a sub program</strong><ul>
+<li>Parameters can be variables or values and they are located <strong>in brackets</strong> after the name of the sub program</li>
+<li>Example: <code>FUNCTION TaxCalculator(pay,taxcode)</code> <strong>OR</strong> <code>PROCEDURE TaxCalculator(pay,taxcode)</code></li>
+</ul>
+</li>
+<li>Sub programs <strong>can have multiple parameters</strong></li>
+<li>To use a sub program you &rsquo; <strong>call</strong> &rsquo; it from the main program</li>
+</ul>
+<h3 id="whats-the-difference-between-a-function-and-procedure">What&rsquo;s the difference between a function and procedure?</h3>
+<ul>
+<li>A <strong>Function returns a value</strong> whereas a procedure does not</li>
+</ul>
+<h2 id="procedures">Procedures</h2>
+<ul>
+<li>Procedures are defined using the <strong>PROCEDURE</strong> keyword in pseudocode</li>
+<li>A procedure can be written as:
+<strong>Pseudocode</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">PROCEDURE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">param1</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">param2</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">...)</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDPROCEDURE</span>
+</code></pre></div>
+
+<ul>
+<li>The identifier is used to <strong>call the procedure</strong></li>
+<li>To call a procedure, it can be written as:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>CALL &lt;identifier&gt;()
+CALL &lt;identifier&gt;(Value1,Value2,...)
+</code></pre></div>
+
+<ul>
+<li>When parameters are used, <code>value1, value2...</code> must be of the correct data type and in the same sequence</li>
+</ul>
+<h4 id="example-code_3">Example code</h4>
+<div class="highlight"><pre><span></span><code><span class="n">PROCEDURE</span><span class="w"> </span><span class="n">GreetUser</span><span class="p">(</span><span class="n">Name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Hello, &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;!&quot;</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">UserName</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter your name: &quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">UserName</span>
+<span class="n">CALL</span><span class="w"> </span><span class="n">GreetUser</span><span class="p">(</span><span class="n">UserName</span><span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li><code>PROCEDURE GreetUser</code> defines the procedure, which takes one parameter: <code>Name</code></li>
+<li>The procedure prints a personalised greeting</li>
+<li>The main program asks for the user’s name and then <strong>calls</strong> the procedure using <code>CALL</code></li>
+</ul>
+<h2 id="functions">Functions</h2>
+<ul>
+<li>Functions are defined using the <strong>FUNCTION</strong> keyword in pseudocode or <strong>def</strong> keyword in Python</li>
+<li>Functions <strong>always return a value</strong> so they <strong>do not</strong> use the <code>CALL</code> function, instead they are called <strong>within an expression</strong></li>
+<li>A function can be written as:
+**Pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDFUNCTION</span>
+<span class="n">FUNCTION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">param1</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">param2</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">...)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">ENDFUNCTION</span>
+</code></pre></div>
+
+<h4 id="example-code_4">Example code</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">)</span>
+<span class="w">  </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
+<span class="w">  </span><span class="n">RETURN</span><span class="w"> </span><span class="n">area</span>
+<span class="n">ENDFUNCTION</span>
+<span class="cp"># Output the value returned from the function</span>
+<span class="n">OUTPUT</span><span class="p">(</span><span class="n">calculate_area</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<ul>
+<li>Defines a <strong>function</strong> called <code>calculate_area</code></li>
+<li>It takes <strong>two parameters</strong>: <code>length</code> and <code>width</code>, both of type <code>INTEGER</code></li>
+<li>A local variable <code>area</code> is declared and assigned the result of <code>length × width</code></li>
+<li>The function <strong>returns</strong> the result to wherever it was called from</li>
+</ul>
+<h2 id="parameter-passing">Parameter passing</h2>
+<h3 id="what-is-parameter-passing">What is parameter passing?</h3>
+<ul>
+<li>Parameter passing is the method by which <strong>values or references</strong> are given to procedures or functions so they can <strong>use or modify data during execution</strong></li>
+<li>When writing <strong>procedures</strong>, you can control how parameters are passed using:<ul>
+<li><code>BYVAL</code> – pass <strong>a copy</strong> of the value (default behaviour)</li>
+<li><code>BYREF</code> – pass <strong>the actual variable</strong>, so changes inside the procedure affect the original</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Keyword</strong></th>
+<th><strong>What it does</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BYVAL</code></td>
+<td>Passes a <strong>copy</strong> of the value (no change to original)</td>
+</tr>
+<tr>
+<td><code>BYREF</code></td>
+<td>Passes a <strong>reference</strong> to the variable (can be modified)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If <strong>no keyword</strong> is used, it is assumed to be <code>BYVAL</code></li>
+<li><strong>Functions</strong> should <strong>not use</strong> <code>BYREF</code> <strong>parameters</strong> – only <strong>procedures</strong> should</li>
+</ul>
+<h4 id="example-swapping-two-values-procedure-with-byref">Example – Swapping two values (Procedure with BYREF)</h4>
+<div class="highlight"><pre><span></span><code><span class="n">PROCEDURE</span><span class="w"> </span><span class="n">Swap</span><span class="p">(</span><span class="n">BYREF</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Temp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="w">    </span><span class="n">Temp</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">X</span>
+<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Y</span>
+<span class="w">    </span><span class="n">Y</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Temp</span>
+<span class="n">ENDPROCEDURE</span>
+</code></pre></div>
+
+<ul>
+<li><code>X</code> is passed <strong>by reference</strong>, so it <strong>can be changed</strong></li>
+<li>
+<p><code>Y</code> is passed <strong>by value</strong>, so any change to <code>Y</code> inside the procedure <strong>does not affect</strong> the original value
+A video-conferencing program supports up to six users. Speech from each user is sampled and digitised (converted from analogue to digital). Digitised values are stored in array <code>Sample</code>.
+The array <code>Sample</code> consists of 6 rows by 128 columns and is of type integer. Each row contains 128 digitised sound samples from one user.
+The digitised sound samples from each user are to be processed to produce a single value which will be stored in a 1D array <code>Result</code> of type integer. This process will be implemented by procedure <code>Mix()</code>.
+A procedure <code>Mix()</code> will:</p>
+</li>
+<li>
+<p>calculate the average of each of the 6 sound samples in a column</p>
+</li>
+<li>ignore sound sample values of 10 or less</li>
+<li>store the average value in the corresponding position in <code>Result</code></li>
+<li>repeat for each column in array <code>Sample</code>
+The diagram uses example values to illustrate the process:
+<img alt="Table with six rows and 128 columns, each filled with numbers. A row at the bottom shows the sum of selected columns, resulting in 20, 20, 35, 40, 46, 25." src="images/42344_2025-06-02-0p8-kleki.png" />
+Write pseudocode for procedure <code>Mix()</code>.
+Assume <code>Sample</code> and <code>Result</code> are global. <strong>[6]</strong>
+<strong>Answer</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">PROCEDURE</span><span class="w"> </span><span class="n">Mix</span><span class="p">()</span>
+<span class="w">  </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Count</span><span class="p">,</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="n">ThisNum</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="w">  </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">ThisUser</span><span class="p">,</span><span class="w"> </span><span class="n">ThisSample</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="w">  </span><span class="n">FOR</span><span class="w"> </span><span class="n">ThisSample</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">128</span>
+<span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">ThisUser</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">      </span><span class="n">IF</span><span class="w"> </span><span class="n">Sample</span><span class="p">[</span><span class="n">ThisUser</span><span class="p">,</span><span class="w"> </span><span class="n">ThisSample</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Sample</span><span class="p">[</span><span class="n">ThisUser</span><span class="p">,</span><span class="w"> </span><span class="n">ThisSample</span><span class="p">]</span>
+<span class="w">      </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">ThisUser</span>
+<span class="w">    </span><span class="n">Result</span><span class="p">[</span><span class="n">ThisSample</span><span class="p">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">INT</span><span class="p">(</span><span class="n">Total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Count</span><span class="p">)</span>
+<span class="w">  </span><span class="n">NEXT</span><span class="w"> </span><span class="n">ThisSample</span>
+<span class="n">ENDPROCEDURE</span>
+</code></pre></div>
+
+<ul>
+<li>Declaration <strong>and</strong> initialisation before inner loop of <code>Count</code> <strong>and</strong> <code>Total</code> [1 mark]</li>
+<li>Outer Loop for 128 iterations [1 mark]</li>
+<li>Inner loop for six iterations [1 mark]</li>
+<li>Test for sample &gt; 10 <strong>in a loop</strong> [1 mark]</li>
+<li>and if true sum <code>Total</code> and increment <code>Count</code> [1 mark]</li>
+<li>Calculate average value and assign to <code>Result</code> array <strong>after inner loop and within outer loop</strong> [1 mark]</li>
+<li>Use of <code>INT()/ DIV</code> to convert average to integer [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

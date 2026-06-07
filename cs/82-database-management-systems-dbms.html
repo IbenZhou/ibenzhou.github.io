@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8.2 Database Management Systems (DBMS) — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>8.2 Database Management Systems (DBMS)</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#dbms-features">DBMS Features</a></li>
+<li><a href="#dbms-vs-file-based-systems">DBMS vs file-based systems</a></li>
+<li><a href="#dbms-tools">DBMS tools</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="dbms-features">DBMS Features</h2>
+<h2 id="dbms-vs-file-based-systems">DBMS vs file-based systems</h2>
+<h3 id="what-is-a-dbms">What is a DBMS?</h3>
+<ul>
+<li>A DBMS (Database Management System) is <strong>software</strong> that is used to <strong>create, manage, and interact with databases</strong></li>
+<li>A DBMS provides several <strong>key features</strong>, including:<ul>
+<li>Defines a <strong>logical schema</strong> – the overall logical design of the database (tables, fields, relationships, and constraints), showing how data is organised independently of how it is physically stored</li>
+<li>Provides <strong>data security</strong> and <strong>access control</strong> to keep data safe</li>
+<li>Maintains <strong>data integrity</strong> by enforcing rules and constraints, e.g.<ul>
+<li>If the data is changed in one place it is updated in every other place</li>
+<li>Ensures each foreign key has a corresponding primary key</li>
+</ul>
+</li>
+<li>Supports <strong>concurrency control</strong> so multiple users can access the database at the same time without errors</li>
+<li>Ensures <strong>data independence</strong> so changes to storage methods do not affect how data is used</li>
+<li>Offers <strong>backup and recovery</strong> tools to protect against data loss</li>
+</ul>
+</li>
+<li>It addresses the [[8.1 Database Concepts#Limitations of file-based systems|Limitations of file-based systems]] limitations of file-based systems] by:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Area</strong></th>
+<th><strong>Limitation in file-based systems</strong></th>
+<th><strong>How a DBMS solves it</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data redundancy</strong></td>
+<td>Same data is stored in multiple files, wasting space and causing confusion</td>
+<td>A DBMS <strong>centralises data</strong>, so it is stored once and referenced when needed</td>
+</tr>
+<tr>
+<td><strong>Data inconsistency</strong></td>
+<td>Data may differ between files if one is updated but others are not</td>
+<td>A DBMS ensures <strong>data consistency</strong> by updating a single source of truth</td>
+</tr>
+<tr>
+<td><strong>Data management</strong></td>
+<td>Each application stores and manages its own data</td>
+<td>A DBMS provides a <strong>data dictionary</strong> that defines all data elements across the system (field/table names, data types)</td>
+</tr>
+<tr>
+<td><strong>Data modelling</strong></td>
+<td>No structured way to represent or link data</td>
+<td>A DBMS uses <strong>data modelling tools</strong> (e.g. ER diagrams) to define entities and relationships</td>
+</tr>
+<tr>
+<td><strong>Logical schema</strong></td>
+<td>The overall logical design of the database (tables, fields, relationships, and constraints)</td>
+<td>Shows how data is <strong>organised and used</strong>, independently of how it is physically stored</td>
+</tr>
+<tr>
+<td><strong>Data integrity</strong></td>
+<td>Difficult to enforce validation rules across different files</td>
+<td>A DBMS uses <strong>constraints</strong> (e.g. primary keys, foreign keys) to enforce integrity</td>
+</tr>
+<tr>
+<td><strong>Data security</strong></td>
+<td>Poor control over who can access or change data</td>
+<td>A DBMS supports <strong>user accounts, access rights, and permissions</strong> for individuals/groups</td>
+</tr>
+<tr>
+<td><strong>Backup procedures</strong></td>
+<td>Often manual and inconsistent</td>
+<td>A DBMS includes <strong>automated backup and recovery tools</strong> to reduce risk of data loss</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dbms-tools">DBMS tools</h2>
+<h3 id="developer-interface">Developer interface</h3>
+<ul>
+<li>The developer interface allows developers to <strong>write database queries</strong> using <strong>Structured Query Language (SQL)</strong></li>
+<li>This is more flexible than using <strong>query-by-example</strong> tools, which are visual and simplified</li>
+<li>Using SQL allows the developer to create <strong>more complex and precise queries</strong> to search, update, or manage data</li>
+</ul>
+<h3 id="query-processor">Query processor</h3>
+<ul>
+<li>The query processor is responsible for <strong>handling and executing SQL queries</strong></li>
+<li>It has several key components:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Component</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DDL interpreter</strong></td>
+<td>Interprets <strong>Data Definition Language (DDL)</strong> commands like <code>CREATE</code>, <code>ALTER</code>, and <code>DROP</code> and updates the <strong>data dictionary</strong></td>
+</tr>
+<tr>
+<td><strong>DML compiler</strong></td>
+<td>Compiles <strong>Data Manipulation Language (DML)</strong> statements (e.g. <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>) into low-level instructions and <strong>optimises</strong> the query</td>
+</tr>
+<tr>
+<td><strong>Query evaluation engine</strong></td>
+<td>Executes the compiled instructions to <strong>retrieve or manipulate</strong> the actual data in the database</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>Together, these components make sure that any query written by the developer is <strong>interpreted, optimised</strong>, and <strong>executed efficiently</strong>
+State what is meant by a data dictionary and give one example of an item typically found in a data dictionary. <strong>[2]</strong>
+<strong>Answer</strong></p>
+</li>
+<li>
+<p>A data dictionary is data about the data structure in the database [1 mark]</p>
+</li>
+<li>Example: field name, data type, or table name [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

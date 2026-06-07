@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6.1 Data Security — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>6.1 Data Security</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#security-measures">Security Measures</a></li>
+<li><a href="#security-privacy-integrity">Security, privacy, integrity</a></li>
+<li><a href="#protection-techniques">Protection techniques</a></li>
+<li><a href="#threats">Threats</a></li>
+<li><a href="#network-internet-risks">Network &amp; internet risks</a></li>
+<li><a href="#data-protection">Data Protection</a></li>
+<li><a href="#data-security-techniques">Data security techniques</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="security-measures">Security Measures</h2>
+<h2 id="security-privacy-integrity">Security, privacy, integrity</h2>
+<h3 id="what-is-the-difference-between-data-security-privacy-and-integrity">What is the difference between data security, privacy and integrity?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Term</strong></th>
+<th><strong>Definition</strong></th>
+<th><strong>Key focus</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Security</strong></td>
+<td>Protecting data from <strong>unauthorised access</strong>, theft, or attacks</td>
+<td>Preventing breaches or leaks</td>
+<td>Using encryption, firewalls, and passwords to protect stored data</td>
+</tr>
+<tr>
+<td><strong>Data Privacy</strong></td>
+<td>Ensuring data is <strong>collected, stored, and shared</strong> in a way that respects the user’s rights</td>
+<td>Controlling who can access and use personal data</td>
+<td>Asking for user consent before collecting or sharing personal information</td>
+</tr>
+<tr>
+<td><strong>Data Integrity</strong></td>
+<td>Ensuring data is <strong>accurate, complete, and unaltered</strong> during storage or transfer</td>
+<td>Maintaining correctness and reliability</td>
+<td>Using checksums or validation rules to detect accidental or unauthorised changes</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Security</strong> = keeping data safe from threats (e.g. hackers)</li>
+<li><strong>Privacy</strong> = making sure data is used <strong>fairly</strong> and <strong>with consent</strong></li>
+<li><strong>Integrity</strong> = making sure data stays <strong>accurate</strong> and <strong>unchanged</strong></li>
+</ul>
+<h2 id="protection-techniques">Protection techniques</h2>
+<h3 id="user-accounts">User accounts</h3>
+<ul>
+<li>User accounts are designed to <strong>control access</strong> to computer systems</li>
+<li>They help protect data and system resources by ensuring only <strong>authorised individuals</strong> can log in and perform specific tasks</li>
+</ul>
+<h4 id="passwords">Passwords</h4>
+<ul>
+<li>Passwords are a <strong>digital lock</strong> to prevent unauthorised access to an account</li>
+<li>They are often stored as an <strong>encrypted/ciphered</strong> text entry in a database, ensuring that even with unauthorised access to a database, a hacker would not be able to gain access to the individual passwords of users</li>
+</ul>
+<h3 id="authentication">Authentication</h3>
+<ul>
+<li>Authentication is the process of <strong>ensuring that a system is secure</strong> by asking the user to <strong>complete tasks to prove they are an authorised</strong> user of the system</li>
+<li>Authentication is done because <strong>bots can submit data in online forms</strong></li>
+<li>Authentication can be done in several ways, including:<ul>
+<li><strong>Digital signatures</strong></li>
+<li><strong>Biometrics</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="digital-signatures">Digital signatures</h4>
+<ul>
+<li>A digital signature is a secure way to <strong>prove that a digital message or document was sent by a specific person</strong> and that it <strong>has not been altered</strong></li>
+<li>It acts like a <strong>digital stamp of approval</strong>, confirming:<ul>
+<li><strong>Who sent the data</strong> (authentication)</li>
+<li><strong>That the data hasn’t been changed</strong> (integrity)</li>
+</ul>
+</li>
+</ul>
+<h4 id="biometrics">Biometrics</h4>
+<ul>
+<li>Biometrics are an individuals <strong>personal characteristics used to identify them</strong>, such as<ul>
+<li><strong>Fingerprints</strong></li>
+<li><strong>Iris/retina scans (eyes)</strong></li>
+<li><strong>Voice recognition</strong></li>
+</ul>
+</li>
+<li>Biometrics provide a <strong>very secure method</strong> of confirming a users <strong>identity</strong> before allowing access/permission to a computer system</li>
+<li>Biometric measures are often <strong>used on mobile devices</strong> to provide secure access</li>
+</ul>
+<h3 id="firewall">Firewall</h3>
+<ul>
+<li>A firewall is a <strong>barrier</strong> between a network and the internet</li>
+<li>A firewall prevents <strong>unwanted traffic</strong> from entering a network by filtering requests to ensure they are <strong>legitimate</strong></li>
+<li>It can be both <strong>hardware</strong> and <strong>software</strong> and they are often used together to provide stronger security to a network<ul>
+<li><strong>Hardware firewalls</strong> will protect the whole network and prevent unauthorised traffic</li>
+<li><strong>Software firewalls</strong> will protect the individual devices on the network, monitoring the data going to and from each computer</li>
+</ul>
+</li>
+</ul>
+<h3 id="anti-virus-software">Anti-virus software</h3>
+<ul>
+<li>Anti-virus software is a term used to describe a combination of different software to prevent computers from being susceptible to <strong>viruses</strong> and other <strong>malicious software</strong></li>
+<li>Anti-virus <strong>scans</strong> through <strong>email</strong> attachments, <strong>websites</strong> and downloaded <strong>files</strong> to search for issues</li>
+<li>Anti-virus software has a list of known malware <strong>signatures to block</strong> immediately if they try to access your device in any way</li>
+<li>Anti-virus will also perform <strong>checks for updates</strong> to ensure the database of known issues is up to date</li>
+</ul>
+<h3 id="anti-spyware-software">Anti-spyware software</h3>
+<ul>
+<li>Anti-spyware is a type of <strong>security software</strong> designed to <strong>detect, block, and remove spyware</strong> from a computer system</li>
+<li>Spyware is a type of <strong>malicious software (malware)</strong> that secretly gathers information about a user without their knowledge</li>
+<li>It can:<ul>
+<li><strong>Record keystrokes</strong> (e.g. passwords, credit card numbers)</li>
+<li><strong>Monitor browsing habits</strong></li>
+<li><strong>Access files</strong> and send them to a third party</li>
+</ul>
+</li>
+</ul>
+<h3 id="encryption">Encryption</h3>
+<ul>
+<li>Encryption is the process of <strong>converting data into a secret code</strong> so that <strong>only authorised users</strong> can read it</li>
+<li>It protects sensitive information (like passwords, personal data, or messages) from <strong>unauthorised access</strong>, especially when data is stored or sent over a network</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Symmetric</strong></td>
+<td>The <strong>same key</strong> is used to encrypt and decrypt. Fast but key must be shared securely</td>
+</tr>
+<tr>
+<td><strong>Asymmetric</strong></td>
+<td>Uses a <strong>public key</strong> for encryption and a <strong>private key</strong> for decryption. More secure for sending data</td>
+</tr>
+</tbody>
+</table>
+<p>A company has several security measures in place to prevent unauthorised access to the data on its computers.
+Describe the difference between the security and privacy of data.<strong>[2]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>Security protects data against loss [1 mark]</li>
+<li>Privacy protects data against unauthorised access [1 mark]</li>
+</ul>
+<h2 id="threats">Threats</h2>
+<h2 id="network-internet-risks">Network &amp; internet risks</h2>
+<h3 id="what-are-common-network-internet-risks">What are common network &amp; internet risks?</h3>
+<h3 id="hackers">Hackers</h3>
+<ul>
+<li>A <strong>hacker</strong> is someone who gains <strong>unauthorised access</strong> to computer systems or networks</li>
+<li>Hackers often <strong>exploit security weaknesses</strong> to:<ul>
+<li><strong>Steal sensitive data</strong></li>
+<li><strong>Gain control of systems</strong></li>
+<li><strong>Cause damage or disruption</strong></li>
+</ul>
+</li>
+<li>Hackers are considered <strong>cybercriminals</strong> when their actions are illegal or harmful.</li>
+</ul>
+<h4 id="how-do-hackers-gain-access">How do hackers gain access?</h4>
+<ul>
+<li>Hackers look for opportunities or vulnerabilities in systems, such as:<ul>
+<li><strong>Unpatched software</strong> – Missing security updates can leave systems exposed</li>
+<li><strong>Out-of-date anti-malware</strong> – Older protection can fail to detect new threats</li>
+<li><strong>Weak passwords</strong> – Simple or reused passwords are easy to guess or crack</li>
+</ul>
+</li>
+</ul>
+<h4 id="effects-of-a-hacker-attack">Effects of a hacker attack</h4>
+<ul>
+<li>When a hacker successfully gains access, it can lead to:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Effect</strong></th>
+<th><strong>Impact</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data breaches</strong></td>
+<td>Personal or company information is leaked or stolen</td>
+</tr>
+<tr>
+<td><strong>Malware installation</strong></td>
+<td>Hackers may install viruses or spyware to cause further harm</td>
+</tr>
+<tr>
+<td><strong>Data loss</strong></td>
+<td>Important files may be deleted or corrupted</td>
+</tr>
+<tr>
+<td><strong>Identity theft</strong></td>
+<td>Stolen personal data can be used to impersonate individuals</td>
+</tr>
+<tr>
+<td><strong>Financial loss</strong></td>
+<td>Hackers may access bank accounts or demand ransom payments</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-can-hacking-be-prevented">How can hacking be prevented?</h4>
+<ul>
+<li>There are several methods to reduce the risk of being targeted by hackers:<ul>
+<li>Use <strong>strong passwords</strong> that are long and hard to guess</li>
+<li>Enable <strong>two-factor authentication</strong> for extra login security</li>
+<li>Install and regularly update <strong>anti-malware software</strong></li>
+<li>Use <strong>firewalls</strong> to block unauthorised access to the network</li>
+<li>Keep all <strong>software up to date</strong> with security patches</li>
+</ul>
+</li>
+</ul>
+<h3 id="phishing">Phishing</h3>
+<ul>
+<li>Phishing is a form of social engineering</li>
+<li>It involves sending <strong>fraudulent, legitimate-looking emails</strong> to a large number of email addresses, claiming to be from a <strong>reputable company</strong> or trusted source to try and <strong>gain access</strong> to your details</li>
+<li>Phishing often tries to <strong>coax</strong> the user to click on a login button to enter their details</li>
+</ul>
+<h4 id="what-are-the-effects-of-phishing">What are the effects of phishing?</h4>
+<ul>
+<li>The creator of the email can gain unauthorised access to <strong>personal data</strong> such as <strong>login information</strong>, <strong>bank accounts</strong> and more</li>
+<li>Phishing can lead to <strong>identity theft</strong> or <strong>fraudulent activity</strong> on credit cards and bank accounts</li>
+</ul>
+<h4 id="how-can-phishing-be-prevented">How can phishing be prevented?</h4>
+<ul>
+<li>Phishing can be prevented by:<ul>
+<li><strong>Anti-spam filters</strong> to avoid fraudulent emails arriving in a user&rsquo;s inbox</li>
+<li><strong>Training staff</strong> to recognise fraudulent emails and to avoid opening attachments from unrecognised senders</li>
+<li><strong>User access levels</strong> to prevent staff from being able to open files-types such as executable (<strong>.exe)</strong> files and batch (<strong>.bat</strong>) files</li>
+</ul>
+</li>
+</ul>
+<h3 id="pharming">Pharming</h3>
+<ul>
+<li>Pharming is typing a website address into a browser and it is <strong>redirected to a &lsquo;fake&rsquo; website</strong> to trick a user into typing in sensitive information such as passwords</li>
+<li>An attacker attempts to <strong>alter</strong> <strong>DNS</strong> settings or <strong>change a users browser settings</strong> to redirect users to the fraudulent website</li>
+</ul>
+<h4 id="what-are-the-effects-of-pharming">What are the effects of pharming?</h4>
+<ul>
+<li>The creator of the malicious content can gain unauthorised access to <strong>personal data</strong> such as <strong>login information, bank accounts</strong> and more</li>
+<li>Pharming can lead to <strong>identity theft</strong> or <strong>fraudulent activity</strong> on credit cards and bank accounts</li>
+</ul>
+<h4 id="how-can-pharming-be-prevented">How can pharming be prevented?</h4>
+<ul>
+<li>Pharming can be prevented by:<ul>
+<li><strong>Keeping anti-malware software up to date</strong></li>
+<li><strong>Checking URLs regularly</strong></li>
+<li><strong>Make sure the padlock icon is visible</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="malware">Malware</h3>
+<ul>
+<li>Malware (<strong>mal</strong> icious soft <strong>ware</strong>) is the term used for any software that has been created with malicious intent to cause harm to a computer system</li>
+<li>Examples of issues caused by malware include<ul>
+<li>Files being <strong>deleted</strong>, <strong>corrupted</strong> or <strong>encrypted</strong></li>
+<li>Internet connection becoming <strong>slow</strong> or <strong>unusable</strong></li>
+<li>Computer <strong>crashing</strong> or <strong>shutting down</strong></li>
+</ul>
+</li>
+<li>Malware can exist in many forms, each designed to perform its role in different ways</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Malware</strong></th>
+<th><strong>What it Does</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Computer virus</td>
+<td>- A program which can <strong>replicate itself</strong> on a user&rsquo;s computer. It contains code that will cause <strong>unwanted and unexpected events</strong> to occur<br>    <br>- Examples of issues a user may experience are<br>    <br>    - <strong>Corrupt</strong> files<br>        <br>    - <strong>Delete</strong> data<br>        <br>    - <strong>Prevent</strong> applications from running correctly</td>
+</tr>
+<tr>
+<td>Trojan</td>
+<td>- Sometimes also called a <strong>Trojan Horse</strong><br>    <br>- Trojans <strong>disguise</strong> themselves as <strong>legitimate software</strong> but contain malicious code in the background</td>
+</tr>
+<tr>
+<td>Spyware</td>
+<td>- Software which will allow a person to <strong>spy</strong> on the users&rsquo; <strong>activities</strong> on their devices<br>    <br>- This form of software will be embedded into other software such as games or programs that have been downloaded from <strong>illegitimate sources</strong><br>    <br>- Spyware can <strong>record</strong> your screen, log your <strong>keystrokes</strong> to gain access to <strong>passwords</strong> and more</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-can-malware-be-prevented">How can malware be prevented?</h4>
+<ul>
+<li>To protect against the threat of malware:<ul>
+<li><strong>Ensure code is written correctly</strong></li>
+<li><strong>Keep anti-malware software up to date</strong></li>
+<li><strong>Install a firewall</strong></li>
+<li><strong>Educate users</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="data-protection">Data Protection</h2>
+<h2 id="data-security-techniques">Data security techniques</h2>
+<h3 id="access-rights">Access rights</h3>
+<ul>
+<li>Access rights control <strong>what users can see or do</strong> on a network</li>
+<li>They ensure that users can <strong>access the files and resources they need</strong> for their role, and <strong>can’t access information they shouldn’t</strong></li>
+<li>Access rights are assigned based on a user’s <strong>role</strong>, <strong>responsibilities</strong>, or <strong>security clearance</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Access right</strong></th>
+<th><strong>What it means</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full access</strong></td>
+<td>The user can <strong>open, create, edit, and delete</strong> files or folders</td>
+</tr>
+<tr>
+<td><strong>Read-only access</strong></td>
+<td>The user can <strong>open and view</strong> files but <strong>cannot edit or delete</strong> them</td>
+</tr>
+<tr>
+<td><strong>No access</strong></td>
+<td>The user <strong>cannot see or interact with</strong> the file or folder at all</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-access-rights-on-a-school-network">Example: access rights on a school network</h4>
+<table>
+<thead>
+<tr>
+<th><strong>User group</strong></th>
+<th><strong>Access rights</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Administrators</strong></td>
+<td><strong>Unrestricted access</strong> – Can access and control all files, folders, and settings</td>
+</tr>
+<tr>
+<td><strong>Teaching Staff</strong></td>
+<td><strong>Partially restricted access</strong> – Can access student data but not other staff files</td>
+</tr>
+<tr>
+<td><strong>Students</strong></td>
+<td><strong>Restricted access</strong> – Can only access <strong>their own files and folders</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Users can be <strong>grouped</strong> (e.g. “Year 11”, “Staff”, “Admin”) and given access rights as a group</li>
+<li>Access rights can be assigned to <strong>files</strong>, <strong>folders</strong>, or <strong>whole systems</strong></li>
+<li>This helps protect <strong>confidential data</strong>, improves <strong>network security</strong>, and supports <strong>efficient collaboration</strong></li>
+</ul>
+<h3 id="encryption_1">Encryption</h3>
+<ul>
+<li>Encryption is a method of <strong>scrambling data</strong> before being transmitted across a network in order to protect the contents from <strong>unauthorised access</strong></li>
+<li>While encryption is important on both <strong>wired</strong> and <strong>wireless</strong> networks, it&rsquo;s even more critical on wireless networks due to the data being transmitted over radio waves, making it easy to <strong>intercept</strong></li>
+</ul>
+<h4 id="how-is-wireless-data-encrypted">How is wireless data encrypted?</h4>
+<ul>
+<li>Wireless networks are identified by a &lsquo;Service Set Identifier&rsquo; (<strong>SSID</strong>) which along with a password is used to create a &rsquo; <strong>master key</strong> &lsquo;</li>
+<li>When devices connect to the <strong>same wireless network</strong> using the SSID and password they are given a copy of the master key</li>
+<li>The master key is used to <strong>encrypt</strong> data into &rsquo; <strong>cipher text</strong> &lsquo;, before being transmitted</li>
+<li>The receiver uses the same master key to <strong>decrypt</strong> the cipher text back to &rsquo; <strong>plain text</strong> &lsquo;</li>
+<li>To guarantee the security of data, the <strong>master key is never transmitted</strong>. Without it, any intercepted data is rendered useless</li>
+<li>Wireless networks use dedicated <strong>protocols</strong> like <strong>WPA2</strong> specifically designed for <strong>Wi-Fi</strong> security
+<img alt="wireless-encryption" src="images/wireless-encryption.png" /></li>
+</ul>
+<h4 id="how-is-wired-data-encrypted">How is wired data encrypted?</h4>
+<ul>
+<li>Wired networks are encrypted in a very similar way to a wireless network, using a <strong>master key to encrypt</strong> data and the <strong>same key to decrypt</strong> data</li>
+<li>Encryption on a wired network differs slightly as it is often left to <strong>individual applications to decide</strong> how encryption is used, for example <strong>HTTPS</strong></li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12.1 Program Development Life cycle — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>12.1 Program Development Life cycle</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#lifecycle-stages">Lifecycle Stages</a></li>
+<li><a href="#lifecycle-stages_1">Lifecycle stages</a></li>
+<li><a href="#development-models">Development Models</a></li>
+<li><a href="#waterfall">Waterfall</a></li>
+<li><a href="#iterative-agile">Iterative (Agile)</a></li>
+<li><a href="#rapid-application-development-rad">Rapid Application Development (RAD)</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="lifecycle-stages">Lifecycle Stages</h2>
+<h2 id="lifecycle-stages_1">Lifecycle stages</h2>
+<h3 id="what-is-the-program-development-life-cyle">What is the program development life cyle?</h3>
+<ul>
+<li>The <strong>program development life cycle (PDLC)</strong> is a structured process used to <strong>design, build, and test software solutions</strong></li>
+<li>It ensures that programs are developed <strong>systematically</strong>, <strong>efficiently</strong>, and to a <strong>high standard</strong></li>
+<li>Each stage of the cycle has a <strong>specific purpose</strong>, and together they help developers <strong>solve real-world problems</strong> with reliable software</li>
+</ul>
+<h3 id="analysis">Analysis</h3>
+<ul>
+<li>The <strong>analysis stage</strong> is all about <strong>understanding the problem</strong> the program is being created to solve</li>
+<li>Developers use <strong>abstraction</strong> to ignore unnecessary detail and focus only on what matters:<ul>
+<li>What the program <strong>must do</strong> (core functionality)</li>
+<li>What <strong>limitations</strong> it must work within (constraints)</li>
+</ul>
+</li>
+<li>
+<p>The London Underground map is a great example of abstraction, you don’t need the real geography, just a clear route from stop A to stop B
+<img alt="7-1-development-life-cycle-program-development-life-cycle---analysis-01" src="images/7-1-development-life-cycle-program-development-life-cycle---analysis-01.png" /></p>
+</li>
+<li>
+<p>At this stage, a <strong>requirements document</strong> is often created. It:</p>
+<ul>
+<li><strong>Breaks</strong> the problem into manageable parts</li>
+<li><strong>Labels</strong> each requirement</li>
+<li><strong>Describes</strong> what success looks like for each feature</li>
+</ul>
+</li>
+</ul>
+<h3 id="design">Design</h3>
+<ul>
+<li>The <strong>design stage</strong> involves planning how the program will work</li>
+<li>Developers create a <strong>blueprint</strong> for the solution using tools such as:<ul>
+<li><strong>Structure diagrams</strong> – break down the program into smaller components</li>
+<li><strong>Flowcharts</strong> – show the logical flow of processes</li>
+<li><strong>Pseudocode</strong> – outlines how the logic will be written in code</li>
+</ul>
+</li>
+</ul>
+<h3 id="coding">Coding</h3>
+<ul>
+<li>In the <strong>coding stage</strong>, developers begin writing the program using a <strong>suitable programming language</strong></li>
+<li>Code is written in <strong>modules</strong> that work together to solve the full problem</li>
+<li><strong>Iterative testing</strong> is used – each module is tested and debugged individually as it’s created</li>
+<li>Modules are <strong>retested</strong> whenever changes are made, to ensure no new errors are introduced</li>
+</ul>
+<h3 id="testing">Testing</h3>
+<ul>
+<li>Once the full program is written, it is thoroughly tested using a variety of <strong>test data</strong> to ensure:<ul>
+<li>It meets all the original requirements</li>
+<li>It handles valid and invalid input correctly</li>
+<li>It performs reliably under different conditions</li>
+</ul>
+</li>
+<li><strong>Example test data</strong>: Alphanumeric sequences used to check password input validation</li>
+</ul>
+<h3 id="maintenance">Maintenance</h3>
+<ul>
+<li>After the program has been delivered to the client or end users, it enters the <strong>maintenance stage</strong></li>
+<li>This involves:<ul>
+<li><strong>Fixing bugs</strong> that weren&rsquo;t discovered during testing</li>
+<li><strong>Updating features</strong> to meet new requirements</li>
+<li><strong>Improving performance</strong> or adapting to new systems</li>
+</ul>
+</li>
+<li>There are three main types of maintenance:<ul>
+<li><strong>Corrective</strong> – fixing errors</li>
+<li><strong>Adaptive</strong> – updating the software to run on new hardware or platforms</li>
+<li><strong>Perfective</strong> – improving features based on user feedback</li>
+</ul>
+</li>
+<li>Software maintenance ensures the program <strong>remains useful and reliable over time</strong></li>
+</ul>
+<h2 id="development-models">Development Models</h2>
+<h2 id="waterfall">Waterfall</h2>
+<h3 id="what-is-the-waterfall-model">What is the waterfall model?</h3>
+<ul>
+<li>The Waterfall Model is a <strong>sequential software development process</strong> divided into <strong>distinct phases</strong></li>
+<li>Each phase <strong>must be completed</strong> before the next one begins</li>
+</ul>
+<h4 id="steps">Steps</h4>
+<ol>
+<li><strong>Requirement Gathering and Analysis:</strong> All possible system requirements to be developed are captured and documented clearly</li>
+<li><strong>System Design:</strong> The requirements are translated into a design. Architects and designers define the overall architecture and identify the main components</li>
+<li><strong>Implementation:</strong> The actual code is written in this phase based on the design documents, turning the system design into a functional program</li>
+<li><strong>Integration and Testing:</strong> All the components and modules are integrated and tested to ensure that the entire system works as expected</li>
+<li><strong>Deployment:</strong> The product is released to the market or handed over to the client. It may involve installation, customization, and training</li>
+<li><strong>Maintenance:</strong> Post-release, the system needs regular maintenance to fix bugs, improve performance, or add new features
+<img alt="The Waterfall Model in Software Engineering" src="images/waterfall-model.png" />
+<strong><em>The Waterfall Model in Software Engineering</em></strong></li>
+</ol>
+<h4 id="benefits-and-drawbacks">Benefits and drawbacks</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Simple and linear</strong> – easy to understand and follow</td>
+<td><strong>Inflexible</strong> – difficult to make changes once development begins</td>
+</tr>
+<tr>
+<td><strong>Clear stages and milestones</strong> – easy to track progress</td>
+<td><strong>Expensive to fix late problems</strong> – issues found late are harder to resolve</td>
+</tr>
+<tr>
+<td><strong>Ideal for well-defined projects</strong> – works best when requirements are fixed</td>
+<td><strong>Long development cycle</strong> – each stage must be completed before moving on</td>
+</tr>
+</tbody>
+</table>
+<h4 id="suitability">Suitability</h4>
+<ul>
+<li>The Waterfall Model is most suitable for projects where <strong>requirements are well understood</strong> and <strong>unlikely to change</strong></li>
+<li>It works well when <strong>high quality and compliance are essential</strong>, and there is a clear understanding of the project&rsquo;s goals and constraints</li>
+</ul>
+<h2 id="iterative-agile">Iterative (Agile)</h2>
+<h3 id="what-is-the-iterative-model">What is the iterative model?</h3>
+<ul>
+<li>The iterative model s a <strong>type of Agile software development methodology</strong> that promotes <strong>adaptability</strong> and high customer involvement</li>
+</ul>
+<h4 id="steps_1">Steps</h4>
+<ol>
+<li><strong>Identify user stories and requirements</strong><ul>
+<li>Work closely with stakeholders to gather functional and non-functional requirements</li>
+<li>Requirements are often written as <strong>user stories</strong> (e.g. <em>As a user, I want to&hellip;</em>)</li>
+</ul>
+</li>
+<li><strong>Plan the sprint (Sprint Planning)</strong><ul>
+<li>Break down requirements into <strong>tasks</strong></li>
+<li>Choose a set of tasks (features) for the <strong>current sprint</strong> (a short time-boxed development period, usually 1–4 weeks)</li>
+<li>Define the <strong>sprint goal</strong></li>
+</ul>
+</li>
+<li><strong>Design the solution</strong><ul>
+<li>Decide how the selected features will be built</li>
+<li>Focus is on <strong>simple and adaptable design</strong>, not heavy upfront documentation</li>
+</ul>
+</li>
+<li><strong>Develop the features</strong><ul>
+<li>Write code for the selected tasks in the sprint</li>
+<li>Developers often work in pairs or small teams (e.g. <strong>pair programming</strong>)</li>
+</ul>
+</li>
+<li><strong>Test continuously</strong><ul>
+<li>Perform <strong>unit testing</strong>, <strong>integration testing</strong>, and <strong>acceptance testing</strong> during the sprint</li>
+<li>Testing is <strong>ongoing</strong>, not saved for the end</li>
+</ul>
+</li>
+<li><strong>Review progress (Sprint Review)</strong><ul>
+<li>Demo the working software to stakeholders</li>
+<li>Collect feedback and identify changes or improvements</li>
+</ul>
+</li>
+<li><strong>Reflect on process (Sprint Retrospective)</strong><ul>
+<li>The team reflects on what went well and what needs improving in the next sprint</li>
+<li>Focus is on <strong>team performance and process optimisation</strong></li>
+</ul>
+</li>
+<li><strong>Release</strong> (may happen after every sprint or set of sprints)<ul>
+<li>Deploy working software to users or staging environment</li>
+</ul>
+</li>
+<li><strong>Repeat</strong><ul>
+<li>Move to the next sprint with updated priorities and feedback
+<img alt="The Extreme Programming (Agile) Model" src="images/software-development-methodology-agile-model-alevel.png" /></li>
+</ul>
+</li>
+</ol>
+<h4 id="benefits-and-drawbacks_1">Benefits and drawbacks</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Highly adaptable</strong> – responds quickly to changing requirements</td>
+<td><strong>Requires experienced team members</strong> – may be hard to manage without expertise</td>
+</tr>
+<tr>
+<td><strong>Frequent communication</strong> – promotes constant collaboration</td>
+<td><strong>Risk of burnout</strong> – intense collaboration can tire the team</td>
+</tr>
+<tr>
+<td><strong>Focus on quality</strong> – encourages good design and continuous testing</td>
+<td><strong>May lack documentation</strong> – flexibility can reduce written records</td>
+</tr>
+<tr>
+<td><strong>Customer collaboration</strong> – ensures the product meets real needs</td>
+<td><strong>Scope creep</strong> – changing goals may lead to uncontrolled growth</td>
+</tr>
+</tbody>
+</table>
+<h4 id="suitability_1">Suitability</h4>
+<ul>
+<li>The iterative model is most suitable for <strong>small to medium-sized projects</strong> where <strong>requirements can change</strong> and customer involvement is high</li>
+</ul>
+<h2 id="rapid-application-development-rad">Rapid Application Development (RAD)</h2>
+<h3 id="what-is-rad">What is RAD?</h3>
+<ul>
+<li>Rapid Application Development (<strong>RAD</strong>) is a software development methodology that <strong>emphasises fast and iterative development</strong></li>
+</ul>
+<h4 id="steps_2">Steps</h4>
+<ol>
+<li><strong>Requirement planning:</strong> Gather general system requirements, define constraints and assumptions</li>
+<li><strong>User design and prototyping:</strong> Collaborate with users to develop prototypes, ensuring alignment with user needs</li>
+<li><strong>Construction or iterative development:</strong> Build the system incrementally, with continuous user feedback and adaptation</li>
+<li><strong>Cutover or deployment:</strong> Transition the product into the live environment, including user training, support, and documentation</li>
+<li><strong>Maintenance and updates:</strong> Continue to adapt and improve the system based on user feedback and needs
+<img alt="Rapid Application Development (RAD) Model of Software Development" src="images/software-development-methodology-rapid-application-development-model-alevel.png" />
+<strong><em>Rapid Application Development (RAD) Model of Software Development</em></strong></li>
+</ol>
+<h4 id="benefits-and-drawbacks_2">Benefits and drawbacks</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Speed</strong> – fast development and delivery at relatively low cost</td>
+<td><strong>Requires strong team collaboration</strong> – skilled and cohesive teams are essential</td>
+</tr>
+<tr>
+<td><strong>User involvement</strong> – client feedback shapes the system throughout</td>
+<td><strong>Potential quality issues</strong> – speed may reduce testing and documentation</td>
+</tr>
+<tr>
+<td><strong>Flexibility</strong> – adapts quickly to changing requirements</td>
+<td><strong>Not ideal for small projects</strong> – may be too complex for simple systems</td>
+</tr>
+<tr>
+<td><strong>Incremental development</strong> – builds in small, testable parts</td>
+<td><strong>Scope creep risk</strong> – flexibility can lead to ever-expanding requirements</td>
+</tr>
+</tbody>
+</table>
+<h4 id="suitability_2">Suitability</h4>
+<ul>
+<li>Rapid Application Development is most suitable for projects where <strong>rapid delivery is required</strong> and where requirements can be developed and <strong>refined on the go</strong></li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

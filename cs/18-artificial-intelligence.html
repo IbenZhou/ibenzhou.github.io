@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>18 Artificial Intelligence — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>18 Artificial Intelligence</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#ai-graphs">AI &amp; Graphs</a></li>
+<li><a href="#graphs-to-aid-ai">Graphs to aid AI</a></li>
+<li><a href="#dijkstras-shortest-path-algorithm">Dijkstra&rsquo;s Shortest Path Algorithm</a></li>
+<li><a href="#dijkstras-shortest-path-algorithm_1">Dijkstra’s shortest path algorithm</a></li>
+<li><a href="#what-is-dijkstras-shortest-path-algorithm">What is Dijkstra’s shortest path algorithm?</a></li>
+<li><a href="#programming-dijkstras-shortest-path-algorithm">Programming Dijkstra&rsquo;s shortest path algorithm</a></li>
+<li><a href="#a-algorithm">A* Algorithm</a></li>
+<li><a href="#a-algorithm_1">A* algorithm</a></li>
+<li><a href="#programming-a-algorithm">Programming A* algorithm</a></li>
+<li><a href="#machine-learning">Machine Learning</a></li>
+<li><a href="#neural-networks-deep-learning">Neural networks &amp; deep learning</a></li>
+<li><a href="#categories-of-machine-learning">Categories of machine learning</a></li>
+<li><a href="#back-propagation-regression">Back propagation &amp; regression</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="ai-graphs">AI &amp; Graphs</h2>
+<h2 id="graphs-to-aid-ai">Graphs to aid AI</h2>
+<h3 id="what-is-a-graph">What is a graph?</h3>
+<ul>
+<li>A graph is a set of <strong>vertices/nodes</strong> connected by <strong>edges/arcs</strong></li>
+<li>In AI, graphs are used to <strong>model relationships, networks, and decision-making problems</strong></li>
+<li>They can represent things like:<ul>
+<li>Routes between cities (pathfinding)</li>
+<li>Connections in a neural network</li>
+<li>State transitions in decision trees or planning</li>
+</ul>
+</li>
+</ul>
+<h4 id="types-of-graphs">Types of graphs</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Use in AI</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Directed Graph</strong></td>
+<td>Models one-way relationships, such as <strong>state transitions</strong> in search algorithms (e.g. A*)</td>
+</tr>
+<tr>
+<td><strong>Undirected Graph</strong></td>
+<td>Useful for <strong>bidirectional relationships</strong>, such as undirected social connections in a graph</td>
+</tr>
+<tr>
+<td><strong>Weighted Graph</strong></td>
+<td>Represents <strong>costs or heuristics</strong>, commonly used in <strong>shortest path algorithms</strong> like Dijkstra&rsquo;s or A*</td>
+</tr>
+</tbody>
+</table>
+<h4 id="representation-of-graphs">Representation of graphs</h4>
+<ul>
+<li>Graphs can be represented using:<ul>
+<li><strong>Adjacency Matrix</strong> – ideal for dense graphs and fast lookup</li>
+<li><strong>Adjacency List</strong> – more space, efficient for sparse graphs (often used in AI search)</li>
+</ul>
+</li>
+<li>Both can be <strong>used in AI to represent problem spaces</strong> such as:<ul>
+<li>Game boards</li>
+<li>Map-based navigation</li>
+<li>Resource allocation networks</li>
+</ul>
+</li>
+</ul>
+<h3 id="undirected-unweighted-graph">Undirected, unweighted graph</h3>
+<ul>
+<li>
+<p>An <strong>undirected, unweighted graph</strong> is a type of graph where:</p>
+<ul>
+<li><strong>Edges have no direction</strong>, connections go both ways</li>
+<li><strong>All edges are equal</strong>, there are no weights or costs</li>
+<li>It is represented with a <strong>symmetric adjacency matrix</strong>, where a <code>1</code> indicates a connection and a <code>0</code> means no connection
+<img alt="zTX0ndVB_graph" src="images/zTX0ndVB_graph.png" /></li>
+</ul>
+</li>
+<li>
+<p>In this example:</p>
+<ul>
+<li>Each <strong>node</strong> is a town (e.g. Bolton, Dunkirk, Teesside)<ul>
+<li>A <code>1</code> in the matrix shows a <strong>connection exists</strong> between two towns</li>
+<li>A <code>0</code> means no direct connection</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Example:<ul>
+<li>Bolton and Frogmore have a <code>1</code> at their intersection → they are connected</li>
+<li>Dunkirk and Moulton have a <code>0</code> → no direct connection</li>
+</ul>
+</li>
+<li>The matrix is <strong>symmetric</strong>, confirming that the graph is <strong>undirected</strong></li>
+</ul>
+<h4 id="ai-relevance">AI relevance</h4>
+<ul>
+<li>Undirected, unweighted graphs are useful in AI for:<ul>
+<li><strong>Exploring environments</strong>, e.g. mapping rooms in a building with equal-cost connections</li>
+<li><strong>Clustering</strong> in <strong>machine learning</strong>, where the presence of a connection implies similarity</li>
+<li><strong>Social network analysis</strong>, where mutual connections (friendships, links) are undirected</li>
+</ul>
+</li>
+<li>These graphs are often used in:<ul>
+<li><strong>Depth-first</strong> or <strong>breadth-first search</strong></li>
+<li><strong>Graph traversal algorithms</strong> to explore all reachable nodes</li>
+</ul>
+</li>
+</ul>
+<h3 id="directed-unweighted-graph">Directed, unweighted graph</h3>
+<ul>
+<li>A directed graph (or digraph) is one where <strong>edges have a direction</strong></li>
+<li>This means connections go from one node <strong>to another</strong></li>
+<li>
+<p>Connections <strong>cannot be traversed in reverse</strong> unless another directed edge exists
+<img alt="Nw59wh-j_graph-directed-and-unweighted" src="images/Nw59wh-j_graph-directed-and-unweighted.png" /></p>
+</li>
+<li>
+<p>In this example:</p>
+<ul>
+<li>Each node represents a <strong>town</strong></li>
+<li>Arrows show the <strong>direction</strong> of travel</li>
+<li>A <code>1</code> in the matrix at (row X, column Y) means there is a <strong>directed edge from X to Y</strong></li>
+<li>A <code>0</code> means there is <strong>no direct connection</strong></li>
+</ul>
+</li>
+<li>For instance:<ul>
+<li><code>B → D</code> is allowed (matrix value = 1)</li>
+<li><code>D → C</code> is not allowed (matrix value = 0)</li>
+</ul>
+</li>
+<li>Because this matrix is <strong>not symmetric</strong>, it reflects the <strong>one-way nature</strong> of connections</li>
+</ul>
+<h4 id="ai-relevance_1">AI relevance</h4>
+<ul>
+<li>Directed, unweighted graphs are essential in AI for:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Use case</strong></th>
+<th><strong>How the graph is used</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search algorithms</strong></td>
+<td>Used in <strong>A</strong><em>, </em><em>BFS</em><em>, </em><em>DFS</em>* where state transitions are directional</td>
+</tr>
+<tr>
+<td><strong>Expert systems / rule engines</strong></td>
+<td>Representing dependencies between logical conditions or actions</td>
+</tr>
+<tr>
+<td><strong>Planning and scheduling</strong></td>
+<td>Modelling <strong>prerequisites</strong> and directed workflows</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Handling one-way streets or directed transport systems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="undirected-weighted-graph">Undirected, weighted graph</h3>
+<ul>
+<li>An <strong>undirected, weighted graph</strong> is a graph where:<ul>
+<li><strong>Edges go both ways</strong> (no direction)</li>
+<li><strong>Each edge has a weight</strong>, which can represent:<ul>
+<li>Cost</li>
+<li>Distance</li>
+<li>Time</li>
+<li>Risk</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>If no connection exists between two nodes, the matrix contains <strong>∞ (infinity)</strong>
+<img alt="P4iS91uk_graph-weighted" src="images/P4iS91uk_graph-weighted.png" /></p>
+</li>
+<li>
+<p>Nodes represent <strong>towns</strong></p>
+</li>
+<li>Edges represent <strong>roads</strong>, and <strong>weights</strong> represent distances or costs</li>
+<li>In the matrix:<ul>
+<li><code>matrix[B][D] = 15</code> → Bolton to Dunkirk is 15 units</li>
+<li><code>matrix[B][C] = ∞</code> → Bolton and Cardiff are not directly connected</li>
+</ul>
+</li>
+<li>The matrix is <strong>symmetric</strong>, confirming this is an <strong>undirected</strong> graph</li>
+</ul>
+<h4 id="ai-relevance_2">AI relevance</h4>
+<ul>
+<li>Undirected, weighted graphs are widely used in AI when:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Use case</strong></th>
+<th><strong>How It helps AI</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pathfinding (e.g. A*, Dijkstra)</strong></td>
+<td>Finding the <strong>lowest cost path</strong> between nodes</td>
+</tr>
+<tr>
+<td><strong>Clustering &amp; similarity graphs</strong></td>
+<td>Edges represent <strong>strength of relationships</strong> or <strong>similarity weights</strong></td>
+</tr>
+<tr>
+<td><strong>Recommendation engines</strong></td>
+<td>Connecting users or items based on weighted similarity</td>
+</tr>
+<tr>
+<td><strong>Robotics &amp; navigation</strong></td>
+<td>Planning efficient movement paths through environments</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>In AI, the <strong>weights</strong> are crucial for deciding the <strong>best route or option</strong> when multiple paths are available</li>
+</ul>
+<h3 id="directed-weighted-graph">Directed, weighted graph</h3>
+<ul>
+<li>A <strong>directed, weighted graph</strong> is a graph where:<ul>
+<li><strong>Edges have a direction</strong> (e.g. <code>A → B</code> but not <code>B → A</code>)</li>
+<li>Each edge has a <strong>weight</strong>, such as:<ul>
+<li>Distance</li>
+<li>Cost</li>
+<li>Time</li>
+<li>Probability</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>If there is <strong>no edge</strong>, the value is <strong>∞ (infinity)</strong>
+<img alt="yc9a~wrS_graph-directed-weighted" src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=3840/https://cdn.savemyexams.com/uploads/2024/01/yc9a~wrS_graph-directed-weighted.png" /></p>
+</li>
+<li>
+<p>Nodes = Towns</p>
+</li>
+<li>Edges = One-way roads</li>
+<li>Weights = Travel cost or distance</li>
+<li>The adjacency matrix:<ul>
+<li><code>B → D = 15</code> → there is a road from Bolton to Dunkirk costing 15 units</li>
+<li><code>C → H = 17</code> → Cardiff to Hartlepool has a weight of 17</li>
+<li><code>H → T = 31</code> but <code>T → H = ∞</code> → you can get from Hartlepool to Teesside, but not the other way</li>
+</ul>
+</li>
+<li>This matrix is <strong>not symmetric</strong>, confirming the graph is <strong>directed</strong></li>
+</ul>
+<h4 id="ai-relevance_3">AI relevance</h4>
+<ul>
+<li>Directed, weighted graphs are critical in AI for:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Use case</strong></th>
+<th><strong>Purpose in AI</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>A and Dijkstra algorithms</em> *</td>
+<td>Choosing the <strong>shortest path</strong> where direction and cost matter</td>
+</tr>
+<tr>
+<td><strong>Route planning in robotics</strong></td>
+<td>Modelling direction-sensitive travel (e.g. traffic rules)</td>
+</tr>
+<tr>
+<td><strong>Search algorithms</strong></td>
+<td>Tracking cost between <strong>transitions between states</strong></td>
+</tr>
+<tr>
+<td><strong>Reinforcement learning</strong></td>
+<td>Modelling <strong>rewards/costs</strong> for state transitions in decision environments</td>
+</tr>
+<tr>
+<td><strong>Game AI</strong></td>
+<td>Movement systems with <strong>terrain costs or restrictions</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="dijkstras-shortest-path-algorithm">Dijkstra&rsquo;s Shortest Path Algorithm</h2>
+<h2 id="dijkstras-shortest-path-algorithm_1">Dijkstra’s shortest path algorithm</h2>
+<ul>
+<li>In Computer Science, an <strong>optimisation problem</strong> involves finding the <strong>most efficient solution</strong> to a given problem</li>
+<li>This could mean <strong>minimising</strong> cost, time, or resource usage, or <strong>maximising</strong> output, efficiency, or value</li>
+<li>Examples of optimisation problems include:<ul>
+<li><strong>Finding the shortest route</strong> between two locations (e.g. Google Maps)</li>
+<li><strong>Minimising resource usage</strong> in manufacturing or video games</li>
+<li><strong>Creating efficient timetables</strong> (e.g. for schools or offices)</li>
+<li><strong>Scheduling tasks</strong> and staff shifts to avoid conflicts or downtime</li>
+</ul>
+</li>
+<li>One of the most common real-world examples is <strong>finding the shortest path from A to B</strong>, which is exactly what Dijkstra’s algorithm solves</li>
+</ul>
+<h2 id="what-is-dijkstras-shortest-path-algorithm">What is Dijkstra’s shortest path algorithm?</h2>
+<ul>
+<li>In A Level Computer Science, <strong>Dijkstra’s shortest path algorithm</strong> is a classic <strong>optimisation algorithm</strong></li>
+<li>It calculates the shortest path from a <strong>starting node</strong> to <strong>all other nodes</strong> in a <strong>weighted graph</strong></li>
+<li>It is often compared to <strong>breadth-first search</strong>, but Dijkstra’s includes edge weights and ensures the <strong>lowest total cost</strong> to reach each destination node</li>
+</ul>
+<h4 id="how-it-works">How It works:</h4>
+<ul>
+<li>The graph is made up of <strong>nodes (vertices)</strong> and <strong>edges (arcs)</strong></li>
+<li>Each edge has a <strong>weight</strong>, which can represent:<ul>
+<li>Time</li>
+<li>Distance</li>
+<li>Cost</li>
+</ul>
+</li>
+<li>The algorithm <strong>explores all possible routes</strong>, keeping track of the shortest known distance to each node</li>
+<li>It guarantees the <strong>optimal path</strong> from the start node to every other node in the graph</li>
+<li>For revision on graphs, see [[#AI &amp; Graphs]] </li>
+<li>An illustrated example of Dijkstra’s algorithm is shown below:</li>
+</ul>
+<h4 id="performing-dijkstras-shortest-path-algorithm">Performing Dijkstra&rsquo;s shortest path algorithm</h4>
+<p><img alt="dijkstra-s-algorithm-1-revision-notes-computer-science" src="images/dijkstra-s-algorithm-1-revision-notes-computer-science.png" /></p>
+<ul>
+<li>
+<p>Set A path to 0 and all other path weights to infinity
+<img alt="dijkstra-s-algorithm-2-revision-notes-computer-science" src="images/dijkstra-s-algorithm-2-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Visit A. Update all neighbouring nodes path weights to the distance from A + A&rsquo;s path weight (0)
+<img alt="dijkstra-s-algorithm-3-revision-notes-computer-science" src="images/dijkstra-s-algorithm-3-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Choose the next node to visit that has the lowest path weight (D)</p>
+</li>
+<li>Visit D</li>
+<li>Update all neighbouring, non-visited nodes with a new path weight if the old path weight is bigger than the new path weight</li>
+<li>
+<p>C is updated from 5 to 3 as the new path is shorted (A &gt; D &gt; C)
+<img alt="dijkstra-s-algorithm-4-revision-notes-computer-science" src="images/dijkstra-s-algorithm-4-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Choose the next node to visit that has the lowest path weight (E)</p>
+</li>
+<li>Visit E</li>
+<li>Update all neighbouring, non-visited nodes from E with a new path weight</li>
+<li>
+<p>F is updated from 7 to 5 as the new path is shorter (A &gt; D &gt; E &gt; F)
+<img alt="dijkstra-s-algorithm-5-revision-notes-computer-science" src="images/dijkstra-s-algorithm-5-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Choose the next node to visit, alphabetically (B)</p>
+</li>
+<li>Visit B</li>
+<li>Update all neighbouring non-visited nodes from B with a new weight if the path is less than the current path</li>
+<li>
+<p>C is not updated as A &gt; B &gt; C is 4
+<img alt="dijkstra-s-algorithm-6-revision-notes-computer-science" src="images/dijkstra-s-algorithm-6-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Choose the next lowest node and visit (C)</p>
+</li>
+<li>Update C&rsquo;s neighbours if the new path is shorter than the old path</li>
+<li>
+<p>A &gt; D &gt; C &gt; G is 8, so G is not updated
+<img alt="dijkstra-s-algorithm-7-revision-notes-computer-science" src="images/dijkstra-s-algorithm-7-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Choose the next lowest node and visit (F)</p>
+</li>
+<li>Update F&rsquo;s neighbours if the new path is shorter than the old path</li>
+<li>
+<p>F has no non-visited neighbours so no updates are made
+<img alt="dijkstra-s-algorithm-8-revision-notes-computer-science" src="images/dijkstra-s-algorithm-8-revision-notes-computer-science.png" /></p>
+</li>
+<li>
+<p>Choose the next lowest node and visit (G)</p>
+</li>
+<li>G has no non-visited neighbours so no updates are made</li>
+<li>All nodes have been visited</li>
+<li>Back tracking from G gives the following order and total distance A-D-E-G (5)
+<img alt="dijkstras-algorithm-9" src="images/dijkstras-algorithm-9.png" />
+<strong><em>Figure 1: Performing Dijkstra’s Shortest path Algorithm</em></strong></li>
+</ul>
+<h2 id="programming-dijkstras-shortest-path-algorithm">Programming Dijkstra&rsquo;s shortest path algorithm</h2>
+<h3 id="how-do-you-write-dijkstras-shortest-path-algorithm">How do you write Dijkstra&rsquo;s shortest path algorithm?</h3>
+<h4 id="pseudocode">Pseudocode</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">Dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">// Initialise distances</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span>
+<span class="w">        </span><span class="n">SET</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">infinity</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">node</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">start</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">previousNode</span><span class="w"> </span><span class="n">AS</span><span class="w"> </span><span class="n">DICTIONARY</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">visited</span><span class="w"> </span><span class="n">AS</span><span class="w"> </span><span class="n">LIST</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">unvisited</span><span class="w"> </span><span class="n">AS</span><span class="w"> </span><span class="n">LIST</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span>
+<span class="w">        </span><span class="n">ADD</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">unvisited</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">node</span>
+<span class="w">    </span><span class="n">WHILE</span><span class="w"> </span><span class="nf">LENGTH</span><span class="p">(</span><span class="n">unvisited</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="c1">// Find unvisited node with shortest distance</span>
+<span class="w">        </span><span class="n">SET</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">        </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">unvisited</span>
+<span class="w">            </span><span class="n">IF</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">node</span>
+<span class="w">            </span><span class="n">ELSEIF</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">min</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">node</span>
+<span class="w">            </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="n">NEXT</span><span class="w"> </span><span class="n">node</span>
+<span class="w">        </span><span class="c1">// Exit if goal reached</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">goal</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">EXIT</span><span class="w"> </span><span class="n">WHILE</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="c1">// Update distances to neighbours</span>
+<span class="w">        </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span><span class="o">[</span><span class="n">min</span><span class="o">]</span>
+<span class="w">            </span><span class="n">SET</span><span class="w"> </span><span class="n">cost</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="nf">weight</span><span class="p">(</span><span class="n">min</span><span class="p">,</span><span class="w"> </span><span class="n">neighbour</span><span class="p">)</span><span class="w">  </span><span class="c1">// assume this function returns the edge weight</span>
+<span class="w">            </span><span class="n">SET</span><span class="w"> </span><span class="n">alt</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">min</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cost</span>
+<span class="w">            </span><span class="n">IF</span><span class="w"> </span><span class="n">alt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">distance</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">alt</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">previousNode</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">min</span>
+<span class="w">            </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="n">NEXT</span><span class="w"> </span><span class="n">neighbour</span>
+<span class="w">        </span><span class="n">REMOVE</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">unvisited</span>
+<span class="w">        </span><span class="n">ADD</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">visited</span>
+<span class="w">    </span><span class="n">ENDWHILE</span>
+<span class="w">    </span><span class="c1">// Build path from goal to start</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="n">AS</span><span class="w"> </span><span class="n">LIST</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">goal</span>
+<span class="w">    </span><span class="n">WHILE</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">start</span>
+<span class="w">        </span><span class="n">ADD</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">path</span>
+<span class="w">        </span><span class="n">SET</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">previousNode</span><span class="o">[</span><span class="n">node</span><span class="o">]</span>
+<span class="w">    </span><span class="n">ENDWHILE</span>
+<span class="w">    </span><span class="n">ADD</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">path</span>
+<span class="w">    </span><span class="n">REVERSE</span><span class="w"> </span><span class="n">path</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">path</span>
+<span class="n">ENDFUNCTION</span>
+</code></pre></div>
+
+<p><strong>Assumptions:</strong></p>
+<ul>
+<li><code>graph[node]</code> returns a list of neighbour nodes</li>
+<li><code>weight(x, y)</code> returns the edge weight between node <code>x</code> and <code>y</code></li>
+<li>Lists like <code>visited</code>, <code>unvisited</code>, and <code>path</code> support <code>ADD</code> and <code>REMOVE</code></li>
+</ul>
+<h4 id="python">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="c1"># Initialise distances and previous node map</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">}</span>
+    <span class="n">distance</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">previous_node</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">unvisited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">while</span> <span class="n">unvisited</span><span class="p">:</span>
+        <span class="c1"># Find the unvisited node with the smallest distance</span>
+        <span class="n">min_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">unvisited</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">min_node</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">distance</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">distance</span><span class="p">[</span><span class="n">min_node</span><span class="p">]:</span>
+                <span class="n">min_node</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">if</span> <span class="n">min_node</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">for</span> <span class="n">neighbour</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">min_node</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">neighbour</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">alt</span> <span class="o">=</span> <span class="n">distance</span><span class="p">[</span><span class="n">min_node</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span>
+            <span class="k">if</span> <span class="n">alt</span> <span class="o">&lt;</span> <span class="n">distance</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]:</span>
+                <span class="n">distance</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt</span>
+                <span class="n">previous_node</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_node</span>
+        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">min_node</span><span class="p">)</span>
+        <span class="n">unvisited</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">min_node</span><span class="p">)</span>
+    <span class="c1"># Reconstruct path from goal to start</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">goal</span>
+    <span class="k">while</span> <span class="n">current</span> <span class="o">!=</span> <span class="n">start</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">previous_node</span><span class="p">[</span><span class="n">current</span><span class="p">]</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">path</span>
+</code></pre></div>
+
+<p><strong>Example usage:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="n">Graph</span><span class="w"> </span><span class="n">format</span><span class="p">:</span><span class="w"> </span><span class="n">adjacency</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="kd">with</span><span class="w"> </span><span class="n">weighted</span><span class="w"> </span><span class="n">edges</span>
+<span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="sc">&#39;A&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;B&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="sc">&#39;C&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;B&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;D&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;C&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;D&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;D&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;E&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;E&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[]</span>
+<span class="p">}</span>
+<span class="n">print</span><span class="p">(</span><span class="n">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;E&#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<p><strong>Output:</strong></p>
+<ul>
+<li>A list of nodes representing the <strong>shortest path</strong> from <code>'A'</code> to <code>'E'</code></li>
+</ul>
+<h2 id="a-algorithm">A* Algorithm</h2>
+<h2 id="a-algorithm_1">A* algorithm</h2>
+<h3 id="what-is-the-a-algorithm">What is the A* algorithm?</h3>
+<ul>
+<li>The <strong>A*</strong> (A-star) algorithm is a <strong>pathfinding algorithm</strong> that builds upon <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/18-artificial-intelligence-ai-/artificial-intelligence-ai/dijkstras-shortest-path-algorithm/">Dijkstra’s algorithm</a></li>
+<li>It introduces a <strong>heuristic function</strong> to improve efficiency</li>
+<li>It is used to find the shortest path from a starting node to a goal node in a graph</li>
+<li>While Dijkstra’s algorithm considers only the <strong>actual cost</strong> from the start node:<ul>
+<li>A* enhances this by estimating the <strong>remaining distance</strong> to the goal</li>
+<li>This makes it <strong>more goal-oriented</strong> and often more efficient</li>
+</ul>
+</li>
+</ul>
+<h4 id="how-a-improves-on-dijkstras">How A* improves on Dijkstra’s</h4>
+<ul>
+<li>To avoid inefficient detours, A* introduces a <strong>heuristic function</strong>, called <strong>h(x)</strong></li>
+<li>It estimates the <strong>straight-line distance</strong> (Euclidean distance) from the current node to the goal</li>
+<li>A* combines both cost and estimate using the formula:<ul>
+<li><strong>f(x) = g(x) + h(x)</strong></li>
+<li><strong>g(x)</strong> = the actual cost from the start node to the current node</li>
+<li><strong>h(x)</strong> = the heuristic estimate to the goal node</li>
+<li><strong>f(x)</strong> = the total estimated cost of the cheapest solution through node x</li>
+</ul>
+</li>
+<li>By choosing nodes with the lowest <strong>f(x)</strong> value, A* aims to explore paths that are both cheap and <strong>move closer to the goal</strong></li>
+</ul>
+<h4 id="heuristics-in-a">Heuristics in A*</h4>
+<ul>
+<li>The heuristic function <strong>h(x)</strong> should <strong>never overestimate</strong> the true cost to the goal</li>
+<li>This ensures A* remains <strong>optimally efficient</strong></li>
+<li>The closer h(x) is to the true cost, the <strong>fewer nodes</strong> A* needs to explore</li>
+<li>If h(x) increases, it may indicate the algorithm is moving <strong>away from the goal</strong>, helping it backtrack or choose a better path</li>
+<li>Below is an illustration of the A* search:
+<img alt="dijkstras-algorithm-a-search-1" src="images/dijkstras-algorithm-a-search-1.png" /> <img alt="dijkstras-algorithm-a-search-2" src="images/dijkstras-algorithm-a-search-2.png" /> <img alt="dijkstras-algorithm-a-search-3" src="images/dijkstras-algorithm-a-search-3.png" /> <img alt="dijkstras-algorithm-a-search-4" src="images/dijkstras-algorithm-a-search-4.png" /> <img alt="dijkstras-algorithm-a-search-5" src="images/dijkstras-algorithm-a-search-5.png" /> <img alt="dijkstras-algorithm-a-search-6" src="images/dijkstras-algorithm-a-search-6.png" />
+<strong>Figure 2: Performing the A* Search</strong></li>
+</ul>
+<h3 id="a-vs-dijkstras">A* vs Dijkstra’s</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Dijkstra’s</th>
+<th>A* Search</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Goal-aware?</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Cost function</td>
+<td><code>g(x)</code></td>
+<td><code>g(x) + h(x)</code></td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Slower (explores more)</td>
+<td>Faster (more direct toward goal)</td>
+</tr>
+<tr>
+<td>Use of heuristic</td>
+<td>None</td>
+<td>Yes, estimates distance to goal</td>
+</tr>
+<tr>
+<td>Best for&hellip;</td>
+<td>Full shortest path map</td>
+<td>Fastest route to a specific destination</td>
+</tr>
+</tbody>
+</table>
+<h2 id="programming-a-algorithm">Programming A* algorithm</h2>
+<h3 id="how-do-you-write-an-a-algorithm">How do you write an A* algorithm?</h3>
+<h4 id="pseudocode_1">Pseudocode</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">AStarSearch</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">// Initialise distances and f-scores</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span>
+<span class="w">        </span><span class="n">SET</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">infinity</span>
+<span class="w">        </span><span class="n">SET</span><span class="w"> </span><span class="n">f</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">infinity</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">node</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">start</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">f</span><span class="o">[</span><span class="n">start</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">h</span><span class="o">[</span><span class="n">start</span><span class="o">]</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">openSet</span><span class="w"> </span><span class="n">AS</span><span class="w"> </span><span class="n">LIST</span>
+<span class="w">    </span><span class="n">ADD</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">openSet</span>
+<span class="w">    </span><span class="n">WHILE</span><span class="w"> </span><span class="n">openSet</span><span class="w"> </span><span class="n">IS</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">EMPTY</span>
+<span class="w">        </span><span class="c1">// Find node in openSet with the lowest f value</span>
+<span class="w">        </span><span class="n">SET</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">        </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">openSet</span>
+<span class="w">            </span><span class="n">IF</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">node</span>
+<span class="w">            </span><span class="n">ELSEIF</span><span class="w"> </span><span class="n">f</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">f</span><span class="o">[</span><span class="n">min</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">node</span>
+<span class="w">            </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="n">NEXT</span><span class="w"> </span><span class="n">node</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">goal</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">EXIT</span><span class="w"> </span><span class="n">WHILE</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="n">REMOVE</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">openSet</span>
+<span class="w">        </span><span class="c1">// Check all neighbours of current node</span>
+<span class="w">        </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span><span class="o">[</span><span class="n">min</span><span class="o">]</span>
+<span class="w">            </span><span class="n">SET</span><span class="w"> </span><span class="n">tentativeG</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">min</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cost</span><span class="p">(</span><span class="n">min</span><span class="p">,</span><span class="w"> </span><span class="n">neighbour</span><span class="p">)</span>
+<span class="w">            </span><span class="n">IF</span><span class="w"> </span><span class="n">tentativeG</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">tentativeG</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">f</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span>
+<span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">previousNode</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">min</span>
+<span class="w">                </span><span class="n">IF</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">openSet</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                    </span><span class="n">ADD</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">TO</span>
+</code></pre></div>
+
+<ul>
+<li><code>graph[min]</code> assumes you&rsquo;re storing adjacency lists</li>
+<li><code>h[node]</code> is your heuristic table</li>
+<li><code>g[]</code> and <code>f[]</code> are maps (dictionaries) for real cost and estimated total cost</li>
+<li><code>cost(min, neighbour)</code> should be defined or assumed available</li>
+</ul>
+<h4 id="python_1">Python</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">a_star_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="n">open_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">}</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">}</span>
+    <span class="n">came_from</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">g</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">f</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span><span class="p">[</span><span class="n">start</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">open_set</span><span class="p">:</span>
+        <span class="c1"># Get node with lowest f value</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">open_set</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">current</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">open_set</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">neighbour</span><span class="p">,</span> <span class="n">cost</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">current</span><span class="p">]:</span>
+            <span class="n">tentative_g</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">current</span><span class="p">]</span> <span class="o">+</span> <span class="n">cost</span>
+            <span class="k">if</span> <span class="n">tentative_g</span> <span class="o">&lt;</span> <span class="n">g</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]:</span>
+                <span class="n">g</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span> <span class="o">=</span> <span class="n">tentative_g</span>
+                <span class="n">f</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span>
+                <span class="n">came_from</span><span class="p">[</span><span class="n">neighbour</span><span class="p">]</span> <span class="o">=</span> <span class="n">current</span>
+                <span class="k">if</span> <span class="n">neighbour</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">open_set</span><span class="p">:</span>
+                    <span class="n">open_set</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbour</span><span class="p">)</span>
+    <span class="c1"># Reconstruct path</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">goal</span>
+    <span class="k">while</span> <span class="n">node</span> <span class="o">!=</span> <span class="n">start</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">came_from</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">path</span>
+</code></pre></div>
+
+<p><strong>Example usage:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="sc">&#39;A&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;B&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="sc">&#39;C&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;B&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;D&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;C&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;D&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;D&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;E&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;E&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[]</span>
+<span class="p">}</span>
+<span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="sc">&#39;A&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;B&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;C&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;D&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="sc">&#39;E&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+<span class="n">print</span><span class="p">(</span><span class="n">a_star_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;E&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">))</span>
+</code></pre></div>
+
+<p><strong>Output:</strong></p>
+<ul>
+<li>A possible shortest path from <code>'A'</code> to <code>'E'</code>, guided by the heuristic values</li>
+</ul>
+<h2 id="machine-learning">Machine Learning</h2>
+<h2 id="neural-networks-deep-learning">Neural networks &amp; deep learning</h2>
+<h3 id="what-is-machine-learning-ml">What is machine learning (ML)?</h3>
+<ul>
+<li>Machine learning is <strong>a type of artificial intelligence (AI)</strong> that allows computers to:<ul>
+<li><strong>Learn patterns from data</strong></li>
+<li>Improve performance <strong>without being explicitly programmed</strong></li>
+</ul>
+</li>
+<li>Instead of following fixed rules, machine learning systems:<ul>
+<li><strong>Analyse</strong> large amounts of data</li>
+<li><strong>Identify</strong> patterns or trends</li>
+<li><strong>Make</strong> predictions or decisions based on that data</li>
+</ul>
+</li>
+<li>ML is used in: spam filters, voice assistants, recommendation systems, fraud detection</li>
+</ul>
+<h3 id="what-are-artificial-neural-networks-anns">What are artificial neural networks (ANNs)?</h3>
+<ul>
+<li>Artificial neural networks (ANNs) are <strong>algorithms</strong> inspired by the structure of the <strong>human brain</strong><ul>
+<li>A neural network is made up of <strong>layers of nodes (neurons)</strong> connected by <strong>weighted links</strong></li>
+<li>Each neuron receives input, processes it, and passes the result to the next layer</li>
+<li>The network <strong>adjusts the weights</strong> based on errors in output (using algorithms like backpropagation)</li>
+</ul>
+</li>
+</ul>
+<h4 id="how-anns-help-machine-learning">How ANNs help machine learning</h4>
+<ul>
+<li>ANNs are powerful because they:<ul>
+<li>Automatically <strong>learn from experience</strong>, even with complex or unstructured data</li>
+<li>Improve their accuracy with <strong>more data and training</strong></li>
+<li>Can solve problems that are <strong>too complex for rule-based programming</strong></li>
+</ul>
+</li>
+<li>Examples: handwriting recognition, speech recognition, image classification, language translation</li>
+</ul>
+<h3 id="deep-learning-dl">Deep learning (DL)</h3>
+<ul>
+<li>Deep learning is a <strong>subfield of machine learning</strong> that uses <strong>deep (multi-layered) neural networks</strong><ul>
+<li>The more layers a network has, the more complex patterns it can learn</li>
+<li>Especially effective at learning <strong>abstract features</strong> in images, text, audio, and video</li>
+</ul>
+</li>
+<li>Example: facial recognition apps learn features like eyes, noses, and then full faces through many layers</li>
+</ul>
+<h3 id="reinforcement-learning-rl">Reinforcement learning (RL)</h3>
+<ul>
+<li>Reinforcement learning is another type of machine learning where an <strong>agent learns by interacting with an environment</strong><ul>
+<li>It <strong>receives rewards</strong> for good actions and <strong>penalties</strong> for poor actions</li>
+<li>Over time, the agent learns an <strong>optimal strategy</strong> (called a <em>policy</em>) to maximise rewards</li>
+</ul>
+</li>
+<li>Used in: robotics, self-driving cars, game-playing AI (like AlphaGo), industrial automation</li>
+</ul>
+<h3 id="summary-why-use-these-methods">Summary: why use these methods?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Method</strong></th>
+<th><strong>What it does</strong></th>
+<th><strong>Why use it</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Machine Learning</strong></td>
+<td>Learns from labelled data</td>
+<td>Automates decisions with high accuracy</td>
+</tr>
+<tr>
+<td><strong>Artificial Neural Network</strong></td>
+<td>Mimics human brain to recognise complex patterns</td>
+<td>Excellent for handling messy, high-dimensional data</td>
+</tr>
+<tr>
+<td><strong>Deep Learning</strong></td>
+<td>Uses many neural layers to extract features</td>
+<td>Performs well with images, language, sound</td>
+</tr>
+<tr>
+<td><strong>Reinforcement Learning</strong></td>
+<td>Learns by trial and error with feedback</td>
+<td>Useful where there&rsquo;s no labelled data, only success/failure</td>
+</tr>
+</tbody>
+</table>
+<h2 id="categories-of-machine-learning">Categories of machine learning</h2>
+<ul>
+<li>Machine learning algorithms are categorised based on <strong>how they learn from data</strong></li>
+<li>The two main categories are:</li>
+</ul>
+<h3 id="supervised-learning">Supervised learning</h3>
+<ul>
+<li>Supervised learning is when the algorithm is trained on a <strong>labelled dataset</strong></li>
+<li>Meaning the <strong>input data</strong> has <strong>known outputs</strong> (answers)<ul>
+<li>The goal is to learn a function that maps inputs to the correct output</li>
+<li>Once trained, the model can make predictions on <strong>unseen data</strong></li>
+</ul>
+</li>
+<li>Example:<ul>
+<li>Input: Email text</li>
+<li>Output: Spam or Not Spam</li>
+<li>The model learns from thousands of pre-labelled emails</li>
+</ul>
+</li>
+</ul>
+<h4 id="used-for">Used for:</h4>
+<ul>
+<li><strong>Classification</strong> (e.g. face recognition, spam detection)</li>
+<li><strong>Regression</strong> (e.g. predicting house prices)</li>
+</ul>
+<h3 id="unsupervised-learning">Unsupervised learning</h3>
+<ul>
+<li>Unsupervised learning is when the algorithm is given <strong>unlabelled data</strong>, and it must <strong>find patterns</strong> or <strong>groupings</strong> on its own<ul>
+<li>There are no correct answers, the system explores the data structure</li>
+<li>It identifies <strong>clusters, trends, or anomalies</strong> without any guidance</li>
+</ul>
+</li>
+<li>Example:<ul>
+<li>Input: Customer purchase data</li>
+<li>Output: Groups of customers with similar buying habits</li>
+</ul>
+</li>
+</ul>
+<h4 id="used-for_1">Used for:</h4>
+<ul>
+<li><strong>Clustering</strong> (e.g. customer segmentation, social network analysis)</li>
+<li><strong>Dimensionality reduction</strong> (e.g. simplifying complex data)</li>
+</ul>
+<h2 id="back-propagation-regression">Back propagation &amp; regression</h2>
+<h3 id="what-is-back-propagation">What is back propagation?</h3>
+<ul>
+<li>Back propagation is a training method used in <strong>artificial neural networks</strong> to <strong>improve accuracy</strong> by adjusting the weights of connections</li>
+<li>It is a key part of the <strong>supervised learning</strong> process and works as follows:
+1. <strong>Forward pass</strong>:<ol>
+<li>Input data passes through the network layer by layer</li>
+<li>The network produces an <strong>output</strong> (a prediction)</li>
+<li><strong>Error calculation</strong></li>
+<li>The output is compared to the <strong>actual target</strong> value</li>
+<li>The <strong>difference</strong> is called the <strong>error</strong></li>
+<li><strong>Backward pass</strong></li>
+<li>The error is <strong>propagated backwards</strong> through the network</li>
+<li>Each layer calculates its <strong>contribution to the error</strong></li>
+<li><strong>Weight adjustment</strong></li>
+<li>The weights of the connections are updated using an algorithm (e.g. <strong>gradient descent</strong>) to reduce future errors</li>
+</ol>
+</li>
+</ul>
+<h4 id="why-use-back-propagation">Why use back propagation?</h4>
+<ul>
+<li>Helps the neural network <strong>learn from mistakes</strong></li>
+<li>Makes the model more <strong>accurate over time</strong></li>
+<li>Allows multi-layer networks to <strong>fine-tune all layers</strong>, not just the output</li>
+<li>Common in: image recognition, speech recognition, language translation</li>
+</ul>
+<h3 id="what-is-regression">What is regression?</h3>
+<ul>
+<li>Regression is a type of <strong>supervised learning</strong> used to predict <strong>continuous values</strong> (rather than categories)</li>
+<li>The aim is to <strong>find the relationship</strong> between input features and a numerical output</li>
+</ul>
+<h4 id="types-of-regression">Types of regression:</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Linear regression</strong></td>
+<td>Predicts output using a straight-line relationship (y = mx + c)</td>
+</tr>
+<tr>
+<td><strong>Multiple linear regression</strong></td>
+<td>Uses <strong>multiple input features</strong> to predict one continuous output</td>
+</tr>
+<tr>
+<td><strong>Logistic regression</strong></td>
+<td>Predicts <strong>binary outcomes</strong> (e.g. yes/no), despite the name “regression”</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-linear-regression">Example: linear regression</h4>
+<ul>
+<li>Predicting house prices based on square footage:<ul>
+<li>Input: size of house</li>
+<li>Output: estimated price</li>
+<li>The model learns a line that best fits the data points</li>
+</ul>
+</li>
+</ul>
+<h4 id="why-use-regression-methods">Why use regression methods?</h4>
+<ul>
+<li>Useful for <strong>forecasting</strong>, <strong>trend analysis</strong>, and <strong>risk prediction</strong></li>
+<li>Interpretable, often used in real-world problems like:<ul>
+<li>Business analytics</li>
+<li>Finance</li>
+<li>Healthcare</li>
+</ul>
+</li>
+</ul>
+<h4 id="quiz">Quiz</h4>
+<p>Supervised and unsupervised learning are two categories of machine learning.
+Describe supervised learning and unsupervised learning.<strong>[4]</strong>
+<strong>Answer</strong>
+<strong>Supervised learning (Max 3 of 4)</strong></p>
+<ul>
+<li>Supervised learning allows data to be collected, or a data output produced, from the previous experience [1 mark]</li>
+<li>In supervised learning, known input and associated outputs are given <strong>OR</strong> uses sample data with known outputs (in training) <strong>OR</strong> uses labelled input data [1 mark]</li>
+<li>
+<p>Able to predict future outcomes based on past data [1 mark]
+<strong>Unsupervised learning (Max 3 of 4)</strong></p>
+</li>
+<li>
+<p>Unsupervised machine learning helps all kinds of unknown patterns in data to be found [1 mark]</p>
+</li>
+<li>Unsupervised learning only requires input data to be given [1 mark]</li>
+<li>Uses any data <strong>OR</strong> not trained on the right output <strong>OR</strong> uses unlabelled input data [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

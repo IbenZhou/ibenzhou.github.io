@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9.2 Algorithms — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>9.2 Algorithms</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#algorithm-basics">Algorithm Basics</a></li>
+<li><a href="#definition-of-algorithm">Definition of algorithm</a></li>
+<li><a href="#what-is-an-algorithm">What is an algorithm?</a></li>
+<li><a href="#identifier-tables">Identifier tables</a></li>
+<li><a href="#pseudocode_1">Pseudocode</a></li>
+<li><a href="#input-process-output">Input, process, output</a></li>
+<li><a href="#programming-constructs">Programming constructs</a></li>
+<li><a href="#translation-skills">Translation Skills</a></li>
+<li><a href="#structured-englishflowchart-to-pseudocode">Structured English/Flowchart to Pseudocode</a></li>
+<li><a href="#structured-englishpseudocode-to-flowchart">Structured English/Pseudocode to Flowchart</a></li>
+<li><a href="#refinement-logic">Refinement &amp; Logic</a></li>
+<li><a href="#stepwise-refinement">Stepwise refinement</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="algorithm-basics">Algorithm Basics</h2>
+<h2 id="definition-of-algorithm">Definition of algorithm</h2>
+<h2 id="what-is-an-algorithm">What is an algorithm?</h2>
+<ul>
+<li>An algorithm is a <strong>solution to a problem</strong> expressed as a <strong>sequence of defined steps</strong></li>
+<li>Methods of writing an algorithm before attempting to program a solution include:<ul>
+<li><strong>Structured English</strong></li>
+<li><strong>Pseudocode</strong></li>
+<li><strong>Flowcharts</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="structured-english">Structured English</h4>
+<ul>
+<li>Structured English is a <strong>human-readable method</strong> for describing algorithms using a combination of <strong>natural English language</strong> and <strong>programming logic</strong><ul>
+<li>It uses clear English phrases to describe each step</li>
+<li>Logic structures like <strong>IF&hellip;THEN</strong>, <strong>REPEAT</strong>, and <strong>WHILE</strong> may appear, but without strict syntax rules</li>
+<li>Often used in the early planning stages before converting to pseudocode</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>Ask<span class="w"> </span>the<span class="w"> </span>user<span class="w"> </span>to<span class="w"> </span>enter<span class="w"> </span>their<span class="w"> </span>age
+If<span class="w"> </span>the<span class="w"> </span>age<span class="w"> </span>is<span class="w"> </span><span class="m">18</span><span class="w"> </span>or<span class="w"> </span>over
+→<span class="w"> </span>Display<span class="w"> </span>a<span class="w"> </span>welcome<span class="w"> </span>message
+Otherwise
+→<span class="w"> </span>Display<span class="w"> </span>an<span class="w"> </span>access<span class="w"> </span>denied<span class="w"> </span>message
+</code></pre></div>
+
+<h4 id="pseudocode">Pseudocode</h4>
+<ul>
+<li>Pseudocode is a <strong>precise, structured, and language-independent way</strong> of describing an algorithm that resembles a programming language</li>
+<li>It <strong>follows specific exam-board-defined syntax</strong><ul>
+<li>It includes formal elements like <code>IF</code>, <code>THEN</code>, <code>ELSE</code>, <code>WHILE</code>, <code>REPEAT</code>, <code>DECLARE</code>, and <code>←</code> for assignment</li>
+<li>Students must follow <strong>CIE’s pseudocode format</strong> in exams</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">INPUT</span><span class="w"> </span><span class="n">Age</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Welcome to the site&quot;</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Sorry, this site is for users 18 and over&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<h4 id="flowcharts">Flowcharts</h4>
+<ul>
+<li>Flowcharts are a <strong>visual tool</strong> that uses <strong>shapes to represent different functions</strong> to <strong>describe an algorithm</strong></li>
+<li>Used to <strong>visualise the flow of control</strong> in a system</li>
+<li>Standard symbols include:<ul>
+<li><strong>Oval</strong> for Start/End</li>
+<li><strong>Parallelogram</strong> for Input/Output</li>
+<li><strong>Rectangle</strong> for Processes</li>
+<li><strong>Diamond</strong> for Decisions</li>
+</ul>
+</li>
+<li>Arrows show the <strong>sequence of operations</strong>
+<img alt="Flowchart symbols: oval for start/stop, parallelogram for input/output, rectangle for processes, and diamond for decisions with yes/no branches." src="images/2801-2026-02-19-0ek-kleki.png" /></li>
+</ul>
+<h2 id="identifier-tables">Identifier tables</h2>
+<h3 id="what-is-an-identifier-table">What is an identifier table?</h3>
+<ul>
+<li>An identifier table is used when writing <strong>pseudocode</strong> to keep track of all the <strong>identifier names</strong> used in an algorithm</li>
+<li>An <strong>identifier</strong> is the <strong>name given to a variable, constant, array, procedure</strong>, or any other named element in the pseudocode</li>
+</ul>
+<h4 id="why-use-an-identifier-table">Why use an identifier table?</h4>
+<ul>
+<li>It helps you stay <strong>organised</strong> when designing an algorithm</li>
+<li>Ensures <strong>consistent naming</strong></li>
+<li>Makes it easier to understand what each identifier stores or does</li>
+<li>Useful in <strong>exam questions</strong> when you are asked to declare variables clearly</li>
+</ul>
+<h4 id="identifier-naming-rules">Identifier naming rules</h4>
+<ul>
+<li>Must start with a <strong>letter</strong> (A–Z or a–z)</li>
+<li>Can include <strong>letters</strong>, <strong>digits (0–9)</strong>, and <strong>underscores (_)</strong></li>
+<li><strong>Accented characters</strong> and <strong>symbols</strong> are not allowed</li>
+<li>Identifiers are <strong>case sensitive</strong> (e.g. <code>Total</code> and <code>total</code> are <strong>NOT</strong> treated the same)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StudentName</code></td>
+<td>Stores a student’s full name</td>
+</tr>
+<tr>
+<td><code>TestScore</code></td>
+<td>Holds a test score value</td>
+</tr>
+<tr>
+<td><code>MAX_SCORE</code></td>
+<td>Maximum score allowed</td>
+</tr>
+<tr>
+<td><code>FormList</code></td>
+<td>Stores names in a form group</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pseudocode_1">Pseudocode</h2>
+<h2 id="input-process-output">Input, process, output</h2>
+<h3 id="what-is-an-input">What is an input?</h3>
+<ul>
+<li>An input is <strong>data or information being entered/taken into a program</strong> before it is processed in the algorithm</li>
+<li>An input can come from a variety of sources, such as:<ul>
+<li><strong>User</strong> - keyboard, mouse, controller, microphone</li>
+<li><strong>Sensors</strong> - temperature, pressure, movement</li>
+</ul>
+</li>
+<li>Values are input using the <code>INPUT</code> command</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">INPUT</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<h3 id="what-is-a-process">What is a process?</h3>
+<ul>
+<li>A process is <strong>a doing action performed in the algorithm</strong> that transforms inputs into the desired output. The central processing unit (<strong>CPU</strong>) executes the instructions that define the process</li>
+<li>An example would be:<ul>
+<li><strong>Comparing two numbers</strong></li>
+<li><strong>Calculating an average</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="what-is-an-output">What is an output?</h3>
+<ul>
+<li>An output is <strong>the result of the processing in an algorithm</strong> and usually the way a user can see if an algorithm works as intended</li>
+<li>An output can take various forms, such as:<ul>
+<li><strong>Numbers</strong> - result of calculations</li>
+<li><strong>Text</strong></li>
+<li><strong>Images</strong></li>
+<li><strong>Actions</strong> - triggering events</li>
+</ul>
+</li>
+<li>Values are output using the <code>OUTPUT</code> command</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">OUTPUT</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p>More than one value can be output in the same command when separated by commas</p>
+<div class="highlight"><pre><span></span><code>OUTPUT &quot;First name: &quot;, Fname, &quot;Surname: &quot;, Sname
+</code></pre></div>
+
+<h4 id="example-1-area-of-a-shape">Example 1 - Area of a shape</h4>
+<ul>
+<li>A user wants to write a program to calculate the area of a shape</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Input</strong></th>
+<th><strong>Process</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>• Length<br>• Width</td>
+<td>• Length ✕ width</td>
+<td>• Area</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1">// Calculate the area of a rectangle</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">Length</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">Width</span>
+<span class="n">Area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Width</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The area is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Area</span>
+</code></pre></div>
+
+<h4 id="example-2-average-test-score">Example 2 - Average test score</h4>
+<ul>
+<li>A teacher wants to calculate the average mark achieved on a test amongst students in a class</li>
+<li>The teacher needs to enter how many students in the class and for each students a score out of 50</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Input</strong></th>
+<th><strong>Process</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>• Number of students<br>• Score per student</td>
+<td>• TotalScore = TotalScore + score per student<br>• Average = TotalScore / Number of students</td>
+<td>• Average mark</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1">// Calculate the average test score for a class</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">TotalScore</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Score</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">NumberOfStudents</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Average</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">TotalScore</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">NumberOfStudents</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">StudentIndex</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">NumberOfStudents</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter score for student &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">StudentIndex</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Score</span>
+<span class="w">    </span><span class="n">TotalScore</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TotalScore</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Score</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">StudentIndex</span>
+<span class="n">Average</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TotalScore</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NumberOfStudents</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The average score is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Average</span>
+</code></pre></div>
+
+<h2 id="programming-constructs">Programming constructs</h2>
+<h3 id="what-is-sequence">What is sequence?</h3>
+<ul>
+<li>Sequence refers to lines of code which are run <strong>one line at a time</strong></li>
+<li>The lines of code are run in the <strong>order</strong> that they written from the first line of code to the last line of code</li>
+<li>Sequence is <strong>crucial to the flow</strong> of a program, any instructions out of sequence can lead to <strong>unexpected behaviour or errors</strong></li>
+</ul>
+<h4 id="example">Example</h4>
+<ul>
+<li>A simple program to ask a user to input two numbers, number two is subtracted from number one and the result is outputted</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Line</strong></th>
+<th><strong>Pseudocode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>01</strong></td>
+<td><code>INPUT NumberOne</code></td>
+</tr>
+<tr>
+<td><strong>02</strong></td>
+<td><code>INPUT NumberTwo</code></td>
+</tr>
+<tr>
+<td><strong>03</strong></td>
+<td><code>Result ← NumberOne - NumberTwo</code></td>
+</tr>
+<tr>
+<td><strong>04</strong></td>
+<td><code>OUTPUT "The result is ", Result</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-selection">What is selection?</h3>
+<ul>
+<li>Selection is when the <strong>flow of a program is changed,</strong> depending on a <strong>set of conditions</strong></li>
+<li>The outcome of this condition will then determine <strong>which lines or block of code is run next</strong></li>
+<li>Selection is used for <strong>validation</strong>, <strong>calculation</strong> and making sense of a <strong>user&rsquo;s choices</strong></li>
+<li>There are two ways to write selection statements:<ul>
+<li><strong>if</strong>&hellip; <strong>then</strong>&hellip; <strong>else</strong>&hellip;</li>
+<li><strong>case</strong>&hellip;</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Structure</strong></th>
+<th><strong>IF&hellip;THEN&hellip;ELSE example</strong></th>
+<th><strong>CASE statement example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Used for <strong>binary decisions</strong> (true/false)</td>
+<td>Used for <strong>multiple specific options</strong></td>
+</tr>
+<tr>
+<td><strong>Scenario</strong></td>
+<td>Check if a user is old enough to vote</td>
+<td>Perform an action based on the direction entered</td>
+</tr>
+<tr>
+<td><strong>Pseudocode example</strong></td>
+<td>INPUT Age<br>IF Age &gt;= 18 THEN<br>        OUTPUT &ldquo;You can vote&rdquo;<br>ELSE<br>        OUTPUT &ldquo;You cannot vote&rdquo;<br>ENDIF</td>
+<td>INPUT Direction<br>CASE OF Direction<br>    &ldquo;N&rdquo; : OUTPUT &ldquo;North&rdquo;<br>    &ldquo;S&rdquo; : OUTPUT &ldquo;South&rdquo;<br>    &ldquo;E&rdquo; : OUTPUT &ldquo;East&rdquo;<br>    &ldquo;W&rdquo; : OUTPUT &ldquo;West&rdquo;<br>    OTHERWISE : OUTPUT &ldquo;Invalid direction&rdquo;<br>ENDCASE</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-iteration">What is iteration?</h3>
+<ul>
+<li>Iteration means <strong>repeating a line or block of code</strong> using a <strong>loop</strong></li>
+<li>It allows a program to perform a task <strong>multiple times</strong> until a condition is met</li>
+</ul>
+<h4 id="types-of-iteration">Types of iteration</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Pseudocode Format</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Count-controlled</strong></td>
+<td>Repeats a fixed number of times</td>
+<td><code>FOR ... TO ... NEXT</code></td>
+</tr>
+<tr>
+<td><strong>Post-condition</strong></td>
+<td>Repeats <strong>at least once</strong>, checks the condition <strong>after</strong> running the block</td>
+<td><code>REPEAT ... UNTIL</code></td>
+</tr>
+<tr>
+<td><strong>Pre-condition</strong></td>
+<td>Checks the condition <strong>before</strong> running the block</td>
+<td><code>WHILE ... ENDWHILE</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1">// Count-controlled</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">i</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+<span class="c1">// Post-condition</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Password</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Secret123&quot;</span>
+<span class="c1">// Pre-condition</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">Score</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span>
+<span class="w">    </span><span class="n">Score</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Score</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span>
+<span class="n">ENDWHILE</span>
+</code></pre></div>
+
+<h4 id="quiz">Quiz</h4>
+<p>A teacher uses a paper-based system to store marks for a class test. The teacher requires a program to assign grades based on these results.
+The program will output the grades together with the average mark.
+Write a detailed description of the algorithm that will be needed.<strong>[6]</strong>
+<strong>Answer</strong>
+<strong>Marks awarded for a description of each of the following steps of the algorithm:</strong></p>
+<ol>
+<li>Reference variables for Count of students and Total marks [1 mark]</li>
+<li>Loop through all students (Count) [1 mark]</li>
+<li>Input individual mark (in loop) [1 mark]</li>
+<li>Compare mark with threshold / boundary values to determine grade (in loop) [1 mark]</li>
+<li>Output the grade for a student (in loop) [1 mark]</li>
+<li>Maintain a Total (and Count if required) (in loop) [1 mark]</li>
+<li>Calculate average by dividing Total by Count and Output (after loop) [1 mark]</li>
+</ol>
+<h2 id="translation-skills">Translation Skills</h2>
+<h2 id="structured-englishflowchart-to-pseudocode">Structured English/Flowchart to Pseudocode</h2>
+<h3 id="example-structured-english">Example - Structured English</h3>
+<p>A customer is buying an item. If the customer has a discount code, they receive 10% off the price. Otherwise, they pay the full amount. The program should ask for the item price and whether they have a discount code, then calculate and display the final price.</p>
+<h4 id="step-1-structured-english">Step 1 - Structured English</h4>
+<ol>
+<li>Ask the user to enter the price of the item</li>
+<li>Ask the user if they have a discount code</li>
+<li>
+<p>If they do have a discount code<br />
+     → Calculate 10% off the price<br />
+     → Subtract the discount from the original price</p>
+</li>
+<li>
+<p>Otherwise<br />
+     → The price stays the same</p>
+</li>
+<li>
+<p>Output the final price</p>
+</li>
+</ol>
+<h4 id="step-2-identifier-table">Step 2 – Identifier table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ItemPrice</code></td>
+<td>Original price of the item</td>
+</tr>
+<tr>
+<td><code>HasDiscount</code></td>
+<td>TRUE if user has a discount code</td>
+</tr>
+<tr>
+<td><code>DiscountAmount</code></td>
+<td>Amount taken off the original price</td>
+</tr>
+<tr>
+<td><code>FinalPrice</code></td>
+<td>Price after discount is applied</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-3-pseudocode">Step 3 – Pseudocode</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Ask for item price</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">ItemPrice</span>
+<span class="c1">// Ask if user has a discount code</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">HasDiscount</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">HasDiscount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">DiscountAmount</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ItemPrice</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.10</span>
+<span class="w">    </span><span class="n">FinalPrice</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ItemPrice</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">DiscountAmount</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">FinalPrice</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ItemPrice</span>
+<span class="n">ENDIF</span>
+<span class="c1">// Output the final price</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The final price is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FinalPrice</span>
+</code></pre></div>
+
+<h2 id="structured-englishpseudocode-to-flowchart">Structured English/Pseudocode to Flowchart</h2>
+<h3 id="example-pseudocode">Example - Pseudocode</h3>
+<div class="highlight"><pre><span></span><code><span class="n">INPUT</span><span class="w"> </span><span class="n">Number</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="n">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Even&quot;</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Odd&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<h4 id="step-1-identifier-table">Step 1 – Identifier table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Number</code></td>
+<td>The number entered by the user</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-2-flowchart-structure">Step 2 – Flowchart structure</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Pseudocode statement</strong></th>
+<th><strong>Flowchart symbol</strong></th>
+<th><strong>Purpose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INPUT Number</code></td>
+<td>Parallelogram (Input/Output)</td>
+<td>User enters a number</td>
+</tr>
+<tr>
+<td><code>IF Number MOD 2 = 0</code></td>
+<td>Diamond (Decision)</td>
+<td>Checks if the number is divisible by 2</td>
+</tr>
+<tr>
+<td><code>OUTPUT "Even"</code></td>
+<td>Parallelogram (Input/Output)</td>
+<td>Displays message if the condition is true</td>
+</tr>
+<tr>
+<td><code>OUTPUT "Odd"</code></td>
+<td>Parallelogram (Input/Output)</td>
+<td>Displays message if the condition is false</td>
+</tr>
+<tr>
+<td>Start/End</td>
+<td>Oval</td>
+<td>Denotes beginning and end of the process</td>
+</tr>
+<tr>
+<td>Arrows</td>
+<td>Lines with arrows</td>
+<td>Indicate flow of control</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Flowchart to determine if a number is odd or even: start, input number, check if number mod 2 equals 0, output 'Even' or 'Odd', then stop." src="images/40540_untitled-diagram-3.png" /></p>
+<h2 id="refinement-logic">Refinement &amp; Logic</h2>
+<h2 id="stepwise-refinement">Stepwise refinement</h2>
+<h3 id="what-is-stepwise-refinement">What is stepwise refinement?</h3>
+<ul>
+<li>Stepwise refinement is the process of <strong>breaking down a complex problem</strong> into smaller, more manageable sub-problems in a logical order</li>
+<li>Each sub-problem is <strong>refined step by step</strong> until it is simple enough to be solved with a single subroutine or module</li>
+<li>This method ensures that the overall problem can be solved by addressing each part individually, in a <strong>structured and efficient</strong> way</li>
+</ul>
+<h4 id="relationship-to-decomposition-and-top-down-design">Relationship to decomposition and top-down design</h4>
+<ul>
+<li><strong>Decomposition</strong> is the general concept of breaking a problem down into smaller parts</li>
+<li><strong>Top-down design</strong> is the strategy used to perform decomposition</li>
+<li><strong>Stepwise refinement</strong> is the process used in top-down design to <strong>gradually refine</strong> each major task into simpler sub-tasks</li>
+<li>In other words, <strong>stepwise refinement is how top-down design is implemented</strong></li>
+</ul>
+<h4 id="benefits-of-stepwise-refinement">Benefits of stepwise refinement</h4>
+<ul>
+<li>Helps developers <strong>understand and organise</strong> the structure of a program</li>
+<li>Makes <strong>testing and debugging easier</strong> through <strong>unit testing</strong> of individual subroutines</li>
+<li>Encourages <strong>code reuse</strong> by breaking tasks into reusable components</li>
+<li>Supports <strong>collaborative development</strong>, as tasks can be divided between team members</li>
+<li>Each subroutine should:<ul>
+<li><strong>Be clear and focused</strong> on a single task</li>
+<li><strong>Be simple</strong> enough to implement directly</li>
+<li><strong>Not need</strong> further breakdown</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-calculating-student-grades">Example: Calculating student grades</h3>
+<ul>
+<li>Here’s how stepwise refinement could be applied to a program designed to calculate student grades for a teacher’s classes:</li>
+</ul>
+<h4 id="top-level-task">Top-level task:</h4>
+<ul>
+<li>Calculate grades for all students in all classes</li>
+</ul>
+<h4 id="stepwise-refinement_1">Stepwise refinement:</h4>
+<ul>
+<li><strong>Step 1 – Calculate the grade for each assessment</strong><ul>
+<li>For each question:<ul>
+<li>Mark the question</li>
+<li>Store the mark</li>
+</ul>
+</li>
+<li>Sum the marks for all questions in the assessment</li>
+</ul>
+</li>
+<li><strong>Step 2 – Calculate the average grade for each student</strong><ul>
+<li>Add together grades from all assessments</li>
+<li>Divide by the number of assessments</li>
+<li>Store the average</li>
+</ul>
+</li>
+<li><strong>Step 3 – Repeat for each class</strong><ul>
+<li>For every student in the class:<ul>
+<li>Perform Steps 1 and 2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>This structured breakdown allows each task to be turned into a subroutine, simplifying the design, implementation, and testing of the overall program</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

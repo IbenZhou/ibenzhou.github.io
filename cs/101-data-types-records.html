@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10.1 Data Types & Records — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>10.1 Data Types & Records</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#data-types">Data Types</a></li>
+<li><a href="#primitive-data-types">Primitive data types</a></li>
+<li><a href="#record-structures">Record Structures</a></li>
+<li><a href="#purpose-of-records">Purpose of records</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="data-types">Data Types</h2>
+<h2 id="primitive-data-types">Primitive data types</h2>
+<h3 id="what-are-data-types">What are data types?</h3>
+<ul>
+<li>A data type is a classification of data into groups according to the <strong>kind of data they represent</strong></li>
+<li>Computers use different data types to represent different types of data in a program</li>
+<li>The basic data types include:<ul>
+<li><strong>Integer</strong>: used to represent <strong>whole numbers</strong>, either positive or negative<ul>
+<li>Examples: 10, -5, 0</li>
+</ul>
+</li>
+<li><strong>Real</strong>: used to represent <strong>numbers with a fractional part</strong>, either positive or negative<ul>
+<li>Examples: 3.14, -2.5, 0.0</li>
+</ul>
+</li>
+<li><strong>Char</strong>: used to represent a <strong>single character</strong> such as a letter, digit or symbol<ul>
+<li>Examples: &lsquo;a&rsquo;, &lsquo;B&rsquo;, &lsquo;5&rsquo;, &lsquo;$&rsquo;</li>
+</ul>
+</li>
+<li><strong>String</strong>: used to represent a <strong>sequence of alphanumerical characters</strong><ul>
+<li>Examples: &ldquo;Hello World&rdquo;, &ldquo;1234&rdquo;, &ldquo;@#$%&rdquo;</li>
+</ul>
+</li>
+<li><strong>Boolean</strong>: used to represent <strong>true or false</strong> values<ul>
+<li>Examples: True, False</li>
+</ul>
+</li>
+<li><strong>Date</strong>: used to store a <strong>calendar date</strong><ul>
+<li>Example: DD/MM/YY</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>It is important to choose the <strong>correct data type for a given situation</strong> to ensure accuracy and efficiency in the program</li>
+<li>In pseudocode and some other programming languages, <strong>data types must be declared</strong> before they can be used<ul>
+<li>The data types are declared with each <strong>data item</strong> to be used</li>
+<li>Each data item is given a <strong>unique</strong> name called an <strong>identifier</strong></li>
+<li><code>DECLARE &lt;identifier&gt; : &lt;data type&gt;</code></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Data Type</strong></th>
+<th><strong>Example Value</strong></th>
+<th><strong>Pseudocode</strong></th>
+<th><strong>Python</strong></th>
+<th><strong>Java</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Integer</strong></td>
+<td><code>10</code></td>
+<td><code>DECLARE Age : INTEGER</code>  <br><code>Age ← 10</code></td>
+<td><code>age = 10</code></td>
+<td><code>int age = 10;</code></td>
+</tr>
+<tr>
+<td><strong>Real</strong></td>
+<td><code>3.14</code></td>
+<td><code>DECLARE Temp : REAL</code>  <br><code>Temp ← 3.14</code></td>
+<td><code>temp = 3.14</code></td>
+<td><code>double temp = 3.14;</code></td>
+</tr>
+<tr>
+<td><strong>Char</strong></td>
+<td><code>'A'</code></td>
+<td><code>DECLARE Grade : CHAR</code>  <br><code>Grade ← 'A'</code></td>
+<td><code>grade = 'A'</code></td>
+<td><code>char grade = 'A';</code></td>
+</tr>
+<tr>
+<td><strong>String</strong></td>
+<td><code>"Hello"</code></td>
+<td><code>DECLARE Name : STRING</code>  <br><code>Name ← "Hello"</code></td>
+<td><code>name = "Hello"</code></td>
+<td><code>String name = "Hello";</code></td>
+</tr>
+<tr>
+<td><strong>Boolean</strong></td>
+<td><code>TRUE</code></td>
+<td><code>DECLARE LoggedIn : BOOLEAN</code>  <br><code>LoggedIn ← TRUE</code></td>
+<td><code>logged_in = True</code></td>
+<td><code>boolean loggedIn = true;</code></td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td><code>24/04/2025</code></td>
+<td><code>DECLARE DOB : DATE</code>  <br><code>DOB ← "24/04/2025"</code></td>
+<td><code>dob = "24/04/2025"</code> (string or <code>datetime</code>)</td>
+<td><code>LocalDate dob = LocalDate.of(2025, 4, 24);</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="record-structures">Record Structures</h2>
+<h2 id="purpose-of-records">Purpose of records</h2>
+<h3 id="what-is-a-record">What is a record?</h3>
+<ul>
+<li>A record is a <strong>composite data structure</strong> used to store a <strong>collection of related data items</strong></li>
+<li>Each item <strong>can be</strong> of a <strong>different data type</strong></li>
+<li>It allows a programmer to group related values under <strong>one identifier</strong></li>
+<li>Records help create a <strong>more structured and readable</strong> approach to storing and managing data</li>
+<li>A record contains a <strong>fixed number of fields</strong>, each with its own name and type</li>
+<li>In pseudocode, a record can by declared as:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">Typename</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="p">..</span>
+<span class="w">    </span><span class="p">..</span>
+<span class="n">ENDTYPE</span>
+</code></pre></div>
+
+<ul>
+<li>Suppose we want to store information about a car</li>
+<li>We can define a <strong>record type</strong> like this:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Car</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Make</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Model</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Colour</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Price</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">DateOfRegistration</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">DATE</span>
+<span class="n">ENDTYPE</span>
+</code></pre></div>
+
+<ul>
+<li>We can then <strong>create a variable</strong> of this type:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">MyCar</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Car</span>
+</code></pre></div>
+
+<ul>
+<li>And <strong>assign values</strong> to its fields:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">MyCar</span><span class="p">.</span><span class="na">Make</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Toyota&quot;</span>
+<span class="n">MyCar</span><span class="p">.</span><span class="na">Model</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Yaris&quot;</span>
+<span class="n">MyCar</span><span class="p">.</span><span class="na">Colour</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Red&quot;</span>
+<span class="n">MyCar</span><span class="p">.</span><span class="na">Price</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mf">14995.99</span>
+<span class="n">MyCar</span><span class="p">.</span><span class="na">DateOfRegistration</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;12/03/2022&quot;</span>
+</code></pre></div>
+
+<ul>
+<li>To <strong>read from the record</strong> we can:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Make: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MyCar</span><span class="p">.</span><span class="na">Make</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Model: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MyCar</span><span class="p">.</span><span class="na">Model</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Colour: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MyCar</span><span class="p">.</span><span class="na">Colour</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Price: £&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MyCar</span><span class="p">.</span><span class="na">Price</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Date of Registration: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MyCar</span><span class="p">.</span><span class="na">DateOfRegistration</span>
+</code></pre></div>
+
+<ul>
+<li><strong>Records</strong> in programming are a type of <strong>data structure</strong> used to group related data in your code</li>
+<li>These are <strong>not the same</strong> as records in a database, which refer to a <strong>complete set of fields</strong> on a single entity in a table (<strong>row</strong>)</li>
+</ul>
+<h4 id="key-features-of-records">Key features of records</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Can store <strong>different data types</strong></td>
+<td>Unlike arrays, records are not limited to a single type</td>
+</tr>
+<tr>
+<td>Fields are <strong>named</strong></td>
+<td>Each item in the record has a meaningful identifier</td>
+</tr>
+<tr>
+<td>Offers <strong>structured storage</strong></td>
+<td>Easier to manage complex data about real-world entities</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

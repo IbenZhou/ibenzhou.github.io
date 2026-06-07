@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5.1 Operating System — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>5.1 Operating System</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#operating-system-fundamentals">Operating System Fundamentals</a></li>
+<li><a href="#purpose-of-an-os">Purpose of an OS</a></li>
+<li><a href="#os-management-tasks">OS management tasks</a></li>
+<li><a href="#utility-software">Utility software</a></li>
+<li><a href="#program-libraries">Program libraries</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="operating-system-fundamentals">Operating System Fundamentals</h2>
+<h2 id="purpose-of-an-os">Purpose of an OS</h2>
+<h3 id="what-is-an-operating-system-os">What is an operating system (OS)?</h3>
+<ul>
+<li>An operating system (<strong>OS</strong>) is software that <strong>provides an interface between the user and the hardware</strong> in a computer system</li>
+<li>An operating system <strong>hides the complexities of the hardware</strong> from the user, for example:<ul>
+<li>A user <strong>does not need to know</strong> &lsquo;where&rsquo; on secondary storage data is kept, just that it is saved for when they want it again</li>
+</ul>
+</li>
+</ul>
+<h4 id="user-interface">User interface</h4>
+<ul>
+<li>A user interface is <strong>how the user interacts with the operating system</strong></li>
+<li>Examples of user interfaces include:<ul>
+<li><strong>Command Line Interface (CLI)</strong></li>
+<li><strong>Graphical User Interface (GUI)</strong></li>
+<li><strong>Menu</strong></li>
+<li><strong>Natural language (NLI)</strong>
+![[Pasted image 20260506070940.png]]</li>
+</ul>
+</li>
+</ul>
+<h4 id="what-is-a-command-line-interface-cli">What is a command line interface (CLI)?</h4>
+<ul>
+<li>A Command Line Interface (<strong>CLI</strong>) requires users to interact with the operating system using <strong>text-based commands</strong></li>
+<li>CLIs are more commonly used by <strong>advanced users</strong></li>
+<li>Examples of CLIs are MS-DOS (Microsoft Disk Operating System) and Raspbian (for Raspberry Pi)</li>
+</ul>
+<h4 id="what-is-a-graphical-user-interface-gui">What is a graphical user interface (GUI)?</h4>
+<ul>
+<li>A Graphical User Interface (<strong>GUI</strong>) requires users to interact with the operating system using <strong>visual elements</strong> such as windows, icons, menus &amp; pointers (<strong>WIMP</strong>)</li>
+<li>GUIs are <strong>optimised for mouse and touch gesture input</strong></li>
+<li>Examples of GUIs are Windows, Android and macOS</li>
+<li>A menu interface is <strong>successive menus</strong> presented to a user with a <strong>single option at each stage</strong></li>
+<li>Often performed with <strong>buttons</strong> or a <strong>keypad</strong></li>
+<li>Examples include:<ul>
+<li><strong>Chip and pin machines</strong></li>
+<li><strong>Vending machines</strong></li>
+<li><strong>Entertainment streaming services</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="what-is-a-natural-language-interface-nli">What is a natural language interface (NLI)?</h4>
+<ul>
+<li>A natural language interface (<strong>NLI</strong>) uses the spoken word to respond to spoken or textual inputs from a user</li>
+<li>Examples include:<ul>
+<li><strong>Virtual assistants</strong> - Amazon Alexa, Google Assistant, Siri</li>
+<li><strong>Search engines</strong></li>
+<li><strong>Smart home devices</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="os-management-tasks">OS management tasks</h2>
+<p>An operating system has five key <strong>management tasks</strong>:</p>
+<ul>
+<li><strong>Memory management</strong></li>
+<li><strong>File management</strong></li>
+<li><strong>Security management</strong></li>
+<li><strong>Hardware management</strong></li>
+<li><strong>Process management</strong></li>
+</ul>
+<h3 id="memory-management">Memory management</h3>
+<ul>
+<li>Memory management is a process carried out by the operating system <strong>allocating main memory (RAM) between different programs</strong> that are <strong>open at the same time</strong></li>
+<li>The OS is responsible for <strong>copying programs and data from secondary to primary storage</strong> as it is needed</li>
+<li><strong>Programs and data require different amounts of RAM</strong> to operate efficiently and the OS manages this process</li>
+<li><strong>RAM is allocated</strong> based on <strong>priority and fairness</strong>, for example, system applications (essential) may have a higher priority than user applications</li>
+<li>The OS <strong>dynamically manages the memory</strong>, adjusting allocation as needed to maintain optimal system performance</li>
+<li>Memory management makes <strong>multitasking</strong> possible<ul>
+<li>Prevents data from different programs overwriting each other in RAM</li>
+<li>Decides which processes and data should be kept in main memory at any given time</li>
+</ul>
+</li>
+</ul>
+<h3 id="file-management">File management</h3>
+<ul>
+<li>File management is a process carried out by the operating system <strong>creating, organising, manipulating and accessing files and folders on a computer system</strong></li>
+<li>The OS <strong>manages where data is stored</strong> in both <strong>main memory</strong> and <strong>secondary</strong> <strong>storage</strong></li>
+<li>File management gives the user the ability to:<ul>
+<li><strong>Create files/folders</strong></li>
+<li><strong>Name files/folders</strong></li>
+<li><strong>Rename files/folders</strong></li>
+<li><strong>Copy files/folders</strong></li>
+<li><strong>Move files/folders</strong></li>
+<li><strong>Delete files/folders</strong></li>
+</ul>
+</li>
+<li>The OS allows users to control who can access, modify and delete files/folders (<strong>permissions</strong>)</li>
+<li>The OS provides a <strong>search facility</strong> to find specific files based on various criteria</li>
+</ul>
+<h3 id="security-management">Security management</h3>
+<ul>
+<li>Operating systems provide various security features such as <strong>password-protected system accounts</strong>, a <strong>firewall</strong>, virus scanning and <strong>file encryption</strong></li>
+<li>Password-protected system accounts are a very common feature in operating systems</li>
+<li>A system administrator is able to <strong>allocate</strong> different <strong>access rights</strong> for different users on a network</li>
+<li>The OS is able to <strong>maintain settings</strong> for individual users, such as desktop backgrounds, icons and colour schemes</li>
+<li>The OS <strong>audits</strong> (keeps a log of) files created by users, accesses, edits and deletes</li>
+</ul>
+<h3 id="hardware-management">Hardware management</h3>
+<ul>
+<li>Peripheral management is a process carried out by the operating system <strong>managing the way</strong> <strong>peripherals</strong> <strong>(hardware) interact with software</strong></li>
+<li>The OS <strong>allocates system resources</strong> to peripherals to ensure <strong>efficient operation</strong></li>
+<li>Peripheral management makes <strong>plug-and-play</strong> (<strong>PnP</strong>) functionality possible, <strong>automatically detecting and configuring new peripherals</strong> without the need for manually installing device drivers or power cycling the system</li>
+<li>A device driver is <strong>a piece of software used to control a piece of hardware</strong></li>
+<li>Input/output devices <strong>require device drivers</strong> in order to be used by the operating system</li>
+<li>The OS has <strong>generic device drivers built in</strong> which makes <strong>basic compatibilit</strong> y possible</li>
+<li>In order for hardware to be used to its <strong>maximum capacity</strong>, often <strong>a separate device driver must be downloaded</strong> from the manufacturer</li>
+<li>Device drivers are <strong>OS specific</strong> and are <strong>regularly updated</strong></li>
+</ul>
+<h3 id="process-management">Process management</h3>
+<ul>
+<li>Process management is a process carried out by the operating system <strong>dividing time</strong> (<strong>time slicing</strong>) into small chunks and <strong>allocating them to different</strong> <strong>processes</strong></li>
+<li>The CPU executes <strong>one instruction at a time</strong>, but rapid context switching allows <strong>multiple processes</strong> to share processor time</li>
+<li>The OS uses a <strong>scheduling algorithm</strong> to <strong>prioritise</strong> processes</li>
+<li>Processes are <strong>placed in queue</strong> whilst waiting to be carried out, they return to the back of the queue when their time is up</li>
+<li>The goal of process management is to <strong>share resources</strong> (<strong>CPU &amp; main memory</strong>)</li>
+<li>Allows processes to be <strong>paused and resumed</strong> using context switching</li>
+<li>
+<p>Decides <strong>which process is executed next</strong> using a scheduling algorithm
+Identify four key management tasks that the Operating System will perform. <strong>[4]</strong>
+<strong>Answer</strong></p>
+</li>
+<li>
+<p>Memory management [1 mark]</p>
+</li>
+<li>File management [1 mark]</li>
+<li>Security management [1 mark]</li>
+<li>Hardware / device / peripheral / resources management [1 mark]</li>
+<li>Input/output management [1 mark]</li>
+<li>Process management [1 mark]</li>
+<li>Error checking and recovery [1 mark]</li>
+<li>Provision of a platform for software [1 mark]</li>
+<li>Provision of a user interface [1 mark]</li>
+</ul>
+<h2 id="utility-software">Utility software</h2>
+<h3 id="what-is-utility-software">What is utility software?</h3>
+<ul>
+<li>Utility software is a <strong>collection of tools</strong> designed to help <strong>maintain</strong> a computer system</li>
+<li>Utility software is designed to <strong>perform a limited number of tasks</strong></li>
+<li>Utility software <strong>interacts with the computers hardware</strong>, for example, secondary storage devices</li>
+<li>Some utility software comes <strong>installed with the operating system</strong></li>
+<li>Examples of utility software include:<ul>
+<li><strong>Disk formatter</strong></li>
+<li><strong>Virus checker</strong></li>
+<li><strong>Defragmentation software</strong></li>
+<li><strong>Disk contents analysis/disk repair software</strong></li>
+<li><strong>File compression</strong></li>
+<li><strong>Back-up software</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="disk-formatter">Disk formatter</h3>
+<ul>
+<li>A disk formatter <strong>prepares a storage device</strong> (like a hard drive or USB stick) for use by <strong>creating a file system</strong> and <strong>organising the space into sectors and tracks</strong></li>
+<li>It is needed:<ul>
+<li>To <strong>wipe</strong> and <strong>re-initialise</strong> a disk before use</li>
+<li>To change the <strong>file system format</strong> (e.g. FAT32, NTFS)</li>
+<li>To <strong>remove all data</strong> and errors before installing a new OS or reusing the drive</li>
+</ul>
+</li>
+<li>For example:<ul>
+<li><strong>Formatting</strong> a new external drive before saving files</li>
+<li><strong>Reformatting</strong> a corrupted USB stick to make it usable again</li>
+</ul>
+</li>
+</ul>
+<h3 id="virus-checker">Virus checker</h3>
+<ul>
+<li>Virus checking software is a <strong>combination of different software to prevent</strong> computers from being susceptible to <strong>viruses</strong> and other <strong>malicious software</strong></li>
+<li>It typically includes:<ul>
+<li><strong>Anti-virus</strong></li>
+<li><strong>Anti-spam</strong></li>
+<li><strong>Anti-spyware</strong></li>
+</ul>
+</li>
+<li>A virus checker <strong>scans</strong> through <strong>email</strong> attachments, <strong>websites</strong> and downloaded <strong>files</strong> to search for issues</li>
+<li>Two ways virus checkers can approach the task are:<ul>
+<li>Use a list of known <strong>unique malware fingerprints</strong> (<strong>signatures</strong>) to block immediately if they try to access your device in any way</li>
+<li><strong>Monitor</strong> the <strong>behaviour</strong> of programs to identify suspicious activities that might indicate malware such as;<ul>
+<li><strong>Rapid deletion/modification of files</strong></li>
+<li><strong>Attempts to access sensitive data/resources</strong></li>
+<li><strong>Communicating with known malicious servers</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Virus checkers will also perform <strong>checks for updates</strong> to ensure the database of signatures is <strong>up to date</strong></li>
+</ul>
+<h3 id="defragmentation-software">Defragmentation software</h3>
+<ul>
+<li>Defragmentation software <strong>groups fragmented files back together</strong> in order to <strong>improve the access speed</strong> of a hard disk drive <strong>(HDD)</strong></li>
+<li>As programs and data are added to a new hard disk drive, it is added in order, <strong>over time as files are deleted this leaves gaps</strong></li>
+<li>As programs and data are added over time, <strong>these gaps get filled and data becomes fragmented</strong></li>
+<li>Defragmentation can only be used on <strong>magnetic storage</strong>
+![[Pasted image 20260506070846.png]]</li>
+</ul>
+<h3 id="disk-contents-analysisdisk-repair-software">Disk contents analysis/disk repair software</h3>
+<ul>
+<li>This utility checks the <strong>structure and health</strong> of a disk, including <strong>files, folders, sectors</strong>, and the <strong>file allocation table</strong></li>
+<li>It is needed:<ul>
+<li>To <strong>diagnose and fix errors</strong> on the disk (e.g. bad sectors, file system corruption)</li>
+<li>To <strong>recover lost or damaged files</strong></li>
+<li>To improve system performance by identifying and repairing issues</li>
+</ul>
+</li>
+<li>For example:<ul>
+<li>Running <strong>Check Disk (chkdsk)</strong> on Windows to repair file system errors</li>
+<li>Using a <strong>disk utility</strong> on macOS to verify and repair drive problems</li>
+</ul>
+</li>
+</ul>
+<h3 id="file-compression">File compression</h3>
+<ul>
+<li>Compression <strong>reduces the amount of secondary storage</strong> required by performing an algorithm on the original data</li>
+<li><strong>Lossy compression</strong> physically <strong>removes data</strong> from the original data to reduce its size, <strong>the original file can not be re-created</strong></li>
+<li><strong>Lossless compression</strong> uses mathematics to <strong>order data</strong> more efficiently reducing its size, <strong>the original files can be re-created as no data is lost</strong></li>
+</ul>
+<h3 id="back-up-software">Back-up software</h3>
+<ul>
+<li>Back-up software is used to <strong>create copies of personal data</strong> in order to keep it safe in the event of:<ul>
+<li><strong>Accidental loss</strong></li>
+<li><strong>Data theft</strong></li>
+</ul>
+</li>
+<li>Backups can be <strong>automated</strong> and <strong>scheduled</strong> to happen at less busy periods of the day, to not take up valuable system resources (e.g. overnight etc.)</li>
+<li>Backups can be made in two ways:<ul>
+<li><strong>Full</strong> - all files are backed up (saftest, slow)</li>
+<li><strong>Incremental</strong> - only files that have been added/modified since the last backup are backed up (faster, less secure)</li>
+</ul>
+</li>
+<li>Backups can be stored <strong>locally</strong> (secondary storage) or <strong>remotely</strong> (cloud)</li>
+<li>Backup software can be <strong>purchased</strong> or come as a standalone application <strong>bundled</strong> with an <strong>operating system</strong>
+Draw one line from each utility software to its correct description.
+<strong>Utility software Description</strong>
+![[Pasted image 20260506071002.png]]
+<strong>[4]</strong>
+<strong>Answer</strong>
+![[Pasted image 20260506071022.png]]</li>
+</ul>
+<h2 id="program-libraries">Program libraries</h2>
+<h3 id="what-is-a-program-library">What is a program library?</h3>
+<ul>
+<li>A program library is a <strong>collection of pre-written code</strong> (called <strong>library routines</strong>) that programmers can <strong>reuse</strong> in their own software</li>
+<li>These routines can <strong>perform common tasks</strong> such as:<ul>
+<li><strong>Sorting</strong></li>
+<li><strong>Displaying graphics</strong></li>
+<li><strong>Playing sounds</strong></li>
+<li><strong>Managing data</strong></li>
+</ul>
+</li>
+<li>Advantages of using program libraries includes:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantage</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Saves development time</strong></td>
+<td>Pre-written routines can be reused, so programmers don’t need to write common functions from scratch</td>
+</tr>
+<tr>
+<td><strong>Promotes code reuse</strong></td>
+<td>Well-tested routines can be used in multiple programs, reducing duplication</td>
+</tr>
+<tr>
+<td><strong>Improves reliability</strong></td>
+<td>Library routines are usually thoroughly tested and debugged, reducing the chance of errors</td>
+</tr>
+<tr>
+<td><strong>Easier maintenance</strong></td>
+<td>Updates to a library routine automatically benefit all programs that use it (especially with <strong>DLLs</strong>)</td>
+</tr>
+<tr>
+<td><strong>Efficient memory usage</strong></td>
+<td><strong>Dynamic link libraries (DLLs)</strong> are only loaded when needed at runtime, saving system resources</td>
+</tr>
+<tr>
+<td><strong>Standardisation</strong></td>
+<td>Promotes consistency in how common tasks (e.g. file handling, sorting) are implemented</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-a-dll">What is a DLL?</h3>
+<ul>
+<li>A <strong>Dynamic Link Library (DLL)</strong> is a file that contains <strong>pre-written code</strong>, such as <strong>functions or routines</strong>, that can be <strong>used by multiple programs</strong> at <strong>runtime</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Aspect</strong></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Program Size</strong></td>
+<td>Reduces program size by keeping reusable code separate</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Memory Usage</strong></td>
+<td>Saves memory by sharing DLLs between programs</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Code Reuse</strong></td>
+<td>Encourages reuse of common routines (e.g. sorting, sound)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Modularity</strong></td>
+<td>Supports modular design for easier development and maintenance</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Ease of Updates</strong></td>
+<td>Update a DLL once to improve all programs that use it</td>
+<td>Can cause <strong>version conflicts</strong> if newer DLLs aren’t compatible</td>
+</tr>
+<tr>
+<td><strong>Dependencies</strong></td>
+<td>External DLLs can be reused by many applications</td>
+<td>Program may <strong>fail to run</strong> if a required DLL is <strong>missing</strong></td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>-</td>
+<td>Malicious or altered DLLs can pose <strong>security risks</strong></td>
+</tr>
+<tr>
+<td><strong>Debugging</strong></td>
+<td>-</td>
+<td>Errors in DLLs can be <strong>hard to trace</strong> across multiple programs</td>
+</tr>
+</tbody>
+</table>
+<p>Jennifer is writing a computer program for her A Level homework.
+Jennifer uses a program library to help her write her computer program.
+Describe how a program library can be used while writing a computer program. <strong>[2]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>Program libraries store pre-written functions and routines [1 mark]</li>
+<li>The program library can be referenced/imported [1 mark]</li>
+<li>The functions/routines can be called in her own program [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

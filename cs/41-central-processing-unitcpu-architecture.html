@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.1 Central Processing Unit(CPU) Architecture — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>4.1 Central Processing Unit(CPU) Architecture</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#system-architecture">System Architecture</a></li>
+<li><a href="#components-of-the-cpu">Components of the CPU</a></li>
+<li><a href="#system-performance">System Performance</a></li>
+<li><a href="#cores">Cores</a></li>
+<li><a href="#clock-speed">Clock speed</a></li>
+<li><a href="#cache-memory">Cache memory</a></li>
+<li><a href="#bus-width">Bus width</a></li>
+<li><a href="#ports-interfaces">Ports &amp; Interfaces</a></li>
+<li><a href="#usb">USB</a></li>
+<li><a href="#hdmi">HDMI</a></li>
+<li><a href="#vga">VGA</a></li>
+<li><a href="#fetch-execute-cycle">Fetch-Execute Cycle</a></li>
+<li><a href="#f-e-stages">F-E stages</a></li>
+<li><a href="#interrupts">Interrupts</a></li>
+<li><a href="#interrupt-handling">Interrupt handling</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="system-architecture">System Architecture</h2>
+<ul>
+<li>A special purpose register <strong>has a dedicated role</strong> within the operation of the CPU</li>
+<li>There are a number of special purpose registers that <strong>control or track data</strong></li>
+<li>Examples of special purpose registers includes:<ul>
+<li><strong>The Program Counter (PC)</strong></li>
+<li><strong>The Memory Address Register (MAR)</strong></li>
+<li><strong>The Memory Data Register (MDR)</strong></li>
+<li><strong>The Accumulator (ACC)</strong></li>
+<li><strong>Current Instruction Register (CIR)</strong></li>
+<li><strong>Index register (IX)</strong></li>
+<li><strong>Status register (SR)</strong></li>
+</ul>
+</li>
+<li>For each of the registers you must know<ul>
+<li><strong>The name of the register</strong></li>
+<li><strong>Its acronym</strong></li>
+<li><strong>The purpose of the register</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Name</strong></th>
+<th><strong>Acronym</strong></th>
+<th><strong>Purpose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Program Counter</strong></td>
+<td><strong>PC</strong></td>
+<td>- <strong>Holds the</strong> <strong>memory address</strong> of the <strong>next instructions</strong> to be executed<br>    <br>- <strong>Increments</strong> <strong>by 1</strong> as the fetch-decode-execute cycle runs</td>
+</tr>
+<tr>
+<td><strong>Memory Address Register</strong></td>
+<td><strong>MAR</strong></td>
+<td>- <strong>Holds the memory address</strong> of where data or instructions are <strong>to be fetched from</strong> <strong>memory</strong></td>
+</tr>
+<tr>
+<td><strong>Memory Data Register</strong></td>
+<td><strong>MDR</strong></td>
+<td>- <strong>Stores the data or instruction</strong> which has been fetched from memory</td>
+</tr>
+<tr>
+<td><strong>Current Instruction Register</strong></td>
+<td><strong>CIR</strong></td>
+<td>- <strong>Stores the instruction</strong> the CPU is currently decoding or executing</td>
+</tr>
+<tr>
+<td><strong>Accumulator</strong></td>
+<td><strong>ACC</strong></td>
+<td>- <strong>Stores the</strong> <strong>results</strong> of any calculations that have taken place in the Arithmetic Logic Unit (ALU)</td>
+</tr>
+<tr>
+<td><strong>Index Register</strong></td>
+<td><strong>IX</strong></td>
+<td>- <strong>Stores a value</strong> that can be <strong>added to an address</strong> to get the effective memory address<br>    <br>- Used for <strong>indexed addressing</strong></td>
+</tr>
+<tr>
+<td><strong>Status Register</strong></td>
+<td><strong>SR</strong></td>
+<td>- <strong>Stores flags</strong> that reflect the <strong>outcome of the CPU operations</strong><br>    <br>- Holds <strong>individual bits (flags)</strong> which are <strong>set or cleared depending on the result of an instruction</strong> (e.g. overflow)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="components-of-the-cpu">Components of the CPU</h2>
+<h3 id="what-is-the-cpu">What is the CPU?</h3>
+<ul>
+<li>The <strong>CPU</strong> is responsible for <strong>processing all data</strong> within the computer</li>
+<li>It is made up of a number of <strong>components</strong> including:<ul>
+<li><strong>Arithmetic and Logic Unit (ALU)</strong></li>
+<li><strong>Control Unit (CU)</strong></li>
+<li><strong>System clock</strong></li>
+<li><strong>Immediate Access Store (IAS)</strong></li>
+<li><strong>Buses</strong>
+<img alt="Diagram showing a computer's architecture with CPU, ALU, control unit, main memory, data, address, and control buses labelled for data processing." src="images/33319_2025-04-04-0ha-kleki.png" /></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Component</strong></th>
+<th><strong>Full name</strong></th>
+<th><strong>Purpose / function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ALU</strong></td>
+<td>Arithmetic Logic Unit</td>
+<td>Performs <strong>calculations</strong> (e.g. add, subtract) and <strong>logic operations</strong> (e.g. AND, OR)</td>
+</tr>
+<tr>
+<td><strong>CU</strong></td>
+<td>Control Unit</td>
+<td><strong>Manages and controls</strong> the execution of instructions and <strong>directs data flow</strong></td>
+</tr>
+<tr>
+<td><strong>System Clock</strong></td>
+<td>–</td>
+<td>Sends out <strong>regular pulses</strong> to <strong>synchronise</strong> all CPU operations</td>
+</tr>
+<tr>
+<td><strong>IAS</strong></td>
+<td>Immediate Access Store</td>
+<td><strong>Main memory</strong> where <strong>instructions and data</strong> needed by the CPU are <strong>temporarily stored</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="buses">Buses</h4>
+<ul>
+<li>Components within the CPU and wider computer system are <strong>connected by buses</strong></li>
+<li>A bus is <strong>a set of parallel wires</strong> through which <strong>data/signals are transmitted</strong> from one component to another</li>
+<li>There are 3 types of bus:<ul>
+<li><strong>Address</strong> - <strong>unidirectional</strong>, carries <strong>location data</strong> (addresses), data is written to/read from</li>
+<li><strong>Data</strong> - <strong>bidirectional</strong>, carries <strong>data or instructions</strong></li>
+<li><strong>Control</strong> - bidirectional, carries <strong>commands</strong> and <strong>control signals</strong> to tell components when they should be receiving reads or writes etc.<strong>.</strong>
+<img alt="3-1-computer-architecture--von-neumann-architecture-1" src="images/3-1-computer-architecture--von-neumann-architecture-1.png" /></li>
+</ul>
+</li>
+</ul>
+<h2 id="system-performance">System Performance</h2>
+<h2 id="cores">Cores</h2>
+<h3 id="what-is-a-core">What is a core?</h3>
+<ul>
+<li>A core acts like a <strong>mini CPU</strong>, it can <strong>fetch, decode, and execute</strong> instructions on its own</li>
+<li>Each core has its own:<ul>
+<li><strong>Control Unit (CU)</strong></li>
+<li><strong>Arithmetic Logic Unit (ALU)</strong></li>
+<li><strong>Registers</strong></li>
+</ul>
+</li>
+<li>A CPU with <strong>more than one core</strong> is a <strong>multicore CPU</strong></li>
+<li>Allows for <strong>parallel processing</strong>, multiple instructions are processed <strong>at the same time</strong></li>
+<li>Example:<ul>
+<li>A <strong>dual-core</strong> processor has <strong>2 cores</strong></li>
+<li>A <strong>quad-core</strong> processor has <strong>4 cores</strong></li>
+</ul>
+</li>
+<li>
+<p>More cores = <strong>better performance</strong>, especially for powerful programs
+    Example:</p>
+<ul>
+<li>A <strong>quad-core CPU</strong> running at <strong>3GHz</strong></li>
+<li>4 cores × 3 billion = <strong>12 billion instructions per second</strong></li>
+<li>A <strong>dual-core</strong> processor isn&rsquo;t always <strong>twice as fast</strong> as a single-core</li>
+<li>Some time is used for <strong>organising tasks between cores</strong></li>
+<li>Not all tasks can be <strong>split across cores</strong></li>
+<li>Some tasks are <strong>sequential</strong> and must be done <strong>step-by-step</strong>
+<img alt="cpu-cores-" src="images/cpu-cores-.png" /></li>
+</ul>
+<h2 id="clock-speed">Clock speed</h2>
+<h3 id="what-is-clock-speed">What is clock speed?</h3>
+</li>
+<li>
+<p>The <strong>clock</strong> controls the <strong>timing of operations</strong> inside the CPU</p>
+</li>
+<li>It constantly <strong>switches between 0 and 1</strong>, each switch is called a <strong>state change</strong></li>
+<li>A <strong>state change</strong> can represent <strong>one step</strong> in the <strong>fetch-decode-execute cycle</strong><ul>
+<li>Some instructions may take <strong>more than one cycle</strong></li>
+</ul>
+</li>
+<li><strong>Clock speed</strong> measures <strong>how many state changes happen per second</strong></li>
+<li><strong>1 cycle per second = 1 Hz</strong></li>
+<li>A typical clock speed is around <strong>2.3 GHz</strong><ul>
+<li>That’s <strong>2.3 billion cycles per second</strong></li>
+</ul>
+</li>
+<li>A <strong>higher clock speed</strong> means the CPU can <strong>execute more instructions per second</strong></li>
+<li>This helps the computer <strong>run tasks more quickly and efficiently</strong>
+<img alt="Image of the CPU" src="images/image-1---the-cpu.png" /></li>
+</ul>
+<h2 id="cache-memory">Cache memory</h2>
+<h3 id="what-is-cache-memory">What is cache memory?</h3>
+<ul>
+<li>Cache is part of <strong>primary storage</strong></li>
+<li>Stores <strong>frequently used data and instructions</strong></li>
+<li>Located <strong>closer to the CPU</strong> than RAM, so it’s <strong>faster to access</strong></li>
+<li>Some cache is built <strong>directly into each processor core</strong></li>
+<li><strong>Speeds up</strong> the performance of the CPU</li>
+<li>More cache = <strong>more data stored</strong> nearby = <strong>less time waiting</strong> for data from RAM</li>
+<li>Example:<ul>
+<li>A <strong>website</strong> you visit often can be stored in the cache</li>
+<li>Next time you visit, it <strong>loads faster</strong></li>
+<li>If the website updates, the <strong>cached version is updated too</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="levels-of-cache">Levels of cache</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Level</strong></th>
+<th><strong>Location</strong></th>
+<th><strong>Speed</strong></th>
+<th><strong>Size</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1 (L1)</strong></td>
+<td>Inside each CPU core</td>
+<td><strong>Fastest</strong></td>
+<td><strong>Smallest</strong></td>
+</tr>
+<tr>
+<td><strong>Level 2 (L2)</strong></td>
+<td>Inside or near each core</td>
+<td>Fast</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Level 3 (L3)</strong></td>
+<td>Shared by all cores</td>
+<td>Slower than L1/L2</td>
+<td><strong>Largest</strong></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Diagram illustrating CPU cache levels: L1 (small, fast, per core), L2 (shared, slower, larger), L3 (slower, larger, on motherboard)." src="images/fetch-decode-execute-cycle.png" />
+Diagram of the levels within the cache</p>
+<h2 id="bus-width">Bus width</h2>
+<h3 id="what-is-bus-width">What is bus width?</h3>
+<ul>
+<li>Bus width is the number of <strong>bits</strong> a bus can carry at once</li>
+<li>A <strong>wider bus</strong> can transfer <strong>more bits in a single operation</strong></li>
+<li>Example:<ul>
+<li>A <strong>32-bit bus</strong> transfers 32 bits at a time</li>
+<li>A <strong>64-bit bus</strong> transfers 64 bits at a time</li>
+</ul>
+</li>
+<li><strong>Increases performance</strong>, more data can be moved in the same amount of time</li>
+<li>A <strong>wider data bus</strong> means:<ul>
+<li><strong>Faster processing</strong></li>
+<li>More <strong>efficient</strong> memory access</li>
+</ul>
+</li>
+<li>Important for <strong>high-performance tasks</strong> like gaming, video editing, or large data processing</li>
+</ul>
+<h2 id="ports-interfaces">Ports &amp; Interfaces</h2>
+<h2 id="usb">USB</h2>
+<h3 id="what-is-usb">What is USB?</h3>
+<ul>
+<li>The <strong>Universal Serial Bus</strong> (<strong>USB</strong>) is a widely used <strong>standard for transmitting data</strong> between devices</li>
+<li>It is a <strong>serial</strong> <strong>communication method</strong>, and it <strong>operates</strong> <strong>asynchronously</strong></li>
+<li>Many devices use USB such as:<ul>
+<li><strong>Keyboards</strong></li>
+<li><strong>Mice</strong></li>
+<li><strong>Video cameras</strong></li>
+<li><strong>Printers</strong></li>
+<li><strong>Portable media players</strong></li>
+<li><strong>Mobile phone</strong></li>
+<li><strong>Disk drives</strong></li>
+<li><strong>Network adapters</strong></li>
+</ul>
+</li>
+<li>Different USB <strong>connector types</strong> exist for different devices</li>
+<li>The letters refer to the <strong>physical shape and design</strong> of the USB connector:<ul>
+<li><strong>USB-A</strong> - Commonly used for flash drives, mice, keyboards, external HDD</li>
+<li><strong>USB-B</strong> - Found in printers, scanners, and older external storage devices</li>
+<li><strong>USB-C</strong> - Latest standard, known for it&rsquo;s <strong>small size</strong>, <strong>transfer speeds</strong>, and it&rsquo;s <strong>ability to carry power</strong></li>
+</ul>
+</li>
+<li>The term USB can also be <strong>followed by numbers</strong> (<strong>USB 2.0, 3.0, 4 etc</strong>.)</li>
+<li>The numbers refer to the <strong>generation of USB technology</strong>, which determines the <strong>speed and performance</strong>:<ul>
+<li><strong>USB 1.1</strong> - 12 Mbps (very slow)</li>
+<li><strong>USB 2.0</strong> - 480 Mbps (very common but slower compared to modern versions)</li>
+<li><strong>USB 3.0/3.1/3.2</strong> - 5 Gbps to 20 Gbps (much faster, used for external HDDs and gaming devices)</li>
+<li><strong>USB4/ USB4 2.0</strong> - Up to 80 Gbps (the latest and fastest, used for high speed data transfer)</li>
+</ul>
+</li>
+<li>When a device is connected to a USB port the computer:<ul>
+<li><strong>Automatically detects</strong> that the device has been <strong>connected</strong></li>
+<li><strong>Looks for the correct driver:</strong></li>
+<li>If the driver is already installed, the <strong>appropriate device driver is loaded</strong> so that the <strong>device can communicate with the computer</strong>
+            - If the device is <strong>new</strong>, the computer will <strong>look for a compatible device driver</strong>
+            - If one cannot be found, the <strong>user must download and install</strong> an appropriate driver <strong>manually</strong>
+<img alt="USB-A Connector" src="images/2-1-types-and-methods-of-data-transmission-usb-1.png" /> <img alt="USB-C Connector" src="images/2-1-types-and-methods-of-data-transmission-usb-2.png" /></li>
+</ul>
+</li>
+</ul>
+<h4 id="advantages-and-disadvantages-of-usb">Advantages and disadvantages of USB</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Devices are <strong>automatically detected</strong> and <strong>drivers are automatically loaded</strong> for communication</td>
+<td>The <strong>maximum</strong> cable length is <strong>roughly 5 metres</strong> meaning it cannot be used over long distances, <strong>limiting its use</strong></td>
+</tr>
+<tr>
+<td>Cable connectors fit in only one way.<br><br>This prevents incorrect connections and <strong>ensures compatible data transmission</strong></td>
+<td>Older versions of USB have <strong>limited transmission rates</strong> for example <strong>USB 2.0</strong> has <strong>480Mbps</strong></td>
+</tr>
+<tr>
+<td>As USB usage is standardised, there is a lot of support available online and from retailers</td>
+<td><strong>Very old USB standards</strong> <strong>may not be supported</strong> in the near future (USB 1.1, USB 2.0, etc)</td>
+</tr>
+<tr>
+<td>Several different <strong>data transmission rates</strong> are supported. The newest transmission rate as of 2022 is <strong>USB4 2.0</strong> with <strong>80 Gbps</strong> (81,920 Mbps, 170x faster than USB 2.0)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Newer USB standards</strong> are <strong>backwards compatible</strong> with older USB standards</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="hdmi">HDMI</h2>
+<h3 id="what-is-hdmi">What is HDMI?</h3>
+<ul>
+<li>HDMI is a <strong>digital port</strong> that sends both <strong>video and audio output</strong> from a computer to HDMI-enabled devices (e.g. TVs, monitors)</li>
+<li>Replaces older <strong>VGA</strong> analogue systems</li>
+<li>Modern HD TVs and displays require more data because they support:<ul>
+<li><strong>Widescreen format</strong> (16:9 aspect ratio)</li>
+<li><strong>Higher resolution</strong> (e.g. 1920 × 1080 pixels)</li>
+<li><strong>Faster refresh rates</strong> (e.g. 120 Hz)</li>
+<li><strong>Wider colour range</strong> (millions of colour variations)</li>
+</ul>
+</li>
+<li>These features need <strong>faster and higher bandwidth</strong>, which <strong>HDMI provides</strong> (up to <strong>10 Gbps</strong>)</li>
+<li>HDMI uses <strong>HDCP (High-bandwidth Digital Content Protection)</strong></li>
+<li>Devices check for an <strong>authentication key</strong> before sending data (e.g. Blu-ray player to HD TV)</li>
+<li>If the device is authenticated, a <strong>&ldquo;handshake&rdquo;</strong> occurs and data is transmitted</li>
+<li>Helps prevent <strong>unauthorised copying</strong> of protected content</li>
+</ul>
+<h2 id="vga">VGA</h2>
+<h4 id="what-is-vga">What is VGA?</h4>
+<ul>
+<li>VGA was Introduced in the late 1980s as the <strong>standard for video output</strong></li>
+<li>It is now considered <strong>outdated</strong> and is being <strong>phased out</strong></li>
+<li>Maximum resolution: <strong>640 × 480 pixels</strong></li>
+<li>Refresh rate: <strong>up to 60 Hz</strong>, but only supports <strong>16 colours</strong> at that rate</li>
+<li>If resolution is reduced (e.g. <strong>320 × 200</strong>), it can support up to <strong>256 colours</strong></li>
+<li>VGA is an <strong>analogue signal</strong>, which means:<ul>
+<li><strong>Lower image quality over long cables</strong></li>
+<li><strong>More likely to experience signal loss or interference</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="fetch-execute-cycle">Fetch-Execute Cycle</h2>
+<h2 id="f-e-stages">F-E stages</h2>
+<h3 id="what-is-the-fetch-execute-cycle">What is the fetch-execute cycle?</h3>
+<ul>
+<li>The fetch-execute cycle is the <strong>process</strong> that the CPU goes through <strong>repeatedly to process instructions</strong></li>
+<li>
+<p>There are <strong>3 stages</strong>:</p>
+<ul>
+<li><strong>Fetching</strong> an instruction from memory - supplying the address and receiving the instruction from memory</li>
+<li><strong>Decoding</strong> the instruction - interpreting the instruction and then reading and retrieving the required data from their addresses</li>
+<li><strong>Executing</strong> the instruction - the CPU carries out the required action
+<img alt="the-cpu" src="images/the-cpu.png" /></li>
+</ul>
+</li>
+<li>
+<p>In the section below, registers and CPU components appear in <strong>bold</strong> and assembly language is in <em>italics</em></p>
+</li>
+<li>During the fetch-execute cycle, the following steps happen:</li>
+<li><strong>Fetch</strong><ul>
+<li>The <strong>PC</strong> is loaded with 0</li>
+<li>The value from the <strong>PC</strong> (0) is copied to the <strong>MAR</strong></li>
+<li>The address in the <strong>MAR</strong> is sent via the <strong>address bus</strong>, and a <strong>read</strong> instruction is sent on the <strong>control bus</strong></li>
+<li>The data from that memory location is sent down the <strong>data bus</strong> to the <strong>MDR</strong></li>
+<li>The <strong>PC</strong> is incremented by 1, ready for the next instruction</li>
+</ul>
+</li>
+<li><strong>Decode</strong><ul>
+<li>The data from the <strong>MDR</strong> is copied to the <strong>CIR</strong></li>
+<li>The <strong>CIR</strong> splits the instruction into <strong>opcode</strong> and <strong>operand</strong></li>
+<li>The instruction is sent to the <strong>CU</strong>, which decodes what to do next</li>
+</ul>
+</li>
+<li><strong>Execute</strong><ul>
+<li>The registers used will depend on the instruction:<ul>
+<li><em>INP</em> – value from input device is stored in the <strong>ACC</strong></li>
+<li><em>OUT</em> – value currently in the <strong>ACC</strong> is sent to the output</li>
+<li><em>LDA</em> – loads value from RAM into the <strong>MDR</strong>, then to the <strong>ACC</strong></li>
+<li><em>STA</em> – takes the value from the <strong>ACC</strong>, moves it to the <strong>MDR</strong>, then stores it in RAM (location in <strong>MAR</strong>)</li>
+<li><em>ADD/SUB</em> – value in RAM is loaded into the <strong>MDR</strong>, then the calculation happens in the <strong>ALU</strong>, result stored in the <strong>ACC</strong></li>
+<li><em>BRA/BRZ/BRP</em> – branching instructions are handled by the <strong>ALU</strong> to check if conditions are met, and the <strong>PC</strong> is updated accordingly</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Register Transfer Notation (RTN) is a way of describing how <strong>data moves between registers</strong> in a CPU during the <strong>fetch–execute cycle</strong></li>
+<li>It uses <strong>symbols</strong> to represent <strong>registers</strong>, and the arrow symbol <strong>←</strong> to show <strong>data being transferred</strong> from one place to another</li>
+<li>It is a shorthand way to show what&rsquo;s happening inside the CPU</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Symbol</strong></th>
+<th><strong>Meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>←</strong></td>
+<td>Data is transferred into a register</td>
+</tr>
+<tr>
+<td><strong>PC</strong></td>
+<td>Program Counter</td>
+</tr>
+<tr>
+<td><strong>MAR</strong></td>
+<td>Memory Address Register</td>
+</tr>
+<tr>
+<td><strong>MDR</strong></td>
+<td>Memory Data Register</td>
+</tr>
+<tr>
+<td><strong>CIR</strong></td>
+<td>Current Instruction Register</td>
+</tr>
+<tr>
+<td><strong>ACC</strong></td>
+<td>Accumulator</td>
+</tr>
+<tr>
+<td><strong>[ ]</strong></td>
+<td>Contents of a register</td>
+</tr>
+<tr>
+<td><strong>[[ ]]</strong></td>
+<td>Contents of the memory location addressed by the register</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fetch</strong>
+<code>MAR ← [PC]           ; Copy address from Program Counter to MAR</code>
+<code>MDR ← [[MAR]]     ; Read instruction from memory into MDR</code>
+<code>PC ← [PC] + 1        ; Increment PC for the next instruction</code>
+<code>CIR ← [MDR]          ; Copy instruction from MDR to CIR</code>
+<strong>Decode</strong></p>
+<ul>
+<li>
+<p>No specific register transfer, the <strong>CU</strong> decodes the instruction in the <strong>CIR</strong>
+<strong>Execute examples</strong></p>
+</li>
+<li>
+<p><strong>LDA X</strong> (Load value from memory location <strong>X</strong> into <strong>ACC</strong>):
+<code>MAR ← [operand]       ; Load address X into MAR</code>
+<code>MDR ← [[MAR]]      ; Load data from RAM into MDR</code>
+<code>ACC ← [MDR]           ; Copy data into ACC</code></p>
+</li>
+<li>
+<p><strong>STA X</strong> (Store value from <strong>ACC</strong> into memory location <strong>X</strong>):
+<code>MAR ← [operand]       ; Load address X into MAR</code>
+<code>MDR ← [ACC]           ; Copy data from ACC to MDR</code>
+<code>[[MAR]] ← [MDR]     ; Store MDR value into memory</code></p>
+</li>
+<li>
+<p><strong>ADD X</strong> (Add value from memory location <strong>X</strong> to <strong>ACC</strong>):
+<code>MAR ← [operand]</code>
+<code>MDR ← [[MAR]]</code>
+<code>ACC ← [ACC] + [MDR]</code></p>
+</li>
+<li>
+<p><strong>BRZ X</strong> (Branch to <strong>X</strong> if <strong>ACC</strong> = 0):
+<code>If [ACC] = 0 then PC ← [operand]</code></p>
+</li>
+</ul>
+<h2 id="interrupts">Interrupts</h2>
+<h2 id="interrupt-handling">Interrupt handling</h2>
+<h3 id="what-are-interrupts">What are interrupts?</h3>
+<ul>
+<li>An interrupt is a <strong>signal</strong> to the processor that <strong>stops its current task</strong> and performs a different task temporarily</li>
+<li>Interrupts can be <strong>hardware events or time-sensitive tasks</strong></li>
+<li>When an interrupt occurs, the processor <strong>suspends the current program</strong> execution and transfers control to an <strong>interrupt service routine</strong></li>
+</ul>
+<h4 id="purpose-and-role-of-interrupts">Purpose and role of interrupts</h4>
+<ul>
+<li><strong>Real-time Event Handling</strong>: hardware errors and signals from input devices e.g. hard disk failure</li>
+<li><strong>Device Communication</strong>: alerts from external devices e.g. printer jams and network errors</li>
+<li><strong>Multitasking</strong>: suspending processing in one application so that the user can switch to another</li>
+</ul>
+<h4 id="types-of-interrupts">Types of interrupts</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Definition</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hardware Interrupts</strong></td>
+<td>Generated by external devices</td>
+<td>Keyboard input, mouse movements, disk I/O requests</td>
+</tr>
+<tr>
+<td><strong>Software Interrupts</strong></td>
+<td>Triggered by software or the operating system</td>
+<td>Application requests to open a file, <strong>division by zero</strong> errors</td>
+</tr>
+<tr>
+<td><strong>Trap Interrupts</strong></td>
+<td>Intentionally triggered by a program</td>
+<td>Software debugging, handling unexpected error cases</td>
+</tr>
+</tbody>
+</table>
+<h4 id="the-interrupt-process">The interrupt process</h4>
+<ol>
+<li><strong>Interrupt Request (IRQ)</strong><ul>
+<li>An external device or software generates an interrupt, signalling the processor to stop its current task</li>
+<li>The interrupt controller passes this to the interrupt handler for assessment</li>
+</ul>
+</li>
+<li><strong>Interrupt acknowledge</strong><ul>
+<li>The interrupt handler decides if the interrupt needs to be dealt with n <strong>ow or later</strong></li>
+<li>If yes, the <strong>current contents of the processor registers are saved</strong> in memory</li>
+</ul>
+</li>
+<li><strong>Interrupt Service Routine (ISR) lookup</strong><ul>
+<li>The processor <strong>fetches the corresponding Interrupt Service Routine (ISR)</strong> associated with the interrupt type</li>
+</ul>
+</li>
+<li><strong>ISR execution</strong><ul>
+<li>The processor <strong>transfers control</strong> to the ISR and <strong>executes the routine</strong> to handle the specific interrupt</li>
+</ul>
+</li>
+<li><strong>Interrupt exit</strong><ul>
+<li>After the ISR completes, <strong>the processor restores the content of the registers</strong> from step 2</li>
+<li>The fetch-decode-execute cycle is <strong>resumed</strong>
+<img alt="Flowchart explaining CPU interrupt handling: initialisation, interrupt request, acknowledge, lookup, and execution of interrupt service routines." src="images/the-interrupt-process-alevel.png" />
+The interrupt process</li>
+</ul>
+</li>
+</ol>
+<h4 id="what-is-an-isr">What is an ISR?</h4>
+<ul>
+<li>An ISR is a <strong>special function</strong> that handles a particular interrupt type</li>
+<li>Each type of interrupt has a <strong>corresponding routine</strong><ul>
+<li>E.g. printer jam, hard disk failure, file download error, network connection error all have routines to be followed when they happen</li>
+</ul>
+</li>
+<li>ISRs should be <strong>concise</strong>, <strong>efficient</strong>, and carefully designed to <strong>minimise the time taken to execute</strong>, as they often need to handle time-sensitive events</li>
+</ul>
+<h4 id="interrupt-priority-and-nesting">Interrupt priority and nesting</h4>
+<ul>
+<li>Interrupt prioritisation means the processor can acknowledge and <strong>switch to resolving a higher-priority interrupt</strong></li>
+<li>Prioritising interrupts is vital because many things can go wrong <strong>at the same time</strong></li>
+<li><strong>Lower-priority ISRs may be temporarily suspended</strong> until the higher-priority ISR completes the execution</li>
+<li><strong>Nesting of interrupts</strong> refers to the ability of the processor to handle interrupts within interrupts</li>
+<li>Proper management of nested interrupts <strong>avoids potential conflicts</strong> and ensures system stability
+<strong><em>Nesting of interrupts</em></strong></li>
+</ul>
+<h4 id="interrupt-priority-handling">Interrupt priority handling</h4>
+<p><img alt="Diagram showing an interrupt queue with different priorities processed by an interrupt controller, highlighting the handling of high priority interrupts." src="images/system-interrupt-priority-alevel.png" />
+System handling of interrupt priority
+Explain how the computer handles an interrupt when a key is pressed on the keyboard. <strong>[5]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>An interrupt flag is raised in the interrupt register [1 mark]</li>
+<li>The system finishes its current fetch-execute cycle [1 mark]</li>
+<li>The interrupt register is checked for a higher priority interrupt [1 mark]</li>
+<li>If a higher priority interrupt is found, the current register contents are pushed to the stack [1 mark]</li>
+<li>The appropriate Interrupt Service Routine (ISR) is executed [1 mark]</li>
+<li>The ISR processes the key press and completes [1 mark]</li>
+<li>The register contents are restored from the stack [1 mark]</li>
+<li>Control is returned to the original process [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

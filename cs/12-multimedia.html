@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.2 Multimedia — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>1.2 Multimedia</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#bitmap-images">Bitmap Images</a></li>
+<li><a href="#bitmap-encoding">Bitmap encoding</a></li>
+<li><a href="#calculating-the-size-of-a-bitmap-file">Calculating the size of a bitmap file</a></li>
+<li><a href="#image-quality-file-size">Image quality &amp; file size</a></li>
+<li><a href="#vector-graphics">Vector graphics</a></li>
+<li><a href="#bitmap-vs-vector">Bitmap vs vector</a></li>
+<li><a href="#sound-representation">Sound Representation</a></li>
+<li><a href="#sound-encoding">Sound encoding</a></li>
+<li><a href="#impact-of-sampling-settings">Impact of sampling settings</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="bitmap-images">Bitmap Images</h2>
+<h2 id="bitmap-encoding">Bitmap encoding</h2>
+<h3 id="what-is-a-bitmap">What is a bitmap?</h3>
+<ul>
+<li>A bitmap image is made up of squares called <strong>pixels</strong></li>
+<li>A pixel is the <strong>smallest element</strong> of a bitmap image</li>
+<li>Each pixel is <strong>stored as a binary code</strong></li>
+<li>Binary codes are <strong>unique</strong> to the <strong>colour</strong> in each pixel</li>
+<li>
+<p>A typical example of a bitmap image is a photograph
+<img alt="Blue rectangular electronic sensor with grid openings and four metal pins on the bottom for connectivity, casting a shadow on a white surface." src="images/humidity-sensor-photo.png" />
+Humidity sensor bitmap image</p>
+</li>
+<li>
+<p>The more colours and more detail in the image, the <strong>higher the quality of the image</strong> and the <strong>more binary that needs to be stored</strong></p>
+</li>
+</ul>
+<h3 id="image-vs-screen-resolution">Image vs screen resolution</h3>
+<ul>
+<li><strong>Image resolution</strong> is the <strong>total amount of pixels</strong> that make up a bitmap image</li>
+<li>The image resolution is calculated by <strong>multiplying the height and width</strong> of the image (in pixels)</li>
+<li>In general, the <strong>higher the resolution the more detail in the image</strong> (higher quality)</li>
+<li><strong>Screen resolution</strong> refers to the <strong>total amount of pixels horizontally in a display</strong>, such as:<ul>
+<li><strong>Computer monitors</strong> - 1440p means 1440 pixels horizontally compared to 4K which is 3840 pixels (roughly 4 thousand)</li>
+<li><strong>TVs</strong> - HD (high definition) televisions have a screen resolution of 1080p, 1080 pixels horizontally compared to newer 4K televisions with 3840 pixels</li>
+<li><strong>YouTube</strong> - The quality button allows a user to change the video playback resolution from 144p (144 pixels horizontally) up to 4K</li>
+</ul>
+</li>
+<li>Another consideration of screen resolution is the <strong>physical size</strong> of the of the display</li>
+<li>The <strong>number of pixels per square inch</strong> (<strong>PPI</strong>) is known as <strong>pixel density</strong></li>
+<li>Pixel density can mean images to <strong>need to be scaled up or down to fit</strong>, sometimes causing loss in quality</li>
+<li>A consumer purchases a new <strong>65&rdquo; 4k television</strong></li>
+<li>The screen resolution is <strong>3840 x 2160</strong></li>
+<li>To calculate the pixel density of the screen we <strong>add together the squares of the resolution</strong><ul>
+<li>(3840 <sup>2</sup> + 2160 <sup>2</sup>) = (14 745 600 + 4 665 600) = <strong>19 411 200</strong></li>
+<li>Find the <strong>square root</strong> ( = <strong>4405.814</strong>)</li>
+<li><strong>Divide by the screen size</strong> (4405.814 / 65 = <strong>68</strong>)</li>
+</ul>
+</li>
+<li>The television has a <strong>pixel density of 68</strong> pixels per inch (<strong>PPI</strong>)</li>
+<li>Watching <strong>4K content</strong> from a normal viewing distance means the image will appear <strong>crisp and sharp</strong></li>
+<li>However, if you sit <strong>too close</strong>, you may start to see:<ul>
+<li>The <strong>pixel grid</strong></li>
+<li>A <strong>loss of fine detail</strong></li>
+</ul>
+</li>
+<li>Modern smartphones have <strong>very high screen resolutions</strong> in <strong>much smaller screens</strong></li>
+<li>This gives them a much <strong>higher PPI</strong>, often over <strong>300 PPI</strong></li>
+<li>This means they can be viewed <strong>up close without losing quality</strong> or seeing pixelation</li>
+</ul>
+<h3 id="colourbit-depth">Colour/bit depth</h3>
+<ul>
+<li>Colour depth is the <strong>number of bits stored per pixel</strong> in a bitmap image</li>
+<li>The colour depth is dependent on the <strong>number of colours needed</strong> in the image</li>
+<li>In general, the <strong>higher the colour depth the more detail in the image</strong> (higher quality)</li>
+<li>
+<p>In a black &amp; white image the <strong>colour depth would be 1</strong>, meaning 1 bit is enough to create a unique binary code for each colour in the image (1=white, 0=black)
+<img alt="Example 1 bit black and white image" src="images/1-bit-bitmap-image.png" /></p>
+</li>
+<li>
+<p>In an image with a <strong>colour depth of 2</strong>, you would have 00, 01, 10 &amp; 11 available binary codes, so <strong>4 colours</strong>
+<img alt="Example 2 bit Mario image" src="images/-2-bit-bitmap-image.png" /></p>
+</li>
+<li>
+<p>As <strong>colour depth increases</strong>, so does the <strong>amount of colours available</strong> in an image</p>
+</li>
+<li><strong>Colour depth</strong> can also refer to the <strong>number of colours</strong> that can be represented in an image</li>
+<li>It is calculated using the formula:<ul>
+<li><strong>Colour depth = 2</strong> <sup><b>n</b> </sup> <strong>(where n = number of bits)</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Colour/bit depth</strong></th>
+<th><strong>Number of colours</strong></th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 bit</strong></td>
+<td>2 1 = 1</td>
+<td>B&amp;W</td>
+</tr>
+<tr>
+<td><strong>2 bit</strong></td>
+<td>2 2 = 4</td>
+<td>Icons/logos</td>
+</tr>
+<tr>
+<td><strong>4 bit</strong></td>
+<td>2 4 = 16</td>
+<td>Early computer graphics</td>
+</tr>
+<tr>
+<td><strong>8 bit</strong></td>
+<td>2 8 = 256</td>
+<td>GIFs, retro games</td>
+</tr>
+<tr>
+<td><strong>24 bit (True colour)</strong></td>
+<td>2 24 = 16 777 216</td>
+<td>High-quality images</td>
+</tr>
+</tbody>
+</table>
+<h2 id="calculating-the-size-of-a-bitmap-file">Calculating the size of a bitmap file</h2>
+<h3 id="how-do-you-calculate-the-size-of-a-bitmap-image">How do you calculate the size of a bitmap image?</h3>
+<ul>
+<li>Estimating the size of a bitmap image can be carried out with the following formula:<ul>
+<li><strong>Resolution x colour/bit depth</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="example">Example</h4>
+<p><strong>Image Files</strong>
+(Resolution) <strong>x</strong> (Colour Depth)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Size of bitmap image =</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resolution</td>
+<td><strong>250,000</strong></td>
+<td>Resolution = width x height</td>
+</tr>
+<tr>
+<td>Colour depth</td>
+<td><strong>24 bits</strong></td>
+<td>24 bits = 3 bytes</td>
+</tr>
+<tr>
+<td><strong>250,000 x 24</strong></td>
+<td><strong>=</strong><br><strong>(bit to bytes) /8</strong><br><strong>(bytes to KiB) /1024</strong><br><strong>or</strong><br><strong>(bytes to KB) /1000</strong></td>
+<td><strong>6,000,000 bits</strong><br><strong>750,000 bytes</strong><br><strong>732 KiB</strong><br><strong>or</strong><br><strong>750 KB</strong></td>
+</tr>
+<tr>
+<td><strong>250000 x 3</strong></td>
+<td><strong>=</strong><br><strong>(bytes to KiB) /1024</strong><br><strong>or</strong><br><strong>(bytes to KB) /1000</strong></td>
+<td><strong>750,000 bytes</strong><br><strong>732 KiB</strong><br><strong>or</strong><br><strong>750 KB</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>When bitmap images are saved, <strong>a file header is created</strong></li>
+<li>This contains:<ul>
+<li><strong>File type (.bmp or.jpg)</strong></li>
+<li><strong>File size</strong></li>
+<li><strong>Image resolution</strong></li>
+<li><strong>Colour depth</strong></li>
+<li><strong>Any type of compression if used</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="image-quality-file-size">Image quality &amp; file size</h2>
+<h3 id="what-is-the-relationship-between-image-quality-and-file-size">What is the relationship between image quality and file size?</h3>
+<ul>
+<li>As the <strong>resolution and/or colour depth increases</strong>, the <strong>bigger the size of the file</strong> becomes on secondary storage</li>
+<li>The <strong>higher the resolution</strong>, the <strong>more pixels</strong> are in the image, the more bits are stored</li>
+<li>The <strong>higher the colour depth</strong>, the <strong>more bits per pixel</strong> are stored</li>
+<li>Striking a <strong>balance between quality and file size</strong> is always a consideration</li>
+<li><strong>Compression</strong> can be used on high quality images to help reduce the file size
+<img alt="Seesaw to demonstrate the relationship between quality and file size of an image" src="images/image-5---seesaw-image-of-balance-vs-quality-here.png" /></li>
+</ul>
+<h2 id="vector-graphics">Vector graphics</h2>
+<h3 id="what-is-a-vector-graphic">What is a vector graphic?</h3>
+<ul>
+<li>A vector graphic is created from <strong>mathematical equations</strong> and <strong>points</strong></li>
+<li>Only the <strong>mathematics used</strong> to create the image are stored</li>
+<li>For example, to create a circle the data stored would be:<ul>
+<li><strong>Centre point (x, y coordinates)</strong></li>
+<li><strong>Radius</strong></li>
+</ul>
+</li>
+<li>
+<p>Typical examples of vector images are <strong>logos and clipart</strong>
+<img alt="image-2---vector-image" src="images/image-2---vector-image.png" /></p>
+</li>
+<li>
+<p>Vector images are infinitely <strong>scalable</strong></p>
+</li>
+<li>Ideal for situations where the same image <strong>will be made bigger and smaller</strong> and a <strong>loss of quality is unacceptable</strong><ul>
+<li>For example, the same logo used on both a pencil and a billboard</li>
+</ul>
+</li>
+<li>A vector graphic contains a <strong>drawing list</strong> (included in the file header)</li>
+<li>A typical drawing list will contain:<ul>
+<li><strong>Commands used to create each object in the image</strong></li>
+<li><strong>Attributes that define the properties of each object</strong></li>
+<li><strong>Relative position of each object</strong></li>
+</ul>
+</li>
+<li>Dimensions of the image <strong>are not defined</strong>, meaning scaling up does not result in a loss of quality</li>
+</ul>
+<h2 id="bitmap-vs-vector">Bitmap vs vector</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Bitmap Images</strong></th>
+<th><strong>Vector Images</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Made from</strong></td>
+<td>Pixels (tiny coloured squares)</td>
+<td>Shapes and lines using maths (vectors)</td>
+</tr>
+<tr>
+<td><strong>File size</strong></td>
+<td>Larger (depends on resolution)</td>
+<td>Smaller (uses formulas, not pixels)</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Loses quality when resized (pixelates)</td>
+<td>Can be resized without losing quality</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Photographs, detailed images</td>
+<td>Logos, icons, text graphics</td>
+</tr>
+<tr>
+<td><strong>Editable with</strong></td>
+<td>Paint software (e.g. Photoshop, GIMP)</td>
+<td>Drawing software (e.g. Illustrator, Inkscape)</td>
+</tr>
+<tr>
+<td><strong>Common file types</strong></td>
+<td>.jpg,.png,.bmp,.gif</td>
+<td>.svg,.ai,.eps</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>When <strong>choosing</strong> to use a bitmap or vector based image, the following should be considered:<ul>
+<li><strong>Does the image need to be resized?</strong></li>
+<li><strong>Does the image need to be drawn to scale?</strong></li>
+<li><strong>Does the image need to look real?</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="sound-representation">Sound Representation</h2>
+<h2 id="sound-encoding">Sound encoding</h2>
+<h3 id="how-is-sound-encoded-in-a-computer-system">How is sound encoded in a computer system?</h3>
+<ul>
+<li>Computers represent all data in binary, including sound that we <strong>record</strong> using a microphone (input) or sound that we <strong>playback</strong> from a speaker (output)</li>
+<li>For this to happen, analogue sound must be <strong>sampled and stored</strong></li>
+</ul>
+<h4 id="analogue-sound">Analogue sound</h4>
+<ul>
+<li>Sound waves begin as <strong>analogue</strong> and for a computer system to understand them they must be converted into a <strong>digital form</strong></li>
+<li>Measurements of the original sound wave are <strong>captured</strong> and <strong>stored as binary</strong> on secondary storage</li>
+<li>This process is called <strong>Analogue to Digital conversion</strong> (<strong>A2D</strong>)</li>
+<li>The process begins by measuring the loudness (<strong>amplitude</strong>) of the analogue sound wave at a point in time, this is called <strong>sampling</strong></li>
+<li>The higher the amplitude, the <strong>louder</strong> the sound</li>
+<li>Each measurement (<strong>sample</strong>) generates a value which can be represented in <strong>binary</strong> and <strong>stored</strong></li>
+<li>Using the <strong>samples</strong>, a computer is able to create a <strong>digital version</strong> of the original analogue wave</li>
+<li>
+<p>The digital wave is <strong>stored</strong> on <strong>secondary storage</strong> and can be played back at any time by reversing the process
+<img alt="analogue-to-digital-image" src="images/analogue-to-digital-image.png" /></p>
+</li>
+<li>
+<p>In this example, the grey line <strong>represents the digital wave</strong> that has been created by taking samples of the original analogue wave</p>
+</li>
+<li>In order for the digital wave to <strong>look more like the analogue wave</strong> (black line) the <strong>sampling rate</strong>, <strong>sampling resolution</strong> and <strong>sample interval</strong> can be changed</li>
+</ul>
+<h3 id="sampling-rate-vs-sampling-resolution">Sampling rate vs sampling resolution</h3>
+<h4 id="sampling-rate">Sampling rate</h4>
+<ul>
+<li>The sampling rate is the amount of <strong>samples taken per second</strong> of the analogue wave</li>
+<li>Samples are taken for the <strong>duration</strong> of the sound</li>
+<li>The sampling rate is measured in <strong>Hertz</strong> (<strong>Hz</strong>)</li>
+<li>
+<p><strong>1 Hertz is equal to 1 sample</strong> of the sound wave
+<img alt="image-of-sample-rate-comparisons" src="images/image-of-sample-rate-comparisons.png" /></p>
+</li>
+<li>
+<p>The sample rate of a typical audio CD is <strong>44.1kHz</strong> (44,100 Hertz or 44,100 samples per second), a <strong>sampling resolution</strong> of 16 bits and is recorded in <strong>stereo sound</strong></p>
+</li>
+<li>Using the graphic above to compare common sampling rates, the question, “ <em>Why does telephone hold music sound so bad?</em>” can now be answered</li>
+</ul>
+<h4 id="sampling-resolution">Sampling resolution</h4>
+<ul>
+<li>Sampling resolution is the <strong>number of bits</strong> used to represent <strong>each sound sample</strong></li>
+<li>
+<p>Sampling resolution is closely related to the <strong>bit depth of a bitmap image</strong>, they measure the same thing in different contexts
+<img alt="image2---sample-rate-comparisons" src="images/image2---sample-rate-comparisons.png" /></p>
+</li>
+<li>
+<p>In the example above, the higher the sample resolution, the <strong>closer to the original</strong> sound wave the digital version looks</p>
+</li>
+</ul>
+<h2 id="impact-of-sampling-settings">Impact of sampling settings</h2>
+<h3 id="what-are-the-impacts-of-sampling-settings">What are the impacts of sampling settings?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Factor</strong></th>
+<th><strong>Effect of playback quality</strong></th>
+<th><strong>Effect on file size</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sampling rate</strong></td>
+<td>⬆️ <strong>higher</strong> = more detail, better sound quality</td>
+<td>⬆️ <strong>higher</strong> = more data, larger file size</td>
+</tr>
+<tr>
+<td><strong>Sampling resolution</strong></td>
+<td>⬆️ <strong>higher</strong> = bigger range, better sound quality</td>
+<td>⬆️ <strong>higher</strong> = more data per sample, larger file size</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

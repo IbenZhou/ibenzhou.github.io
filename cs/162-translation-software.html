@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>16.2 Translation Software — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>16.2 Translation Software</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#translation-process">Translation Process</a></li>
+<li><a href="#interpreter-execution">Interpreter execution</a></li>
+<li><a href="#compilation-stages">Compilation stages</a></li>
+<li><a href="#syntax-rules">Syntax Rules</a></li>
+<li><a href="#bnf-syntax-diagrams">BNF &amp; syntax diagrams</a></li>
+<li><a href="#expression-evaluation">Expression Evaluation</a></li>
+<li><a href="#reverse-polish-notation-rpn">Reverse Polish Notation (RPN)</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="translation-process">Translation Process</h2>
+<h2 id="interpreter-execution">Interpreter execution</h2>
+<h3 id="what-is-an-interpreter">What is an interpreter?</h3>
+<ul>
+<li>An interpreter is a type of translator that <strong>executes high-level code line by line</strong></li>
+<li>It <strong>does not</strong> convert the entire program into a separate machine code file</li>
+</ul>
+<h4 id="how-does-it-work">How does it work?</h4>
+<ul>
+<li>The source code is <strong>read, analysed, and executed</strong> <strong>one line at a time</strong></li>
+<li>No complete machine code file is produced, only <strong>immediate execution</strong> happens</li>
+<li>If there is an error in a line<strong>, execution stops</strong>, and the <strong>error is reported immediately</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No output file</td>
+<td>It does <strong>not generate</strong> a standalone <code>.exe</code> or machine code file</td>
+</tr>
+<tr>
+<td>Immediate execution</td>
+<td>Runs the code <strong>as it is interpreted</strong></td>
+</tr>
+<tr>
+<td>Slower execution</td>
+<td>Each line is <strong>translated every time</strong> the program runs</td>
+</tr>
+<tr>
+<td>Useful for development</td>
+<td>Good for testing and debugging during coding</td>
+</tr>
+<tr>
+<td>Stops on first error</td>
+<td>Detects and reports errors <strong>as they occur</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-use-cases">Example use cases</h3>
+<ul>
+<li>Used in <strong>educational tools</strong>, like Python shells or BASIC interpreters</li>
+<li>Helpful for <strong>rapid prototyping</strong> or when frequent changes are made</li>
+</ul>
+<h2 id="compilation-stages">Compilation stages</h2>
+<h3 id="what-is-compilation">What is compilation?</h3>
+<ul>
+<li>Compilation is a <strong>process</strong> that <strong>translates a program</strong> written in a high-level programming language into machine code</li>
+<li><strong>Only machine code</strong> can be executed by a computer</li>
+<li>There are four stages involved in this process:<ul>
+<li><strong>Lexical Analysis</strong></li>
+<li><strong>Syntax Analysis</strong></li>
+<li><strong>Code Generation</strong></li>
+<li><strong>Optimisation</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="lexical-analysis">Lexical analysis</h3>
+<ul>
+<li>In A Level Computer Science, lexical analysis means studying the <strong>words or vocabulary</strong> of a language</li>
+<li>This stage involves <strong>identifying lexical &lsquo;tokens&rsquo;</strong> in the code</li>
+<li>Tokens represent small meaningful units in the programming language, such as:<ul>
+<li><strong>Keywords</strong><ul>
+<li>var, const, function, for, while, if</li>
+</ul>
+</li>
+<li><strong>Identifiers</strong><ul>
+<li>Variable names, function names</li>
+</ul>
+</li>
+<li><strong>Operators</strong><ul>
+<li>&rsquo;+&rsquo;, &lsquo;++&rsquo;, &lsquo;-&lsquo;, &lsquo;*&lsquo;</li>
+</ul>
+</li>
+<li><strong>Separators</strong><ul>
+<li>&rsquo;,&rsquo; &lsquo;;&rsquo;, &lsquo;{&lsquo;, &lsquo;}&rsquo;, &lsquo;(&lsquo;, &lsquo;)&rsquo;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>During this stage, unnecessary elements like comments and whitespace are ignored</li>
+<li>For example, if the following code is being compiled:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="nx">x</span><span class="o">&gt;</span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">x</span><span class="o">*</span><span class="nx">y</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">x</span><span class="o">+</span><span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>The result of lexical analysis is a <strong>token table</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Token</strong></th>
+<th><strong>Type</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>var</td>
+<td>Keyword</td>
+</tr>
+<tr>
+<td>2</td>
+<td>x</td>
+<td>Identifier</td>
+</tr>
+<tr>
+<td>3</td>
+<td>=</td>
+<td>Operator</td>
+</tr>
+<tr>
+<td>4</td>
+<td>function</td>
+<td>Keyword</td>
+</tr>
+<tr>
+<td>5</td>
+<td>(</td>
+<td>Separator</td>
+</tr>
+<tr>
+<td>6</td>
+<td>x</td>
+<td>Identifier</td>
+</tr>
+<tr>
+<td>7</td>
+<td>,</td>
+<td>Separators</td>
+</tr>
+<tr>
+<td>8</td>
+<td>y</td>
+<td>Identifier</td>
+</tr>
+<tr>
+<td>9</td>
+<td>)</td>
+<td>Separator</td>
+</tr>
+<tr>
+<td>10</td>
+<td>{</td>
+<td>Separator</td>
+</tr>
+<tr>
+<td>11</td>
+<td>return</td>
+<td>Keyword</td>
+</tr>
+<tr>
+<td>12</td>
+<td>x</td>
+<td>Identifier</td>
+</tr>
+<tr>
+<td>13</td>
+<td>*</td>
+<td>Operator</td>
+</tr>
+<tr>
+<td>14</td>
+<td>y</td>
+<td>Identifier</td>
+</tr>
+<tr>
+<td>15</td>
+<td>;</td>
+<td>Separator</td>
+</tr>
+<tr>
+<td>16</td>
+<td>}</td>
+<td>Separator</td>
+</tr>
+</tbody>
+</table>
+<h3 id="syntax-analysis">Syntax analysis</h3>
+<ul>
+<li>Now that tokens have been identified, syntax analysis makes sure they all <strong>adhere to the syntax rules</strong> of the programming language</li>
+<li>A symbol, e.g. &lsquo;$&rsquo; could be a valid token but not a valid character according to particular programming languages</li>
+<li>The dollar symbol would be flagged as breaking the syntax rules</li>
+<li>Other syntax errors programmers commonly make include <strong>mismatched parentheses</strong> or <strong>missing semicolons</strong></li>
+<li>If the code passes the syntax analysis, the compiler can create an <strong>Abstract Syntax Tree</strong> (AST)</li>
+<li>An AST is a graph-based representation of the code being compiled</li>
+<li>An AST is an efficient way to represent the code for the next step</li>
+</ul>
+<h3 id="example-abstract-syntax-tree">Example abstract syntax tree</h3>
+<ul>
+<li>For the same code as above, the following abstract syntax tree can be created
+<img alt="Abstract syntax tree|800" src="images/abstract-syntax-tree-2.png" />
+<strong><em>Abstract syntax tree</em></strong></li>
+</ul>
+<h3 id="code-generation">Code generation</h3>
+<ul>
+<li>This step takes the AST and traverses it to generate <strong>object code</strong> that can be executed by the computer</li>
+</ul>
+<h3 id="optimisation">Optimisation</h3>
+<ul>
+<li>This step <strong>modifies the code</strong> to make it <strong>more efficient</strong> without changing its functionality</li>
+<li>This is important to attempt because it <strong>reduces the memory required</strong> to run the code, which leads to faster execution</li>
+<li>A common optimisation action is <strong>removing duplicate code</strong></li>
+<li>If an &lsquo;add&rsquo; function is written twice in the source code, a sophisticated compiler will notice this and include it only once in the object code</li>
+</ul>
+<h2 id="syntax-rules">Syntax Rules</h2>
+<h2 id="bnf-syntax-diagrams">BNF &amp; syntax diagrams</h2>
+<ul>
+<li>When writing programs, you must follow a set of strict rules known as <strong>syntax</strong> — the structure that defines how code must be written.<ul>
+<li>Just like spoken languages have grammar rules, <strong>programming languages have syntax rules</strong><ul>
+<li><strong>Each language has its own syntax</strong>, e.g. Python uses indentation, Java uses semicolons</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Programs are first written in <strong>source code</strong> (a high-level language like Python, Java, etc.)</li>
+<li>To run the program, this source code must be <strong>translated into machine code</strong></li>
+<li>For translation to work, syntax must be <strong>precisely defined</strong> to avoid <strong>ambiguity</strong></li>
+<li>Translators (compilers or interpreters) rely on these rules to correctly convert the program into a form the CPU can understand</li>
+</ul>
+<h4 id="regular-expressions-and-meta-languages">Regular expressions and meta-languages</h4>
+<ul>
+<li>Regular expressions are used to <strong>describe simple patterns</strong> in text or syntax</li>
+<li>Many programming constructs (like variable names or simple statements) <strong>can be defined</strong> using regular expressions</li>
+<li>However<ul>
+<li>Some aspects of a programming language are <strong>too complex</strong> for regular expressions alone</li>
+</ul>
+</li>
+<li>When regular expressions aren&rsquo;t enough, we use a <strong>meta-language</strong></li>
+<li>A language used to <strong>describe the structure of another language</strong></li>
+<li>The most common example is <strong>Backus-Naur Form (BNF)</strong> or <strong>syntax diagrams</strong></li>
+<li>These allow us to define:<ul>
+<li>Full grammar rules</li>
+<li>Nested structures</li>
+<li>Hierarchical syntax</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-is-backus-naur-form-bnf">What is Backus-Naur form (BNF)?</h3>
+<ul>
+<li>BNF is a <strong>meta-language</strong>, a way of writing rules that define the <strong>syntax of programming languages</strong> or <strong>data structures</strong></li>
+<li>BNF is used to:<ul>
+<li>Describe <strong>formal grammar</strong></li>
+<li>Define how statements and expressions are <strong>structured</strong></li>
+<li>Ensure that syntax rules are <strong>unambiguous</strong> and <strong>machine-readable</strong></li>
+</ul>
+</li>
+<li>BNF uses a set of <strong>rules</strong> made up of:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Term</strong></th>
+<th><strong>Meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Non-terminal</strong></td>
+<td>A category or component (e.g. , )</td>
+</tr>
+<tr>
+<td><strong>Terminal</strong></td>
+<td>An actual value or symbol (e.g. <code>0</code>, <code>1</code>, <code>+</code>, <code>if</code>)</td>
+</tr>
+<tr>
+<td><strong>::=</strong></td>
+<td>&ldquo;Is defined as&rdquo;, separates the name from its definition</td>
+</tr>
+<tr>
+<td><strong>|</strong></td>
+<td>&ldquo;or&rdquo;, it gives alternative definitions</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-1">Example 1</h4>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">9</span>
+<span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li><code>&lt;digit&gt;</code> is defined as any single digit 0–9</li>
+<li><code>&lt;number&gt;</code> is defined as:<ul>
+<li>a single digit, or</li>
+<li>a digit followed by another number (i.e. multiple digits)</li>
+</ul>
+</li>
+</ul>
+<h4 id="example-2">Example 2</h4>
+<ul>
+<li><code>&lt;number&gt;</code> contains one or more digits</li>
+<li>BNF for <code>&lt;number&gt;</code> and use it to define <code>&lt;IDcode&gt;</code>, which consists of a <code>&lt;number&gt;</code> followed by either a <code>&lt;letter&gt;</code> or another <code>&lt;number&gt;</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;&lt;</span><span class="n">digit</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">IDcode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;&lt;</span><span class="n">letter</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;&lt;</span><span class="n">number</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Recursive definition of one or more items</li>
+<li>Use of <code>|</code> for choice</li>
+<li>Application to a second rule with multiple components</li>
+</ul>
+<h3 id="what-is-a-syntax-diagram">What is a syntax diagram?</h3>
+<ul>
+<li>A syntax diagram is a <strong>graphical representation of BNF</strong> (meta-language)</li>
+<li>It uses <strong>symbols</strong> to map directly to the structure of BNF</li>
+<li>The symbols used are:
+<img alt="Diagram showing a terminal element in a circle and two non-terminal elements in rectangles with different annotations for further breakdown and reuse." src="images/17873_data.png" /> <img alt="Flowchart showing letters A, B, and C as valid options, and a formula calculating area as length multiplied by width in a sequence of shapes." src="images/43697_data-1.png" /></li>
+</ul>
+<h2 id="expression-evaluation">Expression Evaluation</h2>
+<h2 id="reverse-polish-notation-rpn">Reverse Polish Notation (RPN)</h2>
+<h3 id="what-is-rpn">What is RPN?</h3>
+<ul>
+<li>Reverse Polish Notation (RPN) is a method of writing <strong>mathematical expressions</strong> where the <strong>operator comes after the operands</strong></li>
+<li>This is also known as <strong>postfix notation</strong><ul>
+<li>Infix: <code>3 + 4</code></li>
+<li>RPN: <code>3 4 +</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="why-use-rpn">Why use RPN?</h4>
+<ul>
+<li><strong>No need for brackets</strong>: The order of operations is determined by position, not parentheses</li>
+<li><strong>Easier for computers to evaluate</strong> using a <strong>stack</strong></li>
+<li>Always <strong>unambiguous</strong></li>
+</ul>
+<h4 id="how-rpn-works">How RPN works</h4>
+<ul>
+<li>RPN uses a [[10.1 Data Types &amp; Records#Data Types|Stack]] to evaluate expressions
+1. <strong>Read from left to right</strong>
+2. <strong>Push numbers onto the stack</strong>
+3. When an <strong>operator</strong> is read:<ul>
+<li><strong>Pop the top two values</strong> from the stack</li>
+<li><strong>Apply the operator</strong></li>
+<li><strong>Push the result</strong> back onto the stack
+4. When the expression ends, the final result is at the <strong>top of the stack</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="example-evaluate-3-4-2">Example: evaluate 3 4 + 2 ×</h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+<th>Stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read <code>3</code></td>
+<td>Push to stack</td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>Read <code>4</code></td>
+<td>Push to stack</td>
+<td><code>3 4</code></td>
+</tr>
+<tr>
+<td>Read <code>+</code></td>
+<td>Add 3 + 4 → 7</td>
+<td><code>7</code></td>
+</tr>
+<tr>
+<td>Read <code>2</code></td>
+<td>Push to stack</td>
+<td><code>7 2</code></td>
+</tr>
+<tr>
+<td>Read <code>×</code></td>
+<td>Multiply 7 × 2 → 14</td>
+<td><code>14</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Final result: <code>14</code></li>
+</ul>
+<h4 id="example-convert-this-infix-expression-to-rpn">Example: convert this infix expression to RPN</h4>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="mi">7</span> <span class="err">−</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">9</span> <span class="err">−</span> <span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li><strong>Split the expression into parts:</strong></li>
+<li>
+<p>Left-hand side:
+<code>(7 − 2 + 8)</code></p>
+</li>
+<li>
+<p>This becomes:
+<code>( (7 − 2) + 8 )</code></p>
+</li>
+<li>
+<p>Which in RPN is:
+<code>7 2 − 8 +</code></p>
+</li>
+<li>
+<p>Right-hand side:
+<code>(9 − 5)</code></p>
+</li>
+<li>
+<p>In RPN:
+<code>9 5 −</code></p>
+</li>
+<li>
+<p><strong>Combine with the division</strong></p>
+</li>
+<li>
+<p>In RPN, that becomes:
+<code>7 2 − 8 + 9 5 − ÷</code>
+RPN <strong>follows the evaluation order naturally</strong>, so there’s <strong>no need for brackets</strong> or precedence rules. Just:</p>
+</li>
+<li>
+<p>Work from inside brackets out</p>
+</li>
+<li>Convert each sub-expression</li>
+<li>Add the operator after its operands</li>
+</ul>
+<h3 id="summary">Summary</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RPN (Postfix)</td>
+<td>Operators follow operands</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>Used to store and evaluate values</td>
+</tr>
+<tr>
+<td>Evaluation method</td>
+<td>Push numbers, pop and evaluate on operator</td>
+</tr>
+<tr>
+<td>Benefits</td>
+<td>No brackets, no ambiguity, easy to compute with stack</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

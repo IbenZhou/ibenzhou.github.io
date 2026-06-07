@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20.1 Programming Paradigms — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>20.1 Programming Paradigms</h1>
+    <p>Part 4: Practical</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#paradigms">Paradigms</a></li>
+<li><a href="#low-level-programming">Low-level programming</a></li>
+<li><a href="#immediate-addressing">Immediate addressing</a></li>
+<li><a href="#direct-addressing">Direct addressing</a></li>
+<li><a href="#indirect-addressing">Indirect addressing</a></li>
+<li><a href="#indexed-addressing">Indexed addressing</a></li>
+<li><a href="#relative-addressing">Relative addressing</a></li>
+<li><a href="#imperative-programming-procedural">Imperative programming (Procedural)</a></li>
+<li><a href="#declarative-programming">Declarative programming</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="paradigms">Paradigms</h2>
+<h3 id="what-is-a-programming-paradigm">What is a programming paradigm?</h3>
+<ul>
+<li>A programming paradigm is a <strong>style or approach to programming</strong> that influences:<ul>
+<li>How programs are <strong>written</strong></li>
+<li>How problems are <strong>broken down</strong></li>
+<li>How solutions are <strong>structured</strong></li>
+</ul>
+</li>
+<li><strong>Different</strong> paradigms are suited to <strong>different</strong> types of problems and systems</li>
+</ul>
+<h4 id="programming-paradigms-comparison-table">Programming paradigms comparison table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Paradigm</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Key characteristics</strong></th>
+<th><strong>Examples</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Low-level</strong></td>
+<td>Closest to machine code, using <strong>mnemonics</strong> to directly control hardware</td>
+<td>- Direct memory access  <br>- Register manipulation  <br>- Hardware-specific instructions</td>
+<td>x86 Assembly, ARM Assembly</td>
+</tr>
+<tr>
+<td><strong>Imperative (Procedural)</strong></td>
+<td>Tells the computer <strong>how</strong> to perform tasks using sequences of commands</td>
+<td>- Step-by-step instructions  <br>- Use of loops, conditions  <br>-Procedures/functions</td>
+<td>C, Pascal, Python (procedural)</td>
+</tr>
+<tr>
+<td><strong>Object-Oriented</strong></td>
+<td>Models real-world entities using <strong>objects</strong> that combine data and behaviour</td>
+<td>- Classes and objects  <br>- Encapsulation, inheritance, polymorphism  <br>- Modularity</td>
+<td>Java, C++, Python (OOP)</td>
+</tr>
+<tr>
+<td><strong>Declarative</strong></td>
+<td>Describes <strong>what</strong> should be done, not how to do it</td>
+<td>- Rule-based or logic-based  <br>- No explicit control flow  <br>- Focus on outcomes/results</td>
+<td>SQL, Prolog, Haskell</td>
+</tr>
+</tbody>
+</table>
+<h4 id="strengths-and-weaknesses-of-programming-paradigms">Strengths and weaknesses of programming paradigms</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Paradigm</strong></th>
+<th><strong>Strengths</strong></th>
+<th><strong>Weaknesses</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Procedural</strong></td>
+<td>- Clear flow of control (top to bottom)  <br>- Efficient for simple tasks  <br>- Easy to implement algorithms  <br>- Strong step-by-step logic</td>
+<td>- Becomes hard to manage in large programs  <br>- Poor modularity can lead to redundancy  <br>- Not ideal for complex state-based systems</td>
+</tr>
+<tr>
+<td><strong>Object-Oriented</strong></td>
+<td>- Enhances modularity with encapsulation  <br>- Real-world modelling via objects  <br>- Code reuse through inheritance  <br>- Polymorphism for flexible interfaces</td>
+<td>- Can become overly complex  <br>- Slower due to object overhead  <br>- Misuse leads to bloated hierarchies  <br>- Not ideal for every problem</td>
+</tr>
+<tr>
+<td><strong>Low-Level (Assembly)</strong></td>
+<td>- Complete control over hardware  <br>- Highly optimised for performance  <br>- Transparent view of machine operations</td>
+<td>- Steep learning curve  <br>- Hardware-specific, not portable  <br>- Manual memory management is error-prone  <br>- Difficult to debug/scale</td>
+</tr>
+<tr>
+<td><strong>Declarative</strong></td>
+<td>- Focuses on the result rather than the process  <br>- Concise and expressive  <br>- Suitable for complex logic or rule-based problems (e.g. AI, SQL queries)</td>
+<td>- Harder to learn for beginners  <br>- Less control over program flow  <br>- Not suited for all types of problems  <br>- Debugging can be challenging due to abstraction</td>
+</tr>
+</tbody>
+</table>
+<h2 id="low-level-programming">Low-level programming</h2>
+<h3 id="how-do-i-write-low-level-code-using-addressing-modes">How do I write low-level code using addressing modes?</h3>
+<ul>
+<li>Machine code and assembly language are examples of low-level languages and were introduced in [[4.2 Assembly Language Basics|Assembly Language Basics]]  </li>
+<li>Before continuing, make sure you understand the different [[4.2 Assembly Language Basics#Addressing Modes|Addressing modes]]</li>
+</ul>
+<h2 id="immediate-addressing">Immediate addressing</h2>
+<ul>
+<li><strong>Syntax</strong>: <code>LOAD #value</code></li>
+<li><strong>Meaning</strong>: Load a constant value directly into the accumulator</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="err">#</span><span class="mi">5</span><span class="w">       </span><span class="p">;</span><span class="w"> </span><span class="n">Load</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constant</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">accumulator</span>
+<span class="n">ADD</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w">        </span><span class="p">;</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="kd">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">accumulator</span>
+<span class="n">STORE</span><span class="w"> </span><span class="mi">200</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Store</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">200</span>
+</code></pre></div>
+
+<ul>
+<li>Use when you want to work with <strong>literal values</strong>, not data in memory</li>
+</ul>
+<h2 id="direct-addressing">Direct addressing</h2>
+<ul>
+<li><strong>Syntax</strong>: <code>LOAD address</code></li>
+<li><strong>Meaning</strong>: Load the value stored <strong>at</strong> the specified memory address</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="mi">100</span><span class="w">      </span><span class="p">;</span><span class="w"> </span><span class="n">Load</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">stored</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">ADD</span><span class="w"> </span><span class="mi">101</span><span class="w">       </span><span class="p">;</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">101</span>
+<span class="n">STORE</span><span class="w"> </span><span class="mi">102</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Store</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">102</span>
+</code></pre></div>
+
+<ul>
+<li>Use when the data is stored at <strong>known memory addresses</strong></li>
+</ul>
+<h2 id="indirect-addressing">Indirect addressing</h2>
+<ul>
+<li><strong>Syntax</strong>: <code>LOAD @address</code></li>
+<li><strong>Meaning</strong>: The address given <strong>points to another address</strong>, where the data is stored</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="err">@</span><span class="mi">150</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Load</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">stored</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="mi">150</span>
+<span class="n">STORE</span><span class="w"> </span><span class="mi">200</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Store</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">200</span>
+</code></pre></div>
+
+<ul>
+<li>Example:<ul>
+<li>Memory[150] = 300</li>
+<li>Memory[300] = 42</li>
+<li><code>LOAD @150</code> loads 42 into the accumulator.</li>
+</ul>
+</li>
+<li>Use when data is stored in <strong>dynamically referenced locations</strong></li>
+</ul>
+<h2 id="indexed-addressing">Indexed addressing</h2>
+<ul>
+<li><strong>Syntax</strong>: <code>LOAD base[X]</code></li>
+<li><strong>Meaning</strong>: Load from <strong>base address + index register</strong> (e.g. <code>X</code>)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">LOAD</span><span class="w"> </span><span class="mi">500</span><span class="o">[</span><span class="n">X</span><span class="o">]</span><span class="w">   </span><span class="p">;</span><span class="w"> </span><span class="k">Load</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="p">(</span><span class="mi">500</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">contents</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="n">register</span><span class="w"> </span><span class="n">X</span><span class="p">)</span>
+<span class="k">ADD</span><span class="w"> </span><span class="mi">501</span><span class="o">[</span><span class="n">X</span><span class="o">]</span><span class="w">    </span><span class="p">;</span><span class="w"> </span><span class="k">Add</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">another</span><span class="w"> </span><span class="n">offset</span>
+</code></pre></div>
+
+<ul>
+<li>Assume:<ul>
+<li><code>X = 2</code></li>
+<li>This will access address 502 and 503</li>
+</ul>
+</li>
+<li>Use for working with <strong>arrays or tables</strong>, where the index changes</li>
+</ul>
+<h2 id="relative-addressing">Relative addressing</h2>
+<ul>
+<li><strong>Syntax</strong>: <code>BRANCH offset</code></li>
+<li><strong>Meaning</strong>: Jump to a new instruction <strong>relative</strong> to the current instruction</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">BRZ</span><span class="w"> </span><span class="o">+</span><span class="mi">3</span><span class="w">        </span><span class="p">;</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="n">skip</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">ahead</span>
+<span class="n">BRP</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w">        </span><span class="p">;</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">positive</span><span class="p">,</span><span class="w"> </span><span class="n">jump</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">back</span>
+</code></pre></div>
+
+<ul>
+<li>Used in control flow:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nl">LOOP</span><span class="p">:</span><span class="w">  </span><span class="n">LOAD</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span>
+<span class="w">       </span><span class="n">SUB</span><span class="w"> </span><span class="mi">200</span>
+<span class="w">       </span><span class="n">BRZ</span><span class="w"> </span><span class="n">END</span>
+<span class="w">       </span><span class="n">BR</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span><span class="w">      </span><span class="p">;</span><span class="w"> </span><span class="n">Loop</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="kd">to</span><span class="w"> </span><span class="n">LOOP</span>
+<span class="nl">END</span><span class="p">:</span><span class="w">   </span><span class="n">HALT</span>
+</code></pre></div>
+
+<ul>
+<li>Use for <strong>loops and conditional branches</strong> without needing absolute addresses</li>
+</ul>
+<h2 id="imperative-programming-procedural">Imperative programming (Procedural)</h2>
+<h3 id="how-do-i-write-imperative-procedural-code">How do I write imperative (procedural) code?</h3>
+<ul>
+<li>High-level languages such as <strong>Python, Java, and Visual Basic</strong> support the imperative style</li>
+<li>Imperative code can be made <strong>more organised and readable</strong> by using <strong>structured programming principles</strong>, such as dividing code into <strong>functions and procedures</strong><ul>
+<li>Before continuing, ensure you’re confident with the <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/11-programming-/programming-basics/pseudocode-basics/">basics of programming</a> logic and have a good understanding of <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/11-programming-/structured-programming/procedures-and-functions/">structured programming</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="imperative-programming-pseudocode-no-procedures-or-functions">Imperative programming – pseudocode (no procedures or functions)</h3>
+<ul>
+<li><strong>Task</strong>: Convert a temperature to:<ul>
+<li>Fahrenheit from Celsius</li>
+<li>Celsius from Fahrenheit</li>
+<li>Kelvin from Celsius</li>
+</ul>
+</li>
+<li><strong>Rules</strong>:<ul>
+<li>No procedures or functions</li>
+<li>Use only <strong>global variables</strong></li>
+<li>Use a top-down, sequential flow (basic imperative structure)</li>
+</ul>
+</li>
+</ul>
+<h4 id="imperative-pseudocode">Imperative pseudocode</h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Global variables</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">inputTemp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">convertedTemp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Select conversion type:&quot;</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;1. Celsius to Fahrenheit&quot;</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;2. Fahrenheit to Celsius&quot;</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;3. Celsius to Kelvin&quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">choice</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the temperature:&quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">inputTemp</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">convertedTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">inputTemp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Temperature in Fahrenheit: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convertedTemp</span>
+<span class="n">ELSE</span><span class="w"> </span><span class="n">IF</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">convertedTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">inputTemp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">9</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Temperature in Celsius: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convertedTemp</span>
+<span class="n">ELSE</span><span class="w"> </span><span class="n">IF</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">convertedTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputTemp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">273.15</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Temperature in Kelvin: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convertedTemp</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Invalid option selected.&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<h4 id="walkthrough-whats-happening">Walkthrough – What’s happening?</h4>
+<ul>
+<li>All variables are <strong>declared globally</strong></li>
+<li>The entire program is written as <strong>one long block</strong></li>
+<li>There is <strong>no reusability</strong> (e.g. if you want to convert again, you&rsquo;d have to rerun the whole thing)</li>
+<li>Changes to the program will likely lead to <strong>code duplication</strong> and harder maintenance</li>
+</ul>
+<h3 id="structured-procedural-programming-pseudocode">Structured (procedural) programming – pseudocode</h3>
+<ul>
+<li><strong>Goal</strong>: Rewrite the above code using <strong>procedures or functions</strong>, <strong>local variables</strong>, and <strong>modular logic</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// Global variable</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Select conversion type:&quot;</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;1. Celsius to Fahrenheit&quot;</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;2. Fahrenheit to Celsius&quot;</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;3. Celsius to Kelvin&quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">choice</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">CALL</span><span class="w"> </span><span class="nf">convertCtoF</span><span class="p">()</span>
+<span class="w">    </span><span class="n">ELSE</span><span class="w"> </span><span class="n">IF</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">CALL</span><span class="w"> </span><span class="nf">convertFtoC</span><span class="p">()</span>
+<span class="w">    </span><span class="n">ELSE</span><span class="w"> </span><span class="n">IF</span><span class="w"> </span><span class="n">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">CALL</span><span class="w"> </span><span class="nf">convertCtoK</span><span class="p">()</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Invalid option selected.&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="nf">convertCtoF</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">inputTemp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter temperature in Celsius:&quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">inputTemp</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">inputTemp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Temperature in Fahrenheit: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="nf">convertFtoC</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">inputTemp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter temperature in Fahrenheit:&quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">inputTemp</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">inputTemp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">9</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Temperature in Celsius: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="nf">convertCtoK</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">inputTemp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter temperature in Celsius:&quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">inputTemp</span>
+<span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputTemp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">273.15</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Temperature in Kelvin: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="c1">// Start program</span>
+<span class="n">CALL</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+</code></pre></div>
+
+<h4 id="walkthrough-whats-improved">Walkthrough – what’s improved?</h4>
+<ul>
+<li>Logic is <strong>divided into reusable blocks</strong> (procedures)</li>
+<li>Each procedure has <strong>local variables</strong></li>
+<li>The program is easier to <strong>read</strong>, <strong>maintain</strong>, and <strong>extend</strong></li>
+<li>Only one global variable (<code>choice</code>) is used for communication</li>
+<li>Additional features (like repeating conversions or logging) can be added more easily</li>
+</ul>
+<h3 id="summary">Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Imperative</th>
+<th>Structured (Procedural)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reusability</td>
+<td>No reuse</td>
+<td>Easy to reuse procedures</td>
+</tr>
+<tr>
+<td>Modularity</td>
+<td>All logic in one block</td>
+<td>Code divided into named units</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>Can become unclear in longer code</td>
+<td>Easier to understand each part</td>
+</tr>
+<tr>
+<td>Variables</td>
+<td>All global</td>
+<td>Mix of global and local</td>
+</tr>
+<tr>
+<td>Maintenance</td>
+<td>Changes affect entire block</td>
+<td>Easier to update specific parts</td>
+</tr>
+<tr>
+<td>Ideal for real-world apps?</td>
+<td>Not ideal</td>
+<td>Industry standard approach</td>
+</tr>
+</tbody>
+</table>
+<h2 id="declarative-programming">Declarative programming</h2>
+<h3 id="how-do-i-write-declarative-code">How do I write declarative code?</h3>
+<ul>
+<li>Declarative programming is a paradigm where you describe <strong>what</strong> you want the program to accomplish, not <strong>how</strong> to do it</li>
+<li><strong>SQL</strong> is a common example of declarative programming</li>
+<li>It allows you to <strong>extract and manipulate data using queries</strong>, without needing to specify the control flow</li>
+<li>SQL was covered in more detail in <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/8-databases-/data-definition-language-ddl-and-data-manipulation-language-dml/sql/">Section 8 – SQL</a></li>
+<li>Declarative code is made up of:<ul>
+<li><strong>Facts</strong> – things that are known or assumed to be true</li>
+<li><strong>Rules</strong> – logical relationships between facts</li>
+</ul>
+</li>
+<li>Unlike imperative programming, where order and control flow are essential, declarative code allows you to define <strong>facts and rules in any order</strong>, and then write a <strong>query</strong> that uses them</li>
+<li>In the following examples, a logic-based declarative language (like <strong>Prolog</strong>) is used</li>
+</ul>
+<h4 id="example-facts-about-dog-breeds">Example: Facts about dog breeds</h4>
+<div class="highlight"><pre><span></span><code><span class="nb">type</span><span class="p">(</span><span class="n">beagle</span><span class="p">,</span> <span class="n">hound</span><span class="p">)</span><span class="o">.</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">labrador</span><span class="p">,</span> <span class="n">retriever</span><span class="p">)</span><span class="o">.</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">poodle</span><span class="p">,</span> <span class="n">companion</span><span class="p">)</span><span class="o">.</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">golden_retriever</span><span class="p">,</span> <span class="n">retriever</span><span class="p">)</span><span class="o">.</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">bulldog</span><span class="p">,</span> <span class="n">companion</span><span class="p">)</span><span class="o">.</span>
+<span class="n">size</span><span class="p">(</span><span class="n">beagle</span><span class="p">,</span> <span class="n">medium</span><span class="p">)</span><span class="o">.</span>
+<span class="n">size</span><span class="p">(</span><span class="n">labrador</span><span class="p">,</span> <span class="n">large</span><span class="p">)</span><span class="o">.</span>
+<span class="n">size</span><span class="p">(</span><span class="n">poodle</span><span class="p">,</span> <span class="n">medium</span><span class="p">)</span><span class="o">.</span>
+<span class="n">size</span><span class="p">(</span><span class="n">golden_retriever</span><span class="p">,</span> <span class="n">large</span><span class="p">)</span><span class="o">.</span>
+<span class="n">size</span><span class="p">(</span><span class="n">bulldog</span><span class="p">,</span> <span class="n">medium</span><span class="p">)</span><span class="o">.</span>
+<span class="n">shedding</span><span class="p">(</span><span class="n">beagle</span><span class="p">,</span> <span class="n">moderate</span><span class="p">)</span><span class="o">.</span>
+<span class="n">shedding</span><span class="p">(</span><span class="n">labrador</span><span class="p">,</span> <span class="n">heavy</span><span class="p">)</span><span class="o">.</span>
+<span class="n">shedding</span><span class="p">(</span><span class="n">poodle</span><span class="p">,</span> <span class="n">low</span><span class="p">)</span><span class="o">.</span>
+<span class="n">shedding</span><span class="p">(</span><span class="n">golden_retriever</span><span class="p">,</span> <span class="n">heavy</span><span class="p">)</span><span class="o">.</span>
+<span class="n">shedding</span><span class="p">(</span><span class="n">bulldog</span><span class="p">,</span> <span class="n">low</span><span class="p">)</span><span class="o">.</span>
+</code></pre></div>
+
+<h4 id="interpreting-clauses">Interpreting clauses</h4>
+<ul>
+<li>Each fact uses the format:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">predicate</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span><span class="o">.</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Clause</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type(poodle, companion).</code></td>
+<td>A poodle is a companion dog</td>
+</tr>
+<tr>
+<td><code>size(labrador, large).</code></td>
+<td>A Labrador is a large-sized dog</td>
+</tr>
+<tr>
+<td><code>shedding(bulldog, low).</code></td>
+<td>A bulldog has low shedding</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sample-queries">Sample queries</h4>
+<ul>
+<li>Use queries to retrieve information from the facts</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">?</span><span class="o">-</span><span class="w"> </span><span class="nx">size</span><span class="p">(</span><span class="nx">poodle</span><span class="p">,</span><span class="w"> </span><span class="nx">medium</span><span class="p">).</span>
+<span class="kc">true</span><span class="p">.</span>
+<span class="p">?</span><span class="o">-</span><span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">retriever</span><span class="p">).</span>
+<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">labrador</span><span class="w"> </span><span class="p">;</span>
+<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">golden_retriever</span><span class="p">.</span>
+<span class="p">?</span><span class="o">-</span><span class="w"> </span><span class="nx">shedding</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">low</span><span class="p">),</span><span class="w"> </span><span class="nx">size</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">medium</span><span class="p">).</span>
+<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">poodle</span><span class="w"> </span><span class="p">;</span>
+<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">bulldog</span><span class="p">.</span>
+</code></pre></div>
+
+<h4 id="key-points">Key points</h4>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fact</strong></td>
+<td>A statement like <code>type(beagle, hound).</code> that is always true</td>
+</tr>
+<tr>
+<td><strong>Rule</strong></td>
+<td>A logical relationship built from facts (not shown here)</td>
+</tr>
+<tr>
+<td><strong>Query</strong></td>
+<td>A question to the knowledge base, e.g. <code>size(X, medium).</code></td>
+</tr>
+<tr>
+<td><strong>Any order</strong></td>
+<td>Facts and rules can appear in <strong>any order</strong></td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>The interpreter <strong>matches patterns</strong> in queries against known facts</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

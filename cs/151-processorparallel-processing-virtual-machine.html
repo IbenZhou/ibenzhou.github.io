@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15.1 Processor，Parallel Processing & Virtual Machine — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>15.1 Processor，Parallel Processing & Virtual Machine</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#processor-types">Processor Types</a></li>
+<li><a href="#interrupt-handling-on-risc-cisc">Interrupt handling on RISC &amp; CISC</a></li>
+<li><a href="#pipelining">Pipelining</a></li>
+<li><a href="#architecture-types">Architecture types</a></li>
+<li><a href="#massively-parallel-systems">Massively parallel systems</a></li>
+<li><a href="#virtual-machines">Virtual machines</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="processor-types">Processor Types</h2>
+<ul>
+<li>A computer processor will have an <strong>instruction set</strong> that it can use to execute programs</li>
+<li>This will <strong>vary from one processor to the next</strong></li>
+<li>There are <strong>2 types of processors</strong>:<ul>
+<li>Reduced Instruction Set Computer (<strong>RISC</strong>)</li>
+<li>Complex Instruction Set Computer (<strong>CISC</strong>)</li>
+</ul>
+</li>
+</ul>
+<h3 id="risc">RISC</h3>
+<ul>
+<li><strong>Reduced Instruction Set Computer</strong> <strong>(RISC)</strong> consists of a <strong>smaller instruction set</strong> with more simple instructions</li>
+<li>Each instruction takes <strong>one clock cycle to execute</strong> which makes it more <strong>suitable for pipelining</strong></li>
+<li>A RISC program <strong>may require more instructions</strong> because each instruction performs a simpler operation</li>
+<li>Has <strong>fewer addressing modes</strong></li>
+<li>Is usually used in <strong>smartphones and tablets</strong></li>
+</ul>
+<h3 id="cisc">CISC</h3>
+<ul>
+<li><strong>Complex Instruction Set Computer (CISC)</strong> consists of a <strong>larger instruction set</strong> which includes more complex instructions</li>
+<li>As the instructions are more complex, they can <strong>take more than one clock cycle to execute</strong></li>
+<li>Has <strong>fewer general-purpose registers</strong></li>
+<li>Instructions take up <strong>less space in memory</strong></li>
+<li>Is usually used in <strong>laptops and desktop</strong> computers</li>
+</ul>
+<h4 id="whats-the-difference-between-risc-cisc">What’s the difference between RISC &amp; CISC?</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>RISC</strong></th>
+<th><strong>CISC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instruction set size</strong></td>
+<td>Small</td>
+<td>Large</td>
+</tr>
+<tr>
+<td><strong>Instruction complexity</strong></td>
+<td>Simple</td>
+<td>Complex</td>
+</tr>
+<tr>
+<td><strong>Clock cycles per instruction</strong></td>
+<td>One</td>
+<td>Multiple</td>
+</tr>
+<tr>
+<td><strong>Pipelining suitability</strong></td>
+<td>Well suited</td>
+<td>Less suited</td>
+</tr>
+<tr>
+<td><strong>Compiler complexity</strong></td>
+<td>More complex</td>
+<td>Less complex</td>
+</tr>
+<tr>
+<td><strong>Addressing modes</strong></td>
+<td>Fewer</td>
+<td>More</td>
+</tr>
+<tr>
+<td><strong>General-purpose registers</strong></td>
+<td>More</td>
+<td>Fewer</td>
+</tr>
+<tr>
+<td><strong>Power usage</strong></td>
+<td>Lower</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Lower</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td><strong>Memory use</strong></td>
+<td>More (due to more instructions)</td>
+<td>Less (fewer instructions)</td>
+</tr>
+<tr>
+<td><strong>Typical devices</strong></td>
+<td>Smartphones, tablets</td>
+<td>Laptops, desktops</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A program that has been <strong>written for a RISC</strong> processor <strong>won’t work on a CISC</strong> processor and vice versa</li>
+<li>A program that has been <strong>written for a RISC</strong> processor <strong>won’t necessarily work on another RISC</strong> processor as they may have different instruction sets</li>
+</ul>
+<h2 id="interrupt-handling-on-risc-cisc">Interrupt handling on RISC &amp; CISC</h2>
+<ul>
+<li>The concept of interrupt handling is covered in [[4.1 Types of Software &amp; Interrupts#Interrupts|Chapter04-Interrupt]]</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>CISC</strong></th>
+<th><strong>RISC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instruction complexity</strong></td>
+<td>CISC has <strong>complex instructions</strong>, often with built-in support for interrupt routines</td>
+<td>RISC has <strong>simple, fixed-length instructions</strong>, interrupt handling done using simpler routines</td>
+</tr>
+<tr>
+<td><strong>Interrupt handling</strong></td>
+<td>Often uses <strong>microcode and dedicated hardware instructions</strong> to manage interrupts efficiently</td>
+<td>Uses <strong>software-based interrupt handlers</strong>, managed through general-purpose registers and simple instructions</td>
+</tr>
+<tr>
+<td><strong>Context switching</strong></td>
+<td>May have <strong>hardware support</strong> to save and restore processor state automatically</td>
+<td>Typically handled in <strong>software</strong>, giving more control but requiring more instructions</td>
+</tr>
+<tr>
+<td><strong>Speed of response</strong></td>
+<td>Generally <strong>faster interrupt handling</strong> due to built-in support</td>
+<td><strong>Slower</strong>, but more flexible and consistent across all instructions</td>
+</tr>
+<tr>
+<td><strong>Instruction cycle impact</strong></td>
+<td>CISC can handle <strong>multiple tasks in a single instruction</strong>, including context saving</td>
+<td>RISC uses <strong>multiple simple instructions</strong>, giving the OS greater control</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>CISC processors</strong> often have <strong>dedicated instructions</strong> for handling interrupts, making the process more efficient but less flexible</li>
+<li><strong>RISC processors</strong> rely more on <strong>software routines</strong>, making interrupt handling <strong>slightly slower</strong>, but simpler and more predictable</li>
+<li>Both architectures aim to <strong>respond to interrupts quickly and resume execution</strong> correctly, but they do so using different design philosophies</li>
+</ul>
+<h4 id="quiz">Quiz</h4>
+<p>Reduced Instruction Set Computers (RISC) and Complex Instruction Set Computers (CISC) are two types of processor.
+Tick (3) one box in each row to show if the statement applies to RISC or CISC processors.<strong>[2]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>RISC</th>
+<th>CISC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uses a smaller instruction set</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses single-cycle instructions and limited addressing modes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses fewer general-purpose registers</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses both hardwired and micro-coded control unit</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses a system where cache is split between data and<br><br>instructions</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>RISC</th>
+<th>CISC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uses a smaller instruction set</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>uses single-cycle instructions and limited addressing modes</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>uses fewer general-purpose registers</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>uses both hardwired and micro-coded control unit</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>uses a system where cache is split between data and<br><br>instructions</td>
+<td>✓</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pipelining">Pipelining</h2>
+<h3 id="what-is-pipelining">What is pipelining?</h3>
+<ul>
+<li>Pipelining is the process of carrying out multiple instructions <strong>concurrently</strong></li>
+<li>Each instruction will be at a different stage of the <strong>fetch-decode-execute cycle</strong></li>
+<li>One instruction can be <strong>fetched</strong> while the previous one is being <strong>decoded</strong> and the one before is being <strong>executed</strong></li>
+<li>In the case of a <strong>branch</strong>, the pipeline is flushed</li>
+<li>This table shows which stage each instruction is at during each step:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Fetch</strong></th>
+<th><strong>Decode</strong></th>
+<th><strong>Execute</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>Instruction A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>Instruction B</td>
+<td>Instruction A</td>
+<td></td>
+</tr>
+<tr>
+<td>Step 3</td>
+<td>Instruction C</td>
+<td>Instruction B</td>
+<td>Instruction A</td>
+</tr>
+<tr>
+<td>Step 4</td>
+<td>Instruction D</td>
+<td>Instruction C</td>
+<td>Instruction B</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>While one instruction is being executed, the next instruction will be decoded and the following instruction will be fetched</li>
+</ul>
+<h4 id="pipelining-in-risc-processors">Pipelining in RISC processors</h4>
+<ul>
+<li>RISC (Reduced Instruction Set Computer) processors are <strong>designed for pipelining efficiency</strong></li>
+<li>Key features that support pipelining:<ul>
+<li><strong>Each instruction takes one clock cycle</strong> (or close to it)</li>
+<li><strong>Fixed-length instructions</strong>, making decoding easier</li>
+<li><strong>Limited instruction set</strong>, reducing complexity and stage duration</li>
+<li><strong>A large number of general-purpose registers</strong>, reducing memory access</li>
+</ul>
+</li>
+<li>Registers are <strong>fast, temporary storage</strong> inside the CPU</li>
+<li>RISC processors rely heavily on <strong>registers for operand storage</strong> rather than accessing RAM</li>
+<li>Intermediate values are stored in registers between stages</li>
+<li>Register usage reduces <strong>memory bottlenecks</strong>, allowing pipelining to run smoothly</li>
+<li><strong>Example:</strong><ul>
+<li>Instruction A loads value into <strong>Register R1</strong></li>
+<li>Instruction B adds <strong>R1 + R2</strong> and stores result in <strong>R3</strong></li>
+<li>All of these can be done efficiently <strong>within the CPU</strong> using registers</li>
+</ul>
+</li>
+</ul>
+<h4 id="benefits-of-pipelining">Benefits of pipelining</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantage</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Increased throughput</strong></td>
+<td>Multiple instructions handled at once</td>
+</tr>
+<tr>
+<td><strong>Better use of CPU components</strong></td>
+<td>Fetch, decode, and execute units are all in use simultaneously</td>
+</tr>
+<tr>
+<td><strong>Reduced idle time</strong></td>
+<td>No waiting between stages</td>
+</tr>
+<tr>
+<td><strong>Faster execution of instruction stream</strong></td>
+<td>Even if individual instructions don’t run faster</td>
+</tr>
+</tbody>
+</table>
+<h4 id="quiz_1">Quiz</h4>
+<p>Describe the process of pipelining during the fetch-execute cycle in RISC processors.<strong>[4]</strong>
+<strong>Answer</strong></p>
+<ul>
+<li>Instructions are divided into subtasks / 5 stages [1 mark]</li>
+<li>… Instruction fetch / IF, Instruction decode / ID, operand fetch / OF, opcode/instruction execute IE, result store / write back result / WB [1 mark]</li>
+<li>Each subtask is completed during one clock cycle [1 mark]</li>
+<li>No two instructions can execute their same stage at the same clock cycle [1 mark]</li>
+<li>The second instruction begins in the second clock cycle, while the first instruction has moved on to its second subtask [1 mark]</li>
+<li>The third instruction begins in the third clock cycle while the first and second instructions move on to their second and third subtasks, respectively, etc. [1 mark]</li>
+</ul>
+<h2 id="architecture-types">Architecture types</h2>
+<h3 id="what-is-a-computer-architecture">What is a computer architecture?</h3>
+<ul>
+<li>A computer architecture is the design and structure of a computer system</li>
+<li>It describes how it <strong>fetches, processes, and stores data and instructions</strong></li>
+<li>It defines how components like the CPU, memory, and input/output devices <strong>work together to execute programs</strong></li>
+<li>Each architecture is categorised as:<ul>
+<li><strong>S</strong> ingle or <strong>M</strong> ultiple <strong>Instruction</strong> stream</li>
+<li><strong>S</strong> ingle or <strong>M</strong> ultiple <strong>Data</strong> stream</li>
+</ul>
+</li>
+</ul>
+<h3 id="sisd-single-instruction-single-data">SISD – Single Instruction, Single Data</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Key Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One processor executes <strong>one instruction</strong> on <strong>one data stream</strong> at a time</td>
+<td>Traditional serial (non-parallel) architecture</td>
+</tr>
+<tr>
+<td>Used in <strong>basic, single-core processors</strong></td>
+<td>Step-by-step processing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong>: Classic desktop CPU running one task at a time
+<img alt="Diagram showing data flow: blue box labelled 'Data' connected by arrow to green 'Processor', leading to orange box labelled 'Instructions'." src="images/48364_1.png" />
+Single Instruction, Single Data Diagram</p>
+<h3 id="simd-single-instruction-multiple-data">SIMD – Single Instruction, Multiple Data</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Key Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One instruction is applied to <strong>multiple pieces of data</strong> at once</td>
+<td>Useful for <strong>parallel processing</strong></td>
+</tr>
+<tr>
+<td>All processing units perform the <strong>same operation</strong> in parallel</td>
+<td>Ideal for graphics or scientific computation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong>: GPU operations, image processing
+<img alt="Flowchart depicting data flowing from a blue &quot;Data&quot; block to three &quot;Processor&quot; blocks, and orange arrows to an &quot;Instructions&quot; block." src="images/18769_2.png" />
+Single Instruction, Multiple Data Diagram</p>
+<h3 id="misd-multiple-instruction-single-data">MISD – Multiple Instruction, Single Data</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Key Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Multiple processors execute <strong>different instructions</strong> on the <strong>same data</strong></td>
+<td>Very uncommon in practice</td>
+</tr>
+<tr>
+<td>Used in specialised systems for <strong>fault tolerance</strong></td>
+<td>Each unit checks the same input differently</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong>: Redundant systems in safety-critical environments
+<img alt="Diagram with a blue &quot;Data&quot; box connected to four green &quot;Processor&quot; boxes, which in turn connect to an orange &quot;Instructions&quot; box." src="images/28038_3.png" />
+Multiple Instruction, Single Data Diagram</p>
+<h3 id="mimd-multiple-instruction-multiple-data">MIMD – Multiple Instruction, Multiple Data</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Key Features</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Multiple processors</strong> execute <strong>different instructions</strong> on <strong>different data sets</strong></td>
+<td>Most <strong>modern multi-core processors</strong> use this model</td>
+</tr>
+<tr>
+<td>Allows full <strong>concurrent processing</strong> of independent tasks</td>
+<td>Flexible and scalable for parallel programs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong>: Multi-core CPUs, distributed systems, cloud computing
+<img alt="Diagram showing data and instructions connecting to several processors with blue and orange arrows indicating data and instruction flow." src="images/48232_4.png" />
+Multiple Instruction, Multiple Data Diagram</p>
+<h4 id="summary-table">Summary table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Architecture</strong></th>
+<th><strong>Instruction Stream</strong></th>
+<th><strong>Data Stream</strong></th>
+<th><strong>Used In</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SISD</strong></td>
+<td>Single</td>
+<td>Single</td>
+<td>Standard sequential processors</td>
+</tr>
+<tr>
+<td><strong>SIMD</strong></td>
+<td>Single</td>
+<td>Multiple</td>
+<td>Vector processing (e.g. GPUs)</td>
+</tr>
+<tr>
+<td><strong>MISD</strong></td>
+<td>Multiple</td>
+<td>Single</td>
+<td>Specialised fault-tolerant systems</td>
+</tr>
+<tr>
+<td><strong>MIMD</strong></td>
+<td>Multiple</td>
+<td>Multiple</td>
+<td>Multi-core processors, parallel systems</td>
+</tr>
+</tbody>
+</table>
+<h2 id="massively-parallel-systems">Massively parallel systems</h2>
+<h3 id="what-are-massively-parallel-computers">What are massively parallel computers?</h3>
+<ul>
+<li>Massively parallel computers are systems made up of <strong>thousands of processors</strong> working <strong>simultaneously</strong> to solve a single large problem</li>
+<li>Each processor <strong>executes part of a program</strong>, and <strong>results are combined</strong> to produce the final output</li>
+<li>They are designed to tackle <strong>complex, large-scale tasks</strong> in fields like<ul>
+<li><strong>Scientific research</strong></li>
+<li><strong>Weather simulation</strong></li>
+<li><strong>Cryptography</strong></li>
+<li><strong>AI</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="key-characteristics">Key characteristics</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Thousands of processors</strong></td>
+<td>Many processors are connected and work together to execute different parts of the same task</td>
+</tr>
+<tr>
+<td><strong>Shared or distributed memory</strong></td>
+<td>Each processor may have its own memory or access shared memory resources</td>
+</tr>
+<tr>
+<td><strong>High-speed interconnects</strong></td>
+<td>Processors are linked via <strong>fast communication pathways</strong> to share results</td>
+</tr>
+<tr>
+<td><strong>Data parallelism</strong></td>
+<td>Many data items can be processed at once — often using <strong>SIMD</strong> or <strong>MIMD</strong></td>
+</tr>
+<tr>
+<td><strong>Task parallelism</strong></td>
+<td>Different processors may perform <strong>different tasks</strong> on <strong>different data sets</strong></td>
+</tr>
+<tr>
+<td><strong>Specialised software</strong></td>
+<td>Requires software written to <strong>distribute the work efficiently</strong> across processors</td>
+</tr>
+<tr>
+<td><strong>Tightly coupled</strong></td>
+<td>Processors <strong>depend on one another</strong> and work collaboratively as a single system</td>
+</tr>
+</tbody>
+</table>
+<h4 id="massively-parallel-vs-cluster-computers">Massively parallel vs cluster computers</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Massively parallel computers</strong></th>
+<th><strong>Cluster computers</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thousands of processors form a <strong>single tightly integrated system</strong></td>
+<td>Multiple independent systems networked together</td>
+</tr>
+<tr>
+<td>Processors <strong>communicate continuously</strong> via shared architecture</td>
+<td>Communication occurs via network, often loosely coupled</td>
+</tr>
+<tr>
+<td>Acts like <strong>one machine</strong> with distributed processing</td>
+<td>A group of <strong>co-operating systems</strong> (can be SIMD-based)</td>
+</tr>
+<tr>
+<td>Higher performance, used for <strong>supercomputing tasks</strong></td>
+<td>More general-purpose or batch processing systems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="link-to-computer-architectures">Link to computer architectures</h3>
+<ul>
+<li>Massively parallel systems often use:<ul>
+<li><strong>SIMD</strong>: Apply one instruction to many data points simultaneously</li>
+<li><strong>MIMD</strong>: Run different instructions on different data, fully independently</li>
+</ul>
+</li>
+</ul>
+<h2 id="virtual-machines">Virtual machines</h2>
+<h3 id="what-are-virtual-machines">What are virtual machines?</h3>
+<ul>
+<li>Virtual machines (VMs) are entire operating systems <strong>running inside another operating system</strong></li>
+<li>A user running <strong>Windows 11</strong> could run a <strong>virtual machine of MacOS</strong></li>
+<li>This would allow them to <strong>navigate the GUI</strong> of MacOS and <strong>install software</strong> on it</li>
+<li>Running a virtual machine <strong>helps access software</strong> that is only <strong>designed to run on specific</strong> operating systems</li>
+<li>VM management software includes a <strong>Hypervisor</strong> that monitors all activity happening inside the VM</li>
+</ul>
+<h4 id="structure-of-several-virtual-machines-running-on-a-single-piece-of-hardware">Structure of several virtual machines running on a single piece of hardware</h4>
+<p><img alt="Structure of several virtual machines running on a single piece of hardware" src="images/software-development-virtual-machines-alevel.png" /></p>
+<h4 id="cross-platform-and-forwards-compatibility">Cross-platform and forwards compatibility</h4>
+<ul>
+<li>Not all software is designed to run on all operating systems</li>
+<li>Apple commonly makes software that <strong>only runs on MacOS</strong> for performance reasons</li>
+<li>A Windows user could run a virtual machine of MacOS and install the software they need</li>
+<li>Most software <strong>needs to be updated</strong> to work on the latest versions of operating systems</li>
+<li>A user running the latest release of Windows may need to run a virtual machine of a <em>previous</em> release of Windows to use an application that hasn&rsquo;t received a <strong>forwards-compatibility update</strong></li>
+</ul>
+<h4 id="in-software-testing">In software testing</h4>
+<ul>
+<li>VMs are a way to create <strong>isolated test environments</strong>, that leave the host operating system unaffected</li>
+<li>Isolated environments allow a developer to:<ul>
+<li>Monitor the way their software <strong>affects system performance</strong></li>
+<li>Test on a <strong>clean-slate system</strong>, while no other applications are running</li>
+</ul>
+</li>
+<li>VM management software can create virtual machines that <strong>act</strong> like they have <strong>older hardware</strong></li>
+<li>This allows developers to build software that can be run on older hardware so that <strong>more users can use the software</strong></li>
+<li>A developer can test against <strong>various operating systems</strong>, such as MacOS, Linux and Windows, for <strong>greater compatibility</strong></li>
+<li>In A Level Computer Science, <strong>intermediate code</strong> is generated through compilation and allows programs to run across different operating systems</li>
+</ul>
+<h4 id="consequences">Consequences</h4>
+<ul>
+<li>VMs <strong>share</strong> the same system <strong>hardware</strong> as the <strong>host</strong> OS</li>
+<li>Over-use of VMs can <strong>exhaust</strong> the host OS of the system of CPU, hard disk and memory<ul>
+<li>VM software such as <strong>VirtualBox</strong> can set maximum limits on system resources</li>
+<li>A <strong>low-specification</strong> machine could be configured to allocate only 1GB of memory and 20% of CPU</li>
+<li>A <strong>high-specification</strong> machine could afford up to 8GB of memory and 50% of the CPU</li>
+</ul>
+</li>
+<li>Operating systems are commonly <strong>free to download</strong>, but require an <strong>activation payment</strong> to access all features</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

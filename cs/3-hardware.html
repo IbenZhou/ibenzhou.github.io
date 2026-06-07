@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3. Hardware — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>3. Hardware</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#system-components">System Components</a></li>
+<li><a href="#embedded-systems">Embedded systems</a></li>
+<li><a href="#hardware-devices">Hardware Devices</a></li>
+<li><a href="#use-of-buffers">Use of Buffers</a></li>
+<li><a href="#ram-vs-rom">RAM vs ROM</a></li>
+<li><a href="#monitoring-vs-control">Monitoring vs control</a></li>
+<li><a href="#logic-gates">Logic gates</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="system-components">System Components</h2>
+<h3 id="inputoutput-devices">Input/output devices</h3>
+<h3 id="what-is-an-input-device">What is an input device?</h3>
+<ul>
+<li>Input devices are <strong>hardware components that allow users to interact</strong> with a computer system</li>
+<li>They <strong>enable the user to input data or commands</strong> into the system, which the computer then processes to produce output</li>
+</ul>
+<h4 id="types-of-input-devices">Types of input devices</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Name of device</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keyboard</td>
+<td>The most common input device. It allows users to input text and commands by pressing keys</td>
+</tr>
+<tr>
+<td>Mouse</td>
+<td>Allows users to navigate the computer screen, click on items, and perform other functions</td>
+</tr>
+<tr>
+<td>Touchscreen</td>
+<td>Found on smartphones, tablets, and some computers, touchscreens allow users to interact with the device by touching the screen</td>
+</tr>
+<tr>
+<td>Microphone</td>
+<td>Captures audio input, which can be used for voice commands, recording audio, or video conferencing</td>
+</tr>
+<tr>
+<td>Webcam</td>
+<td>Captures video input, often used for video conferencing or recording videos</td>
+</tr>
+<tr>
+<td>Scanner</td>
+<td>Digitises physical documents or images, converting them into a format that the computer can process</td>
+</tr>
+<tr>
+<td>Game Controller</td>
+<td>Used primarily for video games, these devices allow users to control game characters and interact with the gaming environment</td>
+</tr>
+<tr>
+<td>Graphics Tablet</td>
+<td>Allows artists and designers to draw or sketch directly onto a computer. It&rsquo;s particularly useful for graphic design, 3D modelling, and other visual creative tasks</td>
+</tr>
+<tr>
+<td>Biometric Devices</td>
+<td>These devices, such as fingerprint scanners or facial recognition systems, are used for security purposes to verify a user&rsquo;s identity</td>
+</tr>
+<tr>
+<td>Barcode Reader</td>
+<td>Scans barcodes, typically used in retail and inventory management</td>
+</tr>
+<tr>
+<td>Joystick</td>
+<td>Often used for computer games, especially flight simulators. It allows the user to control movement more fluidly than with a keyboard or mouse</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-an-output-device">What is an output device?</h3>
+<ul>
+<li>Output devices are <strong>hardware components that receive information</strong> from a computer system and present it to the user in a comprehensible form</li>
+<li>They enable the computer to <strong>communicate the results of processed data or commands</strong></li>
+</ul>
+<h4 id="types-of-output-devices">Types of output devices</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Name of device</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monitor</td>
+<td>This is the most common output device. It displays visual output from the computer, including text, images, and videos</td>
+</tr>
+<tr>
+<td>Printer</td>
+<td>Produces a hard copy of digital documents or images. There are various types of printers, including inkjet, laser, and 3D printers</td>
+</tr>
+<tr>
+<td>Speakers</td>
+<td>Output audio from the computer, such as music, sound effects, or voice</td>
+</tr>
+<tr>
+<td>Headphones</td>
+<td>Similar to speakers, headphones output audio directly to the user, providing a more personal and potentially immersive experience</td>
+</tr>
+<tr>
+<td>Projector</td>
+<td>Projects the computer&rsquo;s display onto a large screen or wall, useful for presentations or movie viewing</td>
+</tr>
+<tr>
+<td>Braille Display</td>
+<td>This specialised device outputs information in Braille, allowing visually impaired users to read text from the computer</td>
+</tr>
+<tr>
+<td>Plotter</td>
+<td>Used for printing large, high-quality diagrams and designs, often used in engineering or architecture</td>
+</tr>
+<tr>
+<td>Virtual Reality (VR) Headset</td>
+<td>Provides an immersive visual and audio output, primarily used for gaming and virtual simulations</td>
+</tr>
+<tr>
+<td>Computer-Controlled Machinery</td>
+<td>In manufacturing or robotics, computers often output commands directly to machinery to control their operation</td>
+</tr>
+</tbody>
+</table>
+<h4 id="choosing-the-right-device">Choosing the right device</h4>
+<p>When recommending a device for a specific situation, consider the following factors:</p>
+<ul>
+<li><strong>User Needs</strong><ul>
+<li>What tasks will the user be performing? A graphic designer might need a graphics tablet, while a data entry clerk might need a keyboard with a number pad</li>
+</ul>
+</li>
+<li><strong>User Skills</strong><ul>
+<li>Is the user comfortable with the device? A touch screen might be more intuitive for some users, while others might prefer a mouse and keyboard</li>
+</ul>
+</li>
+<li><strong>Environment</strong><ul>
+<li>Where will the device be used? A wireless mouse might be suitable for a clutter-free office, while a wired mouse might be better for a public computer lab to prevent theft</li>
+</ul>
+</li>
+<li><strong>Cost</strong><ul>
+<li>Higher-end devices often have more features but are also more expensive. Consider the budget and whether the extra features are worth the cost</li>
+</ul>
+</li>
+</ul>
+<h3 id="primary-storage">Primary storage</h3>
+<h3 id="what-is-primary-memory">What is primary memory?</h3>
+<ul>
+<li>Primary memory is <strong>memory directly accessible by the CPU</strong></li>
+<li>Has <strong>much faster access times</strong> than secondary storage</li>
+<li>This <strong>speeds up operations</strong> like the <strong>Fetch-Execute Cycle</strong></li>
+<li>Stores <strong>data and instructions</strong> the CPU needs while the computer is <strong>on and running</strong></li>
+<li>Acts as <strong>short-term, working memory</strong></li>
+<li>Found in components like:<ul>
+<li><strong>RAM</strong> (Random Access Memory) – directly connected to the CPU</li>
+<li><strong>Cache and Registers</strong> – built <strong>into the CPU</strong> for even faster access</li>
+<li><strong>ROM</strong> (Read-only Memory) store simple program to boot-up the hardware and the Operating System. <ul>
+<li>Example: <strong>Bootstrap</strong>, <strong>Firmware</strong>, <strong>Bootloader</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Because it’s fast, it’s also <strong>more expensive</strong>, so we use <strong>less of it</strong><ul>
+<li>Example: RAM = <strong>16–32 GB</strong></li>
+<li>Secondary storage (like HDDs) = <strong>1–2 TB or more</strong></li>
+</ul>
+</li>
+<li>View more detailed information on the different <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/3-hardware-/computers-and-components/memory-types/">types of memory</a></li>
+</ul>
+<h3 id="secondary-storage">Secondary storage</h3>
+<h3 id="what-is-secondary-storage">What is secondary storage?</h3>
+<ul>
+<li>Secondary storage provides <strong>permanent data storage</strong></li>
+<li>Hardware components that <strong>retain digital data</strong> within a computer system</li>
+<li>They provide a means of <strong>storing</strong>, <strong>accessing</strong>, and <strong>retrieving</strong> data, which can include software applications, documents, images, videos, and more</li>
+<li>There are 3 types of storage:<ul>
+<li><strong>Magnetic</strong></li>
+<li><strong>Optical</strong></li>
+<li><strong>Solid state</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Type of storage</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Magnetic</strong> (e.g., Hard Disk Drives, Magnetic Tape Drives)</td>
+<td>Store data by magnetising particles on a disk or tape</td>
+<td>High storage capacity; relatively low cost per gigabyte; suitable for long-term storage and backup</td>
+<td>Slower read/write speeds compared to other types; susceptible to physical damage; moving parts can wear out over time</td>
+</tr>
+<tr>
+<td><strong>Optical</strong> (e.g., CDs, DVDs, Blu-ray Discs)</td>
+<td>Store data using a laser to burn pits into the surface of the disc</td>
+<td>Durable and relatively immune to environmental conditions; easy to transport; suitable for distributing software, music, or movies</td>
+<td>Lower storage capacity compared to other types; slower read/write speeds; can be easily scratched or damaged</td>
+</tr>
+<tr>
+<td><strong>Solid state</strong> (e.g., Solid-State Drives, USB Flash Drives)</td>
+<td>Store data in flash memory cells</td>
+<td>Fast read/write speeds; no moving parts, so less likely to fail due to physical shock; silent operation</td>
+<td>Higher cost per gigabyte; flash memory cells can wear out after a certain number of write cycles</td>
+</tr>
+</tbody>
+</table>
+<p>Here are some of the <strong>devices commonly used</strong> for storage:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Name of device</strong></th>
+<th><strong>Type of device</strong></th>
+<th><strong>Typical storage capacity</strong></th>
+<th><strong>Affordability</strong></th>
+<th><strong>Portability</strong></th>
+<th><strong>Durability</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hard Disk Drive (HDD)</strong></td>
+<td>Magnetic</td>
+<td>500GB - 2TB (consumer-grade)</td>
+<td>Low cost per GB</td>
+<td>Low (especially for internal HDDs)</td>
+<td>Moderate (susceptible to damage from shocks or falls due to moving parts)</td>
+</tr>
+<tr>
+<td><strong>Solid-State Drive (SSD)</strong></td>
+<td>Flash</td>
+<td>120GB - 4TB (consumer-grade)</td>
+<td>High cost per GB</td>
+<td>High (especially for external SSDs)</td>
+<td>High (no moving parts, less susceptible to physical shock)</td>
+</tr>
+<tr>
+<td><strong>USB Flash Drive</strong></td>
+<td>Flash</td>
+<td>8GB - 256GB (common sizes)</td>
+<td>Moderate cost per GB</td>
+<td>Very High (small and lightweight)</td>
+<td>Moderate (can withstand casual handling, but can be lost or damaged if not cared for)</td>
+</tr>
+<tr>
+<td><strong>CD/DVD/Blu-ray Disc</strong></td>
+<td>Optical</td>
+<td>CD: 700MB, DVD: 4.7GB - 9GB, Blu-ray: 25GB - 50GB</td>
+<td>Low cost per disc</td>
+<td>High (thin and lightweight)</td>
+<td>Low (can be scratched or damaged easily)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="choosing-the-right-storage-device">Choosing the right storage device</h4>
+<p>When recommending a storage device for a specific situation, consider the following factors:</p>
+<ul>
+<li><strong>Storage needs</strong><ul>
+<li>How much data does the user need to store? A user with large amounts of data might need a high-capacity HDD, while a user who only needs to store a few documents might be fine with a USB flash drive</li>
+</ul>
+</li>
+<li><strong>Performance needs</strong><ul>
+<li>Does the user need fast access to their data? An SSD might be best for tasks that require high-speed data access, like video editing or gaming</li>
+</ul>
+</li>
+<li><strong>Portability</strong><ul>
+<li>Does the user need to transport the data? USB flash drives and external HDDs or SSDs are portable and can be used to transfer data between different computers</li>
+</ul>
+</li>
+<li><strong>Cost</strong><ul>
+<li>Higher-capacity and faster storage devices are generally more expensive</li>
+<li>Consider the user&rsquo;s budget and whether their storage and performance needs justify the extra cost</li>
+</ul>
+</li>
+</ul>
+<h2 id="embedded-systems">Embedded systems</h2>
+<h3 id="what-is-an-embedded-system">What is an embedded system?</h3>
+<ul>
+<li>An embedded system is a computer system which is used to <strong>perform a dedicated function</strong>, inside a larger mechanical unit</li>
+<li>Examples of embedded systems include<ul>
+<li><strong>Heating thermostats</strong></li>
+<li><strong>Hospital equipment</strong></li>
+<li><strong>Washing machines</strong></li>
+<li><strong>Dishwashers</strong></li>
+<li><strong>Coffee machines</strong></li>
+<li><strong>Satellite navigation systems</strong></li>
+<li><strong>Factory equipment</strong></li>
+<li><strong>Security systems</strong></li>
+<li><strong>Traffic lights</strong>
+<img alt="embedded systems" src="images/embedded-systems-.png" /></li>
+</ul>
+</li>
+</ul>
+<h4 id="benefits-and-drawbacks-of-embedded-systems">Benefits and drawbacks of embedded systems</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Small and compact</strong> – easy to fit into dedicated devices</td>
+<td><strong>Limited functionality</strong> – only performs specific tasks</td>
+</tr>
+<tr>
+<td><strong>Low power consumption</strong> – efficient and cost-effective</td>
+<td><strong>Hard to upgrade or repair</strong> – often built into the device</td>
+</tr>
+<tr>
+<td><strong>Fast and reliable</strong> – designed for quick, repetitive tasks</td>
+<td><strong>Limited memory and processing power</strong></td>
+</tr>
+<tr>
+<td><strong>Cheaper to produce</strong> – uses minimal hardware</td>
+<td><strong>Not flexible</strong> – can’t easily be reprogrammed for other tasks</td>
+</tr>
+<tr>
+<td><strong>Works in real-time</strong> – ideal for time-sensitive operations (e.g. alarms)</td>
+<td><strong>May be less secure</strong> – limited protection if connected to other systems</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hardware-devices">Hardware Devices</h2>
+<h3 id="input-devices">Input devices</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Device</strong></th>
+<th><strong>Pricipal operations</strong></th>
+<th>Additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microphone</strong></td>
+<td>- Converts sound waves into electrical signals</td>
+<td>- Allows users to record voice or send audio into a computer<br>    <br>- <strong>Dynamic microphones</strong> – good for loud environments (e.g. concerts)<br>    <br>- <strong>Condenser microphones</strong> – more sensitive and accurate, used in studios</td>
+</tr>
+<tr>
+<td><strong>Touchscreen</strong></td>
+<td>- Detects a user&rsquo;s touch and converts it into an input command</td>
+<td>- <strong>Capacitive</strong> – responds to electrical charge from your finger (used in smartphones, tablets)<br>    <br>- <strong>Resistive</strong> – responds to pressure (used in ATMs, tills)<br>    <br>- First used in ATMs and information kiosks, now used in smartphones, tablets, laptops, smart displays<br>    <br>- Popular for direct, easy interaction and improved accessibility</td>
+</tr>
+</tbody>
+</table>
+<h3 id="output-devices">Output devices</h3>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Principal operations</th>
+<th>Additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Laser printer</strong></td>
+<td>- Laser beam draws the image of the page onto a photosensitive drum, changing its electric charge<br>    <br>- Toner is transferred from drum to paper</td>
+<td>- <strong>Toner sticks to the drum</strong> – toner powder is attracted to charged areas matching text/image shape<br>    <br>- <strong>Fusing</strong> – paper passes through hot rollers, melting toner onto paper so it doesn&rsquo;t smudge</td>
+</tr>
+<tr>
+<td><strong>3D printer</strong></td>
+<td>- Builds objects layer by layer from the bottom up<br>    <br>- Uses various materials such as thermoplastics, resins, and metals<br>    <br>- Allows high customisation and rapid prototyping</td>
+<td>- Handles complex shapes traditional methods can’t make easily<br>    <br>- <strong>FDM</strong> – melts plastic and builds in layers, <strong>SLA</strong> – uses light to harden liquid resin<br>    <br>- Used in healthcare (prosthetics), automotive/aerospace (custom parts)<br>    <br>- Can be slow for large/detailed objects, some methods need costly specialist materials</td>
+</tr>
+<tr>
+<td><strong>Speakers</strong></td>
+<td>- Convert electrical signals into sound waves</td>
+<td>- Range from basic laptop speakers to high-end multi-driver home theatre systems<br>    <br>- Found in phones, laptops, studios, smart devices, home theatres<br>    <br>- Improved with digital sound processing and miniaturised components<br>    <br>- Support voice commands, calls, and multimedia playback</td>
+</tr>
+<tr>
+<td><strong>Virtual reality headset</strong></td>
+<td>- Creates a fully immersive 360° digital environment<br>    <br>- Lets users look around and interact with the virtual world</td>
+<td>- Uses head tracking, motion sensors, and stereoscopic displays for 3D vision<br>    <br>- <strong>Uses</strong> – gaming, education/training, architecture/design, medical/therapy<br>    <br>- <strong>Challenges</strong> – expensive hardware, possible eye strain or motion sickness, time-intensive content creation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage-devices">Storage devices</h3>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Principal operations</th>
+<th>Additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Magnetic hard disk</strong></td>
+<td>- Multiple metal platters coated with magnetic material store data as magnetised iron particles (0s and 1s)<br>    <br>- Platters spin at high speed (typically 5400–7200 RPM)<br>    <br>- Data read/written using electromagnets</td>
+<td>- <strong>Platters</strong> divided into concentric tracks and wedge-shaped sectors, forming track sectors<br>    <br>- <strong>Read/write arm</strong>, controlled by an actuator, positions the head over the correct track sector<br>    <br>- Reliable but mechanical – can be slower and more prone to damage than SSDs</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="images/3-3-data-storage-secondary-storage-2-1.png" /> <img alt="" src="images/3-3-data-storage-secondary-storage-1.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Principal operations</th>
+<th>Additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Solid state (flash) memory</strong></td>
+<td>- Stores data in <strong>cells</strong> using transistors that act as switches  <br>  <br>- Uses <strong>NAND</strong> or <strong>NOR</strong> gates to control flow of electrons  <br>  <br>- Writing: high voltage <strong>pushes electrons</strong> onto floating gate  <br>  <br>- Faster and more durable than magnetic drives</td>
+<td>- Common examples: SSDs, USB flash drives  <br>  <br>- Each cell contains a <strong>control gate</strong> (controls current) and a <strong>floating gate</strong> (stores charge)  <br>  <br>- Erasing: reverse high voltage pulls electrons off floating gate  <br>  <br>- No moving parts – better shock resistance</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="images/63100_2024-09-02-0gu-kleki.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Principal operations</th>
+<th>Additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Optical disc reader/writer</strong></td>
+<td>- Uses a <strong>laser</strong> to read and/or write data on optical discs  <br>  <br>- Writing: <strong>laser burns pits and lands</strong> onto the disc surface  <br>  <br>- <strong>Arm</strong> moves the laser across the disc  <br>  <br>- Blu-rays store the most, CDs the least</td>
+<td>- Examples: CD, DVD, Blu-ray<br>    <br>- Reading: laser scans surface; changes in reflection indicate 0s and 1s<br>    <br>- CD-R = write once, CD-RW/DVD-RW = rewriteable<br>    <br>- Slower than magnetic/solid-state storage but good for archival</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="images/3-3-data-storage-secondary-storage-3.png" /></p>
+<h2 id="use-of-buffers">Use of Buffers</h2>
+<h3 id="buffers">Buffers</h3>
+<h3 id="what-is-a-buffer">What is a buffer?</h3>
+<ul>
+<li>A buffer is a <strong>temporary storage area</strong> that holds data <strong>while it is being transferred</strong> between two devices or processes</li>
+<li>Buffers help <strong>manage speed differences</strong> between components, ensuring smooth data flow</li>
+</ul>
+<h4 id="how-buffers-work">How buffers work</h4>
+<ul>
+<li>Data is collected in the buffer <strong>before</strong> being processed or output</li>
+<li>When the <strong>receiving device is ready</strong>, it takes data from the buffer</li>
+<li>This <strong>prevents data loss</strong> and allows devices with <strong>different speeds</strong> to communicate effectively</li>
+</ul>
+<h4 id="examples">Examples</h4>
+<table>
+<thead>
+<tr>
+<th>Buffer</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Keyboard</strong></td>
+<td>Stores keystrokes until the processor is ready to handle them</td>
+</tr>
+<tr>
+<td><strong>Print</strong></td>
+<td>Holds print jobs so the processor can move on while the printer outputs the data at its own speed</td>
+</tr>
+<tr>
+<td><strong>Video</strong></td>
+<td>Stores a portion of data before playback to prevent pauses caused by network delays</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key points</strong></p>
+<ul>
+<li>Buffers are used to synchronise data transfer between fast and slow devices</li>
+<li>They improve efficiency and avoid bottlenecks</li>
+<li>Without buffers, data could be lost or delayed if one device is not ready to process information</li>
+</ul>
+<h3 id="memory-types">Memory Types</h3>
+<h2 id="ram-vs-rom">RAM vs ROM</h2>
+<h3 id="what-is-ram">What is RAM?</h3>
+<ul>
+<li>RAM (Random Access Memory) is <strong>primary storage</strong> that is directly connected to the CPU and holds the <strong>data</strong> and <strong>instructions</strong> that are <strong>currently in use</strong></li>
+<li>RAM is <strong>volatile</strong> which means the contents of RAM are lost when the power is turned off</li>
+<li>For the CPU to access the data and instructions they must be <strong>copied from secondary storage</strong></li>
+<li>RAM is <strong>very fast</strong> working memory, much faster than secondary storage</li>
+<li>RAM is <strong>read/write</strong> which means data can be read from and written to</li>
+<li>In comparison to ROM, it has a much <strong>larger capacity</strong></li>
+</ul>
+<h3 id="what-is-rom">What is ROM?</h3>
+<ul>
+<li>ROM (Read Only Memory) is <strong>primary storage</strong> that holds the <strong>first instructions</strong> a computer needs to <strong>start up</strong> (Bootstrap)</li>
+<li>ROM contains the <strong>BIOS</strong> (Basic Input Output System)</li>
+<li>ROM is a small <strong>memory chip</strong> located on the computers <strong>motherboard</strong></li>
+<li>ROM is <strong>fast</strong> memory, much faster than secondary storage but <strong>slower than RAM</strong></li>
+<li>ROM is <strong>non-volatile</strong> which means the contents of ROM are not lost when the power is turned off</li>
+<li>ROM is <strong>read only</strong> which means data can only be read from</li>
+<li>In comparison to RAM, it has a much <strong>smaller capacity</strong></li>
+</ul>
+<h3 id="differences-between-ram-rom">Differences between RAM &amp; ROM</h3>
+<table>
+<thead>
+<tr>
+<th><strong>ure</strong></th>
+<th><strong>RAM</strong></th>
+<th><strong>ROM</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Very fast</td>
+<td>Fast (slower than RAM)</td>
+</tr>
+<tr>
+<td><strong>Capacity</strong></td>
+<td>Gigabytes (GB)</td>
+<td>Megabytes (MB)</td>
+</tr>
+<tr>
+<td><strong>Stores</strong></td>
+<td>Programs and data in use</td>
+<td>Bootstrap (start-up instructions)</td>
+</tr>
+<tr>
+<td><strong>Read/Write</strong></td>
+<td>Read &amp; write</td>
+<td>Read only</td>
+</tr>
+<tr>
+<td><strong>Volatile/Non-volatile</strong></td>
+<td>Volatile</td>
+<td>Non-volatile</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sram-vs-dram">SRAM vs DRAM</h3>
+<h3 id="what-is-sram">What is SRAM?</h3>
+<ul>
+<li>SRAM (Static RAM) is a form of RAM that <strong>keeps data</strong> as long as power is on</li>
+<li>SRAM is made from <strong>flip-flops</strong> so there is no need for constant refreshing</li>
+<li>SRAM is used in places where <strong>speed</strong> is more important than storage size</li>
+<li>An example of where SRAM is used is:<ul>
+<li><strong>Cache memory</strong>, where quick access to data is most important</li>
+</ul>
+</li>
+<li><strong>Very fast</strong> – faster than DRAM</li>
+<li><strong>Uses less power</strong>, good for <strong>low-power devices</strong></li>
+<li><strong>Expensive</strong> to make</li>
+<li><strong>Takes up more space</strong> – lower storage capacity compared to DRAM</li>
+</ul>
+<h3 id="what-is-dram">What is DRAM?</h3>
+<ul>
+<li>DRAM (Dynamic RAM) is a form of RAM that stores each bit in a <strong>tiny capacitor</strong></li>
+<li>DRAM needs <strong>constant refreshing</strong> to keep the data</li>
+<li>DRAM is commonly used as:<ul>
+<li><strong>Main memory (RAM)</strong>, where larger amounts of cheaper storage is required</li>
+</ul>
+</li>
+<li><strong>Cheaper</strong> to produce than SRAM</li>
+<li><strong>Higher capacity</strong> – can fit <strong>more memory in less space</strong></li>
+<li><strong>Slower</strong> than SRAM, needs time to refresh data</li>
+<li><strong>Uses more power</strong>, especially during refreshing cycles</li>
+</ul>
+<h3 id="prom-vs-eprom-vs-eeprom">PROM vs EPROM vs EEPROM</h3>
+<h3 id="what-is-prom-eprom-eeprom">What is PROM, EPROM &amp; EEPROM?</h3>
+<ul>
+<li>PROM, EPROM and EEPROM are all <strong>types of ROM</strong> that are <strong>programmed and reprogrammed in different ways</strong></li>
+<li>Each type has a <strong>specific application</strong> in difference devices</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>PROM</strong></th>
+<th><strong>EPROM</strong></th>
+<th><strong>EEPROM</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Can be reprogrammed?</strong></td>
+<td>No – programmed once only</td>
+<td>Yes – can be erased and rewritten</td>
+<td>Yes – can be erased and rewritten</td>
+</tr>
+<tr>
+<td><strong>Erased using</strong></td>
+<td>Cannot be erased</td>
+<td>UV light</td>
+<td>Electric voltage</td>
+</tr>
+<tr>
+<td><strong>Must be removed from device?</strong></td>
+<td>No</td>
+<td>Yes – must be removed from the device</td>
+<td>No – can be erased in place</td>
+</tr>
+<tr>
+<td><strong>Erased all at once?</strong></td>
+<td>Not applicable</td>
+<td>Yes – entire chip is erased</td>
+<td>No – specific parts can be erased</td>
+</tr>
+<tr>
+<td><strong>Common use</strong></td>
+<td>Permanent firmware</td>
+<td>Reprogrammable chip development</td>
+<td>Flash memory, BIOS chips</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Remote controls, basic calculators, early model washing machines</td>
+<td>Arcade machines (older models)<br><br>Early games consoles</td>
+<td>BIOS chips in computers, Smart cards, remote key fobs, flash memory like USB sticks and SSDs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="monitoring-vs-control">Monitoring vs control</h2>
+<h3 id="monitoring-systems">Monitoring systems</h3>
+<ul>
+<li>A monitoring system is used to <strong>collect data continuously</strong> through observation</li>
+<li>It works by <strong>passively gathering data</strong></li>
+<li>It <strong>does not interact with or change</strong> the environment</li>
+<li>The system <strong>does not take action</strong> based on the data collected</li>
+<li>Designed for <strong>high accuracy</strong> using <strong>precise sensors and measurements</strong></li>
+<li>Examples of monitoring systems include:<ul>
+<li><strong>Weather stations</strong></li>
+<li><strong>Patient monitoring in hospitals</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="weather-stations">Weather stations</h4>
+<ul>
+<li>Collect data like <strong>temperature, wind speed, humidity, and rainfall</strong></li>
+<li>Used by <strong>meteorologists</strong> to observe and predict weather patterns</li>
+<li>Data is collected <strong>24/7</strong> but the system does <strong>not react or change anything</strong></li>
+</ul>
+<h4 id="patient-monitoring">Patient monitoring</h4>
+<ul>
+<li>Tracks <strong>heart rate, oxygen levels, and blood pressure</strong> in real-time</li>
+<li>Alerts medical staff if readings go outside safe ranges</li>
+<li>The system itself just <strong>records and displays data</strong>, it doesn’t directly treat the patient</li>
+</ul>
+<h3 id="control-systems">Control systems</h3>
+<ul>
+<li>A control system is used to <strong>automatically manage or adjust</strong> a process based on data collected from sensors</li>
+<li>It works by <strong>monitoring input</strong>, then <strong>taking action</strong> if certain conditions are met</li>
+<li>Unlike monitoring systems, control systems <strong>do interact with the environment</strong></li>
+<li>They are designed to keep systems <strong>stable, safe, or working efficiently</strong> without human input</li>
+<li>Examples of control systems include:<ul>
+<li><strong>Central heating system</strong></li>
+<li><strong>Automatic irrigation system</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="central-heating-system">Central heating system</h4>
+<ul>
+<li><strong>Monitors room temperature</strong> using a thermostat</li>
+<li>If the temperature drops below the set level, the <strong>boiler is switched on</strong></li>
+<li>Once the target temperature is reached, the system <strong>turns the heating off</strong> automatically</li>
+<li>The system constantly checks and <strong>adjusts</strong> to maintain the desired temperature</li>
+</ul>
+<h4 id="automatic-irrigation-system">Automatic irrigation system</h4>
+<ul>
+<li><strong>Monitors soil moisture levels</strong> in farmland or gardens</li>
+<li>If moisture drops too low, it <strong>activates sprinklers</strong> to water the plants</li>
+<li>Once the soil reaches the correct level, the system <strong>turns off the water supply</strong></li>
+<li>Ensures plants are <strong>watered efficiently</strong> without wasting resources</li>
+<li><strong>Actuators</strong> are output devices in a control system that carry out actions based on data from sensors</li>
+<li>Examples include motors, heaters, valves, and pumps</li>
+</ul>
+<h3 id="use-of-sensors">Use of sensors</h3>
+<h3 id="what-are-sensors">What are sensors?</h3>
+<ul>
+<li>Sensors are <strong>input devices</strong></li>
+<li>They <strong>measure a physical property of their environment</strong> such as light levels, temperature or movement</li>
+<li>Sensors can be used for both <strong>monitoring and control systems</strong></li>
+<li>A process where <strong>outputs are recycled and used as inputs</strong>, creating a continuous cycle is called a <strong>feedback loop</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Sensor type</strong></th>
+<th><strong>What it measures</strong></th>
+<th><strong>Typical use</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Acoustic</strong></td>
+<td>Sound levels</td>
+<td>To detect changes in sound levels of industrial machinery<br><br>To monitor noise pollution<br><br>In security system to detect suspicious sounds</td>
+</tr>
+<tr>
+<td><strong>Accelerometer</strong></td>
+<td>Acceleration rate, tilt, vibration</td>
+<td>Detecting sudden changes in vehicle movement and deploy safety features if needed<br><br>In mobile phones to detect orientation of the device</td>
+</tr>
+<tr>
+<td><strong>Flow</strong></td>
+<td>Rate of gas, liquid or powder flow</td>
+<td>Detect changes in the flow through pipes in water system</td>
+</tr>
+<tr>
+<td><strong>Gas</strong></td>
+<td>Presence of a gas e.g. carbon monoxide</td>
+<td>Detect levels of gas in confined spaces<br><br>Detect gas levels when fixing gas leaks</td>
+</tr>
+<tr>
+<td><strong>Humidity</strong></td>
+<td>Levels of water vapour</td>
+<td>Monitor humidity in greenhouses</td>
+</tr>
+<tr>
+<td><strong>Infra-red</strong></td>
+<td>Detecting motion or a heat source</td>
+<td>Security systems detecting intruders who break the beam<br><br>Measures heat radiation of objects - used by emergency services to detect people</td>
+</tr>
+<tr>
+<td><strong>Level</strong></td>
+<td>Liquid levels</td>
+<td>Detects levels of petrol in a car tank<br><br>Detect levels of water in a water tank<br><br>Detect a drop in water levels due to a leak</td>
+</tr>
+<tr>
+<td><strong>Light</strong></td>
+<td>Light levels</td>
+<td>Automatically switching on lights when it gets dark (street lights, headlights)</td>
+</tr>
+<tr>
+<td><strong>Magnetic field</strong></td>
+<td>Presence and strength</td>
+<td>Anti-lock braking system<br><br>Monitoring rotating machinery such as turbines</td>
+</tr>
+<tr>
+<td><strong>Moisture</strong></td>
+<td>Presence and levels of moisture</td>
+<td>Monitoring moisture in the soil<br><br>Monitoring dampness in buildings</td>
+</tr>
+<tr>
+<td><strong>pH</strong></td>
+<td>Acidity or alkaline</td>
+<td>Monitoring soil to ensure optimum growing conditions<br><br>Monitor ph levels in chemical processes</td>
+</tr>
+<tr>
+<td><strong>Pressure</strong></td>
+<td>Gas, liquid or physical pressure</td>
+<td>Monitoring tyre pressure<br><br>Monitoring pressure in pipes during the manufacturing process</td>
+</tr>
+<tr>
+<td><strong>Proximity</strong></td>
+<td>Distance</td>
+<td>Monitoring the position of objects in robotics<br><br>Used in safety systems to prevent objects from colliding</td>
+</tr>
+<tr>
+<td><strong>Temperature</strong></td>
+<td>Temperature in Celsius, Fahrenheit or Kelvin</td>
+<td>Used to maintain temperature in swimming pools<br><br>Used to control temperature in chemical processes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feedback-loops">Feedback loops</h3>
+<h3 id="what-is-a-feedback-loop">What is a feedback loop?</h3>
+<ul>
+<li>A feedback loop is when a control system uses its <strong>output to influence its next input</strong></li>
+<li>Allows the system to <strong>automatically adjust</strong> and stay within set conditions</li>
+<li>Feedback allows the system to <strong>check if it’s working as expected</strong></li>
+<li>The <strong>output affects the next input</strong>, helping the system make adjustments</li>
+<li>This means the system can <strong>automatically respond to changes</strong> in its environment</li>
+<li>Helps the system <strong>stay within set limits or target values</strong> (e.g. temperature, moisture)</li>
+<li>Makes the system <strong>more accurate and efficient</strong> without needing human control</li>
+</ul>
+<h4 id="example-central-heating-system">Example: Central heating system</h4>
+<ul>
+<li>The system uses a <strong>thermostat</strong> to monitor the <strong>room temperature</strong></li>
+<li>If the room gets <strong>too cold</strong>, the system <strong>turns the heating on</strong></li>
+<li>Once the room reaches the <strong>set temperature</strong>, the system <strong>turns the heating off</strong></li>
+<li>This process uses <strong>feedback</strong>:<ul>
+<li>The <strong>output</strong> (room temperature) affects the <strong>input</strong> (whether heating is needed)</li>
+</ul>
+</li>
+<li>Feedback ensures the system <strong>automatically adjusts</strong> to keep the room at the right temperature</li>
+<li>No need for manual control as the system <strong>self-corrects</strong> using feedback</li>
+</ul>
+<h2 id="logic-gates">Logic gates</h2>
+<h3 id="what-is-a-logic-gate">What is a logic gate?</h3>
+<ul>
+<li>A logic gate is a <strong>visual way</strong> of representing a <strong>Boolean expression</strong></li>
+<li>The logic gates covered in this course are:<ul>
+<li><strong>AND</strong></li>
+<li><strong>OR</strong></li>
+<li><strong>NOT</strong></li>
+<li><strong>XOR</strong></li>
+<li><strong>NAND</strong></li>
+<li><strong>NOR</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="and">AND</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>AND</strong> B)</td>
+<td><img alt="" src="images/gate-and.svg" /></td>
+<td>Returns TRUE only if <strong>both</strong> inputs are TRUE<br><br><strong>TRUE</strong> AND <strong>TRUE</strong> = <strong>TRUE</strong><br><br>Otherwise = FALSE</td>
+</tr>
+</tbody>
+</table>
+<h4 id="or">OR</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>OR</strong> B)</td>
+<td><img alt="" src="images/gate-or.svg" /></td>
+<td>Returns TRUE if <strong>either</strong> input is TRUE<br><br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>FALSE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="not">NOT</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(<strong>NOT</strong> A)</td>
+<td><img alt="" src="images/gate-not.svg" /></td>
+<td><strong>Reverses</strong> the input value<br><br>NOT <strong>TRUE</strong> = <strong>FALSE</strong><br><br>NOT <strong>FALSE</strong> = <strong>TRUE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="xor-exclusive-or">XOR (exclusive OR)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>XOR</strong> B)</td>
+<td><img alt="" src="images/gate-xor.svg" /></td>
+<td>Returns TRUE if <strong>either</strong> input is TRUE but <strong>NOT</strong> both<br><br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>FALSE</strong><br><br><strong>TRUE</strong> OR <strong>TRUE</strong> = <strong>FALSE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="nand-not-and">NAND (not and)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>NAND</strong> B)</td>
+<td><img alt="" src="images/gate-nand.svg" /></td>
+<td>Returns TRUE if <strong>either or both</strong> inputs are FALSE<br><br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><br><strong>TRUE</strong> OR <strong>TRUE</strong> = <strong>FALSE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="nor-not-or">NOR (not OR)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>NOR</strong> B)</td>
+<td><img alt="" src="images/gate-nor.svg" /></td>
+<td>Returns TRUE if <strong>both</strong> inputs are FALSE<br><br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>FALSE</strong><br><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><br><strong>TRUE</strong> OR <strong>TRUE</strong> = <strong>FALSE</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="truth-tables">Truth tables</h3>
+<h3 id="what-is-a-truth-table">What is a truth table?</h3>
+<ul>
+<li>A truth table is a <strong>tool</strong> used in logic and computer science to <strong>visualise</strong> the <strong>results</strong> of <strong>Boolean expressions</strong></li>
+<li>They represent <strong>all possible inputs</strong> and the <strong>associated outputs</strong> for a <strong>given Boolean expression</strong></li>
+</ul>
+<h4 id="and_1">AND</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1"><img width="211" height="160" src="images/gate-and.svg"></td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>A AND B</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="or_1">OR</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1"><img width="211" height="156" src="images/gate-or.svg"></td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>A OR B</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="not_1">NOT</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1"><img width="214" height="167" src="images/gate-not.svg"></td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>NOT</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="xor-exclusive">XOR (exclusive)</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1"><img width="211" height="159" src="images/gate-xor.svg"></td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>A XOR B</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="nand-not-and_1">NAND (not and)</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1"><img width="210" height="170" src="images/gate-nand.svg"></td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>NOT (A AND B)</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="nor-not-or_1">NOR (not or)</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1"><img width="207" height="156" src="images/gate-nor.svg"></td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>NOT (A OR B)</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

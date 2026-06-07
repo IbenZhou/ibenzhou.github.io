@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>17. Security — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>17. Security</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#encryption">Encryption</a></li>
+<li><a href="#how-encryption-works">How encryption works</a></li>
+<li><a href="#symmetric-asymmetric-encryption">Symmetric &amp; asymmetric encryption</a></li>
+<li><a href="#quantum-cryptography">Quantum cryptography</a></li>
+<li><a href="#what-is-quantum-cryptograhy">What is quantum cryptograhy?</a></li>
+<li><a href="#protocols">Protocols</a></li>
+<li><a href="#ssltls">SSL/TLS</a></li>
+<li><a href="#what-is-tls">What is TLS?</a></li>
+<li><a href="#digital-certificates">Digital certificates</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="encryption">Encryption</h2>
+<h2 id="how-encryption-works">How encryption works</h2>
+<h3 id="what-is-encryption">What is encryption?</h3>
+<ul>
+<li>Encryption is a method of <strong>scrambling data</strong> before being transmitted across a network</li>
+<li>Encryption helps to protect the contents from unauthorised access by <strong>making data meaningless</strong></li>
+<li>While encryption is important on both <strong>wired</strong> and <strong>wireless</strong> networks, it&rsquo;s even more critical on wireless networks due to the data being transmitted over radio waves, making it easy to <strong>intercept</strong></li>
+</ul>
+<h3 id="how-is-wireless-data-encrypted">How is wireless data encrypted?</h3>
+<ul>
+<li>Wireless networks are identified by a &lsquo;Service Set Identifier&rsquo; (<strong>SSID</strong>) which along with a password is used to create a &rsquo; <strong>master key</strong> &lsquo;</li>
+<li>When devices connect to the <strong>same wireless network</strong> using the SSID and password they are given a copy of the master key</li>
+<li>The master key is used to <strong>encrypt</strong> data into &rsquo; <strong>cipher text</strong> &lsquo;, before being transmitted</li>
+<li>The receiver uses the same master key to <strong>decrypt</strong> the cipher text back to &rsquo; <strong>plain text</strong> &lsquo;</li>
+<li>To guarantee the security of data, the <strong>master key is never transmitted</strong>. Without it, any intercepted data is rendered useless</li>
+<li>Wireless networks use dedicated <strong>protocols</strong> like <strong>WPA2</strong> specifically designed for <strong>Wi-Fi</strong> security
+<img alt="Overview diagram of basic wireless encryption" src="images/wireless-encryption.png" /></li>
+</ul>
+<h3 id="how-is-wired-data-encrypted">How is wired data encrypted?</h3>
+<ul>
+<li>Wired networks are encrypted in a very similar way to a wireless network, using a <strong>master key to encrypt</strong> data and the <strong>same key to decrypt</strong> data</li>
+<li>Encryption on a wired network differs slightly as it is often left to <strong>individual applications to decide</strong> how encryption is used, for example <strong>HTTPS</strong></li>
+</ul>
+<h2 id="symmetric-asymmetric-encryption">Symmetric &amp; asymmetric encryption</h2>
+<h3 id="how-does-symmetric-encryption-work">How does symmetric encryption work?</h3>
+<ul>
+<li>The sender uses a key to <strong>encrypt</strong> the data before transmission</li>
+<li>The receiver <strong>uses the same key</strong> to <strong>decrypt</strong> the data</li>
+<li>It&rsquo;s usually <strong>faster</strong>, making it ideal for encrypting <strong>large amounts of data</strong></li>
+<li>The significant downside is <strong>the challenge of securely sharing this key</strong> between the sender and receiver</li>
+<li>If a <strong>bad actor</strong> captures the key, they can <strong>decrypt all messages intercepted</strong> in transmission
+<img alt="Structure of Symmetric Encryption" src="images/utility-software-file-encryption-alevel.png" />
+<strong><em>Structure of Symmetric Encryption</em></strong></li>
+</ul>
+<h3 id="how-does-asymmetric-encryption-work">How does asymmetric encryption work?</h3>
+<ul>
+<li>Asymmetric encryption uses <strong>two keys</strong>:<ul>
+<li>a <strong>public key</strong> for encryption</li>
+<li>and a <strong>private key</strong> for decryption</li>
+</ul>
+</li>
+<li><strong>Receivers</strong> openly sharetheir <strong>public key</strong></li>
+<li><strong>Senders</strong> use this public key to <strong>encrypt</strong> the data</li>
+<li>The <strong>receiver&rsquo;s private key</strong> is the <strong>only key</strong> that can decrypt the data and is kept locally on their side</li>
+<li>The public and private keys are created at the same time and are <strong>designed to work together</strong> in this way</li>
+<li>It is typically <strong>slower than symmetric encryption</strong></li>
+<li>It is generally used for <strong>more secure and smaller</strong> data transactions, e.g. <strong>passwords</strong>, <strong>bank details</strong>
+<img alt="Structure of Asymmetric Encryption" src="images/asymmetric-encryption-public-key-private-key.png" />
+<strong><em>Structure of Asymmetric Encryption</em></strong></li>
+</ul>
+<h3 id="choosing-an-encryption-type">Choosing an encryption type</h3>
+<ul>
+<li><strong>Symmetric encryption is fast</strong> but has key-sharing issues; <strong>asymmetric is slower</strong> but solves these issues.</li>
+<li>The choice should be made based on the <strong>situation&rsquo;s needs</strong>: whether <strong>speed</strong> or <strong>security</strong> is more critical.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Encryption Type</strong></th>
+<th><strong>Suitable For</strong></th>
+<th><strong>Reasons to choose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Symmetric</strong></td>
+<td>Large files, databases</td>
+<td>- Fast and efficient for bulk data.<br>    <br>- The same person encrypts and decrypts, e.g. when backing up data.</td>
+</tr>
+<tr>
+<td><strong>Asymmetric</strong></td>
+<td>Confidential/secret communications</td>
+<td>- Sharing highly secure data, e.g. passwords, government communications</td>
+</tr>
+</tbody>
+</table>
+<h2 id="quantum-cryptography">Quantum cryptography</h2>
+<h2 id="what-is-quantum-cryptograhy">What is quantum cryptograhy?</h2>
+<ul>
+<li>Quantum cryptography uses <strong>quantum mechanics</strong> to securely transmit encryption keys</li>
+<li>Its main goal is to enable <strong>unbreakable communication</strong> by detecting any attempt to intercept or tamper with the key</li>
+<li>The most well-known method is:<ul>
+<li><strong>Quantum Key Distribution (QKD)</strong> – uses quantum particles (like photons) to share a secret key between two parties securely</li>
+</ul>
+</li>
+</ul>
+<h4 id="benefits-of-quantum-cryptography">Benefits of quantum cryptography</h4>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unbreakable key transmission</strong></td>
+<td>Uses quantum physics – measuring a quantum state disturbs it, so eavesdropping is detectable</td>
+</tr>
+<tr>
+<td><strong>Eavesdropper detection</strong></td>
+<td>Any interception changes the quantum state of the key, alerting the users</td>
+</tr>
+<tr>
+<td><strong>Perfect forward secrecy</strong></td>
+<td>Keys are used once and then discarded, reducing the impact of future key leaks</td>
+</tr>
+<tr>
+<td><strong>Stronger than classical encryption</strong></td>
+<td>Not based on mathematical problems like factoring large primes, so it&rsquo;s not vulnerable to advances in computing (e.g. quantum computers)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="drawbacks-of-quantum-cryptography">Drawbacks of quantum cryptography</h4>
+<table>
+<thead>
+<tr>
+<th>Drawback</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Expensive and complex</strong></td>
+<td>Requires advanced technology, including specialised hardware like photon detectors and fibre-optic channels</td>
+</tr>
+<tr>
+<td><strong>Short distance limits</strong></td>
+<td>Works best over short ranges (limited by current fibre-optic and signal loss issues)</td>
+</tr>
+<tr>
+<td><strong>Slow transmission speed</strong></td>
+<td>QKD is typically slower than traditional key exchange methods</td>
+</tr>
+<tr>
+<td><strong>Still evolving</strong></td>
+<td>Technology is new and not yet widely available or standardised</td>
+</tr>
+<tr>
+<td><strong>Only secures key exchange</strong></td>
+<td>Quantum cryptography secures the key, but not the actual data encryption itself – traditional algorithms still needed</td>
+</tr>
+</tbody>
+</table>
+<h4 id="quiz">Quiz</h4>
+<p>Quantum cryptography isn&rsquo;t about encrypting the message – it’s about securing the <strong>key</strong> used in encryption (e.g. with QKD). Always mention this to show clear understanding.
+Encryption is used to alter data into a form that makes it meaningless if intercepted.
+Describe the purpose of asymmetric key cryptography.
+<strong>Answer</strong></p>
+<ul>
+<li>To provide better security [1 mark]</li>
+<li>… by using two different keys / a public key and a private key [1 mark]</li>
+<li>One of the keys is used to encrypt the message [1 mark]</li>
+<li>… the matching key is used to decrypt the message [1 mark]</li>
+</ul>
+<h2 id="protocols">Protocols</h2>
+<h2 id="ssltls">SSL/TLS</h2>
+<h3 id="what-is-ssl">What is SSL?</h3>
+<ul>
+<li>SSL (Secure Sockets Layer) is a <strong>security protocol</strong> used to <strong>encrypt data sent over the internet</strong></li>
+<li>Helps to prevent <strong>eavesdropping</strong>, <strong>tampering</strong>, or <strong>man-in-the-middle attacks</strong></li>
+<li>Commonly used for:<ul>
+<li><strong>Protecting websites</strong></li>
+<li><strong>Online payments</strong></li>
+<li><strong>Login credentials</strong></li>
+</ul>
+</li>
+<li>Creates a <strong>secure connection</strong> between a web server and a browser</li>
+</ul>
+<h2 id="what-is-tls">What is TLS?</h2>
+<ul>
+<li>TLS (Transport Layer Security) is the <strong>successor to SSL</strong></li>
+<li>It performs the <strong>same functions</strong> but is <strong>more secure and efficient</strong><ul>
+<li>Modern websites use <strong>TLS</strong>, although people often still refer to it as “SSL”</li>
+<li>When you see <strong>HTTPS</strong> in the browser, it means <strong>TLS/SSL encryption is active</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="how-ssltls-works-with-digital-certificates">How SSL/TLS works with digital certificates</h4>
+<ol>
+<li>When you visit a secure website (e.g. <code>https://</code>), the server sends your browser its <strong>digital certificate</strong></li>
+<li>The certificate contains:<ul>
+<li>The server’s <strong>public key</strong></li>
+<li>Information about the website and Certificate Authority (CA)</li>
+<li>A <strong>digital signature</strong> from the CA</li>
+</ul>
+</li>
+<li>Your browser checks that the <strong>certificate is valid and trusted</strong> using the CA’s public key</li>
+<li>If trusted, a <strong>secure connection is established</strong>, often using a shared secret key (symmetric encryption) created during the handshake</li>
+</ol>
+<h4 id="summary-what-a-digital-certificate-does">Summary: What a digital certificate does</h4>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Public key</td>
+<td>Used by your browser to create secure communication</td>
+</tr>
+<tr>
+<td>Website identity</td>
+<td>Shows who owns the key</td>
+</tr>
+<tr>
+<td>Certificate Authority</td>
+<td>Signs the certificate to confirm it&rsquo;s trustworthy</td>
+</tr>
+<tr>
+<td>Browser validation</td>
+<td>Uses the CA’s public key to verify the certificate</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>TLS has replaced SSL — but both are encryption protocols used with digital certificates</li>
+<li>Always mention digital certificates when explaining how websites create secure connections</li>
+</ul>
+<h2 id="digital-certificates">Digital certificates</h2>
+<h3 id="what-is-a-digital-certificate">What is a digital certificate?</h3>
+<ul>
+<li>A digital certificate is an <strong>electronic file</strong> that <strong>confirms someone’s identity</strong> and proves that a <strong>public key</strong> belongs to them</li>
+<li>It is issued by a trusted third party called a <strong>Certificate Authority (CA)</strong></li>
+<li>A digital certificate includes:<ul>
+<li>The owner’s <strong>public key</strong></li>
+<li>The owner’s <strong>identity details</strong> (e.g. name, email, company)</li>
+<li>The <strong>expiry date</strong> of the certificate</li>
+<li>The <strong>Certificate Authority’s digital signature</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="hash-function">Hash function</h4>
+<ul>
+<li>A hash function is a one-way algorithm that takes an input (e.g. a message) and produces a fixed-length output, called a <strong>hash value</strong> or <strong>message-digest</strong></li>
+<li><strong>Key features:</strong><ul>
+<li>The output is always the same length, regardless of input size</li>
+<li>It is <strong>one-way</strong> — you cannot reverse it to get the original input</li>
+<li>Even a small change in input produces a completely different output</li>
+<li>Commonly used in digital signatures and password storage</li>
+</ul>
+</li>
+<li>Think of it as a fingerprint for data</li>
+</ul>
+<h4 id="message-digest">Message-digest</h4>
+<ul>
+<li>A message-digest is the <strong>output (the hash value) produced</strong> when a message is processed through a hash function</li>
+<li><strong>It is:</strong><ul>
+<li>A fixed-length summary of the original message</li>
+<li>Unique to the message (ideally – collisions are rare)</li>
+<li>Used to check whether a message has been altered</li>
+</ul>
+</li>
+<li>Think of it as the unique ID or checksum of a message</li>
+</ul>
+<h3 id="how-is-a-digital-certificate-acquired">How is a digital certificate acquired?</h3>
+<ol>
+<li><strong>Leila</strong> wants to be able to sign documents digitally</li>
+<li>She generates a <strong>key pair</strong> – one private key and one public key</li>
+<li>Leila sends a <strong>Certificate Signing Request (CSR)</strong> to a <strong>Certificate Authority (CA)</strong><ol>
+<li>This includes her <strong>public key</strong> and identity details</li>
+</ol>
+</li>
+<li>The CA <strong>verifies Leila’s identity</strong> using documents or other checks</li>
+<li>If approved, the CA <strong>digitally signs</strong> a certificate and sends it back to Leila<ol>
+<li>This certificate contains Leila’s <strong>public key</strong>, identity, and the CA’s signature</li>
+</ol>
+</li>
+</ol>
+<h3 id="how-is-a-digital-certificate-used-to-produce-a-digital-signature">How is a digital certificate used to produce a digital signature?</h3>
+<ol>
+<li>Leila writes a message she wants to send to <strong>Jonas</strong></li>
+<li>She applies a <strong>hash function</strong> to the message to create a <strong>message-digest</strong></li>
+<li>Leila then <strong>encrypts the message-digest using her private key</strong><ol>
+<li>This becomes her <strong>digital signature</strong></li>
+</ol>
+</li>
+<li>She sends Jonas:<ul>
+<li>The <strong>original message</strong></li>
+<li>Her <strong>digital signature</strong></li>
+<li>Her <strong>digital certificate</strong></li>
+</ul>
+</li>
+<li>Jonas:<ul>
+<li>Uses Leila’s <strong>public key</strong> (from the certificate) to <strong>verify the digital signature</strong></li>
+<li>Uses the CA’s <strong>public key</strong> to verify that the certificate is genuine and hasn’t been forged</li>
+</ul>
+</li>
+</ol>
+<h4 id="summary">Summary</h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Certificate issued by a CA</td>
+<td>Proves the public key belongs to the sender</td>
+</tr>
+<tr>
+<td>Certificate includes public key</td>
+<td>Lets others verify digital signatures</td>
+</tr>
+<tr>
+<td>CA’s digital signature on certificate</td>
+<td>Shows it was issued by a trusted third party</td>
+</tr>
+<tr>
+<td>Public verifies sender and message</td>
+<td>Ensures authenticity and integrity of the message</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The digital certificate <strong>proves ownership</strong> of a public key</li>
+<li>The digital signature <strong>proves a message came from the claimed sender</strong> and wasn’t altered
+<strong>Don&rsquo;t mix them up!</strong></li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

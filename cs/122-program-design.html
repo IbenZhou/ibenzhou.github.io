@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12.2 Program Design — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>12.2 Program Design</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#structure-charts">Structure Charts</a></li>
+<li><a href="#structure-charts_1">Structure charts</a></li>
+<li><a href="#state-transition-diagrams">State-Transition Diagrams</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="structure-charts">Structure Charts</h2>
+<h2 id="structure-charts_1">Structure charts</h2>
+<h3 id="what-is-a-structure-chart">What is a structure chart?</h3>
+<ul>
+<li>A structure chart is a <strong>modelling tool</strong> used in the <strong>design stage</strong> of program development</li>
+<li>It helps to <strong>decompose a problem</strong> into smaller, manageable <strong>sub-tasks</strong>, representing each as a <strong>module</strong></li>
+<li>Structure charts focus on <strong>what the program does</strong>, not how it does it</li>
+</ul>
+<h4 id="example">Example</h4>
+<ul>
+<li>A program that asks a user to enter their username and password</li>
+<li>Checks if the password matches the stored password and uses a counter to track how many times it is checked</li>
+<li>If the password matches, a successful message is displayed, else after three failed attempts a &lsquo;denied&rsquo; message is displayed</li>
+<li>A structure chart might look like:
+<img alt="Flowchart of login process: input username, enter password, check password with conditions, possible outputs are &quot;Login successful&quot; or &quot;Access denied&quot;." src="images/56567_calculate-average.png" /></li>
+</ul>
+<h4 id="key-features">Key features</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Feature</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top-down design</strong></td>
+<td>The chart starts with the <strong>main program</strong> and breaks it into sub-modules</td>
+</tr>
+<tr>
+<td><strong>Decomposition</strong></td>
+<td>Each module represents a <strong>specific task</strong> or <strong>function</strong></td>
+</tr>
+<tr>
+<td><strong>Module boxes</strong></td>
+<td>Each module is shown as a <strong>box</strong></td>
+</tr>
+<tr>
+<td><strong>Vertical lines</strong></td>
+<td>Show <strong>control flow</strong> – which module calls which</td>
+</tr>
+<tr>
+<td><strong>Parameter arrows</strong></td>
+<td><strong>Arrows</strong> pointing into modules show <strong>data being passed in or returned</strong></td>
+</tr>
+<tr>
+<td><strong>Stepwise refinement</strong></td>
+<td>Each level adds <strong>more detail</strong> to the task above</td>
+</tr>
+<tr>
+<td><strong>Diamond shape</strong></td>
+<td>Shows a <strong>condition</strong> that could be <strong>true or false</strong></td>
+</tr>
+<tr>
+<td><strong>Semi-circular arrow</strong></td>
+<td>Indicates <strong>repetition</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="pseudocode-from-structure-chart">Pseudocode from structure chart</h3>
+<ul>
+<li>The first step is to create an <strong>identifier table</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Data type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Username</code></td>
+<td>STRING</td>
+<td>Stores the username entered by the user</td>
+</tr>
+<tr>
+<td><code>Password</code></td>
+<td>STRING</td>
+<td>Stores the password entered by the user</td>
+</tr>
+<tr>
+<td><code>StoredPass</code></td>
+<td>STRING</td>
+<td>The correct password stored in the system for comparison</td>
+</tr>
+<tr>
+<td><code>NoAttempts</code></td>
+<td>INTEGER</td>
+<td>Counts the number of failed login attempts</td>
+</tr>
+<tr>
+<td><code>LoginSuccess</code></td>
+<td>BOOLEAN</td>
+<td>Indicates whether the login was successful</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Next, identify is any <strong>functions</strong> or <strong>procedures</strong> could be used</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Module</strong></th>
+<th><strong>Type</strong></th>
+<th><strong>Purpose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetCredentials</code></td>
+<td><strong>PROCEDURE</strong></td>
+<td>Asks the user to input username and password</td>
+</tr>
+<tr>
+<td><code>CheckPassword</code></td>
+<td><strong>FUNCTION</strong></td>
+<td>Compares input password with stored password and returns TRUE/FALSE</td>
+</tr>
+<tr>
+<td><code>ShowAccessMessage</code></td>
+<td><strong>PROCEDURE</strong></td>
+<td>Displays success or failure message</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Any finally, write the pseudocode</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Password</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">StoredPass</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">NoAttempts</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">LoginSuccess</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">BOOLEAN</span>
+<span class="n">StoredPass</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;admin123&quot;</span>
+<span class="n">NoAttempts</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">LoginSuccess</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">GetCredentials</span><span class="p">()</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter username: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Username</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter password: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Password</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">FUNCTION</span><span class="w"> </span><span class="n">CheckPassword</span><span class="p">(</span><span class="n">P</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">BOOLEAN</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StoredPass</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">RETURN</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">RETURN</span><span class="w"> </span><span class="n">FALSE</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDFUNCTION</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">ShowAccessMessage</span><span class="p">(</span><span class="n">Success</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">BOOLEAN</span><span class="p">)</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Login successful&quot;</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Access denied&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">NoAttempts</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">LoginSuccess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span>
+<span class="w">    </span><span class="n">CALL</span><span class="w"> </span><span class="n">GetCredentials</span><span class="p">()</span>
+<span class="w">    </span><span class="n">LoginSuccess</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">CheckPassword</span><span class="p">(</span><span class="n">Password</span><span class="p">)</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">LoginSuccess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Incorrect password&quot;</span>
+<span class="w">        </span><span class="n">NoAttempts</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">NoAttempts</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDWHILE</span>
+<span class="n">CALL</span><span class="w"> </span><span class="n">ShowAccessMessage</span><span class="p">(</span><span class="n">LoginSuccess</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="state-transition-diagrams">State-Transition Diagrams</h2>
+<h3 id="what-are-state-transition-diagrams">What are state-transition diagrams?</h3>
+<ul>
+<li>A state-transition diagram shows <strong>how a system moves between different states</strong> based on inputs</li>
+<li>Each <strong>state</strong> represents a condition or situation of the system</li>
+<li><strong>Transitions</strong> are arrows that show movement between states when certain inputs occur</li>
+<li>Transitions may also produce <strong>outputs</strong>, shown as labels on the arrows</li>
+<li>These diagrams model <strong>finite-state machines (FSMs)</strong>, which are widely used in computing</li>
+</ul>
+<h4 id="key-elements">Key elements</h4>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>State</strong></td>
+<td>Circle labelled with a name (e.g. S1, S2) showing a situation the system can be in</td>
+</tr>
+<tr>
+<td><strong>Initial state</strong></td>
+<td>Starting point, sometimes marked with an arrow pointing to it</td>
+</tr>
+<tr>
+<td><strong>Transition</strong></td>
+<td>Arrow from one state to another, labelled with input and output</td>
+</tr>
+<tr>
+<td><strong>Input</strong></td>
+<td>Event or data that causes a transition (e.g. Button-Y pressed)</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Action or signal produced by a transition (e.g. Output-A)</td>
+</tr>
+<tr>
+<td><strong>Next state</strong></td>
+<td>The state the system moves into after the transition</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Labels are often written as <strong>Input | Output</strong></li>
+<li>If no output is produced, “none” may be written</li>
+<li>Example: <code>Button-Y | Output-B</code> means pressing Button-Y in the current state produces Output-B and causes a transition to the next state</li>
+<li>
+<p>The diagram below shows the key features of a state-transition diagram:
+<img alt="Example state-transition diagram showing S1 and S2 labels" src="images/29318_chatgpt-image-sep-3-2025-12-43-58-pm.png" /></p>
+</li>
+<li>
+<p>States are circles labelled S1, S2, etc</p>
+</li>
+<li>Transitions are arrows between states, labelled with Input | Output</li>
+<li>The initial state is marked with an incoming arrow</li>
+</ul>
+<h4 id="completing-transition-tables">Completing transition tables</h4>
+<ul>
+<li>Exam questions often ask you to convert a diagram into a <strong>table</strong></li>
+<li>The table normally has columns for <strong>Current state, Input, Output, Next state</strong></li>
+<li>Work through the diagram row by row, following the arrows for each possible input
+Example table structure:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Current state</th>
+<th>Input</th>
+<th>Output</th>
+<th>Next state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>Button-Y</td>
+<td>Output-A</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>Button-Z</td>
+<td>Output-B</td>
+<td>S3</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Always identify the <strong>initial state</strong> before tracing</li>
+<li>Highlight or mark inputs and outputs on your diagram to avoid missing one</li>
+<li>For tables, keep the order consistent: Input → Output → Next state</li>
+<li>Use arrows systematically, avoid guessing paths</li>
+<li>Remember: more than one sequence can sometimes reach the same state, but exams often ask for the <strong>minimum changes</strong>
+Part of a program is represented by the following state‑transition diagram
+<img alt="State diagram with five states (S1-S5). Arrows with inputs and outputs connect these states, starting from S1. States interact with Inputs A and B." src="images/9840_2025-09-03-0ns-kleki.png" />
+<strong>A</strong>. Complete the table to show the inputs, outputs and next states.
+Assume that the current state for each row is given by the ‘Next state’ on the previous row. For example, the first Input‑A is made when in state S1.
+If there is no output for a given transition, then the output cell should contain ‘none’.
+The first two rows have been completed.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Output</th>
+<th>Next state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>S1</td>
+</tr>
+<tr>
+<td>Input-A</td>
+<td>none</td>
+<td>S3</td>
+</tr>
+<tr>
+<td></td>
+<td>Output-W</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>Input-B</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Input-A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>S4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>[5]</strong>
+<strong>B</strong>. Identify the input sequence that will cause the minimum number of state changes in the transition from S1 to S4
+<strong>[1]</strong>
+<strong>Answers</strong></p>
+<h6 id="a"><strong>A.</strong></h6>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Output</th>
+<th>Next state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>S1</td>
+</tr>
+<tr>
+<td>Input-A</td>
+<td>none</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>Input-A</td>
+<td>Output-W</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>Input-B</td>
+<td>none</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>Input-B</td>
+<td>none</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>Input-A</td>
+<td>none</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>Input-A</td>
+<td>Output-X</td>
+<td>S4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>One mark per row 3 to 7 [5 marks]
+<strong>B</strong>. Input-B, Input-A [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

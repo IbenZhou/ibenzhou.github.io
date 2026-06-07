@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8.1 Database Concepts — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>8.1 Database Concepts</h1>
+    <p>Part 1: Theory Fundamentals</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#database-models">Database Models</a></li>
+<li><a href="#limitations-of-file-based-systems">Limitations of file-based systems</a></li>
+<li><a href="#flat-file-vs-relational">Flat file vs Relational</a></li>
+<li><a href="#database-terminology">Database terminology</a></li>
+<li><a href="#database-design">Database Design</a></li>
+<li><a href="#entity-relationship-e-r-diagrams">Entity-relationship (E-R) diagrams</a></li>
+<li><a href="#database-normalisation">Database Normalisation</a></li>
+<li><a href="#normalised-design">Normalised design</a></li>
+<li><a href="#first-normal-form-1nf">First Normal Form (1NF)</a></li>
+<li><a href="#second-normal-form-2nf">Second Normal Form (2NF)</a></li>
+<li><a href="#third-normal-form-3nf">Third Normal Form (3NF)</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="database-models">Database Models</h2>
+<h2 id="limitations-of-file-based-systems">Limitations of file-based systems</h2>
+<h3 id="what-is-a-file-based-system">What is a file-based system?</h3>
+<ul>
+<li>A file-based system refers to any system where <strong>data is stored in separate files</strong> (e.g. text files, spreadsheets)</li>
+<li>Each application or department may have its <strong>own files</strong>, often with <strong>redundant or duplicated data</strong></li>
+<li>There is <strong>no central control</strong> or shared structure, files are often standalone</li>
+<li>Common in older systems or small-scale setups</li>
+</ul>
+<h4 id="limitations">Limitations</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Limitation</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data redundancy</strong></td>
+<td>The same data is stored in multiple files, leading to duplication</td>
+</tr>
+<tr>
+<td><strong>Data inconsistency</strong></td>
+<td>If one file is updated but others aren’t, the data becomes unreliable</td>
+</tr>
+<tr>
+<td><strong>Lack of data integrity</strong></td>
+<td>It&rsquo;s harder to ensure data is accurate and consistent across all files</td>
+</tr>
+<tr>
+<td><strong>Poor security</strong></td>
+<td>Limited control over who can access or modify different files</td>
+</tr>
+<tr>
+<td><strong>Difficult to update</strong></td>
+<td>Changes must be made in several places, increasing time and risk of error</td>
+</tr>
+<tr>
+<td><strong>Limited scalability</strong></td>
+<td>Not suitable for large volumes of data or complex data relationships</td>
+</tr>
+<tr>
+<td><strong>No central control</strong></td>
+<td>Each application manages its own data, leading to lack of coordination</td>
+</tr>
+<tr>
+<td><strong>Hard to manage relationships</strong></td>
+<td>Cannot easily link related data across files (e.g. customers and their orders)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="flat-file-vs-relational">Flat file vs Relational</h2>
+<ul>
+<li>A <strong>flat file database</strong> is one that stores all data in a <strong>single table</strong><ul>
+<li>It is simple and easy to understand but causes data redundancy, inefficient storage and is harder to maintain</li>
+</ul>
+</li>
+<li>A <strong>relational database</strong> is one that organises data into <strong>multiple tables</strong><ul>
+<li>It uses keys to connect related data which reduces data <strong>redundancy</strong>, makes efficient use of storage and is easier to maintain</li>
+</ul>
+</li>
+<li>
+<p>Consider this example <strong>flat file</strong> table of students
+<img alt="flat-file-table" src="images/flat-file-table.png" /></p>
+</li>
+<li>
+<p>This table has <strong>redundant data</strong> - the tutor and form room information repeats</p>
+</li>
+<li>This is <strong>inefficient</strong></li>
+<li>If a tutor changed their name we would need to find all instances of that name and change them all</li>
+<li>Missing any would mean the table had <strong>inconsistent data</strong></li>
+<li>
+<p>A <strong>relational</strong> database would solve this issue:</p>
+<ul>
+<li>A new <strong>table</strong> could be created to store the tutor information and the tutor information in the student table could be moved to the new <strong>table</strong></li>
+<li>A <strong>foreign key</strong> in the student <strong>table</strong> (<code>TutorID</code>) could link a student to their tutor
+<img alt="relational-database" src="images/relational-database.png" /></li>
+</ul>
+</li>
+<li>
+<p>Now the name of each tutor and their form room is stored <strong>only once</strong></p>
+</li>
+<li>This means if they change only one piece of data, the data is <strong>updated in the entire database</strong> and <strong>inconsistency</strong> is avoided</li>
+</ul>
+<h2 id="database-terminology">Database terminology</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Term</strong></th>
+<th><strong>Definition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Entity</strong></td>
+<td>A real-world object or concept that data is stored about (e.g. <code>Student</code>, <code>Book</code>)</td>
+</tr>
+<tr>
+<td><strong>Table</strong></td>
+<td>A collection of data about an entity, organised in rows and columns</td>
+</tr>
+<tr>
+<td><strong>Record (Tuple)</strong></td>
+<td>A single row in a table representing one instance of an entity</td>
+</tr>
+<tr>
+<td><strong>Field (Attribute)</strong></td>
+<td>A single column in a table, storing one piece of data about the entity</td>
+</tr>
+<tr>
+<td><strong>Primary key</strong></td>
+<td>A unique identifier for each record in a table (e.g. <code>StudentID</code>)</td>
+</tr>
+<tr>
+<td><strong>Candidate key</strong></td>
+<td>A field (or combination of fields) that could be used as a primary key</td>
+</tr>
+<tr>
+<td><strong>Secondary key</strong></td>
+<td>A field used for searching or sorting, but not necessarily unique</td>
+</tr>
+<tr>
+<td><strong>Foreign key</strong></td>
+<td>A field that links to the primary key in another table to create relationships</td>
+</tr>
+<tr>
+<td><strong>Relationship</strong></td>
+<td>A logical connection between two tables/entities</td>
+</tr>
+<tr>
+<td><strong>One-to-One</strong></td>
+<td>One record in a table relates to one record in another table</td>
+</tr>
+<tr>
+<td><strong>One-to-Many</strong></td>
+<td>One record in a table relates to many records in another table</td>
+</tr>
+<tr>
+<td><strong>Many-to-Many</strong></td>
+<td>Records in one table relate to many records in another, and vice versa</td>
+</tr>
+<tr>
+<td><strong>Referential integrity</strong></td>
+<td>Ensures foreign keys match a primary key in the related table to prevent broken links</td>
+</tr>
+<tr>
+<td><strong>Indexing</strong></td>
+<td>A technique to speed up searching in a table by creating an ordered list of key fields</td>
+</tr>
+</tbody>
+</table>
+<h2 id="database-design">Database Design</h2>
+<h2 id="entity-relationship-e-r-diagrams">Entity-relationship (E-R) diagrams</h2>
+<h3 id="what-is-an-entity">What is an entity?</h3>
+<ul>
+<li>An entity in something worthy of <strong>capturing and storing data about</strong> e.g. <em>students, orders, products, courses, customers</em></li>
+<li>Entities become <strong>tables</strong> in a <strong>relational database</strong></li>
+<li>Relational databases store different entities in <strong>separate tables</strong></li>
+<li>Linking tables depends on the <strong>relationships between entities</strong></li>
+<li>There are 3 types of (sometimes called degrees of) <strong>relationships:</strong><ul>
+<li><strong>One-to-one</strong></li>
+<li><strong>One-to-many</strong></li>
+<li><strong>Many-to-many</strong></li>
+</ul>
+</li>
+<li>Imagine a company has<ul>
+<li>A table of <code>products</code></li>
+<li>A table of <code>customers</code></li>
+<li>A table of the <code>orders</code> the customers have made</li>
+</ul>
+</li>
+<li>What is the relationship between a <strong>customer</strong> and an <strong>order</strong>?<ul>
+<li><strong>One</strong> customer can make multiple (<strong>many</strong>) orders</li>
+<li>But each order relates to a specific (<strong>one</strong>) customer</li>
+<li>So the relationship between customer and order is <strong>one-to-many</strong></li>
+</ul>
+</li>
+<li>Now consider the relationship between a <strong>product</strong> and an <strong>order</strong><ul>
+<li>An order could have more than one (<strong>many</strong>) products on it</li>
+<li>A product could be on more than one (<strong>many</strong>) order</li>
+<li>So the relationship between order and product is <strong>many-to-many</strong></li>
+</ul>
+</li>
+<li><strong>One-to-one</strong> relationships also exist but are not very common in databases</li>
+</ul>
+<h3 id="what-is-an-entity-relationship-e-r-diagram">What is an entity-relationship (E-R) diagram?</h3>
+<ul>
+<li>An entity relationship diagram(<strong>E-R</strong>) is a <strong>diagram that represents the entities</strong> (tables) that will be in a database and the <strong>relationships between these entities</strong></li>
+<li>The entities are drawn as <strong>boxes</strong> with the <strong>entity</strong> name in</li>
+<li>The relationships are drawn in as what is known as ‘ <strong>crow’s feet notation</strong> ’</li>
+<li>
+<p>This is how to draw the relationships in the exam:
+<img alt="entity-relationship-diagrams" src="images/entity-relationship-diagrams.png" /></p>
+</li>
+<li>
+<p>The <strong>names</strong> of the entities would go inside the boxes
+These diagrams are simple but tell us some important things about the database:</p>
+</li>
+<li>
+<p>The names of all the tables</p>
+</li>
+<li>Which tables will have a foreign key - when an entity has a ‘many’ relationship against it that means it will have a foreign key in it that links to the primary key of the connected entity</li>
+</ul>
+<h2 id="database-normalisation">Database Normalisation</h2>
+<h2 id="normalised-design">Normalised design</h2>
+<h3 id="what-is-a-normalised-design">What is a normalised design?</h3>
+<ul>
+<li>A <strong>normalised design</strong> is a database structure that:<ul>
+<li><strong>Organises data efficiently</strong></li>
+<li><strong>Eliminates unnecessary duplication</strong></li>
+<li><strong>Ensures data integrity</strong></li>
+<li><strong>Supports easy updates and accurate relationships</strong></li>
+</ul>
+</li>
+<li>You may be asked to produce a normalised design based on:<ul>
+<li>A <strong>written description</strong> of a system</li>
+<li>A <strong>table of unnormalised data</strong></li>
+<li>A set of <strong>existing flat tables</strong></li>
+</ul>
+</li>
+<li>You need to be able to:<ul>
+<li>Identify <strong>repeating groups</strong> or <strong>duplicated data</strong></li>
+<li>Break down data into <strong>separate related tables</strong></li>
+<li>Assign appropriate <strong>primary keys</strong> and <strong>foreign keys</strong></li>
+<li>Show the database in <strong>1NF, 2NF, and 3NF</strong></li>
+<li>Clearly show <strong>relationships</strong> between the tables</li>
+</ul>
+</li>
+</ul>
+<h4 id="step-by-step-process">Step-by-step process</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>What to do</strong></th>
+<th><strong>Why it matters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Read the scenario or table carefully</td>
+<td>Understand what entities (real-world things) are involved</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Identify the fields and any repeated/duplicated values</td>
+<td>These usually indicate the need for more than one table</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Apply <strong>1NF</strong> – remove repeating groups, separate fields</td>
+<td>Each field should hold a single value</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Apply <strong>2NF</strong> – remove partial dependencies</td>
+<td>Make sure non-key fields depend on the whole primary key</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Apply <strong>3NF</strong> – remove transitive dependencies</td>
+<td>Non-key fields should not depend on other non-key fields</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Assign <strong>primary keys</strong> for each table</td>
+<td>Every table needs a unique identifier</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Use <strong>foreign keys</strong> to link related tables</td>
+<td>Ensures relationships and referential integrity</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example">Example</h4>
+<ul>
+<li>A student is enrolled on <strong>multiple</strong> <strong>courses</strong></li>
+<li>Each course is taught by <strong>a teacher</strong></li>
+<li>The table includes: <code>StudentName, StudentID, CourseID, CourseName, TeacherName</code></li>
+<li>You would:<ul>
+<li>Identify <strong>Entities</strong>: Student, Course, Teacher</li>
+<li>Create tables:<ul>
+<li><strong>Student</strong> (<code>StudentID</code>, <code>StudentName</code>)</li>
+<li><strong>Course</strong> (<code>CourseID</code>, <code>CourseName</code>, <code>TeacherID</code>)</li>
+<li><strong>Teacher</strong> (<code>TeacherID</code>, <code>TeacherName</code>)</li>
+<li>A link table: <strong>StudentCourse</strong> (<code>StudentID</code>, <code>CourseID</code>) – handles many-to-many</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="examiner-tips-and-tricks">Examiner Tips and Tricks</h3>
+<ul>
+<li>Always check for <strong>repeating fields</strong> or <strong>duplicated values</strong></li>
+<li>Watch for <strong>composite keys</strong> in link tables (especially many-to-many relationships)</li>
+<li>Check that all fields in a table <strong>depend only on the key, the whole key, and nothing but the key</strong></li>
+<li>Label each stage of your work (1NF → 2NF → 3NF)</li>
+</ul>
+<h2 id="first-normal-form-1nf">First Normal Form (1NF)</h2>
+<h3 id="what-is-first-normal-form">What is first normal form?</h3>
+<ul>
+<li>For a <strong>table</strong> to be in first normal form it must:<ul>
+<li><strong>Contain atomic values</strong><ul>
+<li>Each column in a table must contain single, indivisible values</li>
+</ul>
+</li>
+<li><strong>Have no repeating groups</strong><ul>
+<li>Columns must not contain arrays or lists of values</li>
+</ul>
+</li>
+<li><strong>Have unique column names</strong><ul>
+<li>Each column must have a unique name within the table</li>
+</ul>
+</li>
+<li><strong>Have a unique identifier (</strong><strong>primary key</strong><strong>)</strong><ul>
+<li>Each row must have a unique identifier to distinguish it from other rows</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>This customers table below has <strong>no primary key</strong> and the name is stored in <strong>one field</strong> so is not atomic</li>
+<li>This table is <strong>not</strong> in first normal form
+<strong>Table: Customers</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>phone</th>
+<th>country</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John Smith</td>
+<td>07373 929122</td>
+<td>UK</td>
+</tr>
+<tr>
+<td>Iram Iravani</td>
+<td>07234 543422</td>
+<td>Iraq</td>
+</tr>
+<tr>
+<td>Wu Zhang</td>
+<td>04563 523427</td>
+<td>China</td>
+</tr>
+<tr>
+<td>Anne James</td>
+<td>09378 482894</td>
+<td>USA</td>
+</tr>
+<tr>
+<td>Khalid Shirvani</td>
+<td>02343 536522</td>
+<td>France</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>This customers table below <strong>has a primary key</strong> and the name is stored in <strong>two fields</strong> so it is <strong>atomic</strong></li>
+<li>This table is in <strong>first normal form</strong>
+<strong>Table: Customers</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>customer_id</th>
+<th>forename</th>
+<th>surname</th>
+<th>phone</th>
+<th>country</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+<td>Smith</td>
+<td>07373 929122</td>
+<td>UK</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Iram</td>
+<td>Iravani</td>
+<td>07234 543422</td>
+<td>Iraq</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Wu</td>
+<td>Zhang</td>
+<td>04563 523427</td>
+<td>China</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Anne</td>
+<td>James</td>
+<td>09378 482894</td>
+<td>USA</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Khalid</td>
+<td>Shirvani</td>
+<td>02343 536522</td>
+<td>France</td>
+</tr>
+</tbody>
+</table>
+<h2 id="second-normal-form-2nf">Second Normal Form (2NF)</h2>
+<h3 id="what-is-second-normal-form">What is second normal form?</h3>
+<ul>
+<li>For a table to be in second normal form it must:<ul>
+<li><strong>Fulfil all 1NF requirements</strong></li>
+<li><strong>Only apply to tables with a</strong> <strong>compound primary key</strong></li>
+<li><strong>Have full functional dependency</strong><ul>
+<li><strong>All non-prime attributes (attributes not part of the primary key) must be fully dependent on the primary key</strong></li>
+</ul>
+</li>
+<li><strong>Have no partial dependencies</strong><ul>
+<li>Non-prime attributes must not depend on only part of the primary key (in case of a composite primary key)</li>
+<li>Separate tables should be created for partially dependent attributes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In this table below, <code>Course Title</code> <strong>only depends on part</strong> of the compound primary key (the course code) and not the Date so this table <strong>is not</strong> in second normal form
+<strong>Table: Course</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Course</th>
+<th>Date</th>
+<th>Course Title</th>
+<th>Room</th>
+<th>Capacity</th>
+<th>Available</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQL101</td>
+<td>03/01/2020</td>
+<td>SQL Basics</td>
+<td>4A</td>
+<td>12</td>
+<td>4</td>
+</tr>
+<tr>
+<td>DB202</td>
+<td>03/01/2020</td>
+<td>Database Design</td>
+<td>7B</td>
+<td>14</td>
+<td>7</td>
+</tr>
+<tr>
+<td>SQL101</td>
+<td>04/05/2020</td>
+<td>SQL Basics</td>
+<td>7B</td>
+<td>14</td>
+<td>10</td>
+</tr>
+<tr>
+<td>SQL101</td>
+<td>15/05/2020</td>
+<td>SQL Basics</td>
+<td>12A</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>CS50</td>
+<td>31/05/2020</td>
+<td>C Programming</td>
+<td>4A</td>
+<td>12</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To turn this table into second normal form we will ensure:<ul>
+<li><code>Course Title</code> is moved into its own <strong>Course</strong> table</li>
+<li>A <code>Session</code> table is created to use the full key (<code>Course</code>, <code>Date</code>) for all time-specific info</li>
+<li>No <strong>partial dependencies</strong> remain
+<strong>Table: Course</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Course</th>
+<th>Course Title</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQL101</td>
+<td>SQL Basics</td>
+</tr>
+<tr>
+<td>DB202</td>
+<td>Database Design</td>
+</tr>
+<tr>
+<td>CS50</td>
+<td>C Programming</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table: Session</strong></p>
+<table>
+<thead>
+<tr>
+<th>Course</th>
+<th>Date</th>
+<th>Room</th>
+<th>Capacity</th>
+<th>Available</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQL101</td>
+<td>03/01/2020</td>
+<td>4A</td>
+<td>12</td>
+<td>4</td>
+</tr>
+<tr>
+<td>DB202</td>
+<td>03/01/2020</td>
+<td>7B</td>
+<td>14</td>
+<td>7</td>
+</tr>
+<tr>
+<td>SQL101</td>
+<td>04/05/2020</td>
+<td>7B</td>
+<td>14</td>
+<td>10</td>
+</tr>
+<tr>
+<td>SQL101</td>
+<td>15/05/2020</td>
+<td>12A</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>CS50</td>
+<td>31/05/2020</td>
+<td>4A</td>
+<td>12</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<h2 id="third-normal-form-3nf">Third Normal Form (3NF)</h2>
+<h3 id="what-is-third-normal-form">What is third normal form?</h3>
+<ul>
+<li>For a table to be in third normal form it must:<ul>
+<li><strong>Fulfill all 2NF requirements</strong></li>
+<li><strong>Have no transitive dependencies</strong><ul>
+<li>Non-prime attributes must not depend on other non-prime attributes</li>
+</ul>
+</li>
+<li><strong>Have each non-prime attribute dependent solely on the primary key, not on other non-prime attributes</strong></li>
+<li><strong>Have separate tables for attributes with transitive dependencies, and the tables should be linked using a</strong> <strong>foreign key</strong></li>
+</ul>
+</li>
+<li>In this table below, the certificate depends on the title - this a transitive dependency and so this table <strong>is not</strong> in third normal form</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>FilmID</th>
+<th>Title</th>
+<th>Certificate</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12034</td>
+<td>Saw IV</td>
+<td>18</td>
+<td>Eighteen and over</td>
+</tr>
+<tr>
+<td>12035</td>
+<td>Spiderman 2</td>
+<td>12A</td>
+<td>Age 12 and over</td>
+</tr>
+<tr>
+<td>12036</td>
+<td>Shrek</td>
+<td>U</td>
+<td>Universal</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To turn this table into third normal form we will ensure:<ul>
+<li>Transitive dependency removed by <strong>separating</strong> <code>Description</code> into its own table</li>
+<li>The <code>Film</code> table only stores fields that <strong>directly depend</strong> on the key (<code>FilmID</code>)</li>
+<li>A <strong>foreign key</strong> (<code>Certificate</code>) is used to maintain the relationship
+<strong>Table: Film</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>FilmID</th>
+<th>Title</th>
+<th>Certificate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12034</td>
+<td>Saw IV</td>
+<td>18</td>
+</tr>
+<tr>
+<td>12035</td>
+<td>Spiderman 2</td>
+<td>12A</td>
+</tr>
+<tr>
+<td>12036</td>
+<td>Shrek</td>
+<td>U</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table: Certificate</strong></p>
+<table>
+<thead>
+<tr>
+<th>Certificate</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18</td>
+<td>Eighteen and over</td>
+</tr>
+<tr>
+<td>12A</td>
+<td>Age 12 and over</td>
+</tr>
+<tr>
+<td>U</td>
+<td>Universal</td>
+</tr>
+</tbody>
+</table>
+<p>Match each normal form to its definition:</p>
+<table>
+<thead>
+<tr>
+<th>First Normal Form (1NF)</th>
+<th>All fields are fully dependent on the primary key.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Second Normal Form (2NF)</td>
+<td>There are no repeating groups of attributes.</td>
+</tr>
+<tr>
+<td>Third Normal Form (3NF)</td>
+<td>There are no partial dependencies.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>[1]</strong>
+<strong>Answer</strong></p>
+<table>
+<thead>
+<tr>
+<th>First Normal Form (1NF)</th>
+<th>There are no repeating groups of attributes.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Second Normal Form (2NF)</td>
+<td>There are no partial dependencies.</td>
+</tr>
+<tr>
+<td>Third Normal Form (3NF)</td>
+<td>All fields are fully dependent on the primary key.</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

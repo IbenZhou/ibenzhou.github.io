@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蓍草占卜 · 易经起卦</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0e0c09;
+    --surface:  #171410;
+    --border:   #2d2618;
+    --border-hover: #463a26;
+    --gold:     #b39250;
+    --gold-bright: #d4b56a;
+    --gold-dim: #6e5a34;
+    --text:     #d6cfbf;
+    --text-dim: #827b6e;
+    --yang:     #dcd3bb;
+    --yin:      #5b5140;
+    --yin-half: #4a4233;
+    --accent:   #b8423a;
+    --accent-dim: #6e2822;
+    --shadow:   rgba(0,0,0,0.35);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", "STSong", "Noto Serif", Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    text-wrap: pretty;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Home Link ---- */
+  .home-link {
+    position: fixed;
+    top: 1.5rem; left: 1.5rem;
+    z-index: 10;
+    font-size: 0.8rem; color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.3s;
+    font-family: "Noto Serif SC", "Songti SC", serif;
+  }
+  .home-link:hover { color: var(--gold); }
+
+  /* ---- Page Title ---- */
+  .page-title {
+    font-family: "Ma Shan Zheng", "STKaiti", "KaiTi", cursive;
+    font-size: 3.2rem;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+  }
+
+  /* ---- Layout grid (desktop 3-col) ---- */
+  .page-layout {
+    display: flex;
+    gap: 2rem;
+    max-width: 1060px;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .center-col {
+    flex: 0 1 500px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .side-panel {
+    width: 210px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 2;
+  }
+  .side-spacer {
+    height: calc(150px + 2rem);
+  }
+  .side-panel h4 {
+    font-family: "Ma Shan Zheng", "STKaiti", "KaiTi", cursive;
+    font-size: 1.05rem;
+    color: var(--gold-dim);
+    margin-bottom: -1.4rem;
+    letter-spacing: 0.15em;
+    font-weight: 400;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+    text-align: center;
+    transform: translateY(-100%);
+  }
+  .side-panel p { margin-top: 0.5rem; margin-bottom: 0.6rem; text-align: left; }
+  .side-panel .highlight {
+    color: var(--gold-bright);
+    font-weight: 500;
+  }
+  .side-panel .step {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ---- Footer ---- */
+  .page-footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    line-height: 2.2;
+    margin-top: 3rem;
+    letter-spacing: 0.1em;
+    opacity: 0.55;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+  }
+  .page-footer .divider {
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto 1rem;
+  }
+
+  /* ---- Paper texture + gold speckle ---- */
+  .texture-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,175,130,0.018) 2px, rgba(200,175,130,0.018) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,175,130,0.012) 2px, rgba(200,175,130,0.012) 4px);
+  }
+  .texture-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 25%, rgba(200,160,90,0.07) 0%, transparent 65%),
+      radial-gradient(ellipse at 50% 85%, rgba(180,140,100,0.04) 0%, transparent 55%),
+      radial-gradient(1px 1px at 12% 18%, rgba(210,180,110,0.5), transparent),
+      radial-gradient(1px 1px at 88% 22%, rgba(200,170,100,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 22% 48%, rgba(210,180,110,0.35), transparent),
+      radial-gradient(1px 1px at 78% 52%, rgba(190,160,95,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 8% 72%, rgba(200,170,100,0.35), transparent),
+      radial-gradient(1px 1px at 92% 68%, rgba(210,180,110,0.4), transparent),
+      radial-gradient(1px 1px at 45% 92%, rgba(190,160,95,0.35), transparent),
+      radial-gradient(1.5px 1.5px at 28% 8%, rgba(200,170,100,0.3), transparent),
+      radial-gradient(1px 1px at 72% 12%, rgba(210,180,110,0.35), transparent);
+  }
+
+  /* All content above texture */
+  .page-title, .page-layout, .page-footer, .bagua-stage, .input-card, .progress, .result-area, .toast { position: relative; z-index: 1; }
+
+  /* ---- Bagua ---- */
+  .bagua-stage {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 2rem;
+    animation: rotate-bagua 36s linear infinite;
+    filter: drop-shadow(0 0 28px rgba(190,155,80,0.22)) drop-shadow(0 0 70px rgba(180,145,70,0.07));
+  }
+  @keyframes rotate-bagua {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .bagua-stage svg { width: 100%; height: 100%; }
+
+  /* ---- Input ---- */
+  .input-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem 2.25rem;
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .input-card label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+  }
+  .input-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .input-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 0.25rem;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.3s;
+    border-radius: 0;
+  }
+  .input-row input:focus { border-bottom-color: var(--gold); }
+  .input-row input::placeholder { color: var(--text-dim); opacity: 0.5; }
+  .input-row button {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    padding: 0.55rem 1.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.15em;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .input-row button:hover {
+    background: var(--gold);
+    color: #1a1610;
+  }
+  .input-row button:active { transform: scale(0.97); }
+
+  /* ---- Progress ---- */
+  .progress {
+    display: none;
+    color: var(--gold-dim);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.12em;
+  }
+  .progress.active { display: block; }
+
+  /* ---- Result ---- */
+  .result-area {
+    display: none;
+    max-width: 540px;
+    width: 100%;
+  }
+  .result-area.active { display: block; }
+
+  /* Hexagram card */
+  .hex-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem 2.25rem 1.75rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .hex-name {
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+  }
+  .hex-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  /* ---- Individual line ---- */
+  .line-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: reveal-line 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  @keyframes reveal-line {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .line-bar {
+    width: 220px;
+    height: 14px;
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .line-bar.yang {
+    background: linear-gradient(180deg, #e0d7be 0%, #d4caa8 40%, #c8bd96 100%);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .line-bar.yin {
+    background: transparent;
+    display: flex;
+    gap: 0;
+    justify-content: space-between;
+  }
+  .line-bar.yin .half {
+    width: 96px;
+    height: 14px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #59503e 0%, #4e4535 50%, #433c2e 100%);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.25);
+  }
+  .line-markers {
+    width: 58px;
+    flex-shrink: 0;
+    display: flex;
+    gap: 3px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .line-marker {
+    font-size: 0.72rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .line-marker.changing {
+    color: var(--accent);
+    background: rgba(184,66,58,0.1);
+    border-radius: 2px;
+    padding: 1px 4px;
+  }
+  .line-marker.shi-bian {
+    color: var(--gold-bright);
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    padding: 1px 6px;
+  }
+  .line-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+    letter-spacing: 0.06em;
+  }
+
+  /* Transformed hexagram */
+  .hex-divider {
+    color: var(--text-dim);
+    margin: 1.75rem 0 1rem;
+    letter-spacing: 0.25em;
+    font-size: 0.8rem;
+    opacity: 0.6;
+  }
+
+  /* Detail list */
+  .detail-list {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 2;
+    columns: 2;
+    column-gap: 2rem;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .detail-list span.changing { color: var(--accent); font-weight: 500; }
+  .detail-list span.shi-bian { color: var(--gold-bright); }
+
+  /* ---- Prompt Card ---- */
+  .prompt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.75rem 2.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .prompt-card h3 {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 0.85rem;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  .prompt-text {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.25rem 1.5rem;
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--text);
+    max-height: 340px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .prompt-text::-webkit-scrollbar { width: 4px; }
+  .prompt-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .btn-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+  }
+  .btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.25s;
+  }
+  .btn-copy {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    font-weight: 500;
+  }
+  .btn-copy:hover { background: var(--gold); color: #1a1610; }
+  .btn-copy.copied { background: #3d5e3a; border-color: #4d7e4a; color: #c8dcc0; }
+
+  .btn-reset {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid transparent;
+  }
+  .btn-reset:hover { color: var(--text); border-color: var(--border-hover); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--surface);
+    color: var(--gold-bright);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.5rem;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 960px) {
+    .page-layout { flex-direction: column; align-items: center; gap: 0; }
+    .side-panel { display: none; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 1.5rem 0.75rem 3rem; }
+    .page-title { font-size: 2.2rem; letter-spacing: 0.4em; }
+    .bagua-stage { width: 130px; height: 130px; margin-bottom: 1.5rem; }
+    .input-card { padding: 1.5rem 1.25rem; }
+    .input-row { flex-direction: column; }
+    .input-row button { padding: 0.6rem; }
+    .line-bar { width: 150px; height: 11px; }
+    .line-bar.yin .half { width: 65px; height: 11px; }
+    .hex-card, .prompt-card { padding: 1.5rem 1.25rem; }
+    .detail-list { columns: 1; }
+    .prompt-text { font-size: 0.8rem; line-height: 1.8; padding: 1rem; }
+    .page-footer { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../" class="home-link">← iben.fun</a>
+
+<!-- Paper texture -->
+<div class="texture-overlay"></div>
+
+<!-- Page Title -->
+<div class="page-title">蓍草占卜</div>
+
+<!-- Three-column layout -->
+<div class="page-layout">
+
+  <!-- Left theory panel -->
+  <aside class="side-panel left">
+    <div class="side-spacer"></div>
+    <h4>蓍草成卦法</h4>
+    <p>取<span class="highlight">五十根蓍草</span>，实用四十九根。信手分而为二，取一策悬于指间，以象三才。</p>
+    <p>两堆各以<span class="step">四根一组</span>数之，取其余数。凡三演而得一爻，<span class="step">六爻</span>自下而上成一卦。</p>
+    <p>最后一演余数除四：<span class="highlight">九</span>为老阳、<span class="highlight">八</span>为少阴、<span class="highlight">七</span>为少阳、<span class="highlight">六</span>为老阴。九六为变爻，七八为静爻。</p>
+  </aside>
+
+  <!-- Center column -->
+  <main class="center-col">
+
+    <!-- Rotating Bagua -->
+    <div class="bagua-stage">
+      <svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="0" cy="0" r="96" fill="none" stroke="#28221a" stroke-width="1"></circle>
+    <circle cx="0" cy="0" r="91" fill="none" stroke="#1c1812" stroke-width="6"></circle>
+
+    <g transform="translate(0,-70)">
+      <rect x="-13" y="-14" width="26" height="4.5" fill="#dcd3bb"></rect>
+      <rect x="-13" y=" -5" width="26" height="4.5" fill="#dcd3bb"></rect>
+      <rect x="-13" y="  4" width="26" height="4.5" fill="#dcd3bb"></rect>
+    </g>
+
+    <g transform="translate(50,-50)">
+      <rect x="-11" y="-14" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="  2" y="-14" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="-11" y=" -5" width="22" height="4" fill="#b39250"></rect>
+      <rect x="-11" y="  4" width="22" height="4" fill="#b39250"></rect>
+    </g>
+
+    <g transform="translate(70,0)">
+      <rect x="-13" y="-14" width="26" height="4.5" fill="#b39250"></rect>
+      <rect x="-13" y=" -5" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="  2" y=" -5" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="-13" y="  4" width="26" height="4.5" fill="#b39250"></rect>
+    </g>
+
+    <g transform="translate(50,50)">
+      <rect x="-11" y="-14" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="  2" y="-14" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="-11" y=" -5" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="  2" y=" -5" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="-11" y="  4" width="22" height="4" fill="#b39250"></rect>
+    </g>
+
+    <g transform="translate(0,70)">
+      <rect x="-13" y="-14" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="  2" y="-14" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="-13" y=" -5" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="  2" y=" -5" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="-13" y="  4" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="  2" y="  4" width="11" height="4.5" fill="#5b5140"></rect>
+    </g>
+
+    <g transform="translate(-50,50)">
+      <rect x="-11" y="-14" width="22" height="4" fill="#b39250"></rect>
+      <rect x="-11" y=" -5" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="  2" y=" -5" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="-11" y="  4" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="  2" y="  4" width=" 9" height="4" fill="#5b5140"></rect>
+    </g>
+
+    <g transform="translate(-70,0)">
+      <rect x="-13" y="-14" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="  2" y="-14" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="-13" y=" -5" width="26" height="4.5" fill="#b39250"></rect>
+      <rect x="-13" y="  4" width="11" height="4.5" fill="#5b5140"></rect>
+      <rect x="  2" y="  4" width="11" height="4.5" fill="#5b5140"></rect>
+    </g>
+
+    <g transform="translate(-50,-50)">
+      <rect x="-11" y="-14" width="22" height="4" fill="#b39250"></rect>
+      <rect x="-11" y=" -5" width="22" height="4" fill="#b39250"></rect>
+      <rect x="-11" y="  4" width=" 9" height="4" fill="#5b5140"></rect>
+      <rect x="  2" y="  4" width=" 9" height="4" fill="#5b5140"></rect>
+    </g>
+
+    <circle cx="0" cy="0" r="30" fill="#1c1812" stroke="#28221a" stroke-width="0.8"></circle>
+    <g transform="scale(0.72)">
+      <path d="M0,-38 A38,38 0 0,1 0,38 A19,19 0 0,0 0,0 A19,19 0 0,1 0,-38" fill="#b39250"></path>
+      <path d="M0,-38 A38,38 0 0,0 0,38 A19,19 0 0,0 0,0 A19,19 0 0,1 0,-38" fill="#0e0c09"></path>
+      <circle cx="0" cy="-19" r="5" fill="#1c1812"></circle>
+      <circle cx="0" cy="19" r="5" fill="#d4b56a"></circle>
+    </g>
+  </svg>
+</div>
+
+<!-- Input -->
+<div class="input-card" id="inputCard">
+  <label for="question">默念所问之事，然后输入</label>
+  <div class="input-row">
+    <input type="text" id="question" placeholder="例如：今天的考试会顺利吗？" maxlength="200" autocomplete="off">
+    <button id="btnSubmit" onclick="startDivination()">起 卦</button>
+  </div>
+</div>
+
+<!-- Progress -->
+<div class="progress" id="progress">⋯  正在推演蓍草，请稍候  ⋯</div>
+
+<!-- Results -->
+<div class="result-area" id="resultArea">
+  <div id="hexCard"></div>
+
+  <div class="prompt-card">
+    <h3>问答文本</h3>
+    <div class="prompt-text" id="promptText"></div>
+    <div class="btn-row">
+      <button class="btn btn-reset" onclick="resetAll()">重新起卦</button>
+      <button class="btn btn-copy" id="btnCopy" onclick="copyPrompt()">一键复制</button>
+    </div>
+  </div>
+</div>
+
+  </main><!-- /center-col -->
+
+  <!-- Right theory panel -->
+  <aside class="side-panel right">
+    <div class="side-spacer"></div>
+    <h4>解卦之法</h4>
+    <p>卦成之后，观<span class="highlight">变爻</span>之多寡而定解卦之途。无变爻则观本卦卦辞，一爻变则味其爻辞。</p>
+    <p>变爻二三则以本卦为体，<span class="step">三爻以上</span>则变卦参之。六爻皆变则观之卦，乾坤二卦更参「用九」「用六」。</p>
+    <p>又以<span class="highlight">天地之数五十五</span>减六爻之和，循数推得<span class="step">宜变之爻</span>，与本卦变爻互参印证。</p>
+  </aside>
+
+</div><!-- /page-layout -->
+
+<!-- Footer -->
+<footer class="page-footer">
+  <span class="divider"></span>
+  易有太极，是生两仪，两仪生四象，四象生八卦。<br>
+  八卦而小成，引而伸之，触类而长之，天下之能事毕矣。
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== HASH & PRNG ====================
+
+function hashString(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h) + str.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h);
+}
+
+function mulberry32(a) {
+  return function() {
+    a |= 0;
+    a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+// ==================== DATA ====================
+
+const HEX_NAMES = [
+  '坤','复','师','临','谦','明夷','升','泰',
+  '豫','震','解','归妹','小过','丰','恒','大壮',
+  '比','屯','坎','节','蹇','既济','井','需',
+  '萃','随','困','兑','咸','革','大过','夬',
+  '剥','颐','蒙','损','艮','贲','蛊','大畜',
+  '晋','噬嗑','未济','睽','旅','离','鼎','大有',
+  '观','益','涣','中孚','渐','家人','巽','小畜',
+  '否','无妄','讼','履','遁','同人','姤','乾'
+];
+
+const TRIGRAM_NAMES = ['坤','震','坎','兑','艮','离','巽','乾'];
+
+const HEX_NUM = {
+  '乾':1,'坤':2,'屯':3,'蒙':4,'需':5,'讼':6,'师':7,'比':8,'小畜':9,'履':10,
+  '泰':11,'否':12,'同人':13,'大有':14,'谦':15,'豫':16,'随':17,'蛊':18,
+  '临':19,'观':20,'噬嗑':21,'贲':22,'剥':23,'复':24,'无妄':25,'大畜':26,
+  '颐':27,'大过':28,'坎':29,'离':30,'咸':31,'恒':32,'遁':33,'大壮':34,
+  '晋':35,'明夷':36,'家人':37,'睽':38,'蹇':39,'解':40,'损':41,'益':42,
+  '夬':43,'姤':44,'萃':45,'升':46,'困':47,'井':48,'革':49,'鼎':50,
+  '震':51,'艮':52,'渐':53,'归妹':54,'丰':55,'旅':56,'巽':57,'兑':58,
+  '涣':59,'节':60,'中孚':61,'小过':62,'既济':63,'未济':64
+};
+
+// ==================== YARROW STALK SIMULATION ====================
+
+function yao(rand, n) {
+  for (let round = 0; round < 3; round++) {
+    let c = 0;
+    for (let j = 0; j < n; j++) {
+      c += rand() < 0.5 ? 0 : 1;
+    }
+    let left = c - 1;
+    let right = n - c;
+    let leftl = left % 4;
+    let rightl = right % 4;
+    if (leftl === 0 && Math.floor(left / 4) !== 0) leftl = 4;
+    if (rightl === 0 && Math.floor(right / 4) !== 0) rightl = 4;
+    n = n - leftl - rightl - 1;
+  }
+  return Math.floor(n / 4);
+}
+
+function generateHexagram(question) {
+  const q = hashString(question);
+  const ts = parseInt(
+    String(new Date().getFullYear()) +
+    String(new Date().getMonth() + 1).padStart(2, '0') +
+    String(new Date().getDate()).padStart(2, '0') +
+    String(new Date().getHours()).padStart(2, '0') +
+    String(new Date().getMinutes()).padStart(2, '0') +
+    String(new Date().getSeconds()).padStart(2, '0')
+  , 10);
+
+  const Y = [];
+  let total = 0;
+  for (let i = 0; i < 6; i++) {
+    const seed = q + ts + i;
+    const rand = mulberry32(seed);
+    const y = yao(rand, 49);
+    Y.push(y);
+    total += y;
+  }
+
+  const diff = 54 - total;
+  const change_i = Math.abs((1 - (Math.floor(diff / 6) % 2)) * 5 - (diff % 6));
+
+  let idx = 0;
+  for (let i = 0; i < 6; i++) {
+    if (Y[i] === 7 || Y[i] === 9) idx += (1 << i);
+  }
+  const name = HEX_NAMES[idx];
+  const num = HEX_NUM[name] || '?';
+
+  const changingLines = [];
+  for (let i = 0; i < 6; i++) {
+    if (Y[i] === 6 || Y[i] === 9) changingLines.push(i);
+  }
+  const chCount = changingLines.length;
+
+  let changedName = null, changedNum = null, changedIdx = null;
+  if (chCount >= 3) {
+    changedIdx = 0;
+    for (let i = 0; i < 6; i++) {
+      if (Y[i] === 6) changedIdx += (1 << i);
+      else if (Y[i] === 7) changedIdx += (1 << i);
+    }
+    changedName = HEX_NAMES[changedIdx];
+    changedNum = HEX_NUM[changedName] || '?';
+  }
+
+  const shiBianFromBottom = 6 - change_i;
+
+  function isYang(y) { return y === 7 || y === 9; }
+  const lowerTriIdx = (isYang(Y[0])?1:0) + (isYang(Y[1])?2:0) + (isYang(Y[2])?4:0);
+  const upperTriIdx = (isYang(Y[3])?1:0) + (isYang(Y[4])?2:0) + (isYang(Y[5])?4:0);
+  const descName = TRIGRAM_NAMES[upperTriIdx] + TRIGRAM_NAMES[lowerTriIdx] + name;
+
+  let changedDescName = null;
+  if (changedName) {
+    const cY = Y.map(y => y===9?6 : y===6?7 : y);
+    const ci = (isYang(cY[0])?1:0)+(isYang(cY[1])?2:0)+(isYang(cY[2])?4:0);
+    const cu = (isYang(cY[3])?1:0)+(isYang(cY[4])?2:0)+(isYang(cY[5])?4:0);
+    changedDescName = TRIGRAM_NAMES[cu] + TRIGRAM_NAMES[ci] + changedName;
+  }
+
+  return { Y, total, change_i, name, num, descName, changingLines, chCount, changedName, changedNum, changedDescName, changedIdx, shiBianFromBottom };
+}
+
+// ==================== LINE VALUE HELPERS ====================
+
+function lineInfo(y) {
+  if (y === 7) return { type: 'yang', changing: false, label: '阳' };
+  if (y === 8) return { type: 'yin',  changing: false, label: '阴' };
+  if (y === 9) return { type: 'yang', changing: true,  label: '阳' };
+  if (y === 6) return { type: 'yin',  changing: true,  label: '阴' };
+}
+
+// ==================== RENDER ====================
+
+function buildLineHTML(y, displayIdx, change_i, delay) {
+  const info = lineInfo(y);
+  const isChanging = info.changing;
+  const isShiBian = (displayIdx === change_i);
+
+  let markerHTML = '';
+  if (isChanging && isShiBian) {
+    markerHTML = '<span class="line-marker changing">变</span><span class="line-marker shi-bian">宜</span>';
+  } else if (isChanging) {
+    markerHTML = '<span class="line-marker changing">变</span>';
+  } else if (isShiBian) {
+    markerHTML = '<span class="line-marker shi-bian">宜</span>';
+  } else {
+    markerHTML = '<span class="line-marker"></span>';
+  }
+
+  let barHTML;
+  if (info.type === 'yang') {
+    barHTML = '<div class="line-bar yang"></div>';
+  } else {
+    barHTML = '<div class="line-bar yin"><div class="half"></div><div class="half"></div></div>';
+  }
+
+  const lineNum = 6 - displayIdx;
+  const labelHTML = '<span class="line-label">第' + lineNum + '爻</span>';
+
+  return '<div class="line-row" style="animation-delay:' + delay + 's">'
+    + labelHTML + barHTML + '<span class="line-markers">' + markerHTML + '</span>'
+    + '</div>';
+}
+
+function renderResults(data, question) {
+  const { Y, change_i, name, num, descName, changingLines, chCount, changedName, changedNum, changedDescName, shiBianFromBottom } = data;
+
+  let html = '<div class="hex-card">';
+  html += '<div class="hex-name">本卦：' + descName + '（第' + num + '卦）</div>';
+  html += '<div class="hex-lines">';
+  for (let i = 0; i < 6; i++) {
+    html += buildLineHTML(Y[5 - i], i, change_i, i * 0.08);
+  }
+  html += '</div>';
+
+  html += '<div class="detail-list">';
+  for (let i = 5; i >= 0; i--) {
+    const info = lineInfo(Y[i]);
+    const lineNum = i + 1;
+    const isChanging = info.changing;
+    const isShiBian = (lineNum === shiBianFromBottom);
+    let parts = ['第' + lineNum + '爻：' + info.label];
+    if (isChanging) parts.push('<span class="changing">变爻</span>');
+    if (isShiBian) parts.push('<span class="shi-bian">宜变</span>');
+    html += '<div>' + parts.join('、') + '</div>';
+  }
+  html += '</div>';
+
+  if (changedName) {
+    html += '<div class="hex-divider">—— 变卦 ——</div>';
+    html += '<div class="hex-name">变卦：' + changedDescName + '（第' + changedNum + '卦）</div>';
+    html += '<div class="hex-lines">';
+    for (let i = 0; i < 6; i++) {
+      const y = Y[5 - i];
+      let changedY;
+      if (y === 9) changedY = 6;
+      else if (y === 6) changedY = 7;
+      else changedY = y;
+      html += buildLineHTML(changedY, i, -1, (i + 6) * 0.06);
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  document.getElementById('hexCard').innerHTML = html;
+
+  let prompt = '我用蓍草占卜法起卦，所问之事为「' + question + '」，得到本卦为「' + descName + '」（第' + num + '卦）。\n\n';
+  prompt += '六爻详情：\n';
+  for (let i = 5; i >= 0; i--) {
+    const info = lineInfo(Y[i]);
+    const lineNum = i + 1;
+    const isChanging = info.changing;
+    const isShiBian = (lineNum === shiBianFromBottom);
+    let parts = ['第' + lineNum + '爻：' + info.label];
+    if (isChanging) parts.push('变爻');
+    if (isShiBian) parts.push('宜变');
+    prompt += parts.join('、') + '\n';
+  }
+
+  prompt += '\n';
+  if (changingLines.length > 0) {
+    const clNums = changingLines.map(i => '第' + (i + 1) + '爻').join('、');
+    prompt += '变爻为' + clNums + '。';
+  } else {
+    prompt += '无变爻。';
+  }
+  prompt += '宜变之爻为第' + shiBianFromBottom + '爻。';
+
+  if (changedName) {
+    prompt += '\n变卦为「' + changedDescName + '」（第' + changedNum + '卦）。';
+  }
+
+  prompt += '\n\n请作为专业易理专家，结合《周易》经传（卦辞、爻辞、彖传、象传等），对该卦象进行详细分析解读，包括卦象总体含义、变爻所揭示的启示，以及对所问之事项的参考建议。';
+
+  document.getElementById('promptText').textContent = prompt;
+  document.getElementById('resultArea').classList.add('active');
+}
+
+// ==================== ACTIONS ====================
+
+async function startDivination() {
+  const questionEl = document.getElementById('question');
+  const question = questionEl.value.trim();
+  if (!question) {
+    questionEl.focus();
+    questionEl.style.borderBottomColor = 'var(--accent)';
+    setTimeout(() => { questionEl.style.borderBottomColor = ''; }, 1500);
+    return;
+  }
+
+  document.getElementById('inputCard').style.display = 'none';
+  document.getElementById('resultArea').classList.remove('active');
+  document.getElementById('progress').classList.add('active');
+
+  await new Promise(r => setTimeout(r, 700 + Math.random() * 500));
+
+  const data = generateHexagram(question);
+
+  await new Promise(r => setTimeout(r, 300));
+
+  document.getElementById('progress').classList.remove('active');
+  renderResults(data, question);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetAll() {
+  document.getElementById('resultArea').classList.remove('active');
+  document.getElementById('hexCard').innerHTML = '';
+  document.getElementById('promptText').textContent = '';
+  document.getElementById('question').value = '';
+  document.getElementById('inputCard').style.display = '';
+  document.getElementById('btnCopy').textContent = '一键复制';
+  document.getElementById('btnCopy').classList.remove('copied');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function copyPrompt() {
+  const text = document.getElementById('promptText').textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  const btn = document.getElementById('btnCopy');
+  btn.textContent = '已复制';
+  btn.classList.add('copied');
+  showToast('已复制问答文本，可粘贴给 AI 进行解卦');
+  setTimeout(() => {
+    btn.textContent = '一键复制';
+    btn.classList.remove('copied');
+  }, 2500);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+document.getElementById('question').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') startDivination();
+});
+</script>
+</body>
+</html>

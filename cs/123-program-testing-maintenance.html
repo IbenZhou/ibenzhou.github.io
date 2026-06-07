@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12.3 Program Testing & Maintenance — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>12.3 Program Testing & Maintenance</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#faults-errors">Faults &amp; Errors</a></li>
+<li><a href="#error-types">Error types</a></li>
+<li><a href="#what-are-the-common-types-of-error">What are the common types of error?</a></li>
+<li><a href="#testing-methods">Testing methods</a></li>
+<li><a href="#choosing-suitable-test-data">Choosing suitable test data</a></li>
+<li><a href="#types-of-maintenance">Types of maintenance</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="faults-errors">Faults &amp; Errors</h2>
+<h2 id="error-types">Error types</h2>
+<h2 id="what-are-the-common-types-of-error">What are the common types of error?</h2>
+<ul>
+<li>Designing algorithms is a skill that must be developed and when designing algorithms, <strong>mistakes and issues will occur</strong></li>
+<li><strong>Trace tables</strong> can also help to find any kind of error in a program or algorithm</li>
+<li>There are three main categories of errors that when designing algorithms a programmer must be able to identify &amp; fix, they are:<ul>
+<li><strong>Syntax errors</strong></li>
+<li><strong>Logic errors</strong></li>
+<li><strong>Runtime errors</strong></li>
+</ul>
+</li>
+<li>A syntax error is <strong>an error that breaks the grammatical rules of a programming language</strong> and <strong>stops it from running</strong></li>
+<li>Examples of syntax errors are:<ul>
+<li><strong>Typos and spelling errors</strong></li>
+<li><strong>Missing or extra brackets or quotes</strong></li>
+<li><strong>Misplaced or missing semicolons</strong></li>
+<li><strong>Invalid variable or function names</strong></li>
+<li><strong>Incorrect use of operators</strong></li>
+<li><strong>Incorrectly nested loops &amp; blocks of code</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="pseudocode-with-syntax-errors">Pseudocode - with syntax errors</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">username</span>
+<span class="n">ENDFUNCTION</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">first_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter your first name: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">first_name</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter your last name: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">last_name</span>
+<span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">generate_username</span><span class="p">[</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">]</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Here&#39;s a suggested username:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">username</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="c1">// Main program</span>
+<span class="n">CALL</span><span class="w"> </span><span class="n">Main</span>
+</code></pre></div>
+
+<h4 id="pseudocode-without-syntax-errors">Pseudocode - without syntax errors</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">username</span>
+<span class="n">ENDFUNCTION</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">first_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter your first name: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">first_name</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter your last name: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">last_name</span>
+<span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">)</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Here&#39;s a suggested username: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">username</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="c1">// Main program</span>
+<span class="n">CALL</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<h4 id="syntax-error">Syntax error</h4>
+<ul>
+<li><code>FUNCTION generate_username(first_name STRING...)</code><ul>
+<li><strong>Missing colon</strong>: between parameter name and type</li>
+<li><code>first_name : STRING and last_name : STRING</code></li>
+</ul>
+</li>
+<li><code>username = SUBSTRING(...)</code><ul>
+<li><strong>Uses =</strong> instead of correct assignment operator ←</li>
+<li>Should be <code>username ← ...</code></li>
+</ul>
+</li>
+<li><code>username ← generate_username[first_name, last_name]</code><ul>
+<li><strong>Incorrect use of square brackets []</strong> instead of parentheses () for function call</li>
+<li>Should be <code>generate_username(first_name, last_name)</code></li>
+</ul>
+</li>
+<li><code>CALL Main</code><ul>
+<li><strong>Incorrect capitalisation and missing parentheses</strong> — procedure name is case-sensitive</li>
+<li>Should be <code>CALL main()</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="logic-error">Logic error</h4>
+<ul>
+<li>A logic error is where <strong>incorrect code is used that causes the program to run</strong>, but <strong>produces an incorrect output or result</strong></li>
+<li>Logic errors can be difficult to identify by the person who wrote the program, so one method of finding them is to use &rsquo; <strong>Trace Tables</strong> &lsquo;</li>
+<li>Examples of logic errors are:<ul>
+<li><strong>Incorrect use of operators (&lt; and &gt;)</strong></li>
+<li><strong>Logical operator confusion (AND for OR)</strong></li>
+<li><strong>Looping one extra time</strong></li>
+<li><strong>Indexing arrays incorrectly (arrays indexing starts from 0)</strong></li>
+<li><strong>Using variables before they are assigned</strong></li>
+<li><strong>Infinite loops</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="pseudocode">Pseudocode</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="c1">// Checks for valid dimensions and calculates area</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">        </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">length</span>
+<span class="w">        </span><span class="n">RETURN</span><span class="w"> </span><span class="n">area</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Length and width must be positive values.&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDFUNCTION</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the length of the rectangle: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">length</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the width of the rectangle: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">width</span>
+<span class="w">    </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The area of the rectangle is approximately &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">area</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; square units.&quot;</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="c1">// Main program</span>
+<span class="n">CALL</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th><strong>Line</strong></th>
+<th><strong>Error</strong></th>
+<th><strong>Correction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IF length &gt; 0 OR width &gt; 0 THEN</code></td>
+<td>The check allows one value to be negative, which is not valid</td>
+<td>Should be <code>IF length &gt; 0 AND width &gt; 0 THEN</code></td>
+</tr>
+<tr>
+<td><code>area ← width - length</code></td>
+<td>Incorrect calculation – subtracts instead of multiplying to find the area</td>
+<td>Should be <code>area ← length * width</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A runtime error is where <strong>an error causes a program to crash</strong></li>
+<li>Examples of runtime errors are:<ul>
+<li><strong>Dividing a number by 0</strong></li>
+<li><strong>Index out of the range of an array</strong></li>
+<li><strong>Unable to read or write a drive</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="pseudocode_1">Pseudocode</h4>
+<div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="c1">// Calculates area of a rectangle after input validation</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Length and width must be positive values.&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">area</span>
+<span class="n">ENDFUNCTION</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the length of the rectangle: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">length</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the width of the rectangle: &quot;</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">width</span>
+<span class="w">    </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The area of the rectangle is approximately &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">area</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; square units.&quot;</span>
+<span class="n">ENDPROCEDURE</span>
+<span class="c1">// Main program</span>
+<span class="n">CALL</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th><strong>Line</strong></th>
+<th><strong>Error</strong></th>
+<th><strong>Correction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>area ← calculate_area(length)</code></td>
+<td>Only one parameter is passed instead of two – will crash at runtime</td>
+<td>Should be <code>area ← calculate_area(length, width)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each pseudocode statement in the following table may contain an error due to the incorrect use of the function or operator.
+Describe the error in each case, or write ‘NO ERROR’ if the statement contains no error.
+You can assume that none of the variables referenced are of an incorrect type.<strong>[5]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Result ← 2 &amp; 4</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>SubString ← MID("pseudocode", 4, 1)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>IF x = 3 OR 4 THEN</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Result ← Status AND INT(x/2)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Message ← "Done" + LENGTH(MyString)</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="answer"><strong>Answer</strong></h5>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Result ← 2 &amp; 4</code></td>
+<td>Should be arithmetic<br><br>operator (not &amp;) <strong>OR</strong> 2 and 4<br><br>should be CHAR / STRING</td>
+</tr>
+<tr>
+<td><code>SubString ← MID("pseudocode", 4, 1)</code></td>
+<td>NO ERROR</td>
+</tr>
+<tr>
+<td><code>IF x = 3 OR 4 THEN</code></td>
+<td>Not Boolean values /<br><br>incorrect operator <strong>OR</strong><br><br>Condition incorrect</td>
+</tr>
+<tr>
+<td><code>Result ← Status AND INT(x/2)</code></td>
+<td><code>INT(X/2)</code> doesn&rsquo;t evaluate<br><br>to a Boolean value /<br><br>incorrect operator</td>
+</tr>
+<tr>
+<td><code>Message ← "Done" + LENGTH(MyString)</code></td>
+<td>Can’t add string to number /<br><br>&ldquo;Done&rdquo; is not a number</td>
+</tr>
+</tbody>
+</table>
+<h2 id="testing-methods">Testing methods</h2>
+<h3 id="what-are-the-different-methods-of-testing">What are the different methods of testing?</h3>
+<ul>
+<li>Testing takes place during the <strong>testing stage</strong> of the <strong>program development life cycle</strong>, once the program has been written and compiled<ul>
+<li><strong>Syntax errors</strong> are usually detected during compilation</li>
+<li>Testing focuses on checking for <strong>logic errors</strong>, <strong>unexpected behaviour</strong>, and <strong>operational integrity</strong></li>
+<li>A detailed <strong>test plan</strong>, outlining test cases and expected results, should be created during the <strong>analysis stage</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="sample-test-plan">Sample test plan</h4>
+<ul>
+<li>Scenario: A program accepts a user&rsquo;s age between 0 and 120 inclusive</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Test No.</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Input</strong></th>
+<th><strong>Expected output</strong></th>
+<th><strong>Type of test data</strong></th>
+<th><strong>Actual outcome</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Valid age within accepted range</td>
+<td>25</td>
+<td>&ldquo;Age accepted&rdquo;</td>
+<td>Normal</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Input is not a number</td>
+<td>&ldquo;twenty&rdquo;</td>
+<td>&ldquo;Invalid input: enter a number&rdquo;</td>
+<td>Abnormal</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Age above the maximum allowed</td>
+<td>130</td>
+<td>&ldquo;Age out of range&rdquo;</td>
+<td>Extreme</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Age exactly at the upper boundary</td>
+<td>120</td>
+<td>&ldquo;Age accepted&rdquo;</td>
+<td>Boundary</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Age exactly at the lower boundary</td>
+<td>0</td>
+<td>&ldquo;Age accepted&rdquo;</td>
+<td>Boundary</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Age just below lower boundary</td>
+<td>-1</td>
+<td>&ldquo;Age out of range&rdquo;</td>
+<td>Extreme</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Blank input</td>
+<td>(blank)</td>
+<td>&ldquo;Please enter your age&rdquo;</td>
+<td>Abnormal</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-methods-of-testing">Common methods of testing</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Testing method</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dry run</strong></td>
+<td><strong>Manually trace through</strong> the code (e.g. on paper) to predict output and track variables</td>
+</tr>
+<tr>
+<td><strong>Walkthrough</strong></td>
+<td>Step-by-step review of the code <strong>with others</strong> to identify issues early</td>
+</tr>
+<tr>
+<td><strong>White-box testing</strong></td>
+<td>Tests the <strong>internal logic</strong> and code structure; the tester knows how the program works</td>
+</tr>
+<tr>
+<td><strong>Black-box testing</strong></td>
+<td>Tests the <strong>inputs and expected outputs</strong> without knowing the internal workings</td>
+</tr>
+<tr>
+<td><strong>Integration testing</strong></td>
+<td>Checks that different modules or components <strong>work correctly together</strong></td>
+</tr>
+<tr>
+<td><strong>Alpha testing</strong></td>
+<td>Performed <strong>in-house</strong> by the developers during early testing</td>
+</tr>
+<tr>
+<td><strong>Beta testing</strong></td>
+<td>Carried out by <strong>external users</strong> in real-world environments</td>
+</tr>
+<tr>
+<td><strong>Acceptance testing</strong></td>
+<td>Final check to ensure the program meets the original <strong>client requirements</strong></td>
+</tr>
+<tr>
+<td><strong>Stub testing</strong></td>
+<td>Uses temporary modules (stubs) to <strong>simulate missing components</strong> during early testing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="choosing-suitable-test-data">Choosing suitable test data</h2>
+<h3 id="what-is-suitable-test-data">What is suitable test data?</h3>
+<ul>
+<li>Suitable test data is <strong>specially chosen to test the functionality</strong> of a program or design</li>
+<li>Developers or test-users would pick <strong>a selection of test data</strong> from the following categories<ul>
+<li><strong>Normal</strong></li>
+<li><strong>Abnormal</strong></li>
+<li><strong>Extreme</strong></li>
+<li><strong>Boundary</strong></li>
+</ul>
+</li>
+<li>The results would be <strong>compared to the expected results</strong> to check if the algorithm/program works as intended</li>
+<li>The results would be <strong>stored in the test plan</strong></li>
+<li>Each category is explained within the context of a simple pseudocode program below
+<strong>Pseudocode</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;What is your name? &quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">name</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;How old are you? &quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">age</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Welcome, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;! Your age is accepted.&quot;</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Sorry, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;. Your age is not accepted.&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<h4 id="normal-data">Normal data</h4>
+<ul>
+<li>Normal test data is data that <strong>should be accepted</strong> in the program</li>
+<li>An example would be a user entering their age as 16 into the age field of the program</li>
+</ul>
+<h4 id="abnormal-data">Abnormal data</h4>
+<ul>
+<li>Abnormal test data is data that is the <strong>wrong data type</strong></li>
+<li>An example would be a user entering their age as &ldquo;F&rdquo; into the age field of the program</li>
+</ul>
+<h4 id="extreme-data">Extreme data</h4>
+<ul>
+<li>Extreme test data is the <strong>maximum</strong> and <strong>minimum</strong> values of normal data that are <strong>accepted</strong> by the system</li>
+<li>An example would be a user entering their age as 18 or 12 into the age field of the program</li>
+</ul>
+<h4 id="boundary-data">Boundary data</h4>
+<ul>
+<li>Boundary test data is similar to extreme data except that the values <strong>on either side of</strong> the <strong>maximum</strong> and <strong>minimum</strong> values are tested</li>
+<li>The largest and smallest <strong>unacceptable values</strong></li>
+<li>An example would be a user entering their age as 11 or 19 into the age field of the program</li>
+</ul>
+<h3 id="selecting-suitable-test-data">Selecting suitable test data</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Type of Test</strong></th>
+<th><strong>Input</strong></th>
+<th><strong>Expected Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal</strong></td>
+<td>14</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Normal</strong></td>
+<td>16</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Extreme</strong></td>
+<td>12</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Extreme</strong></td>
+<td>18</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Abnormal</strong></td>
+<td>H</td>
+<td>Rejected</td>
+</tr>
+<tr>
+<td><strong>Abnormal</strong></td>
+<td>@</td>
+<td>Rejected</td>
+</tr>
+<tr>
+<td><strong>Boundary</strong></td>
+<td>11</td>
+<td>Rejected</td>
+</tr>
+<tr>
+<td><strong>Boundary</strong></td>
+<td>19</td>
+<td>Rejected</td>
+</tr>
+</tbody>
+</table>
+<h2 id="types-of-maintenance">Types of maintenance</h2>
+<h3 id="what-is-program-maintenance">What is program maintenance?</h3>
+<ul>
+<li>Program maintenance is the process of updating or improving a program <strong>after it has been delivered</strong> to the user</li>
+<li>Unlike physical equipment, programs <strong>don’t wear out</strong>, but they may need to be changed due to <strong>errors</strong>, <strong>changing requirements</strong>, or <strong>new technology</strong></li>
+</ul>
+<h4 id="why-maintenance-is-needed">Why maintenance is needed</h4>
+<ul>
+<li>To <strong>fix errors that were missed</strong> during testing</li>
+<li>To <strong>improve performance</strong> based on user feedback</li>
+<li>To <strong>adapt the software</strong> to new uses or platforms</li>
+</ul>
+<h4 id="types-of-program-maintenance">Types of program maintenance</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Corrective</strong></td>
+<td>Fixes bugs or errors found during real-world use</td>
+<td>Fixing a bug that causes the program to crash when special characters are entered</td>
+</tr>
+<tr>
+<td><strong>Perfective</strong></td>
+<td>Improves performance or adds small enhancements</td>
+<td>Replacing a loading screen with a progress bar to give better user feedback</td>
+</tr>
+<tr>
+<td><strong>Adaptive</strong></td>
+<td>Modifies the program to support new environments or requirements</td>
+<td>Modifying the program to work on a tablet instead of just a desktop computer</td>
+</tr>
+</tbody>
+</table>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

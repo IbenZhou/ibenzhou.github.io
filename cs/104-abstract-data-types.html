@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10.4 Abstract Data Types — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>10.4 Abstract Data Types</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#adt-overview">ADT Overview</a></li>
+<li><a href="#what-is-an-abstract-data-type-adt">What is an abstract data type (ADT)?</a></li>
+<li><a href="#stack-operations">Stack operations</a></li>
+<li><a href="#queue-operations">Queue operations</a></li>
+<li><a href="#linked-list-operations">Linked list operations</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="adt-overview">ADT Overview</h2>
+<h2 id="what-is-an-abstract-data-type-adt">What is an abstract data type (ADT)?</h2>
+<ul>
+<li>An abstract data type (ADT) is a <strong>collection of data</strong> and <strong>a set of operations</strong> on that data</li>
+<li>Three common ADT&rsquo;s are:<ul>
+<li><strong>Stacks</strong></li>
+<li><strong>Queues</strong></li>
+<li><strong>Linked lists</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="stack-operations">Stack operations</h2>
+<h3 id="what-is-a-stack">What is a stack?</h3>
+<ul>
+<li>A stack is an abstract data type that stores data using the <strong>Last In, First Out (LIFO)</strong> principle</li>
+<li>A stack is like <strong>a pile of plates</strong>, the last item you put on is the first one you take off<ul>
+<li><strong>PUSH</strong>: Add an item to the top of the stack</li>
+<li><strong>POP</strong>: Remove the item from the top</li>
+</ul>
+</li>
+<li>The <strong>first item pushed</strong> onto the stack will be the <strong>last one popped</strong> off</li>
+<li>A stack uses two pointers:<ul>
+<li><strong>A base pointer</strong> - points to the first item in the stack</li>
+<li><strong>A top pointer</strong> - points to the last item in the stack</li>
+</ul>
+</li>
+</ul>
+<h4 id="main-operations">Main operations</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>isEmpty()</strong></td>
+<td>This checks is the stack is empty by checking the value of the top pointer</td>
+</tr>
+<tr>
+<td><strong>push(value)</strong></td>
+<td>This adds a new value to the end of the list, it will need to check the stack is not full before pushing to the stack.</td>
+</tr>
+<tr>
+<td><strong>peek()</strong></td>
+<td>This returns the top value of the stack. First check the stack is not empty by looking at the value of the top pointer.</td>
+</tr>
+<tr>
+<td><strong>pop()</strong></td>
+<td>This removes and returns the top value of the stack. This first checks if the stack is not empty by looking at the value of the top pointer.</td>
+</tr>
+<tr>
+<td><strong>size()</strong></td>
+<td>Returns the size of the stack</td>
+</tr>
+<tr>
+<td><strong>isFull()</strong></td>
+<td>Checks if the stack is full and returns the Boolean value, this compares the stack size to the top pointer.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Stacks use a <strong>pointer</strong> which points to the top of the stack, where the next piece of data will be added (pushed) or the current piece of data can be removed (popped)
+<img alt="push---visual-example" src="images/push---visual-example.png" /></li>
+</ul>
+<h4 id="pushing-data-to-a-stack">Pushing data to a stack</h4>
+<ul>
+<li>When pushing (<strong>adding</strong>) data to a stack, the data is pushed to the position of the pointer</li>
+<li>Once pushed, the <strong>pointer will increment by 1</strong>, signifying the top of the stack</li>
+<li>Since the stack is a <strong>static data structure</strong>, an attempt to push an item on to a full stack is called a <strong>stack overflow</strong></li>
+<li>
+<p>This would push &lsquo;Bunny&rsquo; onto the empty stack
+    <img alt="push---bunny" src="images/push---bunny.png" /></p>
+</li>
+<li>
+<p>This would push &lsquo;Dog&rsquo; to the top of the stack
+    <img alt="push---dog" src="images/push---dog.png" /></p>
+</li>
+<li>
+<p>This would push &lsquo;Ant&rsquo; to the top of the stack
+    <img alt="push---ant" src="images/push---ant.png" /></p>
+</li>
+</ul>
+<h4 id="popping-data-from-a-stack">Popping data from a stack</h4>
+<ul>
+<li>When popping (<strong>removing</strong>) data from a stack, the data is popped from the position of the pointer</li>
+<li>Once popped, the <strong>pointer will decrement by 1</strong>, to point at the new top of the stack</li>
+<li>Since the stack is a static data structure, an attempt to pop an item from an empty stack is called a <strong>stack underflow</strong></li>
+<li>This would pop &lsquo;Ant&rsquo; from the top of the stack</li>
+<li>
+<p>The new top of the stack would become &lsquo;Dog&rsquo;
+<img alt="pop---visual-example" src="images/pop---visual-example.png" /></p>
+</li>
+<li>
+<p>Note that the data that is ‘popped’ isn’t necessarily erased</p>
+</li>
+<li>The pointer &lsquo;top&rsquo; moves to show that &lsquo;Ant&rsquo; is no longer in the stack and depending on the implementation, &lsquo;Ant&rsquo; can be deleted or replaced with a null value, or left to be overwritten</li>
+</ul>
+<h2 id="queue-operations">Queue operations</h2>
+<h3 id="what-is-a-queue">What is a queue?</h3>
+<ul>
+<li>A queue is an abstract data type that <strong>stores data in</strong> <strong>the order it arrives</strong>, using the <strong>First In, First Out (FIFO)</strong> principle</li>
+<li>A queue works like <strong>a line of people waiting at a shop</strong>, the first one in is the first one served<ul>
+<li><strong>ENQUEUE</strong>: Add an item to the back of the queue</li>
+<li><strong>DEQUEUE</strong>: Remove the item from the front</li>
+</ul>
+</li>
+<li>The <strong>first item added</strong> to the queue is the <strong>first one removed</strong></li>
+</ul>
+<h4 id="main-operations_1">Main operations</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Operation</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>enQueue(value)</strong></td>
+<td>Adding an element to the back of the queue</td>
+</tr>
+<tr>
+<td><strong>deQueue()</strong></td>
+<td>Returning an element from the front of the queue</td>
+</tr>
+<tr>
+<td><strong>peek()</strong></td>
+<td>Return the value of the item from the front of the queue without removing it from the queue</td>
+</tr>
+<tr>
+<td><strong>isEmpty()</strong></td>
+<td>Check whether the queue is empty</td>
+</tr>
+<tr>
+<td><strong>isFull()</strong></td>
+<td>Check whether the queue is full (if the size has a constraint)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="linear-queues">Linear queues</h4>
+<ul>
+<li>A linear queue is a data structure that <strong>consists of an array</strong></li>
+<li>Items are added to the <strong>next available space</strong> in the queue starting from the front</li>
+<li>
+<p>Items are then <strong>removed from the front</strong> of the queue
+<img alt="linear-queue" src="images/linear-queue.png" /></p>
+</li>
+<li>
+<p>Before <strong>adding an item to the queue</strong> you need to <strong>check that the queue is not full</strong></p>
+</li>
+<li>If the end of the array has not been reached, the rear <strong>index pointer is incremented</strong> and the new item is added to the queue</li>
+<li>
+<p>In the example below, you can see the queue as the data Adam, Brian and Linda are enqueued.
+<img alt="initialise-queue-example-" src="images/initialise-queue-example-.png" /> <img alt="enqueue-adam" src="images/enqueue-adam.png" /> <img alt="enqueue-brian" src="images/enqueue-brian.png" /> <img alt="enqueue-linda-" src="images/enqueue-linda-.png" /></p>
+</li>
+<li>
+<p>Before <strong>removing</strong> an item from the queue, you need to make sure that the queue is not empty</p>
+</li>
+<li>If the queue is not empty the item at the front of the queue is returned and <strong>the front is incremented by 1</strong></li>
+<li>In the example below, you can see the queue as the data Adam is dequeued
+<img alt="dequeue-adam" src="images/dequeue-adam.png" /></li>
+</ul>
+<h4 id="circular-queues">Circular queues</h4>
+<ul>
+<li>A circular queue is <strong>a static array</strong> that has a <strong>fixed capacity</strong></li>
+<li>It means that as you add items to the queue you will <strong>eventually reach the end</strong> of the array</li>
+<li>When items are dequeued, <strong>space is freed up at the start of the array</strong></li>
+<li>It would <strong>take time</strong> to move items up to the start of the array to free up space at the end, so a Circular queue (or circular buffer) is implemented</li>
+<li>It <strong>reuses empty slots</strong> at the front of the array that are caused when items are dequeued</li>
+<li>As items are enqueued and the rear index pointer reaches the last position of the array, it wraps around to point to the start of the array as long as it isn’t full</li>
+<li>
+<p>When items are dequeued the front index pointer will wrap around until it passes the rear index points which would show the queue is empty
+<img alt="circular-queue" src="images/circular-queue.png" /></p>
+</li>
+<li>
+<p>Before <strong>adding</strong> an item to the circular queue you need to check that the <strong>array is not full</strong></p>
+</li>
+<li>It will be full if the next position to be used <strong>is already occupied</strong> by the item at the front of the queue</li>
+<li>If the queue is not full then the <strong>rear index pointer must be adjusted</strong> to reference the next free position so that the new item can be added</li>
+<li>
+<p>In the example below, you can see the circular queue as the data Lauren is enqueued.
+<img alt="enqueue-circular-example-1" src="images/enqueue-circular-example-1.png" /> <img alt="enqueue-circular-example-2" src="images/enqueue-circular-example-2.png" /></p>
+</li>
+<li>
+<p>Before <strong>removing</strong> an item from the queue, you need to make sure that the queue is not empty</p>
+</li>
+<li>If the queue is not empty the <strong>item at the front of the queue is returned</strong></li>
+<li>If this is the only item that was in the queue the <strong>rear and front pointers are reset</strong>, otherwise the pointer moves to reference the next item in the queue</li>
+<li>In the example below, you can see the queue as the data Adam is dequeued
+<img alt="dequeue-circular-example-1" src="images/dequeue-circular-example-1.png" /> <img alt="dequeue-circular-example-2" src="images/dequeue-circular-example-2.png" /></li>
+</ul>
+<h2 id="linked-list-operations">Linked list operations</h2>
+<h3 id="what-is-a-linked-list">What is a linked list?</h3>
+<ul>
+<li>A linked list is an abstract data type where each item, or <strong>node</strong>, contains a <strong>data field</strong> and a <strong>pointer to the next node</strong> in the sequence</li>
+<li>A linked list is <strong>a chain of items</strong>, where each item stores <strong>two things</strong>:<ul>
+<li>The <strong>actual data</strong></li>
+<li><strong>A pointer</strong> to the next item in the list</li>
+</ul>
+</li>
+<li>New items are usually added to the <strong>start</strong> of the list, and each one <strong>links</strong> to the next</li>
+<li>Like a <strong>scavenger hunt</strong> where each clue tells you where to go next</li>
+<li>Each item is called a <strong>node</strong> and contains a data field alongside another address which is called a pointer</li>
+<li>For example:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Index</strong></th>
+<th><strong>Data</strong></th>
+<th><strong>Pointer</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>&lsquo;Apple&rsquo;</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>&lsquo;Pineapple&rsquo;</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>&lsquo;Melon&rsquo;</td>
+<td>-</td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Start = 1 NextFree = 3</strong></p>
+<ul>
+<li>The data field contains the <strong>value of the actual data</strong> which is part of the list</li>
+<li>The pointer field contains the <strong>address of the next item</strong> in the list</li>
+<li>Linked lists can only be traversed by following each item’s next pointer until the end of the list is located</li>
+</ul>
+<h4 id="traverse-a-linked-list">Traverse a linked list</h4>
+<ul>
+<li>Check if the linked list is empty</li>
+<li>Start at the node the pointer is pointing to (Start = 1)</li>
+<li>Output the item at the current node (&lsquo;Pineapple&rsquo;)</li>
+<li>Follow the pointer to the next node repeating through each node until the end of the linked list.</li>
+<li>When the pointer field is empty/null it signals that the end of the linked list has been reached</li>
+<li>Traversing the example above would produce: ‘Pineapple’, ‘Apple’, ‘Melon’</li>
+</ul>
+<h4 id="adding-a-node">Adding a node</h4>
+<ul>
+<li>An advantage of using linked lists is that values can easily be added or removed by editing the points</li>
+<li>The following example will add the word ‘Orange’ after the word ‘Pineapple’
+1. Check there is free memory to insert data into the node
+2. Add the new value to the end of the linked list and update the ‘NextFree’ pointer</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>3</th>
+<th>&lsquo;Orange&rsquo;</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Start = 1 NextFree = 4
+3. The pointer field of the word ‘Pineapple’ is updated to point to ‘Orange’, at position 3</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>&lsquo;Pineapple&rsquo;</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>4. The pointer field of the word ‘Orange’ is updated to point to ‘Apple’ at position 0</p>
+<table>
+<thead>
+<tr>
+<th>3</th>
+<th>&lsquo;Orange&rsquo;</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>4. When traversed this linked list will now output: ‘Pineapple’, ‘Orange’, ‘Apple’, ‘Melon’</p>
+<h4 id="removing-a-node">Removing a node</h4>
+<ul>
+<li>Removing a node also involves updating nodes, this time to bypass the deleted node</li>
+<li>The following example will remove the word ‘Apple’ from the original linked list
+1. Update the pointer field of ‘Pineapple’ to point to ‘Melon’ at index 2</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Index</strong></th>
+<th><strong>Data</strong></th>
+<th><strong>Pointer</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>&lsquo;Apple&rsquo;</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>&lsquo;Pineapple&rsquo;</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>&lsquo;Melon&rsquo;</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>2. When traversed this linked list will now output: ‘Pineapple’, ‘Melon’</p>
+<ul>
+<li>The node is not truly removed from the list; it is only ignored</li>
+<li>Although this is easier it does waste memory</li>
+<li>Storing pointers themselves also means that more memory is required compared to an array</li>
+<li>Items in a linked list are also stored in a sequence, they can only be traversed within that order so an item cannot be directly accessed as is possible in an array</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

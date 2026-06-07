@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15.2 Boolean Algebra & Logic Circuits — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>15.2 Boolean Algebra & Logic Circuits</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#adders-circuits">Adders &amp; Circuits</a></li>
+<li><a href="#half-adders">Half adders</a></li>
+<li><a href="#full-adders">Full adders</a></li>
+<li><a href="#flip-flops">Flip-Flops</a></li>
+<li><a href="#sr-jk-flip-flops">SR &amp; JK flip flops</a></li>
+<li><a href="#boolean-algebra">Boolean Algebra</a></li>
+<li><a href="#boolean-algebra_1">Boolean algebra</a></li>
+<li><a href="#de-morgans-law">De Morgan&rsquo;s Law</a></li>
+<li><a href="#karnaugh-maps">Karnaugh Maps</a></li>
+<li><a href="#karnaugh-maps_1">Karnaugh maps</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="adders-circuits">Adders &amp; Circuits</h2>
+<h2 id="half-adders">Half adders</h2>
+<h3 id="what-is-a-half-adder-circuit">What is a half adder circuit?</h3>
+<ul>
+<li>A half adder circuit is a <strong>basic digital circuit</strong> used in computation to perform the <strong>addition</strong> of <strong>two single bit numbers</strong></li>
+<li>Has <strong>two inputs</strong>, usually labelled as <strong>A</strong> and <strong>B</strong></li>
+<li>Produces <strong>two outputs</strong> labelled <strong>Carry out</strong> (C <sub>out</sub>) and <strong>Sum</strong> (s)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>A</strong></th>
+<th><strong>B</strong></th>
+<th><strong>C</strong> <strong>out</strong></th>
+<th><strong>S</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>A AND B</strong></td>
+<td><strong>A XOR B</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Remember that you are <strong>adding together</strong> the <strong>binary numbers</strong> represented by <strong>A and B</strong></li>
+<li>Create the <strong>C</strong> <sub><b>out</b></sub> <strong>column first</strong> then for each row you can just <strong>add A and B together</strong> and write the <strong>answer in 2 bits</strong> in the <strong>C</strong> <sub><b>out</b></sub> and <strong>S</strong> columns<ul>
+<li>For example in row 2:<ul>
+<li>A is 0 and B is 1 and 0+1=1
+        - 1 = 01 in 2 bits (C <sub>out</sub> 0 and Sum 1)</li>
+<li>In the last row:</li>
+<li>A is 1 and B is 1 and 1+1 = 2
+        - 2 = 10 in 2 bit binary (C <sub>out</sub> 1 and Sum 0)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="drawing-a-half-adder-circuit">Drawing a half adder circuit</h3>
+<ul>
+<li>A half adder circuit has <strong>two inputs</strong>, typically labelled as <strong>A</strong> and <strong>B</strong>, and <strong>two outputs</strong>: the <strong>Sum</strong> (S) and <strong>Carry</strong> (C <sub>out</sub>)</li>
+<li>This circuit can be created using an <strong>XOR gate</strong> for the <strong>Sum output</strong> and an <strong>AND gate</strong> for the <strong>Carry output</strong></li>
+<li><strong>Label Inputs</strong>:<ul>
+<li>Begin by drawing two lines on the left side of your paper or drawing space</li>
+<li>Label the top line as &rsquo; <strong>A</strong> &rsquo; and the bottom line as &rsquo; <strong>B</strong> &lsquo;</li>
+<li>These represent your <strong>inputs</strong></li>
+</ul>
+</li>
+<li><strong>XOR Gate (Sum)</strong>:<ul>
+<li><strong>Draw an</strong> <strong>XOR gate</strong> (often a shape like a curved &lsquo;D&rsquo; or a shape similar to an OR gate but with an additional curved line on the input side) in the middle of the paper or drawing space<ul>
+<li>Connect the A and B lines to the two inputs of the <strong>XOR gate</strong></li>
+<li>The output from the XOR gate is the &rsquo; <strong>Sum</strong> &lsquo;</li>
+<li>Draw a line from the output of the <strong>XOR</strong> gate to the right side of your paper and label it as &rsquo; <strong>S</strong> &lsquo;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>AND Gate (Carry)</strong>:<ul>
+<li><strong>Draw an</strong> <strong>AND gate</strong> (typically a D-shaped symbol) above the <strong>XOR gate</strong><ul>
+<li>Again, connect the A and B lines to the two inputs of the <strong>AND gate</strong></li>
+<li>The output from the <strong>AND gate</strong> is the &rsquo; <strong>Carry</strong> &lsquo;</li>
+<li>Draw a line from the output of the <strong>AND</strong> gate to the right side of your paper and label it as &rsquo; <strong>C</strong> <sub><b>out</b></sub> &rsquo;
+<img alt="half-adder-v2" src="images/half-adder-v2.png" />
+<strong>Half Adder Logic Gates</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="full-adders">Full adders</h2>
+<h3 id="what-is-a-full-adder-circuit">What is a full adder circuit?</h3>
+<ul>
+<li>A full adder circuit <strong>extends</strong> the half adder to handle the <strong>addition of three bits</strong></li>
+<li>Has <strong>three inputs</strong>: <strong>A</strong>, <strong>B</strong>, and an input carry (<strong>C</strong> <sub><b>in</b></sub>)</li>
+<li>Produces <strong>two outputs</strong>: carry (<strong>C</strong> <sub><b>out</b></sub>) and sum (<strong>S</strong>)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>A</strong></th>
+<th><strong>B</strong></th>
+<th><strong>C</strong> <strong>in</strong></th>
+<th><strong>C</strong> <strong>out</strong></th>
+<th><strong>S</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To easily reproduce this <strong>Truth Table</strong>, remember:<ul>
+<li>The full adder <strong>adds up three binary inputs</strong> A,B and C<ul>
+<li>So the answer can be <strong>0,1,2 or 3</strong></li>
+<li>For each row, add up A, B and C and the <strong>write the answer as a 2 bit binary number</strong> in the last 2 columns (C <sub>out</sub> and Sum)</li>
+<li>For example in row 4, A=0, B=1 and C=1 - <strong>0+1+1=2</strong> which is <strong>10 in binary</strong>, so <strong>C</strong> <sub><b>out</b></sub> <strong>is 1 and Sum is 0</strong></li>
+<li>In the last row, A=1, B=1 and C=1, <strong>1+1+1=3</strong> which is <strong>11 in binary</strong> so <strong>C</strong> <sub><b>out</b></sub> <strong>is 1 and Sum is 1</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="operation">Operation</h3>
+<ul>
+<li>The &ldquo;Sum&rdquo; output <strong>provides the XOR</strong> of the inputs A, B, and C <sub>in</sub></li>
+<li>The &ldquo;Carry&rdquo; output is <strong>TRUE</strong> if at <strong>least two of the inputs</strong> A, B, and C <sub>in</sub> are <strong>TRUE</strong></li>
+</ul>
+<h3 id="drawing-a-full-adder-circuit">Drawing a full adder circuit</h3>
+<ul>
+<li>A full adder circuit consists of <strong>three inputs</strong>: <strong>A</strong>, <strong>B</strong>, and Carry (<strong>C</strong> <sub><b>in</b></sub>), and <strong>two outputs</strong>: Sum (<strong>S</strong>) and Carry (<strong>C</strong> <sub><b>out</b></sub>)</li>
+<li>It can be designed using <strong>two half adders</strong> and an <strong>OR gate</strong></li>
+<li><strong>Label Inputs</strong>:<ul>
+<li>Start by <strong>drawing three lines</strong> on the left side of your paper or drawing space</li>
+<li>Label the top line as &rsquo; <strong>A</strong> &lsquo;, the middle line as &rsquo; <strong>B&rsquo;</strong>, and the bottom line as &rsquo; <strong>C</strong> <sub><b>in</b></sub> &lsquo;</li>
+<li>These represent your inputs</li>
+</ul>
+</li>
+<li><strong>First Half Adder</strong>:<ul>
+<li><strong>Draw a half adder</strong> with A and B as inputs</li>
+<li>This consists of an <strong>XOR gate</strong> (for the Sum) and an <strong>AND gate</strong> (for the Carry)</li>
+<li>Label the output of the XOR gate as &rsquo; <strong>Sum1</strong> &rsquo; and the output of the AND gate as &rsquo; <strong>Carry1</strong> &lsquo;</li>
+</ul>
+</li>
+<li><strong>Second Half Adder</strong>:<ul>
+<li><strong>Draw a second half adder</strong> underneath the first, using <strong>Sum1</strong> and <strong>C</strong> <sub><b>in</b></sub> as inputs</li>
+<li>Again, it consists of an <strong>XOR gate</strong> (for the Sum) and an <strong>AND gate</strong> (for the Carry)</li>
+<li>Label the output of the XOR gate as &rsquo; <strong>S</strong> &rsquo; (final Sum) and the output of the <strong>AND gate</strong> as &rsquo; <strong>Carry2</strong> &lsquo;</li>
+</ul>
+</li>
+<li><strong>OR Gate</strong>:<ul>
+<li><strong>Draw an OR gate</strong> to the right of the half adders</li>
+<li>Connect Carry1 and Carry2 to the inputs of the OR gate</li>
+<li>The output of the OR gate is the final Carry (<strong>C</strong> <sub><b>out</b></sub>)
+    <img alt="full-adder-v2" src="images/full-adder-v2.png" />
+<strong>Full Adder Logic Gates</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="flip-flops">Flip-Flops</h2>
+<h2 id="sr-jk-flip-flops">SR &amp; JK flip flops</h2>
+<h3 id="what-are-sr-and-jk-flip-flops">What are SR and JK flip flops?</h3>
+<ul>
+<li>In A Level Computer Science, <strong>SR (Set-Reset)</strong> and <strong>JK flip flops</strong> are digital memory components used in <strong>sequential circuits</strong></li>
+<li>They store <strong>1 bit of data</strong> and are commonly used in <strong>counters</strong>, <strong>control systems</strong>, and <strong>synchronous logic</strong></li>
+<li>They are both types of <strong>bistable circuits</strong>, meaning:<ul>
+<li>They have <strong>two stable states</strong></li>
+<li>They <strong>respond to clock signals</strong></li>
+<li>They are often <strong>edge-triggered</strong> (typically on the <strong>rising edge</strong>)</li>
+</ul>
+</li>
+</ul>
+<h3 id="sr-flip-flop">SR flip flop</h3>
+<ul>
+<li><strong>SR</strong> stands for <strong>Set</strong> and <strong>Reset</strong></li>
+<li>An SR flip-flop can be constructed using <strong>NOR gates</strong> (common in exams)</li>
+</ul>
+<h4 id="inputs">Inputs:</h4>
+<ul>
+<li><strong>S</strong> = Set</li>
+<li><strong>R</strong> = Reset</li>
+<li><strong>CLK</strong> = Clock (when edge-triggered)</li>
+</ul>
+<h4 id="outputs">Outputs:</h4>
+<ul>
+<li><strong>Q</strong> = Current stored value</li>
+<li><strong>NOT(Q)</strong> = Inverse of Q</li>
+</ul>
+<h4 id="sr-flip-flop-truth-table-nor-logic">SR flip flop truth table (NOR logic)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>S</strong></th>
+<th><strong>R</strong></th>
+<th><strong>Q (next state)</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>0</code></td>
+<td><code>No change</code></td>
+<td>Memory/Hold</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td>Reset</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td>Set</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td>Forces Q = 0 (NOR only)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>In <strong>NOR-based SR flip-flops</strong>, <code>S = 1, R = 1</code> is not invalid, it forces <strong>Q = 0</strong></li>
+<li>(In NAND-based designs, this state is <strong>undefined</strong>)</li>
+</ul>
+<h4 id="sr-flip-flop-example">SR flip flop example</h4>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>S</th>
+<th>R</th>
+<th>Q</th>
+<th>NOT(Q)</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initially</td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td>Set: S = 1 forces Q = 1</td>
+</tr>
+<tr>
+<td>S changed to 0</td>
+<td><code>0</code></td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td>Memory mode: No change</td>
+</tr>
+<tr>
+<td>R changed to 1</td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td>Reset: R = 1 forces Q = 0</td>
+</tr>
+<tr>
+<td>R changed to 0</td>
+<td><code>0</code></td>
+<td><code>0</code></td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td>Memory mode: Q holds</td>
+</tr>
+<tr>
+<td>S and R changed to 1</td>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td><code>0</code></td>
+<td>NOR logic forces both Q and NOT(Q) to 0 (Q = 0)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jk-flip-flop">JK flip flop</h3>
+<ul>
+<li>The <strong>JK flip-flop</strong> is a more versatile version of the SR flip-flop</li>
+<li>It solves the problem of the SR’s illegal state</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Problem with SR</strong></th>
+<th><strong>Why JK solves it</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. S = 1 and R = 1 is invalid</strong></td>
+<td>JK uses this condition to <strong>toggle</strong> the output instead</td>
+</tr>
+<tr>
+<td><strong>2. Glitches from feedback loops</strong></td>
+<td>JK uses a <strong>clock</strong> to control exact timing of changes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="inputs_1">Inputs:</h4>
+<ul>
+<li><strong>J</strong> = Set</li>
+<li><strong>K</strong> = Reset</li>
+<li><strong>CLK</strong> = Clock (required)</li>
+</ul>
+<h4 id="outputs_1">Outputs:</h4>
+<ul>
+<li><strong>Q</strong> = Current state</li>
+<li><strong>NOT(Q)</strong> = Inverse</li>
+</ul>
+<h3 id="jk-flip-flop-truth-table">JK flip flop truth table</h3>
+<table>
+<thead>
+<tr>
+<th><strong>J</strong></th>
+<th><strong>K</strong></th>
+<th><strong>Q (next)</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>0</code></td>
+<td><code>No change</code></td>
+<td>Memory/Hold</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td>Reset</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td>Set</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>1</code></td>
+<td><code>Toggle</code></td>
+<td>Q becomes NOT(Q)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="use-cases">Use cases</h3>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Flip Flop</b></p></th><th colspan="1" rowspan="1"><p><b>Typical uses</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>SR</b></p></td><td colspan="1" rowspan="1"><p>Simple memory, control circuits</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>JK</b></p></td><td colspan="1" rowspan="1"><p><b>Toggles</b>, <b>counters</b>, frequency dividers</p></td></tr></tbody></table>
+<p>Draw a logic circuit for an SR flip-flop and label the inputs.<strong>[3]</strong>
+<img alt="Simple box diagram with horizontal lines on the left, vertical lines on the right labelled Q and QI. Lines on the left have no labels." src="images/46639_2025-06-04-0it-kleki.png" />
+Answer
+<strong>Or</strong>
+<img alt="SR latch circuit diagram with two NOR gates. Inputs are labelled &quot;R/Reset&quot; and &quot;S/Set,&quot; with outputs marked as Q and not-Q." src="images/60662_2025-06-04-0iw-kleki.png" /></p>
+<h2 id="boolean-algebra">Boolean Algebra</h2>
+<h2 id="boolean-algebra_1">Boolean algebra</h2>
+<h3 id="what-is-boolean-algebra">What is Boolean algebra?</h3>
+<ul>
+<li>Boolean algebra is a <strong>mathematical system</strong> used to <strong>manipulate Boolean values</strong></li>
+<li><strong>Complex expressions</strong> can be made <strong>simpler</strong> using the rules of <strong>Boolean algebra</strong></li>
+<li>This is a <strong>more powerful simplification</strong> method than Karnaugh maps and can simplify expressions that Karnaugh maps cannot</li>
+<li>There are various different <strong>rules</strong> that you need to learn and that can then be applied to certain expressions to simplify them</li>
+<li><strong>Combining these rules</strong> can mean that <strong>complex expressions</strong> can be <strong>reduced to much simpler ones</strong></li>
+</ul>
+<h4 id="general-rules">General rules</h4>
+<ul>
+<li><strong>General AND rules</strong><ul>
+<li>X AND 0 = 0</li>
+<li>X AND 1 = X</li>
+<li>X AND A = X</li>
+<li>NOT X AND X = 0</li>
+</ul>
+</li>
+<li>Note, the value ox X is unknown and it is used as a placeholder</li>
+<li>Therefore <strong>X AND 1 = X</strong> means that the output will be whatever the value of X is</li>
+<li><strong>General OR rules</strong><ul>
+<li>X OR 0 = X  </li>
+<li>X OR 1 = 1  </li>
+<li>X OR A = X  </li>
+<li>NOT X OR X = 1</li>
+</ul>
+</li>
+</ul>
+<h3 id="boolean-algebra-notation">Boolean algebra notation</h3>
+<ul>
+<li>In Boolean algebra, expressions are written using shorthand notation:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Symbol</strong></th>
+<th><strong>Meaning</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A · B</code> or <code>AB</code></td>
+<td><strong>AND</strong></td>
+<td><code>A · B</code></td>
+<td>True only if <strong>both</strong> A and B are 1</td>
+</tr>
+<tr>
+<td><code>A + B</code></td>
+<td><strong>OR</strong></td>
+<td><code>A + B</code></td>
+<td>True if <strong>either</strong> A or B is 1</td>
+</tr>
+<tr>
+<td><code>¬A</code> or <code>A'</code></td>
+<td><strong>NOT</strong> / complement</td>
+<td><code>¬A</code></td>
+<td>True if A is 0, False if A is 1</td>
+</tr>
+<tr>
+<td><code>( )</code></td>
+<td>Brackets / grouping</td>
+<td><code>(A + B)·C</code></td>
+<td>Do A OR B <strong>first</strong>, then AND with C</td>
+</tr>
+</tbody>
+</table>
+<p>A dot (<code>·</code>) for <strong>AND</strong> is often omitted, so <code>AB</code> means <code>A AND B</code></p>
+<ul>
+<li>A <strong>line drawn above</strong> a variable or expression means that the value is <strong>inverted</strong> or <strong>negated</strong></li>
+<li>It&rsquo;s the <strong>NOT</strong> of that value</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Notation</strong></th>
+<th><strong>Meaning</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>¬A</code> or <code>A'</code> or <code>A̅</code></td>
+<td><strong>NOT A</strong></td>
+<td>True if A is False, False if A is True</td>
+</tr>
+<tr>
+<td><code>A · B̅</code></td>
+<td>A AND (<strong>NOT B</strong>)</td>
+<td>B is negated before the AND operation</td>
+</tr>
+<tr>
+<td><code>(A + B)̅</code></td>
+<td><strong>NOT</strong> (A OR B)</td>
+<td>The entire OR expression is negated (use De Morgan)</td>
+</tr>
+<tr>
+<td><code>(A · B · C)̅</code></td>
+<td><strong>NOT</strong> (A AND B AND C)</td>
+<td>All values are ANDed together, then the result is negated</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>When you see <strong>multiple horizontal lines</strong>, for example:
+<img alt="Three Boolean expressions: (A.B), (A.C), (B.D) each with an overline indicating negation, displayed as digital logic notation." src="images/39687_2025-06-04-0ia-kleki.png" /></p>
+</li>
+<li>
+<p>It means the <strong>whole expression is negated</strong>, not just one part</p>
+</li>
+<li>Always apply <strong>De Morgan’s Law</strong> starting with the <strong>outermost line</strong> first</li>
+</ul>
+<h2 id="de-morgans-law">De Morgan&rsquo;s Law</h2>
+<h3 id="what-is-de-morgans-law">What is De Morgan’s Law?</h3>
+<ul>
+<li>De Morgan’s Laws are used to <strong>simplify Boolean expressions</strong> involving <strong>negation</strong> of <strong>conjunctions (AND)</strong> or <strong>disjunctions (OR)</strong></li>
+<li>They are particularly useful for rewriting logic circuits using only <strong>NAND</strong> or <strong>NOR</strong> gates</li>
+<li>There are two key rules:<ol>
+<li><strong>NOT (A AND B)</strong> is equivalent to <strong>(NOT A) OR (NOT B)</strong></li>
+<li><strong>NOT (A OR B)</strong> is equivalent to <strong>(NOT A) AND (NOT B)</strong></li>
+</ol>
+</li>
+</ul>
+<h4 id="worked-example-1-simplify-a-b">Worked example 1: Simplify ¬(A ∧ B)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Explanation</strong></th>
+<th><strong>Expression</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>Start with the original expression</td>
+<td></td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>Apply De Morgan’s Law: change ∧ to ∨ and negate both terms</td>
+<td></td>
+</tr>
+<tr>
+<td>Step 3</td>
+<td>Remove unnecessary brackets</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="worked-example-2-simplify-a-b">Worked example 2: Simplify ¬(A ∨ B)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Explanation</strong></th>
+<th><strong>Expression</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>Start with the original expression</td>
+<td></td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>Apply De Morgan’s Law: change ∨ to ∧ and negate both terms</td>
+<td></td>
+</tr>
+<tr>
+<td>Step 3</td>
+<td>Remove unnecessary brackets</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-use-de-morgans-laws">Why use De Morgan’s Laws?</h3>
+<ul>
+<li>
+<p>Simplifying Boolean expressions using De Morgan’s Laws:</p>
+<ul>
+<li>Allows for implementation using only <strong>NAND</strong> or <strong>NOR</strong> gates</li>
+<li>Makes <strong>circuit design more efficient</strong> and cost-effective</li>
+<li>Is essential in hardware where NAND/NOR logic is cheaper or faster to implement</li>
+<li>Is commonly used in <strong>microprocessor</strong> and <strong>memory device</strong> design (e.g. flash drives)
+Simplify the following expression using Boolean algebra, including De Morgan’s laws. Show your working.<strong>[3]</strong>
+<img alt="Boolean logic expression with horizontal lines above (A.B), (A.C), and (B.D), indicating logical negation of the operations inside brackets." src="images/26717_2025-06-04-0ia-kleki.png" />
+Answer</li>
+</ul>
+</li>
+<li>
+<p>Correct application of De Morgan’s Law [1 mark]</p>
+</li>
+<li>Correct application of Double Negation Law or Distributive Law [1 mark]</li>
+<li>Correct answer [1 mark]
+<img alt="" src="images/32895_2025-06-04-0ic-kleki.png" /></li>
+</ul>
+<h2 id="karnaugh-maps">Karnaugh Maps</h2>
+<h2 id="karnaugh-maps_1">Karnaugh maps</h2>
+<h3 id="what-is-a-karnaugh-map">What is a Karnaugh map?</h3>
+<ul>
+<li>A Karnaugh map (<strong>KMap</strong>) is a tool that is used for <strong>simplifying Boolean algebra expressions</strong></li>
+<li>It offers a <strong>visual method</strong> of <strong>grouping together expressions</strong> with <strong>common factors</strong></li>
+<li>The format of the map makes it <strong>easy to identify</strong> and <strong>eliminate redundant terms</strong></li>
+<li>They are used in <strong>digital logic design</strong>, such as simplifying the logic of digital circuits</li>
+</ul>
+<h4 id="steps">Steps:</h4>
+<ol>
+<li><strong>Create the Map</strong>: Each cell in the grid corresponds to a term in the Boolean expression. Fill cells with 1s and 0s corresponding to the output of that term</li>
+<li><strong>Grouping</strong>: Group the 1s in the grid. Each group must be a rectangle and the size of the group must be a power of 2. A cell can be part of multiple groups</li>
+<li><strong>Simplifying</strong>: Write down a simplified Boolean expression for each group. The simplified expression for a group consists of the variables that remain constant in all terms in the group</li>
+<li><strong>Final Expression</strong>: Combine the simplified expressions from each group using OR operations to get the final simplified Boolean expression</li>
+</ol>
+<h3 id="creating-karnaugh-maps">Creating Karnaugh Maps</h3>
+<ul>
+<li>A Karnaugh Map (<strong>KMap</strong>) can be used to <strong>simplify a Boolean expression</strong> with 2 inputs</li>
+<li>Here is an example for the expression <strong>A V B</strong> (<strong>A OR B</strong>)</li>
+</ul>
+<h4 id="step-1">Step 1</h4>
+<ul>
+<li><strong>Add each variable</strong> starting with <strong>A</strong> at the top and <strong>B</strong> down the side</li>
+<li><strong>Add each possible state</strong> for <strong>A</strong> and <strong>B</strong>
+<img alt="step 1" src="images/screenshot-2024-04-02-at-2-34-56-pm.png" /></li>
+</ul>
+<h4 id="step-2">Step 2</h4>
+<ul>
+<li>Take each expression in turn <strong>separated</strong> by the <strong>V</strong> (<strong>OR</strong>)</li>
+<li>First look at <strong>A</strong> on it&rsquo;s own</li>
+<li>Find <strong>all cells where A is 1</strong></li>
+<li><strong>Add 1 to the cell</strong>
+<img alt="step 2" src="images/screenshot-2024-04-02-at-2-35-06-pm.png" /></li>
+</ul>
+<h4 id="step-3">Step 3</h4>
+<ul>
+<li><strong>Repeat for B</strong>
+<img alt="step 3" src="images/screenshot-2024-04-02-at-2-35-17-pm.png" /></li>
+</ul>
+<h4 id="step-4">Step 4</h4>
+<ul>
+<li>This is now a <strong>completed KMap</strong> for the expression <strong>A V B</strong> (<strong>A OR B</strong>)
+<img alt="step " src="images/screenshot-2024-04-02-at-2-35-31-pm.png" /></li>
+</ul>
+<h3 id="simplifying-expressions-using-karnaugh-maps">Simplifying expressions using Karnaugh Maps</h3>
+<ul>
+<li>Simplify <strong>¬A^¬B^C v ¬A^B^¬C v A^¬B^C v A^B</strong> using a KMap</li>
+<li>In this example there will be <strong>3 variables</strong> A,B and C so the empty KMap will look like this:
+<img alt="empty-k-map" src="images/empty-k-map.png" /></li>
+</ul>
+<h4 id="step-1_1">Step 1:</h4>
+<ul>
+<li>Split this long term at each <strong>OR</strong> giving 4 smaller expressions (subterms) to add to the table:<ul>
+<li><strong>¬A^¬B^C</strong></li>
+<li><strong>¬A^B^¬C</strong></li>
+<li><strong>A^¬B^C</strong></li>
+<li><strong>A^B</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="step-2_1">Step 2:</h4>
+<ul>
+<li>Take the first subterm <strong>¬A^¬B^C</strong></li>
+<li>Put a <strong>1</strong> in the map for <strong>every cell where this term would be TRUE (1)</strong></li>
+<li>So if <strong>A</strong> and <strong>B</strong> were <strong>0</strong> and <strong>C</strong> was <strong>1</strong> this subterm would be <strong>1</strong></li>
+<li>So put a <strong>1</strong> in every cell in the KMap where <strong>A is 0</strong>, <strong>B is 0</strong> and <strong>C is 1</strong>
+<img alt="k-map-2" src="images/k-map-2.png" /></li>
+</ul>
+<h4 id="step-3_1">Step 3:</h4>
+<ul>
+<li>The next subterm is <strong>¬A^B^¬C</strong></li>
+<li>Put a <strong>1</strong> in the KMap where <strong>A is 0</strong>, <strong>B is 1</strong> and <strong>C is 0</strong>
+<img alt="k-map-3" src="images/k-map-3.png" /></li>
+</ul>
+<h4 id="step-4_1">Step 4:</h4>
+<ul>
+<li>The next subterm is <strong>A^¬B^C</strong></li>
+<li>Put a <strong>1</strong> in the KMap where <strong>A is 1</strong>, <strong>B is 0</strong> and <strong>C is 1</strong>
+<img alt="k-map-4" src="images/k-map-4.png" /></li>
+</ul>
+<h4 id="step-5">Step 5:</h4>
+<ul>
+<li>The final subterm is <strong>A^B</strong></li>
+<li>Put a <strong>1</strong> in the KMap where <strong>A is 1</strong> and <strong>B is 1</strong> (2 cells this time)
+<img alt="k-map-5" src="images/k-map-5.png" /></li>
+</ul>
+<h3 id="making-the-groups">Making the groups</h3>
+<ul>
+<li>Once you have written the 1s and 0s into your KMap, you can then use this to <strong>simply the expression</strong></li>
+<li>In order to do this, you need to <strong>identify the groups</strong></li>
+<li>This is the <strong>key</strong> to using the Karnaugh map to derive the simplified expression</li>
+<li>The aim of making the groups is to<ul>
+<li><strong>Make rectangular groups</strong></li>
+<li><strong>Make groups that are as large as possible</strong></li>
+<li><strong>Make groups that contain either 8,4,2 or 1 ones</strong></li>
+<li><strong>Groups can overlap</strong> (i.e. some ones can be in multiple groups)</li>
+<li><strong>The Karnaugh map ‘grid’ wraps round in all directions so the groups can wrap round</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="example-grouping">Example grouping</h4>
+<p><strong>Group 1:</strong></p>
+<ul>
+<li>
+<p>So this would be one group
+<img alt="k-map-6" src="images/k-map-6.png" /></p>
+</li>
+<li>
+<p>This group would represent <strong>A</strong> since within this group bothC and B change (have zeros and ones) whereas for A all the cells are one.
+<strong>Group 2:</strong></p>
+</li>
+<li>
+<p>This would be another group (<strong>note the wrapping around</strong>).
+<img alt="k-map-7" src="images/k-map-7.png" /></p>
+</li>
+<li>
+<p>This group would represent <strong>¬B</strong> since within this group both A and C change (have zeros and ones) whereas for B all the cells are zero
+<strong>Final simplified expression</strong></p>
+</li>
+<li>
+<p>To get the final simplified expression we <strong>OR</strong> the terms representing the two groups together.</p>
+</li>
+<li>So the simplified expression is <strong>A v ¬B</strong>
+In questions where you have to use a Karnaugh Map always show the groups by drawing a box/circle round them.</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

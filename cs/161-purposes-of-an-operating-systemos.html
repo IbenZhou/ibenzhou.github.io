@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>16.1 Purposes of an Operating System(OS) — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>16.1 Purposes of an Operating System(OS)</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#resource-management">Resource Management</a></li>
+<li><a href="#resource-management_1">Resource management</a></li>
+<li><a href="#process-management">Process Management</a></li>
+<li><a href="#multitasking-process-states">Multitasking &amp; process states</a></li>
+<li><a href="#scheduling-routines">Scheduling routines</a></li>
+<li><a href="#interrupt-handling-kernel">Interrupt handling &amp; kernel</a></li>
+<li><a href="#memory-management">Memory Management</a></li>
+<li><a href="#memory-management_1">Memory management</a></li>
+<li><a href="#paging">Paging</a></li>
+<li><a href="#segmentation">Segmentation</a></li>
+<li><a href="#virtual-memory">Virtual memory</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="resource-management">Resource Management</h2>
+<h2 id="resource-management_1">Resource management</h2>
+<h3 id="how-does-an-operating-system-maximise-the-use-of-resources">How does an operating system maximise the use of resources?</h3>
+<ul>
+<li>The Operating System (OS) is responsible for <strong>managing the computer&rsquo;s hardware efficiently</strong> to ensure the system runs smoothly</li>
+<li>This is known as <strong>resource management</strong> and is vital for:<ul>
+<li><strong>Maximising performance</strong></li>
+<li><strong>Reducing bottlenecks</strong></li>
+<li><strong>Ensuring multitasking</strong> works correctly</li>
+</ul>
+</li>
+<li>When a computer is switched on, the <strong>BIOS</strong> (stored in ROM) runs a <strong>bootstrap</strong> program</li>
+<li>This loads the <strong>kernel</strong> and essential parts of the OS from the hard disk or flash storage into <strong>main memory (RAM)</strong></li>
+<li>On tablets and smartphones, flash memory contains a read-only section for the OS and a second section for apps and user data</li>
+<li><strong>RAM</strong> is then used to <strong>execute apps</strong> and <strong>store active data</strong></li>
+</ul>
+<h4 id="kernel">Kernel</h4>
+<ul>
+<li>The kernel is the <strong>core of the OS</strong> responsible for managing:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Area</strong></th>
+<th><strong>Responsibility</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Process management</strong></td>
+<td>Schedules processes, allocates CPU time, handles multitasking</td>
+</tr>
+<tr>
+<td><strong>Memory management</strong></td>
+<td>Allocates RAM to processes, handles virtual memory, prevents clashes</td>
+</tr>
+<tr>
+<td><strong>Device management</strong></td>
+<td>Controls input/output devices using <strong>device drivers</strong></td>
+</tr>
+<tr>
+<td><strong>Interrupt handling</strong></td>
+<td>Deals with interrupts from hardware (e.g. DMA controller or I/O devices)</td>
+</tr>
+<tr>
+<td><strong>File management</strong></td>
+<td>Handles reading/writing from files and file systems</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cpu-resource-management-scheduling">CPU resource management – scheduling</h4>
+<ul>
+<li>The OS maximises CPU usage through <strong>scheduling</strong>, which allows multiple processes to be managed efficiently<ul>
+<li><strong>Multitasking</strong> ensures that the CPU switches rapidly between processes</li>
+<li>Different <strong>scheduling algorithms</strong> (e.g. round-robin, priority-based) are used to share CPU time fairly</li>
+</ul>
+</li>
+</ul>
+<h4 id="memory-resource-management">Memory resource management</h4>
+<ul>
+<li>RAM is <strong>allocated dynamically</strong> to active programs and system processes</li>
+<li>If RAM is full, the OS may use <strong>virtual memory</strong> on disk to simulate extra memory</li>
+<li>This allows <strong>more programs to run</strong> than would otherwise fit in RAM</li>
+</ul>
+<h4 id="inputoutput-management-and-dma">Input/output management and DMA</h4>
+<ul>
+<li>I/O devices are <strong>much slower</strong> than the CPU, so the OS optimises their use:<ul>
+<li>I/O operations are managed through <strong>device drivers</strong> and <strong>interrupts</strong></li>
+<li>The <strong>Direct Memory Access (DMA) controller</strong> allows data transfer between memory and devices <strong>without CPU involvement</strong></li>
+<li>This <strong>frees up the CPU</strong> to perform other tasks while data is being moved</li>
+<li>When the transfer is complete, the DMA sends an <strong>interrupt</strong> to the CPU</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Device</strong></th>
+<th><strong>Typical data rate</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keyboard</td>
+<td>~50 bps</td>
+</tr>
+<tr>
+<td>Mouse</td>
+<td>~120 bps</td>
+</tr>
+<tr>
+<td>Laser printer</td>
+<td>~1 Mbps</td>
+</tr>
+<tr>
+<td>Hard disk</td>
+<td>~100 Mbps</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hiding-hardware-complexity">Hiding hardware complexity</h4>
+<ul>
+<li>The OS provides a <strong>user-friendly interface</strong> and handles the complexity of interacting with hardware:<ul>
+<li><strong>GUIs</strong> make tasks like file transfers easy (e.g. drag-and-drop instead of command-line)</li>
+<li><strong>Device drivers</strong> handle communication with specific hardware</li>
+<li>Users <strong>don’t need to know</strong> technical commands, the OS abstracts this complexity</li>
+</ul>
+</li>
+</ul>
+<h4 id="summary">Summary</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Resource</strong></th>
+<th><strong>Technique used</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU</strong></td>
+<td>Scheduling, multitasking, process control</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>Allocation, paging, virtual memory</td>
+</tr>
+<tr>
+<td><strong>I/O</strong></td>
+<td>Interrupts, DMA, buffering, driver management</td>
+</tr>
+<tr>
+<td><strong>User interface</strong></td>
+<td>Abstracts complexity through GUI and system utilities</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>File system management, read/write optimisation via caching and buffering</td>
+</tr>
+</tbody>
+</table>
+<h2 id="process-management">Process Management</h2>
+<h2 id="multitasking-process-states">Multitasking &amp; process states</h2>
+<h3 id="what-is-multitasking">What is multitasking?</h3>
+<ul>
+<li>Multitasking is the ability of the operating system to <strong>manage system resources</strong> (such as memory and the CPU) in a way that <strong>gives the user the impression</strong> that multiple programs are running at the same time</li>
+<li>In reality, the CPU can only execute <strong>one instruction at a time</strong></li>
+<li>It can process <strong>billions of instructions per second</strong>, and can switch between tasks so quickly that it gives the <strong>illusion</strong> of programs running simultaneously</li>
+<li>The OS <strong>splits tasks and allocates system resources</strong> based on a priority</li>
+</ul>
+<h3 id="what-is-a-process">What is a process?</h3>
+<ul>
+<li>A process is a <strong>program in execution</strong></li>
+<li>This includes:<ul>
+<li><strong>The program code</strong></li>
+<li><strong>Current data</strong></li>
+<li><strong>Register values</strong></li>
+<li><strong>Memory space</strong></li>
+</ul>
+</li>
+<li>Each running application is <strong>treated as a separate process</strong> by the OS</li>
+<li>A process <strong>does not always run continuously</strong></li>
+<li>It <strong>changes state</strong> depending on what it’s doing and whether it has access to the CPU or is waiting for something</li>
+</ul>
+<h4 id="process-states">Process states</h4>
+<table>
+<thead>
+<tr>
+<th><strong>State</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Running</strong></td>
+<td>The process is actively being executed by the CPU</td>
+</tr>
+<tr>
+<td><strong>Ready</strong></td>
+<td>The process is prepared to run but is <strong>waiting for the CPU</strong> to be available</td>
+</tr>
+<tr>
+<td><strong>Blocked</strong></td>
+<td>The process is <strong>waiting for an event or resource</strong>, such as I/O completion</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scheduling-routines">Scheduling routines</h2>
+<h3 id="what-is-scheduling">What is scheduling?</h3>
+<ul>
+<li>Deciding <strong>which tasks</strong> to process, for <strong>how long</strong>, and in <strong>what order</strong> is achieved through scheduling algorithms</li>
+<li>A CPU is responsible for <strong>processing tasks</strong> as fast as possible</li>
+<li>Different algorithms are used to <strong>prioritise and process</strong> tasks that need CPU time</li>
+<li>The algorithms have different <strong>uses</strong>, <strong>benefits</strong> and <strong>drawbacks</strong></li>
+</ul>
+<h4 id="scheduling-categories">Scheduling categories</h4>
+<ul>
+<li><strong>Pre-emptive</strong>: allocates the CPU for <strong>time-limited slots</strong><ul>
+<li>Allocates the CPU for a specific <strong>time quantum</strong> to a process</li>
+<li>Allows interruption of processes currently being handled</li>
+<li>It can result in low-priority processes being neglected if high-priority processes arrive frequently</li>
+<li>Example algorithms include <strong>Round Robin</strong> and <strong>Shortest Remaining Time First</strong></li>
+</ul>
+</li>
+<li><strong>Non-pre-emptive</strong>: allocates the CPU to tasks for <strong>unlimited time slots</strong><ul>
+<li>Once the CPU is allocated to a process, the process holds it until it completes its <strong>burst time</strong> or switches to a &lsquo;waiting&rsquo; state</li>
+<li>A process cannot be interrupted unless it completes or its burst time is reached</li>
+<li>If a process with a long burst time is running, shorter processes will be neglected</li>
+<li>Example algorithms include <strong>First Come First Serve</strong> and <strong>Shortest Job First</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="scheduling-algorithms">Scheduling algorithms</h3>
+<h4 id="round-robin-rr">Round robin (RR)</h4>
+<ul>
+<li>RR is a pre-emptive scheduling algorithm</li>
+<li>Equally distributing processor time amongst all processes</li>
+<li>Each process is given a <strong>time quantum</strong> to execute</li>
+<li>Processes that are ready to be worked on get queued</li>
+<li>If a process hasn’t been completed by the end of its time quantum, it will be moved to the back of the queue
+<img alt="Round robin scheduling algorithm" src="images/scheduling-algorithm-round-robin-alevel.png" />
+<strong><em>Round robin scheduling algorithm</em></strong></li>
+</ul>
+<h4 id="first-come-first-served-fcfs">First-Come-First-Served (FCFS)</h4>
+<ul>
+<li>FCFS is non-pre-emptive, prioritising processes that arrive at the queue first</li>
+<li>The process currently being worked on will block all other processes until it is complete</li>
+<li>
+<p>All new tasks join the back of the queue
+<img alt="First-Come-First-Served scheduling algorithm" src="images/scheduling-algorithm-first-come-first-served-fcfs-alevel.png" />
+<strong><em>First-Come-First-Served scheduling algorithm</em></strong></p>
+</li>
+<li>
+<p>MLFQ is a pre-emptive priority algorithm where shorter and more critical tasks are processed first</p>
+</li>
+<li>Multiple queues are used so that tasks of equal size are grouped together</li>
+<li>All processes will join the highest priority queue but will trickle down to lower priority queues if they exceed the time quantum
+<img alt="Multi-Level Feedback Queue scheduling algorithm" src="images/scheduling-algorithm-multi-level-feedback-queue-mlfq-alevel.png" />
+<strong><em>Multi-Level Feedback Queue scheduling algorithm</em></strong></li>
+</ul>
+<h4 id="shortest-job-first-sjf">Shortest Job First (SJF)</h4>
+<ul>
+<li>SJF is non-pre-emptive, where all processes are continuously sorted by burst time from shortest to longest</li>
+<li>When new processes arrive on the queue, they are prioritised based on their burst time in the next cycle</li>
+<li>Shorter jobs are placed at the front of the priority queue</li>
+<li>Longer jobs have lower priority, so they are placed at the back
+<img alt="Shortest job first scheduling algorithm" src="images/tclVnVUI_scheduling-algorithm-shortest-job-first-alevel.png" />
+<strong><em>Shortest job first scheduling algorithm</em></strong></li>
+</ul>
+<h4 id="shortest-remaining-time-first-srtf">Shortest Remaining Time First (SRTF)</h4>
+<ul>
+<li>SRTF is a pre-emptive version of SJF, where processes with the shortest remaining time are higher priority</li>
+<li>Time quantum is set, and if a task doesn’t complete in time, it will be re-queued for further processing</li>
+<li>Before the next cycle starts, all processes are inspected and ordered by the shortest remaining time to complete
+<img alt="Shortest remaining time first scheduling algorithm part 1" src="images/scheduling-algorithm-shortest-time-remaining-1-alevel.png" /> <img alt="Shortest remaining time first scheduling algorithm part 2" src="images/VTVvIYKO_scheduling-algorithm-shortest-time-remaining-2-alevel.png" />
+<strong><em>Shortest remaining time first scheduling algorithm</em></strong></li>
+</ul>
+<h3 id="summery">Summery</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Algorithm</strong></th>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Round Robin</strong></td>
+<td>All processes get a fair share of the CPU<br><br>Good for time-sharing systems<br><br>Predictable, as every process gets equal time</td>
+<td>Choosing the right time quantum can be difficult<br><br>This can lead to a high turnaround time and waiting time for long processes</td>
+</tr>
+<tr>
+<td><strong>First Come, First Served</strong></td>
+<td>Simple and easy to understand<br><br>Fair in the sense that processes are served in the order they arrive</td>
+<td>This can lead to poor performance if a long process arrives before shorter processes<br><br>High-priority tasks wait for their turn in the queue</td>
+</tr>
+<tr>
+<td><strong>Multi-Level Feedback Queues</strong></td>
+<td>Smaller tasks are prioritised<br><br>Creates a prioritisation system where similar-sized tasks are queued together</td>
+<td>More complex than other algorithms<br><br>Setting the correct parameters (e.g., number of queues, ageing rules) can be complex</td>
+</tr>
+<tr>
+<td><strong>Shortest Job First</strong></td>
+<td>Minimises waiting time<br><br>Efficient and fast for short processes</td>
+<td>Requires knowing the burst time of processes in advance<br><br>Long processes can starve if short processes keep arriving</td>
+</tr>
+<tr>
+<td><strong>Shortest Time Remaining</strong></td>
+<td>Ideal for jobs that have shorter burst times<br><br>It is pre-emptive, so it can be aligned with CPU for best performance (time quantum)</td>
+<td>Like SJF, it requires knowing the burst time of processes in advance<br><br>High context switching overhead due to pre-emption</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The suitability of a scheduling algorithm largely depends on the <strong>specific scenario</strong> and the <strong>system requirements</strong></li>
+<li>A drawback in one scenario may not be a drawback in another</li>
+</ul>
+<h2 id="interrupt-handling-kernel">Interrupt handling &amp; kernel</h2>
+<h3 id="what-is-the-interrupt-handling-process">What is the interrupt handling process?</h3>
+<ol>
+<li><strong>Interrupt signal occurs</strong> (e.g. input from keyboard, DMA completion, timer)</li>
+<li><strong>Current process is paused</strong> and its state is saved (registers, PC, etc.)</li>
+<li>The kernel identifies the <strong>source and priority</strong> of the interrupt</li>
+<li>The appropriate <strong>Interrupt Service Routine (ISR)</strong> is called</li>
+<li>Once complete, the original process is <strong>restored and resumed</strong></li>
+</ol>
+<h4 id="low-level-scheduling-via-interrupts">Low-level scheduling via interrupts</h4>
+<ul>
+<li>Interrupts are essential for the <strong>OS to perform low-level scheduling</strong>, which involves:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Interrupt Type</strong></th>
+<th><strong>Scheduling Role</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Timer Interrupts</strong></td>
+<td>Used to trigger a context switch between processes, supporting <strong>pre-emptive multitasking</strong></td>
+</tr>
+<tr>
+<td><strong>I/O Interrupts</strong></td>
+<td>Signals that an I/O task (e.g. file write, printer job) has finished — unblocks waiting processes</td>
+</tr>
+<tr>
+<td><strong>Hardware Interrupts</strong></td>
+<td>Responds to urgent external events (e.g. power failure, mouse input)</td>
+</tr>
+<tr>
+<td><strong>Software Interrupts</strong></td>
+<td>Generated by programs to request system-level services (e.g. memory allocation)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The <strong>scheduler</strong>, which is part of the kernel, uses these interrupts to decide which process should run next, often based on a <strong>priority</strong> or <strong>time slice</strong> system</li>
+</ul>
+<h2 id="memory-management">Memory Management</h2>
+<h2 id="memory-management_1">Memory management</h2>
+<h3 id="what-is-memory-management">What is memory management?</h3>
+<ul>
+<li>Memory management is a <strong>fundamental</strong> role of the operating system, dealing with the <strong>allocation</strong> and <strong>deallocation</strong> of the computer&rsquo;s primary memory</li>
+<li>When a user opens an application, its <strong>data is loaded from storage</strong> into active memory so that it can run <strong>smoothly</strong></li>
+<li>When a user opens a file from the file system, e.g. word document, the CPU loads this <strong>file data,</strong> as well as <strong>application data,</strong> into the primary memory</li>
+<li>Primary memory is a <strong>limited resource</strong> in the system, so it needs <strong>careful management</strong></li>
+<li><strong>Benefits</strong> of memory management are:<ul>
+<li>Efficient allocation of memory <strong>enables multitasking</strong>, allowing multiple programs to run at once</li>
+<li>Memory management <strong>maintains security</strong>, it does not let programs access memory reserved for other programs</li>
+</ul>
+</li>
+<li>
+<p>Memory management is made <strong>more efficient</strong> through 3 techniques:</p>
+<ul>
+<li><strong>Paging</strong></li>
+<li><strong>Segmentation</strong></li>
+<li><strong>Virtual memory</strong>
+<img alt="Links between different types of memory and memory management" src="images/memory-management-alevel.png" />
+<strong><em>Links between different types of memory</em></strong></li>
+</ul>
+</li>
+<li>
+<p>The main benefit of memory management is to make computer systems run smoothly. Most users don’t realise that as they effortlessly move between applications, it’s made possible because the OS is rapidly reallocating memory depending on the task that the user is completing.</p>
+</li>
+<li>Make sure you can name one benefit and one drawback for each memory management method in this revision note.</li>
+</ul>
+<h2 id="paging">Paging</h2>
+<h3 id="what-is-paging">What is paging?</h3>
+<ul>
+<li>In A Level Computer Science, paging is a method of <strong>chunking</strong> the primary memory <strong>into equal-sized blocks</strong></li>
+<li>Data stored in memory will lead to the smooth running of applications</li>
+<li>When an application is launched, data will be moved from the hard disk into Pages for faster access</li>
+<li>As users move between applications, memory is dynamically allocated</li>
+<li>Pages will be taken away from applications not in active use and granted to applications that are in active use</li>
+<li>Paging can lead to <strong>internal fragmentation</strong></li>
+<li>If a 200KB file is divided into four 64KB Pages, the last Page would have 56KB of unused space<ul>
+<li><strong>First 64KB</strong> → Full page (64KB used, 0KB unused)</li>
+<li><strong>Second 64KB</strong> → Full page (64KB used, 0KB unused)</li>
+<li><strong>Third 64KB</strong> → Full page (64KB used, 0KB unused)</li>
+<li><strong>Fourth 64KB</strong> → Partial page (<strong>8KB</strong> used, <strong>56KB unused)</strong></li>
+</ul>
+</li>
+<li>Unused space in a Page is wasteful because other unrelated data cannot be stored in this Page</li>
+<li>Over time, more pockets of wasted space will exist across the memory; this process is called <strong>internal fragmentation</strong></li>
+<li>The image below shows a single 64KB Page with 4KB of unoccupied space</li>
+<li>The box below this shows many Pages, each with varying sizes of internal fragments
+<img alt="Internal fragmentation" src="images/paging-internal-fragmentation-alevel.png" />
+<strong><em>Internal fragmentation</em></strong></li>
+</ul>
+<h2 id="segmentation">Segmentation</h2>
+<h3 id="what-is-segmentation">What is segmentation?</h3>
+<ul>
+<li>Segmentation is a method of <strong>chunking</strong> memory into <strong>blocks that correspond to different types of data</strong> needed by an application</li>
+<li>A video editing application may have a Segment for video data, audio data and special effects</li>
+<li>Segments are <strong>not all the same size</strong>; they are sized depending on their allocated data</li>
+<li>Segmentation is space-efficient due to only allocating space depending on the amount an application needs</li>
+<li>Segmentation can lead to <strong>external fragmentation</strong></li>
+<li>As Segments fill up the memory, physical gaps reduce the maximum size of new Segments that can be allocated</li>
+<li>Below (left) shows different application data assigned to a Segment</li>
+<li>The arrangement of data in the segment <strong>becomes more fragmented over time</strong> because as blocks are taken away it&rsquo;s not possible to guarantee a new block will occupy the same amount of space</li>
+<li>Below (right) shows a defragmented version of the Segment to highlight the total unused space
+<img alt="segmentation-external-fragmentation-alevel" src="images/segmentation-external-fragmentation-alevel.png" />
+<strong><em>External fragmentation</em></strong></li>
+</ul>
+<h2 id="virtual-memory">Virtual memory</h2>
+<h3 id="what-is-virtual-memory">What is virtual memory?</h3>
+<ul>
+<li>If a computer is <strong>running low</strong> on primary memory, it can make secondary storage act as an &lsquo;extension&rsquo; of the main memory</li>
+<li>The operating system can <strong>offload data</strong> from the primary memory into virtual memory</li>
+<li>Virtual memory creates <strong>an illusion of a larger memory</strong> and enables applications to continue to multitask</li>
+<li>However, accessing data in virtual memory is <strong>considerably slower</strong> compared to RAM</li>
+<li><strong>Solid-state drives</strong> are faster than traditional hard-disk drives, but <strong>neither are as fast</strong> as RAM</li>
+<li><strong>Over-reliance</strong> on virtual memory can lead to <strong>performance issues</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Memory Management Technique</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Paging</strong></td>
+<td>Divides memory into fixed-sized blocks (pages)</td>
+<td>A process needing 200KB of memory is divided into four 64KB pages, leaving 8KB unused in the last page</td>
+<td>Facilitates efficient memory management and enables the use of virtual memory</td>
+<td>This can lead to internal fragmentation</td>
+</tr>
+<tr>
+<td><strong>Segmentation</strong></td>
+<td>Divides memory into variable-sized segments based on logical parts of a process</td>
+<td>In a video editing application, different segments may be created for video data, audio data, effects, and UI elements</td>
+<td>Allows for intuitive and efficient memory access</td>
+<td>This can result in external fragmentation</td>
+</tr>
+<tr>
+<td><strong>Virtual Memory</strong></td>
+<td>Uses hard drive space as an &lsquo;extension&rsquo; of RAM</td>
+<td>When memory-intensive applications exceed the available RAM, the OS moves less frequently accessed pages to the hard disk</td>
+<td>Allows more extensive programs to be run and facilitates effective multitasking</td>
+<td>Slower to access than physical memory, which degrades performance if overused</td>
+</tr>
+</tbody>
+</table>
+<h4 id="quiz">Quiz</h4>
+<p>Virtual memory, paging and segmentation are used in memory management.
+(a) Explain what is meant by virtual memory.<strong>[3]</strong>
+(b) State one difference between paging and segmentation in the way memory is divided.<strong>[1]</strong>
+<strong>Answers</strong>
+<strong>(a)</strong></p>
+<ul>
+<li>Disk / secondary storage is used to extend the RAM / memory available [1 mark]</li>
+<li>… so the CPU appears to be able to access more memory space than the available RAM [1 mark]</li>
+<li>Only the data in use needs to be in main memory so data can be swapped between RAM and virtual memory as necessary [1 mark]</li>
+<li>
+<p>Virtual memory is created temporarily [1 mark]
+<strong>(b)</strong></p>
+</li>
+<li>
+<p>Paging allows the memory to be divided into fixed size blocks and Segmentation divides the memory into variable sized blocks [1 mark]</p>
+</li>
+<li>The operating system divides the memory into pages, the compiler is responsible for calculating the segment size [1 mark]</li>
+<li>Access times for paging is faster than for segmentation [1 mark]</li>
+</ul>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>

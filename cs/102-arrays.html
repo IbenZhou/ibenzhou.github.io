@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10.2 Arrays — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← CS Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>10.2 Arrays</h1>
+    <p>Part 2: Problem-solving</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#array-basics">Array Basics</a></li>
+<li><a href="#arrays">Arrays</a></li>
+<li><a href="#array-pseudocode">Array Pseudocode</a></li>
+<li><a href="#searching-arrays">Searching arrays</a></li>
+<li><a href="#sorting-arrays">Sorting arrays</a></li>
+<li><a href="#purpose-of-files">Purpose of files</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        <h2 id="array-basics">Array Basics</h2>
+<h2 id="arrays">Arrays</h2>
+<h3 id="what-is-an-array">What is an array?</h3>
+<ul>
+<li>An array is an <strong>ordered, static set of elements</strong></li>
+<li>Can only store <strong>1 data type</strong></li>
+<li>The <strong>position of each element</strong> in an array is identified using the array&rsquo;s <strong>index</strong></li>
+<li>The array&rsquo;s <strong>first element</strong> is the <strong>lower bound (LB)</strong></li>
+<li>The array&rsquo;s <strong>last element</strong> is the <strong>upper bound (UB)</strong></li>
+<li>The <strong>lower bound of an array</strong> is typically <strong>0 or 1</strong> depending on the language being used</li>
+<li>An array can be <strong>one-dimensional</strong> or <strong>multi-dimensional</strong></li>
+</ul>
+<h4 id="one-dimensional-1d-arrays">One-dimensional (1D) arrays</h4>
+<ul>
+<li>
+<p>A 1D array is a <strong>linear array</strong>
+<img alt="Structure of a 1D array" src="images/1d-array-example.png" /></p>
+</li>
+<li>
+<p>To declare a 1D array in pseudocode you <strong>must include</strong> the lower bound, upper bound and data types:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">DECLARE</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">identifier</span><span class="p">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nx">ARRAY</span><span class="p">[</span><span class="nx">LB</span><span class="p">:</span><span class="nx">UB</span><span class="p">]</span><span class="w"> </span><span class="nx">OF</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">data</span><span class="w"> </span><span class="k">type</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>In this example a 1D array of <strong>five elements</strong> each containing <strong>single character</strong> can be declared as:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>DECLARE Letters : ARRAY[0:4] OF CHAR
+</code></pre></div>
+
+<ul>
+<li>An example <strong>complete program</strong> could be:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// Declare the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Letters</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">CHAR</span>
+<span class="c1">// Assign values to each index</span>
+<span class="n">Letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;B&#39;</span>
+<span class="n">Letters</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;E&#39;</span>
+<span class="n">Letters</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;A&#39;</span>
+<span class="n">Letters</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;D&#39;</span>
+<span class="n">Letters</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;S&#39;</span>
+<span class="c1">// Output the full array</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Letters</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
+</code></pre></div>
+
+<ul>
+<li>The array is declared with <strong>indices</strong> from <code>0</code> to <code>4</code></li>
+<li>Each element stores a single character using the <code>CHAR</code> <strong>data type</strong></li>
+<li>The <strong>loop</strong> outputs each letter in order</li>
+</ul>
+<h4 id="two-dimensional-2d-arrays">Two-dimensional (2D) arrays</h4>
+<ul>
+<li>A 2D array can be <strong>visualised as a table</strong></li>
+<li>
+<p>When navigating through a 2D array you first have to go <strong>down the rows</strong> and then <strong>across the columns</strong> to find a position within the array
+<img alt="Structure of a 2D array" src="images/2d-array-example.png" /></p>
+</li>
+<li>
+<p>In 2D arrays the following must be declared:</p>
+<ul>
+<li>Lower bound for rows (<strong>LBR</strong>) &amp; upper bound for rows (<strong>UBR</strong>)</li>
+<li>Lower bound for columns (<strong>LBC</strong>) &amp; upper bound for columns (<strong>UBC</strong>)</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="n">LBR</span><span class="p">:</span><span class="n">UBR</span><span class="p">,</span><span class="w"> </span><span class="n">LBC</span><span class="p">:</span><span class="n">UBC</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>In this example a <strong>2D array</strong> can be declared as:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Letters</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">CHAR</span>
+</code></pre></div>
+
+<ul>
+<li>An example <strong>complete program</strong> could be:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Letters</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">CHAR</span>
+<span class="c1">// Row 0</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;B&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;E&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;A&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;D&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;S&#39;</span>
+<span class="c1">// Row 1</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;S&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;E&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;V&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;E&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;N&#39;</span>
+<span class="c1">// Row 2</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;W&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;H&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;I&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;T&#39;</span>
+<span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;E&#39;</span>
+</code></pre></div>
+
+<ul>
+<li><code>ARRAY[0:2, 0:4]</code> creates <strong>3 rows</strong> and <strong>5 columns</strong></li>
+<li>First index is the <strong>row</strong>, second is the <strong>column</strong>: <code>Letters[row, column]</code></li>
+<li>
+<p>All elements are of type <code>CHAR</code>
+A program reads data from a file and searches for specific data.
+The main program needs to read 25 integer data items from the text file <code>Data.txt</code> into a local 1D array, <code>DataArray</code>
+Write program code to declare the local array <code>DataArray</code> <strong>[1]</strong>
+Answer</p>
+</li>
+<li>
+<p>1D array with name <code>DataArray</code> (with 25 elements of type Integer) [1 mark]
+<strong>Java</strong>
+<code>public static Integer[] DataArray = new Integer[25];</code>
+<strong>VB.NET</strong>
+<code>Dim DataArray(24) As Integer</code>
+<strong>Python</strong>
+<code>DataArray = [] #25 elements Integer</code></p>
+</li>
+</ul>
+<h2 id="array-pseudocode">Array Pseudocode</h2>
+<h2 id="searching-arrays">Searching arrays</h2>
+<ul>
+<li>A linear search <strong>starts with the first value</strong> in a dataset and <strong>checks every value one at a time</strong> until all values have been checked</li>
+<li>A linear search can be performed <strong>even if the values are not in order</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Instruction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Check the first value</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>IF</strong> it is the value you are looking for<br><br>- STOP!</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>ELSE</strong> move to the next value and check</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>REPEAT UNTIL</strong> you have checked all values and not found the value you are looking for</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A linear search can be used to <strong>find elements in an array</strong></li>
+<li>Each element in the array is <strong>checked in order</strong>, from the <strong>lower bound</strong> to the <strong>upper bound</strong>, until the item is found or the upper bound is reached</li>
+<li>An example pseudocode algorithm to perform a linear search on a <strong>1D array</strong> could be:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">List</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Found</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="c1">// Initialise array values</span>
+<span class="n">List</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">12</span>
+<span class="n">List</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">25</span>
+<span class="n">List</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">37</span>
+<span class="n">List</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">42</span>
+<span class="n">List</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">56</span>
+<span class="c1">// Input the value to search for</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter the value to search for:&quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">Target</span>
+<span class="n">Found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span>
+<span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">Found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">List</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">Found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">ENDWHILE</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">Found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Item found at index &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Index</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Item not found&quot;</span>
+<span class="n">ENDIF</span>
+</code></pre></div>
+
+<ul>
+<li>Works on a fixed-size array <code>List[0:4]</code></li>
+<li>Uses a <code>WHILE</code> loop for flexibility (early exit if found)</li>
+<li>Clearly separates <strong>input</strong>, <strong>processing</strong>, and <strong>output</strong></li>
+</ul>
+<h4 id="identifier-table">Identifier table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Data type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>List</code></td>
+<td>ARRAY[1:5] OF INTEGER</td>
+<td>Stores the list of numbers to search through</td>
+</tr>
+<tr>
+<td><code>Target</code></td>
+<td>INTEGER</td>
+<td>The number the user wants to search for</td>
+</tr>
+<tr>
+<td><code>Found</code></td>
+<td>BOOLEAN</td>
+<td>Tracks whether the target value has been found</td>
+</tr>
+<tr>
+<td><code>Index</code></td>
+<td>INTEGER</td>
+<td>The current position being checked in the array</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sorting-arrays">Sorting arrays</h2>
+<h3 id="what-is-a-bubble-sort">What is a bubble sort?</h3>
+<ul>
+<li>A bubble sort is a simple sorting algorithm that starts at the beginning of a dataset and <strong>checks values</strong> in <strong>&lsquo;pairs&rsquo;</strong> and <strong>swaps them</strong> if they are <strong>not in the correct order</strong></li>
+<li>One full run of comparisons from beginning to end is called a &rsquo; <strong>pass</strong> &lsquo;, a bubble sort may require <strong>multiple</strong> &rsquo; <strong>passes</strong> &rsquo; to sort the dataset</li>
+<li>The algorithm is finished when there are <strong>no more swaps to make</strong></li>
+</ul>
+<h3 id="how-do-you-perform-a-bubble-sort">How do you perform a bubble sort?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Instruction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Compare the first two values in the dataset</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>IF</strong> they are in the wrong order&hellip;<br><br>- Swap them</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Compare the next two values</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>REPEAT</strong> step 2 &amp; 3 until you reach the end of the dataset (<strong>pass 1</strong>)</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>IF</strong> you have made any swaps&hellip;<br>• <strong>REPEAT</strong> from the start (pass 2,3,4&hellip;)</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>ELSE</strong> you have not made any swaps&hellip;<br>• STOP! the list is in the correct order</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example">Example</h4>
+<ul>
+<li>Perform a bubble sort on the following dataset</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>5</code></th>
+<th><code>2</code></th>
+<th><code>4</code></th>
+<th><code>1</code></th>
+<th><code>6</code></th>
+<th><code>3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="step-1-compare-the-first-two-values-in-the-dataset">Step 1 - Compare the first two values in the dataset</h5>
+<table>
+<thead>
+<tr>
+<th><code>5</code></th>
+<th><code>2</code></th>
+<th><code>4</code></th>
+<th><code>1</code></th>
+<th><code>6</code></th>
+<th><code>3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="step-2-if-they-are-in-the-wrong-order-swap-them">Step 2 - <strong>IF</strong> they are in the wrong order, Swap them.</h5>
+<table>
+<thead>
+<tr>
+<th><code>2</code></th>
+<th><code>5</code></th>
+<th><code>4</code></th>
+<th><code>1</code></th>
+<th><code>6</code></th>
+<th><code>3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="step-3-compare-the-next-two-values">Step 3 - Compare the next two values</h5>
+<h5 id="step-4-repeat-step-2-3-until-you-reach-the-end-of-the-dataset">Step 4 - <strong>Repeat</strong> step 2 &amp; 3 until you reach the end of the dataset</h5>
+<h6 id="5-4-swap">5 &amp; 4 Swap!</h6>
+<table>
+<thead>
+<tr>
+<th><code>2</code></th>
+<th><code>4</code></th>
+<th><code>5</code></th>
+<th><code>1</code></th>
+<th><code>6</code></th>
+<th><code>3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="5-1-swap">5 &amp; 1 Swap!</h6>
+<table>
+<thead>
+<tr>
+<th><code>2</code></th>
+<th><code>4</code></th>
+<th><code>1</code></th>
+<th><code>5</code></th>
+<th><code>6</code></th>
+<th><code>3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="5-6-not-swap">5 &amp; 6 NOT Swap!</h6>
+<table>
+<thead>
+<tr>
+<th><code>2</code></th>
+<th><code>4</code></th>
+<th><code>1</code></th>
+<th><code>5</code></th>
+<th><code>6</code></th>
+<th><code>3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="6-3-swap">6 &amp; 3 Swap!</h6>
+<table>
+<thead>
+<tr>
+<th><code>2</code></th>
+<th><code>4</code></th>
+<th><code>1</code></th>
+<th><code>5</code></th>
+<th><code>3</code></th>
+<th><code>6</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="end-of-pass-1">End of pass 1</h6>
+<h5 id="step-5-if-you-have-made-any-swaps">Step 5 - <strong>IF</strong> you have made any swaps&hellip;</h5>
+<ul>
+<li><strong>REPEAT</strong> from the start</li>
+</ul>
+<h6 id="end-of-pass-2-swaps-made">End of pass 2 (swaps made)</h6>
+<table>
+<thead>
+<tr>
+<th><code>2</code></th>
+<th><code>1</code></th>
+<th><code>4</code></th>
+<th><code>3</code></th>
+<th><code>5</code></th>
+<th><code>6</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="end-of-pass-3-swaps-made">End of pass 3 (swaps made)</h6>
+<table>
+<thead>
+<tr>
+<th><code>1</code></th>
+<th><code>2</code></th>
+<th><code>3</code></th>
+<th><code>4</code></th>
+<th><code>5</code></th>
+<th><code>6</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="end-of-pass-4-no-swaps">End of pass 4 (no swaps)</h6>
+<table>
+<thead>
+<tr>
+<th><code>1</code></th>
+<th><code>2</code></th>
+<th><code>3</code></th>
+<th><code>4</code></th>
+<th><code>5</code></th>
+<th><code>6</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="step-6-else-you-have-not-made-any-swaps">Step 6 - <strong>ELSE</strong> you have not made any swaps&hellip;</h5>
+<ul>
+<li>STOP! the list is in the correct order</li>
+</ul>
+<h4 id="code-example">Code example</h4>
+<ul>
+<li>A bubble sort can be used to <strong>put elements in an array in order</strong></li>
+<li>A <strong>pseudocode algorithm</strong> for a bubble sort on a 1D array could be:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Numbers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Temp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Pass</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Swapped</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span>
+<span class="c1">// Initialise the array</span>
+<span class="n">Numbers</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">Numbers</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">Numbers</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">Numbers</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">6</span>
+<span class="n">Numbers</span><span class="o">[</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">3</span>
+<span class="c1">// Bubble sort algorithm</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">Swapped</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">Temp</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span>
+<span class="w">            </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span>
+<span class="w">            </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Temp</span>
+<span class="w">            </span><span class="n">Swapped</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Swapped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"> </span>
+<span class="c1">// Output the sorted array</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
+</code></pre></div>
+
+<ul>
+<li>Uses a fixed array of size 6</li>
+<li>Includes an <strong>optimisation</strong> to exit early if no swaps were made on a pass</li>
+</ul>
+<h4 id="identifier-table_1">Identifier table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Data type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Numbers</code></td>
+<td>ARRAY[0:5] OF INTEGER</td>
+<td>Stores the list of numbers to be sorted</td>
+</tr>
+<tr>
+<td><code>Temp</code></td>
+<td>INTEGER</td>
+<td>Temporary variable used for swapping two elements in the array</td>
+</tr>
+<tr>
+<td><code>Pass</code></td>
+<td>INTEGER</td>
+<td>Tracks the number of passes through the array</td>
+</tr>
+<tr>
+<td><code>Index</code></td>
+<td>INTEGER</td>
+<td>Tracks the current position being compared in the array</td>
+</tr>
+<tr>
+<td><code>Swapped</code></td>
+<td>BOOLEAN</td>
+<td>Indicates whether a swap occurred during a pass (used to optimise sorting)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="purpose-of-files">Purpose of files</h2>
+<h3 id="what-is-file-handling">What is file handling?</h3>
+<ul>
+<li>File handling is <strong>the use of programming techniques</strong> to work with information stored in <strong>text files</strong></li>
+<li>Examples of file handing techniques are:<ul>
+<li><strong>opening</strong> text files</li>
+<li><strong>reading</strong> text files</li>
+<li><strong>writing</strong> text files</li>
+<li><strong>closing</strong> text files</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>CIE A Level Pseudocode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open file for reading</strong></td>
+<td><code>OPENFILE fruit.txt FOR READ</code></td>
+</tr>
+<tr>
+<td><strong>Open file for writing</strong></td>
+<td><code>OPENFILE Shopping.txt FOR WRITE</code></td>
+</tr>
+<tr>
+<td><strong>Close file</strong></td>
+<td><code>CLOSEFILE fruit.txt</code></td>
+</tr>
+<tr>
+<td><strong>Read line</strong></td>
+<td><code>READFILE fruit.txt, line</code></td>
+</tr>
+<tr>
+<td><strong>Write line</strong></td>
+<td><code>WRITE fruit.txt, "Oranges"</code></td>
+</tr>
+<tr>
+<td><strong>Check end of file</strong></td>
+<td><code>IF NOT EOF(fruit.txt) THEN</code></td>
+</tr>
+<tr>
+<td><strong>Create new file</strong></td>
+<td><code>OPENFILE Shopping.txt FOR WRITE</code> (same as writing – it overwrites or creates)</td>
+</tr>
+<tr>
+<td><strong>Append to file</strong></td>
+<td><code>OPENFILE Shopping.txt FOR APPEND</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>An example program written in pseudocode to:<ul>
+<li><strong>Opens</strong> a text file for reading</li>
+<li><strong>Reads</strong> each line (a fruit name)</li>
+<li><strong>Counts</strong> how many fruits are in the file</li>
+<li><strong>Outputs</strong> the total</li>
+<li><strong>Closes</strong> the file</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">FruitName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">FruitCount</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">FruitCount</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">OPENFILE</span><span class="w"> </span><span class="n">FruitFile</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">READ</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="nf">EOF</span><span class="p">(</span><span class="n">FruitFile</span><span class="p">)</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">    </span><span class="n">READFILE</span><span class="w"> </span><span class="n">FruitFile</span><span class="p">,</span><span class="w"> </span><span class="n">FruitName</span>
+<span class="w">    </span><span class="n">FruitCount</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FruitCount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+<span class="n">CLOSEFILE</span><span class="w"> </span><span class="n">FruitFile</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Total number of fruits: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FruitCount</span>
+</code></pre></div>
+
+<h4 id="identifier-table_2">Identifier table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Identifier</strong></th>
+<th><strong>Data type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FruitName</code></td>
+<td>STRING</td>
+<td>Stores the name of each fruit read from the file</td>
+</tr>
+<tr>
+<td><code>FruitCount</code></td>
+<td>INTEGER</td>
+<td>Keeps track of how many fruits have been read</td>
+</tr>
+<tr>
+<td><code>FruitFile</code></td>
+<td>FILE</td>
+<td>The file containing the fruit names (e.g. &ldquo;fruit.txt&rdquo;)</td>
+</tr>
+</tbody>
+</table>
+<p>A program is required to read the contents of a text file <code>Data.txt</code> into a 1D array <code>DataArray</code>. The file contains 25 integer values, one per line. [4]
+Write pseudocode to:</p>
+<ul>
+<li>open the file for reading</li>
+<li>read each value into the array</li>
+<li>
+<p>close the file
+Answer</p>
+</li>
+<li>
+<p>Correct use of <code>OPENFILE "Data.txt" FOR READ</code> … [1 mark]</p>
+</li>
+<li>Loop using <code>WHILE NOT EOF("Data.txt") DO … ENDWHILE</code> or <code>FOR 1 TO 25</code> … [1 mark]</li>
+<li>Correct use of <code>READFILE "Data.txt", LineData</code> storing into array with index <code>DataArray[Counter] ← LineData</code> … [1 mark]</li>
+<li>Correct use of <code>CLOSEFILE "Data.txt"</code> in an appropriate place … [1 mark]
+Model answer:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">DataArray</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">25</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Counter</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">LineData</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
+<span class="n">Counter</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">OPENFILE</span><span class="w"> </span><span class="s">&quot;Data.txt&quot;</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">READ</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="nf">EOF</span><span class="p">(</span><span class="s">&quot;Data.txt&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">    </span><span class="n">READFILE</span><span class="w"> </span><span class="s">&quot;Data.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">LineData</span>
+<span class="w">    </span><span class="n">DataArray</span><span class="o">[</span><span class="n">Counter</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">LineData</span>
+<span class="w">    </span><span class="n">Counter</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Counter</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+<span class="n">CLOSEFILE</span><span class="w"> </span><span class="s">&quot;Data.txt&quot;</span>
+</code></pre></div>
+      </article>
+      <p style="text-align:center; margin-top:16px;">
+        <a href="index.html" style="color:var(--accent);">← Back to All Notes</a>
+      </p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>
