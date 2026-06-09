@@ -22,13 +22,13 @@
   blockquote{border-left:3px solid var(--accent);margin:1rem 0;padding:.5rem 1.25rem;font-style:italic;color:var(--ink-dim);background:rgba(74,103,65,.05);border-radius:0 4px 4px 0}
   a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
   a:hover{border-bottom-color:var(--accent)}
-  table{table-layout:fixed;width:100%;border-collapse:collapse;font-size:.88rem;line-height:1.6;margin:1rem 0 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:3px}
+  table{table-layout:auto;width:100%;border-collapse:collapse;font-size:.88rem;line-height:1.6;margin:1rem 0 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:3px}
   thead tr{border-bottom:2px solid var(--accent-dim)}
   th{padding:.55rem .6rem;text-align:left;font-weight:600;font-size:.78rem;letter-spacing:.04em;color:var(--accent-dim);background:linear-gradient(180deg,var(--table-stripe),var(--card))}
   td{padding:.5rem .6rem;border-bottom:1px solid var(--border-subtle);word-break:break-word;overflow-wrap:break-word}
-  td:first-child,th:first-child{width:28%}
-  td:nth-child(2),th:nth-child(2){width:14%}
-  td:nth-child(3),th:nth-child(3){width:58%}
+  td:first-child,th:first-child{max-width:160px;word-break:break-all}
+  td:nth-child(2),th:nth-child(2){max-width:80px;white-space:nowrap}
+  td:nth-child(3),th:nth-child(3){min-width:280px}
   tr:last-child td{border-bottom:none}
   tr:nth-child(even) td{background:var(--table-stripe)}
   hr{margin:3rem 0;border:none;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
