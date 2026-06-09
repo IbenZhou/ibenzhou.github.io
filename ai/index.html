@@ -3,727 +3,391 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>免费好用软件推荐 — iben.fun</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Windows & macOS 免费好用软件推荐</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{--bg:#f7f3e9;--card:#fdfaf3;--ink:#1e293b;--ink-dim:#64748b;--ink-faint:#94a3b8;--accent:#4a6741;--accent-light:#7a9e6e;--accent-dim:#2d4a2e;--border:#e8e0d3;--border-subtle:#efe8db;--table-stripe:#f9f5ed;--code-bg:#f0ebe0;--radius:4px}
-  html{scroll-behavior:smooth;scroll-padding-top:1.25rem;font-size:17px}
-  body{font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-font-smoothing:antialiased;min-height:100vh}
-  .wrapper{max-width:860px;margin:0 auto;padding:0 1.5rem}
-  .back{display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;color:var(--ink-faint);text-decoration:none;padding:1.5rem 0;letter-spacing:.04em;transition:color .2s}
-  .back:hover{color:var(--accent)}
-  header{padding:1rem 0 3rem}
-  header h1{font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;font-size:2.2rem;font-weight:800;color:var(--ink);line-height:1.2;margin-bottom:.4rem}
-  header .sub{font-size:.95rem;color:var(--ink-faint);letter-spacing:.04em}
-  h2{font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;font-size:1.4rem;font-weight:700;color:var(--accent-dim);margin:2.5rem 0 1rem;padding-bottom:.4rem;border-bottom:2px solid var(--accent-light)}
-  h3{font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.8rem 0 .5rem}
-  p{margin-bottom:.7rem}
-  blockquote{border-left:3px solid var(--accent);margin:1rem 0;padding:.5rem 1.25rem;font-style:italic;color:var(--ink-dim);background:rgba(74,103,65,.05);border-radius:0 4px 4px 0}
-  a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
-  a:hover{border-bottom-color:var(--accent)}
-  table{table-layout:auto;width:100%;border-collapse:collapse;font-size:.88rem;line-height:1.6;margin:1rem 0 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:3px}
-  thead tr{border-bottom:2px solid var(--accent-dim)}
-  th{padding:.55rem .6rem;text-align:left;font-weight:600;font-size:.78rem;letter-spacing:.04em;color:var(--accent-dim);background:linear-gradient(180deg,var(--table-stripe),var(--card))}
-  td{padding:.5rem .6rem;border-bottom:1px solid var(--border-subtle);word-break:break-word;overflow-wrap:break-word}
-  td:first-child,th:first-child{max-width:160px;word-break:break-all}
-  td:nth-child(2),th:nth-child(2){max-width:80px;white-space:nowrap}
-  td:nth-child(3),th:nth-child(3){min-width:280px}
-  tr:last-child td{border-bottom:none}
-  tr:nth-child(even) td{background:var(--table-stripe)}
-  hr{margin:3rem 0;border:none;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
-  strong{color:var(--ink);font-weight:700}
-  footer{text-align:center;padding:3rem 1.5rem 4rem;font-size:.82rem;color:var(--ink-faint);letter-spacing:.04em;line-height:2}
-  @media(max-width:640px){header h1{font-size:1.5rem}h2{font-size:1.15rem}table{table-layout:auto;font-size:.78rem;display:block;overflow-x:auto}th,td{padding:.4rem .5rem;width:auto!important}}
-  .toc-panel{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    padding:1.5rem;margin-bottom:2rem;
+  :root {
+    --bg: #f7f3e9;
+    --card-bg: #fdfaf3;
+    --text: #3a3226;
+    --text-secondary: #8c8070;
+    --accent: #b85c38;
+    --accent-light: #f5ebe0;
+    --accent-2: #2e7d32;
+    --accent-3: #1565c0;
+    --accent-4: #6a1b9a;
+    --border: #e3d9c8;
+    --code-bg: #f2ece0;
+    --ink: #2c2416;
+    --radius: 6px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-  .toc-panel .toc-label{
-    font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--ink-faint);margin-bottom:.75rem;display:block;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
   }
-  .toc-panel a{
-    display:inline-block;font-size:.82rem;color:var(--ink-dim);text-decoration:none;
-    margin:0 1rem .4rem 0;padding:.15rem 0;border-bottom:1px dotted var(--border);
-    transition:all .15s;
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.012) 2px, rgba(180,160,130,0.012) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.012) 2px, rgba(180,160,130,0.012) 4px);
   }
-  .toc-panel a:hover{color:var(--accent);border-bottom-color:var(--accent)}
-  .toc-indent{font-size:.76rem!important;opacity:.75}
+
+  /* Header */
+  .site-header {
+    background: rgba(253,250,243,0.92);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+    color: #fdf6ec;
+    padding: 60px 0 52px;
+    margin-bottom: 40px;
+    position: relative; z-index: 1;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+  }
+  .hero h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; }
+  .hero .subtitle { font-size: 15px; opacity: 0.75; margin-top: 6px; }
+  .hero .tagline { font-size: 13px; opacity: 0.55; margin-top: 10px; }
+
+  /* Section */
+  .section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    position: relative; z-index: 1;
+  }
+  .section h2 {
+    font-size: 22px; margin-bottom: 24px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent-light);
+    color: var(--ink); font-weight: 700;
+  }
+  .section h3 {
+    font-size: 16px; margin: 28px 0 14px;
+    color: var(--text); font-weight: 600;
+  }
+  .section h2 .icon { margin-right: 8px; }
+
+  /* Tables */
+  table {
+    width: 100%; border-collapse: collapse; margin: 8px 0 20px;
+    font-size: 14px;
+  }
+  th, td {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px; text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--code-bg); font-weight: 600;
+    color: var(--ink); font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  tr:hover { background: var(--code-bg); }
+  td:first-child, th:first-child { padding-left: 0; }
+  td:last-child, th:last-child { padding-right: 0; }
+
+  /* Software links */
+  td a {
+    color: var(--ink); text-decoration: none; font-weight: 600;
+    transition: color 0.15s;
+  }
+  td a:hover { color: var(--accent); }
+
+  /* Category labels */
+  .cat-win { color: var(--accent-3); }
+  .cat-mac { color: var(--text-secondary); }
+  .cat-cross { color: var(--accent-2); }
+
+  /* Tag chips */
+  .tag {
+    display: inline-block;
+    font-size: 11px; padding: 2px 8px; border-radius: 8px;
+    font-weight: 500; margin-right: 4px;
+  }
+  .tag-free { background: var(--accent-light); color: var(--accent); }
+  .tag-oss { background: #e8f5e9; color: var(--accent-2); }
+
+  /* Highlight row */
+  .highlight-row td { background: rgba(184,92,56,0.04); }
+
+  /* Divider */
+  hr {
+    border: none; border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* Blockquote */
+  blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    padding: 14px 18px; margin: 0 0 24px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 14px; color: #5c4530;
+  }
+  blockquote p { margin: 0; }
+
+  /* Summary table */
+  .summary-table td:first-child {
+    font-weight: 600; white-space: nowrap;
+    color: var(--ink);
+  }
+
+  /* Footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0; text-align: center;
+    color: var(--text-secondary); font-size: 13px;
+    margin-top: 48px; position: relative; z-index: 1;
+  }
+
+  /* Count badge */
+  .count-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--code-bg); color: var(--text-secondary);
+    font-size: 12px; padding: 3px 10px; border-radius: 12px;
+    margin-left: 8px; font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .section { padding: 20px 16px; }
+    .hero { padding: 40px 0 36px; }
+    .hero h1 { font-size: 24px; }
+    table { font-size: 12px; }
+    th, td { padding: 6px 8px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrapper">
-  <a href="../" class="back">← iben.fun</a>
-</div>
 
-<header class="wrapper">
-  <h1>免费好用软件推荐</h1>
-  <p class="sub">持续更新 · 只收录真正好用且免费的工具</p>
+<header class="site-header">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:16px;font-weight:600;color:var(--ink);"><a href="../" style="color:inherit;text-decoration:none;opacity:.7">← iben.fun</a> &nbsp;·&nbsp; 软件推荐</span>
+    <span style="font-size:12px;color:var(--text-secondary);">持续更新 · 免费好用</span>
+  </div>
 </header>
 
-<div class="wrapper">
-  <div class="toc-panel">
-    <span class="toc-label">目录</span>
-        <a href="#跨平台win-mac-通用" class="">跨平台（Win + Mac 通用）</a>
-        <a href="#开发工具" class="">开发工具</a>
-        <a href="#浏览器" class="">浏览器</a>
-        <a href="#效率工具" class="">效率工具</a>
-        <a href="#媒体-创意" class="">媒体 & 创意</a>
-        <a href="#办公-日常" class="">办公 & 日常</a>
-        <a href="#windows-专属" class="">Windows 专属</a>
-        <a href="#系统增强" class="">系统增强</a>
-        <a href="#实用工具" class="">实用工具</a>
-        <a href="#macos-专属" class="">macOS 专属</a>
-        <a href="#系统增强-1" class="">系统增强</a>
-        <a href="#实用工具-1" class="">实用工具</a>
-        <a href="#隐私-安全" class="">隐私 & 安全</a>
-        <a href="#一句话总结" class="">一句话总结</a>
-
+<div class="hero">
+  <div class="container">
+    <h1>Windows &amp; macOS 免费好用软件推荐</h1>
+    <p class="subtitle">只收录真正好用且免费的工具</p>
+    <p class="tagline">优先开源 · 取自官网 · 远离流氓 · 所有链接均为官方网站</p>
   </div>
 </div>
 
-<main class="wrapper">
-<h1 id="windows-macos-免费好用软件推荐">Windows &amp; macOS 免费好用软件推荐</h1>
-<blockquote>
-<p>持续更新 · 只收录真正好用且免费的工具</p>
-</blockquote>
-<hr />
-<h2 id="跨平台win-mac-通用">🌐 跨平台（Win + Mac 通用）</h2>
-<h3 id="开发工具">开发工具</h3>
-<table>
-<colgroup>
-<col style="width: 55%" />
-<col style="width: 8%" />
-<col style="width: 36%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://code.visualstudio.com/">VS Code</a></td>
-<td>代码编辑器</td>
-<td>插件生态无敌，前端/全栈首选</td>
-</tr>
-<tr>
-<td><a href="https://ghostty.org/">Ghostty</a></td>
-<td>终端</td>
-<td>GPU 原生加速，Mac/Linux 可用，极速渲染</td>
-</tr>
-<tr>
-<td><a href="https://www.warp.dev/">Warp</a></td>
-<td>终端</td>
-<td>AI 加持，现代 UI，支持团队协作</td>
-</tr>
-<tr>
-<td><a href="https://dbeaver.io/">DBeaver</a></td>
-<td>数据库管理</td>
-<td>支持几乎所有数据库，免费版够用</td>
-</tr>
-<tr>
-<td><a href="https://git-fork.com/">Fork</a></td>
-<td>Git GUI</td>
-<td>颜值高、交互流畅（Win 免费，Mac 付费但有无限试用）</td>
-</tr>
-<tr>
-<td><a href="https://www.sourcetreeapp.com/">Sourcetree</a></td>
-<td>Git GUI</td>
-<td>Atlassian 出品，完全免费</td>
-</tr>
-</tbody>
-</table>
-<h3 id="浏览器">浏览器</h3>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://arc.net/">Arc Browser</a></td>
-<td>浏览器</td>
-<td>革命性侧边栏设计，空间分类，颜值天花板</td>
-</tr>
-<tr>
-<td><a href="https://zen-browser.app/">Zen Browser</a></td>
-<td>浏览器</td>
-<td>Firefox 内核开源版 Arc，隐私更好，自定义强</td>
-</tr>
-</tbody>
-</table>
-<h3 id="效率工具">效率工具</h3>
-<table>
-<colgroup>
-<col style="width: 63%" />
-<col style="width: 11%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://obsidian.md/">Obsidian</a></td>
-<td>笔记/知识库</td>
-<td>本地 Markdown，插件生态强大</td>
-</tr>
-<tr>
-<td><a href="https://www.marktext.cc/">MarkText</a></td>
-<td>Markdown 编辑器</td>
-<td>WYSIWYG 所见即所得，Typora 开源替代</td>
-</tr>
-<tr>
-<td><a href="https://www.zettlr.com/">Zettlr</a></td>
-<td>学术写作</td>
-<td>开源 Markdown，Zotero 集成，论文/报告利器</td>
-</tr>
-<tr>
-<td><a href="https://joplinapp.org/">Joplin</a></td>
-<td>Markdown 笔记</td>
-<td>开源、端到端加密、全平台同步，笔记数量无上限</td>
-</tr>
-<tr>
-<td><a href="https://notable.app/">Notable</a></td>
-<td>Markdown 笔记</td>
-<td>极简优雅，标签式管理，适合轻量笔记</td>
-</tr>
-<tr>
-<td><a href="https://www.notion.so/">Notion</a></td>
-<td>协作/知识管理</td>
-<td>个人免费版足够用</td>
-</tr>
-<tr>
-<td><a href="https://www.raycast.com/">Raycast</a></td>
-<td>启动器（Mac）</td>
-<td>取代 Spotlight，插件丰富</td>
-</tr>
-<tr>
-<td><a href="https://www.flowlauncher.com/">Flow Launcher</a></td>
-<td>启动器（Win）</td>
-<td>Windows 版 Raycast</td>
-</tr>
-<tr>
-<td><a href="https://bitwarden.com/">Bitwarden</a></td>
-<td>密码管理</td>
-<td>开源、全平台同步、自部署可选</td>
-</tr>
-<tr>
-<td><a href="https://app.diagrams.net/">draw.io</a></td>
-<td>流程图/图表</td>
-<td>免费在线+桌面端，功能强大</td>
-</tr>
-<tr>
-<td><a href="https://www.snipaste.com/">Snipaste</a></td>
-<td>截图贴图</td>
-<td>截图后可以把图贴在屏幕上，神器级</td>
-</tr>
-</tbody>
-</table>
-<h3 id="媒体-创意">媒体 &amp; 创意</h3>
-<table>
-<colgroup>
-<col style="width: 66%" />
-<col style="width: 8%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://www.videolan.org/">VLC</a></td>
-<td>视频播放</td>
-<td>万能播放器，什么格式都行</td>
-</tr>
-<tr>
-<td><a href="https://handbrake.fr/">HandBrake</a></td>
-<td>视频转码</td>
-<td>开源，批量处理能力强</td>
-</tr>
-<tr>
-<td><a href="https://obsproject.com/">OBS Studio</a></td>
-<td>录屏/直播</td>
-<td>专业级免费录屏，支持虚拟摄像头</td>
-</tr>
-<tr>
-<td><a href="https://www.gimp.org/">GIMP</a></td>
-<td>图像编辑</td>
-<td>Photoshop 最强替代</td>
-</tr>
-<tr>
-<td><a href="https://krita.org/">Krita</a></td>
-<td>数字绘画</td>
-<td>专业绘画软件，插画/漫画首选</td>
-</tr>
-<tr>
-<td><a href="https://www.blender.org/">Blender</a></td>
-<td>3D 建模</td>
-<td>开源 3D 全流程，社区活跃</td>
-</tr>
-<tr>
-<td><a href="https://inkscape.org/">Inkscape</a></td>
-<td>矢量图形</td>
-<td>Illustrator 替代方案</td>
-</tr>
-<tr>
-<td><a href="https://www.audacityteam.org/">Audacity</a></td>
-<td>音频编辑</td>
-<td>开源音频工作站</td>
-</tr>
-</tbody>
-</table>
-<h3 id="办公-日常">办公 &amp; 日常</h3>
-<table>
-<colgroup>
-<col style="width: 53%" />
-<col style="width: 6%" />
-<col style="width: 40%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://www.thunderbird.net/">Thunderbird</a></td>
-<td>邮件客户端</td>
-<td>Mozilla 出品，干净好用</td>
-</tr>
-<tr>
-<td><a href="https://www.qbittorrent.org/">qBittorrent</a></td>
-<td>BT 下载</td>
-<td>开源无广告</td>
-</tr>
-<tr>
-<td><a href="https://motrix.app/">Motrix</a></td>
-<td>下载管理</td>
-<td>全协议（HTTP/FTP/BT/磁力），aria2 内核，颜值高</td>
-</tr>
-<tr>
-<td><a href="https://www.neatdownloadmanager.com/">Neat Download Manager</a></td>
-<td>下载加速</td>
-<td>IDM 免费平替，浏览器一键捕获，多线程提速</td>
-</tr>
-<tr>
-<td><a href="https://calibre-ebook.com/">Calibre</a></td>
-<td>电子书管理</td>
-<td>格式转换 + 管理一体</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="windows-专属">🪟 Windows 专属</h2>
-<h3 id="系统增强">系统增强</h3>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://github.com/microsoft/PowerToys">PowerToys</a></td>
-<td>系统工具集</td>
-<td>微软官方出品：取色器、批量重命名、窗口布局、键盘映射等</td>
-</tr>
-<tr>
-<td><a href="https://www.voidtools.com/">Everything</a></td>
-<td>文件搜索</td>
-<td>秒级全盘搜索，比系统自带快 100 倍</td>
-</tr>
-<tr>
-<td><a href="https://github.com/QL-Win/QuickLook">QuickLook</a></td>
-<td>空格预览</td>
-<td>macOS 的 Quick Look 体验搬到 Windows</td>
-</tr>
-<tr>
-<td><a href="https://ditto-cp.sourceforge.io/">Ditto</a></td>
-<td>剪贴板管理</td>
-<td>开源，搜索历史、多设备同步</td>
-</tr>
-<tr>
-<td><a href="https://www.7-zip.org/">7-Zip</a></td>
-<td>压缩解压</td>
-<td>轻量无广告，格式支持全</td>
-</tr>
-<tr>
-<td><a href="https://eartrumpet.app/">EarTrumpet</a></td>
-<td>音量控制</td>
-<td>每个应用独立调音量</td>
-</tr>
-<tr>
-<td><a href="https://www.autohotkey.com/">AutoHotkey</a></td>
-<td>自动化脚本</td>
-<td>按键映射、热键、宏，效率神器</td>
-</tr>
-<tr>
-<td><a href="https://twinkletray.com/">Twinkle Tray</a></td>
-<td>显示器亮度</td>
-<td>外接显示器亮度调节</td>
-</tr>
-<tr>
-<td><a href="https://geekuninstaller.com/">Geek Uninstaller</a></td>
-<td>卸载工具</td>
-<td>彻底清理残留，免安装</td>
-</tr>
-<tr>
-<td><a href="https://www.bcuninstaller.com/">Bulk Crap Uninstaller</a></td>
-<td>强力卸载</td>
-<td>批量卸载、残留扫描更深，比 Geek 更强一档</td>
-</tr>
-<tr>
-<td><a href="https://www.diskanalyzer.com/">WizTree</a></td>
-<td>磁盘分析</td>
-<td>秒出树状图，可视化占用空间</td>
-</tr>
-<tr>
-<td><a href="https://github.com/ModernFlyouts-Community/ModernFlyouts">Modern Flyouts</a></td>
-<td>音量/亮度 OSD</td>
-<td>美化系统弹窗</td>
-</tr>
-</tbody>
-</table>
-<h3 id="实用工具">实用工具</h3>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://getsharex.com/">ShareX</a></td>
-<td>截图/录屏/GIF</td>
-<td>Windows 最强截图工具，开源</td>
-</tr>
-<tr>
-<td><a href="https://www.marktext.cc/">MarkText</a></td>
-<td>Markdown 编辑器</td>
-<td>开源、所见即所得、Typora 平替，极简优雅</td>
-</tr>
-<tr>
-<td><a href="https://rufus.ie/">Rufus</a></td>
-<td>启动盘制作</td>
-<td>写 U 盘装系统最快最稳</td>
-</tr>
-<tr>
-<td><a href="https://www.bandisoft.com/honeyview/">Honeyview</a></td>
-<td>图片查看</td>
-<td>比系统自带快，支持压缩包预览</td>
-</tr>
-<tr>
-<td><a href="https://www.sumatrapdfreader.org/">Sumatra PDF</a></td>
-<td>PDF/电子书阅读</td>
-<td>极度轻量，秒开</td>
-</tr>
-<tr>
-<td><a href="https://localsend.org/">LocalSend</a></td>
-<td>跨设备传文件</td>
-<td>局域网传文件，AirDrop 替代</td>
-</tr>
-<tr>
-<td><a href="https://www.screentogif.com/">ScreenToGif</a></td>
-<td>GIF 录制</td>
-<td>屏幕录制转 GIF，小巧好用</td>
-</tr>
-<tr>
-<td><a href="https://github.com/2dust/v2rayN">v2rayN</a></td>
-<td>代理客户端</td>
-<td>Windows 最成熟的 V2Ray/Xray 客户端，开源</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="macos-专属">🍎 macOS 专属</h2>
-<h3 id="系统增强-1">系统增强</h3>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://rectangleapp.com/">Rectangle</a></td>
-<td>窗口管理</td>
-<td>开源分屏工具，Magnet 的免费替代</td>
-</tr>
-<tr>
-<td><a href="https://maccy.app/">Maccy</a></td>
-<td>剪贴板管理</td>
-<td>轻量开源，类似 Windows 的 Ditto</td>
-</tr>
-<tr>
-<td><a href="https://www.keka.io/">Keka</a></td>
-<td>压缩解压</td>
-<td>macOS 上最好用的解压工具（官网免费，App Store 付费）</td>
-</tr>
-<tr>
-<td><a href="https://github.com/dwarvesf/hidden">Hidden Bar</a></td>
-<td>菜单栏管理</td>
-<td>隐藏菜单栏多余图标，开源免费</td>
-</tr>
-<tr>
-<td><a href="https://iina.io/">IINA</a></td>
-<td>视频播放</td>
-<td>macOS 原生设计，比 VLC 更 Mac</td>
-</tr>
-<tr>
-<td><a href="https://freemacsoft.net/appcleaner/">AppCleaner</a></td>
-<td>卸载工具</td>
-<td>彻底删除应用和关联文件</td>
-</tr>
-<tr>
-<td><a href="https://github.com/tw93/Mole">Mole</a></td>
-<td>系统清理</td>
-<td>tw93 出品，深挖清理开发缓存/浏览器垃圾，开源</td>
-</tr>
-<tr>
-<td><a href="https://github.com/MonitorControl/MonitorControl">MonitorControl</a></td>
-<td>外接显示器</td>
-<td>用原生亮度键控制外接显示器</td>
-</tr>
-<tr>
-<td><a href="https://github.com/exelban/stats">Stats</a></td>
-<td>系统监控</td>
-<td>菜单栏系统信息，iStat 免费替代</td>
-</tr>
-<tr>
-<td><a href="https://www.mowglii.com/itsycal/">Itsycal</a></td>
-<td>菜单栏日历</td>
-<td>精致小巧的日历</td>
-</tr>
-<tr>
-<td><a href="https://pilotmoon.com/scrollreverser/">Scroll Reverser</a></td>
-<td>滚轮方向</td>
-<td>触控板和鼠标独立设置滚动方向</td>
-</tr>
-<tr>
-<td><a href="https://max.codes/latest/">Latest</a></td>
-<td>软件更新</td>
-<td>免费批量检查 App 更新</td>
-</tr>
-<tr>
-<td><a href="https://github.com/TheBoredTeam/boring.notch">boringNotch</a></td>
-<td>刘海利用</td>
-<td>把 MacBook 刘海变灵动岛，音乐/日历/文件架</td>
-</tr>
-</tbody>
-</table>
-<h3 id="实用工具-1">实用工具</h3>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>用途</th>
-<th>亮点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://shottr.cc/">Shottr</a></td>
-<td>截图标注</td>
-<td>滚动截图 + OCR + 像素标尺，免费</td>
-</tr>
-<tr>
-<td><a href="https://macshot.io/">Macshot</a></td>
-<td>截图录屏</td>
-<td>开源免费，标注/长截图/OCR/录屏全能，Shottr 替代</td>
-</tr>
-<tr>
-<td><a href="https://fireball.studio/oneswitch/">One Switch</a></td>
-<td>快捷开关</td>
-<td>一键切换暗黑模式、隐藏桌面等（轻度付费，偶尔限免）</td>
-</tr>
-<tr>
-<td><a href="https://theunarchiver.com/">The Unarchiver</a></td>
-<td>解压工具</td>
-<td>支持几乎所有压缩格式</td>
-</tr>
-<tr>
-<td><a href="https://mos.caldis.me/">Mos</a></td>
-<td>鼠标平滑滚动</td>
-<td>让第三方鼠标滚动如触控板般顺滑</td>
-</tr>
-<tr>
-<td><a href="https://github.com/kyleneideck/BackgroundMusic">Background Music</a></td>
-<td>音量控制</td>
-<td>独立控制每个 App 的音量</td>
-</tr>
-<tr>
-<td><a href="https://imageoptim.com/">ImageOptim</a></td>
-<td>图片压缩</td>
-<td>无损压缩 PNG/JPEG，前端必备</td>
-</tr>
-<tr>
-<td><a href="https://handmirror.app/">Hand Mirror</a></td>
-<td>摄像头预览</td>
-<td>菜单栏一键看摄像头</td>
-</tr>
-<tr>
-<td><a href="https://apps.apple.com/app/copyclip-clipboard-history/id595191960">CopyClip</a></td>
-<td>剪贴板</td>
-<td>另一个轻量选择</td>
-</tr>
-<tr>
-<td><a href="https://github.com/tw93/Easydict">Easydict</a></td>
-<td>划词翻译</td>
-<td>tw93 出品，选词即译，支持多翻译源，开源</td>
-</tr>
-<tr>
-<td><a href="https://www.markedit.app/">MarkEdit</a></td>
-<td>Markdown 编辑器</td>
-<td>原生 Swift，极致轻量秒开，GitHub 开源</td>
-</tr>
-<tr>
-<td><a href="https://github.com/tw93/MiaoYan">MiaoYan</a></td>
-<td>Markdown 笔记</td>
-<td>tw93 出品，极简优雅，本地管理，Swift 原生</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="隐私-安全">🔐 隐私 &amp; 安全</h2>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>软件</th>
-<th>平台</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://brave.com/">Brave Browser</a></td>
-<td>全平台</td>
-<td>隐私浏览器，内置广告拦截 + Tor</td>
-</tr>
-<tr>
-<td><a href="https://bitwarden.com/">Bitwarden</a></td>
-<td>全平台</td>
-<td>开源密码管理</td>
-</tr>
-<tr>
-<td><a href="https://cryptomator.org/">Cryptomator</a></td>
-<td>全平台</td>
-<td>文件加密，保护云盘文件</td>
-</tr>
-<tr>
-<td><a href="https://www.veracrypt.fr/">VeraCrypt</a></td>
-<td>全平台</td>
-<td>磁盘加密，TrueCrypt 继任者</td>
-</tr>
-<tr>
-<td><a href="https://keepassxc.org/">KeePassXC</a></td>
-<td>全平台</td>
-<td>本地密码库，不依赖云端</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="一句话总结">💡 一句话总结</h2>
-<table>
-<thead>
-<tr>
-<th>如果你……</th>
-<th>首选</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>刚开始搭建工具箱</td>
-<td>PowerToys（Win）/ Raycast（Mac）+ Bitwarden + VLC</td>
-</tr>
-<tr>
-<td>是前端开发者</td>
-<td>VS Code + ImageOptim + draw.io</td>
-</tr>
-<tr>
-<td>需要整理笔记</td>
-<td>Obsidian</td>
-</tr>
-<tr>
-<td>需要录课程/直播</td>
-<td>OBS Studio + HandBrake</td>
-</tr>
-<tr>
-<td>要剪音频</td>
-<td>Audacity</td>
-</tr>
-<tr>
-<td>画图设计</td>
-<td>GIMP + Inkscape + Krita</td>
-</tr>
-<tr>
-<td>日常办公</td>
-<td>LibreOffice + Thunderbird + Calibre</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<blockquote>
-<p><strong>原则：</strong> 优先开源、取之官网、远离流氓。所有链接均为官方网站，建议从官网下载安装。</p>
-</blockquote>
+<main class="container">
+
+  <!-- Cross-platform -->
+  <section class="section">
+    <h2>🌐 跨平台（Win + Mac 通用）</h2>
+
+    <h3>开发工具 <span class="count-badge">6 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:16%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://code.visualstudio.com/">VS Code</a></td><td>代码编辑器</td><td>插件生态无敌，前端/全栈首选</td></tr>
+        <tr><td><a href="https://ghostty.org/">Ghostty</a></td><td>终端</td><td>GPU 原生加速，极速渲染</td></tr>
+        <tr><td><a href="https://www.warp.dev/">Warp</a></td><td>终端</td><td>AI 加持，现代 UI，支持团队协作</td></tr>
+        <tr><td><a href="https://dbeaver.io/">DBeaver</a></td><td>数据库管理</td><td>支持几乎所有数据库，免费版够用</td></tr>
+        <tr><td><a href="https://git-fork.com/">Fork</a></td><td>Git GUI</td><td>颜值高、交互流畅</td></tr>
+        <tr><td><a href="https://www.sourcetreeapp.com/">Sourcetree</a></td><td>Git GUI</td><td>Atlassian 出品，完全免费</td></tr>
+      </tbody>
+    </table>
+
+    <h3>浏览器 <span class="count-badge">2 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:16%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://arc.net/">Arc Browser</a></td><td>浏览器</td><td>革命性侧边栏设计，空间分类，颜值天花板</td></tr>
+        <tr><td><a href="https://zen-browser.app/">Zen Browser</a></td><td>浏览器</td><td>Firefox 内核开源版 Arc，隐私更好，自定义强</td></tr>
+      </tbody>
+    </table>
+
+    <h3>效率工具 <span class="count-badge">11 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:16%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://obsidian.md/">Obsidian</a></td><td>笔记/知识库</td><td>本地 Markdown，插件生态强大</td></tr>
+        <tr><td><a href="https://www.marktext.cc/">MarkText</a></td><td>Markdown 编辑器</td><td>WYSIWYG 所见即所得，Typora 开源替代</td></tr>
+        <tr><td><a href="https://www.zettlr.com/">Zettlr</a></td><td>学术写作</td><td>开源 Markdown，Zotero 集成，论文/报告利器</td></tr>
+        <tr><td><a href="https://joplinapp.org/">Joplin</a></td><td>Markdown 笔记</td><td>开源、端到端加密、全平台同步</td></tr>
+        <tr><td><a href="https://notable.app/">Notable</a></td><td>Markdown 笔记</td><td>极简优雅，标签式管理</td></tr>
+        <tr><td><a href="https://www.notion.so/">Notion</a></td><td>协作/知识管理</td><td>个人免费版足够用</td></tr>
+        <tr><td><a href="https://www.raycast.com/">Raycast</a></td><td>启动器（Mac）</td><td>取代 Spotlight，插件丰富</td></tr>
+        <tr><td><a href="https://www.flowlauncher.com/">Flow Launcher</a></td><td>启动器（Win）</td><td>Windows 版 Raycast</td></tr>
+        <tr><td><a href="https://bitwarden.com/">Bitwarden</a></td><td>密码管理</td><td>开源、全平台同步、自部署可选</td></tr>
+        <tr><td><a href="https://app.diagrams.net/">draw.io</a></td><td>流程图/图表</td><td>免费在线+桌面端，功能强大</td></tr>
+        <tr><td><a href="https://www.snipaste.com/">Snipaste</a></td><td>截图贴图</td><td>截图后贴屏幕上，神器级</td></tr>
+      </tbody>
+    </table>
+
+    <h3>媒体 &amp; 创意 <span class="count-badge">8 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:16%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.videolan.org/">VLC</a></td><td>视频播放</td><td>万能播放器，什么格式都行</td></tr>
+        <tr><td><a href="https://handbrake.fr/">HandBrake</a></td><td>视频转码</td><td>开源，批量处理能力强</td></tr>
+        <tr><td><a href="https://obsproject.com/">OBS Studio</a></td><td>录屏/直播</td><td>专业级免费录屏，支持虚拟摄像头</td></tr>
+        <tr><td><a href="https://www.gimp.org/">GIMP</a></td><td>图像编辑</td><td>Photoshop 最强替代</td></tr>
+        <tr><td><a href="https://krita.org/">Krita</a></td><td>数字绘画</td><td>专业绘画软件，插画/漫画首选</td></tr>
+        <tr><td><a href="https://www.blender.org/">Blender</a></td><td>3D 建模</td><td>开源 3D 全流程，社区活跃</td></tr>
+        <tr><td><a href="https://inkscape.org/">Inkscape</a></td><td>矢量图形</td><td>Illustrator 替代方案</td></tr>
+        <tr><td><a href="https://www.audacityteam.org/">Audacity</a></td><td>音频编辑</td><td>开源音频工作站</td></tr>
+      </tbody>
+    </table>
+
+    <h3>办公 &amp; 日常 <span class="count-badge">5 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:16%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.thunderbird.net/">Thunderbird</a></td><td>邮件客户端</td><td>Mozilla 出品，干净好用</td></tr>
+        <tr><td><a href="https://www.qbittorrent.org/">qBittorrent</a></td><td>BT 下载</td><td>开源无广告</td></tr>
+        <tr><td><a href="https://motrix.app/">Motrix</a></td><td>下载管理</td><td>全协议支持，aria2 内核，颜值高</td></tr>
+        <tr><td><a href="https://www.neatdownloadmanager.com/">Neat Download Manager</a></td><td>下载加速</td><td>IDM 免费平替，多线程提速</td></tr>
+        <tr><td><a href="https://calibre-ebook.com/">Calibre</a></td><td>电子书管理</td><td>格式转换 + 管理一体</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Windows -->
+  <section class="section">
+    <h2>🪟 Windows 专属</h2>
+
+    <h3>系统增强 <span class="count-badge">12 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:20%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://github.com/microsoft/PowerToys">PowerToys</a> <span class="tag tag-oss">开源</span></td><td>系统工具集</td><td>微软官方：取色器、批量重命名、窗口布局等</td></tr>
+        <tr><td><a href="https://www.voidtools.com/">Everything</a></td><td>文件搜索</td><td>秒级全盘搜索，比系统快 100 倍</td></tr>
+        <tr><td><a href="https://github.com/QL-Win/QuickLook">QuickLook</a></td><td>空格预览</td><td>macOS Quick Look 体验搬到 Windows</td></tr>
+        <tr><td><a href="https://ditto-cp.sourceforge.io/">Ditto</a></td><td>剪贴板管理</td><td>开源，搜索历史、多设备同步</td></tr>
+        <tr><td><a href="https://www.7-zip.org/">7-Zip</a></td><td>压缩解压</td><td>轻量无广告，格式支持全</td></tr>
+        <tr><td><a href="https://eartrumpet.app/">EarTrumpet</a></td><td>音量控制</td><td>每个应用独立调音量</td></tr>
+        <tr><td><a href="https://www.autohotkey.com/">AutoHotkey</a></td><td>自动化脚本</td><td>按键映射、热键、宏，效率神器</td></tr>
+        <tr><td><a href="https://twinkletray.com/">Twinkle Tray</a></td><td>显示器亮度</td><td>外接显示器亮度调节</td></tr>
+        <tr><td><a href="https://geekuninstaller.com/">Geek Uninstaller</a></td><td>卸载工具</td><td>彻底清理残留，免安装</td></tr>
+        <tr><td><a href="https://www.bcuninstaller.com/">Bulk Crap Uninstaller</a></td><td>强力卸载</td><td>批量卸载、残留扫描更深</td></tr>
+        <tr><td><a href="https://www.diskanalyzer.com/">WizTree</a></td><td>磁盘分析</td><td>秒出树状图，可视化占用空间</td></tr>
+        <tr><td><a href="https://github.com/ModernFlyouts-Community/ModernFlyouts">Modern Flyouts</a></td><td>OSD 美化</td><td>美化系统弹窗</td></tr>
+      </tbody>
+    </table>
+
+    <h3>实用工具 <span class="count-badge">8 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:20%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://getsharex.com/">ShareX</a></td><td>截图/录屏/GIF</td><td>Windows 最强截图工具，开源</td></tr>
+        <tr><td><a href="https://www.marktext.cc/">MarkText</a></td><td>Markdown 编辑器</td><td>开源、所见即所得</td></tr>
+        <tr><td><a href="https://rufus.ie/">Rufus</a></td><td>启动盘制作</td><td>写 U 盘装系统最快最稳</td></tr>
+        <tr><td><a href="https://www.bandisoft.com/honeyview/">Honeyview</a></td><td>图片查看</td><td>支持压缩包预览</td></tr>
+        <tr><td><a href="https://www.sumatrapdfreader.org/">Sumatra PDF</a></td><td>PDF 阅读</td><td>极度轻量，秒开</td></tr>
+        <tr><td><a href="https://localsend.org/">LocalSend</a></td><td>跨设备传文件</td><td>局域网传输，AirDrop 替代</td></tr>
+        <tr><td><a href="https://www.screentogif.com/">ScreenToGif</a></td><td>GIF 录制</td><td>屏幕录制转 GIF，小巧好用</td></tr>
+        <tr><td><a href="https://github.com/2dust/v2rayN">v2rayN</a></td><td>代理客户端</td><td>Windows 最成熟的 V2Ray/Xray 客户端</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- macOS -->
+  <section class="section">
+    <h2>🍎 macOS 专属</h2>
+
+    <h3>系统增强 <span class="count-badge">13 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:20%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://rectangleapp.com/">Rectangle</a></td><td>窗口管理</td><td>开源分屏工具，Magnet 免费替代</td></tr>
+        <tr><td><a href="https://maccy.app/">Maccy</a></td><td>剪贴板管理</td><td>轻量开源</td></tr>
+        <tr><td><a href="https://www.keka.io/">Keka</a></td><td>压缩解压</td><td>macOS 最好用的解压工具</td></tr>
+        <tr><td><a href="https://github.com/dwarvesf/hidden">Hidden Bar</a></td><td>菜单栏管理</td><td>隐藏菜单栏多余图标</td></tr>
+        <tr><td><a href="https://iina.io/">IINA</a></td><td>视频播放</td><td>macOS 原生设计，比 VLC 更 Mac</td></tr>
+        <tr><td><a href="https://freemacsoft.net/appcleaner/">AppCleaner</a></td><td>卸载工具</td><td>彻底删除应用和关联文件</td></tr>
+        <tr><td><a href="https://github.com/tw93/Mole">Mole</a></td><td>系统清理</td><td>深挖清理开发缓存/浏览器垃圾</td></tr>
+        <tr><td><a href="https://github.com/MonitorControl/MonitorControl">MonitorControl</a></td><td>外接显示器</td><td>用原生亮度键控制外接显示器</td></tr>
+        <tr><td><a href="https://github.com/exelban/stats">Stats</a></td><td>系统监控</td><td>菜单栏系统信息，iStat 免费替代</td></tr>
+        <tr><td><a href="https://www.mowglii.com/itsycal/">Itsycal</a></td><td>菜单栏日历</td><td>精致小巧</td></tr>
+        <tr><td><a href="https://pilotmoon.com/scrollreverser/">Scroll Reverser</a></td><td>滚轮方向</td><td>触控板和鼠标独立设置滚动方向</td></tr>
+        <tr><td><a href="https://max.codes/latest/">Latest</a></td><td>软件更新</td><td>免费批量检查 App 更新</td></tr>
+        <tr><td><a href="https://github.com/TheBoredTeam/boring.notch">boringNotch</a></td><td>刘海利用</td><td>把 MacBook 刘海变灵动岛</td></tr>
+      </tbody>
+    </table>
+
+    <h3>实用工具 <span class="count-badge">13 款</span></h3>
+    <table>
+      <thead><tr><th style="width:22%">软件</th><th style="width:20%">用途</th><th>亮点</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://shottr.cc/">Shottr</a></td><td>截图标注</td><td>滚动截图 + OCR + 像素标尺，免费</td></tr>
+        <tr><td><a href="https://macshot.io/">Macshot</a></td><td>截图录屏</td><td>开源免费，标注/长截图/OCR/录屏全能</td></tr>
+        <tr><td><a href="https://fireball.studio/oneswitch/">One Switch</a></td><td>快捷开关</td><td>一键切换暗黑模式、隐藏桌面</td></tr>
+        <tr><td><a href="https://theunarchiver.com/">The Unarchiver</a></td><td>解压工具</td><td>支持几乎所有压缩格式</td></tr>
+        <tr><td><a href="https://mos.caldis.me/">Mos</a></td><td>鼠标平滑滚动</td><td>让第三方鼠标滚动如触控板般顺滑</td></tr>
+        <tr><td><a href="https://github.com/kyleneideck/BackgroundMusic">Background Music</a></td><td>音量控制</td><td>独立控制每个 App 音量</td></tr>
+        <tr><td><a href="https://imageoptim.com/">ImageOptim</a></td><td>图片压缩</td><td>无损压缩 PNG/JPEG，前端必备</td></tr>
+        <tr><td><a href="https://handmirror.app/">Hand Mirror</a></td><td>摄像头预览</td><td>菜单栏一键看摄像头</td></tr>
+        <tr><td><a href="https://apps.apple.com/app/copyclip-clipboard-history/id595191960">CopyClip</a></td><td>剪贴板</td><td>轻量剪贴板管理</td></tr>
+        <tr><td><a href="https://github.com/tw93/Easydict">Easydict</a></td><td>划词翻译</td><td>tw93 出品，选词即译，多翻译源</td></tr>
+        <tr><td><a href="https://www.markedit.app/">MarkEdit</a></td><td>Markdown 编辑器</td><td>原生 Swift，极致轻量秒开</td></tr>
+        <tr><td><a href="https://github.com/tw93/MiaoYan">MiaoYan</a></td><td>Markdown 笔记</td><td>tw93 出品，极简优雅，Swift 原生</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Privacy -->
+  <section class="section">
+    <h2>🔐 隐私 &amp; 安全</h2>
+    <table>
+      <thead><tr><th style="width:28%">软件</th><th style="width:16%">平台</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://brave.com/">Brave Browser</a></td><td>全平台</td><td>隐私浏览器，内置广告拦截 + Tor</td></tr>
+        <tr><td><a href="https://bitwarden.com/">Bitwarden</a></td><td>全平台</td><td>开源密码管理</td></tr>
+        <tr><td><a href="https://cryptomator.org/">Cryptomator</a></td><td>全平台</td><td>文件加密，保护云盘文件</td></tr>
+        <tr><td><a href="https://www.veracrypt.fr/">VeraCrypt</a></td><td>全平台</td><td>磁盘加密，TrueCrypt 继任者</td></tr>
+        <tr><td><a href="https://keepassxc.org/">KeePassXC</a></td><td>全平台</td><td>本地密码库，不依赖云端</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Summary -->
+  <section class="section">
+    <h2>💡 快速挑选指南</h2>
+    <table class="summary-table">
+      <thead><tr><th style="width:32%">如果你……</th><th>首选</th></tr></thead>
+      <tbody>
+        <tr><td>刚开始搭建工具箱</td><td>PowerToys（Win）/ Raycast（Mac）+ Bitwarden + VLC</td></tr>
+        <tr><td>是前端开发者</td><td>VS Code + ImageOptim + draw.io</td></tr>
+        <tr><td>需要整理笔记</td><td>Obsidian</td></tr>
+        <tr><td>需要录课程/直播</td><td>OBS Studio + HandBrake</td></tr>
+        <tr><td>要剪音频</td><td>Audacity</td></tr>
+        <tr><td>画图设计</td><td>GIMP + Inkscape + Krita</td></tr>
+        <tr><td>日常办公</td><td>LibreOffice + Thunderbird + Calibre</td></tr>
+      </tbody>
+    </table>
+  </section>
+
 </main>
 
-<footer>
-  所有链接均为官方网站，建议从官网下载安装。<br>
-  <a href="../">← iben.fun</a>
+<footer class="site-footer">
+  <p style="max-width:600px;margin:0 auto;color:var(--text-secondary);font-size:13px;line-height:1.8;">
+    优先开源 · 取自官网 · 远离流氓<br>
+    所有链接均为官方网站，建议从官网下载安装
+  </p>
 </footer>
+
 </body>
 </html>
