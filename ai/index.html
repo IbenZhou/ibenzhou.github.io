@@ -25,13 +25,17 @@
   table{width:100%;border-collapse:collapse;font-size:.88rem;line-height:1.6;margin:1rem 0 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:3px;overflow:hidden}
   thead tr{border-bottom:2px solid var(--accent-dim)}
   th{padding:.55rem .8rem;text-align:left;font-weight:600;font-size:.78rem;letter-spacing:.04em;color:var(--accent-dim);background:linear-gradient(180deg,var(--table-stripe),var(--card))}
-  td{padding:.5rem .8rem;border-bottom:1px solid var(--border-subtle)}
+  td{padding:.5rem .8rem;border-bottom:1px solid var(--border-subtle);word-break:break-word;overflow-wrap:break-word}
+  /* Column width control — first col capped, others split rest */
+  td:first-child,th:first-child{max-width:320px}
+  td:nth-child(2),th:nth-child(2){width:18%;min-width:60px}
+  td:nth-child(3),th:nth-child(3){min-width:80px}
   tr:last-child td{border-bottom:none}
   tr:nth-child(even) td{background:var(--table-stripe)}
   hr{margin:3rem 0;border:none;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
   strong{color:var(--ink);font-weight:700}
   footer{text-align:center;padding:3rem 1.5rem 4rem;font-size:.82rem;color:var(--ink-faint);letter-spacing:.04em;line-height:2}
-  @media(max-width:640px){header h1{font-size:1.5rem}h2{font-size:1.15rem}table{font-size:.78rem}th,td{padding:.4rem .5rem}}
+  @media(max-width:640px){header h1{font-size:1.5rem}h2{font-size:1.15rem}table{table-layout:auto;font-size:.78rem}th,td{padding:.4rem .5rem;width:auto!important}}
   .toc-panel{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     padding:1.5rem;margin-bottom:2rem;
