@@ -80,6 +80,9 @@
     .cards { flex-direction: column; max-width: 420px; gap: 1.5rem; }
     .cards.revealed { max-width: 420px; }
     header .title { font-size: 1.8rem; }
+    /* 竖屏：玄卡完全移出文档流，避免计/器之间残留空隙 */
+    .card.metaphysics { display: none; width: 100%; height: auto; }
+    .cards.revealed .card.metaphysics { display: flex; }
   }
 
   /* ---- Metaphysics card — hidden by default, expands as curtain ---- */
@@ -345,6 +348,11 @@ function closeDialog() {
 function verify() {
   if (codeInput.value.trim() === PASSCODE) {
     dialog.classList.remove('open');
+    // 竖屏下玄卡是 display:none，先恢复显示再触发过渡动画
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      metaphysicsCard.style.display = 'flex';
+      void metaphysicsCard.offsetHeight; // 强制 reflow，确保 opacity 过渡生效
+    }
     requestAnimationFrame(() => {
       cards.classList.add('revealed');
     });
