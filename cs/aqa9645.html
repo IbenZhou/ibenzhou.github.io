@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oxford AQA Computer Science — 整理中 · iben.fun</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html {
+    --paper: #f7f2e9; --paper-light: #fdfaf5;
+    --ink: #2c2416; --ink-faded: #8c8273; --ink-light: #b8ae9e;
+    --accent: #c44b3a; --border: #e8e0d3;
+    background: var(--paper);
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+    color: var(--ink); line-height: 1.8; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; position: relative; z-index: 1; padding: 2rem; }
+  .box {
+    background: var(--paper-light); border: 1px solid var(--border); border-radius: 2px;
+    padding: 3.5rem 3rem; text-align: center; max-width: 460px; width: 100%;
+    box-shadow: 0 2px 12px rgba(44,36,22,.05);
+  }
+  .box .mark {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+    font-size: 3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; line-height: 1;
+  }
+  .box h1 { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .05em; margin-bottom: .5rem; }
+  .box .code { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--ink-faded); border: 1px solid var(--border); border-radius: 2px; padding: .1rem .6rem; margin-bottom: 1rem; }
+  .box p { font-size: .95rem; color: var(--ink-faded); margin-bottom: 2rem; letter-spacing: .03em; }
+  .box a {
+    display: inline-block; font-size: .85rem; color: var(--ink-faded); text-decoration: none;
+    letter-spacing: .06em; transition: color .2s; border-bottom: 1px solid transparent;
+  }
+  .box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="mark">研</div>
+  <h1>Oxford AQA Computer Science</h1>
+  <span class="code">AQA 9645</span>
+  <p>复习笔记整理中 · 敬请期待</p>
+  <a href="index.html">← 返回计算机科学</a>
+</div>
+</body>
+</html>

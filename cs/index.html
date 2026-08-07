@@ -1,489 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home — CS 9618 A-Level Notes</title>
+<title>计算机科学 — iben.fun</title>
+<meta name="description" content="计算机科学复习笔记 — 9618 · 0478 · AP CSA · AP CSP · AQA 9645">
 <style>
-:root {
-  --bg: #f7f3e9;
-  --card-bg: #fdfaf3;
-  --text: #3a3226;
-  --text-secondary: #8c8070;
-  --accent: #b85c38;
-  --accent-light: #f5ebe0;
-  --border: #e3d9c8;
-  --code-bg: #f2ece0;
-  --ink: #2c2416;
-  --radius: 6px;
-  --shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.8;
-  font-size: 16px;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
-}
-.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-/* Post page two-column layout */
-.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
-.post-sidebar { width: 240px; flex-shrink: 0; }
-.post-main { flex: 1; min-width: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Header */
-.site-header {
-  background: rgba(253,250,243,0.92);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 0;
-  position: sticky; top: 0; z-index: 100;
-  backdrop-filter: blur(12px);
-}
-.site-header .container { display: flex; justify-content: space-between; align-items: center; }
-.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
-.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+  html {
+    --paper: #f7f2e9;
+    --paper-light: #fdfaf5;
+    --ink: #2c2416;
+    --ink-faded: #8c8273;
+    --ink-light: #b8ae9e;
+    --indigo: #2d4a6e;
+    --indigo-light: #5b7ea8;
+    --jade: #4a6741;
+    --jade-light: #7a9e6e;
+    --amber: #9a6b2f;
+    --amber-light: #c89b5e;
+    --violet: #5a4a7a;
+    --violet-light: #8b7aa8;
+    --cinnabar: #c44b3a;
+    --cinnabar-light: #d9786a;
+    --border: #e8e0d3;
+    --border-subtle: #efe8db;
+    background: var(--paper);
+    scroll-behavior: smooth;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+    color: var(--ink);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
 
-/* Hero */
-.hero {
-  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
-  color: #fdf6ec;
-  padding: 44px 0 40px;
-  margin-bottom: 36px;
-  position: relative; z-index: 1;
-}
-.hero::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
-}
-.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
-.hero p { font-size: 14px; opacity: 0.75; }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: .04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-/* Content */
-.content { padding: 32px 0; }
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 32px 40px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow);
-  position: relative; z-index: 1;
-}
-.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
-.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
-.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
-.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
-.card p { margin: 12px 0; }
-.card ul, .card ol { margin: 8px 0 16px 24px; }
-.card li { margin: 4px 0; }
-.card a { color: var(--accent); text-decoration: none; }
-.card a:hover { text-decoration: underline; }
-.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
-.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
-.card blockquote {
-  border-left: 3px solid var(--accent);
-  background: var(--accent-light);
-  padding: 12px 16px;
-  margin: 16px 0;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 15px;
-  color: #5c4530;
-}
-.card blockquote p { margin: 0; }
-.card code {
-  background: var(--code-bg);
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 14px;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  color: #6b3a2e;
-}
-.card pre {
-  background: #2c2416;
-  color: #e8dcc8;
-  padding: 16px 20px;
-  border-radius: var(--radius);
-  overflow-x: auto;
-  margin: 16px 0;
-  font-size: 14px;
-  line-height: 1.5;
-  border: 1px solid #4a3e2e;
-}
-.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
-.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  body {
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh; position: relative; z-index: 1;
+  }
 
-/* Post list */
-.post-list { list-style: none; }
-.post-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-}
-.post-item:hover { background: var(--code-bg); }
-.post-item a {
-  color: var(--text); text-decoration: none;
-  font-size: 15px; font-weight: 500;
-  flex: 1;
-}
-.post-item a:hover { color: var(--accent); }
-.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
-.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+  .top-rule { width: 64px; height: 2px; background: var(--cinnabar); margin-top: 4.5rem; margin-bottom: 2rem; }
 
-/* TOC — left sidebar */
-.toc {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  font-size: 13px;
-  position: sticky;
-  top: 72px;
-  box-shadow: var(--shadow);
-}
-.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
-.toc ul { margin: 0; padding-left: 0; list-style: none; }
-.toc li { margin: 3px 0; line-height: 1.5; }
-.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
-.toc a:hover { color: var(--accent); background: var(--accent-light); }
-.toc ul > li > a { font-weight: 500; color: var(--text); }
+  header { text-align: center; max-width: 520px; padding: 0 1.5rem; }
+  header .title {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+    font-size: 2rem; font-weight: 700; letter-spacing: .08em; line-height: 1.4;
+  }
+  header .subtitle { font-size: .95rem; color: var(--ink-faded); margin-top: .5rem; letter-spacing: .04em; }
 
-/* Footer */
-.site-footer {
-  border-top: 1px solid var(--border);
-  padding: 24px 0;
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 13px;
-  margin-top: 48px;
-  position: relative; z-index: 1;
-}
+  .back-link {
+    display: inline-block; margin-top: 1.5rem;
+    font-size: .85rem; color: var(--ink-light); text-decoration: none;
+    letter-spacing: .04em; transition: color .2s;
+  }
+  .back-link:hover { color: var(--ink-faded); }
 
-/* Responsive */
-@media (max-width: 800px) {
-  .post-layout { flex-direction: column; }
-  .post-sidebar { width: 100%; position: static; }
-  .toc { position: static; }
-}
-@media (max-width: 640px) {
-  .card { padding: 20px 16px; }
-  .post-item { flex-direction: column; align-items: flex-start; }
-  .post-item .date { margin-left: 0; margin-top: 4px; }
-}
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 920px; width: 100%;
+    padding: 2.5rem 1.5rem 4rem;
+  }
 
-/* Code highlighting — warm dark theme */
-.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
-.highlight .hll { background-color: #4a3e2e }
-.highlight .c { color: #8c8070 } /* Comment */
-.highlight .k { color: #d4a574 } /* Keyword */
-.highlight .s { color: #c8b896 } /* String */
-.highlight .n { color: #e8dcc8 } /* Name */
-.highlight .p { color: #b8a890 } /* Punctuation */
-.highlight .o { color: #c09870 } /* Operator */
-.highlight .mi { color: #d4a574 } /* Number */
-.highlight .nb { color: #c09870 } /* Built-in */
-.highlight .nc { color: #e0c8a0 } /* Class */
-.highlight .nf { color: #e0c8a0 } /* Function */
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; max-width: 400px; }
+    header .title { font-size: 1.6rem; }
+  }
+
+  .card {
+    background: var(--paper-light);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem 1.75rem 1.5rem;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: all .3s ease;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44,36,22,.08);
+    border-color: var(--ink-light);
+  }
+
+  .card::before {
+    content: ""; display: block;
+    width: 28px; height: 3px; margin-bottom: 1.5rem;
+  }
+  .card.c9618::before   { background: var(--indigo); }
+  .card.c0478::before   { background: var(--jade); }
+  .card.apcsa::before   { background: var(--amber); }
+  .card.apcsp::before   { background: var(--violet); }
+  .card.aqa9645::before { background: var(--cinnabar); }
+
+  .card .mark {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+    font-size: 2.4rem; font-weight: 700; line-height: 1;
+    margin-bottom: .75rem; opacity: .85;
+  }
+  .card.c9618 .mark   { color: var(--indigo); }
+  .card.c0478 .mark   { color: var(--jade); }
+  .card.apcsa .mark   { color: var(--amber); }
+  .card.apcsp .mark   { color: var(--violet); }
+  .card.aqa9645 .mark { color: var(--cinnabar); }
+
+  .card h2 {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+    font-size: 1.15rem; font-weight: 700; margin-bottom: .4rem; letter-spacing: .05em;
+  }
+  .card .code {
+    display: inline-block; font-size: .72rem; font-weight: 600;
+    letter-spacing: .08em; color: var(--ink-faded);
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: .05rem .5rem; margin-bottom: .75rem;
+  }
+  .card .desc {
+    font-size: .88rem; color: var(--ink-faded);
+    line-height: 1.75; flex: 1;
+  }
+  .card .arrow {
+    display: inline-block; margin-top: 1.25rem;
+    font-size: .85rem; color: var(--ink-light);
+    letter-spacing: .06em; transition: color .3s, transform .3s;
+  }
+  .card:hover .arrow { color: var(--ink-faded); transform: translateX(4px); }
+  .card .status {
+    display: inline-block; margin-top: 1.25rem;
+    font-size: .78rem; color: var(--ink-faded);
+    letter-spacing: .04em;
+  }
+
+  footer {
+    text-align: center; padding: 1rem 1.5rem 3rem;
+    font-size: .82rem; color: var(--ink-light); letter-spacing: .04em; line-height: 2;
+  }
+  footer span { color: var(--cinnabar-dim); }
+  .beian { margin-top: .25rem; }
+  .beian a {
+    font-size: .75rem; color: var(--ink-light); text-decoration: none;
+    letter-spacing: .02em; transition: color .2s;
+  }
+  .beian a:hover { color: var(--ink-faded); }
 </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="container">
-    <a href="index.html" class="site-title">CS 9618 A-Level Notes</a>
-    <span class="site-subtitle"><a href="../" style="color:inherit;text-decoration:none;opacity:.7">← iben.fun</a> &nbsp;·&nbsp; 42 revision notes</span>
-  </div>
+
+<div class="top-rule"></div>
+
+<header>
+  <h1 class="title">计算机科学</h1>
+  <p class="subtitle">多考纲复习笔记 · 持续更新</p>
+  <a class="back-link" href="../">← iben.fun</a>
 </header>
 
-<div class="hero">
-  <div class="container">
-    <h1>CS 9618 A-Level Computer Science</h1>
-    <p>Complete revision notes — 42 topics covering the Cambridge International A-Level syllabus</p>
-  </div>
-</div>
-<main class="content">
-  <div class="container">
-    <div class="card">
-      <h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">1. Information Representation</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="11-data-representation.html">1.1 Data Representation</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-06-04</span>
-  </li>
-  <li class="post-item">
-    <a href="12-multimedia.html">1.2 Multimedia</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-05-06</span>
-  </li>
-  <li class="post-item">
-    <a href="13-compression.html">1.3 Compression</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">2. Communication & Networking</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="2-communication.html">2. Communication</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-04</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">3. Hardware</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="3-hardware.html">3. Hardware</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-04</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">4. Processor Fundamentals</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="41-central-processing-unitcpu-architecture.html">4.1 Central Processing Unit(CPU) Architecture</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-04</span>
-  </li>
-  <li class="post-item">
-    <a href="42-assembly-language-basics.html">4.2 Assembly Language Basics</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-05-04</span>
-  </li>
-  <li class="post-item">
-    <a href="43-bit-manipulation.html">4.3 Bit Manipulation</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">5. System Software</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="51-operating-system.html">5.1 Operating System</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-06-01</span>
-  </li>
-  <li class="post-item">
-    <a href="52-language-translators.html">5.2 Language Translators</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">6. Security, Privacy & Data Integrity</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="61-data-security.html">6.1 Data Security</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-  <li class="post-item">
-    <a href="62-data-integrity.html">6.2 Data Integrity</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">7. Ethics & Ownership</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="7-ethics-ownership.html">7. Ethics & Ownership</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">8. Databases</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="81-database-concepts.html">8.1 Database Concepts</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-  <li class="post-item">
-    <a href="82-database-management-systems-dbms.html">8.2 Database Management Systems (DBMS)</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-  <li class="post-item">
-    <a href="83-data-definition-language-ddl-data-manipulation-language-dml.html">8.3 Data Definition Language (DDL) & Data Manipulation Language (DML)</a>
-    <span class="post-category">Part 1: Theory Fundamentals</span>
-    <span class="date">2026-04-05</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">9. Algorithm Design & Problem-Solving</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="91-computational-thinking.html">9.1 Computational Thinking</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-01</span>
-  </li>
-  <li class="post-item">
-    <a href="92-algorithms.html">9.2 Algorithms</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">10. Data Types & Structures</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="101-data-types-records.html">10.1 Data Types & Records</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="102-arrays.html">10.2 Arrays</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-05-11</span>
-  </li>
-  <li class="post-item">
-    <a href="103-file-handling.html">10.3 File Handling</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="104-abstract-data-types.html">10.4 Abstract Data Types</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">11. Programming</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="11-programming.html">11. Programming</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-29</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">12. Software Development</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="121-program-development-life-cycle.html">12.1 Program Development Life cycle</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="122-program-design.html">12.2 Program Design</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="123-program-testing-maintenance.html">12.3 Program Testing & Maintenance</a>
-    <span class="post-category">Part 2: Problem-solving</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">13. Data Representation (Advanced)</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="131-user-defined-data-types.html">13.1 User-defined Data Types</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-05-11</span>
-  </li>
-  <li class="post-item">
-    <a href="132-file-organisation-access.html">13.2 File Organisation & Access</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="133-floating-point-numbers-representation-manipulation.html">13.3 Floating-point Numbers, Representation &Manipulation</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-06-06</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">14. Communication & Internet Technologies</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="141-protocols.html">14.1 protocols</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-01</span>
-  </li>
-  <li class="post-item">
-    <a href="142-protocol-examples.html">14.2 Protocol Examples</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">15. Hardware & Virtual Machines</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="151-processorparallel-processing-virtual-machine.html">15.1 Processor，Parallel Processing & Virtual Machine</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="152-boolean-algebra-logic-circuits.html">15.2 Boolean Algebra & Logic Circuits</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">16. System Software (Advanced)</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="161-purposes-of-an-operating-systemos.html">16.1 Purposes of an Operating System(OS)</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="162-translation-software.html">16.2 Translation Software</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">17. Security</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="17-security.html">17. Security</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">18. Artificial Intelligence</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="18-artificial-intelligence.html">18 Artificial Intelligence</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">19. Computational Thinking & Problem-Solving</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="191-algorithm.html">19.1 Algorithm</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="192-recursion.html">19.2 Recursion</a>
-    <span class="post-category">Part 3: Fundamental Problem-solving and Programming Skills</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
-<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">20. Further Programming</h2>
-<ul class="post-list">
-  <li class="post-item">
-    <a href="201-programming-paradigms.html">20.1 Programming Paradigms</a>
-    <span class="post-category">Part 4: Practical</span>
-    <span class="date">2026-04-07</span>
-  </li>
-  <li class="post-item">
-    <a href="202-object-oriented-programming.html">20.2 Object-Oriented Programming</a>
-    <span class="post-category">Part 4: Practical</span>
-    <span class="date">2026-04-07</span>
-  </li>
-</ul>
+<div class="cards">
 
-    </div>
+  <!-- 9618 -->
+  <a href="9618.html" class="card c9618">
+    <div class="mark">计</div>
+    <h2>A-Level Computer Science</h2>
+    <span class="code">CIE 9618</span>
+    <p class="desc">
+      数据表示 · 处理器 · 编程范式 · 算法<br>
+      全 42 个主题复习笔记
+    </p>
+    <span class="arrow">进入 →</span>
+  </a>
+
+  <!-- 0478 -->
+  <a href="0478.html" class="card c0478">
+    <div class="mark">础</div>
+    <h2>IGCSE Computer Science</h2>
+    <span class="code">CIE 0478</span>
+    <p class="desc">
+      计算机系统 · 通信 · 逻辑门 · 程序设计<br>
+      考纲复习笔记
+    </p>
+    <span class="status">整理中 · 敬请期待</span>
+  </a>
+
+  <!-- AP CSA -->
+  <a href="apcsa.html" class="card apcsa">
+    <div class="mark">码</div>
+    <h2>AP Computer Science A</h2>
+    <span class="code">AP CSA</span>
+    <p class="desc">
+      Java 程序设计 · 面向对象 · 数据结构<br>
+      考纲复习笔记
+    </p>
+    <span class="status">整理中 · 敬请期待</span>
+  </a>
+
+  <!-- AP CSP -->
+  <a href="apcsp.html" class="card apcsp">
+    <div class="mark">思</div>
+    <h2>AP Computer Science Principles</h2>
+    <span class="code">AP CSP</span>
+    <p class="desc">
+      计算思维 · 数据 · 互联网 · 创意编程<br>
+      考纲复习笔记
+    </p>
+    <span class="status">整理中 · 敬请期待</span>
+  </a>
+
+  <!-- AQA 9645 -->
+  <a href="aqa9645.html" class="card aqa9645">
+    <div class="mark">研</div>
+    <h2>Oxford AQA Computer Science</h2>
+    <span class="code">AQA 9645</span>
+    <p class="desc">
+      A-Level 进阶计算机科学 · 理论 + 项目<br>
+      考纲复习笔记
+    </p>
+    <span class="status">整理中 · 敬请期待</span>
+  </a>
+
+</div>
+
+<footer>
+  静观自得 · <span>iben.fun</span>
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">蜀ICP备2023035345号</a>
   </div>
-</main>
-<footer class="site-footer">
-  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
 </footer>
+
 </body>
 </html>
