@@ -238,9 +238,9 @@ body::before {
       <article class="card">
 <h1 id="section">Unit 4 — Data Collections: Review Notes</h1>
 <blockquote>
-<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025
-<strong>Exam Weight:</strong> 30–40% of AP Exam | <strong>Class Periods:</strong> ~50–52
-<strong>Topics:</strong> 4.1–4.17
+<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025<br>
+<strong>Exam Weight:</strong> 30–40% of AP Exam | <strong>Class Periods:</strong> ~50–52<br>
+<strong>Topics:</strong> 4.1–4.17<br>
 <strong>AP Classroom:</strong> Progress Checks — Part 1 (4.1–4.5) ~18 MCQ + 2 FRQ (Data Analysis with Array); Part 2 (4.6–4.10) ~21 MCQ + 2 FRQ (Data Analysis with <code>ArrayList</code>); Part 3 (4.11–4.17) ~21 MCQ + 2 FRQ (2D Array)</p>
 </blockquote>
 <hr>
@@ -550,10 +550,10 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.1 — Default Values and Initializer Lists (5 marks)</div><div class="callout-body"><p>For each array below, write down the complete contents of the array after the line runs.</p>
-<p>(a) <code>double[] a = new double[3];</code> [1]
-(b) <code>boolean[] b = {true, false, false, true};</code> [1]
-© <code>String[] c = new String[4];</code> [1]
-(d) <code>int[] d = {10, 20};</code> [1]
+<p>(a) <code>double[] a = new double[3];</code> [1]<br>
+(b) <code>boolean[] b = {true, false, false, true};</code> [1]<br>
+© <code>String[] c = new String[4];</code> [1]<br>
+(d) <code>int[] d = {10, 20};</code> [1]<br>
 (e) State the value of <code>c[0].length()</code> after part ©. What happens if that line is executed? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>{0.0, 0.0, 0.0}</code> — the default value for <code>double</code> is <code>0.0</code>. [1]</p>
 <p>(b) <code>{true, false, false, true}</code> — initializer list sets the values directly. [1]</p>
@@ -561,16 +561,16 @@ body::before {
 <p>(d) <code>{10, 20}</code>. [1]</p>
 <p>(e) <code>c[0]</code> is <code>null</code>, so calling <code>.length()</code> on <code>null</code> causes a <code>NullPointerException</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.2 — Indexed Access and Exceptions (4 marks)</div><div class="callout-body"><p>Given <code>int[] nums = {5, 10, 15, 20, 25};</code></p>
-<p>(a) What value is printed by <code>System.out.println(nums[3]);</code>? [1]
-(b) What value is printed by <code>System.out.println(nums[nums.length - 1]);</code>? [1]
-© After <code>nums[1] = 100;</code>, list the new contents of <code>nums</code>. [1]
+<p>(a) What value is printed by <code>System.out.println(nums[3]);</code>? [1]<br>
+(b) What value is printed by <code>System.out.println(nums[nums.length - 1]);</code>? [1]<br>
+© After <code>nums[1] = 100;</code>, list the new contents of <code>nums</code>. [1]<br>
 (d) Explain exactly what happens when the statement <code>nums[5] = 0;</code> is executed. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>20</code> — index 3 is the fourth element. [1]</p>
 <p>(b) <code>25</code> — <code>nums.length</code> is 5, so <code>nums[4]</code> is the last element. [1]</p>
 <p>© <code>{5, 100, 15, 20, 25}</code>. [1]</p>
 <p>(d) Index 5 is outside the valid range <code>0</code> through <code>4</code>, so the program throws an <code>ArrayIndexOutOfBoundsException</code> (the element is never modified). [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.3 — Choosing Array vs. Variable (2 marks)</div><div class="callout-body"><p>A student needs to store the seven daily high temperatures of one week and then compute the week’s average.</p>
-<p>(a) Explain why an array is better than seven separate variables. [1]
+<p>(a) Explain why an array is better than seven separate variables. [1]<br>
 (b) Explain why the fixed length of the array is acceptable for this problem. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) An array lets the program treat all seven values as one collection so a loop can visit each value one at a time to compute the average, and related data is stored under one name. Seven separate variables would need seven duplicated lines of code. [1]</p>
 <p>(b) The number of days in a week never changes, so the length of the array is fixed at creation (7) and never needs to grow or shrink. A static size is exactly what this problem requires. [1]</p>
@@ -716,7 +716,7 @@ body::before {
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Rewrite it using an indexed <code>for</code> loop. [2]
+<p>(a) Rewrite it using an indexed <code>for</code> loop. [2]<br>
 (b) Rewrite it using a <code>while</code> loop. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">largest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readings</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
@@ -888,8 +888,8 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.5.1 — Min, Max, Sum, Average (5 marks)</div><div class="callout-body"><p>Given <code>int[] data = {7, 2, 9, 4, 1, 5};</code></p>
-<p>(a) Trace the “maximum value” algorithm and state the value stored in <code>max</code> after the loop. [1]
-(b) Write a loop that computes the minimum value of <code>data</code>. [2]
+<p>(a) Trace the “maximum value” algorithm and state the value stored in <code>max</code> after the loop. [1]<br>
+(b) Write a loop that computes the minimum value of <code>data</code>. [2]<br>
 © State the sum of all elements and the average (as a <code>double</code>). [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>max = 9</code>. Trace: start <code>max = 7</code>; 2 not greater, 9 greater → <code>max = 9</code>; 4, 1, 5 not greater. [1]</p>
 <p>(b)</p>
@@ -905,9 +905,9 @@ body::before {
 <p>[2]</p>
 <p>© Sum = <code>7+2+9+4+1+5 = 28</code>. Average = <code>28 / 6.0 = 4.6666...</code>. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.5.2 — &quot;At Least One&quot;, &quot;All&quot;, and &quot;Count&quot; (4 marks)</div><div class="callout-body"><p><code>boolean[] flags = {true, false, true, true, false};</code></p>
-<p>(a) Write code that determines whether <em>at least one</em> element of <code>flags</code> is <code>true</code>. [1]
-(b) Write code that determines whether <em>all</em> elements of <code>flags</code> are <code>true</code>. [1]
-© Write code that counts how many elements of <code>flags</code> are <code>true</code>. [1]
+<p>(a) Write code that determines whether <em>at least one</em> element of <code>flags</code> is <code>true</code>. [1]<br>
+(b) Write code that determines whether <em>all</em> elements of <code>flags</code> are <code>true</code>. [1]<br>
+© Write code that counts how many elements of <code>flags</code> are <code>true</code>. [1]<br>
 (d) State the boolean result of (a), the boolean result of (b), and the count from ©. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">boolean</span><span class="w"> </span><span class="n">anyTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
@@ -943,8 +943,8 @@ body::before {
 <p>[1]</p>
 <p>(d) (a) is <code>true</code> (index 0 is true); (b) is <code>false</code> (index 1 is false); © is <code>3</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.5.3 — Consecutive Pairs and Duplicates (4 marks)</div><div class="callout-body"><p><code>int[] nums = {3, 7, 3, 2, 9};</code></p>
-<p>(a) List all four consecutive pairs <code>(nums[i], nums[i+1])</code>. [1]
-(b) Write a loop that computes the largest <em>difference</em> between any two consecutive elements (absolute value). [2]
+<p>(a) List all four consecutive pairs <code>(nums[i], nums[i+1])</code>. [1]<br>
+(b) Write a loop that computes the largest <em>difference</em> between any two consecutive elements (absolute value). [2]<br>
 © State whether the array contains duplicates, and justify with one sentence. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>(3,7)</code>, <code>(7,3)</code>, <code>(3,2)</code>, <code>(2,9)</code>. [1]</p>
 <p>(b)</p>
@@ -1135,7 +1135,7 @@ body::before {
 <span class="mf">19</span>
 </pre></div>
 </code></pre>
-<p>(a) Write the code that opens <code>temps.txt</code> and computes the average of all values. Include the required <code>import</code> statements. [3]
+<p>(a) Write the code that opens <code>temps.txt</code> and computes the average of all values. Include the required <code>import</code> statements. [3]<br>
 (b) Explain why <code>throws IOException</code> must appear in the method header, and what happens if <code>temps.txt</code> does not exist. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
@@ -1158,12 +1158,12 @@ body::before {
 <p>[3]</p>
 <p>(b) The <code>File</code> constructor and the <code>Scanner</code> methods must be able to indicate what to do if the file cannot be opened; adding <code>throws IOException</code> declares that the method may throw it and lets the program compile. If the file name is invalid (the file does not exist), the program terminates. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.6.2 — Scanner Behavior (4 marks)</div><div class="callout-body"><p>A Scanner named <code>input</code> is connected to a file containing the text: <code>12 hello 3.5 true</code></p>
-<p>(a) State the values returned by: <code>input.nextInt();</code> then <code>input.next();</code>. [2]
+<p>(a) State the values returned by: <code>input.nextInt();</code> then <code>input.next();</code>. [2]<br>
 (b) A programmer calls <code>input.nextBoolean();</code> as the next call after the ones in (a). What happens, and why? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>nextInt()</code> returns <code>12</code>; <code>next()</code> returns <code>&quot;hello&quot;</code> (the next token as a <code>String</code>). [2]</p>
 <p>(b) The next token is <code>3.5</code>, which is not a <code>boolean</code>, so <code>nextBoolean()</code> cannot convert it and throws an <code>InputMismatchException</code> — the same behavior as when a next value of the requested type does not exist. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.6.3 — Using `split` and `hasNext` (4 marks)</div><div class="callout-body"><p>The file <code>line.txt</code> contains exactly one line: <code>apples,bananas,cherries</code></p>
-<p>(a) Write code that reads the single line and prints each fruit on its own line. [2]
+<p>(a) Write code that reads the single line and prints each fruit on its own line. [2]<br>
 (b) Write a <code>while</code> loop using <code>hasNext()</code> that reads <code>int</code> values from a Scanner connected to <code>data.txt</code> and prints each value doubled, then closes the file. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">File</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&quot;line.txt&quot;</span><span class="p">);</span>
@@ -1265,23 +1265,23 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.7.1 — Autoboxing and Unboxing (4 marks)</div><div class="callout-body"><p>For each statement, state whether it is legal, and if so identify it as <strong>autoboxing</strong>, <strong>unboxing</strong>, or <strong>neither</strong>.</p>
-<p>(a) <code>Integer num = 42;</code> [1]
-(b) <code>int value = num;</code> (continuing from (a)) [1]
-© <code>Double d = 3;</code> [1]
+<p>(a) <code>Integer num = 42;</code> [1]<br>
+(b) <code>int value = num;</code> (continuing from (a)) [1]<br>
+© <code>Double d = 3;</code> [1]<br>
 (d) <code>int p = Integer.parseInt(&quot;100&quot;);</code> [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Legal — autoboxing: the <code>int</code> <code>42</code> is automatically converted to an <code>Integer</code> object. [1]</p>
 <p>(b) Legal — unboxing: the <code>Integer</code> object is automatically converted back to an <code>int</code>. [1]</p>
 <p>© Legal — autoboxing: the <code>int</code> <code>3</code> is automatically converted to a <code>Double</code> (the <code>int</code> is widened to <code>double</code>, then boxed). [1]</p>
 <p>(d) Legal — neither: <code>Integer.parseInt</code> takes a <code>String</code> and returns an <code>int</code>; no wrapper conversion happens at all. [1]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.7.2 — Storing Primitives in an ArrayList (3 marks)</div><div class="callout-body"><p>(a) Explain why the code <code>ArrayList&lt;Integer&gt; nums = new ArrayList&lt;Integer&gt;(); nums.add(7);</code> works even though <code>7</code> is a primitive <code>int</code>. [1]
-(b) The code <code>int x = nums.get(0);</code> works. Explain what conversion happens and why it is needed. [1]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.7.2 — Storing Primitives in an ArrayList (3 marks)</div><div class="callout-body"><p>(a) Explain why the code <code>ArrayList&lt;Integer&gt; nums = new ArrayList&lt;Integer&gt;(); nums.add(7);</code> works even though <code>7</code> is a primitive <code>int</code>. [1]<br>
+(b) The code <code>int x = nums.get(0);</code> works. Explain what conversion happens and why it is needed. [1]<br>
 © State why <code>ArrayList&lt;int&gt; scores;</code> would not compile. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Autoboxing: the compiler converts the primitive <code>int</code> <code>7</code> into an <code>Integer</code> object before <code>add</code> stores it in the list. [1]</p>
 <p>(b) <code>nums.get(0)</code> returns an <code>Integer</code> object; unboxing converts it back to a primitive <code>int</code> so it can be assigned to <code>x</code>. [1]</p>
 <p>© <code>ArrayList</code> stores object references, and <code>int</code> is a primitive type that cannot be a generic type argument. You must use the wrapper class <code>Integer</code> instead. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.7.3 — Parsing Strings (3 marks)</div><div class="callout-body"><p>A text file contains lines like <code>&quot;98&quot;</code> and <code>&quot;87.5&quot;</code> that were read as <code>String</code> tokens.</p>
-<p>(a) Write the statement that converts the <code>String</code> <code>&quot;98&quot;</code> into an <code>int</code>. [1]
-(b) Write the statement that converts the <code>String</code> <code>&quot;87.5&quot;</code> into a <code>double</code>. [1]
+<p>(a) Write the statement that converts the <code>String</code> <code>&quot;98&quot;</code> into an <code>int</code>. [1]<br>
+(b) Write the statement that converts the <code>String</code> <code>&quot;87.5&quot;</code> into a <code>double</code>. [1]<br>
 © State the result of <code>Integer.parseInt(&quot;12.5&quot;)</code> and explain why. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>int score = Integer.parseInt(&quot;98&quot;);</code> [1]</p>
 <p>(b) <code>double rate = Double.parseDouble(&quot;87.5&quot;);</code> [1]</p>
@@ -1398,7 +1398,7 @@ body::before {
 <span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 </pre></div>
 </code></pre>
-<p>(a) List the contents of <code>list</code> after each statement. [4]
+<p>(a) List the contents of <code>list</code> after each statement. [4]<br>
 (b) State the value of <code>x</code> and the final size of the list. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <ul>
@@ -1411,12 +1411,12 @@ body::before {
 </ul>
 <p>(b) <code>x == 30</code> (the removed element), and the final size is <code>3</code>. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.8.2 — set vs. add (4 marks)</div><div class="callout-body"><p><code>ArrayList&lt;String&gt; pets = new ArrayList&lt;String&gt;();</code> contains <code>[&quot;cat&quot;, &quot;dog&quot;, &quot;bird&quot;]</code>.</p>
-<p>(a) What does <code>pets.set(1, &quot;fish&quot;);</code> do to the list? Write the new contents and the new size. [2]
+<p>(a) What does <code>pets.set(1, &quot;fish&quot;);</code> do to the list? Write the new contents and the new size. [2]<br>
 (b) Starting again from <code>[&quot;cat&quot;, &quot;dog&quot;, &quot;bird&quot;]</code>, what does <code>pets.add(1, &quot;fish&quot;);</code> do? Write the new contents and the new size. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>set(1, &quot;fish&quot;)</code> replaces the element at index 1. New contents: <code>[&quot;cat&quot;, &quot;fish&quot;, &quot;bird&quot;]</code>; size stays <code>3</code>. It also returns the replaced element <code>&quot;dog&quot;</code>. [2]</p>
 <p>(b) <code>add(1, &quot;fish&quot;)</code> inserts a new element at index 1, shifting <code>&quot;dog&quot;</code> and <code>&quot;bird&quot;</code> right. New contents: <code>[&quot;cat&quot;, &quot;fish&quot;, &quot;dog&quot;, &quot;bird&quot;]</code>; size becomes <code>4</code>. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.8.3 — remove Shifts Indices Left (4 marks)</div><div class="callout-body"><p><code>ArrayList&lt;Integer&gt; nums = new ArrayList&lt;Integer&gt;();</code> contains <code>[5, 8, 3, 9, 2]</code>.</p>
-<p>(a) Trace: what is stored in <code>removed</code> after <code>int removed = nums.remove(2);</code>, and what are the new contents of <code>nums</code>? [2]
+<p>(a) Trace: what is stored in <code>removed</code> after <code>int removed = nums.remove(2);</code>, and what are the new contents of <code>nums</code>? [2]<br>
 (b) After the removal, the element that was <code>9</code> is now at which index? Explain why in one sentence. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>removed == 3</code> (the element formerly at index 2), and <code>nums</code> is now <code>[5, 8, 9, 2]</code>. [2]</p>
 <p>(b) Index 2. When an element is removed from the middle, every element at <code>index + 1</code> and higher shifts one position to the left: <code>9</code> (previously at index 3) moves to index 2 and <code>2</code> (previously at index 4) moves to index 3, leaving <code>[5, 8, 9, 2]</code>. [2]</p>
@@ -1718,8 +1718,8 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.10.1 — Min and Count on an ArrayList (5 marks)</div><div class="callout-body"><p><code>ArrayList&lt;Integer&gt; scores = new ArrayList&lt;Integer&gt;();</code> contains <code>[88, 92, 75, 88, 90]</code>.</p>
-<p>(a) Write code that finds the maximum value. [2]
-(b) Write code that counts how many elements equal <code>88</code>. [2]
+<p>(a) Write code that finds the maximum value. [2]<br>
+(b) Write code that counts how many elements equal <code>88</code>. [2]<br>
 © State the maximum and the count for this data. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scores</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
@@ -1743,12 +1743,12 @@ body::before {
 <p>[2]</p>
 <p>© Maximum is <code>92</code>; the count of <code>88</code>s is <code>2</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.10.2 — Inserting into a Sorted List (4 marks)</div><div class="callout-body"><p><code>ArrayList&lt;Integer&gt; nums</code> is <code>[1, 3, 5, 7]</code> (sorted ascending).</p>
-<p>(a) Trace the insert loop from the example with <code>value = 0</code> and state the final list. [2]
+<p>(a) Trace the insert loop from the example with <code>value = 0</code> and state the final list. [2]<br>
 (b) State what happens with <code>value = 8</code> — which position is chosen and what is the final list? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>pos</code> starts at 0. <code>nums.get(0) == 1</code>, and <code>1 &lt; 0</code> is false, so the loop stops at <code>pos = 0</code>. <code>nums.add(0, 0)</code> inserts at the front: <code>[0, 1, 3, 5, 7]</code>. [2]</p>
 <p>(b) The loop condition <code>pos &lt; nums.size() &amp;&amp; nums.get(pos) &lt; 8</code> stays true for every index, so <code>pos</code> ends at <code>size()</code> = 4 and the loop exits because <code>pos &lt; size()</code> is false. <code>nums.add(4, 8)</code> appends at the end: <code>[1, 3, 5, 7, 8]</code>. Inserting at index <code>size()</code> is valid because <code>add</code> accepts <code>0 &lt;= index &lt;= size</code>. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.10.3 — Reverse and Consecutive Pairs (4 marks)</div><div class="callout-body"><p><code>ArrayList&lt;Integer&gt; nums = new ArrayList&lt;Integer&gt;();</code> contains <code>[2, 4, 6, 8]</code>.</p>
-<p>(a) Write code that reverses <code>nums</code> in place using only <code>get</code>, <code>set</code>, and <code>size</code>. [2]
+<p>(a) Write code that reverses <code>nums</code> in place using only <code>get</code>, <code>set</code>, and <code>size</code>. [2]<br>
 (b) Write code that prints every consecutive pair <code>(nums.get(i), nums.get(i+1))</code>. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nums</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -1871,10 +1871,10 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.11.1 — Creating and Accessing 2D Arrays (6 marks)</div><div class="callout-body"><p>Given <code>int[][] grid = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};</code></p>
-<p>(a) State <code>grid.length</code> and <code>grid[0].length</code>. [1]
-(b) State the value of <code>grid[2][0]</code>. [1]
-© Write the statement that changes the element in row 1, column 2 to <code>50</code>. [1]
-(d) Write the statement that stores the middle row in an <code>int[]</code> variable called <code>middle</code>. [1]
+<p>(a) State <code>grid.length</code> and <code>grid[0].length</code>. [1]<br>
+(b) State the value of <code>grid[2][0]</code>. [1]<br>
+© Write the statement that changes the element in row 1, column 2 to <code>50</code>. [1]<br>
+(d) Write the statement that stores the middle row in an <code>int[]</code> variable called <code>middle</code>. [1]<br>
 (e) State what happens at run-time when <code>grid[3][0]</code> is accessed. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>grid.length &lt;mark&gt; 3</code> (rows), <code>grid[0].length &lt;/mark&gt; 3</code> (columns). [1]</p>
 <p>(b) <code>7</code> (row 2, column 0). [1]</p>
@@ -1882,16 +1882,16 @@ body::before {
 <p>(d) <code>int[] middle = grid[1];</code> — a single set of brackets with the row index returns that row. [1]</p>
 <p>(e) An <code>ArrayIndexOutOfBoundsException</code> — row indices are valid only from <code>0</code> through <code>grid.length - 1</code>, which is <code>2</code>. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.11.2 — Default Values (4 marks)</div><div class="callout-body"><p>Write down the complete contents of each 2D array after creation.</p>
-<p>(a) <code>int[][] nums = new int[2][3];</code> [1]
-(b) <code>double[][] vals = new double[2][2];</code> [1]
-© <code>boolean[][] marks = new boolean[1][4];</code> [1]
+<p>(a) <code>int[][] nums = new int[2][3];</code> [1]<br>
+(b) <code>double[][] vals = new double[2][2];</code> [1]<br>
+© <code>boolean[][] marks = new boolean[1][4];</code> [1]<br>
 (d) <code>String[][] words = new String[2][1];</code> [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>{{0, 0, 0}, {0, 0, 0}}</code> — default <code>int</code> is <code>0</code>. [1]</p>
 <p>(b) <code>{{0.0, 0.0}, {0.0, 0.0}}</code> — default <code>double</code> is <code>0.0</code>. [1]</p>
 <p>© <code>{{false, false, false, false}}</code> — default <code>boolean</code> is <code>false</code>. [1]</p>
 <p>(d) <code>{{null}, {null}}</code> — default for a reference type is <code>null</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.11.3 — Choosing a 2D Array (3 marks)</div><div class="callout-body"><p>A school wants to store the exam score of every student in every class section.</p>
-<p>(a) Explain why a 2D array is the most appropriate data structure, and describe how rows and columns should be assigned. [2]
+<p>(a) Explain why a 2D array is the most appropriate data structure, and describe how rows and columns should be assigned. [2]<br>
 (b) State one limitation of using a 2D array for this problem. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A 2D array is most suitable to represent a table. Assign rows to class sections and columns to students (or rows to students and columns to class sections), so each score is identified by a row index and a column index, e.g., <code>scores[section][student]</code>. [2]</p>
 <p>(b) The size of a 2D array is fixed at creation and cannot be changed, so if a new student enrolls (or a section grows beyond the planned number of columns), the array cannot grow. [1]</p>
@@ -2023,8 +2023,8 @@ body::before {
 </code></pre>
 <p>The outer loop fixes a column and the inner loop walks down that column, so the first line visits column 0 of all three rows. [4]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.12.3 — Enhanced For Loop Traversal (4 marks)</div><div class="callout-body"><p><code>String[][] words = {{&quot;a&quot;, &quot;b&quot;}, {&quot;c&quot;, &quot;d&quot;, &quot;e&quot;}, {&quot;f&quot;}};</code> — assume rectangular in all parts.</p>
-<p>(a) Write a nested enhanced <code>for</code> loop that prints every word followed by a space. [2]
-(b) Explain why the outer loop variable must be a <code>String[]</code>, not a <code>String</code>. [1]
+<p>(a) Write a nested enhanced <code>for</code> loop that prints every word followed by a space. [2]<br>
+(b) Explain why the outer loop variable must be a <code>String[]</code>, not a <code>String</code>. [1]<br>
 © The code below intends to change every word to <code>&quot;X&quot;</code>. State what actually happens. [1]</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">words</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">row</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2168,8 +2168,8 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.13.1 — Row Sums vs. Column Sums (5 marks)</div><div class="callout-body"><p><code>int[][] m = {{2, 4}, {6, 8}};</code></p>
-<p>(a) Write code that computes the sum of row 0. [2]
-(b) Write code that computes the sum of column 1. [2]
+<p>(a) Write code that computes the sum of row 0. [2]<br>
+(b) Write code that computes the sum of column 1. [2]<br>
 © State both sums. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">rowSum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
@@ -2189,8 +2189,8 @@ body::before {
 <p>[2]</p>
 <p>© Row 0 sum = <code>2 + 4 = 6</code>; column 1 sum = <code>4 + 8 = 12</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.13.2 — Whole-Array vs. Subsection (5 marks)</div><div class="callout-body"><p><code>int[][] scores = {{90, 80}, {70, 60}};</code></p>
-<p>(a) Write code that finds the maximum value in the entire 2D array. [2]
-(b) Write code that determines whether <em>at least one</em> element of row 1 is greater than 75. [2]
+<p>(a) Write code that finds the maximum value in the entire 2D array. [2]<br>
+(b) Write code that determines whether <em>at least one</em> element of row 1 is greater than 75. [2]<br>
 © State the maximum from (a) and the boolean result from (b). [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scores</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
@@ -2217,7 +2217,7 @@ body::before {
 <p>[2]</p>
 <p>© Maximum is <code>90</code>; row 1 is <code>{70, 60}</code>, so no element is greater than 75 and the result is <code>false</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.13.3 — Count and &quot;All&quot; on a Column (4 marks)</div><div class="callout-body"><p><code>boolean[][] seats = {{true, false}, {true, true}, {false, true}};</code></p>
-<p>(a) Write code that counts how many elements of column 0 are <code>true</code>. [2]
+<p>(a) Write code that counts how many elements of column 0 are <code>true</code>. [2]<br>
 (b) Write code that determines whether <em>all</em> elements of column 1 are <code>true</code>. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
@@ -2338,18 +2338,18 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.14.1 — Tracing Linear Search (4 marks)</div><div class="callout-body"><p><code>String[] names = {&quot;Ana&quot;, &quot;Ben&quot;, &quot;Cara&quot;, &quot;Dan&quot;, &quot;Eve&quot;};</code> — <code>names</code> is searched with a linear search for the value <code>&quot;Cara&quot;</code> starting at index 0.</p>
-<p>(a) List, in order, the indices checked before the value is found. [2]
-(b) State the index that is returned. [1]
+<p>(a) List, in order, the indices checked before the value is found. [2]<br>
+(b) State the index that is returned. [1]<br>
 © If the target is changed to <code>&quot;Zed&quot;</code>, how many elements are checked before the search stops, and what is returned? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Indices <code>0</code> (“Ana”), <code>1</code> (“Ben”), <code>2</code> (“Cara” — match). [2]</p>
 <p>(b) <code>2</code>. [1]</p>
 <p>© All 5 elements are checked (indices 0–4), the value is never found, and the search returns <code>-1</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.14.2 — Linear Search from Either End (4 marks)</div><div class="callout-body"><p><code>int[] nums = {3, 8, 1, 9, 4, 9};</code></p>
-<p>(a) Trace a linear search for the value <code>9</code> starting from the <strong>first</strong> element. State the index returned. [2]
+<p>(a) Trace a linear search for the value <code>9</code> starting from the <strong>first</strong> element. State the index returned. [2]<br>
 (b) Trace a linear search for the value <code>9</code> starting from the <strong>last</strong> element (back-to-front). State the index returned. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Front-to-back: checks index 0 (3), 1 (8), 2 (1), 3 (9 → match). Returns <code>3</code>. [2]</p>
 <p>(b) Back-to-front: checks index 5 (9 → match immediately). Returns <code>5</code>. This shows the search may begin from either end, and the answer can differ depending on which end is chosen. [2]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.14.3 — Linear Search on an ArrayList (4 marks)</div><div class="callout-body"><p>(a) Write a method that returns <code>true</code> if an <code>ArrayList&lt;String&gt;</code> contains a given word, using linear search. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.14.3 — Linear Search on an ArrayList (4 marks)</div><div class="callout-body"><p>(a) Write a method that returns <code>true</code> if an <code>ArrayList&lt;String&gt;</code> contains a given word, using linear search. [2]<br>
 (b) State whether linear search requires the list to be sorted, and give the worst-case number of elements checked for a list of size <code>n</code>. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">contains</span><span class="p">(</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2470,7 +2470,7 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.15.1 — Tracing Selection Sort (6 marks)</div><div class="callout-body"><p>Selection sort (smallest-first) is applied to <code>{7, 2, 9, 4, 1}</code>.</p>
-<p>(a) Write the array after each pass (each pass fixes one more element at the front). [4]
+<p>(a) Write the array after each pass (each pass fixes one more element at the front). [4]<br>
 (b) How many passes are needed to fully sort 5 elements, and why? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <ul>
@@ -2482,7 +2482,7 @@ body::before {
 </ul>
 <p>(b) <code>n - 1 = 4</code> passes. After fixing the first 4 elements into their final positions, the last element is automatically in place, so no 5th pass is needed. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.15.2 — Tracing Insertion Sort (6 marks)</div><div class="callout-body"><p>Insertion sort is applied to <code>{5, 3, 8, 6}</code>.</p>
-<p>(a) Write the array after each insertion step (the sorted prefix is shown before <code>|</code>). [4]
+<p>(a) Write the array after each insertion step (the sorted prefix is shown before <code>|</code>). [4]<br>
 (b) On the last step, list the elements that are shifted right (in order) before the new element is placed. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <ul>
@@ -2493,13 +2493,13 @@ body::before {
 </ul>
 <p>(b) Inserting <code>6</code> shifts <code>8</code>, then <code>5</code> right (each into <code>j + 1</code>); the loop stops at index 1 because <code>3 &lt; 6</code>, and <code>6</code> is placed at index 2. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.15.3 — Selection Sort: Passes and Swaps (4 marks)</div><div class="callout-body"><p>Selection sort (smallest-first) is applied to <code>{8, 8, 3, 3, 6}</code>.</p>
-<p>(a) Write the array after the first pass. [1]
-(b) How many swaps does the entire sort perform? (A “swap” that moves an element into the same position still counts as one swap in this code.) [2]
+<p>(a) Write the array after the first pass. [1]<br>
+(b) How many swaps does the entire sort perform? (A “swap” that moves an element into the same position still counts as one swap in this code.) [2]<br>
 © After the first pass, is <code>8</code> at index 1 in its final position? Explain in one sentence. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Smallest is <code>3</code> (index 2) → swap with index 0 → <code>{3, 8, 8, 3, 6}</code>. [1]</p>
 <p>(b) 4 swaps — one per pass (the loop runs <code>n - 1 = 4</code> passes). [2]</p>
 <p>© No — it is only guaranteed that the element swapped <em>into</em> the sorted portion is final; the <code>8</code> that moved to index 1 is still in the unsorted portion and may move again. [1]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.15.4 — Selection vs. Insertion (4 marks)</div><div class="callout-body"><p>(a) State the key difference between where selection sort and insertion sort place an element during the sort. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.15.4 — Selection vs. Insertion (4 marks)</div><div class="callout-body"><p>(a) State the key difference between where selection sort and insertion sort place an element during the sort. [2]<br>
 (b) Which algorithm typically requires fewer shifts when the array is <em>nearly</em> sorted, and why? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Selection sort swaps the smallest remaining element into its correct and <em>final</em> position at the front of the unsorted portion. Insertion sort inserts an element from the unsorted portion into its correct position within the already-sorted prefix, shifting elements to make room — that position is correct with respect to the current prefix but is not guaranteed to be the element’s final resting spot until the sort is complete. [2]</p>
 <p>(b) Insertion sort. On nearly sorted data, each element is already close to its spot, so very few shifts occur per insertion, and the sort finishes quickly. Selection sort performs the same number of comparisons regardless of the initial order. [2]</p>
@@ -2518,7 +2518,7 @@ body::before {
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Identify the sorting algorithm being implemented. [1]
+<p>(a) Identify the sorting algorithm being implemented. [1]<br>
 (b) Trace the code and write the list after <code>i = 0</code> completes, and after the entire sort. [3]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Selection sort (largest/smallest swap with the front) — at each <code>i</code>, the smallest element from indices <code>i</code> and beyond is swapped into index <code>i</code>. [1]</p>
 <p>(b) Start <code>[4, 1, 3, 2]</code>. <code>i = 0</code>: j=1 swaps → <code>[1, 4, 3, 2]</code>; j=2 no swap; j=3 no swap → after <code>i=0</code>, list is <code>[1, 4, 3, 2]</code>. <code>i=1</code>: j=2 → 3&lt;4 swap → <code>[1, 3, 4, 2]</code>; j=3 → 2&lt;3 swap → <code>[1, 2, 4, 3]</code>. <code>i=2</code>: j=3 → 3&lt;4 swap → <code>[1, 2, 3, 4]</code>. Final sorted list: <code>[1, 2, 3, 4]</code>. [3]</p>
@@ -2616,7 +2616,7 @@ body::before {
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) State the base case(s). [1]
+<p>(a) State the base case(s). [1]<br>
 (b) Show the call tree for <code>mystery(4)</code> and compute its return value. [4]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>n &lt;= 1</code> (i.e., <code>n &lt;mark&gt; 0</code> or <code>n &lt;/mark&gt; 1</code>), which returns <code>1</code>. [1]</p>
 <p>(b)</p>
@@ -2655,7 +2655,7 @@ mystery(4) = mystery(3) + mystery(2) = 3 + 2 = 5
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Explain why calling <code>bad(5)</code> never terminates. [2]
+<p>(a) Explain why calling <code>bad(5)</code> never terminates. [2]<br>
 (b) What error eventually occurs at run-time, and why? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The method has no base case — there is no condition that halts the recursion, so it keeps calling itself with smaller and smaller <code>n</code> forever. [2]</p>
 <p>(b) A <code>StackOverflowError</code>. Each recursive call places a new frame on the call stack, and the stack fills up because the calls never return. [2]</p>
@@ -2667,7 +2667,7 @@ mystery(4) = mystery(3) + mystery(2) = 3 + 2 = 5
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) State the base case and the recursive call (with the value passed). [2]
+<p>(a) State the base case and the recursive call (with the value passed). [2]<br>
 (b) Write an iterative version of <code>pow</code> that uses a <code>for</code> loop. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Base case: <code>exp == 0</code> returns <code>1</code>. Recursive call: <code>pow(base, exp - 1)</code>, combined as <code>base * pow(base, exp - 1)</code>. [2]</p>
 <p>(b)</p>
@@ -2689,7 +2689,7 @@ mystery(4) = mystery(3) + mystery(2) = 3 + 2 = 5
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) How many times is <code>countCalls</code> called (including the initial call) when the caller invokes <code>countCalls(3)</code>? [2]
+<p>(a) How many times is <code>countCalls</code> called (including the initial call) when the caller invokes <code>countCalls(3)</code>? [2]<br>
 (b) State the value returned by <code>countCalls(3)</code>. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) 4 calls: <code>countCalls(3)</code>, <code>countCalls(2)</code>, <code>countCalls(1)</code>, <code>countCalls(0)</code>. Each call has its own parameter value (<code>3</code>, <code>2</code>, <code>1</code>, <code>0</code>), demonstrating EK 4.16.A.2. [2]</p>
 <p>(b) <code>3</code>. Trace: <code>countCalls(3) = 1 + countCalls(2) = 1 + 1 + countCalls(1) = 1 + 1 + 1 + countCalls(0) = 1 + 1 + 1 + 0 = 3</code>. [2]</p>
@@ -2810,14 +2810,14 @@ Merge:   [27, 38]  [3, 43]    [9, 82]  [10]
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Trace <code>rev(&quot;ab&quot;)</code> and state what it returns. [3]
-(b) State, in one sentence, the general purpose of the method. [1]
+<p>(a) Trace <code>rev(&quot;ab&quot;)</code> and state what it returns. [3]<br>
+(b) State, in one sentence, the general purpose of the method. [1]<br>
 © State the base case. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>rev(&quot;ab&quot;) = rev(&quot;b&quot;) + 'a' = (rev(&quot;&quot;) + 'b') + 'a' = (&quot;&quot; + &quot;b&quot;) + &quot;a&quot; = &quot;ba&quot;</code>. So <code>rev(&quot;ab&quot;)</code> returns <code>&quot;ba&quot;</code>. [3]</p>
 <p>(b) The method reverses a <code>String</code>: it recursively reverses the substring after the first character, then appends the first character to the end. [1]</p>
 <p>© Base case: <code>s.length() == 0</code>, which returns the empty string. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.17.2 — Tracing Binary Search (5 marks)</div><div class="callout-body"><p>Binary search is run on the sorted array <code>{2, 4, 6, 8, 10, 12}</code> (indices 0–5) looking for the value <code>10</code>.</p>
-<p>(a) List each <code>(low, high, mid)</code> triple examined, with the value at <code>mid</code>, until the search ends. [4]
+<p>(a) List each <code>(low, high, mid)</code> triple examined, with the value at <code>mid</code>, until the search ends. [4]<br>
 (b) State the index returned. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <ul>
@@ -2825,7 +2825,7 @@ Merge:   [27, 38]  [3, 43]    [9, 82]  [10]
 <li><code>low=3, high=5, mid=4</code> → <code>arr[4]=10</code>, equal → found [4]</li>
 </ul>
 <p>(b) <code>4</code>. Only 2 middle-element checks were needed — linear search would have checked indices 0, 1, 2, 3, 4 (5 checks). [1]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.17.3 — Binary Search Preconditions and Failure (5 marks)</div><div class="callout-body"><p>(a) Explain why binary search requires the collection to be in sorted order, giving a concrete example of what can go wrong if it is not. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.17.3 — Binary Search Preconditions and Failure (5 marks)</div><div class="callout-body"><p>(a) Explain why binary search requires the collection to be in sorted order, giving a concrete example of what can go wrong if it is not. [2]<br>
 (b) Trace binary search on the sorted array <code>{2, 4, 6, 8}</code> for the target <code>5</code> (not present). List each <code>(low, high, mid)</code> triple and state the value returned. [3]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Binary search decides which half to eliminate based on whether the middle element is larger or smaller than the target. That decision is only valid if the array is ordered — e.g., searching <code>{6, 4, 2, 8}</code> for <code>2</code>: the middle element is <code>4</code>, and since <code>4 &gt; 2</code> the search eliminates the right half <code>{2, 8}</code>, incorrectly discarding the very value it is looking for. The data must be sorted first. [2]</p>
 <p>(b)</p>
@@ -2835,7 +2835,7 @@ Merge:   [27, 38]  [3, 43]    [9, 82]  [10]
 <li>Now <code>low=2 &gt; high=1</code>, the range is empty, so the search stops and returns <code>-1</code> (not found). [3]</li>
 </ul>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.17.4 — Tracing Merge Sort (6 marks)</div><div class="callout-body"><p>Merge sort is applied to <code>{5, 2, 8, 1, 9}</code>.</p>
-<p>(a) Write the split steps down to single elements. [3]
+<p>(a) Write the split steps down to single elements. [3]<br>
 (b) Write the merge steps until the array is fully sorted. [3]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Split:</p>
 <pre><code><div class="highlight"><pre><span></span><span class="k">[5, 2, 8, 1, 9]</span>
@@ -2853,7 +2853,7 @@ Merge:   [27, 38]  [3, 43]    [9, 82]  [10]
 </code></pre>
 <p>Final sorted array: <code>{1, 2, 5, 8, 9}</code>. [3]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.17.5 — Choosing a Search Algorithm (3 marks)</div><div class="callout-body"><p>A programmer has two arrays to search and must choose linear or binary search.</p>
-<p>(a) Array A has 1,000,000 numbers in random order. Which search must be used, and why? [2]
+<p>(a) Array A has 1,000,000 numbers in random order. Which search must be used, and why? [2]<br>
 (b) Array B has 1,000,000 numbers already sorted. Which search is typically more efficient, and why? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Linear search. Binary search requires sorted data (its precondition), and Array A is not sorted, so only linear search can be guaranteed to find a value correctly. [2]</p>
 <p>(b) Binary search — it eliminates half of the remaining elements at each step, so it is typically more efficient than linear search, which may check every element. [1]</p>

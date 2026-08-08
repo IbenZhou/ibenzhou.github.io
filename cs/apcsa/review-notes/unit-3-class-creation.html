@@ -230,9 +230,9 @@ body::before {
       <article class="card">
 <h1 id="section">Unit 3 — Class Creation: Review Notes</h1>
 <blockquote>
-<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025
-<strong>Exam Weight:</strong> 10–18% of AP Exam | <strong>Class Periods:</strong> ~20–22
-<strong>Topics:</strong> 3.1–3.9
+<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025<br>
+<strong>Exam Weight:</strong> 10–18% of AP Exam | <strong>Class Periods:</strong> ~20–22<br>
+<strong>Topics:</strong> 3.1–3.9<br>
 <strong>AP Classroom:</strong> Progress Checks — Part 1 (3.1–3.4) ~12 MCQ; Part 2 (3.5–3.9) ~15 MCQ + 2 FRQ (Class Design)</p>
 </blockquote>
 <hr>
@@ -362,7 +362,7 @@ body::before {
 <li><code>getTitle()</code> / <code>getBorrowCount()</code> — read information only (accessor methods). [2]</li>
 </ul>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.2 — Representing a Design with a Diagram (4 marks)</div><div class="callout-body"><p>The school needs a class to model a <code>Course</code>. A course has a name and a maximum capacity. A student can be enrolled, and the course reports its current enrollment and whether it is full.</p>
-<p>(a) Write a natural-language design that lists all attributes and behaviors of <code>Course</code>. [2]
+<p>(a) Write a natural-language design that lists all attributes and behaviors of <code>Course</code>. [2]<br>
 (b) Sketch the design as a simple UML-style diagram, marking which items are data and which are behaviors. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Attributes: course name, maximum capacity, current number of enrolled students. Behaviors: enroll a student, get the course name, get the current enrollment, determine whether the course is full. [2]</p>
 <p>(b)</p>
@@ -380,7 +380,7 @@ body::before {
 </code></pre>
 <p>Data are the three attributes; behaviors are the four methods. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.3 — Benefits of Procedural Abstraction (3 marks)</div><div class="callout-body"><p>A programmer wrote one long 80-line method to play a game, and another programmer broke the same task into five small methods.</p>
-<p>(a) Explain how method decomposition helps reduce complexity. [1]
+<p>(a) Explain how method decomposition helps reduce complexity. [1]<br>
 (b) The programmer later changes how the “score for landing on a square” is calculated to make it faster. Explain why users of the game class do not need to be told about the change. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Method decomposition breaks a larger behavior into smaller behaviors, each implemented as its own method. Each small method is easier to read, test, and debug, and shared logic can be reused instead of duplicated. [1]</p>
 <p>(b) Because of procedural abstraction, users only need to know what the method does, not how it does it. As long as the method signature (name and parameter types) and the method’s behavior are preserved, the internal implementation can change freely without requiring users to update their code. [2]</p>
@@ -453,16 +453,16 @@ body::before {
 </pre></div>
 </code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.1 — Testing for System Reliability (4 marks)</div><div class="callout-body"><p>A program tracks a bank account balance. It has a method <code>withdraw(double amount)</code> that subtracts the amount from the balance.</p>
-<p>(a) State two different conditions (sets of input values) the programmer should test, other than a normal withdrawal, and explain why each is important. [2]
+<p>(a) State two different conditions (sets of input values) the programmer should test, other than a normal withdrawal, and explain why each is important. [2]<br>
 (b) Explain why testing with a variety of conditions helps maximize system reliability. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Accept, for example: (1) withdrawing an amount larger than the balance (boundary/invalid case — ensures the program handles overdrafts without producing a negative balance or crashing); (2) withdrawing exactly 0 or exactly the entire balance (boundary case — ensures exact limits behave as expected); (3) withdrawing a negative amount (invalid input — ensures the program rejects nonsensical input). Any two such conditions with a reason are acceptable. [2]</p>
 <p>(b) System reliability means the program performs its tasks as expected under stated conditions without failure. Testing with a variety of conditions — normal, boundary, and invalid inputs — reveals failures before the program is used, so the programmer can fix them and the program behaves correctly in the situations it will actually face. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.2 — Beneficial and Harmful Impacts (4 marks)</div><div class="callout-body"><p>Consider a ride-sharing app that uses an algorithm to connect drivers with passengers.</p>
-<p>(a) Describe one beneficial impact of this program on the economy and one on society. [2]
+<p>(a) Describe one beneficial impact of this program on the economy and one on society. [2]<br>
 (b) Describe one harmful or unintended effect the program could have that was not part of its intended use. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Economy: it creates a new source of income for drivers and reduces the cost of transportation for passengers, making travel cheaper and more available. Society: it can reduce reliance on personal cars, easing traffic congestion and providing mobility in areas with limited public transit. [2]</p>
 <p>(b) Accept any reasonable unintended effect, for example: surge pricing can make rides unaffordable in emergencies; increased congestion as more cars stay on the road; unfair treatment of drivers or passengers by the rating algorithm; collection of location data that raises privacy concerns. The point: programs that fill a need can produce unintended harmful effects beyond their intended use. [2]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.3 — Code Reuse and Intellectual Property (2 marks)</div><div class="callout-body"><p>(a) A programmer finds a sorting routine published under an open-source license. Explain what they may do with it and why this benefits programmers. [1]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.3 — Code Reuse and Intellectual Property (2 marks)</div><div class="callout-body"><p>(a) A programmer finds a sorting routine published under an open-source license. Explain what they may do with it and why this benefits programmers. [1]<br>
 (b) The same programmer finds an unlicensed sorting routine in a competitor’s product. What must they do before incorporating it into their own program, and why? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Because the routine is open source, the programmer is free to use it in their program. This benefits programmers because reusing tested, published code saves time and effort. [1]</p>
 <p>(b) Because the code is not published as open source, the programmer must obtain permission from the owner — and often purchase a license — before integrating it. Incorporating it without permission violates intellectual property rights. [1]</p>
@@ -582,7 +582,7 @@ body::before {
 <li>Private method — <code>private</code> (accessible only inside the class).</li>
 </ol>
 <p>(1 mark each, 5 total.)</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.3.2 — Encapsulation and Access (4 marks)</div><div class="callout-body"><p>(a) Define data encapsulation and explain why instance variables are made <code>private</code> in this course. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.3.2 — Encapsulation and Access (4 marks)</div><div class="callout-body"><p>(a) Define data encapsulation and explain why instance variables are made <code>private</code> in this course. [2]<br>
 (b) A method is designated <code>private</code>. Who can call it, and who cannot? Give an example use of a private method. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Data encapsulation keeps the implementation details of a class hidden from external classes. Instance variables are made <code>private</code> so that external classes cannot directly read or change the internal data; they must go through the class’s public methods, which protects the state of the object. [2]</p>
 <p>(b) A <code>private</code> method can only be called from within the class in which it is declared (internal access). Classes outside the declaring class cannot call it. Example: a private helper method such as <code>checkMinimum()</code> that is used by several public methods internally. [2]</p>
@@ -612,7 +612,7 @@ body::before {
 <span class="n">b</span><span class="p">.</span><span class="na">setPages</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span><span class="w">                </span><span class="c1">// line 3</span>
 </pre></div>
 </code></pre>
-<p>(a) Which line(s) fail to compile? Explain why. [2]
+<p>(a) Which line(s) fail to compile? Explain why. [2]<br>
 (b) Describe two ways a programmer could correctly change the page count from outside the class. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Line 2 fails because <code>pages</code> is a <code>private</code> instance variable and cannot be accessed from outside the <code>Book</code> class. Line 3 fails because <code>setPages</code> is a <code>private</code> method, so it can only be called from inside <code>Book</code>. Line 1 works because <code>getTitle()</code> is public. [2]</p>
 <p>(b) Either change <code>setPages</code> to be <code>public</code>, or add a new public method (e.g., <code>setPages(int p)</code> or <code>readMore(int p)</code>) that internally assigns to the private <code>pages</code> variable. In both cases, external code goes through a public behavior rather than touching the private data directly. [2]</p>
@@ -712,14 +712,14 @@ body::before {
 <span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
 </pre></div>
 </code></pre>
-<p>(a) What is the default value of each attribute when the object is created? [2]
+<p>(a) What is the default value of each attribute when the object is created? [2]<br>
 (b) Explain what the default constructor is and when Java provides it. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>count</code> is <code>0</code>, <code>rate</code> is <code>0.0</code>, <code>active</code> is <code>false</code>, <code>name</code> is <code>null</code> (reference types default to <code>null</code>). [2]</p>
 <p>(b) The default constructor is a no-parameter constructor that Java provides automatically <strong>only when no constructor is written at all</strong>. It sets all instance variables to their default values. If the programmer writes any constructor, Java no longer provides the default constructor. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.2 — Writing Constructors (6 marks)</div><div class="callout-body"><p>Design the class <code>Student</code> with private instance variables <code>name</code> (String) and <code>grade</code> (int).</p>
-<p>(a) Write the class header and the instance variable declarations. [1]
-(b) Write a constructor that takes a name and a grade and initializes both attributes. [2]
-© Write a second, overloaded constructor that takes only a name and sets the grade to a default value of <code>0</code>. [2]
+<p>(a) Write the class header and the instance variable declarations. [1]<br>
+(b) Write a constructor that takes a name and a grade and initializes both attributes. [2]<br>
+© Write a second, overloaded constructor that takes only a name and sets the grade to a default value of <code>0</code>. [2]<br>
 (d) Explain why writing these two constructors does not leave a “default constructor” available, and what would happen if client code called <code>new Student()</code>. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Student</span><span class="w"> </span><span class="p">{</span>
@@ -746,7 +746,7 @@ body::before {
 <p>(2 marks)</p>
 <p>(d) Once a programmer writes any constructor, Java no longer provides the implicit no-parameter default constructor. Calling <code>new Student()</code> would be a compile-time error because there is no matching no-parameter constructor. (1 mark)</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.3 — Mutable Object Parameter (4 marks)</div><div class="callout-body"><p>A <code>BankAccount</code> class stores the customer’s address as a <code>String[]</code> (mutable). The constructor receives <code>String[] addr</code>.</p>
-<p>(a) Explain the danger of assigning <code>address = addr;</code> directly, using EK 3.4.A.3. [2]
+<p>(a) Explain the danger of assigning <code>address = addr;</code> directly, using EK 3.4.A.3. [2]<br>
 (b) Write the constructor body that correctly initializes the <code>address</code> instance variable with a copy of the referenced array. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) If <code>address = addr;</code> is used, the instance variable holds a reference to the same array as the caller’s. Because an array is mutable, a method could change an element of the array, which would modify the original object’s array too — changing the state of the original object that was passed in. The instance variable should be initialized with a copy so the account’s data cannot be altered from outside. [2]</p>
 <p>(b)</p>
@@ -760,7 +760,7 @@ body::before {
 </pre></div>
 </code></pre>
 <p>This copies the contents into a new array, so the instance variable does not hold a reference to the original object. (2 marks)</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.4 — State and Has-a Relationship (3 marks)</div><div class="callout-body"><p>(a) Define the <em>state</em> of an object and explain how it relates to instance variables. [1]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.4 — State and Has-a Relationship (3 marks)</div><div class="callout-body"><p>(a) Define the <em>state</em> of an object and explain how it relates to instance variables. [1]<br>
 (b) A <code>Car</code> class has instance variables <code>make</code>, <code>model</code>, and <code>fuel</code>. State two different <code>Car</code> objects and describe how their states differ. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The state of an object refers to its attributes and their values at a given time; it is defined by the instance variables belonging to the object. Because each object has its own copies of the instance variables, the state is unique to each instance — this is the <em>has-a</em> relationship between an object and its instance variables. [1]</p>
 <p>(b) For example: <code>Car c1 = new Car(&quot;Toyota&quot;, &quot;Corolla&quot;, 10.0);</code> has state make “Toyota”, model “Corolla”, fuel 10.0; <code>Car c2 = new Car(&quot;Honda&quot;, &quot;Civic&quot;, 5.5);</code> has state make “Honda”, model “Civic”, fuel 5.5. The two objects have the same attributes but different values, so their states differ. [2]</p>
@@ -915,8 +915,8 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Write the exact output of the program. [3]
-(b) Explain how the <code>return</code> statement in <code>setCount</code> affects the value of <code>count</code>. [2]
+<p>(a) Write the exact output of the program. [3]<br>
+(b) Explain how the <code>return</code> statement in <code>setCount</code> affects the value of <code>count</code>. [2]<br>
 © State whether <code>increment</code> and <code>getCount</code> are mutator, accessor, void, or non-void methods. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output:</p>
 <pre><code><div class="highlight"><pre><span></span><span class="mf">6</span>
@@ -927,7 +927,7 @@ public         void        deposit(double amount)      { ... }
 <p>Trace: <code>c</code> starts at 5; <code>increment()</code> makes it 6 (prints 6). <code>setCount(-3)</code> returns early because <code>newCount &lt; 0</code>, so count stays 6 (prints 6). <code>setCount(9)</code> sets count to 9 (prints 9). [3]</p>
 <p>(b) The <code>return</code> statement in <code>setCount</code> executes when <code>newCount &lt; 0</code>, halting the method immediately before the assignment <code>count = newCount</code> runs, so <code>count</code> is left unchanged. Code after a <code>return</code> never executes. [2]</p>
 <p>© <code>increment</code> is a void mutator method (changes state, returns nothing). <code>getCount</code> is a non-void accessor method (returns a value, does not change state). [1]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.2 — Primitive Parameters Are Copies (4 marks)</div><div class="callout-body"><p>(a) Write a method <code>addTax(double price, double rate)</code> that returns the price plus <code>price * rate</code> as a double. Include the full method header and body. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.2 — Primitive Parameters Are Copies (4 marks)</div><div class="callout-body"><p>(a) Write a method <code>addTax(double price, double rate)</code> that returns the price plus <code>price * rate</code> as a double. Include the full method header and body. [2]<br>
 (b) In the method call <code>double p = 100.0; addTax(p, 0.08);</code> explain why <code>p</code> is still <code>100.0</code> after the call, referencing EK 3.S.A.8. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">addTax</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">rate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -938,15 +938,15 @@ public         void        deposit(double amount)      { ... }
 <p>(2 marks)</p>
 <p>(b) When the argument is a primitive value, the parameter is initialized with a copy of that value. <code>p</code> is a primitive <code>double</code>, so <code>price</code> receives a copy of <code>100.0</code>; any changes to <code>price</code> inside the method have no effect on <code>p</code>, and since the method only returns a value without modifying <code>price</code>’s copy in a way that affects <code>p</code>, <code>p</code> remains <code>100.0</code>. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.3 — Accessor vs Mutator Classification (3 marks)</div><div class="callout-body"><p>Classify each method as an <strong>accessor</strong> or a <strong>mutator</strong>, and state whether its header is <code>void</code> or a non-void return type.</p>
-<p>(a) <code>public void deposit(double amount)</code> that adds <code>amount</code> to <code>balance</code>.
-(b) <code>public double getBalance()</code> that returns <code>balance</code>.
+<p>(a) <code>public void deposit(double amount)</code> that adds <code>amount</code> to <code>balance</code>.<br>
+(b) <code>public double getBalance()</code> that returns <code>balance</code>.<br>
 © <code>public void setOwner(String newOwner)</code> that assigns <code>owner = newOwner</code>.</p>
-</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Mutator — void header. It changes the value of an instance variable and returns nothing.
-(b) Accessor — non-void header (<code>double</code>). It returns a copy of the value of an instance variable.
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Mutator — void header. It changes the value of an instance variable and returns nothing.<br>
+(b) Accessor — non-void header (<code>double</code>). It returns a copy of the value of an instance variable.<br>
 © Mutator — void header. It changes the value of an instance variable and returns nothing.</p>
 <p>(1 mark each.)</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.4 — Writing an FRQ-Style Method (4 marks)</div><div class="callout-body"><p>In the <code>BankAccount</code> class, instance variable <code>balance</code> is <code>private</code>. Write the method described below in full.</p>
-<p>(a) Write a mutator method <code>transferTo(BankAccount other, double amount)</code> that is <code>void</code>. If <code>amount</code> is greater than <code>this</code> account’s balance, it does nothing. Otherwise it subtracts <code>amount</code> from this account’s balance and adds it to the <code>other</code> account’s balance, using the methods already available in each account. [2]
+<p>(a) Write a mutator method <code>transferTo(BankAccount other, double amount)</code> that is <code>void</code>. If <code>amount</code> is greater than <code>this</code> account’s balance, it does nothing. Otherwise it subtracts <code>amount</code> from this account’s balance and adds it to the <code>other</code> account’s balance, using the methods already available in each account. [2]<br>
 (b) State what precondition(s) must hold for the method to work as intended. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">transferTo</span><span class="p">(</span><span class="n">BankAccount</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -1049,7 +1049,7 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.1 — Reference vs. Primitive Arguments (6 marks)</div><div class="callout-body"><p>(a) Explain the difference between passing a primitive value and passing an object reference to a method. [2]
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.1 — Reference vs. Primitive Arguments (6 marks)</div><div class="callout-body"><p>(a) Explain the difference between passing a primitive value and passing an object reference to a method. [2]<br>
 (b) A method <code>change(int n, BankAccount acc)</code> sets <code>n = 99</code> and calls <code>acc.deposit(25.0)</code>. If the caller passes the primitive <code>int total = 10</code> and a <code>BankAccount b</code> with balance <code>50.0</code>, what is the value of <code>total</code> and the balance of <code>b</code> after the call? Explain. [4]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A primitive argument is passed by value: the parameter is initialized with a copy of the value, so changes to the parameter have no effect on the argument. An object reference argument is also copied, but the copy refers to the same object; so while reassigning the parameter has no effect on the caller’s variable, using the reference to change a mutable object’s state <strong>does</strong> change the object that the caller also sees. [2]</p>
 <p>(b) <code>total</code> remains <code>10</code> (primitives are passed by copy). The balance of <code>b</code> becomes <code>75.0</code> because <code>acc</code> holds a copy of the reference to the same object as <code>b</code>, and <code>deposit(25.0)</code> alters the state of that shared object. [4]</p>
@@ -1059,16 +1059,16 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) The return expression evaluates to an object reference. Explain what the method returns and why it is <em>not</em> “a reference to a new copy of the object” in the sense of EK 3.6.A.2. [2]
+<p>(a) The return expression evaluates to an object reference. Explain what the method returns and why it is <em>not</em> “a reference to a new copy of the object” in the sense of EK 3.6.A.2. [2]<br>
 (b) Compare <code>copy()</code> with a method <code>public BankAccount getSelf() { return this; }</code>. For two calls <code>BankAccount p = a.copy();</code> and <code>BankAccount q = a.getSelf();</code>, does <code>p &lt;mark&gt; a</code>? Does <code>q &lt;/mark&gt; a</code>? Explain. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) EK 3.6.A.2 says that when a return expression evaluates to an object reference, that reference is returned — the method does not automatically create a new copy. In <code>copy()</code>, a <strong>new</strong> object is explicitly created with <code>new</code>, so the method returns the reference to that new object; returning a reference to an existing object would return that object’s reference, not a fresh copy. The distinction: the reference itself is returned in both cases, not a copy of the object. [2]</p>
 <p>(b) <code>p &lt;mark&gt; a</code> is <code>false</code> because <code>copy()</code> created a brand-new object with <code>new</code>. <code>q &lt;/mark&gt; a</code> is <code>true</code> because <code>getSelf()</code> returns the very same reference stored in <code>a</code> — both refer to the identical object. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.3 — Private Data Through Parameters (4 marks)</div><div class="callout-body"><p>In <code>transferTo(BankAccount other, double amount)</code>, the method body reads <code>other.balance</code>.</p>
-<p>(a) State the condition under which a method may access the private data of an object passed to it as a parameter, per EK 3.6.A.3. [2]
+<p>(a) State the condition under which a method may access the private data of an object passed to it as a parameter, per EK 3.6.A.3. [2]<br>
 (b) Suppose class <code>Bank</code> (a different class) receives a <code>BankAccount</code> parameter. The method in <code>Bank</code> attempts to read <code>acc.balance</code> directly. Will it compile? Explain, and describe the correct approach. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A method can access the private data (and private methods) of a parameter that holds a reference to an object only if the parameter is the same type as the method’s enclosing class. <code>transferTo</code> is in <code>BankAccount</code>, and <code>other</code> is a <code>BankAccount</code>, so <code>other.balance</code> is accessible. [2]</p>
 <p>(b) No, it will not compile. The method is declared in class <code>Bank</code>, which is not the same type as the <code>BankAccount</code> parameter, so <code>acc.balance</code> is private and inaccessible. The correct approach is to use the public methods of <code>BankAccount</code>, such as <code>acc.getBalance()</code> or <code>acc.deposit(...)</code>. [2]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.4 — Object References as Return Values (4 marks)</div><div class="callout-body"><p>(a) A <code>getAccount()</code> method returns the reference to a stored <code>BankAccount</code>. A client writes <code>BankAccount c = acct.getAccount();</code> and then calls <code>c.deposit(10);</code>. Will the change appear in the original stored account? Explain with reference to EK 3.6.A.2. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.4 — Object References as Return Values (4 marks)</div><div class="callout-body"><p>(a) A <code>getAccount()</code> method returns the reference to a stored <code>BankAccount</code>. A client writes <code>BankAccount c = acct.getAccount();</code> and then calls <code>c.deposit(10);</code>. Will the change appear in the original stored account? Explain with reference to EK 3.6.A.2. [2]<br>
 (b) Describe one situation in which a programmer <em>would</em> intentionally return the reference to an internal object, and one reason it is usually safer to return a copy. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Yes. <code>getAccount()</code> returns the reference to the same object that is stored, not a copy. <code>c</code> and the stored reference both point to the identical object, so a mutation through <code>c</code> changes the stored object’s state. [2]</p>
 <p>(b) Intentional: returning an internal reference is fine when the object is immutable (its state cannot change, e.g., <code>String</code>). Safer to return a copy when the object is mutable and external code could alter internal state unexpectedly, so the caller’s changes do not corrupt the class’s private data. [2]</p>
@@ -1209,8 +1209,8 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Write the exact output. [3]
-(b) Explain why <code>instances</code> is shared among all three objects while each <code>id</code> is different. [2]
+<p>(a) Write the exact output. [3]<br>
+(b) Explain why <code>instances</code> is shared among all three objects while each <code>id</code> is different. [2]<br>
 © Why must <code>getInstances()</code> be called as <code>Counter.getInstances()</code> rather than <code>c1.getInstances()</code>? (State the general rule for accessing class members.) [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output:</p>
 <pre><code><div class="highlight"><pre><span></span><span class="mf">3</span>
@@ -1221,11 +1221,11 @@ public         void        deposit(double amount)      { ... }
 <p>[3]</p>
 <p>(b) <code>instances</code> is declared <code>static</code>, so it belongs to the class: all objects share a single copy, and each constructor call increments that same copy. <code>id</code> is an instance variable, so each object has its own copy; c1’s is 1 and c3’s is 3. [2]</p>
 <p>© Class variables and class methods are associated with the class, not with objects, so they are accessed using the class name and the dot operator, e.g., <code>Counter.getInstances()</code>. (It also works through an object reference, but the class-name form is the correct convention per EK 3.7.B.2.) [1]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.2 — Class Method Rules (4 marks)</div><div class="callout-body"><p>(a) State the two rules that restrict what a class method may access, referencing EKs 3.7.A.1 and 3.7.A.2. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.2 — Class Method Rules (4 marks)</div><div class="callout-body"><p>(a) State the two rules that restrict what a class method may access, referencing EKs 3.7.A.1 and 3.7.A.2. [2]<br>
 (b) Class <code>Lamp</code> has instance variable <code>brightness</code> and class method <code>void dim()</code>. Explain why <code>dim()</code> cannot do <code>brightness -= 1;</code>, and show how it could be rewritten to legitimately change a Lamp’s brightness. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (1) A class method cannot access or change the values of instance variables, and cannot call instance methods, unless it is passed an instance of the class via a parameter (3.7.A.1). (2) A class method can access or change the values of class variables and can call other class methods (3.7.A.2). [2]</p>
 <p>(b) <code>dim()</code> is static, so it has no object context; <code>brightness</code> is an instance variable and there is no object whose <code>brightness</code> to change. It must be passed an instance: e.g., <code>public static void dim(Lamp l) { l.brightness -= 1; }</code> — then the instance variable can be accessed through the passed-in instance. [2]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.3 — Static Variables and Constants (4 marks)</div><div class="callout-body"><p>(a) Write the declaration of a public class variable named <code>MAX_SCORE</code> whose value is the <code>final</code> value <code>100</code>. Explain what <code>final</code> does. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.3 — Static Variables and Constants (4 marks)</div><div class="callout-body"><p>(a) Write the declaration of a public class variable named <code>MAX_SCORE</code> whose value is the <code>final</code> value <code>100</code>. Explain what <code>final</code> does. [2]<br>
 (b) Why is it typical to write <code>Math.PI</code> rather than creating an object of <code>Math</code> to get pi? Explain using the idea of class variables. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_SCORE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
@@ -1234,7 +1234,7 @@ public         void        deposit(double amount)      { ... }
 <p><code>final</code> means the value cannot be modified after it is set — it is a named constant, shared by the whole class. [2]</p>
 <p>(b) Because <code>PI</code> is a public class variable (<code>public static final double PI</code>), it belongs to the <code>Math</code> class rather than to any instance. Since it is associated with the class, it is accessed using the class name and the dot operator — <code>Math.PI</code> — with no object needed. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.4 — Shared Counter Design (3 marks)</div><div class="callout-body"><p>A <code>Student</code> class should assign each student a unique <code>id</code> starting at 1, and provide a class method <code>getStudentCount()</code>.</p>
-<p>(a) Declare the class variable needed to track the count and explain why it must be <code>static</code>. [2]
+<p>(a) Declare the class variable needed to track the count and explain why it must be <code>static</code>. [2]<br>
 (b) Write the class method <code>getStudentCount()</code> header and body. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nextId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
@@ -1339,7 +1339,7 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Write the exact output of line 2 and explain why, tracing line 1 carefully. [3]
+<p>(a) Write the exact output of line 2 and explain why, tracing line 1 carefully. [3]<br>
 (b) Show the corrected line 1 that sets the instance variable, and explain the concept from EK 3.8.A.2 that applies. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The output is <code>0</code>. In line 1, the parameter <code>value</code> has the same name as the instance variable <code>value</code>. Per EK 3.8.A.2, the name <code>value</code> refers to the local parameter inside the constructor, so <code>value = value;</code> assigns the parameter to itself and the instance variable is never set — it keeps its default value <code>0</code>. [3]</p>
 <p>(b) Corrected: <code>this.value = value;</code> The concept is <strong>shadowing</strong>: when a local variable or parameter has the same name as an instance variable, the name refers to the local variable within that block. <code>this.value</code> explicitly names the instance variable. [2]</p>
@@ -1363,8 +1363,8 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) For each variable A–E, state whether it is an instance variable, a parameter, or a local variable, and in which block(s) it can be used. [4]
-(b) Can any of the parameters or local variables be declared <code>public</code> or <code>private</code>? Explain. [1]
+<p>(a) For each variable A–E, state whether it is an instance variable, a parameter, or a local variable, and in which block(s) it can be used. [4]<br>
+(b) Can any of the parameters or local variables be declared <code>public</code> or <code>private</code>? Explain. [1]<br>
 © In <code>enlarge</code>, which variable does the name <code>factor</code> refer to, and why does that not conflict with the instance variable <code>width</code>? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A: instance variable — usable anywhere in the class. B: parameter of the constructor — usable only inside the constructor. C: local variable — usable only inside the constructor block. D: parameter of <code>enlarge</code> — usable only inside <code>enlarge</code>. E: local variable — usable only inside <code>enlarge</code>. [4]</p>
 <p>(b) No. Local variables and parameters can only be used within the block in which they are declared and cannot be declared <code>public</code> or <code>private</code>; access modifiers apply only to class-level members. [1]</p>
@@ -1379,7 +1379,7 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Explain why the error occurs, using the concept of scope. [2]
+<p>(a) Explain why the error occurs, using the concept of scope. [2]<br>
 (b) Rewrite the code correctly so that <code>getTotal()</code> can use the fee, keeping instance variables appropriate. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>fee</code> is a local variable declared in the block of <code>totalWithFee</code>. Local variables can only be accessed in the block in which they are declared, so <code>getTotal</code> cannot see <code>fee</code> — it is out of scope there. [2]</p>
 <p>(b) Make <code>fee</code> an instance variable (or a class variable) of the class so it is accessible anywhere in the class:</p>
@@ -1511,8 +1511,8 @@ public         void        deposit(double amount)      { ... }
 <span class="p">}</span>
 </pre></div>
 </code></pre>
-<p>(a) Trace the code and write the exact output. [2]
-(b) In the constructor, explain what <code>this.x = x;</code> does and why <code>x = x;</code> would be wrong. [2]
+<p>(a) Trace the code and write the exact output. [2]<br>
+(b) In the constructor, explain what <code>this.x = x;</code> does and why <code>x = x;</code> would be wrong. [2]<br>
 © In <code>p1.move(2, 5)</code>, explain what <code>this</code> refers to and why the same call on <code>p2</code> behaves differently. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output:</p>
 <pre><code><div class="highlight"><pre><span></span>(5, 9)
@@ -1523,7 +1523,7 @@ public         void        deposit(double amount)      { ... }
 <p>(b) <code>this.x</code> is the instance variable of the current object being constructed; <code>x</code> (on the right) is the parameter. <code>this.x = x;</code> copies the parameter into the instance variable. <code>x = x;</code> would assign the parameter to itself — the instance variable would remain at its default value (shadowing). [2]</p>
 <p>© <code>this</code> is a reference to the object on which the method was called — for <code>p1.move(2, 5)</code>, <code>this</code> is the object referenced by <code>p1</code>, so <code>p1</code>’s <code>x</code> and <code>y</code> change. When the same call runs on <code>p2</code>, <code>this</code> refers to <code>p2</code>’s object, so <code>p2</code>’s coordinates change instead. <code>this</code> always means “the current object.” [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.2 — Passing `this` as an Argument (4 marks)</div><div class="callout-body"><p>A <code>BankAccount</code> has a class method <code>public static boolean canTransfer(BankAccount from, BankAccount to, double amount)</code>.</p>
-<p>(a) Write an instance method <code>transfer(double amount, BankAccount to)</code> that uses <code>this</code> to pass the current object as the “from” account in a call to <code>canTransfer</code>. [2]
+<p>(a) Write an instance method <code>transfer(double amount, BankAccount to)</code> that uses <code>this</code> to pass the current object as the “from” account in a call to <code>canTransfer</code>. [2]<br>
 (b) Explain why passing <code>this</code> is necessary here, referencing EK 3.9.A.2. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">transfer</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="n">BankAccount</span><span class="w"> </span><span class="kd">to</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -1536,7 +1536,7 @@ public         void        deposit(double amount)      { ... }
 </code></pre>
 <p>[2]</p>
 <p>(b) The class method <code>canTransfer</code> needs the <em>current</em> object to compare with <code>to</code> and <code>amount</code>. The keyword <code>this</code> holds a reference to the current object — the object whose method is being called — so <code>this</code> is passed as the argument to hand that object to the class method. This is exactly the use described in EK 3.9.A.2. [2]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.3 — this in Constructors and Class Methods (5 marks)</div><div class="callout-body"><p>(a) Rewrite this constructor using <code>this(...)</code> constructor chaining: a <code>Student</code> full constructor takes <code>name</code> and <code>grade</code>; the one-parameter constructor should delegate with grade <code>0</code>. [2]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.3 — this in Constructors and Class Methods (5 marks)</div><div class="callout-body"><p>(a) Rewrite this constructor using <code>this(...)</code> constructor chaining: a <code>Student</code> full constructor takes <code>name</code> and <code>grade</code>; the one-parameter constructor should delegate with grade <code>0</code>. [2]<br>
 (b) Determine whether each code segment compiles. For each, write “compiles” or “error” and give the reason.</p>
 <pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w">                 </span><span class="c1">// segment 1</span>
 <span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w">                        </span><span class="c1">// segment 2</span>
@@ -1557,8 +1557,8 @@ public         void        deposit(double amount)      { ... }
 </code></pre>
 <p>[2]</p>
 <p>(b) Segment 1: error — <code>this</code> cannot be used in a class (static) method because class methods have no <code>this</code> reference (EK 3.9.A.3). Segment 2: compiles — inside an instance method, <code>this</code> holds a reference to the current object. Segment 3: compiles — it is a class method, but it uses the parameter <code>s</code>, not <code>this</code>. [3]</p>
-</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.4 — Is `this` Needed? (3 marks)</div><div class="callout-body"><p>(a) State whether <code>this</code> is required in <code>return balance;</code> inside an accessor, and what it would be if written as <code>return this.balance;</code>. [1]
-(b) A constructor has no parameters named the same as instance variables. Is <code>this</code> required to initialize the instance variables? Explain. [1]
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.4 — Is `this` Needed? (3 marks)</div><div class="callout-body"><p>(a) State whether <code>this</code> is required in <code>return balance;</code> inside an accessor, and what it would be if written as <code>return this.balance;</code>. [1]<br>
+(b) A constructor has no parameters named the same as instance variables. Is <code>this</code> required to initialize the instance variables? Explain. [1]<br>
 © Why does <code>this(...)</code> constructor chaining save work, and what restriction must the chained call satisfy? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>this</code> is optional when there is no shadowing — <code>return balance;</code> returns the instance variable. <code>return this.balance;</code> is the fully explicit form, referencing the current object’s instance variable. [1]</p>
 <p>(b) No. <code>this</code> is only needed to disambiguate when a parameter or local variable has the same name as an instance variable. Without shadowing, <code>owner = name;</code> already refers to the instance variable. [1]</p>
