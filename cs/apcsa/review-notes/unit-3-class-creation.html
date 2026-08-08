@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 Class Creation — AP CSA Review Notes</title>
+<style>
+:root {
+  --bg: #f3f5ee;
+  --card-bg: #fbfcf7;
+  --text: #33382f;
+  --text-secondary: #8a9183;
+  --accent: #4a6741;
+  --accent-light: #e7eee1;
+  --border: #dde4d3;
+  --code-bg: #edf1e6;
+  --ink: #252b21;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2e4527 0%, #4a6741 45%, #6f8f60 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,220,180,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #3d5235;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #3d5c35;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #262e22;
+  color: #e2ead8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #3d4a36;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e6f0c8; color: #43501f; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #eef3e9; border-color: #c9d9bf; }
+.callout-exercise .callout-title { background: #e0ebd8; color: #33502a; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #262e22; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #3d4a36 }
+.highlight .c { color: #8c9a80 }
+.highlight .k { color: #a8c79a }
+.highlight .s { color: #c8d8b6 }
+.highlight .n { color: #e2ead8 }
+.highlight .p { color: #b0bca4 }
+.highlight .o { color: #9cbc88 }
+.highlight .mi { color: #a8c79a }
+.highlight .mf { color: #a8c79a }
+.highlight .m { color: #a8c79a }
+.highlight .nb { color: #a8c79a }
+.highlight .nc { color: #b8d4a8 }
+.highlight .nd { color: #b8d4a8 }
+.highlight .nf { color: #b8d4a8 }
+.highlight .nn { color: #b8d4a8 }
+.highlight .kt { color: #a8c79a }
+.highlight .bp { color: #e2ead8 }
+.highlight .kn { color: #9cbc88 }
+.highlight .ow { color: #9cbc88 }
+.highlight .kc { color: #a8c79a }
+.highlight .kd { color: #a8c79a }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8d8b6 }
+.highlight .err { color: #e2ead8; background: none }
+.highlight .w { color: #e2ead8 }
+.highlight .nt { color: #b8d4a8 }
+.highlight .na { color: #c8d8b6 }
+.highlight .nl { color: #e2ead8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../apcsa.html" class="site-title">AP CSA Review Notes</a>
+    <span class="site-subtitle"><a href="../apcsa.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSA 版块</a> &nbsp;·&nbsp; 4 units · 180 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Unit 3 · Class Creation</h1>
+    <p>AP Exam Weight 10–18% · ~20–22 class periods · 9 topics (3.1–3.9)</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 3.1 — Abstraction and Program Design</a></li>
+<li><a href="#section_5">Topic 3.2 — Impact of Program Design</a></li>
+<li><a href="#section_8">Topic 3.3 — Anatomy of a Class</a></li>
+<li><a href="#section_11">Topic 3.4 — Constructors</a></li>
+<li><a href="#section_14">Topic 3.5 — Methods: How to Write Them</a></li>
+<li><a href="#section_17">Topic 3.6 — Methods: Passing and Returning References of an Object</a></li>
+<li><a href="#section_20">Topic 3.7 — Class Variables and Methods</a></li>
+<li><a href="#section_23">Topic 3.8 — Scope and Access</a></li>
+<li><a href="#section_26">Topic 3.9 — this Keyword</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Unit 3 — Class Creation: Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025
+<strong>Exam Weight:</strong> 10–18% of AP Exam | <strong>Class Periods:</strong> ~20–22
+<strong>Topics:</strong> 3.1–3.9
+<strong>AP Classroom:</strong> Progress Checks — Part 1 (3.1–3.4) ~12 MCQ; Part 2 (3.5–3.9) ~15 MCQ + 2 FRQ (Class Design)</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>This unit pulls together information from Units 1 and 2 to create new, user-defined reference data types in the form of classes. The ability to accurately model real-world entities in a computer program is a large part of what makes computer science so powerful. By designing their own classes, programmers are not limited to the existing classes provided in the Java libraries and can represent their own ideas. This unit focuses on identifying the appropriate attributes and behaviors of real-world entities and organizing these into classes and their corresponding methods. It also addresses the legal and ethical concerns that come with creating programs and the responsibilities of programmers.</p>
+<p>In this unit you will learn to:</p>
+<ul>
+<li>Design and implement a class based on program specifications, including the class header, <code>private</code> instance variables, constructors, and methods.</li>
+<li>Identify the attributes (data) that define an object of a class and the behaviors (methods) that define what an object of a class does.</li>
+<li>Use access modifiers (<code>public</code> and <code>private</code>) to control access to classes, data, constructors, and methods.</li>
+<li>Write constructors that set the initial state of an object and understand default values.</li>
+<li>Write methods that use primitive values and object references, including accessor and mutator methods.</li>
+<li>Use class (static) variables and class (static) methods.</li>
+<li>Explain scope and access rules for local variables, parameters, and instance variables.</li>
+<li>Use the <code>this</code> keyword to write self-referencing expressions.</li>
+<li>Explain the social, economic, cultural, and ethical implications of computing systems.</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li><strong>Access modifiers matter on the FRQ:</strong> On Question 2 (Class Design), instance variables should be <code>private</code>, while constructors and the methods the specification requires are <code>public</code>. Private helper methods are allowed.</li>
+<li><strong>Constructor vs. method:</strong> A constructor has the same name as the class, has no return type (not even <code>void</code>), and is called with <code>new</code>. A method has a return type and is called with a dot.</li>
+<li><strong>Instance vs. static:</strong> Instance variables/methods belong to each object and are accessed through a reference; class (static) variables/methods belong to the class and are accessed through the class name. Only <code>static</code> members can be used inside a class method without an object reference.</li>
+<li><strong><code>this</code> and shadowing:</strong> <code>this</code> refers to the current object in an instance method or constructor. Use it to disambiguate a parameter with the same name as an instance variable (<code>this.balance = balance</code>). Class methods have no <code>this</code> reference.</li>
+<li><strong>Question 2 (Class Design)</strong> provides a scenario and a specification table describing methods and their behavior. Read the table carefully, match method signatures exactly, and follow the preconditions described.</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 3.1 — Abstraction and Program Design</h2>
+<h3 id="section_3">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.1.A.1</td>
+<td><strong>Abstraction</strong></td>
+<td>The process of reducing complexity by focusing on the main idea. By hiding details irrelevant to the question at hand and bringing together related, useful details, abstraction reduces complexity and lets you focus on the idea.</td>
+</tr>
+<tr>
+<td>3.1.A.2</td>
+<td><strong>Data abstraction</strong></td>
+<td>A separation between the abstract properties of a data type and the concrete details of its representation. Data abstraction manages complexity by giving data a name without referencing the specific details of its representation. Data can be a single variable or a collection of data, such as in a class or a set of data.</td>
+</tr>
+<tr>
+<td>3.1.A.3</td>
+<td><strong>Attribute, instance variable, class variable</strong></td>
+<td>An attribute is a type of data abstraction defined in a class outside any method or constructor. An instance variable’s value is unique to each instance of the class. A class variable is shared by all instances of the class.</td>
+</tr>
+<tr>
+<td>3.1.A.4</td>
+<td><strong>Procedural abstraction, method decomposition</strong></td>
+<td>Procedural abstraction gives a name to a process so a method can be used knowing only what it does, not how it does it. Method decomposition breaks larger behaviors into smaller behaviors implemented as methods. Extracting shared features generalizes functionality instead of duplicating code, enabling code reuse.</td>
+</tr>
+<tr>
+<td>3.1.A.5</td>
+<td><strong>Parameters generalize procedures</strong></td>
+<td>Using parameters allows procedures to be generalized so they can be reused with a range of input values or arguments.</td>
+</tr>
+<tr>
+<td>3.1.A.6</td>
+<td><strong>Changing method internals</strong></td>
+<td>Using procedural abstraction lets programmers change the internals of a method (to make it faster, more efficient, use less storage, etc.) without notifying method users, as long as the method signature and what the method does is preserved.</td>
+</tr>
+<tr>
+<td>3.1.A.7</td>
+<td><strong>Design before implementation</strong></td>
+<td>Prior to implementing a class, it is helpful to design each class, including its attributes and behaviors. This design can be represented using natural language or diagrams (e.g., UML).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.1.A:</strong> Represent the design of a program by using natural language or creating diagrams that indicate the classes in the program and the data and procedural abstractions found in each class by including all attributes and behaviors.</p>
+<p><strong>Design process:</strong> Think about a real-world entity → pick the nouns (attributes) and the verbs (behaviors) → group them into a class → sketch the design in natural language or a UML diagram → then write the Java code.</p>
+<h3 id="section_4">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Design step 1: Identify attributes and behaviors of a &quot;Car&quot;</span>
+<span class="c1">// Attributes (data/nouns):   make, model, fuel (double)</span>
+<span class="c1">// Behaviors (methods/verbs): drive(), refuel(), getFuel()</span>
+
+<span class="c1">// Design step 2: Represent the design in natural language / UML</span>
+<span class="c1">// Car</span>
+<span class="c1">// ------</span>
+<span class="c1">// - make : String</span>
+<span class="c1">// - model : String</span>
+<span class="c1">// - fuel : double</span>
+<span class="c1">// ------</span>
+<span class="c1">// + drive(double miles) : void</span>
+<span class="c1">// + refuel(double gallons) : void</span>
+<span class="c1">// + getFuel() : double</span>
+
+<span class="c1">// Design step 3: Implement the class</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Car</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">make</span><span class="p">;</span><span class="w">      </span><span class="c1">// data abstraction: a named attribute</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">fuel</span><span class="p">;</span><span class="w">      </span><span class="c1">// in gallons</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Car</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">carMake</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">carModel</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">startFuel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">make</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">carMake</span><span class="p">;</span>
+<span class="w">        </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">carModel</span><span class="p">;</span>
+<span class="w">        </span><span class="n">fuel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">startFuel</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Procedural abstraction: we know WHAT drive does, not HOW it works</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drive</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">miles</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fuel</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">miles</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">20.0</span><span class="p">;</span><span class="w">   </span><span class="c1">// assume 20 miles per gallon</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">refuel</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">gallons</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fuel</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">gallons</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getFuel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">fuel</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.1 — Identifying Attributes and Behaviors (4 marks)</div><div class="callout-body"><p>(a) Read the description below and list the attributes (data) and behaviors (actions) of a “Book” that would be useful in a library checkout program. [2]</p>
+<p><em>A book has a title, an author, and a unique ID number. The library can check the book out to a member and return it. The library also needs to know how many times the book has been borrowed.</em></p>
+<p>(b) For each behavior you listed in part (a), state whether it changes the state of the book or only reads information from it. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Attributes: title, author, unique ID number, number of times borrowed, and possibly the member the book is currently checked out to (or a “checked out” status). [2]</p>
+<p>(b) Behaviors:</p>
+<ul>
+<li><code>checkOut(member)</code> — changes state (records who borrowed it, increments borrow count).</li>
+<li><code>returnBook()</code> — changes state (clears the borrower).</li>
+<li><code>getTitle()</code> / <code>getBorrowCount()</code> — read information only (accessor methods). [2]</li>
+</ul>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.2 — Representing a Design with a Diagram (4 marks)</div><div class="callout-body"><p>The school needs a class to model a <code>Course</code>. A course has a name and a maximum capacity. A student can be enrolled, and the course reports its current enrollment and whether it is full.</p>
+<p>(a) Write a natural-language design that lists all attributes and behaviors of <code>Course</code>. [2]
+(b) Sketch the design as a simple UML-style diagram, marking which items are data and which are behaviors. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Attributes: course name, maximum capacity, current number of enrolled students. Behaviors: enroll a student, get the course name, get the current enrollment, determine whether the course is full. [2]</p>
+<p>(b)</p>
+<pre><code><div class="highlight"><pre><span></span>Course
+--------
+- name : String
+- maxCapacity : int
+- enrolled : int
+--------
++ enroll() : void
++ getName() : String
++ getEnrolled() : int
++ isFull() : boolean
+</pre></div>
+</code></pre>
+<p>Data are the three attributes; behaviors are the four methods. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.3 — Benefits of Procedural Abstraction (3 marks)</div><div class="callout-body"><p>A programmer wrote one long 80-line method to play a game, and another programmer broke the same task into five small methods.</p>
+<p>(a) Explain how method decomposition helps reduce complexity. [1]
+(b) The programmer later changes how the “score for landing on a square” is calculated to make it faster. Explain why users of the game class do not need to be told about the change. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Method decomposition breaks a larger behavior into smaller behaviors, each implemented as its own method. Each small method is easier to read, test, and debug, and shared logic can be reused instead of duplicated. [1]</p>
+<p>(b) Because of procedural abstraction, users only need to know what the method does, not how it does it. As long as the method signature (name and parameter types) and the method’s behavior are preserved, the internal implementation can change freely without requiring users to update their code. [2]</p>
+</div></details><hr>
+<h2 id="section_5">Topic 3.2 — Impact of Program Design</h2>
+<h3 id="section_6">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.2.A.1</td>
+<td><strong>System reliability</strong></td>
+<td>Refers to the program being able to perform its tasks as expected under stated conditions without failure. Programmers should make an effort to maximize system reliability by testing the program with a variety of conditions.</td>
+</tr>
+<tr>
+<td>3.2.A.2</td>
+<td><strong>Impacts of programs</strong></td>
+<td>The creation of programs has impacts on society, the economy, and culture. These impacts can be both beneficial and harmful. Programs meant to fill a need or solve a problem can have unintended harmful effects beyond their intended use.</td>
+</tr>
+<tr>
+<td>3.2.A.3</td>
+<td><strong>Legal issues and intellectual property</strong></td>
+<td>Programmers often reuse code written by others and published as open source and free to use. Incorporating code that is not published as open source requires the programmer to obtain permission and often to purchase the code before integrating it into their program.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.2.A:</strong> Explain the social and ethical implications of computing systems.</p>
+<p>Key ideas to internalize for the exam:</p>
+<ul>
+<li><strong>Reliability requires testing:</strong> A reliable system performs its tasks under stated conditions without failure. Testing with a variety of conditions (normal, boundary, and invalid inputs) helps catch failures early.</li>
+<li><strong>Dual nature of impact:</strong> A program designed to solve a problem can also cause unintended harm. Consider <em>who</em> is affected, <em>how</em>, and whether the effect is beneficial or harmful to society, the economy, and culture.</li>
+<li><strong>Code reuse and licenses:</strong> Open-source code is free to use. Code that is not open source must be licensed — you need permission and often must pay before integrating it.</li>
+<li><strong>Responsible programming:</strong> A responsible programmer tests thoroughly, respects licenses and intellectual property, and considers the broader consequences of their code.</li>
+</ul>
+<h3 id="section_7">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Reliability example: test a method with a variety of conditions</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Grades</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Precondition: scores is not null and has at least one element</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">computeAverage</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">scores</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">scores</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">scores</span><span class="p">.</span><span class="na">length</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getAverage</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">average</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Grades</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Grades</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Test variety of conditions to maximize system reliability:</span>
+<span class="w">        </span><span class="n">g</span><span class="p">.</span><span class="na">computeAverage</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="p">{</span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="mi">85</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">});</span><span class="w">       </span><span class="c1">// normal case</span>
+<span class="w">        </span><span class="n">g</span><span class="p">.</span><span class="na">computeAverage</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="p">{</span><span class="mi">100</span><span class="p">});</span><span class="w">              </span><span class="c1">// single element</span>
+<span class="w">        </span><span class="n">g</span><span class="p">.</span><span class="na">computeAverage</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">});</span><span class="w">          </span><span class="c1">// boundary (all zeros)</span>
+<span class="w">        </span><span class="n">g</span><span class="p">.</span><span class="na">computeAverage</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="p">{</span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">});</span><span class="w">      </span><span class="c1">// unusual data</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="na">getAverage</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.1 — Testing for System Reliability (4 marks)</div><div class="callout-body"><p>A program tracks a bank account balance. It has a method <code>withdraw(double amount)</code> that subtracts the amount from the balance.</p>
+<p>(a) State two different conditions (sets of input values) the programmer should test, other than a normal withdrawal, and explain why each is important. [2]
+(b) Explain why testing with a variety of conditions helps maximize system reliability. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Accept, for example: (1) withdrawing an amount larger than the balance (boundary/invalid case — ensures the program handles overdrafts without producing a negative balance or crashing); (2) withdrawing exactly 0 or exactly the entire balance (boundary case — ensures exact limits behave as expected); (3) withdrawing a negative amount (invalid input — ensures the program rejects nonsensical input). Any two such conditions with a reason are acceptable. [2]</p>
+<p>(b) System reliability means the program performs its tasks as expected under stated conditions without failure. Testing with a variety of conditions — normal, boundary, and invalid inputs — reveals failures before the program is used, so the programmer can fix them and the program behaves correctly in the situations it will actually face. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.2 — Beneficial and Harmful Impacts (4 marks)</div><div class="callout-body"><p>Consider a ride-sharing app that uses an algorithm to connect drivers with passengers.</p>
+<p>(a) Describe one beneficial impact of this program on the economy and one on society. [2]
+(b) Describe one harmful or unintended effect the program could have that was not part of its intended use. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Economy: it creates a new source of income for drivers and reduces the cost of transportation for passengers, making travel cheaper and more available. Society: it can reduce reliance on personal cars, easing traffic congestion and providing mobility in areas with limited public transit. [2]</p>
+<p>(b) Accept any reasonable unintended effect, for example: surge pricing can make rides unaffordable in emergencies; increased congestion as more cars stay on the road; unfair treatment of drivers or passengers by the rating algorithm; collection of location data that raises privacy concerns. The point: programs that fill a need can produce unintended harmful effects beyond their intended use. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.3 — Code Reuse and Intellectual Property (2 marks)</div><div class="callout-body"><p>(a) A programmer finds a sorting routine published under an open-source license. Explain what they may do with it and why this benefits programmers. [1]
+(b) The same programmer finds an unlicensed sorting routine in a competitor’s product. What must they do before incorporating it into their own program, and why? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Because the routine is open source, the programmer is free to use it in their program. This benefits programmers because reusing tested, published code saves time and effort. [1]</p>
+<p>(b) Because the code is not published as open source, the programmer must obtain permission from the owner — and often purchase a license — before integrating it. Incorporating it without permission violates intellectual property rights. [1]</p>
+</div></details><hr>
+<h2 id="section_8">Topic 3.3 — Anatomy of a Class</h2>
+<h3 id="section_9">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.3.A.1</td>
+<td><strong>Data encapsulation</strong></td>
+<td>A technique in which the implementation details of a class are kept hidden from external classes. The keyword <code>private</code> restricts access to the declaring class, while <code>public</code> allows access from classes outside the declaring class.</td>
+</tr>
+<tr>
+<td>3.3.A.2</td>
+<td><strong>Class header</strong></td>
+<td>In this course, classes are always designated <code>public</code> and are declared with the keyword <code>class</code> (e.g., <code>public class BankAccount</code>).</td>
+</tr>
+<tr>
+<td>3.3.A.3</td>
+<td><strong>Constructors</strong></td>
+<td>In this course, constructors are always designated <code>public</code>.</td>
+</tr>
+<tr>
+<td>3.3.A.4</td>
+<td><strong>Instance variables</strong></td>
+<td>Instance variables belong to the object, and each object has its own copy of the variable.</td>
+</tr>
+<tr>
+<td>3.3.A.5</td>
+<td><strong>Private attributes</strong></td>
+<td>Access to attributes should be kept internal to the class to accomplish encapsulation. It is good programming practice to designate instance variables as <code>private</code> unless the class specification states otherwise.</td>
+</tr>
+<tr>
+<td>3.3.A.6</td>
+<td><strong>Method access</strong></td>
+<td>Access to behaviors can be internal or external to the class. <code>public</code> methods can be accessed internally or externally; <code>private</code> methods can only be accessed internally to the class.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.3.A:</strong> Develop code to designate access and visibility constraints to classes, data, constructors, and methods.</p>
+<p><strong>The parts of a class, in order:</strong></p>
+<ol>
+<li><strong>Class header</strong> — <code>public class ClassName</code></li>
+<li><strong>Instance variables</strong> (attributes) — declared <code>private</code>, before any constructor or method</li>
+<li><strong>Constructors</strong> — <code>public</code>, same name as the class, set the initial state</li>
+<li><strong>Methods</strong> — behaviors; can be <code>public</code> or <code>private</code></li>
+</ol>
+<p>We begin building a coherent <code>BankAccount</code> example that will be extended in Topics 3.4–3.9.</p>
+<h3 id="section_10">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.3: The skeleton of a class — header, attributes, constructor, methods</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span><span class="w">                     </span><span class="c1">// 1. class header (always public)</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span><span class="w">                      </span><span class="c1">// 2. instance variables: private,</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span><span class="w">                    </span><span class="c1">//    one copy per object</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// 3. constructor (always public)</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">               </span><span class="c1">// 4a. public method: callable from</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span><span class="w">                        </span><span class="c1">//     inside or outside the class</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkMinimum</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">              </span><span class="c1">// 4b. private method: only callable</span>
+<span class="w">        </span><span class="c1">// internal helper — hidden from other classes</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">balance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">25.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Low balance warning&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Encapsulation in action: the data is private, behavior is public</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Alex&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">getBalance</span><span class="p">());</span><span class="w">    </span><span class="c1">// OK: public method, external access</span>
+
+<span class="w">        </span><span class="c1">// System.out.println(a.balance);      // ERROR: balance is private —</span>
+<span class="w">                                               </span><span class="c1">// cannot be accessed from outside</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.3.1 — Label the Parts of a Class (5 marks)</div><div class="callout-body"><p>Given the following class, label each numbered part with its correct name (class header, instance variable, constructor, public method, private method) and state the access level of each part.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Temperature</span><span class="w"> </span><span class="p">{</span><span class="w">          </span><span class="c1">// 1</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">celsius</span><span class="p">;</span><span class="w">         </span><span class="c1">// 2</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Temperature</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// 3</span>
+<span class="w">        </span><span class="n">celsius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getFahrenheit</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 4</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">celsius</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">9.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">5.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">32.0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">warnHot</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">        </span><span class="c1">// 5</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;It&#39;s hot!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><ol>
+<li>Class header — <code>public</code> (accessible from any class).</li>
+<li>Instance variable — <code>private</code> (only accessible inside <code>Temperature</code>).</li>
+<li>Constructor — <code>public</code> (can be called from any class).</li>
+<li>Public method — <code>public</code> (accessible inside and outside the class).</li>
+<li>Private method — <code>private</code> (accessible only inside the class).</li>
+</ol>
+<p>(1 mark each, 5 total.)</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.3.2 — Encapsulation and Access (4 marks)</div><div class="callout-body"><p>(a) Define data encapsulation and explain why instance variables are made <code>private</code> in this course. [2]
+(b) A method is designated <code>private</code>. Who can call it, and who cannot? Give an example use of a private method. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Data encapsulation keeps the implementation details of a class hidden from external classes. Instance variables are made <code>private</code> so that external classes cannot directly read or change the internal data; they must go through the class’s public methods, which protects the state of the object. [2]</p>
+<p>(b) A <code>private</code> method can only be called from within the class in which it is declared (internal access). Classes outside the declaring class cannot call it. Example: a private helper method such as <code>checkMinimum()</code> that is used by several public methods internally. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.3.3 — Which Line Fails to Compile? (4 marks)</div><div class="callout-body"><p>Consider this class and the code that follows.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Book</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pages</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Book</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getTitle</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPages</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">pages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">Book</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Book</span><span class="p">(</span><span class="s">&quot;Moby Dick&quot;</span><span class="p">);</span>
+<span class="n">String</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="na">getTitle</span><span class="p">();</span><span class="w">        </span><span class="c1">// line 1</span>
+<span class="n">b</span><span class="p">.</span><span class="na">pages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">300</span><span class="p">;</span><span class="w">                  </span><span class="c1">// line 2</span>
+<span class="n">b</span><span class="p">.</span><span class="na">setPages</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span><span class="w">                </span><span class="c1">// line 3</span>
+</pre></div>
+</code></pre>
+<p>(a) Which line(s) fail to compile? Explain why. [2]
+(b) Describe two ways a programmer could correctly change the page count from outside the class. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Line 2 fails because <code>pages</code> is a <code>private</code> instance variable and cannot be accessed from outside the <code>Book</code> class. Line 3 fails because <code>setPages</code> is a <code>private</code> method, so it can only be called from inside <code>Book</code>. Line 1 works because <code>getTitle()</code> is public. [2]</p>
+<p>(b) Either change <code>setPages</code> to be <code>public</code>, or add a new public method (e.g., <code>setPages(int p)</code> or <code>readMore(int p)</code>) that internally assigns to the private <code>pages</code> variable. In both cases, external code goes through a public behavior rather than touching the private data directly. [2]</p>
+</div></details><hr>
+<h2 id="section_11">Topic 3.4 — Constructors</h2>
+<h3 id="section_12">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.4.A.1</td>
+<td><strong>Object state, has-a</strong></td>
+<td>An object’s state refers to its attributes and their values at a given time and is defined by instance variables belonging to the object. This defines a <em>has-a</em> relationship between the object and its instance variables.</td>
+</tr>
+<tr>
+<td>3.4.A.2</td>
+<td><strong>Constructor</strong></td>
+<td>Used to set the initial state of an object, including initial values for all instance variables. When a constructor is called, memory is allocated for the object and the associated object reference is returned. Constructor parameters, if specified, provide data to initialize instance variables.</td>
+</tr>
+<tr>
+<td>3.4.A.3</td>
+<td><strong>Mutable object parameters</strong></td>
+<td>When a mutable object is a constructor parameter, the instance variable should be initialized with a copy of the referenced object. This prevents methods from modifying the state of the original object.</td>
+</tr>
+<tr>
+<td>3.4.A.4</td>
+<td><strong>Default constructor</strong></td>
+<td>When no constructor is written, Java provides a no-parameter constructor and the instance variables are set to default values according to the data type.</td>
+</tr>
+<tr>
+<td>3.4.A.5</td>
+<td><strong>Default values</strong></td>
+<td>Default value of <code>int</code> is <code>0</code>; <code>double</code> is <code>0.0</code>; <code>boolean</code> is <code>false</code>; a reference type is <code>null</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.4.A:</strong> Develop code to declare instance variables for the attributes to be initialized in the body of the constructors of a class.</p>
+<p>Rules of constructors:</p>
+<ul>
+<li>A constructor has the <strong>same name as the class</strong> and <strong>no return type</strong> (not even <code>void</code>).</li>
+<li>Constructors are always <code>public</code> in this course.</li>
+<li>A constructor should initialize <strong>all</strong> instance variables.</li>
+<li>Constructors are invoked with <code>new</code>; they return the object reference.</li>
+<li>If you write <strong>any</strong> constructor, Java does <strong>not</strong> provide the default constructor.</li>
+</ul>
+<h3 id="section_13">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.4: BankAccount with overloaded constructors</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Constructor 1: initializes both attributes from parameters</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Constructor 2: overloaded — only owner given, balance starts at 0.0</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w">              </span><span class="c1">// 0.0 is also the default value of double</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Usage</span>
+<span class="n">BankAccount</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Alex&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">500.0</span><span class="p">);</span><span class="w">  </span><span class="c1">// state: owner &quot;Alex&quot;, balance 500.0</span>
+<span class="n">BankAccount</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Bella&quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// state: owner &quot;Bella&quot;, balance 0.0</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.4: Default values — when NO constructor is written</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Point</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">      </span><span class="c1">// default value 0</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w">   </span><span class="c1">// default value 0.0</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">on</span><span class="p">;</span><span class="w"> </span><span class="c1">// default value false</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">tag</span><span class="p">;</span><span class="w"> </span><span class="c1">// default value null</span>
+<span class="w">    </span><span class="c1">// No constructor written -&gt; Java provides a no-parameter default constructor.</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PointTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Point</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Point</span><span class="p">();</span><span class="w">   </span><span class="c1">// default constructor is used</span>
+<span class="w">        </span><span class="c1">// p.x &lt;mark&gt; 0, p.y &lt;/mark&gt; 0.0, p.on &lt;mark&gt; false, p.tag &lt;/mark&gt; null</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.1 — Default Values (4 marks)</div><div class="callout-body"><p>A class has no constructor written and these instance variables:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">rate</span><span class="p">;</span>
+<span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">active</span><span class="p">;</span>
+<span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p>(a) What is the default value of each attribute when the object is created? [2]
+(b) Explain what the default constructor is and when Java provides it. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>count</code> is <code>0</code>, <code>rate</code> is <code>0.0</code>, <code>active</code> is <code>false</code>, <code>name</code> is <code>null</code> (reference types default to <code>null</code>). [2]</p>
+<p>(b) The default constructor is a no-parameter constructor that Java provides automatically <strong>only when no constructor is written at all</strong>. It sets all instance variables to their default values. If the programmer writes any constructor, Java no longer provides the default constructor. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.2 — Writing Constructors (6 marks)</div><div class="callout-body"><p>Design the class <code>Student</code> with private instance variables <code>name</code> (String) and <code>grade</code> (int).</p>
+<p>(a) Write the class header and the instance variable declarations. [1]
+(b) Write a constructor that takes a name and a grade and initializes both attributes. [2]
+© Write a second, overloaded constructor that takes only a name and sets the grade to a default value of <code>0</code>. [2]
+(d) Explain why writing these two constructors does not leave a “default constructor” available, and what would happen if client code called <code>new Student()</code>. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Student</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p>(1 mark)</p>
+<p>(b)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Student</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">studentName</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">studentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">studentName</span><span class="p">;</span>
+<span class="w">        </span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">studentGrade</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(2 marks)</p>
+<p>©</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Student</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">studentName</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">studentName</span><span class="p">;</span>
+<span class="w">        </span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(2 marks)</p>
+<p>(d) Once a programmer writes any constructor, Java no longer provides the implicit no-parameter default constructor. Calling <code>new Student()</code> would be a compile-time error because there is no matching no-parameter constructor. (1 mark)</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.3 — Mutable Object Parameter (4 marks)</div><div class="callout-body"><p>A <code>BankAccount</code> class stores the customer’s address as a <code>String[]</code> (mutable). The constructor receives <code>String[] addr</code>.</p>
+<p>(a) Explain the danger of assigning <code>address = addr;</code> directly, using EK 3.4.A.3. [2]
+(b) Write the constructor body that correctly initializes the <code>address</code> instance variable with a copy of the referenced array. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) If <code>address = addr;</code> is used, the instance variable holds a reference to the same array as the caller’s. Because an array is mutable, a method could change an element of the array, which would modify the original object’s array too — changing the state of the original object that was passed in. The instance variable should be initialized with a copy so the account’s data cannot be altered from outside. [2]</p>
+<p>(b)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="o">[</span><span class="n">addr</span><span class="p">.</span><span class="na">length</span><span class="o">]</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">addr</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">address</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>This copies the contents into a new array, so the instance variable does not hold a reference to the original object. (2 marks)</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.4 — State and Has-a Relationship (3 marks)</div><div class="callout-body"><p>(a) Define the <em>state</em> of an object and explain how it relates to instance variables. [1]
+(b) A <code>Car</code> class has instance variables <code>make</code>, <code>model</code>, and <code>fuel</code>. State two different <code>Car</code> objects and describe how their states differ. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The state of an object refers to its attributes and their values at a given time; it is defined by the instance variables belonging to the object. Because each object has its own copies of the instance variables, the state is unique to each instance — this is the <em>has-a</em> relationship between an object and its instance variables. [1]</p>
+<p>(b) For example: <code>Car c1 = new Car(&quot;Toyota&quot;, &quot;Corolla&quot;, 10.0);</code> has state make “Toyota”, model “Corolla”, fuel 10.0; <code>Car c2 = new Car(&quot;Honda&quot;, &quot;Civic&quot;, 5.5);</code> has state make “Honda”, model “Civic”, fuel 5.5. The two objects have the same attributes but different values, so their states differ. [2]</p>
+</div></details><hr>
+<h2 id="section_14">Topic 3.5 — Methods: How to Write Them</h2>
+<h3 id="section_15">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.S.A.1</td>
+<td><strong><code>void</code> methods</strong></td>
+<td>A <code>void</code> method does not return a value. Its header contains the keyword <code>void</code> before the method name.</td>
+</tr>
+<tr>
+<td>3.S.A.2</td>
+<td><strong>Non-void methods</strong></td>
+<td>A non-void method returns a single value. Its header includes the return type in place of the keyword <code>void</code>.</td>
+</tr>
+<tr>
+<td>3.S.A.3</td>
+<td><strong>Return by value</strong></td>
+<td>In non-void methods, a return expression compatible with the return type is evaluated, and the value is returned (return by value).</td>
+</tr>
+<tr>
+<td>3.S.A.4</td>
+<td><strong>The <code>return</code> keyword</strong></td>
+<td>Returns the flow of control to the point where the method or constructor was called. Any code sequentially after a <code>return</code> statement never executes. A <code>return</code> inside a selection or iteration statement halts the statement and exits the method or constructor.</td>
+</tr>
+<tr>
+<td>3.S.A.5</td>
+<td><strong>Accessor method</strong></td>
+<td>Allows objects of other classes to obtain a copy of the value of instance variables or class variables. An accessor is a non-void method.</td>
+</tr>
+<tr>
+<td>3.S.A.6</td>
+<td><strong>Mutator (modifier) method</strong></td>
+<td>Changes the values of instance variables or class variables. A mutator is often a void method.</td>
+</tr>
+<tr>
+<td>3.S.A.7</td>
+<td><strong>Methods with parameters</strong></td>
+<td>Receive values through those parameters and use those values in accomplishing the method’s task.</td>
+</tr>
+<tr>
+<td>3.S.A.8</td>
+<td><strong>Primitive arguments</strong></td>
+<td>When an argument is a primitive value, the parameter is initialized with a copy of that value. Changes to the parameter have no effect on the corresponding argument.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.S.A:</strong> Develop code to define behaviors of an object through methods written in a class using primitive values and determine the result of calling these methods.</p>
+<p>Anatomy of a method:</p>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>accessModifier  returnType  methodName(parameterList)  {
+    method body
+}
+public         double      getBalance()                { ... }
+public         void        deposit(double amount)      { ... }
+</pre></div>
+</code></pre>
+<h3 id="section_16">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.5: BankAccount methods — accessors, mutators, and void vs non-void</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Accessor (non-void): returns a copy of the balance value</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Accessor (non-void): returns the owner</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getOwner</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Mutator (void): changes state, returns nothing</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deposit</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Mutator (void): returns true/false via a boolean result — note the early return</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">withdraw</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">      </span><span class="c1">// return halts the method here</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">           </span><span class="c1">// code after the first return never runs when amount &gt; balance</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Primitive parameters are copies (EK 3.S.A.8)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CopyDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">        </span><span class="n">doubleValue</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w">          </span><span class="c1">// passes a COPY of 10</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w">   </span><span class="c1">// prints 10 — unchanged</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doubleValue</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">               </span><span class="c1">// only the parameter changes</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.1 — Output Tracing (6 marks)</div><div class="callout-body"><p>Given the following class, trace the code and determine the output.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Counter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Counter</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">increment</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setCount</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">newCount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newCount</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w">            </span><span class="c1">// exit early; count unchanged</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newCount</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CounterTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Counter</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Counter</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">        </span><span class="n">c</span><span class="p">.</span><span class="na">increment</span><span class="p">();</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="na">getCount</span><span class="p">());</span>
+<span class="w">        </span><span class="n">c</span><span class="p">.</span><span class="na">setCount</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="na">getCount</span><span class="p">());</span>
+<span class="w">        </span><span class="n">c</span><span class="p">.</span><span class="na">setCount</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="na">getCount</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Write the exact output of the program. [3]
+(b) Explain how the <code>return</code> statement in <code>setCount</code> affects the value of <code>count</code>. [2]
+© State whether <code>increment</code> and <code>getCount</code> are mutator, accessor, void, or non-void methods. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="mf">6</span>
+<span class="mf">6</span>
+<span class="mf">9</span>
+</pre></div>
+</code></pre>
+<p>Trace: <code>c</code> starts at 5; <code>increment()</code> makes it 6 (prints 6). <code>setCount(-3)</code> returns early because <code>newCount &lt; 0</code>, so count stays 6 (prints 6). <code>setCount(9)</code> sets count to 9 (prints 9). [3]</p>
+<p>(b) The <code>return</code> statement in <code>setCount</code> executes when <code>newCount &lt; 0</code>, halting the method immediately before the assignment <code>count = newCount</code> runs, so <code>count</code> is left unchanged. Code after a <code>return</code> never executes. [2]</p>
+<p>© <code>increment</code> is a void mutator method (changes state, returns nothing). <code>getCount</code> is a non-void accessor method (returns a value, does not change state). [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.2 — Primitive Parameters Are Copies (4 marks)</div><div class="callout-body"><p>(a) Write a method <code>addTax(double price, double rate)</code> that returns the price plus <code>price * rate</code> as a double. Include the full method header and body. [2]
+(b) In the method call <code>double p = 100.0; addTax(p, 0.08);</code> explain why <code>p</code> is still <code>100.0</code> after the call, referencing EK 3.S.A.8. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">addTax</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">rate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rate</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(2 marks)</p>
+<p>(b) When the argument is a primitive value, the parameter is initialized with a copy of that value. <code>p</code> is a primitive <code>double</code>, so <code>price</code> receives a copy of <code>100.0</code>; any changes to <code>price</code> inside the method have no effect on <code>p</code>, and since the method only returns a value without modifying <code>price</code>’s copy in a way that affects <code>p</code>, <code>p</code> remains <code>100.0</code>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.3 — Accessor vs Mutator Classification (3 marks)</div><div class="callout-body"><p>Classify each method as an <strong>accessor</strong> or a <strong>mutator</strong>, and state whether its header is <code>void</code> or a non-void return type.</p>
+<p>(a) <code>public void deposit(double amount)</code> that adds <code>amount</code> to <code>balance</code>.
+(b) <code>public double getBalance()</code> that returns <code>balance</code>.
+© <code>public void setOwner(String newOwner)</code> that assigns <code>owner = newOwner</code>.</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Mutator — void header. It changes the value of an instance variable and returns nothing.
+(b) Accessor — non-void header (<code>double</code>). It returns a copy of the value of an instance variable.
+© Mutator — void header. It changes the value of an instance variable and returns nothing.</p>
+<p>(1 mark each.)</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.5.4 — Writing an FRQ-Style Method (4 marks)</div><div class="callout-body"><p>In the <code>BankAccount</code> class, instance variable <code>balance</code> is <code>private</code>. Write the method described below in full.</p>
+<p>(a) Write a mutator method <code>transferTo(BankAccount other, double amount)</code> that is <code>void</code>. If <code>amount</code> is greater than <code>this</code> account’s balance, it does nothing. Otherwise it subtracts <code>amount</code> from this account’s balance and adds it to the <code>other</code> account’s balance, using the methods already available in each account. [2]
+(b) State what precondition(s) must hold for the method to work as intended. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">transferTo</span><span class="p">(</span><span class="n">BankAccount</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">withdraw</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
+<span class="w">        </span><span class="n">other</span><span class="p">.</span><span class="na">deposit</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(<code>this</code> is optional on the call to <code>withdraw</code>; <code>withdraw</code> and <code>deposit</code> are the account’s own methods.) [2]</p>
+<p>(b) Preconditions: <code>other</code> is not <code>null</code>, and <code>amount</code> is a non-negative value. The method’s behavior for <code>amount &gt; balance</code> is specified (it does nothing), so that case is handled. [2]</p>
+</div></details><hr>
+<h2 id="section_17">Topic 3.6 — Methods: Passing and Returning References of an Object</h2>
+<h3 id="section_18">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.6.A.1</td>
+<td><strong>Object references as arguments</strong></td>
+<td>When an argument is an object reference, the parameter is initialized with a copy of that reference — it does <strong>not</strong> create a new independent copy of the object. If the parameter refers to a mutable object, the method or constructor can use the reference to alter the state of that object. It is good programming practice not to modify mutable objects passed as parameters unless the specification requires it.</td>
+</tr>
+<tr>
+<td>3.6.A.2</td>
+<td><strong>Returning object references</strong></td>
+<td>When the return expression evaluates to an object reference, the reference is returned, not a reference to a new copy of the object.</td>
+</tr>
+<tr>
+<td>3.6.A.3</td>
+<td><strong>Access through a parameter</strong></td>
+<td>Methods cannot access the private data and methods of a parameter that holds a reference to an object unless the parameter is the same type as the method’s enclosing class.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.6.A:</strong> Develop code to define behaviors of an object through methods written in a class using object references and determine the result of calling these methods.</p>
+<p>Key idea — <strong>the reference is the prize:</strong> passing an object to a method copies the <em>reference</em> (the “address”), not the object. Two references to the same mutable object mean changes through one are visible through the other (aliasing).</p>
+<h3 id="section_19">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.6: Passing and returning object references</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deposit</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Parameter `other` holds a copy of the reference to the SAME object.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">transferTo</span><span class="p">(</span><span class="n">BankAccount</span><span class="w"> </span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">balance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span>
+<span class="w">            </span><span class="n">other</span><span class="p">.</span><span class="na">balance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span><span class="w">   </span><span class="c1">// OK: same class, so private data is visible</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Returns the reference to the receiver itself (a &quot;self-reference&quot;).</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">BankAccount</span><span class="w"> </span><span class="nf">getSelf</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w">                   </span><span class="c1">// returns the reference, not a copy</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ReferenceTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Alex&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">500.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Bella&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">100.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">a</span><span class="p">.</span><span class="na">transferTo</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="mf">150.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">getBalance</span><span class="p">());</span><span class="w">   </span><span class="c1">// 350.0</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="na">getBalance</span><span class="p">());</span><span class="w">   </span><span class="c1">// 250.0</span>
+
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">alias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="na">getSelf</span><span class="p">();</span><span class="w">      </span><span class="c1">// alias and a refer to the SAME object</span>
+<span class="w">        </span><span class="n">alias</span><span class="p">.</span><span class="na">deposit</span><span class="p">(</span><span class="mf">50.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">getBalance</span><span class="p">());</span><span class="w">   </span><span class="c1">// 400.0 — same object was changed!</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Aliasing: two references, one object (EK 3.6.A.1)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AliasDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Casey&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">200.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">              </span><span class="c1">// y now refers to the SAME object as x</span>
+<span class="w">        </span><span class="n">y</span><span class="p">.</span><span class="na">deposit</span><span class="p">(</span><span class="mf">100.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="na">getBalance</span><span class="p">());</span><span class="w">   </span><span class="c1">// 300.0 — x &quot;sees&quot; the change</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.1 — Reference vs. Primitive Arguments (6 marks)</div><div class="callout-body"><p>(a) Explain the difference between passing a primitive value and passing an object reference to a method. [2]
+(b) A method <code>change(int n, BankAccount acc)</code> sets <code>n = 99</code> and calls <code>acc.deposit(25.0)</code>. If the caller passes the primitive <code>int total = 10</code> and a <code>BankAccount b</code> with balance <code>50.0</code>, what is the value of <code>total</code> and the balance of <code>b</code> after the call? Explain. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A primitive argument is passed by value: the parameter is initialized with a copy of the value, so changes to the parameter have no effect on the argument. An object reference argument is also copied, but the copy refers to the same object; so while reassigning the parameter has no effect on the caller’s variable, using the reference to change a mutable object’s state <strong>does</strong> change the object that the caller also sees. [2]</p>
+<p>(b) <code>total</code> remains <code>10</code> (primitives are passed by copy). The balance of <code>b</code> becomes <code>75.0</code> because <code>acc</code> holds a copy of the reference to the same object as <code>b</code>, and <code>deposit(25.0)</code> alters the state of that shared object. [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.2 — What Is Returned? (4 marks)</div><div class="callout-body"><p>A class has this method:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="n">BankAccount</span><span class="w"> </span><span class="nf">copy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="n">balance</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) The return expression evaluates to an object reference. Explain what the method returns and why it is <em>not</em> “a reference to a new copy of the object” in the sense of EK 3.6.A.2. [2]
+(b) Compare <code>copy()</code> with a method <code>public BankAccount getSelf() { return this; }</code>. For two calls <code>BankAccount p = a.copy();</code> and <code>BankAccount q = a.getSelf();</code>, does <code>p &lt;mark&gt; a</code>? Does <code>q &lt;/mark&gt; a</code>? Explain. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) EK 3.6.A.2 says that when a return expression evaluates to an object reference, that reference is returned — the method does not automatically create a new copy. In <code>copy()</code>, a <strong>new</strong> object is explicitly created with <code>new</code>, so the method returns the reference to that new object; returning a reference to an existing object would return that object’s reference, not a fresh copy. The distinction: the reference itself is returned in both cases, not a copy of the object. [2]</p>
+<p>(b) <code>p &lt;mark&gt; a</code> is <code>false</code> because <code>copy()</code> created a brand-new object with <code>new</code>. <code>q &lt;/mark&gt; a</code> is <code>true</code> because <code>getSelf()</code> returns the very same reference stored in <code>a</code> — both refer to the identical object. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.3 — Private Data Through Parameters (4 marks)</div><div class="callout-body"><p>In <code>transferTo(BankAccount other, double amount)</code>, the method body reads <code>other.balance</code>.</p>
+<p>(a) State the condition under which a method may access the private data of an object passed to it as a parameter, per EK 3.6.A.3. [2]
+(b) Suppose class <code>Bank</code> (a different class) receives a <code>BankAccount</code> parameter. The method in <code>Bank</code> attempts to read <code>acc.balance</code> directly. Will it compile? Explain, and describe the correct approach. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A method can access the private data (and private methods) of a parameter that holds a reference to an object only if the parameter is the same type as the method’s enclosing class. <code>transferTo</code> is in <code>BankAccount</code>, and <code>other</code> is a <code>BankAccount</code>, so <code>other.balance</code> is accessible. [2]</p>
+<p>(b) No, it will not compile. The method is declared in class <code>Bank</code>, which is not the same type as the <code>BankAccount</code> parameter, so <code>acc.balance</code> is private and inaccessible. The correct approach is to use the public methods of <code>BankAccount</code>, such as <code>acc.getBalance()</code> or <code>acc.deposit(...)</code>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.4 — Object References as Return Values (4 marks)</div><div class="callout-body"><p>(a) A <code>getAccount()</code> method returns the reference to a stored <code>BankAccount</code>. A client writes <code>BankAccount c = acct.getAccount();</code> and then calls <code>c.deposit(10);</code>. Will the change appear in the original stored account? Explain with reference to EK 3.6.A.2. [2]
+(b) Describe one situation in which a programmer <em>would</em> intentionally return the reference to an internal object, and one reason it is usually safer to return a copy. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Yes. <code>getAccount()</code> returns the reference to the same object that is stored, not a copy. <code>c</code> and the stored reference both point to the identical object, so a mutation through <code>c</code> changes the stored object’s state. [2]</p>
+<p>(b) Intentional: returning an internal reference is fine when the object is immutable (its state cannot change, e.g., <code>String</code>). Safer to return a copy when the object is mutable and external code could alter internal state unexpectedly, so the caller’s changes do not corrupt the class’s private data. [2]</p>
+</div></details><hr>
+<h2 id="section_20">Topic 3.7 — Class Variables and Methods</h2>
+<h3 id="section_21">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.7.A.1</td>
+<td><strong>Class methods and instance members</strong></td>
+<td>Class methods cannot access or change the values of instance variables or call instance methods without being passed an instance of the class via a parameter.</td>
+</tr>
+<tr>
+<td>3.7.A.2</td>
+<td><strong>Class methods and class members</strong></td>
+<td>Class methods can access or change the values of class variables and can call other class methods.</td>
+</tr>
+<tr>
+<td>3.7.B.1</td>
+<td><strong>Class variables (<code>static</code>)</strong></td>
+<td>Class variables belong to the class; all objects of the class share a single copy. They are designated with the keyword <code>static</code> before the variable type.</td>
+</tr>
+<tr>
+<td>3.7.B.2</td>
+<td><strong>Accessing public class variables</strong></td>
+<td>Class variables that are <code>public</code> are accessed outside the class using the class name and the dot operator, since they are associated with the class, not with objects.</td>
+</tr>
+<tr>
+<td>3.7.B.3</td>
+<td><strong><code>final</code> variables</strong></td>
+<td>When a variable is declared <code>final</code>, its value cannot be modified.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objectives:</strong></p>
+<ul>
+<li><strong>3.7.A:</strong> Develop code to define behaviors of a class through class methods.</li>
+<li><strong>3.7.B:</strong> Develop code to declare the class variables that belong to the class.</li>
+</ul>
+<p>Rules of thumb:</p>
+<ul>
+<li><code>static</code> = belongs to the <strong>class</strong>, not to any one object. One shared copy exists.</li>
+<li>A class (static) method can only touch instance variables/methods <strong>if it is passed an instance</strong> as a parameter.</li>
+<li><code>public static</code> variables are accessed as <code>ClassName.variableName</code>.</li>
+<li><code>static final</code> = a named constant, e.g., <code>public static final double MIN_BALANCE = 0.0;</code>.</li>
+</ul>
+<h3 id="section_22">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.7: Class variables and class methods in BankAccount</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">totalAccounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">          </span><span class="c1">// shared by ALL BankAccount objects</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">MIN_BALANCE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">25.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// named constant (cannot be modified)</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">accountOwner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">;</span>
+<span class="w">        </span><span class="n">totalAccounts</span><span class="o">++</span><span class="p">;</span><span class="w">                           </span><span class="c1">// every new object increments the shared count</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Class method: can access class variables and other class methods</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getTotalAccounts</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">totalAccounts</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Class method: may access an instance&#39;s private data ONLY via a passed-in instance</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">printBalance</span><span class="p">(</span><span class="n">BankAccount</span><span class="w"> </span><span class="n">acc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">acc</span><span class="p">.</span><span class="na">owner</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">acc</span><span class="p">.</span><span class="na">balance</span><span class="p">);</span><span class="w">  </span><span class="c1">// OK — acc is provided</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Instance method: may access instance and class members freely</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AccountCounter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Alex&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">500.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Bella&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">100.0</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Class variable/method accessed through the CLASS NAME, not an object</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">BankAccount</span><span class="p">.</span><span class="na">getTotalAccounts</span><span class="p">());</span><span class="w">   </span><span class="c1">// 2</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">BankAccount</span><span class="p">.</span><span class="na">MIN_BALANCE</span><span class="p">);</span><span class="w">          </span><span class="c1">// 25.0</span>
+
+<span class="w">        </span><span class="n">BankAccount</span><span class="p">.</span><span class="na">printBalance</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w">                          </span><span class="c1">// Alex: 500.0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// ERROR DEMO: a class method cannot touch instance variables directly</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StaticErrorDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">                     </span><span class="c1">// instance variable</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bad</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">                         </span><span class="c1">// ERROR: cannot access instance variable</span>
+<span class="w">                                           </span><span class="c1">// from a class method — no object context</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.1 — Class Variable Tracing (6 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Counter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">instances</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Counter</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">instances</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instances</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getInstances</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">instances</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getId</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Tester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Counter</span><span class="w"> </span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Counter</span><span class="p">();</span>
+<span class="w">        </span><span class="n">Counter</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Counter</span><span class="p">();</span>
+<span class="w">        </span><span class="n">Counter</span><span class="w"> </span><span class="n">c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Counter</span><span class="p">();</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Counter</span><span class="p">.</span><span class="na">getInstances</span><span class="p">());</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">c1</span><span class="p">.</span><span class="na">getId</span><span class="p">());</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">c3</span><span class="p">.</span><span class="na">getId</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Write the exact output. [3]
+(b) Explain why <code>instances</code> is shared among all three objects while each <code>id</code> is different. [2]
+© Why must <code>getInstances()</code> be called as <code>Counter.getInstances()</code> rather than <code>c1.getInstances()</code>? (State the general rule for accessing class members.) [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="mf">3</span>
+<span class="mf">1</span>
+<span class="mf">3</span>
+</pre></div>
+</code></pre>
+<p>[3]</p>
+<p>(b) <code>instances</code> is declared <code>static</code>, so it belongs to the class: all objects share a single copy, and each constructor call increments that same copy. <code>id</code> is an instance variable, so each object has its own copy; c1’s is 1 and c3’s is 3. [2]</p>
+<p>© Class variables and class methods are associated with the class, not with objects, so they are accessed using the class name and the dot operator, e.g., <code>Counter.getInstances()</code>. (It also works through an object reference, but the class-name form is the correct convention per EK 3.7.B.2.) [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.2 — Class Method Rules (4 marks)</div><div class="callout-body"><p>(a) State the two rules that restrict what a class method may access, referencing EKs 3.7.A.1 and 3.7.A.2. [2]
+(b) Class <code>Lamp</code> has instance variable <code>brightness</code> and class method <code>void dim()</code>. Explain why <code>dim()</code> cannot do <code>brightness -= 1;</code>, and show how it could be rewritten to legitimately change a Lamp’s brightness. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (1) A class method cannot access or change the values of instance variables, and cannot call instance methods, unless it is passed an instance of the class via a parameter (3.7.A.1). (2) A class method can access or change the values of class variables and can call other class methods (3.7.A.2). [2]</p>
+<p>(b) <code>dim()</code> is static, so it has no object context; <code>brightness</code> is an instance variable and there is no object whose <code>brightness</code> to change. It must be passed an instance: e.g., <code>public static void dim(Lamp l) { l.brightness -= 1; }</code> — then the instance variable can be accessed through the passed-in instance. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.3 — Static Variables and Constants (4 marks)</div><div class="callout-body"><p>(a) Write the declaration of a public class variable named <code>MAX_SCORE</code> whose value is the <code>final</code> value <code>100</code>. Explain what <code>final</code> does. [2]
+(b) Why is it typical to write <code>Math.PI</code> rather than creating an object of <code>Math</code> to get pi? Explain using the idea of class variables. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_SCORE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p><code>final</code> means the value cannot be modified after it is set — it is a named constant, shared by the whole class. [2]</p>
+<p>(b) Because <code>PI</code> is a public class variable (<code>public static final double PI</code>), it belongs to the <code>Math</code> class rather than to any instance. Since it is associated with the class, it is accessed using the class name and the dot operator — <code>Math.PI</code> — with no object needed. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.4 — Shared Counter Design (3 marks)</div><div class="callout-body"><p>A <code>Student</code> class should assign each student a unique <code>id</code> starting at 1, and provide a class method <code>getStudentCount()</code>.</p>
+<p>(a) Declare the class variable needed to track the count and explain why it must be <code>static</code>. [2]
+(b) Write the class method <code>getStudentCount()</code> header and body. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nextId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p>It must be <code>static</code> because the counter is a class variable — it must be shared by all <code>Student</code> objects so that every new object can read and increment the single copy; an instance variable would give each object its own counter. [2]</p>
+<p>(b)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getStudentCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">nextId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(A class variable <code>count</code> incremented in the constructor would also be acceptable.) [1]</p>
+</div></details><hr>
+<h2 id="section_23">Topic 3.8 — Scope and Access</h2>
+<h3 id="section_24">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.8.A.1</td>
+<td><strong>Local variables</strong></td>
+<td>Local variables are declared in the headers or bodies of blocks of code. They can only be accessed in the block in which they are declared. Since constructors and methods are blocks of code, parameters to constructors or methods are also considered local variables. They may only be used within the constructor or method and <strong>cannot be declared <code>public</code> or <code>private</code></strong>.</td>
+</tr>
+<tr>
+<td>3.8.A.2</td>
+<td><strong>Shadowing</strong></td>
+<td>When there is a local variable or parameter with the same name as an instance variable, the variable name refers to the <strong>local variable</strong> instead of the instance variable within the body of the constructor or method.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.8.A:</strong> Explain where variables can be used in the code.</p>
+<p>Scope rules to remember:</p>
+<ul>
+<li><strong>Instance variable</strong> — accessible anywhere inside the class (in any constructor or method).</li>
+<li><strong>Local variable / parameter</strong> — accessible only inside its block (its constructor or method).</li>
+<li><strong>No access modifiers on local variables</strong> — <code>public</code>/<code>private</code> only apply to class-level members.</li>
+<li><strong>Shadowing</strong> — a parameter or local variable with the same name as an instance variable “hides” it inside that block. Use <code>this</code> (Topic 3.9) to refer to the instance variable.</li>
+</ul>
+<h3 id="section_25">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.8: Scope — where each variable may be used</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span><span class="w">   </span><span class="c1">// instance variable: usable anywhere in the class</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// The parameter `owner` SHADOWS the instance variable `owner`.</span>
+<span class="w">        </span><span class="n">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span><span class="w">      </span><span class="c1">// BUG: both sides are the parameter — the instance</span>
+<span class="w">                            </span><span class="c1">// variable is never set! (Fixed with `this` in 3.9)</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialDeposit</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deposit</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">          </span><span class="c1">// amount is a local parameter</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">fee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w">                         </span><span class="c1">// local variable in this block</span>
+<span class="w">        </span><span class="n">balance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fee</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// System.out.println(owner);             // OK — instance variable in scope</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// amount and fee are NOT accessible here — they are out of scope.</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Scope of local variables: blocks define the region of use</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BlockDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">demo</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">limit</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">squared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">      </span><span class="c1">// squared is local to the loop block</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">squared</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">// System.out.println(squared);  // ERROR: out of scope</span>
+<span class="w">        </span><span class="c1">// System.out.println(i);        // ERROR: out of scope</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.8.1 — Shadowing Trap (5 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Score</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Score</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w">        </span><span class="c1">// line 1</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ScoreTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Score</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Score</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">getValue</span><span class="p">());</span><span class="w">   </span><span class="c1">// line 2</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Write the exact output of line 2 and explain why, tracing line 1 carefully. [3]
+(b) Show the corrected line 1 that sets the instance variable, and explain the concept from EK 3.8.A.2 that applies. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The output is <code>0</code>. In line 1, the parameter <code>value</code> has the same name as the instance variable <code>value</code>. Per EK 3.8.A.2, the name <code>value</code> refers to the local parameter inside the constructor, so <code>value = value;</code> assigns the parameter to itself and the instance variable is never set — it keeps its default value <code>0</code>. [3]</p>
+<p>(b) Corrected: <code>this.value = value;</code> The concept is <strong>shadowing</strong>: when a local variable or parameter has the same name as an instance variable, the name refers to the local variable within that block. <code>this.value</code> explicitly names the instance variable. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.8.2 — Where Can Each Variable Be Used? (6 marks)</div><div class="callout-body"><p>Consider the class below.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Box</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w">          </span><span class="c1">// variable A</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Box</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">         </span><span class="c1">// parameter B</span>
+<span class="w">        </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">   </span><span class="c1">// local C</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">enlarge</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">factor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// parameter D</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">extra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.25</span><span class="p">;</span><span class="w">               </span><span class="c1">// local E</span>
+<span class="w">        </span><span class="n">width</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="p">(</span><span class="n">factor</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">extra</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getWidth</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">width</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) For each variable A–E, state whether it is an instance variable, a parameter, or a local variable, and in which block(s) it can be used. [4]
+(b) Can any of the parameters or local variables be declared <code>public</code> or <code>private</code>? Explain. [1]
+© In <code>enlarge</code>, which variable does the name <code>factor</code> refer to, and why does that not conflict with the instance variable <code>width</code>? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A: instance variable — usable anywhere in the class. B: parameter of the constructor — usable only inside the constructor. C: local variable — usable only inside the constructor block. D: parameter of <code>enlarge</code> — usable only inside <code>enlarge</code>. E: local variable — usable only inside <code>enlarge</code>. [4]</p>
+<p>(b) No. Local variables and parameters can only be used within the block in which they are declared and cannot be declared <code>public</code> or <code>private</code>; access modifiers apply only to class-level members. [1]</p>
+<p>© <code>factor</code> refers to the parameter, because inside the method the name <code>factor</code> is the parameter — there is no instance variable named <code>factor</code>, so no shadowing occurs; it coexists with <code>width</code>, which is the instance variable being modified. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.8.3 — Scope Debugging (4 marks)</div><div class="callout-body"><p>A student writes this method and it fails to compile.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">totalWithFee</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">fee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.50</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getTotal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fee</span><span class="p">;</span><span class="w">   </span><span class="c1">// ERROR</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Explain why the error occurs, using the concept of scope. [2]
+(b) Rewrite the code correctly so that <code>getTotal()</code> can use the fee, keeping instance variables appropriate. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>fee</code> is a local variable declared in the block of <code>totalWithFee</code>. Local variables can only be accessed in the block in which they are declared, so <code>getTotal</code> cannot see <code>fee</code> — it is out of scope there. [2]</p>
+<p>(b) Make <code>fee</code> an instance variable (or a class variable) of the class so it is accessible anywhere in the class:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">fee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.50</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getTotal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fee</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[2]</p>
+</div></details><hr>
+<h2 id="section_26">Topic 3.9 — this Keyword</h2>
+<h3 id="section_27">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>EK</th>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.9.A.1</td>
+<td><strong><code>this</code> as a reference to the current object</strong></td>
+<td>Within an instance method or a constructor, the keyword <code>this</code> acts as a special variable that holds a reference to the current object — the object whose method or constructor is being called.</td>
+</tr>
+<tr>
+<td>3.9.A.2</td>
+<td><strong>Passing <code>this</code></strong></td>
+<td>The keyword <code>this</code> can be used to pass the current object as an argument in a method call.</td>
+</tr>
+<tr>
+<td>3.9.A.3</td>
+<td><strong>No <code>this</code> in class methods</strong></td>
+<td>Class methods do not have a <code>this</code> reference.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning Objective 3.9.A:</strong> Develop code for expressions that are self-referencing and determine the result of these expressions.</p>
+<p>Three main uses of <code>this</code>:</p>
+<ol>
+<li><strong>Disambiguate parameter shadowing</strong> — <code>this.balance = balance;</code> (the <code>this.balance</code> is the instance variable; <code>balance</code> is the parameter).</li>
+<li><strong>Pass the current object as an argument</strong> — <code>register(this);</code> inside an instance method hands the current object to another method.</li>
+<li><strong>Return the current object</strong> — <code>return this;</code> returns the reference to the current object.</li>
+<li><strong>Call another constructor</strong> — <code>this(...)</code> invokes a sibling constructor of the same class (commonly used, e.g., <code>this(owner, 0.0);</code>).</li>
+</ol>
+<h3 id="section_28">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Topic 3.9: this disambiguates shadowed names and refers to the current object</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Full constructor</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span><span class="w">        </span><span class="c1">// this.owner = instance variable; owner = parameter</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Constructor chaining with this(...) — delegates to the full constructor</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// this as the current object: pass self to a class method</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">printStatement</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="p">.</span><span class="na">printSummary</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">   </span><span class="c1">// passes the current object as an argument</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">balance</span><span class="p">;</span><span class="w">             </span><span class="c1">// this is optional here, but explicit</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Class method: receives the object via the parameter (no this available)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">printSummary</span><span class="p">(</span><span class="n">BankAccount</span><span class="w"> </span><span class="n">acc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">acc</span><span class="p">.</span><span class="na">owner</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">acc</span><span class="p">.</span><span class="na">balance</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ThisTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Alex&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">500.0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">&quot;Bella&quot;</span><span class="p">);</span><span class="w">     </span><span class="c1">// uses this(...) chaining</span>
+<span class="w">        </span><span class="n">a</span><span class="p">.</span><span class="na">printStatement</span><span class="p">();</span><span class="w">                          </span><span class="c1">// Alex: 500.0</span>
+<span class="w">        </span><span class="n">b</span><span class="p">.</span><span class="na">printStatement</span><span class="p">();</span><span class="w">                          </span><span class="c1">// Bella: 0.0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// ERROR DEMO: class methods have no this reference (EK 3.9.A.3)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StaticThisDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bad</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">   </span><span class="c1">// ERROR: &#39;this&#39; cannot be used in a</span>
+<span class="w">                                    </span><span class="c1">// static (class) method — no current object</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.1 — What Does `this` Refer To? (6 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Point</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">move</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">toString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;(&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PointTester</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Point</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Point</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">p1</span><span class="p">.</span><span class="na">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Trace the code and write the exact output. [2]
+(b) In the constructor, explain what <code>this.x = x;</code> does and why <code>x = x;</code> would be wrong. [2]
+© In <code>p1.move(2, 5)</code>, explain what <code>this</code> refers to and why the same call on <code>p2</code> behaves differently. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output:</p>
+<pre><code><div class="highlight"><pre><span></span>(5, 9)
+(1, 1)
+</pre></div>
+</code></pre>
+<p>[2]</p>
+<p>(b) <code>this.x</code> is the instance variable of the current object being constructed; <code>x</code> (on the right) is the parameter. <code>this.x = x;</code> copies the parameter into the instance variable. <code>x = x;</code> would assign the parameter to itself — the instance variable would remain at its default value (shadowing). [2]</p>
+<p>© <code>this</code> is a reference to the object on which the method was called — for <code>p1.move(2, 5)</code>, <code>this</code> is the object referenced by <code>p1</code>, so <code>p1</code>’s <code>x</code> and <code>y</code> change. When the same call runs on <code>p2</code>, <code>this</code> refers to <code>p2</code>’s object, so <code>p2</code>’s coordinates change instead. <code>this</code> always means “the current object.” [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.2 — Passing `this` as an Argument (4 marks)</div><div class="callout-body"><p>A <code>BankAccount</code> has a class method <code>public static boolean canTransfer(BankAccount from, BankAccount to, double amount)</code>.</p>
+<p>(a) Write an instance method <code>transfer(double amount, BankAccount to)</code> that uses <code>this</code> to pass the current object as the “from” account in a call to <code>canTransfer</code>. [2]
+(b) Explain why passing <code>this</code> is necessary here, referencing EK 3.9.A.2. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">transfer</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="n">BankAccount</span><span class="w"> </span><span class="kd">to</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">BankAccount</span><span class="p">.</span><span class="na">canTransfer</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="kd">to</span><span class="p">,</span><span class="w"> </span><span class="n">amount</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">balance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span>
+<span class="w">        </span><span class="kd">to</span><span class="p">.</span><span class="na">balance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">amount</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[2]</p>
+<p>(b) The class method <code>canTransfer</code> needs the <em>current</em> object to compare with <code>to</code> and <code>amount</code>. The keyword <code>this</code> holds a reference to the current object — the object whose method is being called — so <code>this</code> is passed as the argument to hand that object to the class method. This is exactly the use described in EK 3.9.A.2. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.3 — this in Constructors and Class Methods (5 marks)</div><div class="callout-body"><p>(a) Rewrite this constructor using <code>this(...)</code> constructor chaining: a <code>Student</code> full constructor takes <code>name</code> and <code>grade</code>; the one-parameter constructor should delegate with grade <code>0</code>. [2]
+(b) Determine whether each code segment compiles. For each, write “compiles” or “error” and give the reason.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w">                 </span><span class="c1">// segment 1</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w">                        </span><span class="c1">// segment 2</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f3</span><span class="p">(</span><span class="n">Student</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w">           </span><span class="c1">// segment 3</span>
+</pre></div>
+</code></pre>
+<p>[3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="nf">Student</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">grade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="nf">Student</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">     </span><span class="c1">// delegates to the full constructor</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[2]</p>
+<p>(b) Segment 1: error — <code>this</code> cannot be used in a class (static) method because class methods have no <code>this</code> reference (EK 3.9.A.3). Segment 2: compiles — inside an instance method, <code>this</code> holds a reference to the current object. Segment 3: compiles — it is a class method, but it uses the parameter <code>s</code>, not <code>this</code>. [3]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.4 — Is `this` Needed? (3 marks)</div><div class="callout-body"><p>(a) State whether <code>this</code> is required in <code>return balance;</code> inside an accessor, and what it would be if written as <code>return this.balance;</code>. [1]
+(b) A constructor has no parameters named the same as instance variables. Is <code>this</code> required to initialize the instance variables? Explain. [1]
+© Why does <code>this(...)</code> constructor chaining save work, and what restriction must the chained call satisfy? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>this</code> is optional when there is no shadowing — <code>return balance;</code> returns the instance variable. <code>return this.balance;</code> is the fully explicit form, referencing the current object’s instance variable. [1]</p>
+<p>(b) No. <code>this</code> is only needed to disambiguate when a parameter or local variable has the same name as an instance variable. Without shadowing, <code>owner = name;</code> already refers to the instance variable. [1]</p>
+<p>© Constructor chaining lets one constructor reuse the initialization logic of another instead of duplicating code. The call <code>this(args)</code> must be the first statement in the constructor and must match an existing constructor’s signature. [1]</p>
+</div></details><hr>
+<p>Next: <a href="unit-4-data-collections.html">Unit 4 — Data Collections</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="unit-2-selection-and-iteration.html" title="Unit 2 Selection and Iteration" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Unit 2 Selection and Iteration</span></a>
+<a href="unit-3-class-creation.html" title="Unit 3 Class Creation" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Unit 3 Class Creation</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science A (Course &amp; Exam Description, Effective Fall 2025) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

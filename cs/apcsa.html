@@ -1,50 +1,109 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AP Computer Science A — 整理中 · iben.fun</title>
+<title>AP Computer Science A — Review Notes · iben.fun</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html {
-    --paper: #f7f2e9; --paper-light: #fdfaf5;
-    --ink: #2c2416; --ink-faded: #8c8273; --ink-light: #b8ae9e;
-    --accent: #4a6741; --border: #e8e0d3;
-    background: var(--paper);
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
-    color: var(--ink); line-height: 1.8; -webkit-font-smoothing: antialiased;
-  }
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; position: relative; z-index: 1; padding: 2rem; }
-  .box {
-    background: var(--paper-light); border: 1px solid var(--border); border-radius: 2px;
-    padding: 3.5rem 3rem; text-align: center; max-width: 460px; width: 100%;
-    box-shadow: 0 2px 12px rgba(44,36,22,.05);
-  }
-  .box .mark {
-    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
-    font-size: 3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; line-height: 1;
-  }
-  .box h1 { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .05em; margin-bottom: .5rem; }
-  .box .code { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--ink-faded); border: 1px solid var(--border); border-radius: 2px; padding: .1rem .6rem; margin-bottom: 1rem; }
-  .box p { font-size: .95rem; color: var(--ink-faded); margin-bottom: 2rem; letter-spacing: .03em; }
-  .box a {
-    display: inline-block; font-size: .85rem; color: var(--ink-faded); text-decoration: none;
-    letter-spacing: .06em; transition: color .2s; border-bottom: 1px solid transparent;
-  }
-  .box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+:root {
+  --bg: #f3f5ee;
+  --card-bg: #fbfcf7;
+  --text: #33382f;
+  --text-secondary: #8a9183;
+  --accent: #4a6741;
+  --accent-light: #e7eee1;
+  --border: #dde4d3;
+  --code-bg: #edf1e6;
+  --ink: #252b21;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; font-size: 16px; }
+body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px),
+              repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px); }
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.site-header { background: rgba(251,252,247,0.92); border-bottom: 1px solid var(--border); padding: 14px 0; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero { background: linear-gradient(160deg, #2e4527 0%, #4a6741 45%, #6f8f60 100%); color: #f3f7ee; padding: 48px 0 44px; margin-bottom: 36px; position: relative; z-index: 1; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, rgba(200,220,180,0.45), transparent); }
+.hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.2px; }
+.hero p { font-size: 15px; opacity: 0.82; }
+.content { padding: 0 0 40px; }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 40px; margin-bottom: 24px; box-shadow: var(--shadow); position: relative; z-index: 1; }
+.card h2 { font-size: 18px; margin: 28px 0 10px; color: var(--ink); font-weight: 600; }
+.card p { margin: 12px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.post-list { list-style: none; }
+.post-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.post-item:hover { background: var(--code-bg); }
+.post-item a { color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500; flex: 1; }
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.enter { display: inline-block; margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--accent); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 860px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
 </style>
 </head>
 <body>
-<div class="box">
-  <div class="mark">码</div>
-  <h1>AP Computer Science A</h1>
-  <span class="code">AP CSA</span>
-  <p>复习笔记整理中 · 敬请期待</p>
-  <a href="index.html">← 返回计算机科学</a>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">AP Computer Science A</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← iben.fun / CS</a> &nbsp;·&nbsp; Review Notes</span>
+  </div>
+</header>
+<div class="hero">
+  <div class="container">
+    <h1>AP Computer Science A</h1>
+    <p>Complete review notes — Course &amp; Exam Description, Effective Fall 2025 · 4 units · 53 topics · 180 exercises</p>
+  </div>
 </div>
+<main class="content">
+  <div class="container">
+    <div class="card">
+      <h2 style="margin-top:4px;">Units</h2>
+      <ul class="post-list">
+
+  <li class="post-item">
+    <a href="apcsa/review-notes/unit-1-using-objects-and-methods.html">Unit 1 Using Objects and Methods</a>
+    <span class="post-category">15–25%</span>
+    <span class="date">45 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsa/review-notes/unit-2-selection-and-iteration.html">Unit 2 Selection and Iteration</a>
+    <span class="post-category">25–35%</span>
+    <span class="date">40 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsa/review-notes/unit-3-class-creation.html">Unit 3 Class Creation</a>
+    <span class="post-category">10–18%</span>
+    <span class="date">32 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsa/review-notes/unit-4-data-collections.html">Unit 4 Data Collections</a>
+    <span class="post-category">30–40%</span>
+    <span class="date">63 exercises</span>
+  </li>
+      </ul>
+      <p style="margin-top:22px;"><a class="enter" href="apcsa/review-notes/index.html">进入复习笔记总览 →</a></p>
+    </div>
+    <div class="card">
+      <h2>About These Notes</h2>
+      <p>Each unit follows the official CED: every Learning Objective and Essential Knowledge statement, a worked Java example per topic, and exercises right after each knowledge point with <strong>collapsible reference answers</strong> — mirroring the AP exam style.</p>
+      <p>Exam weighting: Unit 1 15–25% · Unit 2 25–35% · Unit 3 10–18% · Unit 4 30–40%.</p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science A (Course &amp; Exam Description, Effective Fall 2025) — Review Notes</p>
+</footer>
 </body>
 </html>

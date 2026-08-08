@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP CSA Review Notes — AP CSA Review Notes</title>
+<style>
+:root {
+  --bg: #f3f5ee;
+  --card-bg: #fbfcf7;
+  --text: #33382f;
+  --text-secondary: #8a9183;
+  --accent: #4a6741;
+  --accent-light: #e7eee1;
+  --border: #dde4d3;
+  --code-bg: #edf1e6;
+  --ink: #252b21;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2e4527 0%, #4a6741 45%, #6f8f60 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,220,180,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #3d5235;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #3d5c35;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #262e22;
+  color: #e2ead8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #3d4a36;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e6f0c8; color: #43501f; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #eef3e9; border-color: #c9d9bf; }
+.callout-exercise .callout-title { background: #e0ebd8; color: #33502a; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #262e22; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #3d4a36 }
+.highlight .c { color: #8c9a80 }
+.highlight .k { color: #a8c79a }
+.highlight .s { color: #c8d8b6 }
+.highlight .n { color: #e2ead8 }
+.highlight .p { color: #b0bca4 }
+.highlight .o { color: #9cbc88 }
+.highlight .mi { color: #a8c79a }
+.highlight .mf { color: #a8c79a }
+.highlight .m { color: #a8c79a }
+.highlight .nb { color: #a8c79a }
+.highlight .nc { color: #b8d4a8 }
+.highlight .nd { color: #b8d4a8 }
+.highlight .nf { color: #b8d4a8 }
+.highlight .nn { color: #b8d4a8 }
+.highlight .kt { color: #a8c79a }
+.highlight .bp { color: #e2ead8 }
+.highlight .kn { color: #9cbc88 }
+.highlight .ow { color: #9cbc88 }
+.highlight .kc { color: #a8c79a }
+.highlight .kd { color: #a8c79a }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8d8b6 }
+.highlight .err { color: #e2ead8; background: none }
+.highlight .w { color: #e2ead8 }
+.highlight .nt { color: #b8d4a8 }
+.highlight .na { color: #c8d8b6 }
+.highlight .nl { color: #e2ead8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../apcsa.html" class="site-title">AP CSA Review Notes</a>
+    <span class="site-subtitle"><a href="../apcsa.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSA 版块</a> &nbsp;·&nbsp; 4 units · 180 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>AP CSA Review Notes</h1>
+    <p>Complete review notes for AP Computer Science A — CED, Effective Fall 2025 · 4 units · 180 exercises</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Units</a></li>
+<li><a href="#section_2">Exam Weighting at a Glance</a></li>
+<li><a href="#section_3">How to Use These Notes</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">AP CSA Review Notes — Index</h1>
+<p>A complete set of review notes for <strong>AP Computer Science A</strong> (<em>Course and Exam Description</em>, Effective Fall 2025), built from the official CED outline. Every topic covers:</p>
+<ul>
+<li><strong>Learning Objectives &amp; Essential Knowledge</strong> — wording faithful to the CED</li>
+<li><strong>Java example code</strong> — a concrete, commented example for every topic</li>
+<li><strong>Exercises</strong> — 180 total, placed right after each knowledge point, with collapsible reference answers (<code>&gt; [!example]- 📖 参考答案 | Reference Answer</code>)</li>
+</ul>
+<h2 id="section_1">Units</h2>
+<ul>
+<li><a href="unit-1-using-objects-and-methods.html">Unit 1 — Using Objects and Methods</a> — 15 topics · 45 exercises · Exam 15–25%</li>
+<li><a href="unit-2-selection-and-iteration.html">Unit 2 — Selection and Iteration</a> — 12 topics · 40 exercises · Exam 25–35%</li>
+<li><a href="unit-3-class-creation.html">Unit 3 — Class Creation</a> — 9 topics · 32 exercises · Exam 10–18%</li>
+<li><a href="unit-4-data-collections.html">Unit 4 — Data Collections</a> — 17 topics · 63 exercises · Exam 30–40%</li>
+</ul>
+<h2 id="section_2">Exam Weighting at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>Unit</th>
+<th>Title</th>
+<th>Topics</th>
+<th>Exercises</th>
+<th>Exam Weight</th>
+<th>Class Periods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Using Objects and Methods</td>
+<td>15</td>
+<td>45</td>
+<td>15–25%</td>
+<td>~32–34</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Selection and Iteration</td>
+<td>12</td>
+<td>40</td>
+<td>25–35%</td>
+<td>~29–31</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Class Creation</td>
+<td>9</td>
+<td>32</td>
+<td>10–18%</td>
+<td>~20–22</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Data Collections</td>
+<td>17</td>
+<td>63</td>
+<td>30–40%</td>
+<td>~50–52</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_3">How to Use These Notes</h2>
+<ol>
+<li>Read the unit <strong>Overview</strong> and the <code>&gt; [!exam]</code> Exam Tip first — they tell you where the points are.</li>
+<li>For each topic: read <strong>Key Concepts</strong> → study the <strong>Example Code</strong> → attempt the exercises → unfold the reference answers to check your work.</li>
+<li>Hard topics (searching, sorting, recursion, 2D arrays, run-time analysis, String manipulation) carry extra exercises — do all of them.</li>
+<li>When unsure about a CED statement, cross-check against the official outline: APCSA outline (in <code>APCSA/CED/</code>).</li>
+</ol>
+<div class="callout callout-tip"><div class="callout-title">💡 Suggested revision loop</div><div class="callout-body"><p>Unit 4 (Data Collections) carries the heaviest exam weight (30–40%). After finishing Units 1–3, loop back to Unit 4’s FRQ-style “write the method” exercises — they mirror AP Exam free-response Questions 3 and 4.</p>
+</div></div>
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<div style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);min-width:0;opacity:.35;pointer-events:none;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;">—</span></div>
+<div style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);min-width:0;opacity:.35;pointer-events:none;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;">—</span></div>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science A (Course &amp; Exam Description, Effective Fall 2025) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

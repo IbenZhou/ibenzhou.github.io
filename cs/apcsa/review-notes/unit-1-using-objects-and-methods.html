@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 Using Objects and Methods — AP CSA Review Notes</title>
+<style>
+:root {
+  --bg: #f3f5ee;
+  --card-bg: #fbfcf7;
+  --text: #33382f;
+  --text-secondary: #8a9183;
+  --accent: #4a6741;
+  --accent-light: #e7eee1;
+  --border: #dde4d3;
+  --code-bg: #edf1e6;
+  --ink: #252b21;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2e4527 0%, #4a6741 45%, #6f8f60 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,220,180,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #3d5235;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #3d5c35;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #262e22;
+  color: #e2ead8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #3d4a36;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e6f0c8; color: #43501f; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #eef3e9; border-color: #c9d9bf; }
+.callout-exercise .callout-title { background: #e0ebd8; color: #33502a; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #262e22; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #3d4a36 }
+.highlight .c { color: #8c9a80 }
+.highlight .k { color: #a8c79a }
+.highlight .s { color: #c8d8b6 }
+.highlight .n { color: #e2ead8 }
+.highlight .p { color: #b0bca4 }
+.highlight .o { color: #9cbc88 }
+.highlight .mi { color: #a8c79a }
+.highlight .mf { color: #a8c79a }
+.highlight .m { color: #a8c79a }
+.highlight .nb { color: #a8c79a }
+.highlight .nc { color: #b8d4a8 }
+.highlight .nd { color: #b8d4a8 }
+.highlight .nf { color: #b8d4a8 }
+.highlight .nn { color: #b8d4a8 }
+.highlight .kt { color: #a8c79a }
+.highlight .bp { color: #e2ead8 }
+.highlight .kn { color: #9cbc88 }
+.highlight .ow { color: #9cbc88 }
+.highlight .kc { color: #a8c79a }
+.highlight .kd { color: #a8c79a }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8d8b6 }
+.highlight .err { color: #e2ead8; background: none }
+.highlight .w { color: #e2ead8 }
+.highlight .nt { color: #b8d4a8 }
+.highlight .na { color: #c8d8b6 }
+.highlight .nl { color: #e2ead8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../apcsa.html" class="site-title">AP CSA Review Notes</a>
+    <span class="site-subtitle"><a href="../apcsa.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSA 版块</a> &nbsp;·&nbsp; 4 units · 180 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Unit 1 · Using Objects and Methods</h1>
+    <p>AP Exam Weight 15–25% · ~32–34 class periods · 15 topics (1.1–1.15)</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 1.1 — Introduction to Algorithms, Programming, and Compilers</a></li>
+<li><a href="#section_5">Topic 1.2 — Variables and Data Types</a></li>
+<li><a href="#section_8">Topic 1.3 — Expressions and Output</a></li>
+<li><a href="#section_11">Topic 1.4 — Assignment Statements and Input</a></li>
+<li><a href="#section_14">Topic 1.5 — Casting and Range of Variables</a></li>
+<li><a href="#section_17">Topic 1.6 — Compound Assignment Operators</a></li>
+<li><a href="#section_20">Topic 1.7 — Application Program Interface (API) and Libraries</a></li>
+<li><a href="#section_23">Topic 1.8 — Documentation with Comments</a></li>
+<li><a href="#section_26">Topic 1.9 — Method Signatures</a></li>
+<li><a href="#section_29">Topic 1.10 — Calling Class Methods</a></li>
+<li><a href="#section_32">Topic 1.11 — Math Class</a></li>
+<li><a href="#section_35">Topic 1.12 — Objects: Instances of Classes</a></li>
+<li><a href="#section_38">Topic 1.13 — Object Creation and Storage (Instantiation)</a></li>
+<li><a href="#section_41">Topic 1.14 — Calling Instance Methods</a></li>
+<li><a href="#section_44">Topic 1.15 — String Manipulation</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Unit 1 — Using Objects and Methods: Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025
+<strong>Exam Weight:</strong> 15–25% of AP Exam | <strong>Class Periods:</strong> ~32–34
+<strong>Topics:</strong> 1.1–1.15
+<strong>AP Classroom:</strong> Progress Checks — Part 1 (1.1–1.4) ~12 MCQ; Part 2 (1.5–1.9) ~15 MCQ; Part 3 (1.10–1.15) ~18 MCQ + 1 FRQ</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>Unit 1 introduces the Java programming language and the use of variables and classes, providing an important foundation of concepts that will be leveraged and built upon in all future units. You will learn the three primitive data types (<code>int</code>, <code>double</code>, <code>boolean</code>), how to create variables, store values in them, and interact with those variables using basic operations. The ability to write expressions is essential to representing the variability of the real world in a program. Several <code>Math</code> and <code>String</code> class methods are introduced, and you will learn the fundamentals of calling methods using classes, including how to create objects and store object references. Spending time to plan a program up front will shorten overall program development time and increase accuracy, and tracing code on paper with different sample inputs helps build confidence before running it.</p>
+<p><strong>In this unit you will learn to:</strong></p>
+<ul>
+<li>Represent patterns and algorithms found in everyday life using written language or diagrams, and explain the code compilation and execution process</li>
+<li>Identify types of programming errors, including syntax, logic, and run-time errors</li>
+<li>Identify the most appropriate data type for a particular specification and declare variables to store numbers and Boolean values</li>
+<li>Develop code for arithmetic expressions, string literals, and output using <code>System.out.print</code> and <code>System.out.println</code></li>
+<li>Develop code for assignment statements and read text input from the keyboard using the <code>Scanner</code> class</li>
+<li>Cast primitive values to different primitive types, and describe integer overflow, the range of <code>int</code> values, and round-off error</li>
+<li>Use compound assignment operators and post-increment/post-decrement operators</li>
+<li>Identify the attributes and behaviors of classes found in the libraries contained in an API</li>
+<li>Document code with comments and describe preconditions and postconditions</li>
+<li>Identify and call methods by their signatures, distinguishing class methods from instance methods</li>
+<li>Write expressions that call <code>Math</code> class methods and produce random values in defined ranges</li>
+<li>Explain the relationship between a class and an object, and create objects by calling constructors</li>
+<li>Create and manipulate <code>String</code> objects using the methods in the Java Quick Reference</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li>Make the <strong>Java Quick Reference</strong> your best friend: every <code>Math</code> and <code>String</code> method you can be asked about appears there with its exact signature. Memorize what each method does, what parameters it takes, and what it returns.</li>
+<li><strong>Trace code by hand</strong> on paper with sample inputs before running it. Most multiple-choice questions in this unit ask for the result of a code segment, and hand-tracing is the single most effective habit you can build here.</li>
+<li>Watch parameter types and return values. Confusing <code>int</code> and <code>double</code> division, or calling an instance method where a class method is needed, is a classic way to lose points. Always check whether a call uses a class name or an object name.</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 1.1 — Introduction to Algorithms, Programming, and Compilers</h2>
+<h3 id="section_3">Key Concepts</h3>
+<p><strong>Learning Objective [1.A] — Represent patterns and algorithms found in everyday life using written language or diagrams.</strong></p>
+<ul>
+<li><strong>[1.A.1]:</strong> <em>Algorithms</em> define step-by-step processes to follow when completing a task or solving a problem. These algorithms can be represented using written language or diagrams.</li>
+<li><strong>[1.A.2]:</strong> <em>Sequencing</em> defines an order for when steps in a process are completed. Steps in a process are completed one at a time.</li>
+</ul>
+<p><strong>Learning Objective [1.B] — Explain the code compilation and execution process.</strong></p>
+<ul>
+<li><strong>[1.B.1]:</strong> Code can be written in any text editor; however, an integrated development environment (IDE) is often used to write programs because it provides tools for a programmer to write, compile, and run code.</li>
+<li><strong>[1.B.2]:</strong> A <em>compiler</em> checks code for some errors. Errors detectable by the compiler need to be fixed before the program can be run.</li>
+</ul>
+<p><strong>Learning Objective [1.C] — Identify types of programming errors.</strong></p>
+<ul>
+<li><strong>[1.C.1]:</strong> A <em>syntax</em> error is a mistake in the program where the rules of the programming language are not followed. These errors are detected by the compiler.</li>
+<li><strong>[1.C.2]:</strong> A <em>logic</em> error is a mistake in the algorithm or program that causes it to behave incorrectly or unexpectedly. These errors are detected by testing the program with specific data to see if it produces the expected outcome.</li>
+<li><strong>[1.C.3]:</strong> A <em>run-time</em> error is a mistake in the program that occurs during the execution of a program. Run-time errors typically cause the program to terminate abnormally.</li>
+<li><strong>[1.C.4]:</strong> An <em>exception</em> is a type of run-time error that occurs as a result of an unexpected error that was not detected by the compiler. It interrupts the normal flow of the program’s execution.</li>
+</ul>
+<h3 id="section_4">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Algorithm (in words): add up the prices of the items, then print the total.</span>
+<span class="c1">// Each statement below is a step; the steps run one at a time (sequencing).</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Receipt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">price1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.50</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">price2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.25</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">price2</span><span class="p">;</span><span class="w">   </span><span class="c1">// step 1: compute the total</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Total: $&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">total</span><span class="p">);</span><span class="w">  </span><span class="c1">// step 2: print the total</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.1.1 — Recognizing Programming Errors (5 marks)</div><div class="callout-body"><p>(a) Classify each of the following as a <em>syntax</em> error, a <em>logic</em> error, or a <em>run-time</em> error. [3]
+(i) <code>System.out.println(&quot;Hello</code> — the closing quotation mark is missing.
+(ii) A program that is meant to double a number always prints a value that is one less than expected.
+(iii) The statement <code>int result = 10 / 0;</code> executes and interrupts the program abnormally.
+(b) Explain why errors detectable by the compiler need to be fixed before the program can be run. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) Syntax error — the rules of the language are not followed (unclosed string literal), and the compiler detects it. [1]
+(ii) Logic error — the program compiles and runs but behaves incorrectly, and it is detected by testing with specific data. [1]
+(iii) Run-time error — it occurs during execution (an <code>ArithmeticException</code>) and causes the program to terminate abnormally. [1]
+(b) The compiler checks code for some errors. If a syntax error (or any error detectable by the compiler) remains, the compiler cannot finish translating the program, so no executable program is produced and it cannot be run. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.1.2 — Representing an Algorithm (4 marks)</div><div class="callout-body"><p>(a) Write an algorithm for a task in daily life (for example, brushing your teeth or preparing a bowl of cereal) using numbered steps in written language. [2]
+(b) What is <em>sequencing</em>, and why is the order of the steps in your algorithm important? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: “Preparing a bowl of cereal”: 1. Pick a bowl. 2. Pour cereal into the bowl. 3. Pour milk over the cereal. 4. Get a spoon. (Any reasonable, ordered set of steps is accepted; each step describes one action.) [2]
+(b) Sequencing defines an order for when steps in a process are completed, and steps are completed one at a time. The order matters because each step builds on the previous ones — for example, you must place the cereal in the bowl before pouring the milk, just as a program must compute a value before printing it. [2]</p>
+</div></details><hr>
+<h2 id="section_5">Topic 1.2 — Variables and Data Types</h2>
+<h3 id="section_6">Key Concepts</h3>
+<p><strong>Learning Objective [1.A] — Identify the most appropriate data type category for a particular specification.</strong></p>
+<ul>
+<li><strong>[1.A.1]:</strong> A data type is a set of values and a corresponding set of operations on those values. Data types can be categorized as either <em>primitive</em> or <em>reference</em>.</li>
+<li><strong>[1.A.2]:</strong> The <em>primitive</em> data types used in this course define the set of values and corresponding operations on those values for numbers and Boolean values.</li>
+<li><strong>[1.A.3]:</strong> A reference type is used to define objects that are not primitive types.</li>
+</ul>
+<p><strong>Learning Objective [1.B] — Develop code to declare variables to store numbers and Boolean values.</strong></p>
+<ul>
+<li><strong>[1.B.1]:</strong> The three primitive data types used in this course are <code>int</code>, <code>double</code>, and <code>boolean</code>. An <code>int</code> value is an integer. A <code>double</code> value is a real number. A <code>boolean</code> value is either <code>true</code> or <code>false</code>.
+<ul>
+<li><strong>Exclusion:</strong> The other five primitive types (<code>long</code>, <code>short</code>, <code>byte</code>, <code>float</code>, and <code>char</code>) are outside the scope of the course and exam.</li>
+</ul>
+</li>
+<li><strong>[1.B.2]:</strong> A <em>variable</em> is a storage location that holds a value, which can change while the program is running. Every variable has a name and an associated data type. A variable of a primitive type holds a primitive value from that type.</li>
+</ul>
+<h3 id="section_7">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RemoteControl</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Declaring and initializing variables of each primitive type.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">             </span><span class="c1">// int: a whole number (e.g., the channel)</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7.5</span><span class="p">;</span><span class="w">         </span><span class="c1">// double: a real number (e.g., the volume level)</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isPowerOn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">    </span><span class="c1">// boolean: either true or false</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Channel: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">channel</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Volume: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">volume</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Power on: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">isPowerOn</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4.0</span><span class="p">;</span><span class="w">                </span><span class="c1">// the stored value can change while running</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;New volume: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">volume</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.1 — Choosing the Most Appropriate Data Type (4 marks)</div><div class="callout-body"><p>(a) For each specification, choose the most appropriate primitive data type (<code>int</code>, <code>double</code>, or <code>boolean</code>). [3]
+(i) The number of students in a class.
+(ii) A student’s grade point average, such as 3.75.
+(iii) Whether a student has completed the assignment.
+(b) Write one declaration statement (with initialization) for each of your three choices. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) <code>int</code> — a count of students is a whole number. [1]
+(ii) <code>double</code> — a grade point average is a real number with a fractional part. [1]
+(iii) <code>boolean</code> — only two values, <code>true</code> or <code>false</code>, are needed. [1]
+(b) Example: <code>int numStudents = 28;</code> <code>double gpa = 3.75;</code> <code>boolean completed = false;</code> (Any valid declarations with the correct types are accepted.) [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.2 — Primitive vs. Reference Data Types (4 marks)</div><div class="callout-body"><p>(a) Describe the difference between a primitive data type and a reference data type. [2]
+(b) A variable of a primitive type holds a primitive value from that type. What does a variable of a reference type hold, and what can it be thought of as? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A primitive data type is a set of values and corresponding operations for numbers and Boolean values (<code>int</code>, <code>double</code>, <code>boolean</code>). A reference type is used to define objects that are not primitive types — the variable holds a reference to an object rather than a value directly. [2]
+(b) A variable of a reference type holds an object reference, which can be thought of as the memory address of that object. (If there is no object, it holds <code>null</code>.) [2]</p>
+</div></details><hr>
+<h2 id="section_8">Topic 1.3 — Expressions and Output</h2>
+<h3 id="section_9">Key Concepts</h3>
+<p><strong>1.3.A — Develop code to generate output and determine the result that would be displayed.</strong></p>
+<ul>
+<li><strong>[1.3.A.1]:</strong> <code>System.out.print</code> and <code>System.out.println</code> display information on the computer display. <code>System.out.println</code> moves the cursor to a new line after the information has been displayed, while <code>System.out.print</code> does not.</li>
+</ul>
+<p><strong>1.3.B — Develop code to utilize string literals and determine the result of using string literals.</strong></p>
+<ul>
+<li><strong>[1.3.B.1]:</strong> A <em>literal</em> is the code representation of a fixed value.</li>
+<li><strong>[1.3.B.2]:</strong> A <em>string literal</em> is a sequence of characters enclosed in double quotes.</li>
+<li><strong>[1.3.B.3]:</strong> <em>Escape sequences</em> are special sequences of characters that can be included in a string. They start with a <code>\</code> and have a special meaning in Java. Escape sequences used in this course include double quote <code>\&quot;</code>, backslash <code>\\</code>, and newline <code>\n</code>.</li>
+</ul>
+<p><strong>1.3.C — Develop code for arithmetic expressions and determine the result of these expressions.</strong></p>
+<ul>
+<li><strong>[1.3.C.1]:</strong> Arithmetic expressions, which consist of numeric values, variables, and operators, include expressions of type <code>int</code> and <code>double</code>.</li>
+<li><strong>[1.3.C.2]:</strong> The arithmetic operators consist of addition <code>+</code>, subtraction <code>-</code>, multiplication <code>*</code>, division <code>/</code>, and remainder <code>%</code>. An arithmetic operation that uses two <code>int</code> values will evaluate to an <code>int</code> value. An arithmetic operation that uses at least one <code>double</code> value will evaluate to a <code>double</code> value.</li>
+<li><strong>[1.3.C.3]:</strong> When dividing numeric values that are both <code>int</code> values, the result is only the integer portion of the quotient. When dividing numeric values that use at least one <code>double</code> value, the result is the quotient.</li>
+<li><strong>[1.3.C.4]:</strong> The remainder operator <code>%</code> is used to compute the remainder when one number a is divided by another number b.</li>
+<li><strong>[1.3.C.5]:</strong> Operators can be used to construct compound expressions. At compile time, numeric values are associated with operators according to <em>operator precedence</em> to determine how they are grouped. Parentheses can be used to modify operator precedence. Multiplication, division, and remainder have precedence over addition and subtraction. Operators with the same precedence are evaluated from left to right.</li>
+<li><strong>[1.3.C.6]:</strong> An attempt to divide an integer by the integer zero will result in an <code>ArithmeticException</code>.</li>
+</ul>
+<h3 id="section_10">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ExpressionsDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Total: &quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// cursor stays on the same line</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="mi">7</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">     </span><span class="c1">// prints: Total: 10</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">     </span><span class="c1">// 3  (int division: only the integer part)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">     </span><span class="c1">// 2  (remainder when 17 is divided by 5)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="mf">17.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w">  </span><span class="c1">// 3.4 (at least one double -&gt; double)</span>
+
+<span class="w">        </span><span class="c1">// Operator precedence: * and / bind tighter than + and -</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w">     </span><span class="c1">// 14</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">((</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w">   </span><span class="c1">// 20  (parentheses override precedence)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w">    </span><span class="c1">// 8   (division first: 10 - 2)</span>
+
+<span class="w">        </span><span class="c1">// Escape sequences</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;He said \&quot;hi\&quot;&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Line 1\nLine 2&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;A backslash: \\&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// int divided by int zero -&gt; ArithmeticException</span>
+<span class="w">        </span><span class="c1">// System.out.println(5 / 0);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.1 — What Is the Output? (6 marks)</div><div class="callout-body"><p>Given the following code segment, state the exact output.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="mi">17</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="mi">17</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;1\n2&quot;</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>(a) Show the exact output of the first five statements (lines 1–5). [3]
+(b) Show the exact output produced by the last statement, including the position of the newline. [3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>AB</code> then <code>3 2</code>. Working through it: <code>print(&quot;A&quot;)</code> displays <code>A</code> with no newline; <code>println(&quot;B&quot;)</code> displays <code>B</code> and moves to a new line, so the first line is <code>AB</code>. <code>17 / 5</code> is <code>3</code> (int division), printed with <code>print</code>, then a space, then <code>17 % 5</code> is <code>2</code> printed with <code>println</code>. The output is:</p>
+<pre><code><div class="highlight"><pre><span></span>AB
+3 2
+</pre></div>
+</code></pre>
+<p>[3]
+(b) The string literal <code>&quot;1\n2&quot;</code> contains a newline escape sequence, so it prints <code>1</code>, then a newline, then <code>2</code>, and the <code>println</code> moves the cursor to the next line afterward. The output is:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="mf">1</span>
+<span class="mf">2</span>
+</pre></div>
+</code></pre>
+<p>[3]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.2 — Writing Arithmetic Expressions (4 marks)</div><div class="callout-body"><p>(a) Write an expression that computes the average of two <code>int</code> variables <code>x</code> and <code>y</code> and stores it in a <code>double</code> variable <code>avg</code>. Explain why <code>avg = (x + y) / 2;</code> would not give the mathematically correct average in general. [2]
+(b) Write an expression using the remainder operator that determines whether an <code>int</code> variable <code>n</code> is even (the expression evaluates to <code>true</code> when <code>n</code> is even). [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>double avg = (double) (x + y) / 2;</code> (or <code>double avg = (x + y) / 2.0;</code>). The statement <code>(x + y) / 2</code> divides two <code>int</code> values, so the result is only the integer portion of the quotient and the fractional part is lost (e.g., <code>(5 + 6) / 2</code> is <code>5</code>, not <code>5.5</code>). [2]
+(b) <code>n % 2 == 0</code> — the remainder when <code>n</code> is divided by <code>2</code> is <code>0</code> exactly when <code>n</code> is even. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.3 — Precedence and Escape Sequences (4 marks)</div><div class="callout-body"><p>(a) Write a string literal that displays exactly: <code>He said &quot;hi&quot; \</code> followed by a newline. [2]
+(b) Using operator precedence, evaluate <code>10 - 2 * 3 + 8 / 4</code> step by step, showing how the expression is grouped. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>&quot;He said \&quot;hi\&quot; \\\n&quot;</code> — the <code>\&quot;</code> produces a double quote, <code>\\</code> produces a backslash, and <code>\n</code> moves to a new line. [2]
+(b) Multiplication and division have precedence over addition and subtraction, and same-precedence operators evaluate left to right: <code>10 - (2 * 3) + (8 / 4)</code> = <code>10 - 6 + 2</code> = <code>4 + 2</code> = <code>6</code>. [2]</p>
+</div></details><hr>
+<h2 id="section_11">Topic 1.4 — Assignment Statements and Input</h2>
+<h3 id="section_12">Key Concepts</h3>
+<p><strong>1.4.A — Develop code for assignment statements with expressions and determine the value that is stored in the variable as a result of these statements.</strong></p>
+<ul>
+<li><strong>[1.4.A.1]:</strong> Every variable must be assigned a value before it can be used in an expression. That value must be from a compatible data type. A variable is <em>initialized</em> the first time it is assigned a value. Reference types can be assigned a new object or <code>null</code> if there is no object. The literal <code>null</code> is a special value used to indicate that a reference is not associated with any object.</li>
+<li><strong>[1.4.A.2]:</strong> The assignment operator <code>=</code> allows a program to initialize or change the value stored in a variable. The value of the expression on the right is stored in the variable on the left.
+<ul>
+<li><strong>Exclusion:</strong> Assignment operators used inside expressions (e.g., <code>a = b = 4;</code> or <code>a[i] += 5;</code>) are outside the scope of the course and exam.</li>
+</ul>
+</li>
+<li><strong>[1.4.A.3]:</strong> During execution, an expression is evaluated to produce a single value. The value of an expression has a type based on the evaluation of the expression.</li>
+</ul>
+<p><strong>1.4.B — Develop code to read input.</strong></p>
+<ul>
+<li><strong>[1.4.B.1]:</strong> Input can come in a variety of forms, such as tactile, audio, visual, or text. The <code>Scanner</code> class is one way to obtain text input from the keyboard.</li>
+</ul>
+<h3 id="section_13">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span><span class="w">   </span><span class="c1">// Scanner is in the java.util package</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">InputDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Scanner</span><span class="w"> </span><span class="n">keyboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter your age: &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyboard</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span><span class="w">   </span><span class="c1">// input value is stored in age</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter your name: &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyboard</span><span class="p">.</span><span class="na">next</span><span class="p">();</span><span class="w">  </span><span class="c1">// reads the next token (a word)</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">ageNextYear</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">      </span><span class="c1">// expression is evaluated to one value</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; will be &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ageNextYear</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; next year.&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">keyboard</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.1 — What Value Is Stored? (4 marks)</div><div class="callout-body"><p>Trace the following code segment and state the final value of each variable.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p>(a) What is the value of <code>a</code> after the assignment <code>a = b + 2;</code>? [1]
+(b) What is the value of <code>b</code> after <code>b = a * 2;</code>? [1]
+© What are the final values of <code>a</code> and <code>b</code> after all statements execute? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>b</code> is <code>5</code>, so <code>a = 5 + 2</code> evaluates to <code>7</code>. [1]
+(b) <code>a</code> is currently <code>7</code>, so <code>b = 7 * 2</code> evaluates to <code>14</code>. [1]
+© <code>a = 10;</code> overwrites <code>a</code> to <code>10</code>, while <code>b</code> remains <code>14</code>. Final values: <code>a = 10</code>, <code>b = 14</code>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.2 — Reading Input with Scanner (3 marks)</div><div class="callout-body"><p>Write a complete <code>main</code> method that uses a <code>Scanner</code> to read a user’s name (a <code>String</code>) and age (an <code>int</code>), then prints a sentence such as <code>Maya is 16 years old.</code> [3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Greeting</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Scanner</span><span class="w"> </span><span class="n">keyboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter your name: &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyboard</span><span class="p">.</span><span class="na">next</span><span class="p">();</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter your age: &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyboard</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; years old.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">keyboard</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>The answer must import <code>Scanner</code>, create a <code>Scanner</code> on <code>System.in</code>, read a <code>String</code> and an <code>int</code>, and print a sentence that combines them with <code>+</code>. [3]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.3 — Initialization and null (2 marks)</div><div class="callout-body"><p>(a) What does it mean for a variable to be <em>initialized</em>, and why must every variable be assigned a value before it is used in an expression? [1]
+(b) For a variable of a reference type, what does the literal <code>null</code> indicate? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A variable is initialized the first time it is assigned a value. Every variable must be assigned a value before it is used in an expression because an uninitialized variable has no value to use in the expression. [1]
+(b) <code>null</code> is a special value used to indicate that the reference is not associated with any object. [1]</p>
+</div></details><hr>
+<h2 id="section_14">Topic 1.5 — Casting and Range of Variables</h2>
+<h3 id="section_15">Key Concepts</h3>
+<p><strong>1.5.A — Develop code to cast primitive values to different primitive types in arithmetic expressions and determine the value that is produced as a result.</strong></p>
+<ul>
+<li><strong>[1.5.A.1]:</strong> The casting operators <code>(int)</code> and <code>(double)</code> can be used to convert from a <code>double</code> value to an <code>int</code> value (or vice versa).</li>
+<li><strong>[1.5.A.2]:</strong> Casting a <code>double</code> value to an <code>int</code> value causes the digits to the right of the decimal point to be <em>truncated</em>.</li>
+<li><strong>[1.5.A.3]:</strong> Some code causes <code>int</code> values to be automatically cast (widened) to <code>double</code> values.</li>
+<li><strong>[1.5.A.4]:</strong> Values of type <code>double</code> can be rounded to the nearest integer by <code>(int)(x + 0.5)</code> for non-negative numbers or <code>(int)(x - 0.5)</code> for negative numbers.</li>
+</ul>
+<p><strong>1.5.B — Describe conditions when an integer expression evaluates to a value out of range.</strong></p>
+<ul>
+<li><strong>[1.5.B.1]:</strong> The constant <code>Integer.MAX_VALUE</code> holds the value of the largest possible <code>int</code> value. The constant <code>Integer.MIN_VALUE</code> holds the value of the smallest possible <code>int</code> value.</li>
+<li><strong>[1.5.B.2]:</strong> Integer values in Java are represented by values of type <code>int</code>, which are stored using a finite amount (4 bytes) of memory. Therefore, an <code>int</code> value must be in the range from <code>Integer.MIN_VALUE</code> to <code>Integer.MAX_VALUE</code> inclusive.</li>
+<li><strong>[1.5.B.3]:</strong> If an expression would evaluate to an <code>int</code> value outside of the allowed range, an <em>integer overflow</em> occurs. The result is an <code>int</code> value in the allowed range but not necessarily the value expected.</li>
+</ul>
+<p><strong>1.5.C — Describe conditions that limit accuracy of expressions.</strong></p>
+<ul>
+<li><strong>[1.5.C.1]:</strong> Computers allot a specified amount of memory to store data based on the data type. If an expression would evaluate to a <code>double</code> that is more precise than can be stored in the allotted amount of memory, a <em>round-off error</em> occurs. The result will be rounded to the representable value. To avoid rounding errors that naturally occur, use <code>int</code> values.</li>
+</ul>
+<h3 id="section_16">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CastingDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7.99</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="n">d</span><span class="p">;</span><span class="w">               </span><span class="c1">// 7: digits right of the decimal are truncated</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5</span><span class="p">));</span><span class="w">   </span><span class="c1">// 8: rounded to the nearest integer</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">                  </span><span class="c1">// int is automatically cast (widened) to double</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">y</span><span class="p">);</span><span class="w">         </span><span class="c1">// 3.0</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Integer</span><span class="p">.</span><span class="na">MAX_VALUE</span><span class="p">);</span><span class="w">     </span><span class="c1">// largest possible int</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Integer</span><span class="p">.</span><span class="na">MIN_VALUE</span><span class="p">);</span><span class="w">     </span><span class="c1">// smallest possible int</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Integer</span><span class="p">.</span><span class="na">MAX_VALUE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// overflow: value in range,</span>
+<span class="w">                                                   </span><span class="c1">// but not the expected result</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.5.1 — Predicting Cast Values (4 marks)</div><div class="callout-body"><p>State the value of each expression. [1 mark each]
+(a) <code>(int) 9.999</code>
+(b) <code>(double) 7 / 2</code>
+© <code>(int) (2.5 + 0.5)</code>
+(d) <code>(int) (-2.5 - 0.5)</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>9</code> — casting a <code>double</code> to <code>int</code> truncates the digits to the right of the decimal point. [1]
+(b) <code>3.5</code> — the cast <code>(double) 7</code> makes one operand a <code>double</code>, so the division yields the quotient as a <code>double</code>. [1]
+© <code>3</code> — <code>2.5 + 0.5 = 3.0</code>, then <code>(int) 3.0</code> is <code>3</code>. [1]
+(d) <code>-3</code> — <code>-2.5 - 0.5 = -3.0</code>, and <code>(int)(x - 0.5)</code> rounds negative values to the nearest integer, giving <code>-3</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.5.2 — Integer Range and Overflow (4 marks)</div><div class="callout-body"><p>(a) What values do <code>Integer.MAX_VALUE</code> and <code>Integer.MIN_VALUE</code> hold, and why must every <code>int</code> value lie within that range? [2]
+(b) Explain what an <em>integer overflow</em> is and what value results from it. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>Integer.MAX_VALUE</code> holds the largest possible <code>int</code> value and <code>Integer.MIN_VALUE</code> holds the smallest possible <code>int</code> value. Every <code>int</code> value must be in this range because <code>int</code> values are stored using a finite amount of memory (4 bytes). [2]
+(b) If an expression would evaluate to an <code>int</code> value outside the allowed range, an integer overflow occurs. The result is an <code>int</code> value in the allowed range but not necessarily the value expected. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.5.3 — Rounding and Round-Off Error (5 marks)</div><div class="callout-body"><p>(a) A student’s test grade is stored in the <code>double</code> variable <code>grade</code> with value <code>86.7</code>. Write an expression that rounds the grade to the nearest integer and assigns it to an <code>int</code> variable. [1]
+(b) Explain what a <em>round-off error</em> is and give an example of a <code>double</code> computation that could suffer from it. [2]
+© Why is it recommended to use <code>int</code> values to avoid rounding errors? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>int rounded = (int) (grade + 0.5);</code> — for non-negative numbers, <code>(int)(x + 0.5)</code> rounds to the nearest integer, so <code>86.7 + 0.5 = 87.2</code>, truncated to <code>87</code>. [1]
+(b) Computers allot a specified amount of memory to store data based on the data type. If an expression would evaluate to a <code>double</code> that is more precise than can be stored, a round-off error occurs: the result is rounded to the representable value. For example, a repeating decimal such as <code>1.0 / 3.0</code> cannot be stored exactly in memory. [2]
+© Integers are stored exactly within their range, so <code>int</code> arithmetic does not suffer from the precision limits of <code>double</code>. Using <code>int</code> values avoids the rounding errors that naturally occur with real numbers. [2]</p>
+</div></details><hr>
+<h2 id="section_17">Topic 1.6 — Compound Assignment Operators</h2>
+<h3 id="section_18">Key Concepts</h3>
+<p><strong>1.6.A — Develop code for assignment statements with compound assignment operators and determine the value that is stored in the variable as a result.</strong></p>
+<ul>
+<li><strong>[1.6.A.1]:</strong> Compound assignment operators <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, and <code>%=</code> can be used in place of the assignment operator in numeric expressions. A compound assignment operator performs the indicated arithmetic operation between the value on the left and the value on the right and then assigns the result to the variable on the left.</li>
+<li><strong>[1.6.A.2]:</strong> The post-increment operator <code>++</code> and post-decrement operator <code>--</code> are used to add 1 or subtract 1 from the stored value of a numeric variable. The new value is assigned to the variable.
+<ul>
+<li><strong>Exclusions:</strong> Prefix form (<code>++x</code>) and increment/decrement used inside other expressions (e.g., <code>arr[x++]</code>) are outside the scope of the course and exam.</li>
+</ul>
+</li>
+</ul>
+<h3 id="section_19">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CompoundDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">        </span><span class="n">score</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">    </span><span class="c1">// score = score + 5  -&gt; 15</span>
+<span class="w">        </span><span class="n">score</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">    </span><span class="c1">// score = score - 3  -&gt; 12</span>
+<span class="w">        </span><span class="n">score</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">    </span><span class="c1">// score = score * 2  -&gt; 24</span>
+<span class="w">        </span><span class="n">score</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">    </span><span class="c1">// score = score / 4  -&gt; 6</span>
+<span class="w">        </span><span class="n">score</span><span class="w"> </span><span class="o">%=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">    </span><span class="c1">// score = score % 4  -&gt; 2</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w">       </span><span class="c1">// count = count + 1  -&gt; 1</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w">       </span><span class="c1">// -&gt; 2</span>
+<span class="w">        </span><span class="n">count</span><span class="o">--</span><span class="p">;</span><span class="w">       </span><span class="c1">// count = count - 1  -&gt; 1</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">score</span><span class="p">);</span><span class="w">   </span><span class="c1">// 2</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">count</span><span class="p">);</span><span class="w">   </span><span class="c1">// 1</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.6.1 — Rewrite and Trace (4 marks)</div><div class="callout-body"><p>For the following code, rewrite each compound assignment as an equivalent ordinary assignment statement, then state the final value of <code>x</code>.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">%=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p>(a) Rewrite each statement using <code>=</code>, <code>+</code>, <code>-</code>, <code>*</code>, and <code>%</code>. [2]
+(b) What is the final value of <code>x</code>? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>x = x + 3;</code> then <code>x = x - 5;</code> then <code>x = x * 2;</code> then <code>x = x % 6;</code>. [2]
+(b) Tracing: <code>x = 10</code>, then <code>13</code>, then <code>8</code>, then <code>16</code>, then <code>16 % 6 = 4</code>. Final value: <code>x = 4</code>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.6.2 — Post-Increment and Post-Decrement (3 marks)</div><div class="callout-body"><p>What is the output of the following code segment? Explain each change to <code>n</code>.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">n</span><span class="o">++</span><span class="p">;</span>
+<span class="n">n</span><span class="o">--</span><span class="p">;</span>
+<span class="n">n</span><span class="o">++</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>(a) State the output. [1]
+(b) Explain how <code>++</code> and <code>--</code> change the stored value of <code>n</code> at each step. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The output is <code>6</code>. [1]
+(b) <code>n++</code> adds 1 to the stored value, so <code>n</code> becomes <code>6</code>; <code>n--</code> subtracts 1, so <code>n</code> becomes <code>5</code>; <code>n++</code> adds 1 again, so <code>n</code> becomes <code>6</code>. In each case the new value is assigned to the variable. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.6.3 — Compound Operators with Division and Remainder (3 marks)</div><div class="callout-body"><p>Starting with <code>y = 12</code>, what is the value of <code>y</code> after each of the following statements executes? Treat each statement as acting on the result of the previous one.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
+<span class="n">y</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="n">y</span><span class="w"> </span><span class="o">%=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p>(a) What is the value of <code>y</code> after <code>y /= 4;</code>? [1]
+(b) What is the value of <code>y</code> after <code>y %= 5;</code>? [1]
+© Write the two statements above as ordinary assignment statements. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>y = 12 / 4 = 3</code>. [1]
+(b) <code>y = 3 % 5 = 3</code> (the remainder when 3 is divided by 5). [1]
+© <code>y = y / 4;</code> and <code>y = y % 5;</code>. [1]</p>
+</div></details><hr>
+<h2 id="section_20">Topic 1.7 — Application Program Interface (API) and Libraries</h2>
+<h3 id="section_21">Key Concepts</h3>
+<p><strong>1.7.A — Identify the attributes and behaviors of a class found in the libraries contained in an API.</strong></p>
+<ul>
+<li><strong>[1.7.A.1]:</strong> <em>Libraries</em> are collections of classes. An <em>application programming interface (API)</em> specification informs the programmer how to use those classes. Documentation found in API specifications and libraries is essential to understanding the attributes and behaviors of a class defined by the API. A class defines a specific reference type. Classes in the APIs and libraries are grouped into packages. Existing classes and class libraries can be utilized to create objects.</li>
+<li><strong>[1.7.A.2]:</strong> <em>Attributes</em> refer to the data related to the class and are stored in variables. <em>Behaviors</em> refer to what instances of the class can do (or what can be done with them) and are defined by methods.</li>
+</ul>
+<h3 id="section_22">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Classes in the Java API are grouped into packages.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span><span class="w">    </span><span class="c1">// Scanner is in the java.util package</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ApiDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// A class from the API is used to create an object.</span>
+<span class="w">        </span><span class="n">Scanner</span><span class="w"> </span><span class="n">keyboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;Enter a word: &quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyboard</span><span class="p">.</span><span class="na">next</span><span class="p">();</span><span class="w">          </span><span class="c1">// behavior: reads input</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You typed: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">word</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.7.1 — Attributes and Behaviors of the Scanner Class (3 marks)</div><div class="callout-body"><p>Using the API documentation for the <code>Scanner</code> class:
+(a) State one attribute (data related to the class). [1]
+(b) State two behaviors (things instances of the class can do). [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: the source of the input (e.g., the keyboard / <code>System.in</code>) that the <code>Scanner</code> reads from is data stored by the object. [1]
+(b) Examples: <code>nextInt()</code> reads an <code>int</code> value from the input; <code>nextLine()</code> reads a whole line of input; <code>next()</code> reads the next token. Any two methods documented for the class are accepted. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.7.2 — What Is an API? (3 marks)</div><div class="callout-body"><p>(a) What is a <em>library</em>, and what is an <em>application programming interface (API)</em> specification? [2]
+(b) Why is documentation found in API specifications and libraries essential to a programmer? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Libraries are collections of classes. An API specification informs the programmer how to use those classes. [2]
+(b) Documentation is essential to understanding the attributes and behaviors of a class defined by the API — without it, a programmer would not know what methods exist, what parameters they take, or what they return. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.7.3 — Attributes vs. Behaviors in a Real-World Class (2 marks)</div><div class="callout-body"><p>Consider the class <code>Bicycle</code>. Give one attribute and one behavior of a <code>Bicycle</code> object, and state how each is represented in a class definition.</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>Example: an attribute is the current speed or gear, stored in a variable; a behavior is <code>speedUp()</code> or <code>changeGear()</code>, defined by a method. Attributes are stored in variables, while behaviors are defined by methods. [2]</p>
+</div></details><hr>
+<h2 id="section_23">Topic 1.8 — Documentation with Comments</h2>
+<h3 id="section_24">Key Concepts</h3>
+<p><strong>1.8.A — Describe the functionality and use of code through comments.</strong></p>
+<ul>
+<li><strong>[1.8.A.1]:</strong> Comments are written for both the original programmer and other programmers to understand the code and its functionality, but are ignored by the compiler and are not executed when the program is run. Three types of comments in Java include <code>/* */</code>, which generates a block of comments; <code>//</code>, which generates a comment on one line; and <code>/** */</code>, which are Javadoc comments and are used to create API documentation.</li>
+<li><strong>[1.8.A.2]:</strong> A <em>precondition</em> is a condition that must be true just prior to the execution of a method in order for it to behave as expected. There is no expectation that the method will check to ensure preconditions are satisfied.</li>
+<li><strong>[1.8.A.3]:</strong> A <em>postcondition</em> is a condition that must always be true after the execution of a method. Postconditions describe the outcome of the execution in terms of what is being returned or the current value of the attributes of an object.</li>
+</ul>
+<h3 id="section_25">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CommentDemo</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Computes the area of a rectangle.</span>
+<span class="cm">     * Javadoc comments are used to create API documentation.</span>
+<span class="cm">     * @param length the length of the rectangle (must be non-negative)</span>
+<span class="cm">     * @param width  the width of the rectangle (must be non-negative)</span>
+<span class="cm">     * @return the area of the rectangle</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">rectangleArea</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Precondition: length &gt;= 0 and width &gt;= 0.</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// Postcondition: the value returned equals length * width.</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">area</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* This block comment explains the statement below. */</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">rectangleArea</span><span class="p">(</span><span class="mf">4.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.5</span><span class="p">));</span><span class="w">   </span><span class="c1">// output: 10.0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.8.1 — Types of Comments (3 marks)</div><div class="callout-body"><p>(a) Match each of the three comment forms <code>/* */</code>, <code>//</code>, and <code>/** */</code> with its purpose. [2]
+(b) Why are comments ignored by the compiler and not executed when the program is run? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>//</code> generates a comment on one line; <code>/* */</code> generates a block of comments; <code>/** */</code> are Javadoc comments used to create API documentation. [2]
+(b) Comments are written for the original programmer and other programmers to understand the code and its functionality; they are not instructions to the computer, so the compiler ignores them and they are not executed. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.8.2 — Preconditions and Postconditions (4 marks)</div><div class="callout-body"><p>Consider a method <code>double calculatePrice(double original)</code> that is intended to return the price after a 10% discount.
+(a) State a reasonable <em>precondition</em> for this method. [1]
+(b) State a reasonable <em>postcondition</em> for this method in terms of the value returned. [1]
+© Explain why the method is not expected to check that its preconditions are satisfied. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: the value of <code>original</code> must be non-negative (a price cannot be negative). [1]
+(b) The value returned equals <code>original * 0.9</code> (the price after a 10% discount). [1]
+© A precondition is a condition that must be true just prior to the execution of a method in order for it to behave as expected; there is no expectation that the method will check to ensure preconditions are satisfied. The caller is responsible for meeting them. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.8.3 — Writing Javadoc Comments (2 marks)</div><div class="callout-body"><p>Write a Javadoc comment for the following method that describes its purpose, parameters, and return value.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">cube</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</code></pre>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Computes the cube of an integer.</span>
+<span class="cm"> * @param n the value to be cubed</span>
+<span class="cm"> * @return n * n * n</span>
+<span class="cm"> */</span>
+</pre></div>
+</code></pre>
+<p>The comment must use the <code>/** */</code> form and describe the purpose, the parameter <code>n</code>, and the returned value. [2]</p>
+</div></details><hr>
+<h2 id="section_26">Topic 1.9 — Method Signatures</h2>
+<h3 id="section_27">Key Concepts</h3>
+<p><strong>1.9.A — Identify the correct method to call based on documentation and method signatures.</strong></p>
+<ul>
+<li><strong>[1.9.A.1]:</strong> A <em>method</em> is a named block of code that only runs when it is called. A <em>block of code</em> is any section of code that is enclosed in braces. <em>Procedural abstraction</em> allows a programmer to use a method by knowing what the method does even if they do not know how the method was written.</li>
+<li><strong>[1.9.A.2]:</strong> A <em>parameter</em> is a variable declared in the header of a method or constructor and can be used inside the body of the method. This allows values or arguments to be passed and used by a method or constructor. A <em>method signature</em> for a method with parameters consists of the method name and the ordered list of parameter types. A method signature for a method without parameters consists of the method name and an empty parameter list.</li>
+</ul>
+<p><strong>1.9.B — Describe how to call methods.</strong></p>
+<ul>
+<li><strong>[1.9.B.1]:</strong> A <code>void</code> method does not have a return value and is therefore not called as part of an expression.</li>
+<li><strong>[1.9.B.2]:</strong> A <code>non-void</code> method returns a value that is the same type as the return type in the header. To use the return value when calling a non-void method, it must be stored in a variable or used as part of an expression.</li>
+<li><strong>[1.9.B.3]:</strong> An <em>argument</em> is a value that is passed into a method when the method is called. The arguments passed to a method must be compatible in number and order with the types identified in the parameter list of the signature. When calling methods, the arguments are passed using <em>call by value</em>. <em>Call by value</em> initializes the parameters with copies of the arguments.</li>
+<li><strong>[1.9.B.4]:</strong> Methods are said to be <em>overloaded</em> when there are multiple methods with the same name but different signatures.</li>
+<li><strong>[1.9.B.5]:</strong> A <em>method call</em> interrupts the sequential execution of statements, causing the program to first execute the statements in the method before continuing. Once the last statement in the method has been executed or a return statement is executed, the flow of control is returned to the point immediately following where the method was called.</li>
+</ul>
+<h3 id="section_28">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MethodDemo</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// Non-void method: returns the larger of two int values.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Overloaded method: same name, different signature (double parameters).</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Void method: has no return value.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">printGreeting</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Hello!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printGreeting</span><span class="p">();</span><span class="w">                </span><span class="c1">// void: called as a statement</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">bigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">         </span><span class="c1">// return value stored in a variable</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="mf">3.9</span><span class="p">);</span><span class="w">       </span><span class="c1">// overloaded double version is used</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">bigger</span><span class="p">);</span><span class="w">     </span><span class="c1">// 7</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">d</span><span class="p">);</span><span class="w">          </span><span class="c1">// 3.9</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.9.1 — Reading Method Signatures (3 marks)</div><div class="callout-body"><p>For each method header below, state the method name, the ordered list of parameter types, and the return type. [1 mark each]
+(a) <code>public static int length(String s)</code>
+(b) <code>public static void reset()</code>
+© <code>public static double average(double a, double b, double c)</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Name: <code>length</code>; parameter list: one parameter of type <code>String</code>; return type: <code>int</code>. [1]
+(b) Name: <code>reset</code>; parameter list: empty (no parameters); return type: <code>void</code>. [1]
+© Name: <code>average</code>; parameter list: <code>double</code>, <code>double</code>, <code>double</code> (three <code>double</code> parameters); return type: <code>double</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.9.2 — Void vs. Non-Void (3 marks)</div><div class="callout-body"><p>(a) Explain why the statement <code>int x = printGreeting();</code> will not compile. [1]
+(b) State two correct ways to use the return value of a non-void method. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>printGreeting</code> is a <code>void</code> method: it does not have a return value, so it cannot be called as part of an expression (nothing can be stored in <code>x</code>). [1]
+(b) The return value must be stored in a variable or used as part of an expression (for example, <code>int s = length(&quot;hi&quot;);</code> or <code>System.out.println(max(1, 2));</code>). [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.9.3 — Overloaded Methods (4 marks)</div><div class="callout-body"><p>Given the two methods <code>max(int a, int b)</code> and <code>max(double a, double b)</code>, state which method is called for each call below, and give the value it returns.
+(a) <code>max(4, 9)</code> [1]
+(b) <code>max(4.0, 9)</code> [1]
+© <code>max(3.5, 2)</code> [1]
+(d) In your own words, what does it mean for methods to be <em>overloaded</em>? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>max(int, int)</code> is called; it returns <code>9</code>. [1]
+(b) Because one argument is a <code>double</code>, the <code>max(double, double)</code> version is called (the <code>int</code> is widened); it returns <code>9.0</code>. [1]
+© <code>max(double, double)</code> is called; it returns <code>3.5</code>. [1]
+(d) Methods are overloaded when there are multiple methods with the same name but different signatures. The correct version is chosen by the types of the arguments passed. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.9.4 — Call by Value (2 marks)</div><div class="callout-body"><p>Explain what <em>call by value</em> means when arguments are passed to a method, and describe how the flow of control returns after a method call finishes.</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>Call by value initializes the parameters with copies of the arguments, so the method works on copies rather than the original values. When a method is called, it interrupts the sequential execution of statements; once the last statement in the method has been executed or a return statement is executed, the flow of control is returned to the point immediately following where the method was called. [2]</p>
+</div></details><hr>
+<h2 id="section_29">Topic 1.10 — Calling Class Methods</h2>
+<h3 id="section_30">Key Concepts</h3>
+<p><strong>1.10.A — Develop code to call class methods and determine the result of those calls.</strong></p>
+<ul>
+<li><strong>[1.10.A.1]:</strong> Class methods are associated with the class, not instances of the class. Class methods include the keyword <code>static</code> in the header before the method name.</li>
+<li><strong>[1.10.A.2]:</strong> Class methods are typically called using the class name along with the dot operator. When the method call occurs in the defining class, the use of the class name is optional in the call.</li>
+</ul>
+<h3 id="section_31">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ClassMethodDemo</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// Class method: the keyword static means it belongs to the class,</span>
+<span class="w">    </span><span class="c1">// not to any particular object (instance) of the class.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">triple</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Typical call: class name + dot operator.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassMethodDemo</span><span class="p">.</span><span class="na">triple</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Inside the defining class, the class name is optional.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">triple</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w">    </span><span class="c1">// 12</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result2</span><span class="p">);</span><span class="w">   </span><span class="c1">// 12</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.10.1 — Tracing Class Method Calls (3 marks)</div><div class="callout-body"><p>A class <code>Helper</code> contains the class method <code>public static int addOne(int x)</code> that returns <code>x + 1</code>. Trace the following code and state the output.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Helper</span><span class="p">.</span><span class="na">addOne</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Helper</span><span class="p">.</span><span class="na">addOne</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>(a) What is the value of <code>a</code>? [1]
+(b) What is the value of <code>b</code>? [1]
+© What is the output? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>a = 5 + 1 = 6</code>. [1]
+(b) <code>b = addOne(6) = 7</code>. [1]
+© The output is <code>7</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.10.2 — Why Class Methods Are Called with the Class Name (2 marks)</div><div class="callout-body"><p>(a) What does the keyword <code>static</code> indicate about a method, and with what is a class method associated? [1]
+(b) When is the use of the class name optional in a call to a class method? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>static</code> indicates the method is a class method, associated with the class rather than with instances of the class. [1]
+(b) The class name is optional when the method call occurs in the defining class; it is still required (along with the dot operator) when calling from outside that class. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.10.3 — Writing and Calling a Class Method (3 marks)</div><div class="callout-body"><p>Write a class method <code>public static int averageOf(int a, int b, int c)</code> that returns the average of three <code>int</code> values (rounded down, as with <code>int</code> division), then write a statement in a <code>main</code> method that calls it and stores the result. [3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">averageOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// in main:</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">avg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">averageOf</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span><span class="w">   </span><span class="c1">// returns 21 / 3 = 7</span>
+</pre></div>
+</code></pre>
+<p>The method must be <code>static</code> and return <code>(a + b + c) / 3</code>; the call stores the returned value in a variable. [3]</p>
+</div></details><hr>
+<h2 id="section_32">Topic 1.11 — Math Class</h2>
+<h3 id="section_33">Key Concepts</h3>
+<p><strong>1.11.A — Develop code to write expressions that incorporate calls to built-in mathematical libraries and determine the value that is produced as a result.</strong></p>
+<ul>
+<li><strong>[1.11.A.1]:</strong> The <code>Math</code> class is part of the <code>java.lang</code> package. Classes in the <code>java.lang</code> package are available by default.</li>
+<li><strong>[1.11.A.2]:</strong> The <code>Math</code> class contains only class methods. The following <code>Math</code> class methods — including what they do and when they are used — are part of the Java Quick Reference:
+<ul>
+<li><code>static int abs(int x)</code> returns the absolute value of an <code>int</code> value.</li>
+<li><code>static double abs(double x)</code> returns the absolute value of a <code>double</code> value.</li>
+<li><code>static double pow(double base, double exponent)</code> returns the value of the first parameter raised to the power of the second parameter.</li>
+<li><code>static double sqrt(double x)</code> returns the nonnegative square root of a <code>double</code> value.</li>
+<li><code>static double random()</code> returns a <code>double</code> value greater than or equal to <code>0.0</code> and less than <code>1.0</code>.</li>
+<li><code>max</code> and <code>min</code> methods also appear on the Java Quick Reference.</li>
+</ul>
+</li>
+<li><strong>[1.11.A.3]:</strong> The values returned from <code>Math.random()</code> can be manipulated using arithmetic and casting operators to produce a random <code>int</code> or <code>double</code> in a defined range based on specified criteria. Each endpoint of the range can be inclusive, meaning the value is included, or exclusive, meaning the value is not included.</li>
+</ul>
+<h3 id="section_34">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MathDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">abs</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">));</span><span class="w">       </span><span class="c1">// 7</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">abs</span><span class="p">(</span><span class="o">-</span><span class="mf">7.5</span><span class="p">));</span><span class="w">     </span><span class="c1">// 7.5</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">));</span><span class="w">    </span><span class="c1">// 1024.0</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">sqrt</span><span class="p">(</span><span class="mi">25</span><span class="p">));</span><span class="w">      </span><span class="c1">// 5.0</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">));</span><span class="w">     </span><span class="c1">// 9</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">min</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">));</span><span class="w">     </span><span class="c1">// 3</span>
+
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">random</span><span class="p">();</span><span class="w">               </span><span class="c1">// 0.0 &lt;= r &lt; 1.0</span>
+
+<span class="w">        </span><span class="c1">// Random int from 1 to 6 inclusive (a die roll):</span>
+<span class="w">        </span><span class="c1">// random() * 6 gives [0.0, 6.0), (int) gives 0..5, + 1 gives 1..6.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">die</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Random int from 10 to 99 inclusive (both endpoints inclusive):</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">twoDigit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.11.1 — Predicting Math Method Results (5 marks)</div><div class="callout-body"><p>State the value of each expression. [1 mark each]
+(a) <code>Math.abs(-4)</code>
+(b) <code>Math.pow(3, 2)</code>
+© <code>Math.sqrt(16)</code>
+(d) <code>Math.max(7, 7)</code>
+(e) <code>Math.min(2, 9)</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>4</code> — absolute value of an <code>int</code>. [1]
+(b) <code>9.0</code> — <code>pow</code> returns a <code>double</code> (<code>3</code> raised to the power <code>2</code>). [1]
+© <code>4.0</code> — nonnegative square root of <code>16</code>. [1]
+(d) <code>7</code> — <code>max</code> returns the larger of the two values; when equal, that value is returned. [1]
+(e) <code>2</code> — the smaller of <code>2</code> and <code>9</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.11.2 — Random Numbers in Defined Ranges (4 marks)</div><div class="callout-body"><p>(a) Write an expression that produces a random <code>int</code> from 1 to 100 inclusive. [1]
+(b) Write an expression that produces a random <code>int</code> from 50 to 99 inclusive. [1]
+© <code>Math.random()</code> returns a <code>double</code> greater than or equal to <code>0.0</code> and less than <code>1.0</code>. Which endpoint of the interval <code>[0.0, 1.0)</code> is inclusive and which is exclusive? [1]
+(d) Write an expression that produces a random <code>double</code> greater than or equal to <code>0.0</code> and less than <code>5.0</code>. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>(int) (Math.random() * 100) + 1</code> — <code>random() * 100</code> gives <code>[0, 100)</code>, casting gives <code>0..99</code>, adding <code>1</code> gives <code>1..100</code>. [1]
+(b) <code>(int) (Math.random() * 50) + 50</code> — <code>random() * 50</code> gives <code>[0, 50)</code>, casting gives <code>0..49</code>, adding <code>50</code> gives <code>50..99</code>. [1]
+© The lower endpoint <code>0.0</code> is inclusive and the upper endpoint <code>1.0</code> is exclusive. [1]
+(d) <code>Math.random() * 5.0</code> — this gives values in <code>[0.0, 5.0)</code>, where <code>0.0</code> is inclusive and <code>5.0</code> is exclusive. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.11.3 — Simulating a Game (4 marks)</div><div class="callout-body"><p>Write a short <code>main</code> method that simulates rolling two six-sided dice and prints the sum of the two rolls. Each die must be a random <code>int</code> from 1 to 6 inclusive. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">DiceGame</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">die1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">die2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">die1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">die2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;You rolled &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">die1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; and &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">die2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; for a total of &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>Both dice must use <code>(int) (Math.random() * 6) + 1</code> so each value is in the inclusive range 1 to 6, and the program must compute and print their sum. [4]</p>
+</div></details><hr>
+<h2 id="section_35">Topic 1.12 — Objects: Instances of Classes</h2>
+<h3 id="section_36">Key Concepts</h3>
+<p><strong>1.12.A — Explain the relationship between a class and an object.</strong></p>
+<ul>
+<li><strong>[1.12.A.1]:</strong> An object is a specific instance of a class with defined attributes. A class is the formal implementation, or <em>blueprint</em>, of the attributes and behaviors of an object.</li>
+<li><strong>[1.12.A.2]:</strong> A class hierarchy can be developed by putting common attributes and behaviors of related classes into a single class called a <em>superclass</em>. Classes that extend a superclass, called <em>subclasses</em>, can draw upon the existing attributes and behaviors of the superclass without replacing these in the code. This creates an <em>inheritance</em> relationship from the subclasses to the superclass.
+<ul>
+<li><strong>Exclusion:</strong> Designing and implementing inheritance relationships are outside the scope of the course and exam.</li>
+</ul>
+</li>
+<li><strong>[1.12.A.3]:</strong> All classes in Java are subclasses of the <code>Object</code> class.</li>
+</ul>
+<p><strong>1.12.B — Develop code to declare variables to store reference types.</strong></p>
+<ul>
+<li><strong>[1.12.B.1]:</strong> A variable of a reference type holds an <em>object reference</em>, which can be thought of as the memory address of that object.</li>
+</ul>
+<h3 id="section_37">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Song</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">title</span><span class="p">;</span><span class="w">      </span><span class="c1">// attribute: stored in a variable</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w">     </span><span class="c1">// attribute: stored in a variable</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Song</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">songTitle</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">songLength</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">songTitle</span><span class="p">;</span>
+<span class="w">        </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">songLength</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getTitle</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Song is the blueprint; each new Song is a specific instance (object).</span>
+<span class="w">        </span><span class="n">Song</span><span class="w"> </span><span class="n">song1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Song</span><span class="p">(</span><span class="s">&quot;Clocks&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">5.1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Song</span><span class="w"> </span><span class="n">song2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Song</span><span class="p">(</span><span class="s">&quot;Viva la Vida&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// A variable of a reference type holds an object reference.</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">song1</span><span class="p">.</span><span class="na">getTitle</span><span class="p">());</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">song2</span><span class="p">.</span><span class="na">getTitle</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.12.1 — Class as Blueprint (3 marks)</div><div class="callout-body"><p>Using the cookie-cutter analogy, explain the relationship between a class and an object. In your explanation, identify which part is the class and which part is an object, and what “attributes” means in this context. [3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>A class is like a cookie cutter: it is the formal implementation, or blueprint, of the attributes and behaviors an object will have. Each piece of dough cut out is a specific instance of that class, called an object, with the attributes (the data, such as thickness or color) filled in with particular values. Many distinct objects can be created from one class. [3]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.12.2 — Object References (2 marks)</div><div class="callout-body"><p>(a) What does a variable of a reference type hold, and what can it be thought of as? [1]
+(b) In the code <code>Song song1 = new Song(&quot;Clocks&quot;, 5.1);</code>, what exactly is stored in the variable <code>song1</code>? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A variable of a reference type holds an object reference, which can be thought of as the memory address of that object. [1]
+(b) <code>song1</code> stores an object reference to the newly created <code>Song</code> object — the memory address of that object, not the object’s data itself. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.12.3 — Classes and the Object Class (2 marks)</div><div class="callout-body"><p>(a) True or False: All classes in Java are subclasses of the <code>Object</code> class. [1]
+(b) What is a <em>superclass</em>, and what relationship do subclasses have to it? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) True — all classes in Java are subclasses of the <code>Object</code> class. [1]
+(b) A superclass is a single class into which common attributes and behaviors of related classes are placed; subclasses extend the superclass and can draw upon its existing attributes and behaviors without replacing them in code, creating an inheritance relationship from the subclasses to the superclass. [1]</p>
+</div></details><hr>
+<h2 id="section_38">Topic 1.13 — Object Creation and Storage (Instantiation)</h2>
+<h3 id="section_39">Key Concepts</h3>
+<p><strong>1.13.A — Identify, using its signature, the correct constructor being called.</strong></p>
+<ul>
+<li><strong>[1.13.A.1]:</strong> A class contains <em>constructors</em> that are called to create objects. They have the same name as the class.</li>
+<li><strong>[1.13.A.2]:</strong> A <em>constructor signature</em> consists of the constructor’s name, which is the same as the class name, and the ordered list of parameter types. The parameter list, in the header of a constructor, lists the types of the values that are passed and their variable names.</li>
+<li><strong>[1.13.A.3]:</strong> Constructors are said to be <em>overloaded</em> when there are multiple constructors with different signatures.</li>
+</ul>
+<p><strong>1.13.B — Develop code to declare variables of the correct types to hold object references.</strong></p>
+<ul>
+<li><strong>[1.13.B.1]:</strong> A variable of a reference type holds an object reference or, if there is no object, <code>null</code>.</li>
+</ul>
+<p><strong>1.13.C — Develop code to create an object by calling a constructor.</strong></p>
+<ul>
+<li><strong>[1.13.C.1]:</strong> An object is typically created using the keyword <code>new</code> followed by a call to one of the class’s constructors.</li>
+<li><strong>[1.13.C.2]:</strong> Parameters allow constructors to accept values to establish the initial values of the attributes of the object.</li>
+<li><strong>[1.13.C.3]:</strong> A <em>constructor argument</em> is a value that is passed into a constructor when the constructor is called. The arguments passed to a constructor must be compatible in order and number with the types identified in the parameter list in the constructor signature. When calling constructors, arguments are passed using <em>call by value</em>. Call by value initializes the parameters with copies of the arguments.</li>
+<li><strong>[1.13.C.4]:</strong> A constructor call interrupts the sequential execution of statements, causing the program to first execute the statements in the constructor before continuing. Once the last statement in the constructor has been executed, the flow of control is returned to the point immediately following where the constructor was called.</li>
+</ul>
+<h3 id="section_40">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Book</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pages</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Constructor: same name as the class.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Book</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">bookTitle</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pageCount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bookTitle</span><span class="p">;</span><span class="w">      </span><span class="c1">// parameters set the initial attribute values</span>
+<span class="w">        </span><span class="n">pages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pageCount</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Overloaded constructor: a different signature (one parameter).</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Book</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">bookTitle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bookTitle</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getTitle</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">title</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Book</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Book</span><span class="p">(</span><span class="s">&quot;Java in Action&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">420</span><span class="p">);</span><span class="w">  </span><span class="c1">// 2-parameter constructor</span>
+<span class="w">        </span><span class="n">Book</span><span class="w"> </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Book</span><span class="p">(</span><span class="s">&quot;Short Story&quot;</span><span class="p">);</span><span class="w">          </span><span class="c1">// 1-parameter constructor</span>
+<span class="w">        </span><span class="n">Book</span><span class="w"> </span><span class="n">b3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">                             </span><span class="c1">// no object yet</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">b1</span><span class="p">.</span><span class="na">getTitle</span><span class="p">());</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">b2</span><span class="p">.</span><span class="na">getTitle</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.13.1 — Marking Up an Instantiation Statement (4 marks)</div><div class="callout-body"><p>Consider the statement <code>Book b1 = new Book(&quot;Java in Action&quot;, 420);</code>
+(a) Circle the assignment operator and the <code>new</code> keyword. State what each one does. [2]
+(b) Underline the variable type and the constructor, and draw a rectangle around the list of actual parameters being passed to the constructor. [1]
+© How many parameters does the chosen constructor have, and what are their types? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The assignment operator <code>=</code> stores the object reference created on the right into the variable <code>b1</code> on the left; <code>new</code> creates the object by calling a constructor. [2]
+(b) Variable type: <code>Book</code> (in <code>Book b1</code>); constructor: <code>Book</code> (in <code>new Book(...)</code>); actual parameters: <code>&quot;Java in Action&quot;</code> and <code>420</code>. [1]
+© Two parameters: one <code>String</code> (<code>&quot;Java in Action&quot;</code>) and one <code>int</code> (<code>420</code>). [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.13.2 — Identifying the Constructor Called (3 marks)</div><div class="callout-body"><p>Using the two constructors <code>Book(String, int)</code> and <code>Book(String)</code> from the example, state which constructor is called by each statement below.
+(a) <code>Book a = new Book(&quot;Mystery&quot;, 200);</code> [1]
+(b) <code>Book b = new Book(&quot;Poems&quot;);</code> [1]
+© What does it mean for constructors to be <em>overloaded</em>? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The two-parameter constructor <code>Book(String, int)</code> is called because two arguments are passed. [1]
+(b) The one-parameter constructor <code>Book(String)</code> is called. [1]
+© Constructors are overloaded when there are multiple constructors with different signatures; the correct one is chosen based on the number and types of the arguments. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.13.3 — null and Flow of Control (3 marks)</div><div class="callout-body"><p>(a) What value does a variable of a reference type hold when there is no object? [1]
+(b) Describe what happens to the flow of control when a constructor is called, using the example <code>Book b2 = new Book(&quot;Short Story&quot;);</code>. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It holds the literal <code>null</code>, which indicates there is no object. [1]
+(b) The constructor call interrupts the sequential execution of statements: the program first executes the statements in the constructor (here, setting <code>title</code> to <code>&quot;Short Story&quot;</code> and <code>pages</code> to <code>0</code>). Once the last statement in the constructor has been executed, the flow of control is returned to the point immediately following where the constructor was called, and the reference to the new object is stored in <code>b2</code>. [2]</p>
+</div></details><hr>
+<h2 id="section_41">Topic 1.14 — Calling Instance Methods</h2>
+<h3 id="section_42">Key Concepts</h3>
+<p><strong>1.14.A — Develop code to call instance methods and determine the result of these calls.</strong></p>
+<ul>
+<li><strong>[1.14.A.1]:</strong> Instance methods are called on objects of the class. The dot operator is used along with the object name to call instance methods.</li>
+<li><strong>[1.14.A.2]:</strong> A method call on a <code>null</code> reference will result in a <code>NullPointerException</code>.</li>
+</ul>
+<h3 id="section_43">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Student</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Student</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">studentName</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">studentName</span><span class="p">;</span>
+<span class="w">        </span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Instance method: no static keyword; it is called on an object.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">promote</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">grade</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Instance method that returns a value.</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getInfo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is in grade &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Student</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student</span><span class="p">(</span><span class="s">&quot;Alex&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">promote</span><span class="p">();</span><span class="w">                      </span><span class="c1">// dot operator with the object name</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="na">getInfo</span><span class="p">());</span><span class="w">  </span><span class="c1">// Alex is in grade 10</span>
+
+<span class="w">        </span><span class="n">Student</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// s2.getInfo();  // would throw a NullPointerException</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.14.1 — Instance Methods vs. Class Methods (3 marks)</div><div class="callout-body"><p>(a) How are instance methods called, and what appears before the dot operator? [1]
+(b) How does that differ from the way class (static) methods are called? [1]
+© In the example above, state one instance method and one method that is not an instance method. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Instance methods are called on objects of the class using the dot operator along with the object name, e.g., <code>s1.promote()</code>. [1]
+(b) Class methods are associated with the class, not instances, and are typically called using the class name along with the dot operator. [1]
+© <code>promote()</code> and <code>getInfo()</code> are instance methods (no <code>static</code> keyword); <code>main</code> is a class method (declared <code>static</code>). [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.14.2 — Tracing Instance Method Calls (3 marks)</div><div class="callout-body"><p>Trace the following code and state the output.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">Student</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student</span><span class="p">(</span><span class="s">&quot;Maya&quot;</span><span class="p">);</span>
+<span class="n">s</span><span class="p">.</span><span class="na">promote</span><span class="p">();</span>
+<span class="n">s</span><span class="p">.</span><span class="na">promote</span><span class="p">();</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">getInfo</span><span class="p">());</span>
+</pre></div>
+</code></pre>
+<p>(a) What grade does <code>s</code> hold after the two calls to <code>promote()</code>? [1]
+(b) What string is printed? [1]
+© Which object is each instance method called on? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The object starts in grade 9; each <code>promote()</code> adds 1, so after two calls the grade is 11. [1]
+(b) <code>Maya is in grade 11</code>. [1]
+© Each instance method is called on the object referenced by <code>s</code> (the <code>Student</code> object created for Maya). [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.14.3 — NullPointerException (2 marks)</div><div class="callout-body"><p>What exception occurs when a method is called on a <code>null</code> reference, and why does it occur? Give a short example of code that would cause it.</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>A method call on a <code>null</code> reference will result in a <code>NullPointerException</code>. It occurs because the variable holds no object, so there is no object for the method to be called on. Example: <code>Student s2 = null; s2.getInfo();</code> [2]</p>
+</div></details><hr>
+<h2 id="section_44">Topic 1.15 — String Manipulation</h2>
+<h3 id="section_45">Key Concepts</h3>
+<p><strong>1.15.A — Develop code to create string objects and determine the result of creating and combining strings.</strong></p>
+<ul>
+<li><strong>[1.15.A.1]:</strong> A <code>String</code> object represents a sequence of characters and can be created by using a string literal or by calling the <code>String</code> class constructor.</li>
+<li><strong>[1.15.A.2]:</strong> The <code>String</code> class is part of the <code>java.lang</code> package. Classes in the <code>java.lang</code> package are available by default.</li>
+<li><strong>[1.15.A.3]:</strong> A <code>String</code> object is <em>immutable</em>, meaning once a <code>String</code> object is created, its attributes cannot be changed. Methods called on a <code>String</code> object do not change the content of the <code>String</code> object.</li>
+<li><strong>[1.15.A.4]:</strong> Two <code>String</code> objects can be concatenated together or combined using the <code>+</code> or <code>+=</code> operator, resulting in a new <code>String</code> object. A primitive value can be concatenated with a <code>String</code> object. This causes the implicit conversion of the primitive value to a <code>String</code> object.</li>
+<li><strong>[1.15.A.5]:</strong> A <code>String</code> object can be concatenated with any object, which implicitly calls the object’s <code>toString</code> method (a behavior that is guaranteed to exist by the inheritance relationship every class has with the <code>Object</code> class). An object’s <code>toString</code> method returns a string value representing the object. Subclasses of <code>Object</code> often override the <code>toString</code> method with class-specific implementation.
+<ul>
+<li><strong>Exclusion:</strong> Overriding the <code>toString</code> method of a class is outside the scope of the course and exam.</li>
+</ul>
+</li>
+</ul>
+<p><strong>1.15.B — Develop code to call methods on string objects and determine the result of calling these methods.</strong></p>
+<ul>
+<li><strong>[1.15.B.1]:</strong> A <code>String</code> object has index values from 0 to one less than the length of the string. Attempting to access indices outside this range will result in an <code>IndexOutOfBoundsException</code>.</li>
+<li><strong>[1.15.B.2]:</strong> The following <code>String</code> methods — including what they do and when they are used — are part of the Java Quick Reference:
+<ul>
+<li><code>int length()</code> returns the number of characters in a <code>String</code> object.</li>
+<li><code>String substring(int from, int to)</code> returns the substring beginning at index <code>from</code> and ending at index <code>to - 1</code>.</li>
+<li><code>String substring(int from)</code> returns <code>substring(from, length())</code>.</li>
+<li><code>int indexOf(String str)</code> returns the index of the first occurrence of <code>str</code>; returns <code>-1</code> if not found.</li>
+<li><code>boolean equals(Object other)</code> returns <code>true</code> if <code>this</code> corresponds to the same sequence of characters as <code>other</code>; returns <code>false</code> otherwise.</li>
+<li><code>int compareTo(String other)</code> returns a value &lt; 0 if <code>this</code> is less than <code>other</code>; returns zero if <code>this</code> is equal to <code>other</code>; returns a value &gt; 0 if <code>this</code> is greater than <code>other</code>. Strings are ordered based upon the alphabet.</li>
+</ul>
+</li>
+<li><strong>[1.15.B.3]:</strong> A string identical to the single element substring at position <code>index</code> can be created by calling <code>substring(index, index + 1)</code>.</li>
+</ul>
+<h3 id="section_46">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StringDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;computer&quot;</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">());</span><span class="w">         </span><span class="c1">// 8</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">));</span><span class="w">  </span><span class="c1">// comp  (indices 0 to 3)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span><span class="w">     </span><span class="c1">// uter  (index 4 to end)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&quot;put&quot;</span><span class="p">));</span><span class="w">   </span><span class="c1">// 3     (first occurrence)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">));</span><span class="w">     </span><span class="c1">// -1    (not found)</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span><span class="w">  </span><span class="c1">// m     (single-character substring)</span>
+
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;apple&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;banana&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">b</span><span class="p">));</span><span class="w">           </span><span class="c1">// false</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">compareTo</span><span class="p">(</span><span class="n">b</span><span class="p">));</span><span class="w">        </span><span class="c1">// &lt; 0   (apple &lt; banana)</span>
+
+<span class="w">        </span><span class="c1">// Concatenation with + creates a new String object.</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">greeting</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Number: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w">               </span><span class="c1">// 5 is implicitly converted to &quot;5&quot;</span>
+
+<span class="w">        </span><span class="c1">// Strings are immutable: word still equals &quot;computer&quot;.</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">greeting</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.15.1 — Predicting String Method Results (4 marks)</div><div class="callout-body"><p>Let <code>String s = &quot;elephant&quot;;</code>. State the value of each expression. [1 mark each]
+(a) <code>s.length()</code>
+(b) <code>s.substring(2, 5)</code>
+© <code>s.indexOf(&quot;ant&quot;)</code>
+(d) <code>s.substring(0, 1)</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>8</code> — the number of characters in <code>&quot;elephant&quot;</code>. [1]
+(b) <code>&quot;eph&quot;</code> — substring begins at index 2 (<code>e</code>) and ends at index 5 - 1 = 4 (<code>h</code>): characters at indices 2, 3, 4. [1]
+© <code>5</code> — <code>&quot;ant&quot;</code> first occurs starting at index 5. [1]
+(d) <code>&quot;e&quot;</code> — <code>substring(0, 1)</code> is the single-character substring at index 0. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.15.2 — Extracting a Last Name (4 marks)</div><div class="callout-body"><p>Write code that, given the <code>String</code> variable <code>fullName</code> holding a name such as <code>&quot;Ada Lovelace&quot;</code> (first name, then a space, then last name), extracts the last name into a <code>String</code> variable using <code>indexOf</code> and <code>substring</code>. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">String</span><span class="w"> </span><span class="n">fullName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Ada Lovelace&quot;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">spacePos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fullName</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">);</span><span class="w">        </span><span class="c1">// index of the space</span>
+<span class="n">String</span><span class="w"> </span><span class="n">lastName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fullName</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">spacePos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>The code must locate the space with <code>indexOf(&quot; &quot;)</code> and then use <code>substring(spacePos + 1)</code> so the last name begins right after the space (<code>&quot;Lovelace&quot;</code>). [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.15.3 — Immutability and IndexOutOfBoundsException (3 marks)</div><div class="callout-body"><p>(a) Explain what it means for a <code>String</code> object to be <em>immutable</em>, and state whether the statement <code>s.substring(0, 3);</code> changes the value of <code>s</code>. [2]
+(b) What exception occurs when a program attempts to access an index outside the valid range 0 to one less than the length of the string? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A <code>String</code> object is immutable: once created, its attributes cannot be changed, and methods called on a <code>String</code> object do not change its content. So <code>s.substring(0, 3);</code> does not change <code>s</code>; it only produces a new <code>String</code> (which must be stored or used to be useful). [2]
+(b) <code>IndexOutOfBoundsException</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.15.4 — equals and compareTo (3 marks)</div><div class="callout-body"><p>Let <code>String x = &quot;abc&quot;;</code> and <code>String y = &quot;abd&quot;;</code>.
+(a) What does <code>x.equals(y)</code> return? [1]
+(b) What does <code>x.compareTo(y)</code> return? [1]
+© State the rule that <code>compareTo</code> uses to order two strings. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>false</code> — the two strings do not have the same sequence of characters. [1]
+(b) A value less than 0 — <code>x</code> is less than <code>y</code> because strings are ordered based upon the alphabet and <code>&quot;abc&quot;</code> comes before <code>&quot;abd&quot;</code>. [1]
+© <code>compareTo</code> returns a value &lt; 0 if <code>this</code> is less than <code>other</code>, zero if equal, and a value &gt; 0 if greater; strings are ordered based upon the alphabet. [1]</p>
+</div></details><hr>
+<p>Next: <a href="unit-2-selection-and-iteration.html">Unit 2 — Selection and Iteration</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="index.html" title="AP CSA Review Notes (Index)" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AP CSA Review Notes (Index)</span></a>
+<a href="unit-1-using-objects-and-methods.html" title="Unit 1 Using Objects and Methods" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Unit 1 Using Objects and Methods</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science A (Course &amp; Exam Description, Effective Fall 2025) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

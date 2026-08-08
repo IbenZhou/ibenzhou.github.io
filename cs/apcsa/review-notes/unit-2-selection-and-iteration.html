@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 Selection and Iteration — AP CSA Review Notes</title>
+<style>
+:root {
+  --bg: #f3f5ee;
+  --card-bg: #fbfcf7;
+  --text: #33382f;
+  --text-secondary: #8a9183;
+  --accent: #4a6741;
+  --accent-light: #e7eee1;
+  --border: #dde4d3;
+  --code-bg: #edf1e6;
+  --ink: #252b21;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2e4527 0%, #4a6741 45%, #6f8f60 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,220,180,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #3d5235;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #3d5c35;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #262e22;
+  color: #e2ead8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #3d4a36;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e6f0c8; color: #43501f; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #eef3e9; border-color: #c9d9bf; }
+.callout-exercise .callout-title { background: #e0ebd8; color: #33502a; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #262e22; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #3d4a36 }
+.highlight .c { color: #8c9a80 }
+.highlight .k { color: #a8c79a }
+.highlight .s { color: #c8d8b6 }
+.highlight .n { color: #e2ead8 }
+.highlight .p { color: #b0bca4 }
+.highlight .o { color: #9cbc88 }
+.highlight .mi { color: #a8c79a }
+.highlight .mf { color: #a8c79a }
+.highlight .m { color: #a8c79a }
+.highlight .nb { color: #a8c79a }
+.highlight .nc { color: #b8d4a8 }
+.highlight .nd { color: #b8d4a8 }
+.highlight .nf { color: #b8d4a8 }
+.highlight .nn { color: #b8d4a8 }
+.highlight .kt { color: #a8c79a }
+.highlight .bp { color: #e2ead8 }
+.highlight .kn { color: #9cbc88 }
+.highlight .ow { color: #9cbc88 }
+.highlight .kc { color: #a8c79a }
+.highlight .kd { color: #a8c79a }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8d8b6 }
+.highlight .err { color: #e2ead8; background: none }
+.highlight .w { color: #e2ead8 }
+.highlight .nt { color: #b8d4a8 }
+.highlight .na { color: #c8d8b6 }
+.highlight .nl { color: #e2ead8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../apcsa.html" class="site-title">AP CSA Review Notes</a>
+    <span class="site-subtitle"><a href="../apcsa.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSA 版块</a> &nbsp;·&nbsp; 4 units · 180 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Unit 2 · Selection and Iteration</h1>
+    <p>AP Exam Weight 25–35% · ~29–31 class periods · 12 topics (2.1–2.12)</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 2.1 — Algorithms with Selection and Repetition</a></li>
+<li><a href="#section_5">Topic 2.2 — Boolean Expressions</a></li>
+<li><a href="#section_8">Topic 2.3 — if Statements</a></li>
+<li><a href="#section_11">Topic 2.4 — Nested if Statements</a></li>
+<li><a href="#section_14">Topic 2.5 — Compound Boolean Expressions</a></li>
+<li><a href="#section_18">Topic 2.6 — Comparing Boolean Expressions</a></li>
+<li><a href="#section_21">Topic 2.7 — while Loops</a></li>
+<li><a href="#section_24">Topic 2.8 — for Loops</a></li>
+<li><a href="#section_27">Topic 2.9 — Implementing Selection and Iteration Algorithms</a></li>
+<li><a href="#section_30">Topic 2.10 — Implementing String Algorithms</a></li>
+<li><a href="#section_33">Topic 2.11 — Nested Iteration</a></li>
+<li><a href="#section_36">Topic 2.12 — Informal Run-Time Analysis</a></li>
+<li><a href="#section_40">Next Steps</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Unit 2 — Selection and Iteration: Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science A — Course and Exam Description, Effective Fall 2025
+<strong>Exam Weight:</strong> 25–35% of AP Exam | <strong>Class Periods:</strong> ~29–31
+<strong>Topics:</strong> 2.1–2.12
+<strong>AP Classroom:</strong> Progress Checks — Part 1 (2.1–2.6) and Part 2 (2.7–2.12)</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>Algorithms are composed of three building blocks: sequencing, selection, and iteration. Unit 1 introduced sequencing; this unit focuses on selection and iteration. Selection gives a program the ability to make a decision and respond to that decision using conditional statements, allowing programmers to incorporate choice into their programs — to create games that react to user interactions, to develop simulations that allow for real-world variability, or to filter out irrelevant data. Iteration is a form of repetition that changes the flow of control by repeating a segment of code, and it is represented by <code>while</code> and <code>for</code> loops. Building on the Boolean variables introduced in Unit 1, you will write Boolean expressions with relational and logical operators, including compound expressions and De Morgan’s law. The unit also introduces several standard algorithms that use iteration; knowing these standard algorithms makes solving similar problems easier, as algorithms can be modified or combined to suit new situations.</p>
+<p><strong>In this unit you will learn to:</strong></p>
+<ul>
+<li>Represent patterns and algorithms involving selection and repetition found in everyday life using written language or diagrams</li>
+<li>Develop code to create Boolean expressions with relational and logical operators and determine the result of these expressions</li>
+<li>Develop code to represent branching and nested branching logical processes using <code>if</code> statements and determine the result of these processes</li>
+<li>Compare equivalent Boolean expressions and develop code to compare object references using Boolean expressions</li>
+<li>Develop code to represent iterative processes using <code>while</code> and <code>for</code> loops and determine the result of these processes</li>
+<li>Develop code for standard and original algorithms (including string algorithms) and determine the result of these algorithms</li>
+<li>Represent nested iterative processes and calculate statement execution counts with informal run-time analysis</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li><strong>Trace every loop by hand</strong> on paper. Most multiple-choice questions on this unit ask for the result of a code segment, and a careful trace (tracking the loop control variable and each output) is the most reliable way to get them right.</li>
+<li>Watch for <strong>off-by-one errors</strong> and loop bounds. Decide carefully whether a loop should use <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code> or <code>&gt;=</code>, and whether the control variable starts at <code>0</code> or <code>1</code>; one wrong comparison changes the number of iterations.</li>
+<li>Do <strong>not</strong> confuse <code>&lt;mark&gt;</code> with <code>.equals()</code>. <code>&lt;/mark&gt;</code> compares primitive values (or object references), while <code>.equals()</code> compares the contents of objects such as <code>String</code> objects. This is one of the most frequently tested traps on the AP Exam.</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 2.1 — Algorithms with Selection and Repetition</h2>
+<h3 id="section_3">Key Concepts</h3>
+<p><strong>Learning Objective [2.1.A] — Represent patterns and algorithms that involve selection and repetition found in everyday life using written language or diagrams.</strong></p>
+<ul>
+<li><strong>[2.1.A.1]:</strong> The building blocks of algorithms include <em>sequencing</em>, <em>selection</em>, and <em>repetition</em>.</li>
+<li><strong>[2.1.A.2]:</strong> Algorithms can contain selection, through decision making, and repetition, via looping.</li>
+<li><strong>[2.1.A.3]:</strong> <em>Selection</em> occurs when a choice of how the execution of an algorithm will proceed is based on a true or false decision.</li>
+<li><strong>[2.1.A.4]:</strong> <em>Repetition</em> is when a process repeats itself until a desired outcome is reached.</li>
+<li><strong>[2.1.A.5]:</strong> The order in which sequencing, selection, and repetition are used contributes to the outcome of the algorithm.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Building block</th>
+<th>What it does</th>
+<th>Everyday example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sequencing</td>
+<td>Steps are completed one at a time, in order</td>
+<td>Get a bowl, then pour cereal, then add milk</td>
+</tr>
+<tr>
+<td>Selection</td>
+<td>A true/false decision changes what happens next</td>
+<td>If the light is red, stop; otherwise, go</td>
+</tr>
+<tr>
+<td>Repetition</td>
+<td>A process repeats until a desired outcome is reached</td>
+<td>Keep stirring the batter until there are no lumps</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_4">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// The three building blocks used together:</span>
+<span class="c1">// sequencing (statements run one at a time),</span>
+<span class="c1">// selection (if statement), and repetition (while loop).</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Cooking</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Sequencing: these steps run in order.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">lumps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Repetition: keep stirring while there are lumps.</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">lumps</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">lumps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lumps</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Selection: decide what to do based on a true/false decision.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lumps</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Batter is smooth — done!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Keep stirring.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.1 — Identifying the Building Blocks (4 marks)</div><div class="callout-body"><p>(a) The algorithm “If the toast is done, remove it; otherwise, toast it for one more minute” contains which two building blocks? Identify the true/false decision in this algorithm. [2]
+(b) Explain what is meant by <em>repetition</em>, and give one everyday example of a process that repeats until a desired outcome is reached. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Selection and repetition. The true/false decision is “the toast is done” (the condition that determines whether the algorithm proceeds to remove the toast or to toast it again). [2]
+(b) Repetition is when a process repeats itself until a desired outcome is reached. Example: keep stirring the batter until there are no lumps, or keep saving money until you reach your goal. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.2 — Ordering the Building Blocks (4 marks)</div><div class="callout-body"><p>(a) Write an algorithm, in written language or as a diagram, for “washing a car” that uses sequencing, at least one selection, and at least one repetition. [3]
+(b) Why does the order in which sequencing, selection, and repetition are used contribute to the outcome of the algorithm? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: 1. Gather the hose, soap, and sponge. (sequencing)
+2. While the car is still dirty, wash one section at a time with the sponge. (repetition)
+3. Rinse the car. (sequencing)
+4. If it is a sunny day, dry the car; otherwise, let it air-dry. (selection)
+(Any reasonable algorithm containing all three building blocks is accepted.) [3]
+(b) Each step builds on the previous ones, so changing the order changes what happens — for example, rinsing before washing would leave the car dirty. [1]</p>
+</div></details><hr>
+<h2 id="section_5">Topic 2.2 — Boolean Expressions</h2>
+<h3 id="section_6">Key Concepts</h3>
+<p><strong>Learning Objective [2.2.A] — Develop code to create Boolean expressions with relational operators and determine the result of these expressions.</strong></p>
+<ul>
+<li><strong>[2.2.A.1]:</strong> Values can be compared using the relational operators <code>==</code> and <code>!=</code> to determine whether the values are the same. With primitive types, this compares the actual primitive values. With reference types, this compares the object references.</li>
+<li><strong>[2.2.A.2]:</strong> Numeric values can be compared using the relational operators <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code> to determine the relationship between the values.</li>
+<li><strong>[2.2.A.3]:</strong> An expression involving relational operators evaluates to a Boolean value (<code>true</code> or <code>false</code>).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;mark&gt;</code></td>
+<td>equal to</td>
+<td><code>5 &lt;/mark&gt; 5</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>not equal to</td>
+<td><code>5 != 5</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>less than</td>
+<td><code>3 &lt; 2</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>greater than</td>
+<td><code>3 &gt; 2</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>less than or equal to</td>
+<td><code>4 &lt;= 4</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>greater than or equal to</td>
+<td><code>6 &gt;= 7</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_7">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Comparisons</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">90.0</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Each relational expression evaluates to true or false.</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">;</span><span class="w">      </span><span class="c1">// true — 85 is &gt;= 60</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">topScore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">limit</span><span class="p">;</span><span class="w">  </span><span class="c1">// false — 85 is not &gt; 90.0</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">exact</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">85</span><span class="p">;</span><span class="w">       </span><span class="c1">// true — compares primitive values</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">notTop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">     </span><span class="c1">// true — 85 is not equal to 100</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Passed: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">passed</span><span class="p">);</span><span class="w">     </span><span class="c1">// Passed: true</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Top score: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">topScore</span><span class="p">);</span><span class="w"> </span><span class="c1">// Top score: false</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Exact: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">exact</span><span class="p">);</span><span class="w">        </span><span class="c1">// Exact: true</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Not top: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">notTop</span><span class="p">);</span><span class="w">     </span><span class="c1">// Not top: true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.2.1 — Evaluating Relational Expressions (4 marks)</div><div class="callout-body"><p>(a) Determine the Boolean value of each expression, given <code>int a = 5; int b = 5; int c = 8;</code>. [4]
+(i) <code>a == b</code>
+(ii) <code>a != c</code>
+(iii) <code>a &lt; c</code>
+(iv) <code>c &lt;= b</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) <code>true</code> — the values are the same, so <code>==</code> is satisfied. [1]
+(ii) <code>true</code> — 5 is not equal to 8. [1]
+(iii) <code>true</code> — 5 is less than 8. [1]
+(iv) <code>false</code> — 8 is not less than or equal to 5. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.2.2 — `==` on Primitives vs. References (3 marks)</div><div class="callout-body"><p>(a) What do the relational operators <code>==</code> and <code>!=</code> compare when used with primitive types? [1]
+(b) What do they compare when used with reference types? [1]
+© Write a Boolean expression, using <code>!=</code>, that is <code>true</code> when a <code>String</code> variable <code>name</code> is not equal to <code>&quot;Ada&quot;</code>. (Do not worry about whether this checks contents or reference.) [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) With primitive types, <code>==</code> and <code>!=</code> compare the actual primitive values. [1]
+(b) With reference types, <code>==</code> and <code>!=</code> compare the object references (whether the two variables refer to the same object). [1]
+© <code>name != &quot;Ada&quot;</code> — with reference types this compares object references, not string contents. (To compare contents you would use <code>!name.equals(&quot;Ada&quot;)</code>, which appears later in this unit.) [1]</p>
+</div></details><hr>
+<h2 id="section_8">Topic 2.3 — if Statements</h2>
+<h3 id="section_9">Key Concepts</h3>
+<p><strong>Learning Objective [2.3.A] — Develop code to represent branching logical processes by using selection statements and determine the result of these processes.</strong></p>
+<ul>
+<li><strong>[2.3.A.1]:</strong> Selection statements change the <em>sequential execution</em> of statements.</li>
+<li><strong>[2.3.A.2]:</strong> An <code>if</code> statement is a type of selection statement that affects the flow of control by executing different segments of code based on the value of a Boolean expression.</li>
+<li><strong>[2.3.A.3]:</strong> A <em>one-way selection</em> (<code>if</code> statement) is used when there is a segment of code to execute under a certain condition. In this case, the body is executed only when the Boolean expression is <code>true</code>.</li>
+<li><strong>[2.3.A.4]:</strong> A <em>two-way selection</em> (<code>if-else</code> statement) is used when there are two segments of code — one to be executed when the Boolean expression is <code>true</code> and another segment for when the Boolean expression is <code>false</code>. In this case, the body of the <code>if</code> is executed when the Boolean expression is <code>true</code>, and the body of the <code>else</code> is executed when the Boolean expression is <code>false</code>.</li>
+</ul>
+<p><strong>One-way selection (<code>if</code>):</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Boolean</span><span class="w"> </span><span class="n">expression</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// executed ONLY when the expression is true</span>
+<span class="p">}</span>
+<span class="c1">// execution continues here afterwards</span>
+</pre></div>
+</code></pre>
+<p><strong>Two-way selection (<code>if-else</code>):</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Boolean</span><span class="w"> </span><span class="n">expression</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// executed when the expression is true</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// executed when the expression is false</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<h3 id="section_10">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TemperatureCheck</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">95</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// One-way selection: the body runs only when temp &gt;= 100.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Water is boiling.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Two-way selection: exactly one segment runs.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Above freezing.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Below freezing.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.1 — One-Way vs. Two-Way Selection (4 marks)</div><div class="callout-body"><p>(a) Describe the difference between a one-way selection (<code>if</code> statement) and a two-way selection (<code>if-else</code> statement). [2]
+(b) When is the body of a one-way <code>if</code> statement executed? [1]
+© In an <code>if-else</code> statement, which body is executed when the Boolean expression is <code>false</code>? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A one-way selection executes a segment of code only when its Boolean expression is <code>true</code>; if it is <code>false</code>, nothing in the body runs. A two-way selection has two segments: the body of the <code>if</code> runs when the expression is <code>true</code>, and the body of the <code>else</code> runs when the expression is <code>false</code> — exactly one of the two always runs. [2]
+(b) The body is executed only when the Boolean expression evaluates to <code>true</code>. [1]
+© The body of the <code>else</code> is executed. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.2 — Tracing an `if` Statement (4 marks)</div><div class="callout-body"><p>Consider the code segment:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;even&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;odd&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;done&quot;</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>(a) What is the output of this code segment? [2]
+(b) Rewrite the condition so that the output is <code>&quot;even&quot;</code> for <code>x = 7</code>. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>odd</code> followed by <code>done</code>. The expression <code>7 % 2 == 0</code> evaluates to <code>false</code>, so the <code>else</code> body runs and prints <code>odd</code>; then the statement after the selection prints <code>done</code>. [2]
+(b) Accept any correct condition, for example <code>if (x % 2 != 0)</code> or <code>if (x % 2 == 1)</code>; with <code>x = 7</code> the expression is <code>true</code>, so the <code>if</code> body runs and prints <code>even</code>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.3 — Writing an `if-else` (4 marks)</div><div class="callout-body"><p>Write a complete <code>if-else</code> statement that prints <code>&quot;discount&quot;</code> when <code>double price &gt;= 100.0</code> and prints <code>&quot;full price&quot;</code> otherwise. [2]
+Explain why selection statements change the sequential execution of statements. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">price</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">100.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;discount&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;full price&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[2]
+Selection statements change sequential execution because the next statement to run is chosen by the value of a Boolean expression rather than by simple top-to-bottom order: different conditions lead the program to execute different segments of code. [2]</p>
+</div></details><hr>
+<h2 id="section_11">Topic 2.4 — Nested if Statements</h2>
+<h3 id="section_12">Key Concepts</h3>
+<p><strong>Learning Objective [2.4.A] — Develop code to represent nested branching logical processes and determine the result of these processes.</strong></p>
+<ul>
+<li><strong>[2.4.A.1]:</strong> <em>Nested <code>if</code> statements</em> consist of <code>if</code>, <code>if-else</code>, or <code>if-else-if</code> statements within <code>if</code>, <code>if-else</code>, or <code>if-else-if</code> statements.</li>
+<li><strong>[2.4.A.2]:</strong> The Boolean expression of the inner nested <code>if</code> statement is evaluated <strong>only if</strong> the Boolean expression of the outer <code>if</code> statement evaluates to <code>true</code>.</li>
+<li><strong>[2.4.A.3]:</strong> A <em>multiway selection</em> (<code>if-else-if</code>) is used when there are a series of expressions with different segments of code for each condition. Multiway selection is performed such that <strong>no more than one</strong> segment of code is executed, based on the first expression that evaluates to <code>true</code>. If no expression evaluates to <code>true</code> and there is a trailing <code>else</code> statement, then the body of the <code>else</code> is executed.</li>
+</ul>
+<p><strong>Structure of nested <code>if</code>:</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">outer</span><span class="w"> </span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">inner</span><span class="w"> </span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// runs only when outer AND inner are true</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// runs only when outer is true AND inner is false</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// If outer condition is false, the inner if-else never runs.</span>
+</pre></div>
+</code></pre>
+<p><strong>Structure of multiway <code>if-else-if</code>:</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">expression1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">expression2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">expression3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// runs only if NO earlier expression was true</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<h3 id="section_13">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Grade</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">87</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Multiway selection: at most one branch runs.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;F&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Nested if: the inner condition is checked only when the outer one is true.</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Login</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">hasAccount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;open sesame&quot;</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hasAccount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">password</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;open sesame&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// String contents compared</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Welcome back!&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Wrong password.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Please create an account.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.1 — When Is the Inner `if` Evaluated? (3 marks)</div><div class="callout-body"><p>In the code segment</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;inner&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Is the inner Boolean expression <code>a &lt; 20</code> evaluated? Explain. [2]
+(b) What is the output of the code segment? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) No. The inner <code>if</code>’s Boolean expression is evaluated only if the outer expression <code>a &gt; 10</code> evaluates to <code>true</code>. Since <code>a = 1</code>, the outer expression is <code>false</code>, so the inner expression is never evaluated. [2]
+(b) Nothing is printed — the entire nested block is skipped. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.2 — Tracing an `if-else-if` (4 marks)</div><div class="callout-body"><p>Consider:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">55</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;big&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;medium&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;small&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;negative&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) What is the output, and which branch runs? [2]
+(b) Explain how the multiway selection guarantees that no more than one segment of code is executed. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Output is <code>&quot;medium&quot;</code>. The first expression <code>55 &gt;= 100</code> is <code>false</code>; the second <code>55 &gt;= 50</code> is <code>true</code>, so that branch’s body runs and the remaining conditions are not tested. [2]
+(b) The expressions are evaluated in order, and as soon as the first one evaluates to <code>true</code>, its segment is executed and the rest of the chain is skipped. Because later branches are reached only when every earlier expression was <code>false</code>, no more than one segment can ever run. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.3 — Writing Nested Selection (4 marks)</div><div class="callout-body"><p>Write code using nested <code>if</code> statements that prints <code>&quot;cold&quot;</code> if <code>int temp &lt; 50</code>; within the cold case, additionally print <code>&quot;freezing&quot;</code> if <code>temp &lt; 32</code>. If <code>temp &gt;= 50</code>, print <code>&quot;warm&quot;</code>. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;cold&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;freezing&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;warm&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>The inner <code>if</code> is evaluated only when the outer condition <code>temp &lt; 50</code> is <code>true</code>. For <code>temp &gt;= 50</code>, the <code>else</code> prints <code>&quot;warm&quot;</code>. [4]</p>
+</div></details><hr>
+<h2 id="section_14">Topic 2.5 — Compound Boolean Expressions</h2>
+<h3 id="section_15">Key Concepts</h3>
+<p><strong>Learning Objective [2.5.A] — Develop code to represent compound Boolean expressions and determine the result of these expressions.</strong></p>
+<ul>
+<li><strong>[2.5.A.1]:</strong> <em>Logical operators</em> <code>!</code> (not), <code>&amp;&amp;</code> (and), and <code>||</code> (or) are used with Boolean expressions.
+<ul>
+<li>The expression <code>!a</code> evaluates to <code>true</code> if <code>a</code> is <code>false</code> and evaluates to <code>false</code> otherwise.</li>
+<li>The expression <code>a &amp;&amp; b</code> evaluates to <code>true</code> if both <code>a</code> and <code>b</code> are <code>true</code> and evaluates to <code>false</code> otherwise.</li>
+<li>The expression <code>a || b</code> evaluates to <code>true</code> if <code>a</code> is <code>true</code>, <code>b</code> is <code>true</code>, or both are, and evaluates to <code>false</code> otherwise.</li>
+<li>The order of precedence for evaluating logical operators is <code>!</code> (not), <code>&amp;&amp;</code> (and), then <code>||</code> (or). An expression involving logical operators evaluates to a Boolean value.</li>
+</ul>
+</li>
+<li><strong>[2.5.A.2]:</strong> <em>Short-circuit evaluation</em> occurs when the result of a logical operation using <code>&amp;&amp;</code> or <code>||</code> can be determined by evaluating only the first Boolean expression. In this case, the second Boolean expression is <strong>not evaluated</strong>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>a</code></th>
+<th><code>b</code></th>
+<th><code>!a</code></th>
+<th><code>a &amp;&amp; b</code></th>
+<th><code>a || b</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>true</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Precedence:</strong> <code>!</code> (highest) → <code>&amp;&amp;</code> → <code>||</code> (lowest). So <code>a || b &amp;&amp; c</code> means <code>a || (b &amp;&amp; c)</code>.</p>
+<h3 id="section_16">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Eligibility</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">hasLicense</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// &amp;&amp; (and): both must be true.</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">canDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">hasLicense</span><span class="p">;</span><span class="w">   </span><span class="c1">// true</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Can drive: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">canDrive</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">95</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// || (or): at least one must be true.</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isExtreme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">temp</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// false</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Extreme: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">isExtreme</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ! (not): flips the value.</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">notBusy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">hasLicense</span><span class="p">;</span><span class="w">   </span><span class="c1">// false</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Not busy: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">notBusy</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<h3 id="section_17">Short-Circuit Evaluation Example</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ShortCircuit</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// With ||, since word == null is true, the RIGHT side is NOT evaluated.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">word</span><span class="w"> </span><span class="o">&lt;</span><span class="n">mark</span><span class="o">&gt;</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;/</span><span class="n">mark</span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Empty or null.&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// runs safely</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Danger: this order evaluates word.length() first and crashes</span>
+<span class="w">        </span><span class="c1">// with a NullPointerException because word is null.</span>
+<span class="w">        </span><span class="c1">// if (word.length() &lt;mark&gt; 0 || word &lt;/mark&gt; null) { ... }  // BAD — crashes</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.5.1 — Truth Values of Compound Expressions (4 marks)</div><div class="callout-body"><p>Let <code>a = true</code>, <code>b = false</code>. Determine the value of each expression. [4]
+(i) <code>!a</code>
+(ii) <code>a &amp;&amp; b</code>
+(iii) <code>a || b</code>
+(iv) <code>!a || b</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(i) <code>false</code> — <code>!a</code> is the opposite of <code>true</code>. [1]
+(ii) <code>false</code> — <code>&amp;&amp;</code> requires both to be <code>true</code>. [1]
+(iii) <code>true</code> — <code>||</code> requires at least one to be <code>true</code>. [1]
+(iv) <code>false</code> — <code>!a</code> is <code>false</code>, and <code>false || false</code> is <code>false</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.5.2 — Short-Circuit Evaluation (4 marks)</div><div class="callout-body"><p>Consider <code>int x = 5;</code>. What is printed by each segment, and why? [4]
+(a) <code>if (x &gt; 10 &amp;&amp; x / 0 &gt; 1) { System.out.println(&quot;A&quot;); } else { System.out.println(&quot;B&quot;); }</code>
+(b) <code>if (x &gt; 10 || x / 0 &gt; 1) { System.out.println(&quot;A&quot;); } else { System.out.println(&quot;B&quot;); }</code></p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>B</code>. Since <code>x &gt; 10</code> is <code>false</code>, short-circuit evaluation determines that <code>false &amp;&amp; anything</code> is <code>false</code>, so the second expression <code>x / 0 &gt; 1</code> is never evaluated — the program does not crash. [2]
+(b) The program crashes. Since <code>x &gt; 10</code> is <code>false</code>, the value of <code>false || anything</code> cannot yet be determined, so the second expression <code>x / 0 &gt; 1</code> IS evaluated, producing a division-by-zero run-time error. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.5.3 — Writing Compound Conditions (4 marks)</div><div class="callout-body"><p>(a) Write a Boolean expression that is <code>true</code> when <code>int score</code> is between 60 and 100 inclusive. [2]
+(b) Write a Boolean expression using <code>!</code> that is <code>true</code> when <code>boolean isRaining</code> is <code>false</code>. [1]
+© State the order of precedence for the logical operators. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>score &gt;= 60 &amp;&amp; score &lt;= 100</code> — both conditions must hold, so <code>&amp;&amp;</code> is appropriate. [2]
+(b) <code>!isRaining</code>. [1]
+© <code>!</code> (not) first, then <code>&amp;&amp;</code> (and), then <code>||</code> (or). [1]</p>
+</div></details><hr>
+<h2 id="section_18">Topic 2.6 — Comparing Boolean Expressions</h2>
+<h3 id="section_19">Key Concepts</h3>
+<p><strong>Learning Objective [2.6.A] — Compare equivalent Boolean expressions.</strong></p>
+<ul>
+<li><strong>[2.6.A.1]:</strong> Two Boolean expressions are <em>equivalent</em> if they evaluate to the same value in all cases. <em>Truth tables</em> can be used to prove Boolean expressions are equivalent.</li>
+<li><strong>[2.6.A.2]:</strong> <em>De Morgan’s law</em> can be applied to Boolean expressions to create equivalent Boolean expressions. Under De Morgan’s law, the Boolean expression <code>!(a &amp;&amp; b)</code> is equivalent to <code>!a || !b</code>, and the Boolean expression <code>!(a || b)</code> is equivalent to <code>!a &amp;&amp; !b</code>.</li>
+</ul>
+<p><strong>Learning Objective [2.6.B] — Develop code to compare object references using Boolean expressions and determine the result of these expressions.</strong></p>
+<ul>
+<li><strong>[2.6.B.1]:</strong> Two different variables can hold references to the same object. Object references can be compared using <code>==</code> and <code>!=</code>.</li>
+<li><strong>[2.6.B.2]:</strong> An object reference can be compared with <code>null</code>, using <code>==</code> or <code>!=</code>, to determine if the reference actually references an object.</li>
+<li><strong>[2.6.B.3]:</strong> Classes often define their own <code>equals</code> method, which can be used to specify the criteria for equivalency for two objects of the class. The equivalency of two objects is most often determined using attributes from the two objects.
+<ul>
+<li><strong>Exclusion:</strong> Overriding the <code>equals</code> method is outside the scope of the AP Computer Science A course and exam.</li>
+</ul>
+</li>
+</ul>
+<p><strong>De Morgan’s law:</strong></p>
+<ul>
+<li><code>!(a &amp;&amp; b)</code> is equivalent to <code>!a || !b</code></li>
+<li><code>!(a || b)</code> is equivalent to <code>!a &amp;&amp; !b</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>a</code></th>
+<th><code>b</code></th>
+<th><code>!(a &amp;&amp; b)</code></th>
+<th><code>!a || !b</code></th>
+<th><code>!(a || b)</code></th>
+<th><code>!a &amp;&amp; !b</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td><code>F</code></td>
+<td><code>F</code></td>
+<td><code>F</code></td>
+<td><code>F</code></td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td><code>F</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td><code>F</code></td>
+<td><code>F</code></td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td><code>F</code></td>
+<td><code>F</code></td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td><code>F</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_20">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ObjectCompare</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;java&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;java&quot;</span><span class="p">;</span><span class="w">      </span><span class="c1">// may or may not be the same object as a</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="s">&quot;java&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// a different object with same contents</span>
+
+<span class="w">        </span><span class="c1">// == on reference types compares REFERENCES, not contents:</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">sameObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w">          </span><span class="c1">// false (different objects)</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">nullSafe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span><span class="w">         </span><span class="c1">// true — a references an object</span>
+
+<span class="w">        </span><span class="c1">// equals() compares the contents of the String objects:</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">sameContents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w">     </span><span class="c1">// true — both hold &quot;java&quot;</span>
+
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Same object: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sameObject</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Not null: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nullSafe</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Same contents: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sameContents</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// null check: determine whether a reference actually references an object.</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">NullCheck</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">word</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;No object yet.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">());</span><span class="w">  </span><span class="c1">// safe: word references an object</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.6.1 — De Morgan's Law (4 marks)</div><div class="callout-body"><p>(a) State De Morgan’s law for <code>!(a &amp;&amp; b)</code>. [1]
+(b) State De Morgan’s law for <code>!(a || b)</code>. [1]
+© Apply De Morgan’s law to write an equivalent expression for <code>!(x &gt; 0 &amp;&amp; y &lt; 10)</code>. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>!(a &amp;&amp; b)</code> is equivalent to <code>!a || !b</code>. [1]
+(b) <code>!(a || b)</code> is equivalent to <code>!a &amp;&amp; !b</code>. [1]
+© <code>!(x &gt; 0) || !(y &lt; 10)</code>, which simplifies to <code>x &lt;= 0 || y &gt;= 10</code>. Negating both the whole expression and each individual comparison. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.6.2 — Truth Table Proof (4 marks)</div><div class="callout-body"><p>(a) Build a truth table for the expression <code>!(a || b)</code> and for <code>!a &amp;&amp; !b</code> (rows: <code>a</code> true/false × <code>b</code> true/false). [3]
+(b) What do the two columns in your table show, and what can you conclude? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Table with rows (T,T): <code>F</code>/<code>F</code>; (T,F): <code>F</code>/<code>F</code>; (F,T): <code>F</code>/<code>F</code>; (F,F): <code>T</code>/<code>T</code>. [3]
+(b) The two columns match in every row, proving the expressions are equivalent — they evaluate to the same value in all cases. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.6.3 — `==` vs. `equals` (4 marks)</div><div class="callout-body"><p>Two different variables, <code>s1</code> and <code>s2</code>, can hold references to the same object. [4]
+(a) What does <code>s1 == s2</code> compare? [1]
+(b) What does <code>s1.equals(s2)</code> compare, and how do classes specify what “equal” means? [2]
+© Write a Boolean expression, using <code>==</code>, that is <code>true</code> when <code>s1</code> does not reference any object. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>s1 == s2</code> compares the object references — whether both variables refer to the same object. [1]
+(b) <code>s1.equals(s2)</code> compares the contents/attributes of the two objects. Classes often define their own <code>equals</code> method to specify the criteria for equivalency, most often determined using attributes from the two objects. [2]
+© <code>s1 == null</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.6.4 — Null Comparison (3 marks)</div><div class="callout-body"><p>(a) Why is it useful to compare an object reference with <code>null</code> using <code>==</code> or <code>!=</code>? [2]
+(b) Write a one-way <code>if</code> statement that prints <code>&quot;ready&quot;</code> only when the <code>String</code> variable <code>input</code> actually references an object. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Comparing a reference with <code>null</code> determines whether the reference actually references an object; this prevents calling methods on a <code>null</code> reference, which would cause a run-time error. [2]
+(b) <code>if (input != null) { System.out.println(&quot;ready&quot;); }</code> [1]</p>
+</div></details><hr>
+<h2 id="section_21">Topic 2.7 — while Loops</h2>
+<h3 id="section_22">Key Concepts</h3>
+<p><strong>Learning Objective [2.7.A] — Identify when an iterative process is required to achieve a desired result.</strong></p>
+<ul>
+<li><strong>[2.7.A.1]:</strong> <em>Iteration</em> is a form of repetition. Iteration statements change the flow of control by repeating a segment of code zero or more times as long as the Boolean expression controlling the loop evaluates to <code>true</code>.</li>
+<li><strong>[2.7.A.2]:</strong> An <em>infinite loop</em> occurs when the Boolean expression in an iterative statement always evaluates to <code>true</code>.</li>
+<li><strong>[2.7.A.3]:</strong> The loop body of an iterative statement will <strong>not execute</strong> if the Boolean expression initially evaluates to <code>false</code>.</li>
+<li><strong>[2.7.A.4]:</strong> <em>Off-by-one errors</em> occur when the iteration statement loops one time too many or one time too few.</li>
+</ul>
+<p><strong>Learning Objective [2.7.B] — Develop code to represent iterative processes using <code>while</code> loops and determine the result of these processes.</strong></p>
+<ul>
+<li><strong>[2.7.B.1]:</strong> A <code>while</code> loop is a type of iterative statement. In <code>while</code> loops, the Boolean expression is evaluated <strong>before each iteration</strong> of the loop body, including the first. When the expression evaluates to <code>true</code>, the loop body is executed. This continues until the Boolean expression evaluates to <code>false</code>, whereupon the iteration terminates.</li>
+</ul>
+<p><strong>Structure:</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">Boolean</span><span class="w"> </span><span class="n">expression</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// loop body — repeated while the expression is true</span>
+<span class="p">}</span>
+<span class="c1">// execution continues here when the expression becomes false</span>
+</pre></div>
+</code></pre>
+<h3 id="section_23">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Countdown</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// The Boolean expression is checked BEFORE each iteration.</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">count</span><span class="p">);</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">      </span><span class="c1">// progress toward making the condition false</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Blast off!&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// printed once the loop ends</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// The body does not execute when the condition is initially false.</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ZeroIterations</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">              </span><span class="c1">// 3 &lt; 0 is false immediately</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;inside&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;done&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// only &quot;done&quot; is printed</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// DANGER: an infinite loop — the Boolean expression is always true.</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Infinite</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">              </span><span class="c1">// x never becomes &lt;= 0</span>
+<span class="w">            </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">               </span><span class="c1">// so this loop never terminates!</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.7.1 — Tracing a `while` Loop (4 marks)</div><div class="callout-body"><p>What is the output of this code segment? Show your tracing.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>Output: <code>0 1 2 3 </code> — the loop runs with <code>n = 0, 1, 2, 3</code> (four iterations) and stops when <code>n = 4</code> because <code>4 &lt; 4</code> is <code>false</code>. [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.7.2 — Zero Iterations and Infinite Loops (4 marks)</div><div class="callout-body"><p>(a) Will the body of <code>while (num &lt; 0)</code> ever execute if <code>num = 3</code>? Explain. [2]
+(b) Explain what an <em>infinite loop</em> is and give a condition that would cause one. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) No. The Boolean expression is evaluated before the first iteration, and <code>3 &lt; 0</code> is <code>false</code>, so the loop body is not executed even once (zero iterations). [2]
+(b) An infinite loop occurs when the Boolean expression in an iterative statement always evaluates to <code>true</code>, so the loop never terminates. Example: <code>while (x &gt; 0)</code> where <code>x</code> only ever increases. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.7.3 — Avoiding Off-by-One (4 marks)</div><div class="callout-body"><p>(a) What is an <em>off-by-one error</em>? [1]
+(b) Write a <code>while</code> loop that prints the integers from 1 to 5 inclusive, each on its own line. [3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) An off-by-one error occurs when the iteration statement loops one time too many or one time too few. [1]
+(b) Example:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>The condition <code>i &lt;= 5</code> makes the loop run exactly for <code>i = 1, 2, 3, 4, 5</code>. [3]</p>
+</div></details><hr>
+<h2 id="section_24">Topic 2.8 — for Loops</h2>
+<h3 id="section_25">Key Concepts</h3>
+<p><strong>Learning Objective [2.8.A] — Develop code to represent iterative processes using <code>for</code> loops and determine the result of these processes.</strong></p>
+<ul>
+<li><strong>[2.8.A.1]:</strong> A <code>for</code> loop is a type of iterative statement. There are three parts in a <code>for</code> loop header: the <em>initialization</em>, the <em>Boolean expression</em>, and the <em>update</em>.</li>
+<li><strong>[2.8.A.2]:</strong> In a <code>for</code> loop, the initialization statement is only executed once before the first Boolean expression evaluation. The variable being initialized is referred to as a <em>loop control variable</em>. The Boolean expression is evaluated immediately after the loop control variable is initialized and then following each execution of the increment statement until it is <code>false</code>. In each iteration, the update is executed after the entire loop body is executed and before the Boolean expression is evaluated again.</li>
+<li><strong>[2.8.A.3]:</strong> A <code>for</code> loop can be rewritten into an equivalent <code>while</code> loop (and vice versa).</li>
+</ul>
+<p><strong>Structure:</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">initialization</span><span class="p">;</span><span class="w"> </span><span class="n">Boolean</span><span class="w"> </span><span class="n">expression</span><span class="p">;</span><span class="w"> </span><span class="n">update</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// loop body</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p><strong>Execution order:</strong></p>
+<ol>
+<li><code>initialization</code> runs once (creates the loop control variable).</li>
+<li>Evaluate the Boolean expression — if <code>false</code>, the loop ends.</li>
+<li>Execute the loop body.</li>
+<li>Execute the <code>update</code>.</li>
+<li>Go back to step 2.</li>
+</ol>
+<p><strong><code>for</code> loop → equivalent <code>while</code> loop:</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// for version:</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// while version:</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<h3 id="section_26">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ForLoopDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// initialization: int i = 0 (runs once)</span>
+<span class="w">        </span><span class="c1">// Boolean expression: i &lt; 5 (checked before each iteration)</span>
+<span class="w">        </span><span class="c1">// update: i++ (runs after each full body)</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Iteration &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Counting down:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">j</span><span class="p">);</span><span class="w">   </span><span class="c1">// 10 8 6 4 2 0</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.8.1 — Tracing a `for` Loop (4 marks)</div><div class="callout-body"><p>What is the output of this code segment? Trace the loop control variable.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>Output: <code>1</code>, <code>4</code>, <code>9</code> (each on its own line). Tracing: <code>i = 1</code> → prints 1, update to <code>2</code>; <code>i = 2</code> → prints 4, update to <code>3</code>; <code>i = 3</code> → prints 9, update to <code>4</code>; <code>4 &lt;= 3</code> is <code>false</code>, loop ends. [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.8.2 — Rewriting `for` as `while` (4 marks)</div><div class="callout-body"><p>(a) Rewrite the following <code>for</code> loop as an equivalent <code>while</code> loop:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">k</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[3]
+(b) Which statement in a <code>for</code> loop header is executed only once? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">k</span><span class="p">);</span>
+<span class="w">    </span><span class="n">k</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[3]
+(b) The initialization statement is executed only once, before the first Boolean expression evaluation. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.8.3 — Loop Header Order (3 marks)</div><div class="callout-body"><p>In a <code>for</code> loop, describe the order in which the initialization, Boolean expression, update, and loop body are executed in the first two iterations. [3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>First iteration: initialization runs once, then the Boolean expression is evaluated; if <code>true</code>, the loop body executes, then the update runs. Second iteration: the Boolean expression is evaluated again (after the previous update); if <code>true</code>, the body executes, then the update runs again. The initialization never runs again. [3]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.8.4 — Finding an Error (3 marks)</div><div class="callout-body"><p>The following code is intended to print the integers 5, 4, 3, 2, 1. Identify the error and correct it.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>The update should decrement the loop control variable, otherwise <code>i</code> grows forever (<code>i++</code> makes the condition <code>i &gt; 0</code> always true → infinite loop). Correct update: <code>i--</code>. [3]</p>
+</div></details><hr>
+<h2 id="section_27">Topic 2.9 — Implementing Selection and Iteration Algorithms</h2>
+<h3 id="section_28">Key Concepts</h3>
+<p><strong>Learning Objective [2.9.A] — Develop code for standard and original algorithms (without data structures) and determine the result of these algorithms.</strong></p>
+<ul>
+<li><strong>[2.9.A.1]:</strong> There are standard algorithms to:
+<ul>
+<li>identify if an integer is or is not evenly divisible by another integer</li>
+<li>identify the individual digits in an integer</li>
+<li>determine the frequency with which a specific criterion is met</li>
+<li>determine a minimum or maximum value</li>
+<li>compute a sum or average</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Standard algorithm</th>
+<th>Idea</th>
+<th>Key technique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evenly divisible</td>
+<td><code>a % b == 0</code> means <code>a</code> is evenly divisible by <code>b</code></td>
+<td>Remainder operator <code>%</code></td>
+</tr>
+<tr>
+<td>Individual digits</td>
+<td>Repeatedly take <code>n % 10</code> and <code>n / 10</code></td>
+<td>Digit extraction</td>
+</tr>
+<tr>
+<td>Frequency / counting</td>
+<td>Increment a counter when a criterion is met</td>
+<td>Counter variable</td>
+</tr>
+<tr>
+<td>Minimum / maximum</td>
+<td>Compare each value with the best so far</td>
+<td>Sentinel-style tracker</td>
+</tr>
+<tr>
+<td>Sum / average</td>
+<td>Accumulate values, divide by count</td>
+<td>Running total</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_29">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StandardAlgorithms</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 1. Evenly divisible: is 15 evenly divisible by 5?</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="n">divisor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">divisor</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is divisible by &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">divisor</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 2. Identify the individual digits of 273 (right to left: 3, 7, 2).</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">273</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">digit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">   </span><span class="c1">// last digit</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">digit</span><span class="p">);</span>
+<span class="w">            </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">         </span><span class="c1">// drop the last digit</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MoreAlgorithms</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w">   </span><span class="c1">// for loop over an array</span>
+
+<span class="w">        </span><span class="c1">// 3. Frequency: count how many are even.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">countEven</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">countEven</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Even count: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">countEven</span><span class="p">);</span><span class="w">   </span><span class="c1">// 2</span>
+
+<span class="w">        </span><span class="c1">// 4. Maximum value.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Max: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">max</span><span class="p">);</span><span class="w">   </span><span class="c1">// 9</span>
+
+<span class="w">        </span><span class="c1">// 5. Sum and average.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">values</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="na">length</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Sum: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; Average: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">average</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.9.1 — Divisibility (3 marks)</div><div class="callout-body"><p>(a) Write code that prints <code>&quot;multiple&quot;</code> if <code>int a</code> is evenly divisible by <code>int b</code>, and <code>&quot;not a multiple&quot;</code> otherwise. [2]
+(b) Explain how the remainder operator <code>%</code> identifies whether one integer divides another evenly. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;multiple&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;not a multiple&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[2]
+(b) <code>a % b</code> gives the remainder of dividing <code>a</code> by <code>b</code>; if the remainder is <code>0</code>, then <code>a</code> is evenly divisible by <code>b</code>. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.9.2 — Extracting Digits (4 marks)</div><div class="callout-body"><p>(a) Given <code>int value = 584;</code>, what does the following segment print?</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[2]
+(b) Modify the code so the digits are printed in original order (5, 8, 4) — describe your approach or write the code. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It prints <code>4</code>, <code>8</code>, <code>5</code> — each on its own line. <code>value % 10</code> extracts the last digit, then <code>value / 10</code> removes it, so digits come out right-to-left. [2]
+(b) Collect the digits in a <code>String</code> as you extract them and reverse it, or store the digits in an <code>ArrayList&lt;Integer&gt;</code> and print them in reverse. Example: build <code>String rev = &quot;&quot; + digit + rev</code> inside the loop, then print <code>rev</code>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.9.3 — Frequency and Maximum (4 marks)</div><div class="callout-body"><p>Given the array <code>int[] data = {4, 9, 4, 1, 4, 8};</code>: [4]
+(a) Write code that counts how many elements equal <code>4</code>. [2]
+(b) Write code that finds and prints the maximum value in <code>data</code>. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p><code>count</code> will be <code>3</code>. [2]
+(b)</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">max</span><span class="p">);</span><span class="w">   </span><span class="c1">// 9</span>
+</pre></div>
+</code></pre>
+<p>[2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.9.4 — Sum and Average (4 marks)</div><div class="callout-body"><p>Write code that computes and prints the sum and the average of the integers in the array <code>int[] scores = {80, 90, 75};</code>. The average should be printed as a <code>double</code>. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">scores</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">scores</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">scores</span><span class="p">.</span><span class="na">length</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Sum: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="p">);</span><span class="w">       </span><span class="c1">// 245</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Average: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">average</span><span class="p">);</span><span class="w"> </span><span class="c1">// 81.666...</span>
+</pre></div>
+</code></pre>
+<p>Casting <code>sum</code> to <code>double</code> before dividing prevents integer division from truncating the result. [4]</p>
+</div></details><hr>
+<h2 id="section_30">Topic 2.10 — Implementing String Algorithms</h2>
+<h3 id="section_31">Key Concepts</h3>
+<p><strong>Learning Objective [2.10.A] — Develop code for standard and original algorithms that involve strings and determine the result of these algorithms.</strong></p>
+<ul>
+<li><strong>[2.10.A.1]:</strong> There are standard string algorithms to:
+<ul>
+<li>find if one or more substrings have a particular property</li>
+<li>determine the number of substrings that meet specific criteria</li>
+<li>create a new string with the characters reversed</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>String algorithm</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find a property in a substring</td>
+<td>Loop over indices; use <code>charAt</code>, <code>substring</code>, <code>indexOf</code></td>
+</tr>
+<tr>
+<td>Count substrings meeting criteria</td>
+<td>Counter variable; check each character or substring</td>
+</tr>
+<tr>
+<td>Reverse a string</td>
+<td>Build a new string from last character to first</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AP Quick Reference <code>String</code> methods used in this unit:</strong> <code>String substring(int from, int to)</code>, <code>int length()</code>, <code>String substring(int from)</code>, <code>int indexOf(String str)</code>, <code>boolean equals(String other)</code>, <code>int compareTo(String other)</code>, <code>char charAt(int index)</code>.</p>
+<h3 id="section_32">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StringAlgorithms</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;banana&quot;</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// 1. Find a property: does the word contain the letter &#39;a&#39;?</span>
+<span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">hasA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w">   </span><span class="c1">// indexOf returns -1 if absent</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Contains &#39;a&#39;: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hasA</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 2. Count substrings meeting a criterion:</span>
+<span class="w">        </span><span class="c1">//    how many characters are vowels (a, e, i, o, u)?</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">vowelCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// one-character substring</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ch</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;e&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ch</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
+<span class="w">                </span><span class="o">||</span><span class="w"> </span><span class="n">ch</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;o&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ch</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;u&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">vowelCount</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Vowel count: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">vowelCount</span><span class="p">);</span><span class="w">   </span><span class="c1">// 3</span>
+
+<span class="w">        </span><span class="c1">// 3. Create a new string with the characters reversed.</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">reversed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">reversed</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Reversed: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">reversed</span><span class="p">);</span><span class="w">   </span><span class="c1">// ananab</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.10.1 — Finding a Property (3 marks)</div><div class="callout-body"><p>(a) What does <code>String.indexOf(String str)</code> return when the substring is <strong>not</strong> found? [1]
+(b) Write a Boolean expression, using <code>indexOf</code>, that is <code>true</code> when the <code>String word</code> contains the substring <code>&quot;cat&quot;</code>. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>indexOf</code> returns <code>-1</code> when the substring is not found. [1]
+(b) <code>word.indexOf(&quot;cat&quot;) != -1</code> — a non-negative index means the substring is present. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.10.2 — Counting Substrings (4 marks)</div><div class="callout-body"><p>Write a method-style code segment that counts and prints the number of spaces in the <code>String sentence</code>. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">spaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">sentence</span><span class="p">.</span><span class="na">length</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sentence</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">).</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">spaces</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">spaces</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>Each one-character substring is compared with <code>&quot; &quot;</code> using <code>.equals()</code> (the correct way to compare <code>String</code> contents). [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.10.3 — Reversing a String (4 marks)</div><div class="callout-body"><p>(a) Trace the loop below for <code>String s = &quot;abc&quot;;</code> and state what it prints.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">String</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>[2]
+(b) Rewrite the loop so it builds the reversed string using <code>charAt</code> and string concatenation with <code>String.valueOf</code>, or an equivalent correct approach. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Tracing: <code>i = 2</code> → add <code>&quot;c&quot;</code>; <code>i = 1</code> → add <code>&quot;b&quot;</code>; <code>i = 0</code> → add <code>&quot;a&quot;</code>. Prints <code>cba</code>. [2]
+(b) Example using <code>charAt</code>:</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">String</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(<code>String.valueOf(char)</code> converts the character to a <code>String</code> so <code>+=</code> concatenates rather than performs numeric addition.) Any equivalent correct approach is accepted. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.10.4 — Checking a Substring Property (4 marks)</div><div class="callout-body"><p>Write code that determines whether the <code>String word</code> ends with the letter <code>&quot;y&quot;</code> and prints <code>&quot;ends in y&quot;</code> or <code>&quot;does not end in y&quot;</code> accordingly. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">String</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// substring(from) to end</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">last</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;y&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;ends in y&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;does not end in y&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p><code>substring(word.length() - 1)</code> returns the one-character substring at the end; <code>.equals()</code> compares its contents with <code>&quot;y&quot;</code>. [4]</p>
+</div></details><hr>
+<h2 id="section_33">Topic 2.11 — Nested Iteration</h2>
+<h3 id="section_34">Key Concepts</h3>
+<p><strong>Learning Objective [2.11.A] — Develop code to represent nested iterative processes and determine the result of these processes.</strong></p>
+<ul>
+<li><strong>[2.11.A.1]:</strong> <em>Nested iteration</em> statements are iteration statements that appear in the body of another iteration statement. When a loop is nested inside another loop, the <strong>inner loop must complete all its iterations</strong> before the outer loop can continue to its next iteration.</li>
+</ul>
+<p><strong>Key idea:</strong> For each iteration of the outer loop, the inner loop runs from start to finish. If the outer loop runs <code>m</code> times and the inner loop runs <code>n</code> times per outer iteration, the inner body executes <code>m × n</code> times total.</p>
+<h3 id="section_35">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">NestedLoopDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// For each outer iteration (row), the inner loop (columns)</span>
+<span class="w">        </span><span class="c1">// runs completely before the outer loop moves on.</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="n">row</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">();</span><span class="w">   </span><span class="c1">// move to the next row</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>Output:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="mf">1</span><span class="p">,</span><span class="mf">1</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="mf">3</span>
+<span class="mf">2</span><span class="p">,</span><span class="mf">1</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="mf">2</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="mf">3</span>
+<span class="mf">3</span><span class="p">,</span><span class="mf">1</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="mf">2</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="mf">3</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StarSquare</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">       </span><span class="c1">// outer loop: 4 rows</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// inner loop: 4 stars per row</span>
+<span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>Output (4 rows of 4 stars):</p>
+<pre><code><div class="highlight"><pre><span></span>****
+****
+****
+****
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.11.1 — Tracing Nested Iteration (4 marks)</div><div class="callout-body"><p>What is the output of this code segment?</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>Output:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="mf">1</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="mf">3</span>
+<span class="mf">2</span><span class="w"> </span><span class="mf">4</span><span class="w"> </span><span class="mf">6</span>
+</pre></div>
+</code></pre>
+<p>For <code>i = 1</code>, the inner loop prints <code>1×1, 1×2, 1×3</code>. For <code>i = 2</code>, it prints <code>2×1, 2×2, 2×3</code>. The inner loop completes all its iterations before the outer loop advances. [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.11.2 — Counting Total Iterations (3 marks)</div><div class="callout-body"><p>(a) How many times is the <code>System.out.print</code> statement executed in the segment from Exercise 2.11.1? Explain. [2]
+(b) In general, if the outer loop runs <code>m</code> times and the inner loop runs <code>n</code> times per outer iteration, how many times does the innermost statement execute? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Six times: the outer loop runs 2 times, and for each outer iteration the inner loop runs 3 times, so the inner body executes 2 × 3 = 6 times. [2]
+(b) <code>m × n</code> times. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.11.3 — Writing a Triangular Pattern (4 marks)</div><div class="callout-body"><p>Write a nested <code>for</code> loop that prints this pattern (each row contains one more star than the previous):</p>
+<pre><code><div class="highlight"><pre><span></span><span class="k">*</span>
+**
+***
+</pre></div>
+</code></pre>
+<p>[4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">row</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>The inner loop’s bound is <code>row</code>, so row 1 prints 1 star, row 2 prints 2 stars, row 3 prints 3 stars. [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.11.4 — Finding an Error (3 marks)</div><div class="callout-body"><p>A student wants to print the numbers 1, 2, 3 on separate lines 2 times. The code below does not work as intended. Explain the error and fix it.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>[3]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>The inner loop condition <code>j &lt; 3</code> runs for <code>j = 1</code> and <code>j = 2</code> only, so it prints <code>1 2</code> instead of <code>1 2 3</code>. The error is an off-by-one in the loop bound. Fix: change the condition to <code>j &lt;= 3</code>. [3]</p>
+</div></details><hr>
+<h2 id="section_36">Topic 2.12 — Informal Run-Time Analysis</h2>
+<h3 id="section_37">Key Concepts</h3>
+<p><strong>Learning Objective [2.12.A] — Calculate statement execution counts and informal run-time comparison of iterative statements.</strong></p>
+<ul>
+<li><strong>[2.12.A.1]:</strong> A <em>statement execution count</em> indicates the number of times a statement is executed by the program. Statement execution counts are often calculated informally through tracing and analysis of the iterative statements.</li>
+</ul>
+<p><strong>Approach to counting:</strong></p>
+<ol>
+<li>Identify how many times each loop iterates.</li>
+<li>Multiply counts for nested loops (inner body executes outer-runs × inner-runs times).</li>
+<li>Compare two code segments by their execution counts — the one with fewer total statement executions generally runs faster informally.</li>
+</ol>
+<h3 id="section_38">Example Code</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ExecutionCounts</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Single loop: the body runs exactly n times.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">            </span><span class="c1">// executed n = 5 times</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Nested loop: the inner body runs row * col times.</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">        </span><span class="c1">// runs n = 5 times</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// runs n times per outer</span>
+<span class="w">                </span><span class="n">total</span><span class="o">++</span><span class="p">;</span><span class="w">                           </span><span class="c1">// executed n * n = 25 times</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<h3 id="section_39">Comparing Two Segments Informally</h3>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Segment A: fixed inner bound — inner body runs 3 * 3 = 9 times.</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Segment B: variable inner bound — inner body runs 3 * n times.</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.12.1 — Counting a Single Loop (3 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) How many times is <code>count++</code> executed? [1]
+(b) How many times is the Boolean expression <code>i &lt; 7</code> evaluated (including the final false evaluation)? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) 7 times — the loop iterates for <code>i = 0</code> through <code>i = 6</code>. [1]
+(b) 8 times — once before each of the 7 iterations, plus once more when <code>i = 7</code> makes the condition <code>false</code> and the loop terminates. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.12.2 — Nested Loop Count (3 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;hi&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) How many times is <code>System.out.println(&quot;hi&quot;)</code> executed? [1]
+(b) How many times is the inner Boolean expression <code>j &lt; 3</code> evaluated in total? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) 12 times — 4 outer iterations × 3 inner iterations = 4 × 3 = 12. [1]
+(b) 16 times — for each of the 4 outer iterations, the inner condition is evaluated 4 times (3 true + 1 final false), so 4 × 4 = 16. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.12.3 — Comparing Two Segments (4 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Segment A</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Segment B</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) How many times does the body of Segment A execute, and how many times does the body of Segment B execute? [2]
+(b) Based on statement execution counts, which segment would informally be considered to do more work, and why? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Segment A: 5 times; Segment B: 10 times. [2]
+(b) Segment B does more work, because its <code>System.out.println</code> statement executes 10 times versus 5 — twice as many statement executions — so informally its run time is greater. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.12.4 — Variable Inner Bound (4 marks)</div><div class="callout-body"><pre><code class="language-java"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">total</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>(a) Write an expression, in terms of <code>n</code>, for how many times <code>total++</code> executes. [1]
+(b) Compute the execution count when <code>n = 10</code>. [1]
+© If <code>n</code> doubles to 20, how many times does <code>total++</code> execute? What does this suggest about the relationship between the count and <code>n</code>? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>n * n</code> times — the outer loop runs <code>n</code> times and the inner loop runs <code>n</code> times per outer iteration. [1]
+(b) <code>10 × 10 = 100</code>. [1]
+© <code>20 × 20 = 400</code>. Doubling <code>n</code> multiplies the count by 4, so the execution count grows much faster than <code>n</code> itself — informally, the nested loop’s work grows quadratically with <code>n</code>. [2]</p>
+</div></details><hr>
+<h2 id="section_40">Next Steps</h2>
+<p>You have now covered all of Unit 2: selection through <code>if</code> statements and Boolean expressions, and iteration through <code>while</code> and <code>for</code> loops, along with the standard algorithms for numbers and strings, nested iteration, and informal run-time analysis.</p>
+<p>Next: <a href="unit-3-class-creation.html">Unit 3 — Class Creation</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="unit-1-using-objects-and-methods.html" title="Unit 1 Using Objects and Methods" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Unit 1 Using Objects and Methods</span></a>
+<a href="unit-2-selection-and-iteration.html" title="Unit 2 Selection and Iteration" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Unit 2 Selection and Iteration</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science A (Course &amp; Exam Description, Effective Fall 2025) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>
