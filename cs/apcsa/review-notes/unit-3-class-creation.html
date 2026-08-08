@@ -700,7 +700,7 @@ body::before {
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PointTester</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Point</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Point</span><span class="p">();</span><span class="w">   </span><span class="c1">// default constructor is used</span>
-<span class="w">        </span><span class="c1">// p.x &lt;mark&gt; 0, p.y &lt;/mark&gt; 0.0, p.on &lt;mark&gt; false, p.tag &lt;/mark&gt; null</span>
+<span class="w">        </span><span class="c1">// p.x == 0, p.y == 0.0, p.on == false, p.tag == null</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -1060,9 +1060,9 @@ public         void        deposit(double amount)      { ... }
 </pre></div>
 </code></pre>
 <p>(a) The return expression evaluates to an object reference. Explain what the method returns and why it is <em>not</em> “a reference to a new copy of the object” in the sense of EK 3.6.A.2. [2]<br>
-(b) Compare <code>copy()</code> with a method <code>public BankAccount getSelf() { return this; }</code>. For two calls <code>BankAccount p = a.copy();</code> and <code>BankAccount q = a.getSelf();</code>, does <code>p &lt;mark&gt; a</code>? Does <code>q &lt;/mark&gt; a</code>? Explain. [2]</p>
+(b) Compare <code>copy()</code> with a method <code>public BankAccount getSelf() { return this; }</code>. For two calls <code>BankAccount p = a.copy();</code> and <code>BankAccount q = a.getSelf();</code>, does <code>p == a</code>? Does <code>q == a</code>? Explain. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) EK 3.6.A.2 says that when a return expression evaluates to an object reference, that reference is returned — the method does not automatically create a new copy. In <code>copy()</code>, a <strong>new</strong> object is explicitly created with <code>new</code>, so the method returns the reference to that new object; returning a reference to an existing object would return that object’s reference, not a fresh copy. The distinction: the reference itself is returned in both cases, not a copy of the object. [2]</p>
-<p>(b) <code>p &lt;mark&gt; a</code> is <code>false</code> because <code>copy()</code> created a brand-new object with <code>new</code>. <code>q &lt;/mark&gt; a</code> is <code>true</code> because <code>getSelf()</code> returns the very same reference stored in <code>a</code> — both refer to the identical object. [2]</p>
+<p>(b) <code>p == a</code> is <code>false</code> because <code>copy()</code> created a brand-new object with <code>new</code>. <code>q == a</code> is <code>true</code> because <code>getSelf()</code> returns the very same reference stored in <code>a</code> — both refer to the identical object. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.3 — Private Data Through Parameters (4 marks)</div><div class="callout-body"><p>In <code>transferTo(BankAccount other, double amount)</code>, the method body reads <code>other.balance</code>.</p>
 <p>(a) State the condition under which a method may access the private data of an object passed to it as a parameter, per EK 3.6.A.3. [2]<br>
 (b) Suppose class <code>Bank</code> (a different class) receives a <code>BankAccount</code> parameter. The method in <code>Bank</code> attempts to read <code>acc.balance</code> directly. Will it compile? Explain, and describe the correct approach. [2]</p>

@@ -255,7 +255,7 @@ body::before {
 <div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
 <li><strong>Trace every loop by hand</strong> on paper. Most multiple-choice questions on this unit ask for the result of a code segment, and a careful trace (tracking the loop control variable and each output) is the most reliable way to get them right.</li>
 <li>Watch for <strong>off-by-one errors</strong> and loop bounds. Decide carefully whether a loop should use <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code> or <code>&gt;=</code>, and whether the control variable starts at <code>0</code> or <code>1</code>; one wrong comparison changes the number of iterations.</li>
-<li>Do <strong>not</strong> confuse <code>&lt;mark&gt;</code> with <code>.equals()</code>. <code>&lt;/mark&gt;</code> compares primitive values (or object references), while <code>.equals()</code> compares the contents of objects such as <code>String</code> objects. This is one of the most frequently tested traps on the AP Exam.</li>
+<li>Do <strong>not</strong> confuse <code>==</code> with <code>.equals()</code>. <code>==</code> compares primitive values (or object references), while <code>.equals()</code> compares the contents of objects such as <code>String</code> objects. This is one of the most frequently tested traps on the AP Exam.</li>
 </ul>
 </div></div><hr>
 <h2 id="section_2">Topic 2.1 — Algorithms with Selection and Repetition</h2>
@@ -350,9 +350,9 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td><code>&lt;mark&gt;</code></td>
+<td><code>==</code></td>
 <td>equal to</td>
-<td><code>5 &lt;/mark&gt; 5</code></td>
+<td><code>5 == 5</code></td>
 <td><code>true</code></td>
 </tr>
 <tr>
@@ -695,13 +695,13 @@ Selection statements change sequential execution because the next statement to r
 <span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
 
 <span class="w">        </span><span class="c1">// With ||, since word == null is true, the RIGHT side is NOT evaluated.</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">word</span><span class="w"> </span><span class="o">&lt;</span><span class="n">mark</span><span class="o">&gt;</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;/</span><span class="n">mark</span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">word</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Empty or null.&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// runs safely</span>
 <span class="w">        </span><span class="p">}</span>
 
 <span class="w">        </span><span class="c1">// Danger: this order evaluates word.length() first and crashes</span>
 <span class="w">        </span><span class="c1">// with a NullPointerException because word is null.</span>
-<span class="w">        </span><span class="c1">// if (word.length() &lt;mark&gt; 0 || word &lt;/mark&gt; null) { ... }  // BAD — crashes</span>
+<span class="w">        </span><span class="c1">// if (word.length() == 0 || word == null) { ... }  // BAD — crashes</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
