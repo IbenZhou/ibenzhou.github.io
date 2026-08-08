@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5.3 Cyber Security — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>5.3 Cyber Security</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Cyber Security Threats</a></li>
+<li><a href="#section_2">Brute Force Attack</a></li>
+<li><a href="#section_4">Data interception</a></li>
+<li><a href="#section_6">DDoS Attack</a></li>
+<li><a href="#section_8">Hacking</a></li>
+<li><a href="#section_10">Malware</a></li>
+<li><a href="#section_12">Pharming</a></li>
+<li><a href="#section_15">Phishing</a></li>
+<li><a href="#section_17">Keeping Data Safe</a></li>
+<li><a href="#section_18">Access Levels</a></li>
+<li><a href="#section_20">Anti Malware</a></li>
+<li><a href="#section_23">Authentication</a></li>
+<li><a href="#section_26">Automating Software Updates</a></li>
+<li><a href="#section_28">Communication</a></li>
+<li><a href="#section_30">URL</a></li>
+<li><a href="#section_32">Firewalls</a></li>
+<li><a href="#section_35">Proxy Servers</a></li>
+<li><a href="#section_37">SSL</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Cyber Security Threats</h2>
+<h3 id="section_1">Forms of cyber security threat</h3>
+<ul>
+<li>Computers face a variety of forms of attack and they can cause a large number of issues for a network and computers</li>
+<li>The main threats posed are:
+<ul>
+<li><strong>Brute-force attacks</strong></li>
+<li><strong>Data interception &amp; theft</strong></li>
+<li><strong>DDos attack</strong></li>
+<li><strong>Hacking</strong></li>
+<li><strong>Malware</strong></li>
+<li><strong>Pharming</strong></li>
+<li><strong>Phishing</strong></li>
+<li><strong>Social engineering</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_2">Brute Force Attack</h2>
+<h3 id="section_3">What is a brute-force attack?</h3>
+<ul>
+<li>A brute force attack works by an attacker repeatedly trying <strong>multiple combinations</strong> of a user’s password to <strong>try and gain unauthorised access</strong> to their accounts or devices</li>
+<li>An example of this attack would be an attacker finding out the length of a PIN code, for example, 4-digits</li>
+<li>They would then <strong>try each possible combination</strong> until the pin was cracked, for example
+<ul>
+<li><strong>0000</strong></li>
+<li><strong>0001</strong></li>
+<li><strong>0002</strong></li>
+</ul>
+</li>
+<li>A second form of this attack, commonly used for passwords is a <strong>dictionary attack</strong></li>
+<li>This method tries <strong>popular words or phrases</strong> for passwords to guess the password as quickly as possible</li>
+<li>Popular words and phrases such as ’ <strong>password</strong> ', ’ <strong>1234</strong> ’ and ’ <strong>qwerty</strong> ’ will be checked extremely quickly.</li>
+</ul>
+<h2 id="section_4">Data interception</h2>
+<h3 id="section_5">What is data interception &amp; theft?</h3>
+<ul>
+<li>Data interception and theft is when thieves or hackers cancompromise <strong>usernames</strong> and <strong>passwords</strong> as well as other sensitive data</li>
+<li>This is done by using devices such as a <strong>packet sniffer</strong></li>
+<li>A packet sniffer will be able to <strong>collect the data</strong> that is being transferred on a network</li>
+<li>A thief can use this data to gain <strong>unauthorised access</strong> to websites, companies and more</li>
+</ul>
+<h2 id="section_6">DDoS Attack</h2>
+<h3 id="section_7">What is a DDoS attack?</h3>
+<ul>
+<li>A <strong>Distributed Denial of Service Attack</strong> (DDoS attac <strong>k</strong>) is a <strong>large scale</strong>, <strong>coordinated</strong> attack designed to <strong>slow down a server</strong> to the point of it becoming <strong>unusable</strong></li>
+<li>A server is continually <strong>flooded with requests</strong> from <strong>multiple distributed devices</strong> preventing genuine users from accessing or using a service</li>
+<li>A DDoS attack uses computers as ’ <strong>bots</strong> ', the bots act as <strong>automated tools</strong> under the attackers control, making it difficult to <strong>trace back</strong> to the original source</li>
+<li>A DDoS attack can result in companies <strong>losing money</strong> and not being able to carry out their daily duties</li>
+<li>A DDoS attack can cause <strong>damage to a company’s reputation</strong></li>
+</ul>
+<h2 id="section_8">Hacking</h2>
+<h3 id="section_9">What is hacking?</h3>
+<ul>
+<li>Hacking is the process of <strong>identifying and exploiting weaknesses</strong> in a computer system or network to <strong>gain unauthorised access</strong></li>
+<li>Access can be for various <strong>malicious purposes</strong>, such as stealing data, installing malware, or disrupting operations</li>
+<li>Hackers <strong>seek out opportunities</strong> that make this possible, this includes:
+<ul>
+<li><strong>Unpatched software</strong></li>
+<li><strong>Out-of-date anti-malware</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_10">Malware</h2>
+<h3 id="section_11">What is malware?</h3>
+<ul>
+<li>Malware (<strong>mal</strong> icious soft <strong>ware</strong>) is the term used for any software that has been created with malicious intent to cause harm to a computer system</li>
+<li>Examples of issues caused by malware include
+<ul>
+<li>Files being <strong>deleted</strong>, <strong>corrupted</strong> or <strong>encrypted</strong></li>
+<li>Internet connection becoming <strong>slow</strong> or <strong>unusable</strong></li>
+<li>Computer <strong>crashing</strong> or <strong>shutting down</strong></li>
+</ul>
+</li>
+<li>There are various types of malware and each has slightly different issues which they cause</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Malware</strong></th>
+<th><strong>What it Does</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Virus</td>
+<td>• Contains code that will <strong>replicate</strong> and cause <strong>unwanted and unexpected events</strong> to occur<br>• Examples of issues a user may experience are  <br>• <strong>Corrupt</strong> files      <br>• <strong>Delete</strong> data      <br>• <strong>Prevent</strong> applications from running correctly</td>
+</tr>
+<tr>
+<td>Worms</td>
+<td>• Very similar to viruses, main difference being that they <strong>spread to other drives</strong> and <strong>computers</strong> on the network<br>• Worms can infect other computers from<br>• <strong>Infected websites</strong>      <br>• <strong>Instant message services</strong>      <br>• <strong>Email</strong><br>• <strong>Network connection</strong></td>
+</tr>
+<tr>
+<td>Trojan</td>
+<td>• Sometimes called a <strong>Trojan Horse</strong><br>• Trojans <strong>disguise</strong> themselves as l <strong>egitimate</strong> software but contain <strong>malicious</strong> code in the background</td>
+</tr>
+<tr>
+<td>Spyware</td>
+<td>• Allow a person to <strong>spy</strong> on the users’ <strong>activities</strong> on their devices  <br>• Embedded into other software such as games or programs that have been downloaded from <strong>illegitimate sources</strong><br>• Can <strong>record</strong> your screen, log your <strong>keystrokes</strong> to gain access to <strong>passwords</strong> and more</td>
+</tr>
+<tr>
+<td>Adware</td>
+<td>• Displays <strong>adverts</strong> to the user<br>• Users have <strong>little or no control</strong> over the <strong>frequency</strong> or <strong>type</strong> of ads<br>• Can <strong>redirect clicks</strong> to unsafe sites that contain spyware</td>
+</tr>
+<tr>
+<td>Ransomware</td>
+<td>• Locks your computer or device and <strong>encrypts</strong> your documents and other important files<br>• A <strong>demand is made for money</strong> to receive the password that will allow the user to decrypt the files<br>• <strong>No guarantee</strong> paying the ransom will result in the user getting their data back</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_12">Pharming</h2>
+<h3 id="section_13">What is pharming?</h3>
+<ul>
+<li>Pharming is typing a website address into a browser and it being <strong>redirected to a ‘fake’ website</strong> in order to trick a user into typing in sensitive information such as passwords</li>
+<li>An attacker attempts to <strong>alter DNS settings</strong>, the directory of websites and their matching IP addresses that is used to access websites on the internet or change a users browser settings</li>
+<li>A user <strong>clicks a link</strong> which <strong>downloads malware</strong></li>
+<li>The user <strong>types in a web address</strong> which is then <strong>redirected</strong> to the fake website
+<img src="0478-images/33141_malware-eg.png" alt="Flowchart showing how malware redirects a web request. User's computer with malware sends the request to a fake website instead of the real website."></li>
+</ul>
+<h3 id="section_14">How can you protect against it?</h3>
+<ul>
+<li>To protect against the threat of pharming:
+<ul>
+<li><strong>Keep anti-malware software up to date</strong></li>
+<li><strong>Check URLs regularly</strong></li>
+<li><strong>Make sure the padlock icon is visible</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_15">Phishing</h2>
+<h3 id="section_16">What is phishing?</h3>
+<ul>
+<li>Phishing is the process of sending fraudulent emails/SMS to a large number of people, claiming to be from a <strong>reputable company</strong> or trusted source</li>
+<li>Phishing is an attempt to try and <strong>gain access</strong> to your details, often by coaxing the user to click on a login button/link</li>
+</ul>
+<p>A company is concerned about a distributed denial of service (DDoS) attack.</p>
+<p>(i) Describe what is meant by a DDoS attack.</p>
+<p><strong>[4]</strong></p>
+<p>(ii) Suggest one security device that can be used to help prevent a DDoS attack.<strong>[1]</strong></p>
+<p><strong>Answers</strong></p>
+<p>(i) Any four from:</p>
+<ul>
+<li>multiple computers are used as bots</li>
+<li>designed to deny people access to a website</li>
+<li>a large number / numerous requests are sent (to a server) …</li>
+<li>… all at the same time</li>
+<li>the server is unable to respond / struggles to respond to all the requests</li>
+<li>the server fails / times out as a result.</li>
+</ul>
+<p>(ii)</p>
+<ul>
+<li>firewall <strong>OR</strong> proxy server</li>
+</ul>
+<h2 id="section_17">Keeping Data Safe</h2>
+<h2 id="section_18">Access Levels</h2>
+<h3 id="section_19">What are access levels?</h3>
+<ul>
+<li>Access levels ensure users of a network <strong>can access what they need to access</strong> and do not have access to information/resources they shouldn’t</li>
+<li>Users can have <strong>designated</strong> <strong>roles</strong> on a network</li>
+<li>Access levels can be set based on a user’s <strong>role, responsibility, or clearance level</strong>
+<ul>
+<li><strong>Full access -</strong> this allows the user to open, create, edit &amp; delete files</li>
+<li><strong>Read-only access -</strong> this only allows the user to open files without editing or deleting</li>
+<li><strong>No access -</strong> this hides the file from the user</li>
+</ul>
+</li>
+<li>Some examples of different levels of access to a school network could include:
+<ul>
+<li><strong>Administrators:</strong> <em>Unrestricted</em> - Can access all areas of the network</li>
+<li><strong>Teaching Staff:</strong> <em>Partially restricted -</em> Can access all student data but cannot access other staff members’ data</li>
+<li><strong>Students:</strong> <em>Restricted</em> - Can only access their own data and files</li>
+</ul>
+</li>
+<li>Users and groups of users can be given <strong>specific file permissions</strong></li>
+</ul>
+<h2 id="section_20">Anti Malware</h2>
+<h3 id="section_21">What is anti-malware software?</h3>
+<ul>
+<li>Anti-malware software is a term used to describe a combination of different software to prevent computers from being susceptible to <strong>viruses</strong> and other <strong>malicious software</strong></li>
+<li>The different software anti-malware includes are
+<ul>
+<li><strong>Anti-virus</strong></li>
+<li><strong>Anti-spam</strong></li>
+<li><strong>Anti-spyware</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_22">How does anti-malware work?</h3>
+<ul>
+<li>Anti-malware <strong>scans</strong> through <strong>email</strong> attachments, <strong>websites</strong> and downloaded <strong>files</strong> to search for issues</li>
+<li>Anti-malware software has a list of known malware <strong>signatures to block</strong> immediately if they try to access your device in any way</li>
+<li>Anti-malware will also perform <strong>checks for updates</strong> to ensure the database of known issues is up to date</li>
+</ul>
+<h2 id="section_23">Authentication</h2>
+<h3 id="section_24">What is authentication?</h3>
+<ul>
+<li>Authentication is the process of <strong>ensuring that a system is secure</strong> by asking the user to <strong>complete tasks to prove they are an authorised</strong> user of the system</li>
+<li>Authentication is done because <strong>bots can submit data in online forms</strong></li>
+<li>Authentication can be done in several ways, these include
+<ul>
+<li><strong>Usernames and passwords</strong></li>
+<li><strong>Multi-factor authentication</strong></li>
+<li><strong>CAPTCHA</strong> - see example below
+<img src="0478-images/authentication-recaptcha.png" alt="authentication-recaptcha" width="775"></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_25">Biometrics</h4>
+<ul>
+<li>Biometrics use <strong>biological data</strong> for authentication by identifying <strong>unique physical characteristics</strong> of a human such as <strong>fingerprints</strong>, <strong>facial recognition</strong>, or <strong>iris scans</strong></li>
+<li>Biometric authentication is <strong>more secure</strong> than using passwords as:
+<ul>
+<li>A biometric password <strong>cannot be guessed</strong></li>
+<li>It is very <strong>difficult to fake</strong> a biometric password</li>
+<li>A biometric password <strong>cannot be recorded</strong> by spyware</li>
+<li>A perpetrator <strong>cannot shoulder surf</strong> to see a biometric password</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_26">Automating Software Updates</h2>
+<h3 id="section_27">What are automatic software updates?</h3>
+<ul>
+<li>Automatic software updates take away the need for a user to remember to keep software updated and <strong>reduce the risk of software flaws/vulnerabilities</strong> being targeted in <strong>out of date software</strong></li>
+<li>Automatic updates <strong>ensure fast deployment</strong> of updates as they release</li>
+</ul>
+<h2 id="section_28">Communication</h2>
+<h3 id="section_29">What is communication?</h3>
+<ul>
+<li>One way of protecting data is by <strong>monitoring digital communication</strong> to check for errors in the <strong>spelling</strong> and <strong>grammar</strong> or <strong>tone</strong> of the communication</li>
+<li>Phishing scams often involve communication with users, monitoring it can be effective as:
+<ul>
+<li><strong>Rushed</strong> - emails and texts pretending to be from a reputable company are focused on quantity rather than quality and often contain basic spelling and grammar errors</li>
+<li><strong>Urgency</strong> - emails using a tone that creates panic or makes a user feel rushed is often a sign that something is suspicious</li>
+<li><strong>Professionalism</strong> - emails from reputable companies should have flawless spelling and grammar</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_30">URL</h2>
+<h3 id="section_31">How to check a URL?</h3>
+<ul>
+<li>Checking the <strong>URL attached to a link</strong> is another way to prevent phishing attacks</li>
+<li>Hackers often use fake URLs to trick users into visiting fraudulent websites
+<ul>
+<li>e.g. <strong><a href="http://amaz.on.co.uk/">http://amaz.on.co.uk/</a></strong> rather than <strong><a href="http://amazon.co.uk/">http://amazon.co.uk/</a></strong></li>
+</ul>
+</li>
+<li>If you are unsure, always check the website URL <strong>before clicking any links</strong> contained in an email</li>
+</ul>
+<h2 id="section_32">Firewalls</h2>
+<h3 id="section_33">What is a firewall?</h3>
+<ul>
+<li>A firewall <strong>monitors incoming and outgoing network traffic</strong> and uses a set of rules to determine which traffic to allow</li>
+<li>A firewall prevents <strong>unwanted traffic</strong> from entering a network by filtering requests to ensure they are <strong>legitimate</strong></li>
+<li>It can be both <strong>hardware</strong> and <strong>software</strong> and they are often used together to provide stronger security to a network
+<ul>
+<li><strong>Hardware firewalls</strong> will protect the whole network and prevent unauthorised traffic</li>
+<li><strong>Software firewalls</strong> will protect the individual devices on the network, monitoring the data going to and from each computer</li>
+</ul>
+</li>
+</ul>
+<h3 id="section_34">What form of attack would this prevent?</h3>
+<ul>
+<li>
+<p>Hackers</p>
+</li>
+<li>
+<p>Malware</p>
+</li>
+<li>
+<p>Unauthorised access to a network</p>
+</li>
+<li>
+<p>Privacy settings are used to <strong>control the amount of personal information</strong> that is shared online</p>
+</li>
+<li>
+<p>They are an important measure to prevent identity theft and other forms of online fraud</p>
+</li>
+<li>
+<p>Users should <strong>regularly review</strong> their privacy settings and adjust them as needed</p>
+</li>
+</ul>
+<h2 id="section_35">Proxy Servers</h2>
+<h3 id="section_36">What is a proxy server?</h3>
+<ul>
+<li>A proxy-server is used to <strong>hide a user’s IP address</strong> and <strong>location</strong>, making it more difficult for <strong>hackers to track them</strong></li>
+<li>They <strong>act as a firewall</strong> and can also be used to <strong>filter web traffic</strong> by setting criteria for traffic</li>
+<li>Malicious content <strong>is blocked</strong> and a warning message can be sent to the user</li>
+<li>Proxy-servers are a useful security measure for protecting against external security threats as it can direct traffic away from the server</li>
+</ul>
+<h2 id="section_37">SSL</h2>
+<h3 id="section_38">What is SSL?</h3>
+<ul>
+<li>Secure Socket Layer (<strong>SSL</strong>) is a <strong>security protocol</strong> which is used to <strong>encrypt data</strong> transmitted <strong>over the internet</strong></li>
+<li>This helps to prevent <strong>eavesdropping</strong> and other forms of <strong>interception</strong></li>
+<li>SSL is widely used to protect <strong>online transactions</strong>, such as those involving credit card information or other sensitive data</li>
+<li>It works by sending a <strong>digital certificate</strong> to the user’s browser</li>
+<li>This contains the <strong>public key</strong> which can be used for <strong>authentication</strong></li>
+<li>Once the certificate is authenticated, the transaction will begin</li>
+</ul>
+<p>(i) ) Identify a security solution that could be used to protect a computer from a computer virus, hacking and spyware.</p>
+<p>Each security solution must be different</p>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Security solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Computer virus</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Hacking</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Spyware</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>[3]</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>(ii) Describe how each security solution you identified in (i) will help protect the computer.</p>
+<p><strong>[6]</strong></p>
+<p><strong>Answers</strong></p>
+<p>(i)</p>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Security solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Computer virus</strong></td>
+<td>Anti-malware/virus (software) Firewall</td>
+</tr>
+<tr>
+<td><strong>Hacking</strong></td>
+<td>Firewall<br>Passwords<br>Biometrics<br>Two-step verification</td>
+</tr>
+<tr>
+<td><strong>Spyware</strong></td>
+<td>Anti-malware/virus (software)<br>Two-step verification<br>Firewall</td>
+</tr>
+</tbody>
+</table>
+<p>(ii) <strong>Two</strong> marks for each description</p>
+<ul>
+<li><strong>Anti-malware/virus (software)</strong>
+<ul>
+<li>Scans the computer system (for viruses)</li>
+<li>Has a record of known viruses</li>
+<li>Removes/quarantines any viruses that are found</li>
+<li>Checks data before it is downloaded</li>
+<li>… and stops download if virus found/warns user may contain virus</li>
+</ul>
+</li>
+<li><strong>Anti-malware/spyware (software)</strong>
+<ul>
+<li>Scans the computer for spyware</li>
+<li>Removes/quarantines any spyware that is found</li>
+<li>Can prevent spyware being downloaded</li>
+</ul>
+</li>
+<li><strong>Firewall</strong>
+<ul>
+<li>Monitors traffic coming into and out of the computer system</li>
+<li>Checks that the traffic meets any criteria/rules set</li>
+<li>Blocks any traffic that does not meet the criteria/rules set // set blacklist/whitelist</li>
+</ul>
+</li>
+<li><strong>Passwords</strong>
+<ul>
+<li>Making a password stronger // by example</li>
+<li>Changing it regularly</li>
+<li>Lock out after set number of attempts // stops brute force attacks // makes it more difficult to guess</li>
+</ul>
+</li>
+<li><strong>Biometrics</strong></li>
+<li><strong>Two-step verification</strong>
+<ul>
+<li>Extra data is sent to device, pre-set by user</li>
+<li>… making it more difficult for hacker to obtain it</li>
+<li>Data has to be entered into the same system</li>
+<li>… so if attempted from a remote location, it will not be accepted</li>
+</ul>
+</li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="52-digital-currency.html" title="Previous: 5.2 Digital Currency" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">5.2 Digital Currency</span></a>
+<a href="61-automated-systems-emerging-technologies.html" title="Next: 6.1 Automated Systems & Emerging Technologies" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">6.1 Automated Systems & Emerging Technologies</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8 Programming — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>8 Programming</h1>
+    <p>Paper 2: Algorithms, Programming & Logic</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Variables &amp; Constants</a></li>
+<li><a href="#section_3">Data Types</a></li>
+<li><a href="#section_6">Input &amp; Output</a></li>
+<li><a href="#section_11">Sequence</a></li>
+<li><a href="#section_15">Selection</a></li>
+<li><a href="#section_16">What is Selection?</a></li>
+<li><a href="#section_17">If Statements</a></li>
+<li><a href="#section_20">Nested Selection</a></li>
+<li><a href="#section_23">Case Statements</a></li>
+<li><a href="#section_25">Iteration</a></li>
+<li><a href="#section_26">What is iteration?</a></li>
+<li><a href="#section_27">Count Controlled Loops</a></li>
+<li><a href="#section_30">Condition Controlled Loops</a></li>
+<li><a href="#section_34">Nested Iteration</a></li>
+<li><a href="#section_37">Totalling &amp; Counting</a></li>
+<li><a href="#section_40">String Handling</a></li>
+<li><a href="#section_45">Arithmetic, Logical &amp; Boolean Operators</a></li>
+<li><a href="#section_46">What is an operator?</a></li>
+<li><a href="#section_47">Arithmetic Operators</a></li>
+<li><a href="#section_48">Logical Operators</a></li>
+<li><a href="#section_49">Boolean Operators</a></li>
+<li><a href="#section_50">Procedures &amp; Functions</a></li>
+<li><a href="#section_51">What are functions and procedures?</a></li>
+<li><a href="#section_53">Procedures</a></li>
+<li><a href="#section_55">Functions</a></li>
+<li><a href="#section_57">Local &amp; Global Variables</a></li>
+<li><a href="#section_58">Local Variables</a></li>
+<li><a href="#section_61">Global Variables</a></li>
+<li><a href="#section_64">Library Routines</a></li>
+<li><a href="#section_70">Maintaining Programs</a></li>
+<li><a href="#section_73">Arrays</a></li>
+<li><a href="#section_74">1-Dimensional Arrays</a></li>
+<li><a href="#section_77">2-Dimensional Arrays</a></li>
+<li><a href="#section_81">File Handling</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Variables &amp; Constants</h2>
+<h3 id="section_1">What is a variable?</h3>
+<ul>
+<li>A variable is an <strong>identifier</strong> that <strong>can change</strong> in the lifetime of a program</li>
+<li>Identifiers should be:
+<ul>
+<li>In <strong>mixed case</strong> (Pascal case)
+<ul>
+<li>Only <strong>contain letters</strong> (A-Z, a-z)</li>
+<li>Only <strong>contain digits</strong> (0-9)</li>
+<li><strong>Start with a capital</strong> letter and not a digit</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A variable can be <strong>associated a datatype</strong> when it is declared</li>
+<li>When a variable is declared, <strong>memory is allocated</strong> based on the data type indicated</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>seudocode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DECLARE :</strong></td>
+</tr>
+<tr>
+<td><code>DECLARE Age : INTEGER</code></td>
+</tr>
+<tr>
+<td><code>DECLARE Price : REAL</code></td>
+</tr>
+<tr>
+<td><code>DECLARE GameOver : BOOLEAN</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>score = int()</code> # whole number</td>
+</tr>
+<tr>
+<td><code>cost = float()</code> # decimal number</td>
+</tr>
+<tr>
+<td><code>light = bool()</code> # data can only have one or two values</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_2">What is a constant?</h3>
+<ul>
+<li>A constant is an <strong>identifier set once in the lifetime of a program</strong></li>
+<li>Constants are generally named in <strong>all uppercase characters</strong></li>
+<li>Constants <strong>aid</strong> the <strong>readability</strong> and <strong>maintainability</strong></li>
+<li>If a constant needs to be changed, it should only need to be altered <strong>in one place</strong> in the whole program</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Pseudocode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CONSTANT</strong> ←</td>
+</tr>
+<tr>
+<td><code>CONSTANT PI ← 3.142</code></td>
+</tr>
+<tr>
+<td><code>CONSTANT PASSWORD ← &quot;letmein&quot;</code></td>
+</tr>
+<tr>
+<td><code>CONSTANT HIGHSCORE ← 9999</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PI = 3.142</code></td>
+</tr>
+<tr>
+<td><code>VAT = 0.20</code></td>
+</tr>
+<tr>
+<td><code>PASSWORD = &quot;letmein&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_3">Data Types</h2>
+<h3 id="section_4">What is a data type?</h3>
+<ul>
+<li>A data type is <strong>a classification of data into groups</strong> according to the <strong>kind of data they represent</strong></li>
+<li>Computers use <strong>different data types</strong> to represent <strong>different types of data</strong> in a program</li>
+<li>The basic data types include:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Data type</strong></th>
+<th><strong>Used for</strong></th>
+<th>Pseudocode</th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Integer</strong></td>
+<td>Whole numbers</td>
+<td><code>INTEGER</code></td>
+<td><code>10, -5, 0</code></td>
+</tr>
+<tr>
+<td><strong>Real</strong></td>
+<td>Numbers with a fractional part (decimal)</td>
+<td><code>REAL</code></td>
+<td><code>3.14, -2.5, 0.0</code></td>
+</tr>
+<tr>
+<td><strong>Character</strong></td>
+<td>Single character</td>
+<td><code>CHAR</code></td>
+<td><code>'a', 'B', '6', '£'</code></td>
+</tr>
+<tr>
+<td><strong>String</strong></td>
+<td>Sequence of characters</td>
+<td><code>STRING</code></td>
+<td><code>&quot;Hello world&quot;, &quot;ABC&quot;, &quot;@#!%&quot;</code></td>
+</tr>
+<tr>
+<td><strong>Boolean</strong></td>
+<td>True or false values</td>
+<td><code>BOOLEAN</code></td>
+<td><code>True, False</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>It is important to choose the correct data type for a given situation to ensure <strong>accuracy</strong> and <strong>efficiency</strong> in the program</li>
+<li>Data types can be changed within a program, this is called <strong>casting</strong></li>
+</ul>
+<h3 id="section_5">Programming data types</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Data type</strong></th>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Integer</strong></td>
+<td><code>Number ← 5</code></td>
+<td><code>number = 5</code></td>
+</tr>
+<tr>
+<td><strong>Real</strong></td>
+<td><code>RealNumber ← 3.14</code></td>
+<td><code>realNumber = 3.14</code></td>
+</tr>
+<tr>
+<td><strong>Character</strong></td>
+<td><code>FirstNameInitial ← 'a'</code></td>
+<td><code>firstNameInitial = 'a'</code></td>
+</tr>
+<tr>
+<td><strong>String</strong></td>
+<td><code>Password ← &quot;letmein&quot;</code></td>
+<td><code>password = &quot;letmein&quot;</code></td>
+</tr>
+<tr>
+<td><strong>Boolean</strong></td>
+<td><code>LightSensor ← True</code></td>
+<td><code>lightSensor = True</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_6">Input &amp; Output</h2>
+<h3 id="section_7">What is an input?</h3>
+<ul>
+<li>An input isa value that is <strong>read from an input device</strong> and then <strong>processed</strong> by a computer program</li>
+<li>Typical input devices include:
+<ul>
+<li><strong>Keyboards</strong> - Typing text</li>
+<li><strong>Mice</strong> - Selecting item, clicking buttons</li>
+<li><strong>Sensors</strong> - Reading data from sensors such as temperature, pressure or motion</li>
+<li><strong>Microphone</strong> - Capturing audio, speech recognition</li>
+</ul>
+</li>
+<li>Without inputs, programs are <strong>not useful</strong> as they can’t i <strong>nteract with the outside world</strong> and always produce the <strong>same result</strong></li>
+<li>In programming the <strong>keyboard</strong> is considered the <strong>standard</strong> for user input</li>
+<li>If the command ’ <strong>INPUT</strong> ’ is executed, a program will wait for the <strong>user</strong> to <strong>type a sequence of characters</strong></li>
+<li>In other programming languages <strong>different command words</strong> can be used</li>
+</ul>
+<h4 id="section_8">Examples</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Pseudocode (INPUT )</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INPUT Name</code><br><br><code>IF Name ← &quot;James&quot; OR Name ← &quot;Rob&quot; THEN...</code></td>
+<td><code>name=input(&quot;Enter your name: &quot;)</code><br><br><code>if name &lt;mark&gt; &quot;James&quot; or name &lt;/mark&gt; &quot;Rob&quot;:</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_9">What is an output?</h3>
+<ul>
+<li>An output is a value <strong>sent to an output device</strong> from a computer program</li>
+<li>Typical output devices include:
+<ul>
+<li><strong>Monitor</strong> - Displaying text, images or graphics</li>
+<li><strong>Speaker</strong> - Playing audio</li>
+<li><strong>Printer</strong> - Creating physical copies of documents or images</li>
+</ul>
+</li>
+<li>In programming the <strong>monitor</strong> is considered the <strong>standard</strong> for user output</li>
+<li>If the command ’ <strong>OUTPUT</strong> ’ is executed, a program will output to the screen</li>
+<li>In other programming languages <strong>different command words</strong> can be used</li>
+</ul>
+<h4 id="section_10">Examples</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Pseudocode (OUTPUT )</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INPUT Name</code><br><br><code>IF Name ← &quot;James&quot; OR Name ← &quot;Rob&quot; THEN</code><br><br><code>OUTPUT &quot;Great names!&quot;</code></td>
+<td><code>name=input(&quot;Enter your name: &quot;)</code><br><br><code>if name &lt;mark&gt; &quot;James&quot; or name &lt;/mark&gt; &quot;Rob&quot;:</code><br><br><code>print(&quot;Great names!&quot;)</code></td>
+</tr>
+<tr>
+<td><code>INPUT Name</code><br><br><code>IF Name ← &quot;James&quot; OR Name ← &quot;Rob&quot; THEN</code><br><br><code>OUTPUT &quot;Love the name &quot;, Name</code></td>
+<td><code>name=input(&quot;Enter your name: &quot;)</code><br><br><code>if name &lt;mark&gt; &quot;James&quot; or name &lt;/mark&gt; &quot;Rob&quot;:</code><br><br><code>print(&quot;Love the name &quot;+name)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_11">Sequence</h2>
+<h3 id="section_12">What is sequence?</h3>
+<ul>
+<li>Sequence refers to lines of code which are run <strong>one line at a time</strong></li>
+<li>The lines of code are run in the <strong>order</strong> that they written from the first line of code to the last line of code</li>
+<li>Sequence is <strong>crucial to the flow</strong> of a program, any instructions out of sequence can lead to <strong>unexpected behaviour or errors</strong></li>
+</ul>
+<h4 id="section_13">Example 1</h4>
+<ul>
+<li>A simple program to ask a user to input two numbers, number two is subtracted from number one and the result is outputted</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Line</strong></th>
+<th><strong>Pseudocode</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>01</strong></td>
+<td><code>OUTPUT &quot;Enter the first number&quot;</code></td>
+</tr>
+<tr>
+<td><strong>02</strong></td>
+<td><code>INPUT Num1</code></td>
+</tr>
+<tr>
+<td><strong>03</strong></td>
+<td><code>OUTPUT &quot;Enter the second number&quot;</code></td>
+</tr>
+<tr>
+<td><strong>04</strong></td>
+<td><code>INPUT Num2</code></td>
+</tr>
+<tr>
+<td><strong>05</strong></td>
+<td><code>Result ← Num1 - Num2</code></td>
+</tr>
+<tr>
+<td><strong>06</strong></td>
+<td><code>OUTPUT Result</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A simple swap of line 01 and line 02 would lead to an unexpected behaviour, the user would be prompted to input information without knowing what they should enter</li>
+</ul>
+<h4 id="section_14">Example 2</h4>
+<ul>
+<li>This function calculates the area of a rectangle</li>
+<li><strong>Inputs</strong>:
+<ul>
+<li>length: The length of the rectangle
+<ul>
+<li>width: The width of the rectangle</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Returns</strong>:
+<ul>
+<li>The area of the rectangle</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">FUNCTION</span><span class="w"> </span><span class="nf">CalculateArea</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">area</span>
+<span class="w">    </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
+<span class="n">END</span><span class="w"> </span><span class="n">FUNCTION</span>
+
+<span class="c1">// Main program</span>
+<span class="n">length</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">width</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">correct_area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">CalculateArea</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Correct area (length * width): &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">correct_area</span><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">th</span><span class="w"> </span><span class="n">colspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="n">rowspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="o">&gt;&lt;</span><span class="n">p</span><span class="o">&gt;&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">Python</span><span class="w"> </span><span class="n">example</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;&lt;/</span><span class="n">th</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="w"> </span><span class="n">colspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="n">rowspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="o">&gt;&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">def</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">):</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">area</span>
+<span class="w">  </span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
+
+<span class="err">#</span><span class="w"> </span><span class="o">------------------------------------------------------------------------</span>
+<span class="err">#</span><span class="w"> </span><span class="n">Main</span><span class="w"> </span><span class="n">program</span>
+<span class="err">#</span><span class="w"> </span><span class="o">------------------------------------------------------------------------</span>
+
+<span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">correct_area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;Correct area (length * width): {correct_area}&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>In the example, the <strong>sequence of instructions</strong> is wrong and would cause a runtime error</li>
+<li>In the <code>calculate_area()</code> function a value is <strong>returned before it is assigned</strong></li>
+<li>The correct sequence is:</li>
+</ul>
+<p><code>area ← length * width</code><br>
+<code>RETURN area</code></p>
+<p><code>OR</code></p>
+<p><code>area = length * width</code><br>
+<code>return area</code></p>
+<h2 id="section_15">Selection</h2>
+<h2 id="section_16">What is Selection?</h2>
+<ul>
+<li>Selection is when the <strong>flow of a program is changed,</strong> depending on a <strong>set of conditions</strong></li>
+<li>The outcome of this condition will then determine <strong>which lines or block of code is run next</strong></li>
+<li>Selection is used for <strong>validation</strong>, <strong>calculation</strong> and making sense of a <strong>user’s choices</strong></li>
+<li>There are two ways to write selection statements:
+<ul>
+<li><strong>if</strong>… <strong>then</strong>… <strong>else</strong>…
+<ul>
+<li><strong>case</strong>…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_17">If Statements</h2>
+<h3 id="section_18">What is an If statement?</h3>
+<ul>
+<li>As If statements allow you to execute a set of instructions if a condition is true</li>
+<li>They have the following syntax:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">IF</span><span class="w"> </span><span class="o">&lt;</span><span class="n">condition</span><span class="o">&gt;</span>
+<span class="w">	</span><span class="n">THEN</span>
+<span class="w">		</span><span class="o">&lt;</span><span class="n">statement</span><span class="o">&gt;</span><span class="w">  </span>
+<span class="n">ENDIF</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>A detailed look at a Python IF statement:
+<img src="0478-images/if-else-if-else-statement-pseudocode-computer-science-revision-notes.png" alt="if-else-if-else-statement-pseudocode-computer-science-revision-notes"></li>
+</ul>
+<h4 id="section_19">Example</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>Pseudocode</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IF-THEN-ELSE</td>
+<td><code class="table-inline">IF Answer ← “Yes”<br>  THEN<br>      OUTPUT “Correct”<br>  ELSE<br>      OUTPUT “Wrong”<br>ENDIF</code></td>
+<td><code class="table-inline">if answer <mark> “Yes”:<br>   print(“Correct”)<br>elif answer </mark> “No”:<br>   print(“Wrong”)<br>else:<br>   print(“Error”)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_20">Nested Selection</h2>
+<h3 id="section_21">What is nested selection?</h3>
+<ul>
+<li>Nested selection is <strong>a selection statement within a selection statement</strong>, e.g. an If inside of another If</li>
+<li>Nested means to be ’ <strong>stored inside the other</strong> ’</li>
+</ul>
+<h4 id="section_22">Example</h4>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">Player2Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Player1Score</span><span class="w"> </span>
+<span class="w">    </span><span class="n">THEN</span><span class="w"> </span>
+<span class="w">         </span><span class="n">IF</span><span class="w"> </span><span class="n">Player2Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">HighScore</span><span class="w"> </span>
+<span class="w">             </span><span class="n">THEN</span><span class="w"> </span>
+<span class="w">                  </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is champion and highest scorer&quot;</span><span class="w"> </span>
+<span class="w">             </span><span class="n">ELSE</span><span class="w"> </span>
+<span class="w">                  </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is the new champion&quot;</span><span class="w"> </span>
+<span class="w">         </span><span class="n">ENDIF</span><span class="w"> </span>
+<span class="w">    </span><span class="n">ELSE</span><span class="w"> </span>
+<span class="w">         </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is still the champion&quot;</span><span class="w"> </span>
+<span class="w">         </span><span class="n">IF</span><span class="w"> </span><span class="n">Player1Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">HighScore</span><span class="w"> </span>
+<span class="w">             </span><span class="n">THEN</span><span class="w"> </span>
+<span class="w">                  </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Player1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is also the highest scorer&quot;</span><span class="w"> </span>
+<span class="w">         </span><span class="n">ENDIF</span><span class="w"> </span>
+<span class="n">ENDIF</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Prompt the user to enter a number</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Enter a number: &quot;</span><span class="p">)</span>
+<span class="n">test_score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="c1"># Outer statement to check if the test_score is above 40</span>
+<span class="k">if</span> <span class="n">test_score</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">:</span>
+    <span class="c1"># Inner statement to assign the result from the test</span>
+    <span class="k">if</span> <span class="n">test_score</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Distinction&quot;</span>
+    <span class="k">elif</span> <span class="n">test_score</span> <span class="o">&gt;</span> <span class="mi">55</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Merit&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Pass&quot;</span> 
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Fail&quot;</span>
+
+<span class="c1"># Output the result</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_23">Case Statements</h2>
+<h4 id="section_24">What is a case statement?</h4>
+<ul>
+<li>A case statement <strong>can mean less code</strong> but it only useful when comparing <strong>multiple values of the same variable</strong></li>
+<li><strong>If</strong> statements are <strong>more flexible</strong> and are generally used more in languages such as Python</li>
+<li>The format of a CASE statement is:<pre><code class="language-java"><div class="highlight"><pre><code>CASE OF &lt;identifier> 
+	&lt;value 1>: &lt;statement>  
+	&lt;value 2>: &lt;statement>  
+	....
+	OTHERWISE &lt;statement> 
+ENDCASE
+</code></pre></div></code></pre>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CASE</td>
+<td>INPUT Move<br><br>CASE OF Move<br>    ‘W’ : Position ← Position - 10<br>    ‘E’ : Position ← Position + 10<br>    ‘A’ : Position ← Position - 1<br>    ‘D’ : Position ← Position + 1<br>    OTHERWISE <br>        OUTPUT “Beep”<br>ENDCASE</td>
+<td>day = “Sat”<br>match day:<br>    case “Sat”:<br>        print(“Saturday”)<br>    case “Sun”:<br>        print(“Sunday”)<br>    case _:<br>        print(“Weekday”)<br></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Make sure to include all necessary components in the selection statement:
+<ul>
+<li>the condition,</li>
+<li>the statement(s) to execute when the condition is true</li>
+<li>any optional statements to execute when the condition is false</li>
+</ul>
+</li>
+<li>Use proper indentation to make the code easier to read and understand</li>
+<li>Be careful with the syntax of the programming language being used, as it may differ slightly between languages</li>
+<li>Make sure to test the selection statement with various input values to ensure that it works as expected</li>
+</ul>
+<p>Write an algorithm using pseudocode that:</p>
+<ul>
+<li>Inputs 3 numbers</li>
+<li>Outputs the largest of the three numbers <strong>[3]</strong></li>
+</ul>
+<p><strong>Exemplar answer</strong></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">A</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">B</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">C</span>
+
+<span class="n">IF</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">A</span>
+<span class="n">ELSE</span><span class="w"> </span><span class="n">IF</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">B</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">C</span>
+<span class="n">ENDIF</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">A</span> <span class="o">&gt;</span> <span class="n">B</span> <span class="ow">and</span> <span class="n">A</span> <span class="o">&gt;</span> <span class="n">C</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">B</span> <span class="o">&gt;</span> <span class="n">C</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_25">Iteration</h2>
+<h2 id="section_26">What is iteration?</h2>
+<ul>
+<li>Iteration is <strong>repeating a line or a block of code</strong> using a loop</li>
+<li>Iteration can be:
+<ul>
+<li><strong>Count controlled</strong></li>
+<li><strong>Condition controlled</strong></li>
+<li><strong>Nested</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_27">Count Controlled Loops</h2>
+<h3 id="section_28">What is a count controlled loop?</h3>
+<ul>
+<li>A count controlled loop is when the code is repeated <strong>a fixed number of times</strong> (e.g. using a for loop)</li>
+<li>A count controlled loop can be written as:<pre><code class="language-java"><div class="highlight"><pre><code>FOR &lt;identifier> ← &lt;value1> TO &lt;value2>
+	&lt;statements>
+NEXT &lt;identifier>
+</code></pre></div></code></pre>
+</li>
+<li>Identifiers must be an <strong>integer data type</strong></li>
+<li>It uses a counter variable that is <strong>incremented</strong> or <strong>decremented</strong> after each iteration</li>
+<li>This can be written as:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">FOR</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">STEP</span><span class="w"> </span><span class="o">&lt;</span><span class="n">increment</span><span class="o">&gt;</span>
+<span class="w">	</span><span class="o">&lt;</span><span class="n">statements</span><span class="o">&gt;</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>A detailed look at a Python <strong>FOR</strong> statement:
+<img src="0478-images/xp66-srn-for-loop-pseudocode-computer-science-revision-notes.png" alt="xp66-srn-for-loop-pseudocode-computer-science-revision-notes"></li>
+</ul>
+<h4 id="section_29">Examples</h4>
+<table>
+<thead>
+<tr>
+<th>Iteration</th>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count controlled</td>
+<td>FOR X ← 1 TO 10<br>    OUTPUT “Hello”<br>NEXT X</td>
+<td>for x in range(10):<br>    print(“Hello”)</td>
+</tr>
+<tr>
+<td><strong>This will print the word “Hello” 10 times</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>FOR X ← 2 TO 10 STEP 2<br>    OUTPUT X<br>NEXT X</td>
+<td>for x in range(2,12,2):<br>    print(x)<br># Python range function excludes end value</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>This will print the even numbers from 2 to 10 inclusive</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>FOR X ← 10 TO 0 STEP -1<br>    OUTPUT X<br>NEXT X</td>
+<td>for x in range(10,-1,-1):<br>    print(x)<br># Python range function excludes end value</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>This will print the numbers from 10 to 0 inclusive</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_30">Condition Controlled Loops</h2>
+<h3 id="section_31">What is a condition controlled loop?</h3>
+<ul>
+<li>A condition controlled loop is when the code is repeated <strong>until a condition is met</strong></li>
+<li>There are two types of condition controlled loops:
+<ul>
+<li><strong>Post-condition (REPEAT)</strong></li>
+<li><strong>Pre-condition (WHILE)</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_32">Post-condition loops (REPEAT)</h4>
+<ul>
+<li>
+<p>A post-condition loop <strong>is executed at least once</strong></p>
+</li>
+<li>
+<p>The condition must be an <strong>expression</strong> that evaluates to a <strong>Boolean</strong> (True/False)</p>
+</li>
+<li>
+<p>The condition is tested <strong>after the statements are executed</strong> and only stops once the condition is evaluated to True</p>
+</li>
+<li>
+<p>It can be written as:</p>
+<pre><code class="language-java"><div class="highlight"><pre><code>REPEAT
+	&lt;statement>
+UNTIL &lt;condition>
+</code></pre></div></code></pre>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Iteration</th>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Post-condition</td>
+<td>REPEAT<br>    INPUT Colour<br>UNTIL Colour = “red”</td>
+<td># NOT USED IN PYTHON</td>
+</tr>
+<tr>
+<td>REPEAT<br>    INPUT Guess<br>UNTIL Guess = 42</td>
+<td># NOT USED IN PYTHON</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_33">Pre-condition loops (WHILE)</h4>
+<ul>
+<li>The condition must be an <strong>expression</strong> that evaluates to a <strong>Boolean</strong> (True/False)</li>
+<li>The condition is tested and statements are <strong>only executed if the condition evaluates to True</strong></li>
+<li>After statements have been executed the condition is <strong>tested again</strong></li>
+<li>The loop ends when the condition <strong>evaluates to False</strong></li>
+<li>It can be written as:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">WHILE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">condition</span><span class="o">&gt;</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">	</span><span class="o">&lt;</span><span class="n">statements</span><span class="o">&gt;</span><span class="w">  </span>
+<span class="n">ENDWHILE</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>A detailed look at a Python <strong>WHILE</strong> statement:
+<img src="0478-images/while-loop-password-pseudocode-computer-science-revision-notes.png" alt="while-loop-password-pseudocode-computer-science-revision-notes"></li>
+</ul>
+<p>Iteration</p>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="n">WHILE</span> <span class="n">Colour</span> <span class="o">!=</span> <span class="s2">&quot;Red&quot;</span> <span class="n">DO</span>
+    <span class="n">INPUT</span> <span class="n">Colour</span>
+<span class="n">ENDWHILE</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">colour</span> <span class="o">!=</span> <span class="s2">&quot;Red&quot;</span><span class="p">:</span>
+    <span class="n">colour</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;New colour&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="n">INPUT</span> <span class="n">Temperature</span>
+<span class="n">WHILE</span> <span class="n">Temperature</span> <span class="o">&gt;</span> <span class="mi">37</span> <span class="n">DO</span>
+    <span class="n">OUTPUT</span> <span class="s2">&quot;Patient has a fever&quot;</span>
+    <span class="n">INPUT</span> <span class="n">temperature</span>
+<span class="n">ENDWHILE</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="n">temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter temperature: &quot;</span><span class="p">))</span>
+<span class="k">while</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">37</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Patient has a fever&quot;</span><span class="p">)</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter temperature: &quot;</span><span class="p">))</span>
+</pre></div>
+</code></pre>
+<h2 id="section_34">Nested Iteration</h2>
+<h3 id="section_35">What is nested iteration?</h3>
+<ul>
+<li>Nested iteration is <strong>a loop within a loop</strong>, e.g. a FOR inside of another FOR</li>
+<li>Nested means to be ’ <strong>stored inside the other</strong> ’</li>
+</ul>
+<h4 id="section_36">Example</h4>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+
+<span class="n">FOR</span><span class="w"> </span><span class="n">Row</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">MaxRow</span><span class="w"> </span>
+<span class="w">    </span><span class="n">RowTotal</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">Column</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span>
+<span class="w">        </span><span class="n">RowTotal</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">RowTotal</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Amount</span><span class="o">[</span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="n">Column</span><span class="o">]</span><span class="w"> </span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">Column</span><span class="w"> </span>
+
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Total for Row &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">RowTotal</span><span class="w"> </span>
+<span class="w">    </span><span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RowTotal</span><span class="w"> </span>
+
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Row</span><span class="w"> </span>
+
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The grand total is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Total</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Program to print a multiplication table up to a given number</span>
+
+<span class="c1"># Prompt the user to enter a number</span>
+<span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a number: &quot;</span><span class="p">))</span>
+
+<span class="c1"># Set the initial value of the counter for the outer loop</span>
+<span class="n">outer_counter</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Outer loop to iterate through the multiplication table</span>
+<span class="k">while</span> <span class="n">outer_counter</span> <span class="o">&lt;=</span> <span class="n">number</span><span class="p">:</span>
+    <span class="c1"># Set the initial value of the counter for the inner loop</span>
+    <span class="n">inner_counter</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Inner loop to print the multiplication table for the current number</span>
+    <span class="k">while</span> <span class="n">inner_counter</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="c1"># Calculate the product of the outer and inner counters</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">outer_counter</span> <span class="o">*</span> <span class="n">inner_counter</span>
+
+        <span class="c1"># Print the multiplication table entry</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">outer_counter</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">inner_counter</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+
+        <span class="c1"># Increment the inner counter</span>
+        <span class="n">inner_counter</span> <span class="o">=</span> <span class="n">inner_counter</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Move to the next number in the multiplication table</span>
+    <span class="n">outer_counter</span> <span class="o">=</span> <span class="n">outer_counter</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</code></pre>
+<h2 id="section_37">Totalling &amp; Counting</h2>
+<h3 id="section_38">How do you use totalling in a program?</h3>
+<ul>
+<li>Totalling involves <strong>adding up values</strong>, often in a loop</li>
+<li>A total variable is set to 0 at the beginning of the program and then updated within a loop, such as:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total ← 0<br>FOR I ← 1 to 10<br>     INPUT Num<br>     TOTAL ← TOTAL + Num<br>NEXT I<br>OUTPUT Total</td>
+<td>total = 0<br>for i in range(1, 11):<br>    num = int(input(&quot;Enter a number: &quot;))<br>    total = total + num<br>print(“Total:”, total)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_39">How do you use counting in a program?</h3>
+<ul>
+<li>Counting involves <strong>keeping track</strong> of the number of times a particular event occurs</li>
+<li>A count variable is set to 0 and then updated within a loop, such as:</li>
+</ul>
+<p>Pseudocode</p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">Count</span> <span class="err">←</span> <span class="mi">0</span>
+<span class="kr">FOR</span> <span class="n">I</span> <span class="err">←</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">10</span>
+    <span class="n">INPUT</span> <span class="n">Num</span>
+    <span class="kr">IF</span> <span class="n">Num</span> <span class="o">&gt;</span> <span class="mi">5</span> 
+        <span class="kr">THEN</span>
+            <span class="n">Count</span> <span class="err">←</span> <span class="n">Count</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">ENDIF</span>
+<span class="n">NEXT</span> <span class="n">I</span>
+<span class="n">OUTPUT</span> <span class="n">Count</span>
+</pre></div>
+</code></pre>
+<p>Python</p>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="k">for</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">range</span><span class="ss">(</span><span class="mi">1</span>,<span class="w"> </span><span class="mi">11</span><span class="ss">)</span>:
+<span class="w">    </span><span class="nv">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">int</span><span class="ss">(</span><span class="nv">input</span><span class="ss">(</span><span class="s2">&quot;Enter a number: &quot;</span><span class="ss">))</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">num</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span>:
+<span class="w">        </span><span class="nv">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="nv">print</span><span class="ss">(</span><span class="s2">&quot;Count:&quot;</span>,<span class="w"> </span><span class="nv">count</span><span class="ss">)</span>
+</pre></div>
+</code></pre>
+<p>Write an algorithm using pseudocode that:</p>
+<ul>
+<li>Inputs 20 numbers</li>
+<li>Outputs how many of these numbers are greater than 50</li>
+</ul>
+<p><strong>[3]</strong></p>
+<p><strong>Answer</strong></p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">Count</span> <span class="err">←</span> <span class="mi">0</span>
+<span class="kr">FOR</span> <span class="n">x</span> <span class="err">←</span> <span class="mi">1</span> <span class="kr">TO</span> <span class="mi">20</span>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">INPUT</span> <span class="n">Number</span>
+    <span class="kr">IF</span> <span class="n">Number</span> <span class="o">&gt;</span> <span class="mi">50</span> 
+        <span class="kr">THEN</span> 
+            <span class="n">Count</span> <span class="err">←</span> <span class="n">Count</span> <span class="o">+</span> <span class="mi">1</span>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ENDIF</span>
+<span class="n">NEXT</span> <span class="n">x</span>
+<span class="n">OUTPUT</span> <span class="n">Count</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</code></pre>
+<h2 id="section_40">String Handling</h2>
+<h3 id="section_41">What is string manipulation?</h3>
+<ul>
+<li>String manipulation is the use of <strong>programming techniques</strong> to <strong>modify</strong>, <strong>analyse</strong> or <strong>extract</strong> information <strong>from a string</strong></li>
+<li>Examples of string manipulation include:
+<ul>
+<li><strong>Case conversion</strong> (modify)</li>
+<li><strong>Length</strong> (analyse)</li>
+<li><strong>Substrings</strong> (extract)</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_42">Case conversion</h4>
+<ul>
+<li>The ability to <strong>change a string from one case to another</strong>, for example, lower case to upper case</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Uppercase</strong></td>
+<td>Name ← “Sarah”<br>OUTPUT UCASE(Name)</td>
+<td>Name = “Sarah”<br>print(Name.upper())</td>
+<td><code>&quot;SARAH&quot;</code></td>
+</tr>
+<tr>
+<td><strong>Lowercase</strong></td>
+<td>Name ← “SARAH”<br>OUTPUT LCASE(Name)</td>
+<td>Name = “SARAH”<br>print(Name.lower())</td>
+<td><code>&quot;sarah&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_43">Length</h4>
+<ul>
+<li>The ability to <strong>count the number of characters in a string</strong>, for example, checking a password meets the minimum requirement of 8 characters</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Password ← “letmein”<br>OUTPUT LENGTH(Password)</td>
+<td>Password = “letmein”<br>print(len(Password))</td>
+<td><code>7</code></td>
+</tr>
+<tr>
+<td>Password ← “letmein”<br>IF LENGTH(Password) &gt;= 8<br>    THEN<br>        OUTPUT “Password accepted”<br>    ELSE<br>        OUTPUT “Password too short”<br>ENDIF</td>
+<td>Password = “letmein”<br>if len(Password) &gt;= 8:<br>    print(“Password accepted”)<br>else:<br>    print(“Password too short”)</td>
+<td><code>&quot;Password too short&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_44">Substring</h4>
+<ul>
+<li>The ability to <strong>extract a sequence of characters from a larger string</strong> in order to be used by another function in the program, for example, data validation or combining it with other strings</li>
+<li>Extracting substrings is done by specifying a <strong>start position</strong> and <strong>length</strong> in pseudocode, or a <strong>start</strong> and <strong>end</strong> index in Python.</li>
+<li>Substring has a <strong>start position of 1</strong> in pseudocode and 0 in Python</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Word ← “Revision”<br>OUTPUT SUBSTRING(Word, 1, 3)</td>
+<td>Word = “Revision”<br>print(Word[0:2])</td>
+<td><code>&quot;Rev&quot;</code></td>
+</tr>
+<tr>
+<td>Word ← “Revision”<br>OUTPUT SUBSTRING(Word, 3, 6)</td>
+<td>Word = “Revision” <br>print(Word[2:5])</td>
+<td><code>&quot;vision&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p>The function Length(x) finds the length of a string x. The function substring(x,y,z) finds a substring of x starting at position y and z characters long. The first character in x is in position 1.</p>
+<p>Write pseudocode statements to:</p>
+<ul>
+<li>Store the string “Save my exams” in x</li>
+<li>Find the length of the string and output it</li>
+<li>Extract the word exams from the string and output it</li>
+</ul>
+<p><strong>[6]</strong></p>
+<p><strong>Answer</strong></p>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">X</span><span class="w"> </span>←<span class="w"> </span><span class="s2">&quot;Save my exams&quot;</span><span class="w">    </span>
+
+#<span class="w"> </span>[<span class="mi">1</span>]<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">storing</span><span class="w"> </span><span class="nv">string</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">X</span>
+
+<span class="nv">OUTPUT</span><span class="w"> </span><span class="nv">LENGTH</span><span class="ss">(</span><span class="nv">X</span><span class="ss">)</span><span class="w">    </span>
+
+#<span class="w"> </span>[<span class="mi">1</span>]<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">calling</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">function</span><span class="w"> </span><span class="nv">length</span>.<span class="w"> </span>[<span class="mi">1</span>]<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">using</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">correct</span><span class="w"> </span><span class="nv">parameter</span><span class="w"> </span><span class="nv">X</span>
+
+<span class="nv">Y</span><span class="w"> </span>←<span class="w"> </span><span class="mi">9</span>
+
+<span class="nv">Z</span><span class="w"> </span>←<span class="w"> </span><span class="mi">5</span><span class="w"> </span>
+
+<span class="nv">OUTPUT</span><span class="w"> </span><span class="nv">SUBSTRING</span><span class="ss">(</span><span class="nv">X</span>,<span class="nv">Y</span>,<span class="nv">Z</span><span class="ss">)</span><span class="w">    </span>
+
+#<span class="w"> </span>[<span class="mi">1</span>]<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">using</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">substring</span><span class="w"> </span><span class="nv">function</span>.
+
+#<span class="w"> </span>[<span class="mi">1</span>]<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">correct</span><span class="w"> </span><span class="nv">parameters</span>
+
+#<span class="w"> </span>[<span class="mi">1</span>]<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">outputting</span><span class="w"> </span><span class="nv">length</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">substring</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">values</span>
+</pre></div>
+</code></pre>
+<h2 id="section_45">Arithmetic, Logical &amp; Boolean Operators</h2>
+<h2 id="section_46">What is an operator?</h2>
+<ul>
+<li>An operator is <strong>a symbol used to instruct a computer to perform a specific operation</strong> on one or more values</li>
+<li>Examples of common operators include:
+<ul>
+<li><strong>Arithmetic</strong></li>
+<li><strong>Logical</strong></li>
+<li><strong>Boolean</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_47">Arithmetic Operators</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Operator</strong></th>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Addition</strong></td>
+<td><code>+</code></td>
+<td><code>+</code></td>
+</tr>
+<tr>
+<td><strong>Subtraction</strong></td>
+<td><code>-</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><strong>Multiplication</strong></td>
+<td><code>*</code></td>
+<td><code>*</code></td>
+</tr>
+<tr>
+<td><strong>Division</strong></td>
+<td><code>/</code></td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td><strong>Modulus (remainder after division)</strong></td>
+<td><code>MOD</code></td>
+<td><code>%</code></td>
+</tr>
+<tr>
+<td><strong>Quotient (whole number division)</strong></td>
+<td><code>DIV</code></td>
+<td><code>//</code></td>
+</tr>
+<tr>
+<td><strong>Exponentiation (to the power of)</strong></td>
+<td><code>^</code></td>
+<td><code>**</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To demonstrate the use of common arithmetic operators, three sample programs written in Python are given below</li>
+<li>Comments have been included to help understand how the arithmetic operators are being used
+<ul>
+<li><strong>Arithmetic operators #1</strong> - a simple program to calculate if a user entered number is odd or even</li>
+<li><strong>Arithmetic operators #2</strong> - a simple program to calculate the area of a circle from a user inputted radius</li>
+<li><strong>Arithmetic operators #3</strong> - a simple program that generates 5 maths questions based on user inputs and gives a score of how many were correctly answered at the end</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="c1"># Arithmetic operators #1</span>
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="c1"># Get the user to input a number</span>
+<span class="n">user_input</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a number: &quot;</span><span class="p">))</span>
+
+<span class="c1"># If the remainder of the number divided by 2 is 0, the number is even</span>
+<span class="k">if</span> <span class="n">user_input</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The number is even.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The number is odd.&quot;</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="c1"># Arithmetic operators #2</span>
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="c1"># Get the radius from the user</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the radius of the circle: &quot;</span><span class="p">))</span>
+
+<span class="c1"># Calculate the area of the circle</span>
+<span class="n">area</span> <span class="o">=</span> <span class="mf">3.14159</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="c1"># Display the calculated area</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The area of the circle with radius&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
+
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="c1"># Arithmetic operators #3</span>
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="c1"># Set the score to 0</span>
+<span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Loop 5 times</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the first number: &quot;</span><span class="p">))</span>
+    <span class="n">operator</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the operator (+, -, *): &quot;</span><span class="p">)</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the second number: &quot;</span><span class="p">))</span>
+    <span class="n">user_answer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;What is &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num2</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;? &quot;</span><span class="p">))</span>
+
+    <span class="c1"># Check the answer and update the score</span>
+    <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span>
+        <span class="n">correct_answer</span> <span class="o">=</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+        <span class="n">correct_answer</span> <span class="o">=</span> <span class="n">num1</span> <span class="o">-</span> <span class="n">num2</span>
+    <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+        <span class="n">correct_answer</span> <span class="o">=</span> <span class="n">num1</span> <span class="o">*</span> <span class="n">num2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid operator!&quot;</span><span class="p">)</span>
+        <span class="k">continue</span>
+
+    <span class="k">if</span> <span class="n">user_answer</span> <span class="o">==</span> <span class="n">correct_answer</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sorry, that&#39;s incorrect.&quot;</span><span class="p">)</span>
+
+<span class="c1"># Display the final score</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your score is:&quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_48">Logical Operators</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Operator</strong></th>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Equal to</strong></td>
+<td><code>&lt;mark&gt;</code></td>
+<td><code>&lt;/mark&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Not equal to</strong></td>
+<td><code>&lt;&gt;</code></td>
+<td><code>!=</code></td>
+</tr>
+<tr>
+<td><strong>Less than</strong></td>
+<td><code>&lt;</code></td>
+<td><code>&lt;</code></td>
+</tr>
+<tr>
+<td><strong>Less than or equal to</strong></td>
+<td><code>&lt;=</code></td>
+<td><code>&lt;=</code></td>
+</tr>
+<tr>
+<td><strong>Greater than</strong></td>
+<td><code>&gt;</code></td>
+<td><code>&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Greater than or equal to</strong></td>
+<td><code>&gt;=</code></td>
+<td><code>&gt;=</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_49">Boolean Operators</h2>
+<ul>
+<li>A Boolean operators is a logical operator that can be used to <strong>compare two or more values</strong> and <strong>return a Boolean value</strong> (True or False) based on the comparison</li>
+<li>There are 3 main Boolean values:
+<ul>
+<li><strong>AND</strong>: Returns True if both conditions are True</li>
+<li><strong>OR</strong>: Returns True if one or both conditions are True</li>
+<li><strong>NOT</strong>: Returns the opposite of the condition (True if False, False if True)</li>
+</ul>
+</li>
+<li>To demonstrate the use of common Boolean operators, three sample programs written in Python are given below</li>
+<li>Comments have been included to help understand how the Boolean operators are being used
+<ul>
+<li><strong>Common Boolean operators #1</strong> - a simple program that assigns Boolean values to two variables and outputs basic comparisons</li>
+<li><strong>Common Boolean operators #2</strong> - a simple program to output a grade based on a users score</li>
+<li><strong>Common Boolean operators #3</strong> - a simple program reads a text files and searches for an inputted score</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Common Boolean operators #1</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Assign a Boolean value to a and b</span>
+<span class="n">a</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">b</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Print the result of a and b</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a and b:&quot;</span><span class="p">,</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1"># Print the result of a or b</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a or b:&quot;</span><span class="p">,</span> <span class="n">a</span> <span class="ow">or</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1"># Print the result of not a</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not a:&quot;</span><span class="p">,</span> <span class="ow">not</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Common Boolean operators #2</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Take input for the score from the user</span>
+<span class="n">score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the score: &quot;</span><span class="p">))</span>
+
+<span class="c1"># Compare the score and output the corresponding grade</span>
+<span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">90</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grade: A&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">80</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grade: B&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">70</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grade: C&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fail&quot;</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Common Boolean operators #3</span>
+<span class="c1"># -----------------------------------------------------------</span>
+<span class="c1"># Open the file for reading</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;scores.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Set flags to false</span>
+    <span class="n">end_of_file</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a score: &quot;</span><span class="p">)</span>
+
+    <span class="c1"># While it&#39;s not the end of the file and the score has not been found</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">end_of_file</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+        <span class="c1"># Read the line</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># If the line equals the score</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score found&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># If the line is empty (i.e., end of file)</span>
+        <span class="k">if</span> <span class="n">scores</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">end_of_file</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score not found&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Close the file after reading</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The file &#39;scores.txt&#39; was not found.&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>Boolean operators are often used in conditional statements such as if, while, and for loops</li>
+<li>Boolean operators can be combined with comparison operators</li>
+<li>Be careful when using the NOT operator, as it can sometimes lead to unexpected results</li>
+<li>It is always a good idea to test your code with different inputs to ensure that it works as expected</li>
+</ul>
+<h2 id="section_50">Procedures &amp; Functions</h2>
+<h2 id="section_51">What are functions and procedures?</h2>
+<p><em>IGCSE 0478 Paper 2 assesses your ability to define, use, and explain</em> <em><strong>functions</strong></em>*,* <em><strong>procedures</strong></em>*, and* <em><strong>parameters</strong></em> <em>using both</em> <em><strong>pseudocode and Python</strong></em>*. This page shows only examinable structures, phrasing, and examples—no fluff.*</p>
+<ul>
+<li>Functions and proceduresare a type of <strong>sub program</strong>, a <strong>sequence of instructions</strong> that <strong>perform a specific task</strong> or <strong>set of tasks</strong></li>
+<li>Procedures and functions are <strong>defined at the start of the code</strong></li>
+<li>Sub programs are often used to <strong>simplify</strong> a program by <strong>breaking it into smaller, more manageable parts</strong></li>
+<li>Sub programs can be used to:
+<ul>
+<li><strong>Avoid duplicating code</strong> and can be reused throughout a program
+<ul>
+<li><strong>Improve</strong> the <strong>readability</strong> and <strong>maintainability</strong> of code</li>
+<li>Perform <strong>calculations</strong>, to <strong>retrieve data</strong>, or to <strong>make decisions</strong> based on input</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Parameters</strong> are <strong>values</strong> that are <strong>passed into a sub program</strong>
+<ul>
+<li>Parameters can be variables or values and they are located <strong>in brackets</strong> after the name of the sub program
+<ul>
+<li>Example: <code>FUNCTION TaxCalculator(pay,taxcode)</code> <strong>OR</strong> <code>PROCEDURE TaxCalculator(pay,taxcode)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Sub programs <strong>can have multiple parameters</strong></li>
+<li>To use a sub program you ’ <strong>call</strong> ’ it from the main program</li>
+</ul>
+<h3 id="section_52">What’s the difference between a function and procedure?</h3>
+<ul>
+<li>A <strong>Function returns a value</strong> whereas a procedure does not</li>
+</ul>
+<h2 id="section_53">Procedures</h2>
+<ul>
+<li>Procedures are defined using the <strong>PROCEDURE</strong> keyword in pseudocode or <strong>def</strong> keyword in Python</li>
+<li>A procedure can be written as:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">PROCEDURE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
+<span class="w">	</span><span class="o">&lt;</span><span class="n">statements</span><span class="o">&gt;</span><span class="w"> </span>
+<span class="n">ENDPROCEDURE</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>Or if parameters are being used:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">PROCEDURE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">param1</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">param2</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">...)</span><span class="w"> </span>
+<span class="w">	</span><span class="o">&lt;</span><span class="n">statements</span><span class="o">&gt;</span><span class="w"> </span>
+<span class="n">ENDPROCEDURE</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Creating a procedure</span>
+<span class="c1">// Pseudocode</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">)</span>
+<span class="w">  </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
+<span class="w">      </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The area is &quot;</span><span class="p">,</span><span class="n">area</span>
+<span class="n">END</span><span class="w"> </span><span class="n">PROCEDURE</span><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="w"> </span><span class="n">colspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="n">rowspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="o">&gt;&lt;</span><span class="n">p</span><span class="o">&gt;&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">Python</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="w"> </span><span class="n">colspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="n">rowspan</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="o">&gt;&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">def</span><span class="w"> </span><span class="nf">ageCheck</span><span class="p">(</span><span class="n">age</span><span class="p">):</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">18</span><span class="p">:</span>
+<span class="w">        </span><span class="n">print</span><span class="p">(</span><span class="s">&quot;You are old enough&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="n">print</span><span class="p">(</span><span class="s">&quot;You are too young&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>To call a procedure, it can be written as:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">CALL</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
+<span class="n">CALL</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Value1</span><span class="p">,</span><span class="n">Value2</span><span class="p">...)</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Calling a procedure</span>
+<span class="c1">// Pseudocode</span>
+<span class="c1">// CALL Calculate_area</span>
+<span class="n">CALL</span><span class="w"> </span><span class="nf">Calculate_area</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1">// Python</span>
+<span class="c1">// ageCheck(21)</span>
+<span class="n">print</span><span class="p">(</span><span class="n">ageCheck</span><span class="p">(</span><span class="mi">21</span><span class="p">))</span>
+</pre></div>
+</code></pre>
+<h4 id="section_54">Examples</h4>
+<ul>
+<li>A Python program using procedures to <strong>display a menu</strong> and <strong>navigate</strong> between them</li>
+<li><strong>Procedures</strong> are <strong>defined at the start of the program</strong> and the main program calls the first procedure to start</li>
+<li>In this example, no parameters are needed</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Procedures</span>
+<span class="c1"># Procedure definition for the main menu</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main_menu</span><span class="p">():</span>
+    <span class="c1"># Outputs the options</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Addition&quot;</span><span class="p">)</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Subtraction&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. Multiplication&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;4. Division&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;5. Exit&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Asks the user to enter their choice</span>
+    <span class="n">choice</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your choice: &quot;</span><span class="p">))</span> 
+    <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
+        <span class="n">addition</span><span class="p">()</span> 
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">subtraction</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">multiplication</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">division</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">exit_program</span><span class="p">()</span>
+
+<span class="c1"># Procedure definition for addition</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">addition</span><span class="p">():</span> 
+    <span class="n">num1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the first number: &quot;</span><span class="p">))</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the second number: &quot;</span><span class="p">))</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result:&quot;</span><span class="p">,</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span><span class="p">)</span> 
+
+<span class="c1"># Procedure definition for subtraction</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">subtraction</span><span class="p">():</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the first number: &quot;</span><span class="p">))</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the second number: &quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result:&quot;</span><span class="p">,</span> <span class="n">num1</span> <span class="o">-</span> <span class="n">num2</span><span class="p">)</span>
+
+<span class="c1"># Procedure definition for multiplication</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">multiplication</span><span class="p">():</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the first number: &quot;</span><span class="p">))</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the second number: &quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result:&quot;</span><span class="p">,</span> <span class="n">num1</span> <span class="o">*</span> <span class="n">num2</span><span class="p">)</span>
+
+<span class="c1"># Procedure definition for division</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">division</span><span class="p">():</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the first number: &quot;</span><span class="p">))</span>
+    <span class="n">num2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the second number: &quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">num2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result:&quot;</span><span class="p">,</span> <span class="n">num1</span> <span class="o">/</span> <span class="n">num2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Division by zero is not allowed.&quot;</span><span class="p">)</span>
+
+<span class="c1"># Procedure to exit the program</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">exit_program</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exiting the program. Goodbye!&quot;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
+
+<span class="c1"># Main program</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># Loop to continuously show the menu until the user chooses to exit</span>
+    <span class="n">main_menu</span><span class="p">()</span>
+</pre></div>
+</code></pre>
+<h2 id="section_55">Functions</h2>
+<ul>
+<li>Functions are defined using the <strong>FUNCTION</strong> keyword in pseudocode or <strong>def</strong> keyword in Python</li>
+<li>Functions <strong>always return a value</strong> so they do not use the CALL function, instead they are called <strong>within an expression</strong></li>
+<li>A function can be written as:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">FUNCTION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<span class="w">	</span><span class="o">&lt;</span><span class="n">statements</span><span class="o">&gt;</span>
+<span class="n">ENDFUNCTION</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>Or if parameters are being used:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">FUNCTION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">param1</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">param2</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="p">...)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span><span class="w"> </span>
+<span class="w">	</span><span class="o">&lt;</span><span class="n">statements</span><span class="o">&gt;</span>
+<span class="n">ENDFUNCTION</span>
+</pre></div>
+</code></pre>
+<p><em>In pseudocode, never write</em> <code>CALL calculate_area()</code> <em>for a function.</em><br>
+<em>Functions are</em> <em><strong>called in expressions</strong></em> <em>like:</em><br>
+<code>OUTPUT calculate_area(5,3)</code><br>
+<em>Use</em> <code>CALL</code> <em>only with</em> <em><strong>procedures</strong></em> <em>that do not return a value.</em></p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Creating and using a function</span>
+<span class="c1">// Pseudocode</span>
+<span class="n">FUNCTION</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">)</span>
+<span class="w">  </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
+<span class="w">      </span><span class="n">RETURN</span><span class="w"> </span><span class="n">area</span>
+<span class="n">ENDFUNCTION</span>
+
+<span class="err">#</span><span class="w"> </span><span class="n">Output</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">returned</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span>
+<span class="nf">OUTPUT</span><span class="p">(</span><span class="n">calculate_area</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="c1">//Python</span>
+<span class="n">def</span><span class="w"> </span><span class="nf">squared</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+<span class="w">  </span><span class="n">squared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">number</span><span class="o">^</span><span class="mi">2</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">squared</span>
+
+<span class="err">#</span><span class="w"> </span><span class="n">Output</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">returned</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">squared</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</code></pre>
+<h4 id="section_56">Examples</h4>
+<ul>
+<li>A Python program using a <strong>function to calculate area</strong> and return the result</li>
+<li>Two options for main program are shown, one which <strong>outputs the result</strong> (# 1) and one which <strong>stores the result</strong> so that it can be used at a later time (# 2)</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Functions</span>
+<span class="c1"># Function definition, length and width are parameters</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span> 
+    <span class="n">area</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="n">width</span>  <span class="c1"># Calculate area</span>
+    <span class="k">return</span> <span class="n">area</span>  <span class="c1"># Return area</span>
+
+<span class="c1"># Main program #1</span>
+<span class="n">length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the length: &quot;</span><span class="p">))</span> 
+<span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the width: &quot;</span><span class="p">))</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>  <span class="c1"># Calls the area function and prints the result</span>
+
+<span class="c1"># Main program #2</span>
+<span class="n">length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the length: &quot;</span><span class="p">))</span>  <span class="c1"># Input for length</span>
+<span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the width: &quot;</span><span class="p">))</span>  <span class="c1"># Input for width</span>
+<span class="n">calculated_area</span> <span class="o">=</span> <span class="n">area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>  <span class="c1"># Stores the result of the function in a variable</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The area is &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">calculated_area</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; cm^2&quot;</span><span class="p">)</span>  <span class="c1"># Outputs the result with a message&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</span>
+</pre></div>
+</code></pre>
+<p>An economy-class airline ticket costs £199. A first-class airline ticket costs £595.</p>
+<p>(<strong>A</strong>) Create a function,<code> flightCost(),</code> that takes the number of passengers and the type of ticket as parameters, calculates and returns the price to pay.</p>
+<p>You do <strong>not</strong> have to validate these parameters</p>
+<p>You must use:</p>
+<ul>
+<li>a high-level programming language that you have studied <strong>[4]</strong></li>
+</ul>
+<p>(<strong>B</strong>) Write program code, that uses <code>flightCost()</code>, to output the price of 3 passengers flying economy.</p>
+<p>You must use:</p>
+<ul>
+<li>a high-level programming language that you have studied <strong>[3]</strong></li>
+</ul>
+<p><strong>How do I answer this question?</strong></p>
+<p>(<strong>A</strong>)</p>
+<ul>
+<li>Define the function, what parameters are needed? where do they go?</li>
+<li>How do you calculate the price?</li>
+<li>Return the result</li>
+</ul>
+<p>(<strong>B</strong>)</p>
+<ul>
+<li>How do you call a function?</li>
+<li>What parameters does the function need to return the result?</li>
+</ul>
+<p><strong>Answers</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Part</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>def flightCost(passengers, type):<br>  if type == “economy”:<br>    cost = 199 * passengers<br>  elif type == “first”:<br>    cost = 595 * passengers<br>  return cost</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td><code>print(flightCost(&quot;economy&quot;, 3)</code><br><br><strong>OR</strong><br><br><code>x = flightCost(&quot;economy&quot;, 3)</code><br><br><code>print(x)</code></td>
+</tr>
+</tbody>
+</table>
+<p><em>in pseudocode, you can get marks just for using the correct structure:</em></p>
+<ul>
+<li><em>Starts with</em> <code>FUNCTION</code> <em>or</em> <code>PROCEDURE</code> <em><strong>[1 mark]</strong></em></li>
+<li><em>Correct use of parameters and</em> <code>RETURN</code> <em>(functions) or</em> <code>OUTPUT</code> <em>(procedures)</em> <em>[1 mark]</em></li>
+<li><em>Called correctly from main program</em> <em>[1 mark]</em></li>
+</ul>
+<h2 id="section_57">Local &amp; Global Variables</h2>
+<h2 id="section_58">Local Variables</h2>
+<h3 id="section_59">What is a local variable?</h3>
+<ul>
+<li>A local variable is <strong>a variable declared within a specific scope</strong>, such as a function or a code block</li>
+<li>Local variables are accessible <strong>only within the block in which they are defined</strong>, and their lifetime is limited to that particular block</li>
+<li>Once the execution of the block ends, <strong>the local variable is destroyed</strong>, and its memory is released</li>
+</ul>
+<h4 id="section_60">Python example</h4>
+<ul>
+<li>In this python code, you can see that the <code> localVariable</code> (with the value 10) is declared <strong>inside</strong> of the function <code>printValue</code></li>
+<li>This means that <strong>only</strong> this function can access and change the value in the local variable</li>
+<li>It <strong>cannot be accessed</strong> by other modules in the program</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Local variables</span>
+<span class="o">&gt;</span><span class="k">def</span><span class="w"> </span><span class="nf">printValue</span><span class="p">():</span>
+    <span class="n">localVariable</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Defines a local variable inside the function</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The value of the local variable is:&quot;</span><span class="p">,</span> <span class="n">localVariable</span><span class="p">)</span>
+
+<span class="n">printValue</span><span class="p">()</span>  <span class="c1"># Call the function</span>
+</pre></div>
+</code></pre>
+<h2 id="section_61">Global Variables</h2>
+<h3 id="section_62">What is a global variable?</h3>
+<ul>
+<li>A global variable is <strong>a variable declared at the outermost level of a program</strong>.</li>
+<li>They are declared <strong>outside any modules</strong> such as functions or procedures</li>
+<li>Global variables have a <strong>global scope</strong>, which means they can be <strong>accessed and modified</strong> from <strong>any part of the program</strong></li>
+</ul>
+<h4 id="section_63">Python example</h4>
+<ul>
+<li>In this python code, you can see that the <code> globalVariable</code> (with the value 10) is declared <strong>outside</strong> of the function <code>printValue</code></li>
+<li>This means that this function and <strong>any other modules</strong> can access and change the value in the global variable</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Global variables</span>
+<span class="n">globalVariable</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># Defines a global variable</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">printValue</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">globalVariable</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The value into the variable is:&quot;</span><span class="p">,</span> <span class="n">globalVariable</span><span class="p">)</span>
+
+<span class="n">printValue</span><span class="p">()</span> <span class="c1"># Call the function</span>
+</pre></div>
+</code></pre>
+<h2 id="section_64">Library Routines</h2>
+<h3 id="section_65">What are library routines?</h3>
+<ul>
+<li>A library routine is <strong>reusable code</strong> that can be used throughout a program</li>
+<li>The code has been made public through <strong>reusable modules or functions</strong></li>
+<li>Using library routines <strong>saves programmers time</strong> by using working code that has <strong>already been</strong> <strong>tested</strong></li>
+<li>Some examples of pre-existing libraries are:
+<ul>
+<li><strong>Random</strong></li>
+<li><strong>Round</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_66">Random</h3>
+<ul>
+<li>The random library is a library of code which allows users to make use of ’ <strong>random</strong> ’ in their programs</li>
+<li>Examples of random that are most common are:
+<ul>
+<li><strong>Random choices</strong></li>
+<li><strong>Random numbers</strong></li>
+</ul>
+</li>
+<li>Random number generation is a programming concept that involves <strong>a computer generating a random number</strong> to be used within a program to add an element of <strong>unpredictability</strong></li>
+<li>Examples of where this concept could be used include:
+<ul>
+<li><strong>Simulating the roll of a dice</strong></li>
+<li><strong>Selecting a random question (from a numbered list)</strong></li>
+<li><strong>National lottery</strong></li>
+<li><strong>Cryptography</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Random numbers</strong></td>
+<td><code>RANDOM(1,6)</code></td>
+<td><code>import random</code><br><br><code>number = random.randint(1,10)</code><br><br><code>number = random.randint(-1.0,10.0)</code></td>
+</tr>
+<tr>
+<td><strong>Random choice</strong></td>
+<td></td>
+<td><code>import random</code><br><br><code>choice = random.choice()</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_67">Examples</h4>
+<ul>
+<li>Random number</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">//Pseudocode</span>
+<span class="c1">// (In pseudocode we just use the RANDOM() function, so no import is needed)</span>
+
+<span class="c1">// Ask user to enter a username and password</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter a username: &quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">User</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter a password: &quot;</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">Pw</span>
+
+<span class="c1">// Check if the user and password are correct</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">Pw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1234&quot;</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">  </span><span class="c1">// Generate a random 4-digit code</span>
+<span class="w">  </span><span class="n">Code</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ROUND</span><span class="p">((</span><span class="n">RANDOM</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">9000</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">  </span><span class="c1">// Print the code</span>
+<span class="w">  </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Your code is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Code</span>
+<span class="n">ELSE</span>
+<span class="w">  </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Invalid username or password.&quot;</span>
+<span class="n">ENDIF</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># importing random library</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="c1"># asking user to enter a username and password</span>
+<span class="n">user</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a username: &quot;</span><span class="p">)</span>
+<span class="n">pw</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a password: &quot;</span><span class="p">)</span>
+
+<span class="c1"># checking if the user and password are correct</span>
+<span class="k">if</span> <span class="n">user</span> <span class="o">&lt;</span><span class="n">mark</span><span class="o">&gt;</span> <span class="s2">&quot;admin&quot;</span> <span class="ow">and</span> <span class="n">pw</span> <span class="o">&lt;/</span><span class="n">mark</span><span class="o">&gt;</span> <span class="s2">&quot;1234&quot;</span><span class="p">:</span>
+    <span class="c1"># generating a random 4-digit code</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+    
+    <span class="c1"># printing the code</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your code is&quot;</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid username or password.&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>National lottery</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">// Create a list of numbers for the national lottery</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">LotteryNumbers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">49</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">49</span>
+<span class="w">    </span><span class="n">LotteryNumbers</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Index</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
+
+<span class="c1">// Create an empty list to store the chosen numbers</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">ChosenNumbers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span>
+
+<span class="c1">// Loop to pick 6 numbers from the list</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">    </span><span class="c1">// Use RANDOM to pick a number from the remaining list</span>
+<span class="w">    </span><span class="n">RandomIndex</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ROUND</span><span class="p">((</span><span class="n">RANDOM</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">50</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Count</span><span class="p">)),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">RandomIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">RandomIndex</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+
+<span class="w">    </span><span class="n">Number</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">LotteryNumbers</span><span class="o">[</span><span class="n">RandomIndex</span><span class="o">]</span>
+
+<span class="w">    </span><span class="c1">// Add the chosen number to the list of chosen numbers</span>
+<span class="w">    </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Number</span>
+
+<span class="w">    </span><span class="c1">// Remove the chosen number from the list of available numbers</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">RandomIndex</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">48</span>
+<span class="w">        </span><span class="n">LotteryNumbers</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">LotteryNumbers</span><span class="o">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Count</span>
+
+<span class="c1">// Sort the chosen numbers in ascending order</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">j</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">Temp</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">i</span><span class="o">]</span>
+<span class="w">            </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">j</span><span class="o">]</span>
+<span class="w">            </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">j</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Temp</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">j</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+
+<span class="c1">// Output the chosen numbers</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The winning numbers are: &quot;</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">ChosenNumbers</span><span class="o">[</span><span class="n">i</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="c1"># Create a list of numbers for the national lottery</span>
+<span class="n">lottery_numbers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+
+<span class="c1"># Create an empty list to store the chosen numbers</span>
+<span class="n">chosen_numbers</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Loop to pick 6 numbers from the list</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="c1"># Use random.choice to pick a number from the list</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">lottery_numbers</span><span class="p">)</span>
+
+    <span class="c1"># Add the chosen number to the list of chosen numbers</span>
+    <span class="n">chosen_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+
+    <span class="c1"># Remove the chosen number from the list of available numbers</span>
+    <span class="n">lottery_numbers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+
+<span class="c1"># Sort the chosen numbers in ascending order</span>
+<span class="n">chosen_numbers</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># Output the chosen numbers</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The winning numbers are:&quot;</span><span class="p">,</span> <span class="n">chosen_numbers</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h3 id="section_68">Round</h3>
+<ul>
+<li>The round library is a library of code which allows users to <strong>round numerical values to a set amount of decimal places</strong></li>
+<li>An example of rounding is using <strong>REAL</strong> values and rounding to 2 decimal places</li>
+<li>The round library can be written as:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">ROUND</span><span class="p">(</span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">places</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th>Pseudocode</th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Round</td>
+<td><code>Cost ← 1.9556</code><br><code>OUTPUT ROUND(Cost,2)</code><br><br># Outputs 1.96</td>
+<td><code>number = 3.14159</code><br><code>rounded_number = round(number, 2)</code><br><code>print(rounded_number)</code><br><br># Outputs 3.14</td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_69">Example</h4>
+<pre><code><div class="highlight"><pre><span></span><span class="c1">// Example using the ROUND function</span>
+
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Price</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">RoundedPrice</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
+
+<span class="n">Price</span><span class="w"> </span>←<span class="w"> </span><span class="mf">12.6789</span>
+
+<span class="c1">// Round the value of Price to 2 decimal places</span>
+<span class="n">RoundedPrice</span><span class="w"> </span>←<span class="w"> </span><span class="n">ROUND</span><span class="p">(</span><span class="n">Price</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The rounded price is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">RoundedPrice</span>
+</pre></div>
+</code></pre>
+<p>So if the variable <code>Price</code> was <code>12.6789</code>, the output would be:</p>
+<pre><code><div class="highlight"><pre><span></span>The rounded price is 12.68
+</pre></div>
+</code></pre>
+<h2 id="section_70">Maintaining Programs</h2>
+<h3 id="section_71">How do you write programs that are easy to maintain?</h3>
+<ul>
+<li>Easy to maintain programs are written using techniques that <strong>make code easy to read</strong></li>
+<li>Programmers should be <strong>consistent</strong> with the use of techniques such as:
+<ul>
+<li><strong>Layout</strong> - spacing between sections</li>
+<li><strong>Indentation</strong> - clearly defined sections of code</li>
+<li><strong>Comments</strong> - explaining key parts of the code</li>
+<li><strong>Meaningful variable names</strong> - describe what is being stored</li>
+<li><strong>White space</strong> - adding suitable spaces to make it easy to read</li>
+<li><strong>Sub-programs</strong> - Functions or procedures used where possible</li>
+</ul>
+</li>
+<li>When consistency is applied, programs are <strong>easy to maintain</strong></li>
+</ul>
+<h4 id="section_72">Example easy to-maintain program</h4>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Calculates the area of a triangle given its base and height</span>
+<span class="c1"># Inputs:</span>
+<span class="c1"># base (float): The length of the triangle&#39;s base (positive value)</span>
+<span class="c1"># height (float): The height of the triangle from the base (positive value)</span>
+<span class="c1"># Returns:</span>
+<span class="c1"># The calculated area of the triangle (float)</span>
+<span class="c1"># Raises:</span>
+<span class="c1"># ValueError: If either base or height is non-positive</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_area_of_triangle</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">base</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Base and height must be positive values.&quot;</span><span class="p">)</span>
+
+    <span class="n">area</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">base</span> <span class="o">*</span> <span class="n">height</span>  <span class="c1"># Corrected multiplication syntax</span>
+    <span class="k">return</span> <span class="n">area</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Prompts the user for triangle base and height, calculates and prints the area</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the base of the triangle: &quot;</span><span class="p">))</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the height of the triangle: &quot;</span><span class="p">))</span>
+
+        <span class="c1"># Call the area calculation function</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area_of_triangle</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The area of the triangle is approximately </span><span class="si">{</span><span class="n">area</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> square units.&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="c1"># Main program</span>
+<span class="c1"># ------------------------------------------------------------------------</span>
+
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+</code></pre>
+<h2 id="section_73">Arrays</h2>
+<h2 id="section_74">1-Dimensional Arrays</h2>
+<h3 id="section_75">What is an array?</h3>
+<ul>
+<li>An array is an <strong>ordered</strong>, <strong>static set of elements</strong> in a fixed-size memory location</li>
+<li>An array can only store <strong>1 data type</strong></li>
+<li>A 1D array is a <strong>linear array</strong></li>
+<li>In languages such as Python, indexes start at 0, known as <strong>zero-indexed</strong></li>
+<li>In CIE pseudocode, <strong>index’s start at 1</strong>
+<img src="0478-images/1d-array-example.png" alt="1d-array-example"></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>Pseudocode</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create</td>
+<td><code>DECLARE scores: ARRAY[1:5]OF INTEGER</code></td>
+<td><code>scores = []</code></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Creates a blank array with 5 elements (1-5)</strong></td>
+<td><strong>Creates a blank array</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><code>scores ← [12, 10, 5, 2, 8]</code></td>
+<td><code>scores = [12, 10, 5, 2, 8]</code></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Creates an array called scores with values assigned</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Assignment</td>
+<td><code>colours[4] ← &quot;Red&quot;</code></td>
+<td><code>colours[4] = &quot;Red&quot;</code></td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Assigns the colour “Red” to index 4 (4th element)</strong></td>
+<td><strong>Assigns the colour “Red” to index 4 (5th element)</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_76">Examples</h4>
+<p>Creating a one-dimensional array called ‘array’ which contains 5 integers.</p>
+<ul>
+<li>Create the array with the following syntax:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DECLARE MyArray : ARRAY[1:5] OF INTEGER</code></td>
+<td><code>array = [1, 2, 3, 4, 5]</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Access the individual elements of the array by using the following syntax:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MyArray[1] ← 1</code></td>
+<td><code>array[index]</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Modify the individual elements by assigning new values to specific indexes using the following syntax:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MyArray[index] ← newValue</code></td>
+<td><code>array[index] = newValue</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Use the <code>len</code> function to determine the length of the array by using the following syntax:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Pseudocode</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>There is no built-in length function in CIE pseudocode. The array length is known from the declaration or stored in a variable.</em></td>
+<td><code>len(array)</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>In the example the array has been iterated through to output each element within the array</li>
+<li>A for loop has been used for this</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">// Creating a one-dimensional array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">MyArray</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">MyArray</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">MyArray</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">MyArray</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">MyArray</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">MyArray</span><span class="o">[</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">5</span>
+
+<span class="c1">// Accessing elements of the array</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">MyArray</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w">          </span><span class="c1">// Output: 1</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">MyArray</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w">          </span><span class="c1">// Output: 3</span>
+
+<span class="c1">// Modifying elements of the array</span>
+<span class="n">MyArray</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">10</span>
+<span class="c1">// MyArray is now: [1, 10, 3, 4, 5]</span>
+
+<span class="c1">// Iterating over the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">MyArray</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
+
+<span class="c1">// Output:</span>
+<span class="c1">// 1</span>
+<span class="c1">// 10</span>
+<span class="c1">// 3</span>
+<span class="c1">// 4</span>
+<span class="c1">// 5</span>
+
+<span class="c1">// Length of the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">Length</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">Length</span><span class="w">               </span><span class="c1">// Output: 5</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Creating a one-dimensional array</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="c1"># Accessing elements of the array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   <span class="c1"># Output: 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>   <span class="c1"># Output: 3</span>
+
+<span class="c1"># Modifying elements of the array</span>
+<span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>      <span class="c1"># Output: [1, 10, 3, 4, 5]</span>
+
+<span class="c1"># Iterating over the array</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">array</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+<span class="c1"># Output:</span>
+<span class="c1"># 1</span>
+<span class="c1"># 10</span>
+<span class="c1"># 3</span>
+<span class="c1"># 4</span>
+<span class="c1"># 5</span>
+
+<span class="c1"># Length of the array</span>
+<span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>     <span class="c1"># Output: 5</span>
+</pre></div>
+</code></pre>
+<h2 id="section_77">2-Dimensional Arrays</h2>
+<h3 id="section_78">What is a 2-dimensional array?</h3>
+<ul>
+<li>A 2D array <strong>extends</strong> the concept on a 1D array by <strong>adding another dimension</strong></li>
+<li>A 2D array can be visualised as <strong>a table with rows and columns</strong></li>
+<li>When navigating through a 2D array you first have to go <strong>down the rows</strong> and then <strong>across the columns</strong> to find a position within the array
+<img src="0478-images/2d-array-example.png" alt="2d-array-example"></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>Pseudocode</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create</td>
+<td><strong>Declare a 2D array with name and number for 3 people</strong></td>
+<td><strong>Creates a 3x2 blank array (3 people, each with name and number)</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><code>DECLARE NamesAndNumbers : ARRAY[1:3, 1:2] OF STRING</code><br><br><code>1:3</code> = 3 <strong>rows</strong> → one for each person<br><br><code>1:2</code> = 2 <strong>columns</strong> → one for <strong>name</strong>, one for <strong>number</strong><br><br><code>OF STRING</code> → both names and phone numbers are stored as strings</td>
+<td><code>NamesANDNumbers = [[None, None], [None, None], [None, None]]</code></td>
+</tr>
+<tr>
+<td><strong>Declare a 2D array called</strong> <code>players</code> <strong>with</strong> <code>name</code> <strong>and</strong> <code>score</code> <strong>assigned for 4 people (Alice, Bob, Charlie &amp; Daisy)</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><code>// Declare a 2D array with 4 rows and 2 columns (name and score)</code>  <br>  <br><code>DECLARE players : ARRAY[1:4, 1:2] OF STRING</code>  <br><br><code>// Assign values to each player</code>  <br>  <br><code>players[1,1] ← &quot;Alice&quot;</code>  <br>  <br><code>players[1,2] ← &quot;25&quot;</code>  <br>  <br><code>players[2,1] ← &quot;Bob&quot;</code>  <br>  <br><code>players[2,2] ← &quot;30&quot;</code>  <br>  <br><code>players[3,1] ← &quot;Charlie&quot;</code>  <br>  <br><code>players[3,2] ← &quot;22&quot;</code>  <br>  <br><code>players[4,1] ← &quot;Daisy&quot;</code>  <br>  <br><code>players[4,2] ← &quot;28&quot;</code></td>
+<td><code># Each player has a name and a score</code><br><br><code>players = [</code><br><br><code>[&quot;Alice&quot;, 25],</code><br><br><code>[&quot;Bob&quot;, 30],</code><br><br><code>[&quot;Charlie&quot;, 22],</code><br><br><code>[&quot;Daisy&quot;, 28]</code><br><br><code>]</code></td>
+</tr>
+<tr>
+<td>Assignment</td>
+<td><strong>Assigning the name</strong> <code>Holly</code> <strong>to replace the name</strong> <code>Charlie</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><code>players[3,1] ← &quot;Holly&quot;</code></td>
+<td><code>players[2][0] = &quot;Holly&quot; # Charlie is at index 2 (third row), name is at index 0</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_79">Examples</h4>
+<ul>
+<li>Initialising a 2D array with 3 rows and 3 columns, with the specified values</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Array2D</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">6</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">7</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">Array2D</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">9</span>
+
+<span class="c1">// Accessing elements in the 2D array</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">Array2D</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="w">       </span><span class="c1">// Output: 1</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">Array2D</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w">       </span><span class="c1">// Output: 6</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="n">array_2d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]</span>
+
+<span class="c1"># Accessing elements in the 2D array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_2d</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Output: 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_2d</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># Output: 6</span>
+</pre></div>
+</code></pre>
+<h3 id="section_80">Iterating through a 2-dimensions array</h3>
+<ul>
+<li>When iterating through a 2D array, a nested <code>FOR...NEXT</code> loop can be used</li>
+<li>Nested iteration to access items in the 2D array</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Row</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Col</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Row</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">Col</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Array2D</span><span class="o">[</span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="n">Col</span><span class="o">]</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">Col</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Row</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">array_2d</span><span class="p">:</span> 
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span> 
+    <span class="nb">print</span><span class="p">()</span> <span class="c1"># Print a newline after each row</span>
+</pre></div>
+</code></pre>
+<p>In the exam, the question will always give an example to demonstrate which order the array is being read from.</p>
+<p>Some questions can be X,Y and others can be Y, X. Always refer to the example before giving your answer!</p>
+<p>A parent records the length of time being spent watching TV by 4 children</p>
+<p>Data for one week (Monday to Friday) is stored in a 2D array with the identifier <code>minsWatched</code>.</p>
+<p>The following table shows the array</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>**  Quinn**</th>
+<th><strong>Lyla</strong></th>
+<th><strong>Harry</strong></th>
+<th><strong>Elias</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>2</strong></td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td><strong>Monday</strong></td>
+<td><strong>0</strong></td>
+<td>34</td>
+<td>67</td>
+<td>89</td>
+<td>78</td>
+</tr>
+<tr>
+<td><strong>Tuesday</strong></td>
+<td><strong>1</strong></td>
+<td>56</td>
+<td>43</td>
+<td>45</td>
+<td>56</td>
+</tr>
+<tr>
+<td><strong>Wednesday</strong></td>
+<td><strong>2</strong></td>
+<td>122</td>
+<td>23</td>
+<td>34</td>
+<td>45</td>
+</tr>
+<tr>
+<td><strong>Thursday</strong></td>
+<td><strong>3</strong></td>
+<td>13</td>
+<td>109</td>
+<td>23</td>
+<td>90</td>
+</tr>
+<tr>
+<td><strong>Friday</strong></td>
+<td><strong>4</strong></td>
+<td>47</td>
+<td>100</td>
+<td>167</td>
+<td>23</td>
+</tr>
+</tbody>
+</table>
+<p>Elias watched 78 minutes of TV on Monday:</p>
+<ul>
+<li>Identify the row for Monday: Row <code>0</code>.</li>
+<li>Identify the column for Elias: Column <code>3</code>.</li>
+<li>Find the value at <code>minsWatched[0][3]</code>: The value is <code>78</code></li>
+</ul>
+<p>Write a line of code to output the number of minutes that Lyla watched TV on Tuesday <strong>[1]</strong></p>
+<p>Write a line of code to output the number of minutes that Harry watched TV on Friday <strong>[1]</strong></p>
+<p>Write a line of code to output the number of minutes that Quinn watched TV on Wednesday <strong>[1]</strong></p>
+<p><strong>Answers</strong></p>
+<ul>
+<li><code>print(minsWatched[1][1]</code> <strong>OR</strong> <code>print(minsWatched[1,1]</code></li>
+<li><code>print(minsWatched[4][2]</code> <strong>OR</strong> <code>print(minsWatched[4,2]</code></li>
+<li><code>print(minsWatched[2][0]</code> <strong>OR</strong> <code>print(minsWatched[2,0]</code></li>
+</ul>
+<h2 id="section_81">File Handling</h2>
+<h3 id="section_82">What is file handling?</h3>
+<ul>
+<li>File handling is <strong>the use of programming techniques</strong> to work with information stored in <strong>text files</strong></li>
+<li>Examples of file handing techniques are:
+<ul>
+<li><strong>opening</strong> text files</li>
+<li><strong>reading</strong> text files</li>
+<li><strong>writing</strong> text files</li>
+<li><strong>closing</strong> text files</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>OCR exam reference</strong></th>
+<th><strong>Python</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open</strong></td>
+<td><code>OPENFILE &quot;fruit.txt&quot; FOR READ</code></td>
+<td><code>file = open(&quot;fruit.txt&quot;,&quot;r&quot;)</code></td>
+</tr>
+<tr>
+<td><strong>Close</strong></td>
+<td><code>CLOSEFILE &quot;fruit.txt&quot;</code></td>
+<td><code>file.close()</code></td>
+</tr>
+<tr>
+<td><strong>Read line</strong></td>
+<td><code>READFILE &quot;fruit.txt&quot;, LineOfText</code></td>
+<td><code>file.readline()</code></td>
+</tr>
+<tr>
+<td><strong>Write line</strong></td>
+<td><code>OPENFILE &quot;fruit.txt&quot; FOR WRITE</code><br><br><code>WRITEFILE &quot;fruit.txt&quot;, &quot;Oranges&quot;</code></td>
+<td><code>file.write(&quot;Oranges&quot;)</code></td>
+</tr>
+<tr>
+<td><strong>Append a file</strong></td>
+<td><code>OPENFILE &quot;fruit.txt&quot; FOR APPEND</code></td>
+<td><code>file = open(&quot;shopping.txt&quot;,&quot;a&quot;)</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_83">Pseudocode example (reading data)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Employees</strong></th>
+<th><strong>Text file</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OPENFILE “employees.txt” FOR READ<br><br>endOfFile ← FALSE  // Set end of file flag to false<br><br>WHILE NOT endOfFile DO<br>    READFILE “employees.txt”, name  // Read line 1 (name)<br>    name ← TRIM(name)  // Remove extra spaces/newlines<br><br>    READFILE “employees.txt”, department  // Read line 2 (department)<br>    department ← TRIM(department)  // Remove extra spaces/newlines<br><br>    READFILE “employees.txt”, salary  // Read line 3 (salary)<br>    salary ← TRIM(salary)  // Remove extra spaces/newlines<br><br>    READFILE “employees.txt”, age  // Read line 4 (age)<br>    age ← TRIM(age)  // Remove extra spaces/newlines<br><br>    IF name = “” THEN  // If name is empty (end of file)<br>        endOfFile ← TRUE  // Set end of file flag to true<br>    ELSE<br>        OUTPUT &quot;Name: &quot; &amp; name  // Print name<br>        OUTPUT &quot;Department: &quot; &amp; department  // Print department<br>        OUTPUT &quot;Salary: &quot; &amp; salary  // Print salary<br>        OUTPUT &quot;Age: &quot; &amp; age  // Print age<br>        OUTPUT “”  // Add a blank line for readability<br>    ENDIF<br>ENDWHILE<br><br>CLOSEFILE “employees.txt”</td>
+<td>Greg  <br>Sales  <br>39000  <br>43  <br>Lucy  <br>Human resources  <br>26750  <br>28  <br>Jordan  <br>Payroll  <br>45000  <br>31</td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_84">Python example (reading data)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Employees</strong></th>
+<th><strong>Text file</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td># Open file in read mode<br>file = open(“employees.txt”, “r”)<br><br>endOfFile = False  # Set end of file flag to false<br><br>while not endOfFile:  # While not end of file<br>    name = file.readline().strip()  # Read line 1 and remove extra spaces/newlines<br>    department = file.readline().strip()  # Read line 2<br>    salary = file.readline().strip()  # Read line 3<br>    age = file.readline().strip()  # Read line 4<br><br>    if name == “”:  # If name is empty (end of file)<br>        endOfFile = True  # Set end of file flag to true<br>    else:<br>        print(&quot;Name: &quot;, name)  # Print name<br>        print(&quot;Department: &quot;, department)  # Print department<br>        print(&quot;Salary: &quot;, salary)  # Print salary (fixed typo)<br>        print(&quot;Age: &quot;, age)  # Print age<br>        print()  # Add a blank line for readability<br><br># Close the file<br>file.close()</td>
+<td>Greg  <br>Sales  <br>39000  <br>43  <br>Lucy  <br>Human resources  <br>26750  <br>28  <br>Jordan  <br>Payroll  <br>45000  <br>31</td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_85">Pseudocode example (writing new data)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Employees</strong></th>
+<th><strong>Text file</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OPENFILE “employees.txt” FOR APPEND<br><br>// Write employee details to the file<br>WRITEFILE “employees.txt”, “Polly”  // Name<br>WRITEFILE “employees.txt”, NEWLINE<br>WRITEFILE “employees.txt”, “Sales”  // Department<br>WRITEFILE “employees.txt”, NEWLINE<br>WRITEFILE “employees.txt”, “26000”  // Salary<br>WRITEFILE “employees.txt”, NEWLINE<br>WRITEFILE “employees.txt”, “32”  // Age<br>WRITEFILE “employees.txt”, NEWLINE<br><br>CLOSEFILE “employees.txt”</td>
+<td>Greg  <br>Sales  <br>39000  <br>43  <br>Lucy  <br>Human resources  <br>26750  <br>28  <br>Jordan  <br>Payroll  <br>45000  <br>31<br><br><em>Polly</em>  <br><em>Sales</em>  <br><em>26000</em>  <br><em>32</em></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_86">Python example (writing new data)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Employees</strong></th>
+<th><strong>Text file</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td># Open file in append mode<br>file = open(“employees.txt”, “a”)<br><br># Write employee details to the file<br>file.write(“Polly\n”)        # Name<br>file.write(“Sales\n”)        # Department<br>file.write(“26000\n”)        # Salary<br>file.write(“32\n”)           # Age<br><br># Close the file<br>file.close()</td>
+<td>Greg  <br>Sales  <br>39000  <br>43  <br>Lucy  <br>Human resources  <br>26750  <br>28  <br>Jordan  <br>Payroll  <br>45000  <br>31  <br><em>Polly</em>  <br><em>Sales</em>  <br><em>26000</em>  <br><em>32</em></td>
+</tr>
+</tbody>
+</table>
+<p>When opening files it is really important to make sure you use the correct letter in the open command</p>
+<ul>
+<li>&quot; <strong>r</strong> &quot; is for reading from a file only</li>
+<li>&quot; <strong>w</strong> &quot; is for writing to a new file, if the file does not exist it will be created. If a file with the same name exists the contents will be overwritten</li>
+<li>&quot; <strong>a</strong> &quot; is for writing to the end of an existing file only</li>
+</ul>
+<p>Always make a backup of text files you are working with, one mistake and you can lose the contents!</p>
+<p>Use pseudocode to write an algorithm that does the following:</p>
+<ul>
+<li>Inputs the title and year of a book from the user.</li>
+<li>Permanently stores the book title and year to the existing text file <em>books.txt</em> <strong>[4]</strong></li>
+</ul>
+<p><strong>How to answer this question</strong></p>
+<ul>
+<li>Write two input statements (title and year of book)</li>
+<li>Open the file</li>
+<li>Write inputs to file</li>
+<li>Close the file</li>
+</ul>
+<p><strong>Example answer</strong></p>
+<pre><code><div class="highlight"><pre><span></span>title = input(&quot;Enter title&quot;)
+year = input(&quot;Enter year&quot;)
+file = open(&quot;books.txt&quot;)
+file.writeline(title)
+file.writeline(year)
+file.close()
+</pre></div>
+</code></pre>
+<p><strong>Guidance</strong></p>
+<table>
+<thead>
+<tr>
+<th><code>title = input(&quot;Enter title&quot;)</code></th>
+<th>1 mark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>year = input(&quot;Enter year&quot;)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>file = open(&quot;books.txt&quot;)</code></td>
+<td>1 mark</td>
+</tr>
+<tr>
+<td><code>file.writeline(title)</code></td>
+<td>1 mark</td>
+</tr>
+<tr>
+<td><code>file.writeline(year)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>file.close()</code></td>
+<td>1 mark</td>
+</tr>
+</tbody>
+</table>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="7-algorithm-design-problem-solving.html" title="Previous: 7 Algorithm Design & Problem-Solving" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">7 Algorithm Design & Problem-Solving</span></a>
+<a href="9-database.html" title="Next: 9 Database" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">9 Database</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.1 Number System — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>1.1 Number System</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Computers &amp; Binary</a></li>
+<li><a href="#section_1">Why Computers Use Binary</a></li>
+<li><a href="#section_3">Number Systems</a></li>
+<li><a href="#section_4">The Denary, Binary &amp; Hexadecimal Number Systems</a></li>
+<li><a href="#section_8">Converting Between Binary &amp; Denary</a></li>
+<li><a href="#section_9">Denary to Binary Conversion</a></li>
+<li><a href="#section_13">Binary to Denary Conversion</a></li>
+<li><a href="#section_17">Converting Between Hexadecimal &amp; Denary</a></li>
+<li><a href="#section_18">Denary to Hexadecimal Conversion</a></li>
+<li><a href="#section_22">Hexadecimal to Denary Conversion</a></li>
+<li><a href="#section_26">Converting Between Hexadecimal &amp; Binary</a></li>
+<li><a href="#section_27">Binary to Hexadecimal Conversion</a></li>
+<li><a href="#section_31">Hexadecimal to Binary Conversion</a></li>
+<li><a href="#section_35">Uses of Hexadecimal</a></li>
+<li><a href="#section_40">Binary Addition</a></li>
+<li><a href="#section_41">Adding Positive 8-bit Binary Integers</a></li>
+<li><a href="#section_45">Overflow &amp; Binary Addition</a></li>
+<li><a href="#section_46">Binary Shifts</a></li>
+<li><a href="#section_53">Two’s Complement</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Computers &amp; Binary</h2>
+<h2 id="section_1">Why Computers Use Binary</h2>
+<p><em>This note covers exactly what Cambridge 0478 expects you to know about binary processing—nothing more, nothing less.</em></p>
+<h3 id="section_2">Why does data have to be converted to binary to be processed by a computer?</h3>
+<ul>
+<li>Data is processed in a computer using <strong>logic gates</strong> that only have <strong>two states</strong></li>
+<li>The binary number system only has two digits (<strong>1/0</strong>), which means each digit can <strong>represent a different state</strong> (1 = on, 0 = off)</li>
+<li>All data must be converted to binary <strong>before</strong> a computer can <strong>understand</strong> and <strong>process</strong> it</li>
+<li>Converting data to binary allows computers to process it at an incredible <strong>speed</strong>, perform complex <strong>calculations</strong> and <strong>store</strong> vast amounts of data <strong>efficiently</strong>
+<img src="0478-images/processing-binary-data.png" alt="Hard drive and CD to show polarity, pits and lands"></li>
+<li>Secondary storage is a great example of the process
+<ul>
+<li><strong>Magnetic hard drives</strong> use <strong>North</strong> and <strong>South polarity</strong> to represent a 1 or a 0</li>
+<li>In <strong>Optical</strong> <strong>disks,</strong> light hitting a flat area (<strong>land</strong>) is interpreted as a 1 and light hitting a bump (<strong>pit</strong>) is interpreted as a 0</li>
+</ul>
+</li>
+<li>Take an example of driving a car
+<ul>
+<li>When driving a car the accelerator pedal is used to increase the cars speed</li>
+<li>If a car was accelerating from 50mph to 100mph the increase would be gradual</li>
+<li>In a computer system, the car is doing either 50mph (0) or 100mph (1), there is no in-between</li>
+<li>Trying to change the computer system so that it has more options would be less efficient and require more complex parts for the computer to understand</li>
+</ul>
+</li>
+</ul>
+<p>Explain why computers process data in binary format <strong>[2]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>Computers process data using logic gates… <strong>[1]</strong></li>
+<li>… that can only have two states (1/0) <strong>[1]</strong></li>
+</ul>
+<p><em>Mark schemes expect: logic gates + two states (1/0). Phrases like “computers understand binary” don’t get the mark, this does.</em></p>
+<h2 id="section_3">Number Systems</h2>
+<h2 id="section_4">The Denary, Binary &amp; Hexadecimal Number Systems</h2>
+<p><em>All conversions here are capped at 16 bits because that’s Cambridge’s limit. No distractions, just the format you’ll see in Paper 1.</em></p>
+<h3 id="section_5">What is denary?</h3>
+<ul>
+<li>Denary is a number system that is made up of <strong>10 digits (0-9)</strong></li>
+<li>Denary is referred to as a <strong>base-10</strong> number system</li>
+<li>Each digit has a weight factor of <strong>10 raised to a power</strong>, the rightmost digit is 1s (10 <sup>0</sup>), the next digit to the left 10s (10 <sup>1</sup>) and so on</li>
+<li>Humans use the denary system for <strong>counting</strong>, <strong>measuring</strong> and <strong>performing maths calculations</strong></li>
+<li>Using combinations of the 10 digits we can represent any number
+<img src="0478-images/1-1-number-systems-number-systems-1-ib-computer-science-revision.png" alt="Diagram showing denary number 3268 with column headings"></li>
+<li>In this example, (3 x 1000) + (2 x 100) + (6 x 10) + (8 x 1) = 3268</li>
+<li>To represent a bigger number we <strong>add more digits</strong></li>
+</ul>
+<h3 id="section_6">What is binary?</h3>
+<ul>
+<li>Binary is a number system that is made up of <strong>two digits (1 and 0)</strong></li>
+<li>Binary is referred to as a <strong>base-2</strong> number system</li>
+<li>Each digit has a weight factor of <strong>2 raised to a power</strong>, the rightmost digit is 1s (2 <sup>0</sup>), the next digit to the left 2s (2 <sup>1</sup>) and so on</li>
+<li>Each time a new digit is added, the <strong>column value is multiplied by 2</strong></li>
+<li>Using <strong>combinations of the 2 digits</strong> we can represent any number
+<img src="0478-images/uCiRLNB9_1-1-number-systems-number-systems-2-ib-psychology-revision.png" alt="Diagram showing binary 1101 using binary column headings"></li>
+<li>In this example, <strong>Binary 1100</strong> = <strong>(1 x 8) + (1 x 4) = 12</strong></li>
+<li>To represent bigger numbers we add more <strong>b</strong> inary dig <strong>its</strong> (bits)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>32,768</th>
+<th>16,384</th>
+<th>8,192</th>
+<th>4,096</th>
+<th>2,048</th>
+<th>1,024</th>
+<th>512</th>
+<th>256</th>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 15</td>
+<td>2 14</td>
+<td>2 13</td>
+<td>2 12</td>
+<td>2 11</td>
+<td>2 10</td>
+<td>2 9</td>
+<td>2 8</td>
+<td>2 7</td>
+<td>2 6</td>
+<td>2 5</td>
+<td>2 4</td>
+<td>2 3</td>
+<td>2 2</td>
+<td>2 1</td>
+<td>2 0</td>
+</tr>
+</tbody>
+</table>
+<p><em>The largest denary number that can be represented using 16 bits is:</em></p>
+<ul>
+<li><em>65,535 (Binary 1111111111111111)</em></li>
+</ul>
+<h3 id="section_7">What is hexadecimal?</h3>
+<ul>
+<li>Hexadecimal is a number system that is made up of <strong>16 digits</strong>, 10 numbers (<strong>0-9</strong>) and 6 letters (<strong>A-F</strong>)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>0</strong></th>
+<th><strong>1</strong></th>
+<th><strong>2</strong></th>
+<th><strong>3</strong></th>
+<th><strong>4</strong></th>
+<th><strong>5</strong></th>
+<th><strong>6</strong></th>
+<th><strong>7</strong></th>
+<th><strong>8</strong></th>
+<th><strong>9</strong></th>
+<th><strong>10</strong></th>
+<th><strong>11</strong></th>
+<th><strong>12</strong></th>
+<th><strong>13</strong></th>
+<th><strong>14</strong></th>
+<th><strong>15</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>2</strong></td>
+<td><strong>3</strong></td>
+<td><strong>4</strong></td>
+<td><strong>5</strong></td>
+<td><strong>6</strong></td>
+<td><strong>7</strong></td>
+<td><strong>8</strong></td>
+<td><strong>9</strong></td>
+<td><strong>A</strong></td>
+<td><strong>B</strong></td>
+<td><strong>C</strong></td>
+<td><strong>D</strong></td>
+<td><strong>E</strong></td>
+<td><strong>F</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Hexadecimal is referred to as a <strong>base-16</strong> number system</li>
+<li>Each digit has a weight factor of <strong>16 raised to a power</strong>, the rightmost digit is 1s (16^0), the next digit to the left 16s (16^1)</li>
+<li>In GCSE you are required to work with up to and including <strong>2 digit hexadecimal</strong> values</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>16s</strong></th>
+<th><strong>1s</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>3</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>1 x16</td>
+<td>3 x 1</td>
+<td>= 19</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A quick comparison table demonstrates a <strong>relationship</strong> between <strong>hexadecimal and a binary</strong> <strong>nibble</strong></li>
+<li>One hexadecimal digit can represent <strong>four bits</strong> of binary data</li>
+</ul>
+<p><em>You must be able to convert binary to hex and back using nibbles. Write out the hex digits (0–F) during the exam to avoid confusion—it’s a top tip that examiners mention every year.</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Denary</strong></th>
+<th><strong>Binary</strong></th>
+<th><strong>Hexadecimal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0000</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0001</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0010</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0011</td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0100</td>
+<td><strong>4</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>0101</td>
+<td><strong>5</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>0110</td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>0111</td>
+<td><strong>7</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td>1000</td>
+<td><strong>8</strong></td>
+</tr>
+<tr>
+<td>9</td>
+<td>1001</td>
+<td><strong>9</strong></td>
+</tr>
+<tr>
+<td>10</td>
+<td>1010</td>
+<td><strong>A</strong></td>
+</tr>
+<tr>
+<td>11</td>
+<td>1011</td>
+<td><strong>B</strong></td>
+</tr>
+<tr>
+<td>12</td>
+<td>1100</td>
+<td><strong>C</strong></td>
+</tr>
+<tr>
+<td>13</td>
+<td>1101</td>
+<td><strong>D</strong></td>
+</tr>
+<tr>
+<td>14</td>
+<td>1110</td>
+<td><strong>E</strong></td>
+</tr>
+<tr>
+<td>15</td>
+<td>1111</td>
+<td><strong>F</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_8">Converting Between Binary &amp; Denary</h2>
+<h2 id="section_9">Denary to Binary Conversion</h2>
+<p><em>Every method and number line on this page follows the exact rules and bit limits used in the Cambridge IGCSE 0478 exam. No extras. No guesswork.</em></p>
+<h3 id="section_10">How do you convert denary to binary?</h3>
+<ul>
+<li>It is important to <strong>know the process</strong> of converting from denary to binary to understand how computers interpret and process data</li>
+<li>To convert from denary to binary you must start by <strong>writing out a binary number line</strong></li>
+<li>Find the first column heading with <strong>a value larger than the denary value</strong> you are converting</li>
+<li>Write down <strong>each column heading to the right (not including the largest heading)</strong> until you reach 1</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>32,768</th>
+<th>16,384</th>
+<th>8,192</th>
+<th>4,096</th>
+<th>2,048</th>
+<th>1,024</th>
+<th>512</th>
+<th>256</th>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+</table>
+<h4 id="section_11">Example 1</h4>
+<ul>
+<li>To convert the denary number <strong>45</strong> to binary, start by <strong>writing out the binary number line</strong></li>
+<li>The <strong>first column heading larger than 45</strong> is <strong>64</strong>, so the number line would be:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+</table>
+<ul>
+<li>Start at the <strong>leftmost empty column heading</strong> (32)</li>
+<li>Divide <strong>column heading into denary number</strong> (how many times does 32 fit into 45?)
+<ul>
+<li>1 time with 13 remaining</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>13</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Repeat with next column heading</strong> (how many times does 16 fit into 13?)
+<ul>
+<li>0 times with 13 remaining</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>13</th>
+<th>13</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Repeat</strong> until all columns have a binary value</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>13</th>
+<th>13</th>
+<th>5</th>
+<th>1</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Denary <strong>45</strong> is 101101 in binary (6 bits)</li>
+</ul>
+<p><em>Cambridge often asks for a</em> <em><strong>specific number of bits</strong></em> <em>—if the question says “8-bit answer,” you must pad your binary result with leading 0s. Always double-check the number of bits or you’ll lose a mark.</em></p>
+<h4 id="section_12">Example 2</h4>
+<ul>
+<li>To convert the denary number <strong>3059</strong> to binary, start by <strong>writing out the binary number line</strong></li>
+<li>The <strong>first column heading larger than 3059</strong> is <strong>4096</strong>, so the number line would be:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>2,048</th>
+<th>1,024</th>
+<th>512</th>
+<th>256</th>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+</table>
+<ul>
+<li>Start at the <strong>leftmost empty column heading</strong> (2048)</li>
+<li>Divide <strong>column heading into denary number</strong> (how many times does 2048 fit into 3059?)
+<ul>
+<li>1 time with 1011 remaining</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>1011</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2,048</td>
+<td>1,024</td>
+<td>512</td>
+<td>256</td>
+<td><strong>128</strong></td>
+<td><strong>64</strong></td>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Repeat with next column heading</strong> (how many times does 1024 fit into 1011?)
+<ul>
+<li>0 times with 1011 remaining</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>1011</th>
+<th>1011</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2,048</td>
+<td>1,024</td>
+<td>512</td>
+<td>256</td>
+<td><strong>128</strong></td>
+<td><strong>64</strong></td>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Repeat</strong> until all columns have a binary value</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>1011</th>
+<th>1011</th>
+<th>499</th>
+<th>243</th>
+<th>115</th>
+<th>51</th>
+<th>19</th>
+<th>3</th>
+<th>3</th>
+<th>3</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2,048</td>
+<td>1,024</td>
+<td>512</td>
+<td>256</td>
+<td><strong>128</strong></td>
+<td><strong>64</strong></td>
+<td><strong>32</strong></td>
+<td><strong>16</strong></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Denary <strong>3059</strong> is 101111110011 in binary (12 bits)</li>
+</ul>
+<h2 id="section_13">Binary to Denary Conversion</h2>
+<ul>
+<li>To convert from binary to denary, count how many bits make up the value</li>
+<li>Write out the column headings for the number of bits given from right to left</li>
+<li>Add together any column heading with a value of 1 in the column</li>
+</ul>
+<h4 id="section_14">Example 1 (4 bits)</h4>
+<ul>
+<li>To convert the binary number 1011 to denary, start by <strong>writing out the binary headings</strong> from right to left</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+</table>
+<ul>
+<li>Write in the binary digits under the headings from left to right</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Add together <strong>any column heading with a 1 under it</strong></li>
+<li>(1 x 8) + (1 x 2) + (1 x 1) = 11</li>
+<li>Binary 1011 is <strong>11</strong> in denary</li>
+</ul>
+<p><em>If a binary number ends in 1, the denary result</em> <em><strong>must</strong></em> <em>be odd. Use this as a quick logic check during the exam—examiners love to test basic number sense.</em></p>
+<h4 id="section_15">Example 2 (8 bits)</h4>
+<ul>
+<li>To convert the binary number 01100011 to denary, start by <strong>writing out the binary headings</strong> from right to left</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+</table>
+<ul>
+<li>Write in the binary digits under the headings from left to right</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Add together <strong>any column heading with a 1 under it</strong></li>
+<li>(1 x 64) + (1 x 32) + (1 x 2) + (1 x 1) = 99</li>
+<li>Binary 01100011 is <strong>99</strong> in denary</li>
+</ul>
+<h4 id="section_16">Example 3 (14 bits)</h4>
+<ul>
+<li>To convert the binary number 01110001110100 to denary, start by <strong>writing out the binary headings</strong> from right to left</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>8,192</th>
+<th>4,096</th>
+<th>2,048</th>
+<th>1,024</th>
+<th>512</th>
+<th>256</th>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Add together <strong>any column heading with a 1 under it</strong></li>
+<li>(1 x 4096) + (1 x 2048) + (1 x 1024) + (1 x 64) + (1 x 32) + (1 x 16) + (1 x 4) = 7284</li>
+<li>Binary 01110001110100 is <strong>7284</strong> in denary</li>
+</ul>
+<h2 id="section_17">Converting Between Hexadecimal &amp; Denary</h2>
+<h2 id="section_18">Denary to Hexadecimal Conversion</h2>
+<h3 id="section_19">How do you convert denary to hexadecimal?</h3>
+<p><em>Cambridge IGCSE 0478 requires you to convert between denary and hex without a calculator. Every method shown here is designed to match exam conditions exactly.</em></p>
+<h4 id="section_20">Method 1 (denary to binary to hexadecimal)</h4>
+<ul>
+<li>To convert the denary number <strong>28</strong> to hexadecimal, start by converting the denary number to binary.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Split</strong> the 8 bit binary number into <strong>two nibbles</strong> as shown below</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Convert each nibble to its denary value</li>
+<li><strong>0001 = 1</strong> and <strong>1100 = 12</strong></li>
+<li>Using the <a href="https://www.savemyexams.com/o-level/computer-science/cie/21/revision-notes/1-data-representation/number-systems/number-systems/">comparison table</a>, the denary value 1 is also 1 in hexadecimal whereas denary value 12 is represented in hexadecimal as C</li>
+<li>Denary <strong>28</strong> is <strong>1C</strong> in hexadecimal</li>
+</ul>
+<h4 id="section_21">Method 2 (divide by 16)</h4>
+<ul>
+<li>To convert the denary number 163 to hexadecimal, start by <strong>dividing the denary</strong> value by 16 and recording the <strong>whole times</strong> the number goes in and the <strong>remainder</strong></li>
+<li>163 ➗16 = 10 remainder 3</li>
+<li>In hexadecimal the <strong>whole number = digit 1</strong> and the <strong>remainder = digit 2</strong></li>
+<li>Digit 1 = 10 (A)</li>
+<li>Digit 2 = 3</li>
+<li>Denary <strong>163</strong> is <strong>A3</strong> in hexadecimal</li>
+</ul>
+<h2 id="section_22">Hexadecimal to Denary Conversion</h2>
+<h3 id="section_23">How do you convert hexadecimal to denary?</h3>
+<h4 id="section_24">Method 1 (hexadecimal to binary to denary)</h4>
+<p><em>If you’re not confident multiplying or dividing by 16, always fall back on binary conversion. It’s</em> <em><strong>fool proof</strong></em>*, and examiners accept either method.*</p>
+<ul>
+<li>To convert the hexadecimal number <strong>B9</strong> to denary, take each hexadecimal digit and convert it from its <strong>denary value</strong> to <strong>4 bit binary</strong> (nibble)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>B (11)</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th><strong>9</strong></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+<td></td>
+<td><strong>8</strong></td>
+<td><strong>4</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Join</strong> the two nibbles to make an <strong>8 bit number</strong> (byte)</li>
+<li>Convert from binary to denary.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>(1 x 128) + (1 x 32) + (1 x 16) + (1 x 8) + (1 x 1) = 185</li>
+<li>Hexadecimal <strong>B9</strong> is <strong>185</strong> in denary</li>
+</ul>
+<h4 id="section_25">Method 2 (multiply by 16)</h4>
+<ul>
+<li>To convert the hexadecimal number <strong>79</strong> to denary, start by <strong>multiplying the first hexadecimal digit by 16</strong></li>
+<li>7 ✖ 16 = 112</li>
+<li><strong>Add digit 2</strong> to the result</li>
+<li>112 + 9 = 121</li>
+<li>Hexadecimal <strong>79</strong> is <strong>121</strong> in denary</li>
+</ul>
+<p>Remember that the exam is non-calculator, if you are not confident multiplying and dividing by 16 then use method 1 on both conversions</p>
+<h2 id="section_26">Converting Between Hexadecimal &amp; Binary</h2>
+<h2 id="section_27">Binary to Hexadecimal Conversion</h2>
+<h3 id="section_28">How do you convert from binary to hexadecimal?</h3>
+<p><em>Cambridge IGCSE 0478 expects all conversions to use 8-bit binary and 2-digit hex where possible. These examples follow the exam format exactly—so you’re revising the right way.</em></p>
+<ul>
+<li>It is important before revising how to convert from binary to hexadecimal and vice versa that you fully understand the binary and hexadecimal number systems.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>0</strong></th>
+<th><strong>1</strong></th>
+<th><strong>2</strong></th>
+<th><strong>3</strong></th>
+<th><strong>4</strong></th>
+<th><strong>5</strong></th>
+<th><strong>6</strong></th>
+<th><strong>7</strong></th>
+<th><strong>8</strong></th>
+<th><strong>9</strong></th>
+<th><strong>10</strong></th>
+<th><strong>11</strong></th>
+<th><strong>12</strong></th>
+<th><strong>13</strong></th>
+<th><strong>14</strong></th>
+<th><strong>15</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>2</strong></td>
+<td><strong>3</strong></td>
+<td><strong>4</strong></td>
+<td><strong>5</strong></td>
+<td><strong>6</strong></td>
+<td><strong>7</strong></td>
+<td><strong>8</strong></td>
+<td><strong>9</strong></td>
+<td><strong>A</strong></td>
+<td><strong>B</strong></td>
+<td><strong>C</strong></td>
+<td><strong>D</strong></td>
+<td><strong>E</strong></td>
+<td><strong>F</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_29">Example 1</h4>
+<ul>
+<li>To convert the binary number 10110111 to <strong>hexadecimal</strong>, first split the 8 bit number into 2 binary <strong>nibbles</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>For each nibble, convert the binary to it’s denary value</li>
+<li>(1 x 8) + (1 x 2) + (1 x 1) = 11 (B)</li>
+<li>(1 x 4) + (1 x 2) + (1 x 1) = 7</li>
+<li>Join them together to make a 2 digit hexadecimal number</li>
+<li>Binary 10110111 is <strong>B7</strong> in hexadecimal</li>
+</ul>
+<h4 id="section_30">Example 2</h4>
+<ul>
+<li>To convert the binary number 00111001 to <strong>hexadecimal</strong>, first split the 8 bit number into 2 binary nibbles</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>For each nibble, convert the binary to it’s denary value</li>
+<li>(1 x 2) + (1 x 1) = 3</li>
+<li>(1 x 8) + (1 x 1) = 9</li>
+<li>Join them together to make a 2 digit hexadecimal number</li>
+<li>Binary 00111001 is <strong>39</strong> in hexadecimal</li>
+</ul>
+<h2 id="section_31">Hexadecimal to Binary Conversion</h2>
+<h3 id="section_32">How do you convert from hexadecimal to binary?</h3>
+<h4 id="section_33">Example 1</h4>
+<ul>
+<li>To convert the hexadecimal number <strong>5F</strong> to binary, first <strong>split the digits apart</strong> and convert each to a binary <strong>nibble</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><strong>= 5</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><strong>= 15 (F)</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Join the 2 binary nibbles together to create an 8 bit binary number</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Hexadecimal <strong>5F</strong> is <strong>01011111</strong> in binary</li>
+</ul>
+<p><em>You might see methods that skip writing out the full 8-bit binary number—especially in textbooks. In this course, we stick to</em> <em><strong>examiner-approved formatting</strong></em>*, so your answers never fall short.*</p>
+<h4 id="section_34">Example 2</h4>
+<ul>
+<li>To convert the hexadecimal number <strong>26</strong> to binary, first <strong>split the digits apart</strong> and convert each to a binary <strong>nibble</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><strong>= 2</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td><strong>= 6</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Join the 2 binary nibbles together to create an 8 bit binary number</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Hexadecimal <strong>26</strong> is <strong>00100110</strong> in binary</li>
+</ul>
+<h2 id="section_35">Uses of Hexadecimal</h2>
+<p><em>Cambridge IGCSE 0478 specifically requires you to explain why hexadecimal is used instead of binary—especially for things like MAC addresses, colour codes, and URLs. Everything on this page comes straight from the spec.</em></p>
+<h3 id="section_36">Why is hexadecimal used?</h3>
+<ul>
+<li>In Computer Science hexadecimal is often preferred when working with <strong>large values</strong></li>
+<li>It takes <strong>fewer digits to represent a given value</strong> in hexadecimal than in binary
+<ul>
+<li>1 hexadecimal digit corresponds 4 bits (one nibble) and can represent 16 unique values (0-F)</li>
+</ul>
+</li>
+<li>It is <strong>beneficial</strong> to use hexadecimal over binary because:
+<ul>
+<li>The more bits there are in a binary number, the <strong>harder it makes for a human to read</strong></li>
+<li>Numbers with more bits are more <strong>prone to errors</strong> when being copied</li>
+</ul>
+</li>
+</ul>
+<p><em>In the exam, don’t just say “hex is shorter” or “hex is easier.” Use phrases like “</em> <em><strong>fewer digits = easier for humans to read</strong></em> <em>” or “</em> <em><strong>less chance of copying errors</strong></em> <em>”—these match the mark scheme language.</em></p>
+<ul>
+<li>Examples of where hexadecimal can be seen:
+<ul>
+<li><strong>MAC addresses</strong></li>
+<li><strong>Colour codes</strong></li>
+<li><strong>URLs</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_37">MAC addresses</h4>
+<ul>
+<li>MAC address are covered <a href="https://www.savemyexams.com/o-level/computer-science/cie/21/revision-notes/3-hardware/network-hardware/mac-addresses-and-ip-addresses/">here</a> in full</li>
+<li>A typical MAC address consists of <strong>12 hexadecimal digits</strong>, equivalent to <strong>48 digits</strong> in in binary
+<ul>
+<li><strong>AA:BB:CC:DD:EE:FF</strong></li>
+<li><strong>10101010:10111011:11001100:11011101:11101110:11111111</strong></li>
+</ul>
+</li>
+<li><strong>Writing down</strong> or <strong>performing calculations</strong> with 48 binary digits makes it <strong>very easy to make a mistake</strong>
+<img src="0478-images/xaPxjdos_computer-mac-address.png" alt="Example of a MAC addresses displayed in a windows command prompt"></li>
+</ul>
+<h4 id="section_38">Colour codes</h4>
+<ul>
+<li>A typical hexadecimal colour code consists of <strong>6 hexadecimal digits</strong>, equivalent to <strong>24 digits</strong> in binary
+<ul>
+<li><strong>#66FF33</strong> (green)</li>
+<li><strong>01000010:11111111:00110011</strong>
+<img src="0478-images/hexcolours.png" alt="Example colour palette with colours and their hexadecimal codes"></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_39">URL’s</h4>
+<ul>
+<li>A URL can only contain <strong>standard characters</strong> (a-z and A-Z), <strong>numbers</strong> (0-9) and some <strong>special symbols</strong> which is enough for basic web browsing</li>
+<li>If a URL needs to include a character <strong>outside of this set</strong>, they are converted into a <strong>hexadecimal code</strong></li>
+<li>Hexadecimal codes included in a URL are prefixed with a <strong>%</strong> sign</li>
+</ul>
+<p><em>You might see other uses of hex online (like memory dumps or debug screens). For your exam, stick to the three covered here:</em> <em><strong>MAC addresses, colour codes, and URLs</strong></em> <em>—they’re the only ones that come up in past papers.</em></p>
+<h2 id="section_40">Binary Addition</h2>
+<h2 id="section_41">Adding Positive 8-bit Binary Integers</h2>
+<p><em>Cambridge IGCSE 0478 expects you to add 8-bit binary values using clear working, with carries shown. These examples match the style and format used in the real exam.</em></p>
+<h3 id="section_42">What is binary addition?</h3>
+<ul>
+<li>Binary addition is the process of <strong>adding together two binary integers</strong> (up to and including 8 bits)</li>
+<li>To be successful there are <strong>5 golden rules</strong> to apply:</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+<span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>Like denary addition, start from the rightmost digit and move left</li>
+<li>Carrying over occurs when the <strong>sum of a column is greater than 1</strong>, passing the excess to the next left column</li>
+</ul>
+<h4 id="section_43">Example 1</h4>
+<ul>
+<li>Add together the binary values <strong>1001</strong> and <strong>0100</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>carry</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>+</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Starting from right to left, add the two binary values together <strong>applying the 5 golden rules</strong></li>
+<li>If your answer has <strong>2 digits</strong>, place the rightmost digit in the column and <strong>carry the remaining digit</strong> to the next column on the left</li>
+<li>In this example, start with 1+0, 1+0 = 1, so place a 1 in the column</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>carry</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>+</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Repeat until <strong>all columns have a value</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>carry</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>+</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The sum of adding together binary <strong>1001</strong> (9) and <strong>0100</strong> (4) is <strong>1101</strong> (13)</li>
+</ul>
+<p><em>You can earn marks</em> <em><strong>just for showing carries correctly</strong></em>*, even if your final answer is wrong. Always show your carry bits clearly above or below your sum—examiner reports say it matters.*</p>
+<h4 id="section_44">Example 2</h4>
+<ul>
+<li>Add together the binary values <strong>00011001</strong> and <strong>10001001</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>carry</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>+</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Starting from right to left, add the two binary values together <strong>applying the 5 golden rules</strong></li>
+<li>If your answer has <strong>2 digits</strong>, place the rightmost digit in the column and <strong>carry the remaining digit</strong> to the next column on the left</li>
+<li>In this example, start with 1+1, 1+1 = 10, so place a 0 in the column and carry the 1 to the next column</li>
+<li>Repeat until <strong>all columns have a value</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>carry</strong></th>
+<th></th>
+<th></th>
+<th></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+<th></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>+</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The sum of adding together binary <strong>00011001</strong> (25) and <strong>10001001</strong> (137) is <strong>10100010</strong> (162)</li>
+</ul>
+<h2 id="section_45">Overflow &amp; Binary Addition</h2>
+<ul>
+<li>An overflow error occurs when the result of a binary addition <strong>exceeds the available bits</strong></li>
+<li>For example, if you took binary <strong>11111111</strong> (255) and tried to add <strong>00000001</strong> (1) this would cause an overflow error as the result would need a <strong>9th</strong> bit to represent the answer (256)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>carry</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>+</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>If the next question asks what error has occurred, it’s probably testing</em> <em><strong>overflow</strong></em>*. Look for sums that go over 255—Cambridge loves this trick.*</p>
+<h2 id="section_46">Binary Shifts</h2>
+<h3 id="section_47">What is a logical binary shift?</h3>
+<p><em>Cambridge IGCSE 0478 expects you to perform binary shifts</em> <em><strong>on 8-bit values</strong></em> <em>and explain how the result changes (×2, ÷2). Every example here mirrors the real exam format.</em></p>
+<ul>
+<li>A logical binary shift is how a computer system performs <strong>basic multiplication and division</strong> on non-negative values (0 and positive numbers)</li>
+<li>Binary digits are <strong>moved left</strong> or <strong>right</strong> a set number of times</li>
+<li>A left shift <strong>multiplies</strong> a binary number by 2 (x2)</li>
+<li>A right shift <strong>divides</strong> a binary number by 2 (/2)</li>
+<li>A shift can move more than one place at a time, the principle remains the same</li>
+<li>A left shift of 2 places would multiply the original binary number by 4 (x4)</li>
+</ul>
+<h3 id="section_48">How do you perform a logical left shift of 1?</h3>
+<ul>
+<li>Here is the binary representation of the denary number 40</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To perform a left logical binary shift of 1, we move each bit 1 place to the left</li>
+<li>Since the most significant bit is 0, there is no overflow</li>
+<li>The 1 column becomes empty so is filled with a 0</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>= 40</strong></td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>= 80</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The original binary representation of denary <strong>40</strong> (32+8) was <strong>multiplied by 2</strong> and became <strong>80</strong> (64+16)</li>
+</ul>
+<h3 id="section_49">How do you perform a logical left shift of 2?</h3>
+<ul>
+<li>Here is the binary representation of the denary number 28</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To perform a left binary shift of 2, we move each bit 2 places to the left</li>
+<li>Since the two leftmost bits are <strong>0</strong>, nothing important is lost and <strong>no overflow occurs</strong></li>
+<li>The 1 and 2 column become empty so are filled with a 0</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>= 28</strong></td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>= 112</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The original binary representation of denary <strong>28</strong> (16+8+4) was <strong>multiplied by 4</strong> and became <strong>112</strong> (64+32+16)</li>
+</ul>
+<p><em>Your textbook might show shifts with longer binary values—but in IGCSE exams, you’ll only ever be asked about</em> <em><strong>8-bit unsigned integers</strong></em>*. That’s why all our examples are capped at 8 bits.*</p>
+<h3 id="section_50">How do you perform a logical right shift of 1?</h3>
+<ul>
+<li>Here is the binary representation of the denary number 40</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To perform a right binary shift of 1, we move each bit 1 place to the right</li>
+<li>The bit in the <strong>1 column (LSB)</strong> is shifted out and <strong>lost</strong></li>
+<li>The 128 column becomes empty so is filled with a 0</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td></td>
+<td><strong>= 40</strong></td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>= 20</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The original binary representation of denary <strong>40</strong> (32+8) was <strong>divided by 2</strong> and became <strong>20</strong> (16+4)</li>
+</ul>
+<h3 id="section_51">How do you perform a logical right shift of 2?</h3>
+<ul>
+<li>Here is the binary representation of the denary number 200</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To perform a right binary shift of 2, we move each bit 2 places to the right</li>
+<li>The bits in the <strong>1 and 2 columns</strong> are shifted out and <strong>lost</strong></li>
+<li>The 128 and 64 columns become empty so are filled with a 0</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td></td>
+<td></td>
+<td><strong>= 200</strong></td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>= 50</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The original binary representation of denary <strong>200</strong> (128+64+8) was <strong>divided by 4</strong> and became <strong>50</strong> (32+16+2)</li>
+</ul>
+<h3 id="section_52">Overflow in binary shifts</h3>
+<ul>
+<li><strong>Overflow happens</strong> when a <strong>1 is shifted out of the most significant bit (MSB)</strong> on the left in a logical left shift</li>
+<li>This means <strong>important data is lost</strong>, which can seriously change the number’s value</li>
+</ul>
+<p><em>In IGCSE Computer Science, you usually only need to spot an overflow when a 1 is shifted out on the left. You don’t need to worry about</em> <em><strong>underflow</strong></em> <em>in this context!</em></p>
+<h2 id="section_53">Two’s Complement</h2>
+<h3 id="section_54">What is two’s complement?</h3>
+<p><em>Cambridge IGCSE 0478 requires you to represent signed binary values using</em> <em><strong>8-bit two’s complement</strong></em> <em>only. This page follows the exact bit structure and method examiners expect to see.</em></p>
+<ul>
+<li>In IGCSE Computer Science, two’s complement is a method of using <strong>signed binary values</strong> to <strong>represent negative numbers</strong></li>
+<li>Using two’s complement the <strong>left most bit</strong> is designated the most significant bit (<strong>MSB</strong>)</li>
+<li>In two’s complement, <strong>if the MSB is 1</strong>, it represents <strong>a negative number</strong></li>
+<li><strong>In 8-bit</strong>, the MSB column has a weight of <strong>-128</strong>, while the remaining columns keep their positive values</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>-128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><strong>= -1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>In the example above, to find the value, <strong>add together the column values where there is a 1</strong></li>
+<li>Here, all columns are 1, so the sum is <strong>-128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = -1</strong></li>
+<li>The two’s complement representation of -1 is 11111111</li>
+</ul>
+<h4 id="section_55">Quick two’s complement conversion</h4>
+<table>
+<thead>
+<tr>
+<th><strong>128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>= 76</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Starting from the <strong>least significant bit</strong> (right most column), copy out the binary values <strong>up to and including the first 1</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>-128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>For the remaining digits, <strong>invert them</strong> (0s to 1s/1s to 0s)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>-128</strong></th>
+<th><strong>64</strong></th>
+<th><strong>32</strong></th>
+<th><strong>16</strong></th>
+<th><strong>8</strong></th>
+<th><strong>4</strong></th>
+<th><strong>2</strong></th>
+<th><strong>1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>-128 + 32 + 16 + 4 = <strong>-76</strong></li>
+<li>The two’s complement representation of -76 is 10110100</li>
+</ul>
+<p><em>The “flip and add 1” trick isn’t shown here, but the method above is what examiners prefer: copy from the right, then invert. It’s reliable, repeatable, and rewarded in papers.</em></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<div style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;opacity:.35;pointer-events:none;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;">—</span></div>
+<a href="12-text-sound-images.html" title="Next: 1.2 Text, Sound & Images" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1.2 Text, Sound & Images</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

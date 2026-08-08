@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Database — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>9 Database</h1>
+    <p>Paper 2: Algorithms, Programming & Logic</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Single Table Databases</a></li>
+<li><a href="#section_2">Fields &amp; records</a></li>
+<li><a href="#section_5">Validation</a></li>
+<li><a href="#section_6">Data types</a></li>
+<li><a href="#section_8">Primary Keys</a></li>
+<li><a href="#section_11">SQL</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Single Table Databases</h2>
+<h3 id="section_1">What is a database?</h3>
+<ul>
+<li>A <strong>Database</strong> is an organised collection of data</li>
+<li>A database is made up of either <strong>one or multiple tables</strong> which are made up of <strong>fields</strong> and <strong>records</strong> to organise how it stores data</li>
+<li>It allows <strong>easy storage, retrieval, and management</strong> of information</li>
+<li>A database is useful when working with l <strong>arge amounts of data</strong>, databases are stored on <strong>secondary storage</strong></li>
+<li>A database is often stored on remote servers so <strong>multiple users</strong> can access it at the same time, useful for online systems</li>
+<li>Data can be <strong>sorted and searched efficiently</strong>, making use of more advanced structures</li>
+<li>They are <strong>more secure</strong> than text files</li>
+</ul>
+<h2 id="section_2">Fields &amp; records</h2>
+<h3 id="section_3">What are fields &amp; records?</h3>
+<ul>
+<li>A field is <strong>one piece</strong> of information relating to one person, item or object</li>
+<li>A field is represented in a database by a <strong>column</strong>,</li>
+<li>A record is a <strong>collection of fields</strong> relating to one person, item or object</li>
+<li>A record is represented in a database by a <strong>row</strong></li>
+</ul>
+<h3 id="section_4">Text files</h3>
+<ul>
+<li>A text file is useful when working with <strong>small amounts of data</strong>, text files are stored on <strong>secondary storage</strong> and ‘read’ into a program when being used</li>
+<li>They are used to store information <strong>when the application is closed</strong></li>
+<li>Each entry is stored on a new line or separated with a special identifier, for example, a comma (‘,’)</li>
+<li>It can be difficult in text files to know where a record begins and ends
+<img src="0478-images/8-records-to-store-data.png" alt="8-records-to-store-data"></li>
+</ul>
+<h2 id="section_5">Validation</h2>
+<ul>
+<li>When a table is created, <strong>validation rules</strong> can be assigned to the different fields
+<ul>
+<li>A validation rule <strong>controls what data</strong> can be entered into that field</li>
+<li>There are different types of validation checks used to limit what data can be entered into each field</li>
+<li>The validation checks that are used are the same as those that appear in section 7: Algorithm Design &amp; Problem-Solving</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Length Check</strong></td>
+<td>This type of validation checks the number of <strong>characters</strong> that have been entered into a field. For example, you might make phone numbers entered have to be eleven characters long</td>
+</tr>
+<tr>
+<td><strong>Format Check</strong></td>
+<td>This type of validation checks data entered meets an exact format. For example, a product code might have to be two letters followed by five numbers</td>
+</tr>
+<tr>
+<td><strong>Range Check</strong></td>
+<td>A range check will check the number entered is within a specific range. For example, the age of a dog would be between 0 - 40. Any other number would be disallowed</td>
+</tr>
+<tr>
+<td><strong>Presence Check</strong></td>
+<td>A presence check can be added to fields which cannot be left blank</td>
+</tr>
+<tr>
+<td><strong>Type Check</strong></td>
+<td>A type check will allow data with a specific data type to be entered into a field. For example, if text was entered into a field which is supposed to contain the date of birth of a person it would not be allowed</td>
+</tr>
+<tr>
+<td><strong>Check Digits</strong></td>
+<td>Check digit validation is a process used to verify the accuracy of numbers such as credit card numbers. A check digit is a single digit added to the end of the number, which is calculated based on a specific algorithm applied to the other digits in the number. When the data is re-entered the same algorithm can be applied, and if it produces a different result the code is incorrect</td>
+</tr>
+</tbody>
+</table>
+<p>You will likely be presented with an example database table and identify either how many fields there are or how many records there are so make sure you remember a record is a row and a field is a column.</p>
+<p><strong>A Database Table Containing Student Grades</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>StudentID</strong></th>
+<th><strong>FirstName</strong></th>
+<th><strong>LastName</strong></th>
+<th><strong>MarkSubmitted</strong></th>
+<th><strong>Percentage</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1483792</td>
+<td>Shanay</td>
+<td>Giles</td>
+<td>Y</td>
+<td>55</td>
+</tr>
+<tr>
+<td>1498378</td>
+<td>Poppy</td>
+<td>Petit</td>
+<td>N</td>
+<td>20</td>
+</tr>
+<tr>
+<td>1500121</td>
+<td>Diya</td>
+<td>Dinesh</td>
+<td>Y</td>
+<td>74</td>
+</tr>
+<tr>
+<td>1382972</td>
+<td>Joe</td>
+<td>Swaile</td>
+<td>Y</td>
+<td>68</td>
+</tr>
+<tr>
+<td>1598264</td>
+<td>Anton</td>
+<td>Smith</td>
+<td>Y</td>
+<td>34</td>
+</tr>
+<tr>
+<td>1548282</td>
+<td>Felicity</td>
+<td>Hall</td>
+<td>N</td>
+<td>47</td>
+</tr>
+</tbody>
+</table>
+<p>Describe <strong>two validation checks</strong> that could be used to check data being inputted into the table above [<strong>4</strong>]</p>
+<p>How to answer this question</p>
+<p><strong>Answer</strong></p>
+<p>StudentID could have a <strong>length check</strong> to ensure 7 characters are entered [2]</p>
+<p>FirstName and LastName could have a <strong>presence check</strong> to make a record cannot be entered without entering the name of the student [2]</p>
+<p>A <strong>type check</strong> of boolean could be applied to the Mark Submitted field so that only Y or N are entered [2]</p>
+<p>A <strong>range check</strong> could be assigned to the Mark column to ensure only numbers between 0 and 100 are entered [2]</p>
+<h2 id="section_6">Data types</h2>
+<h3 id="section_7">What is a data type?</h3>
+<ul>
+<li>A data type is the <strong>type of data</strong> that can be held <strong>in a field</strong> and is defined when designing a table</li>
+<li>Examples of common datatypes are:
+<ul>
+<li><strong>Integer</strong> - whole number</li>
+<li><strong>Real</strong> - decimal number</li>
+<li><strong>Text/alphanumeric</strong> - text data</li>
+<li><strong>Character</strong> - single</li>
+<li><strong>Date/Time</strong></li>
+<li><strong>Boolean</strong> - true or false values</li>
+</ul>
+</li>
+<li>In the table <em><strong>cars</strong></em> below, the following datatypes would be used:
+<ul>
+<li><strong>car_id</strong>: integer</li>
+<li><strong>make</strong>: text/alphanumeric</li>
+<li><strong>model</strong>: text/alphanumeric</li>
+<li><strong>colour</strong>: text/alphanumeric</li>
+<li><strong>price</strong>: real</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>cars</strong></em></p>
+<table>
+<thead>
+<tr>
+<th><strong>car_id</strong></th>
+<th><strong>make</strong></th>
+<th><strong>model</strong></th>
+<th><strong>colour</strong></th>
+<th><strong>price</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Peugeot</td>
+<td>2008</td>
+<td>Red</td>
+<td>24950</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Mazda</td>
+<td>MX5</td>
+<td>Blue</td>
+<td>17995</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Citroen</td>
+<td>DS4</td>
+<td>Black</td>
+<td>21450</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ford</td>
+<td>Puma</td>
+<td>White</td>
+<td>19500</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_8">Primary Keys</h2>
+<h3 id="section_9">What is a primary key?</h3>
+<ul>
+<li>A primary key is a <strong>unique field</strong> that can be used to <strong>identify a record</strong> in a <strong>table</strong></li>
+<li><em>customer_id</em> is the <strong>primary key</strong> for the customers <strong>table</strong> below</li>
+<li>Other examples of primary keys in database tables would include:
+<ul>
+<li>Student_ID in a school database</li>
+<li>Car_Registration in a car database</li>
+<li>Product_ID in a shop database</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>CustomerID</strong></th>
+<th><strong>FirstName</strong></th>
+<th><strong>LastName</strong></th>
+<th><strong>DOB</strong></th>
+<th><strong>PhoneNumber</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>Andrea</td>
+<td>Bycroft</td>
+<td>05031976</td>
+<td>0746762883</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Melissa</td>
+<td>Langler</td>
+<td>22012001</td>
+<td>0756372892</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Amy</td>
+<td>George</td>
+<td>22111988</td>
+<td>074637</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_10">Key database terminology</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Term</strong></th>
+<th><strong>Definition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Table</strong></td>
+<td>A collection of records with a similar structure</td>
+</tr>
+<tr>
+<td><strong>Record</strong></td>
+<td>A group of related fields, representing one data entry</td>
+</tr>
+<tr>
+<td><strong>Field</strong></td>
+<td>A single piece of data in a record</td>
+</tr>
+<tr>
+<td><strong>Data type</strong></td>
+<td>Type of data held in a field</td>
+</tr>
+<tr>
+<td><strong>Primary key</strong></td>
+<td>A unique identifier for each record in a table, usually an ID number</td>
+</tr>
+</tbody>
+</table>
+<p>A database has been developed for a dance club to store information about their members.</p>
+<p>The database contains one table: <strong>Members</strong></p>
+<p><strong>Figure A</strong> shows some data from the table.</p>
+<p><em><strong>Members</strong></em></p>
+<table>
+<thead>
+<tr>
+<th><strong>MemberID</strong></th>
+<th><strong>FirstName</strong></th>
+<th><strong>LastName</strong></th>
+<th><strong>DateJoined</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Zarmeen</td>
+<td>Hussain</td>
+<td>2024-01-19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Fyn</td>
+<td>Ball</td>
+<td>2024-02-01</td>
+</tr>
+<tr>
+<td>3</td>
+<td>George</td>
+<td>Johnson</td>
+<td>2024-02-25</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ella</td>
+<td>Franks</td>
+<td>2024-03-04</td>
+</tr>
+</tbody>
+</table>
+<p>State the name of the field from the <strong>Members</strong> table that is the most suitable to use as the primary key <strong>[1]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>(a) <em>MemberID</em></li>
+</ul>
+<h2 id="section_11">SQL</h2>
+<h3 id="section_12">What is SQL?</h3>
+<ul>
+<li><strong>SQL</strong> (Structured Query Language) is a programming language used to interact with a <strong>DBMS</strong>.</li>
+<li>The use of SQL allows a user to:
+<ul>
+<li><strong>Select data</strong></li>
+<li><strong>Order data</strong></li>
+<li><strong>Sum data</strong></li>
+<li><strong>Count data</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_13">Selecting data commands</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Command</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SELECT</strong></td>
+<td>Retrieves data from a database table</td>
+<td><strong>SELECT</strong> * <strong>FROM</strong> users;  <br>(retrieves all data from the ‘users’ table)<br><br><strong>SELECT</strong> name, age  <br><strong>FROM</strong> users  <br>(retrieves names and ages from the ‘users’ table)</td>
+</tr>
+<tr>
+<td><strong>FROM</strong></td>
+<td>Specifies the tables to retrieve data from</td>
+<td><strong>SELECT</strong> name, age <strong>FROM</strong> users;  <br>(retrieves names and ages from the ‘users’ table)</td>
+</tr>
+<tr>
+<td><strong>WHERE</strong></td>
+<td>Filters the data based on a specified condition</td>
+<td><strong>SELECT</strong> * <strong>FROM</strong> users  <br><strong>WHERE</strong> age &gt; 30;  <br>(Retrieves users older than 30)</td>
+</tr>
+<tr>
+<td><strong>AND</strong></td>
+<td>Combines multiple conditions in a <strong>WHERE</strong> clause</td>
+<td><strong>SELECT</strong> * <strong>FROM</strong> users  <br><strong>WHERE</strong> age &gt; 18 <strong>AND</strong> city = ‘New York’;  <br>(retrieves users older than 18 and from New York)</td>
+</tr>
+<tr>
+<td><strong>OR</strong></td>
+<td>Retrieves data when at least one of the conditions is true</td>
+<td><strong>SELECT</strong> * <strong>FROM</strong> users  <br><strong>WHERE</strong> age &lt; 18 <strong>OR</strong> city = ‘New York’;  <br>(retrieves users younger than 18 or from New York)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WILDCARDS</strong></p>
+<p>’ <strong>*</strong> ’ and ’ <strong>%</strong> ’ symbols are used for searching and matching data<br>
+’ <strong>*</strong> ’ used to select all columns in a table<br>
+’ <strong>%</strong> ’ used as a wildcard character in the LIKE operator</p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="p">;</span><span class="w">  </span>
+<span class="c1">--(retrieves all columns for the &#39;users&#39; table)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;J%&#39;</span><span class="p">;</span><span class="w">  </span>
+<span class="c1">--(retrieves users whose names start with &#39;J&#39;)</span>
+</pre></div>
+</code></pre>
+<p><strong>ORDER BY</strong></p>
+<p>How data is organised (sorted) when it is retrieved</p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">Forename</span><span class="p">,</span><span class="w"> </span><span class="n">Lastname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Students</span><span class="w">  </span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">StudentID</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w">  </span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Lastname</span><span class="p">,</span><span class="w"> </span><span class="n">Forename</span><span class="w"> </span><span class="k">ASC</span>
+
+<span class="c1">--(retrieves only the _forename_ and _lastname_ of all students from the _students_ table who have a _studentID_ of less than 10 and displays in ascending order by _lastname_ and _forename_)</span>
+</pre></div>
+</code></pre>
+<p><strong>SUM</strong></p>
+<p>Adds up and outputs the sum of a field</p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="w"> </span><span class="p">(</span><span class="n">Salary</span><span class="p">)</span><span class="w"> </span><span class="o">**</span><span class="k">FROM</span><span class="o">**</span><span class="w"> </span><span class="n">tbl_people</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p><strong>COUNT</strong></p>
+<p>Counts the number of rows which match the set criteria</p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tbl_people</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Salary</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50000</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<h3 id="section_14">Examples</h3>
+<ul>
+<li>Select all the fields from the Customers table</li>
+</ul>
+<p><strong>Command:</strong></p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p><strong>Output:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>ID</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Age</strong></th>
+<th><strong>City</strong></th>
+<th><strong>Country</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John Doe</td>
+<td>30</td>
+<td>New York</td>
+<td>deer</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Jane Doe</td>
+<td>25</td>
+<td>London</td>
+<td>UK</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Peter Lee</td>
+<td>40</td>
+<td>Paris</td>
+<td>France</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Select the ID, name &amp; age of customers who are older than 25</li>
+</ul>
+<p><strong>Command:</strong></p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="w">  </span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w">  </span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p><strong>Output:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>ID</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Age</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John Doe</td>
+<td>30</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Peter Lee</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Select the name and country of customers who are from a country that begins with ‘U’</li>
+</ul>
+<p><strong>Command:</strong></p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Country</span><span class="w">  </span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w">  </span>
+<span class="n">WHER</span><span class="w"> </span><span class="n">Country</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;U%&#39;</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p><strong>Output:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Name</strong></th>
+<th><strong>Country</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John Doe</td>
+<td>deer</td>
+</tr>
+<tr>
+<td>Jane Doe</td>
+<td>UK</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Select all fields of customers who are from ‘London’ or ‘Paris’</li>
+</ul>
+<p><strong>Command:</strong></p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w">  </span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w">  </span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">City</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;London&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">City</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Paris&#39;</span><span class="p">;</span>
+</pre></div>
+</code></pre>
+<p><strong>Output:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>ID</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Age</strong></th>
+<th><strong>City</strong></th>
+<th><strong>Country</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>Jane Doe</td>
+<td>25</td>
+<td>London</td>
+<td>UK</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Peter Lee</td>
+<td>40</td>
+<td>Paris</td>
+<td>France</td>
+</tr>
+</tbody>
+</table>
+<p>Below is a table of animals called <em><strong>tbl_animals</strong></em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Animal</strong></th>
+<th><strong>Breeding</strong></th>
+<th><strong>Number of Young</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Red Fox</td>
+<td>Yes</td>
+<td>4-6</td>
+</tr>
+<tr>
+<td>Rabbit</td>
+<td>Yes</td>
+<td>4-12</td>
+</tr>
+<tr>
+<td>African Elephant</td>
+<td>Yes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Blue Whale</td>
+<td>No</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Orangutan</td>
+<td>Yes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Polar Bear</td>
+<td>Yes</td>
+<td>1-3</td>
+</tr>
+<tr>
+<td>Dolphin</td>
+<td>Yes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Kangaroo</td>
+<td>Yes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>Yes</td>
+<td>1-6</td>
+</tr>
+<tr>
+<td>Penguin</td>
+<td>Yes</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Complete this SQL statement to display all of the animal breeds that are currently breeding and there was only one young born this year <strong>[3]</strong></p>
+<p>SELECT…</p>
+<p>FROM…</p>
+<p>WHERE…</p>
+<p>Answer</p>
+<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">Animal</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tbl_animals</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Breeding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;Yes&quot;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="nb">Number</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">Young</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span>
+</pre></div>
+</code></pre>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="8-programming.html" title="Previous: 8 Programming" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">8 Programming</span></a>
+<a href="10-boolean-logic.html" title="Next: 10 Boolean Logic" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">10 Boolean Logic</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

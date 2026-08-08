@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.1 Types of Software & Interrupts — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>4.1 Types of Software & Interrupts</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">System Software &amp; Application Software</a></li>
+<li><a href="#section_4">The Purpose &amp; Functionality of Operating Systems</a></li>
+<li><a href="#section_5">What is an operating system?</a></li>
+<li><a href="#section_6">File Management</a></li>
+<li><a href="#section_8">Handling Interrupts</a></li>
+<li><a href="#section_10">User Interface</a></li>
+<li><a href="#section_16">Peripheral Management &amp; Device Drivers</a></li>
+<li><a href="#section_19">Memory Management &amp; Multitasking</a></li>
+<li><a href="#section_22">Providing a Platform for Running Applications</a></li>
+<li><a href="#section_23">Providing System Security</a></li>
+<li><a href="#section_25">User Management</a></li>
+<li><a href="#section_27">Hardware, Firmware &amp; the Operating System</a></li>
+<li><a href="#section_30">Interrupts</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">System Software &amp; Application Software</h2>
+<ul>
+<li>Software can be broken down in to two categories, <strong>system</strong> and <strong>application</strong> software</li>
+</ul>
+<p>Cambridge IGCSE 0478 expects you to distinguish clearly between system and application software. This revision note uses only the categories and terms examiners reward, no off-spec extras.</p>
+<p><img src="0478-images/software.png" alt="Structure diagram showing how software is categorised"></p>
+<h3 id="section_1">What is system software?</h3>
+<ul>
+<li>System software is software <strong>essential for the operation of the computer system</strong></li>
+<li>It gives users <strong>a platform to run applications</strong> and <strong>carry out tasks</strong></li>
+<li>Examples of system software include:
+<ul>
+<li><a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/4-software/types-of-software-and-interrupts/the-purpose-and-functionality-of-operating-systems/">The operating system</a></li>
+<li><strong>Utility software</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_2">Utility software</h4>
+<ul>
+<li>Utility software is software designed to help <strong>maintain</strong>, <strong>enhance</strong> and <strong>troubleshoot/repair</strong> a computer system</li>
+<li>Designed to <strong>perform a limited number of tasks</strong></li>
+<li><strong>Interacts with the computers hardware</strong>, for example, secondary storage devices</li>
+<li>Some utility software comes <strong>installed with the operating system</strong></li>
+<li>Examples of utility software and their function are:
+<ul>
+<li><strong>Defragmentation (maintain)</strong></li>
+<li><a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/1-data-representation/data-storage-and-compression/compression/">Compression</a> <strong>(enhance)</strong></li>
+<li><a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/2-data-transmission/encryption/encryption/">Encryption</a> <strong>(enhance)</strong></li>
+<li><strong>Task manager (troubleshoot/repair)</strong></li>
+</ul>
+</li>
+</ul>
+<p><em>For 2-mark questions on software types, give the category (e.g. utility software) and a matching function (e.g. defragmentation to maintain disk performance). That’s how you hit both marks.</em></p>
+<h3 id="section_3">What is application software?</h3>
+<ul>
+<li>Application software (abbreviated ‘apps’) is software <strong>chosen by a user</strong> to help them <strong>carry out a specific task</strong></li>
+<li><strong>Installed on top of system software</strong> and is user-chosen to best suit <strong>individual requirements</strong></li>
+<li>Common categories of application software include:
+<ul>
+<li><strong>Productivity</strong> - get things done efficiently (word processors, spreadsheets &amp; presentation)</li>
+<li><strong>Communication</strong> - stay connected (email, browser, messaging)</li>
+<li><strong>Entertainment</strong> - Watch movies, play games or listen to music</li>
+</ul>
+</li>
+</ul>
+<p>Marks aren’t given for brand names like “Microsoft Word” or “Google Chrome.” Always use <strong>generic software types</strong> like <em>word processor</em>, <em>browser</em>, or <em>email client</em>, that’s what examiners look for.</p>
+<h2 id="section_4">The Purpose &amp; Functionality of Operating Systems</h2>
+<h2 id="section_5">What is an operating system?</h2>
+<p><em>Cambridge IGCSE 0478 expects you to describe the</em> <em><strong>functions of an operating system</strong></em>*, with clear examples. This page follows the structure used in past paper questions and mark schemes, so you’re only learning what gets you marks.*</p>
+<ul>
+<li>An operating system (<strong>OS</strong>) is software that <strong>manages computer hardware</strong> and <strong>provides a platform for running applications</strong></li>
+<li>It provides <strong>an interface between the user and the hardware</strong> in a computer system</li>
+<li>It <strong>hides the complexities of the hardware</strong> from the user, for example:
+<ul>
+<li>A user does not need to know ‘where’ on secondary storage data is kept, just that it is saved for when they want it again</li>
+</ul>
+</li>
+<li>An operating systems <strong>main functions</strong> can be divided in to <strong>eight</strong> key areas</li>
+</ul>
+<p><em>In the exam, you’re often asked to name and describe two functions of an OS. Don’t waffle. Say what the OS does and why, for example:</em></p>
+<p><em>“Memory management [1] allocates RAM between programs so they run efficiently [1].”</em></p>
+<h2 id="section_6">File Management</h2>
+<h3 id="section_7">What is file management?</h3>
+<ul>
+<li>File management is a process carried out by the operating system <strong>creating, organising, manipulating and accessing files and folders on a computer system</strong></li>
+<li>The OS <strong>manages where data is stored</strong> in both <strong>primary and secondary</strong> <strong>storage</strong></li>
+<li>File management gives the user the ability to:
+<ul>
+<li><strong>Create files/folders</strong></li>
+<li><strong>Name files/folders</strong></li>
+<li><strong>Rename files/folders</strong></li>
+<li><strong>Copy files/folders</strong></li>
+<li><strong>Move files/folders</strong></li>
+<li><strong>Delete files/folders</strong></li>
+</ul>
+</li>
+<li>The OS allows users to control who can access, modify and delete files/folders (<strong>permissions</strong>)</li>
+<li>The OS provides a <strong>search facility</strong> to find specific files based on various criteria</li>
+</ul>
+<h2 id="section_8">Handling Interrupts</h2>
+<h4 id="section_9">What is interrupt handling?</h4>
+<ul>
+<li>Interrupt events <strong>require the immediate attention</strong> of the <strong>central processing unit</strong></li>
+<li>In order to maintain the smooth running of the system, interrupts need to be <strong>handled</strong> and processed <strong>in a timely manner</strong></li>
+<li>For example, if a user clicks cancel on a file conversion process, a signal is sent from the mouse, <strong>interrupts the processor</strong>, and the operating system will trigger the cancellation routine</li>
+</ul>
+<h2 id="section_10">User Interface</h2>
+<h3 id="section_11">What is a user interface?</h3>
+<ul>
+<li>A user interface is <strong>how the user interacts with the operating system</strong></li>
+<li>Examples of user interfaces include:
+<ul>
+<li><strong>Command Line Interface (CLI)</strong></li>
+<li><strong>Graphical User Interface (GUI)</strong></li>
+<li><strong>Menu</strong></li>
+<li><strong>Natural language (NLI)</strong>
+<img src="0478-images/purpose-and-functionality-of-the-os-.png" alt="Graphic showing visual differences between CLI and GUI"></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_12">What is a command line interface?</h4>
+<ul>
+<li>A Command Line Interface (<strong>CLI</strong>) requires users to interact with the operating system using <strong>text based commands</strong></li>
+<li>CLIs are more commonly used by <strong>advanced users</strong></li>
+<li>Examples of CLIs are MSDOS (Microsoft Disk Operating System) and Raspbian (for Raspberry Pi)</li>
+</ul>
+<h4 id="section_13">What is a graphical user interface?</h4>
+<ul>
+<li>A Graphical User Interface (<strong>GUI</strong>) requires users to interact with the operating system using <strong>visual elements</strong> such as windows, icons, menus &amp; pointers (<strong>WIMP</strong>)</li>
+<li>GUIs are <strong>optimised for mouse and touch gesture input</strong></li>
+<li>Examples of GUIs are Windows, Android and MAC OS</li>
+<li>A menu interface is <strong>successive menus</strong> presented to a user with a <strong>single option at each stage</strong></li>
+<li>Often performed with <strong>buttons</strong> or a <strong>keypad</strong></li>
+<li>Examples include
+<ul>
+<li><strong>Chip and pin machines</strong></li>
+<li><strong>Vending machines</strong></li>
+<li><strong>Entertainment streaming services</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_14">What is a natural language interface?</h4>
+<ul>
+<li>A natural language interface (<strong>NLI</strong>) uses the spoken word to respond to spoken or textual inputs from a user</li>
+<li>Examples include
+<ul>
+<li><strong>Virtual assistants</strong> - Amazon Alexa, Google Assistant, Siri</li>
+<li><strong>Search engines</strong></li>
+<li><strong>Smart home devices</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_15">Advantages and disadvantages of user interfaces</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Interface</strong></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Command line (<strong>CLI</strong>)</td>
+<td>•Uses less system resources<br>• Useful for automation of tasks<br>• Commands are often faster to type than navigating menus</td>
+<td>• Requires users to remember commands<br>• Typing errors are common<br>• Less intuitive than GUI</td>
+</tr>
+<tr>
+<td>Graphical (<strong>GUI</strong>)</td>
+<td>• Intuitive and user-friendly<br>• Requires no previous knowledge to use  <br>• Information is visual, making it easier to understand</td>
+<td>• Uses more system resources<br>• Can be slower to find and execute commands<br>• Can be frustrating when doing repetitive tasks</td>
+</tr>
+<tr>
+<td>Menu</td>
+<td>• Simplicity<br>• Efficiency</td>
+<td>• Limited flexibility<br>• Accessibility issues</td>
+</tr>
+<tr>
+<td>Natural language (<strong>NLI</strong>)</td>
+<td>• Can be used by people with disabilities<br>• Intuitive</td>
+<td>• Not always reliable<br>• Privacy concerns</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_16">Peripheral Management &amp; Device Drivers</h2>
+<h3 id="section_17">What is peripheral management?</h3>
+<ul>
+<li>Peripheral management is a process carried out by the operating system <strong>managing the way</strong> <strong>peripherals</strong> <strong>(hardware) interact with software</strong></li>
+<li>The OS <strong>allocates system resources</strong> to peripherals to ensure <strong>efficient operation</strong></li>
+<li>Peripheral management makes <strong>plug-and-play</strong> (PnP) functionality possible, <strong>automatically detecting and configuring new peripherals</strong> without the need for manually installing device drivers or power cycling the system</li>
+</ul>
+<h3 id="section_18">What is a device driver?</h3>
+<ul>
+<li>A device driver is <strong>a piece of software used to control a piece of hardware</strong></li>
+<li>Peripherals <strong>require device drivers</strong> in order to be used by the operating system</li>
+<li>The OS has <strong>generic device drivers built in</strong> which makes <strong>basic compatibility</strong> possible and enables <strong>plug-and-play</strong> (PnP)</li>
+<li>In order for hardware to be used to its <strong>maximum capacity</strong>, often <strong>a separate device driver must be downloaded</strong> from the manufacturer</li>
+<li>Device drivers are <strong>OS specific</strong> and are <strong>regularly updated</strong></li>
+</ul>
+<h2 id="section_19">Memory Management &amp; Multitasking</h2>
+<h3 id="section_20">What is memory management?</h3>
+<ul>
+<li>Memory management is a process carried out by the operating system <strong>allocating main memory (RAM) between different programs</strong> that are <strong>open at the same time</strong></li>
+<li>The OS is responsible for <strong>copying programs and data from secondary to primary storage</strong> as it is needed</li>
+<li><strong>Programs and data require different amounts of RAM</strong> to operate efficiently and the OS manages this process</li>
+<li><strong>RAM is allocated</strong> based on <strong>priority and fairness</strong>, for example, system applications (essential) may have a higher priority than user applications</li>
+<li>The OS <strong>dynamically manages the memory</strong>, adjusting allocation as needed to maintain optimal system performance</li>
+<li>Memory management makes <strong>multitasking</strong> possible</li>
+</ul>
+<h3 id="section_21">What is multitasking?</h3>
+<ul>
+<li>Multitasking is a process made possible by the OS <strong>simultaneously managing system resources</strong> (memory, CPU etc) to give a user the <strong>perception of being able to use multiple programs at the same time</strong></li>
+<li>The OS <strong>splits tasks and allocates system resources</strong> based on a priority</li>
+<li>The CPU can only <strong>execute one instruction at a time</strong>, it can can execute billions of them in one second.</li>
+<li>This makes it <strong>appear that multiple programs are running at the same time</strong></li>
+</ul>
+<p><em>Just naming functions (e.g. “File management, memory management…”) won’t earn full marks.</em> <em><strong>You must explain each one</strong></em> <em>using exam-friendly language like “allocates,” “controls,” or “manages.”</em></p>
+<h2 id="section_22">Providing a Platform for Running Applications</h2>
+<ul>
+<li>Operating systems provide a <strong>platform</strong> on which <strong>application software can run</strong>, this is mainly by allowing software <strong>access to system resources</strong></li>
+<li>For example, if a computer game has intensive graphics and online play, the operating system will grant it access to the GPU and the network card
+<img src="0478-images/providing-a-platform-for-software-to-run.png" alt="organisation of application layer, operating system components, and input/output"></li>
+</ul>
+<p><em><strong>Organisation of application layer, operating system components, and input/output</strong></em></p>
+<h2 id="section_23">Providing System Security</h2>
+<h3 id="section_24">What is system security?</h3>
+<ul>
+<li>Operating systems provide various security features such as password-protected system accounts, a <strong>firewall</strong>, virus scanning and <strong>file encryption</strong></li>
+<li>Password-protected system accounts are a very common feature in operating systems</li>
+<li>System accounts can also be restricted from performing certain actions, e.g. editing network settings, installing unapproved software, changing the account settings of other users</li>
+</ul>
+<h2 id="section_25">User Management</h2>
+<h3 id="section_26">What is user management?</h3>
+<ul>
+<li>User management is a process carried out by the operating system enabling different users to log onto a computer</li>
+<li>The OS is able to maintain settings for individual users, such as desktop backgrounds, icons and colour schemes</li>
+<li>A system administrator is able to allocate different <strong>access rights</strong> for different users on a network</li>
+</ul>
+<p>Ella uses her computer to create artwork for a magazine</p>
+<p>Ella makes use of system software.</p>
+<p>One type of system software is the operating system.</p>
+<p><strong>Identify</strong> and describe <strong>two functions</strong> of an operating system <strong>[6]</strong></p>
+<p><strong>How to answer this question</strong></p>
+<ul>
+<li>Break down the 6 marks, 1 mark each for identifying a function of the operating system. For each function you need to make 2 points about how they work</li>
+</ul>
+<p><strong>Answer</strong></p>
+<ul>
+<li>Memory management</li>
+<li>File management</li>
+</ul>
+<h2 id="section_27">Hardware, Firmware &amp; the Operating System</h2>
+<h3 id="section_28">How does application software, the operating system and hardware communicate?</h3>
+<p><em>Cambridge IGCSE 0478 expects you to explain how</em> <em><strong>application software</strong></em>*, the* <em><strong>operating system</strong></em>*, and* <em><strong>hardware</strong></em> <em>interact, and describe the role of</em> <em><strong>firmware</strong></em> <em>during startup. This page is focused only on what’s required for the exam—nothing extra.</em></p>
+<ul>
+<li><strong>Application software</strong> talks to the <strong>operating system</strong>, this allows it to <strong>interact</strong> with the <strong>hardware</strong></li>
+<li>The hardware <strong>processes</strong> and <strong>sends</strong> the information to the <strong>operating system</strong> which <strong>talks directly</strong> to the applications software</li>
+<li>This process is <strong>repeated</strong> while application software is <strong>in use</strong>
+<img src="0478-images/unnamed-2.png" alt="Diagram showing links between hardware, firmware, operating system and application software" width="434"></li>
+</ul>
+<p>Always describe the communication flow as:<br>
+<strong>Application software → Operating System → Hardware</strong>.<br>
+The OS acts as a <strong>bridge</strong>. Saying software “talks to hardware” without the OS in between will lose you marks.</p>
+<h3 id="section_29">What is firmware?</h3>
+<ul>
+<li>Firmware is <strong>embedded directly in to the hardware of a device</strong>, to make them function</li>
+<li>When a computer is turned on, it has to explore the <strong>ROM</strong> for its initial boot-up instructions, these are contained in a <strong>Bootstrap loader</strong></li>
+<li>The initial process is handled by the <strong>basic input/output system (BIOS)</strong> which is known as <strong>firmware</strong></li>
+<li>Once start-up is complete, instructions are sent to <strong>RAM</strong> to be processed by the operating system</li>
+<li>This layer ensures that hardware devices e.g. keyboard and mouse <strong>are available</strong> and can be <strong>communicated directly by the operating system</strong></li>
+<li>Firmware <strong>translates</strong> between the <strong>hardware</strong> and the <strong>software</strong></li>
+</ul>
+<p><em>Students often confuse</em> <em><strong>firmware</strong></em> <em>with</em> <em><strong>device drivers</strong></em>*. Firmware is* <em><strong>permanently stored in ROM</strong></em> <em>and controls basic hardware functions. Drivers are</em> <em><strong>OS-level software</strong></em> <em>that allow hardware to communicate with applications.</em></p>
+<h2 id="section_30">Interrupts</h2>
+<h3 id="section_31">What is an interrupt?</h3>
+<p><em>Cambridge IGCSE 0478 expects you to describe</em> <em><strong>what an interrupt is</strong></em>*, explain* <em><strong>why they occur</strong></em>*, and understand the* <em><strong>role of the ISR and stack</strong></em> <em>in managing them. This page focuses only on examinable concepts and uses the terminology seen in real mark schemes.</em></p>
+<ul>
+<li>An interrupt is <strong>a signal for the CPU</strong> <strong>to stop</strong> what it is <strong>currently</strong> doing and <strong>do something else</strong> as a higher priority</li>
+<li>The CPU is in a continuous loop of carrying out the fetch-decode-execute cycle, however there are occasions when this <strong>needs to be interrupted</strong></li>
+</ul>
+<h3 id="section_32">How is an interrupt generated?</h3>
+<ul>
+<li>An interrupt can be generated by hardware and software:
+<ul>
+<li><strong>Hardware -</strong> this is caused by a hardware device such as a hardware failure</li>
+<li><strong>Software -</strong> this occurs when an application stops or requests services from the OS</li>
+</ul>
+</li>
+<li>Interrupts are added to an area called the <strong>interrupt service routine</strong></li>
+<li>The interrupt service routine <strong>holds instructions</strong> that will need to be fetched, decoded and executed to complete the commands of the <strong>interrupt</strong></li>
+<li>The contents of the registers within the CPU cannot be lost by an interrupt, so contents are <strong>copied to a reserved area in RAM</strong> called a <strong>stack</strong></li>
+<li>Contents are added to the <strong>top of the stack,</strong> which will <strong>save them for later</strong> retrieval when the interrupt is complete</li>
+<li>The interrupt will be <strong>executed</strong> instead of the original instructions</li>
+</ul>
+<p><em>In exam answers, always mention</em> <em><strong>that the CPU saves the current state to a stack</strong></em> <em>before executing the ISR. Just saying “the CPU stops” won’t earn full marks, you must include the idea of</em> <em><strong>resuming the original task</strong></em> <em>after the interrupt.</em></p>
+<h3 id="section_33">What are examples of hardware interrupts?</h3>
+<ul>
+<li><strong>Hardware</strong>
+<ul>
+<li>power button may have been pressed</li>
+<li>moving the mouse</li>
+<li>clicking an icon to open a new program</li>
+<li>keyboard presses e.g. ctrl, alt, delete</li>
+</ul>
+</li>
+</ul>
+<h3 id="section_34">What are examples of software interrupts?</h3>
+<ul>
+<li><strong>Software</strong>
+<ul>
+<li>a program is not responding</li>
+<li>division by zero</li>
+<li>two processes trying to access the same memory location</li>
+</ul>
+</li>
+</ul>
+<p><em>Students sometimes say the CPU “loses” or “replaces” data when an interrupt occurs. Wrong.</em></p>
+<p><em>Correct: CPU</em> <em><strong>copies register values to a stack</strong></em><br>
+<em>Incorrect: CPU</em> <em><strong>deletes the program or values</strong></em></p>
+<p>Describe the purpose of an interrupt in a computer system</p>
+<p><strong>[4]</strong></p>
+<p><strong>Answer</strong></p>
+<p><strong>Four</strong> from:</p>
+<ul>
+<li>Used to attend to certain tasks/issues</li>
+<li>Used to make sure that vital tasks are dealt with immediately</li>
+<li>The interrupt/signal tells the CPU/processor (that its attention is required)</li>
+<li>A signal that can be sent from a device (attached to the computer)</li>
+<li>A signal that can be sent from software (installed on the computer)</li>
+<li>The interrupt will cause the OS/current process to pause</li>
+<li>The OS/CPU/ISR will service/handle the interrupt</li>
+<li>They have different levels of priority</li>
+<li>After the interrupt is serviced, the (previous) process is continued</li>
+<li>It enables multi-tasking to be carried out on a computer</li>
+<li>A valid example of an interrupt e.g. ‘out of paper’ message for a printer</li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="34-network-hardware.html" title="Previous: 3.4 Network Hardware" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">3.4 Network Hardware</span></a>
+<a href="42-types-of-programming-language-translators-ides.html" title="Next: 4.2 Types of Programming Language, Translators & IDEs" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">4.2 Types of Programming Language, Translators & IDEs</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

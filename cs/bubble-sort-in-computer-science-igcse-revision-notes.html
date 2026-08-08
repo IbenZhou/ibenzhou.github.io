@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Bubble Sort in Computer Science — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>A Bubble Sort in Computer Science</h1>
+    <p>Supplementary</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Linear Search &amp; Bubble Sort</a></li>
+<li><a href="#section_1">Linear Search</a></li>
+<li><a href="#section_2">What is a searching algorithm?</a></li>
+<li><a href="#section_3">What is a linear search?</a></li>
+<li><a href="#section_4">How do you perform a linear search?</a></li>
+<li><a href="#section_5">Bubble Sort</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Linear Search &amp; Bubble Sort</h2>
+<h2 id="section_1">Linear Search</h2>
+<h2 id="section_2">What is a searching algorithm?</h2>
+<ul>
+<li>Searching algorithms are <strong>precise step-by-step instructions</strong> that a computer can follow to <strong>efficiently locate specific data</strong> in massive datasets</li>
+</ul>
+<h2 id="section_3">What is a linear search?</h2>
+<ul>
+<li>A linear search <strong>starts with the first value</strong> in a dataset and <strong>checks every value one at a time</strong> until all values have been checked</li>
+<li>A linear search can be performed <strong>even if the values are not in order</strong></li>
+</ul>
+<h2 id="section_4">How do you perform a linear search?</h2>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Step</b></p></th><th colspan="1" rowspan="1"><p><b>Instruction</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p>Check the first value</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>2</b></p></td><td colspan="1" rowspan="1"><p><b>IF</b> it is the value you are looking for</p><ul><li><p>STOP!</p></li></ul></td></tr><tr><td colspan="1" rowspan="1"><p><b>3</b></p></td><td colspan="1" rowspan="1"><p><b>ELSE</b> move to the next value and check</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>4</b></p></td><td colspan="1" rowspan="1"><p><b>REPEAT UNTIL</b> you have checked all values and not found the value you are looking for</p></td></tr></tbody></table>
+<p>You will not be asked to perform a linear search on a dataset in the exam, you will be expected to understand how to do it and know the advantages and disadvantages of performing it</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// A linear search in Pseudocode</span>
+
+<span class="c1">// Declare variables</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span><span class="w"> </span>
+
+<span class="c1">// Assign values to the array and target</span>
+<span class="n">data</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="o">]</span>
+<span class="n">target</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">11</span>
+<span class="n">found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span><span class="w">  </span><span class="c1">// Start with the assumption that the target is not found</span>
+
+<span class="c1">// Loop through each element in the array</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="c1">// Check if the current element matches the target</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">data</span><span class="o">[</span><span class="n">index</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Target found&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">index</span>
+
+<span class="c1">// After the loop, check if the target was never found</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Target not found&quot;</span>
+<span class="n">ENDIF</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># A linear search in Python code</span>
+<span class="c1"># Identify the dataset to search, the target value and set the initial flag</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Loop through each element in the data</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>  <span class="c1"># loop to go through all elements</span>
+    <span class="c1"># Check if the current element matches the target</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+        <span class="c1"># If found, output message</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target found&quot;</span><span class="p">)</span>
+        <span class="k">break</span>  <span class="c1"># Exit the loop if the target is found</span>
+
+<span class="c1"># If the target is not found, output a message</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target not found&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_5">Bubble Sort</h2>
+<h3 id="section_6">What is a sorting algorithm?</h3>
+<ul>
+<li>Sorting algorithms are <strong>precise step-by-step instructions</strong> that a computer can follow to <strong>efficiently sort data</strong> in massive datasets</li>
+</ul>
+<h3 id="section_7">What is a bubble sort?</h3>
+<ul>
+<li>A bubble sort is a simple sorting algorithm that starts at the beginning of a dataset and <strong>checks values</strong> in <strong>‘pairs’</strong> and <strong>swaps them</strong> if they are <strong>not in the correct order</strong></li>
+<li>One full run of comparisons from beginning to end is called a ’ <strong>pass</strong> ', a bubble sort may require multiple ’ <strong>passes</strong> ’ to sort the dataset</li>
+<li>The algorithm is finished when there are <strong>no more swaps to make</strong></li>
+</ul>
+<h3 id="section_8">How do you perform a bubble sort?</h3>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Step</b></p></th><th colspan="1" rowspan="1"><p><b>Instruction</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p>Compare the first two values in the dataset</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>2</b></p></td><td colspan="1" rowspan="1"><p><b>IF</b> they are in the wrong order...</p><ul><li><p>Swap them</p></li></ul></td></tr><tr><td colspan="1" rowspan="1"><p><b>3</b></p></td><td colspan="1" rowspan="1"><p>Compare the next two values</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>4</b></p></td><td colspan="1" rowspan="1"><p><b>REPEAT</b> step 2 & 3 until you reach the end of the dataset (<b>pass 1</b>)</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>5</b></p></td><td colspan="1" rowspan="1"><p><b>IF</b> you have made any swaps...</p><ul><li><p><b>REPEAT</b> from the start (pass 2,3,4...)</p></li></ul></td></tr><tr><td colspan="1" rowspan="1"><p><b>6</b></p></td><td colspan="1" rowspan="1"><p><b>ELSE</b> you have not made any swaps...</p><ul><li><p>STOP! the list is in the correct order</p></li></ul></td></tr></tbody></table>
+<p><img src="0478-images/1205_bubble-sort-fixed.png" alt="Bubble sort algorithm illustration showing two passes on the list: 9, 2, 4, 7, 10, 3, 1. Arrows indicate comparisons and swaps."></p>
+<h4 id="section_9">Example</h4>
+<ul>
+<li>Perform a bubble sort on the following dataset</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Step</b></p></th><th colspan="1" rowspan="1"><p><b>Instruction</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p>Compare the first two values in the dataset</p><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table></div></td></tr><tr><td colspan="1" rowspan="1"><p><b>2</b></p></td><td colspan="1" rowspan="1"><p><b>IF</b> they are in the wrong order...</p><ul><li><p>Swap them</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table></div></td></tr><tr><td colspan="1" rowspan="1"><p><b>3</b></p></td><td colspan="1" rowspan="1"><p>Compare the next two values</p><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table></div></td></tr><tr><td colspan="1" rowspan="1"><p><b>4</b></p></td><td colspan="1" rowspan="1"><p><b>REPEAT</b> step 2 & 3 until you reach the end of the dataset</p><ul><li><p>5 & 4 SWAP!</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table></div><ul><li><p>5 & 1 SWAP!</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table></div><ul><li><p>5 & 6 NO SWAP!</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th></tr></tbody></table></div><ul><li><p>6 & 3 SWAP!</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th></tr></tbody></table></div><ul><li><p>End of pass 1</p></li></ul></td></tr><tr><td colspan="1" rowspan="1"><p><b>5</b></p></td><td colspan="1" rowspan="1"><p><b>IF</b> you have made any swaps...</p><ul><li><p><b>REPEAT</b> from the start</p></li><li><p>End of pass 2 (swaps made)</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th></tr></tbody></table></div><ul><li><p>End of pass 3 (swaps made)</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th></tr></tbody></table></div><ul><li><p>End of pass 4 (no swaps)</p></li></ul><div><table><tbody><tr><th colspan="1" rowspan="1"><p><b>1</b></p></th><th colspan="1" rowspan="1"><p><b>2</b></p></th><th colspan="1" rowspan="1"><p><b>3</b></p></th><th colspan="1" rowspan="1"><p><b>4</b></p></th><th colspan="1" rowspan="1"><p><b>5</b></p></th><th colspan="1" rowspan="1"><p><b>6</b></p></th></tr></tbody></table></div></td></tr><tr><td colspan="1" rowspan="1"><p><b>6</b></p></td><td colspan="1" rowspan="1"><p><b>ELSE</b> you have not made any swaps...</p><ul><li><p>STOP! the list is in the correct order</p></li></ul></td></tr></tbody></table>
+<p>In the exam you do not have to show every swap that takes place in a bubble sort. You can show the outcome of a bubble sort at the end of each pass. If you have the outcome of each pass correct then a bubble sort has been implemented correctly and all marks will be given!</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// A bubble sort in Pseudocode</span>
+<span class="c1">// Declare the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">nums</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">11</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">nums</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="mi">66</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">69</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">71</span><span class="p">,</span><span class="w"> </span><span class="mi">321</span><span class="p">,</span><span class="w"> </span><span class="mi">67</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">39</span><span class="o">]</span>
+
+<span class="c1">// Store the length of the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">numlength</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">numlength</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">11</span>
+
+<span class="c1">// Set a flag to check if any swaps are made</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">swaps</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span><span class="w"> </span>
+<span class="n">swaps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+
+<span class="c1">// Repeat the loop while swaps are being made</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">swaps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">    </span><span class="n">swaps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span>
+
+<span class="w">    </span><span class="c1">// Loop through the array from the start to the second-last unsorted element</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">numlength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="c1">// If the current number is greater than the next number, swap them</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="w">            </span><span class="n">temp</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="o">]</span>
+<span class="w">            </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span>
+<span class="w">            </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">temp</span>
+
+<span class="w">            </span><span class="n">swaps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span><span class="w">  </span><span class="c1">// A swap was made</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">y</span>
+
+<span class="w">    </span><span class="c1">// Decrease the range as the last value is now sorted</span>
+<span class="w">    </span><span class="n">numlength</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">numlength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+
+<span class="c1">// Output the sorted array</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">11</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># A bubble sort in Python code</span>
+<span class="c1"># Unsorted dataset</span>
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">66</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">321</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">39</span><span class="p">]</span>
+
+<span class="c1"># Count the length of the dataset</span>
+<span class="n">numlength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+
+<span class="c1"># Set a flag to initiate the loop</span>
+<span class="n">swaps</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">while</span> <span class="n">swaps</span><span class="p">:</span>  <span class="c1"># While any swap is made, continue</span>
+    <span class="n">swaps</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Loop through the dataset</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numlength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># Compare adjacent elements</span>
+        <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>  <span class="c1"># If the first number is bigger</span>
+            <span class="c1"># Swap the numbers using a temporary variable</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
+            <span class="n">swaps</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Mark that a swap was made</span>
+
+    <span class="c1"># Each iteration confirms that the last element is in place</span>
+    <span class="n">numlength</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="c1"># Print the sorted list</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<p>A program uses a file to store a list of words.</p>
+<p>A sample of this data is shown</p>
+<table><tbody><tr><td colspan="1" rowspan="1"><p>Milk</p></td><td colspan="1" rowspan="1"><p>Eggs</p></td><td colspan="1" rowspan="1"><p>Bananas</p></td><td colspan="1" rowspan="1"><p>Cheese</p></td><td colspan="1" rowspan="1"><p>Potatoes</p></td><td colspan="1" rowspan="1"><p>Grapes</p></td></tr></tbody></table>
+<p>Show the stages of a bubble sort when applied to data shown <strong>[2]</strong></p>
+<p><strong>How to answer this question</strong></p>
+<ul>
+<li>We need to sort the values in to <strong>alphabetical order</strong> from A-Z</li>
+<li>You <strong>CAN</strong> use the first letter of each word to simplify the process</li>
+</ul>
+<p><strong>Answer</strong></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="11-exam-technique.html" title="Previous: 11 Exam Technique" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">11 Exam Technique</span></a>
+<div style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;opacity:.35;pointer-events:none;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;">—</span></div>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

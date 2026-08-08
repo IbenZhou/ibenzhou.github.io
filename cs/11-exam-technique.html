@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11 Exam Technique — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>11 Exam Technique</h1>
+    <p>Supplementary</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">What is examined in the Cambridge IGCSE Computer Science Paper 1?</a></li>
+<li><a href="#section_3">Paper 2 Guidance</a></li>
+<li><a href="#section_4">What is examined in the Cambridge IGCSE Computer Science Paper 2?</a></li>
+<li><a href="#section_10">How to Answer Programming Questions</a></li>
+<li><a href="#section_11">How do I answer a CIE IGCSE Computer Science programming question?</a></li>
+<li><a href="#section_13">How to Answer Trace Table Questions</a></li>
+<li><a href="#section_14">How do I answer a CIE IGCSE Computer Science trace table question?</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<p>C## Paper 1 Guidance</p>
+<h2 id="section">What is examined in the Cambridge IGCSE Computer Science Paper 1?</h2>
+<ul>
+<li>It focuses on the <strong>fundamental principles and concepts</strong> of computer systems</li>
+<li>The content assessed in Paper 1 includes topics 1 through 6 of the subject content:
+<ul>
+<li><strong>Topic 1</strong>: Data Representation</li>
+<li><strong>Topic 2</strong>: Data Transmission</li>
+<li><strong>Topic 3</strong>: Hardware</li>
+<li><strong>Topic 4</strong>: Software</li>
+<li><strong>Topic 5</strong>: The Internet and its Uses</li>
+<li><strong>Topic 6</strong>: Automated and Emerging Technologies</li>
+</ul>
+</li>
+<li>The paper’s duration is <strong>1 hour and 45 minutes</strong></li>
+<li>The total number of marks available is <strong>75</strong></li>
+<li>Paper 1 represents <strong>50% of the total IGCSE qualification</strong></li>
+</ul>
+<h3 id="section_1">Assessment structure and questions:</h3>
+<ul>
+<li>This is a <strong>written paper</strong></li>
+<li>It consists of <strong>short-answer and structured questions</strong></li>
+<li><strong>All questions are compulsory</strong>, and candidates must answer directly on the question paper</li>
+<li>The paper assesses <strong>assessment objectives (AO) AO1, AO2, and AO3</strong>
+<ul>
+<li><strong>AO1</strong>: Demonstrate knowledge and understanding of principles and concepts</li>
+<li><strong>AO2</strong>: Apply knowledge and understanding to analyse problems</li>
+<li><strong>AO3</strong>: Provide solutions by evaluating, making judgments, and presenting conclusions</li>
+</ul>
+</li>
+<li>Calculators are <strong>not permitted</strong> in this examination</li>
+<li>The paper assesses the <em>full grade range from</em> <em><strong>A* to G</strong></em></li>
+<li>Each individual question is set within <strong>separate contexts of ICT applications in everyday life</strong></li>
+</ul>
+<h3 id="section_2">Key considerations for students:</h3>
+<ul>
+<li>Candidates should be able to apply <strong>mathematical skills</strong>, including arithmetic, Boolean operators, different number systems (binary, denary, hexadecimal), and methods of counting, totalling, and rounding</li>
+<li><strong>Command words</strong> (e.g., Calculate, Compare, Define, Describe, Explain, Identify, State) will be used consistently to indicate expectations</li>
+<li><strong>No prior study</strong> is expected for this course</li>
+</ul>
+<h2 id="section_3">Paper 2 Guidance</h2>
+<h2 id="section_4">What is examined in the Cambridge IGCSE Computer Science Paper 2?</h2>
+<ul>
+<li>It primarily focuses on the <strong>concepts of computational thinking</strong>, <strong>algorithm design</strong>, <strong>programming</strong>, and <strong>Boolean logic</strong></li>
+<li>The main focus of this paper is on the following topics:
+<ul>
+<li><strong>Topic 7:</strong> Algorithm design and problem-solving</li>
+<li><strong>Topic 8:</strong> Programming</li>
+<li><strong>Topic 9:</strong> Databases</li>
+<li><strong>Topic 10:</strong> Boolean logic</li>
+</ul>
+</li>
+<li>The paper’s duration is <strong>1 hour and 45 minutes</strong></li>
+<li>The total number of marks available is <strong>75</strong></li>
+<li>Paper 2 represents <strong>50% of the total IGCSE qualification</strong></li>
+</ul>
+<h3 id="section_5">Assessment structure and questions:</h3>
+<ul>
+<li>This is a <strong>written paper</strong> consisting of <strong>short-answer and structured questions</strong></li>
+<li><strong>All questions are compulsory</strong>, and candidates must answer directly on the question paper</li>
+<li>Calculators are <strong>not permitted</strong> in this examination</li>
+<li>The paper assesses <strong>assessment objectives (AO) AO1, AO2, and AO3</strong>:
+<ul>
+<li><strong>AO1 (Knowledge and Understanding):</strong> Demonstrating knowledge and understanding of computer science principles and concepts</li>
+<li><strong>AO2 (Application):</strong> Applying knowledge and understanding to a given context, including the analysis and design of computational or programming problems</li>
+<li><strong>AO3 (Solution Provision):</strong> Providing solutions by evaluating computer systems, making reasoned judgments, and presenting conclusions</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_6">Scenario question:</h4>
+<ul>
+<li>The <strong>final question</strong> in Paper 2 is an <strong>unseen scenario question</strong> worth <strong>15 marks</strong></li>
+<li>Candidates will be required to <strong>write an algorithm</strong> using <strong>pseudocode or program code</strong> for the given context</li>
+<li>It is expected that candidates spend <strong>30 minutes</strong> answering this question</li>
+</ul>
+<h3 id="section_7">Programming and algorithmic responses:</h3>
+<ul>
+<li>Knowledge of programming language syntax is <strong>not examined</strong>; the logic is considered more important than the syntax</li>
+<li>When responding with pseudocode, learners are <strong>not expected to memorise the exact syntax</strong> shown in the syllabus guide, but their answers should be inferable by a competent programmer</li>
+<li>The general style for pseudocode will use <strong>keywords in uppercase</strong> (e.g., IF, REPEAT, PROCEDURE), and identifiers in mixed case (e.g., NumberOfPlayers)</li>
+<li>Standard <strong>flowchart symbols</strong> must be used by students when drawing flowcharts</li>
+<li>Standard <strong>logic gate symbols</strong> must be used by students when drawing logic circuits</li>
+</ul>
+<h3 id="section_8">Mathematical requirements:</h3>
+<ul>
+<li>Candidates should be able to:
+<ul>
+<li>Add, subtract, multiply, and divide</li>
+<li>Use averages, random numbers, decimals, fractions, percentages, and ratios</li>
+<li>Use both positive and negative integers, and real numbers</li>
+<li>Use arithmetic and Boolean operators</li>
+<li>Use different number systems, including binary, denary, and hexadecimal</li>
+<li>Use methods of counting, totalling, and rounding</li>
+</ul>
+</li>
+</ul>
+<h3 id="section_9">Key considerations for students:</h3>
+<ul>
+<li>Develop strong <strong>computational thinking skills</strong>, including abstraction and decomposition</li>
+<li><strong>Practice</strong> designing, writing, testing, and debugging programs extensively</li>
+<li>Focus on the <strong>logic</strong> of algorithms and programs, rather than memorising exact syntax</li>
+<li>Be prepared to write algorithms in <strong>pseudocode or program code</strong></li>
+<li>Understand and apply <strong>standard algorithms for searching</strong> (linear, binary) and sorting (bubble, insertion)</li>
+<li>Familiarise yourself with the specified pseudocode, flowchart symbols, and logic gate symbols in the syllabus</li>
+</ul>
+<h2 id="section_10">How to Answer Programming Questions</h2>
+<h2 id="section_11">How do I answer a CIE IGCSE Computer Science programming question?</h2>
+<ul>
+<li>Programming questions can appear in <strong>both papers</strong></li>
+<li><strong>Paper 1</strong> may include questions that test understanding and interpretation of <strong>algorithms</strong> and <strong>computational thinking principles</strong>, including the ability to <strong>trace and explain pseudocode</strong></li>
+<li><strong>Paper 2</strong> is the paper that primarily assesses the ability to <strong>design, write, test</strong>, and <strong>refine programs</strong>
+<ul>
+<li>It also includes a <strong>fixed 15‑mark programming question</strong> at the end of the paper</li>
+</ul>
+</li>
+<li><strong>All questions</strong> must be answered using:
+<ul>
+<li>CIE <strong>pseudocode</strong> notation</li>
+<li><strong>Structured English</strong></li>
+<li><strong>High‑level</strong> programming language</li>
+</ul>
+</li>
+<li>To attempt a programming question that requires the writing of a new program, you should always ask yourself the following <strong>five key questions</strong>:
+<ul>
+<li>What are the <strong>inputs</strong>?</li>
+<li>What are the <strong>outputs</strong>?</li>
+<li>What <strong>processes</strong> take place?</li>
+<li>What <strong>constructs</strong> will I need to use?</li>
+<li>Do I need to use <strong>subprograms</strong>?</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_12">Example</h4>
+<table><tbody><tr><th colspan="2" rowspan="1"><p>Question</p></th></tr><tr><td colspan="2" rowspan="1"><p>The string operation <code>SUBSTRING(Quote, Start, Number)</code> returns a string from <code>Quote</code></p><p>beginning at position <code>Start</code> that is <code>Number</code> characters long. The first character in <code>Quote</code> is in position 1.</p><p><b>Write</b> pseudocode statements to:</p><ul><li><p>store the string " <code>Learning Never Exhausts The Mind</code> " in <code>Quote</code></p></li><li><p>extract and display the words " <code>The Mind</code> " from the string</p></li><li><p>output the original string in lower case.</p></li></ul><p><b>[5 marks]</b></p></td></tr><tr><td colspan="2" rowspan="1"><p>What are the <b>inputs</b>? What are the <b>outputs</b>? What <b>processes</b> take place?</p></td></tr><tr><td colspan="2" rowspan="1"><p>The string operation SUBSTRING(Quote, Start, Number) returns a string from Quote</p><p>beginning at position <code>Start</code> that is <code>Number</code> characters long. The first character in <code>Quote</code> is in position 1.</p><ul><li><p>store the string " <code>Learning Never Exhausts The Mind</code> " in <code>Quote</code></p></li><li><p>extract and display the words " <code>The Mind</code> " from the string</p></li><li><p>output the original string in lower case.</p></li></ul></td></tr><tr><td colspan="2" rowspan="1"><p>What <b>constructs</b> will I need to use?</p></td></tr><tr><td colspan="2" rowspan="1"><ul><li><p><b>Sequence</b></p><ul><li><p>Each pseudocode instruction is executed in order</p></li></ul></li><li><p><b>Assignment</b></p><ul><li><p>Assigning the string to <code>Quote</code></p></li></ul></li><li><p><b>String manipulation</b></p><ul><li><p>Using <code>SUBSTRING()</code> to extract part of a string</p></li></ul></li><li><p><b>Case conversion</b></p><ul><li><p>Using <code>LCASE()</code> (or similar function) to convert the string to lowercase</p></li></ul></li></ul></td></tr><tr><td colspan="2" rowspan="1"><p>Do I need to use <b>subprograms</b>?</p></td></tr><tr><td colspan="2" rowspan="1"><ul><li><p>In this question, the subprograms are <b>built-in string handling functions</b>:</p><ul><li><p><code>SUBSTRING(Quote, Start, Number)</code> – extracts part of a string</p></li><li><p><code>LCASE(Quote)</code> – returns the lowercase version of the string</p></li></ul></li></ul></td></tr><tr><td colspan="2" rowspan="1"><p>Answer</p></td></tr><tr><td colspan="2" rowspan="1"><p><b>Pseudocode</b></p></td></tr><tr><td colspan="2" rowspan="1"><p>Quote ← "Learning Never Exhausts The Mind"</p><p>Start ← 25</p><p>Number ← 8</p><p>OUTPUT SUBSTRING(Quote, Start, Number)</p><p>OUTPUT LCASE(Quote)</p></td></tr></tbody></table>
+<h2 id="section_13">How to Answer Trace Table Questions</h2>
+<h2 id="section_14">How do I answer a CIE IGCSE Computer Science trace table question?</h2>
+<h3 id="section_15">What is a trace table?</h3>
+<ul>
+<li>
+<p>Trace tables are used to <strong>follow the values of variables</strong> as a program runs</p>
+</li>
+<li>
+<p>These questions test your ability to simulate code line by line and accurately record outputs</p>
+</li>
+<li>
+<p><em>You must read the code carefully and simulate it exactly as a computer would</em></p>
+</li>
+<li>
+<p><em>Use a pencil and annotate each step</em></p>
+</li>
+<li>
+<p><em>The most common mistake is skipping or misreading a line</em></p>
+</li>
+</ul>
+<h4 id="section_16">What you need to know</h4>
+<ul>
+<li>You may be asked to <strong>complete a trace table</strong>, <strong>explain a trace table</strong>, or <strong>spot errors</strong> in output</li>
+<li>These questions are normally worth <strong>3–6 marks</strong></li>
+<li>Most commonly appear in questions involving <strong>iteration</strong>, <strong>selection</strong>, and <strong>arrays/lists</strong></li>
+<li>In most cases, the <strong>structure of the table is provided</strong>, your task is to complete the missing values</li>
+</ul>
+<h4 id="section_17">Command words to look out for</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p>Command word</p></th><th colspan="1" rowspan="1"><p>What it means</p></th></tr><tr><td colspan="1" rowspan="1"><p>Complete</p></td><td colspan="1" rowspan="1"><p>Fill in the table with correct values</p></td></tr><tr><td colspan="1" rowspan="1"><p>State</p></td><td colspan="1" rowspan="1"><p>Give the value/output/result (usually a single word or number)</p></td></tr><tr><td colspan="1" rowspan="1"><p>Explain</p></td><td colspan="1" rowspan="1"><p>Say why something happens or changes in the program</p></td></tr><tr><td colspan="1" rowspan="1"><p>Identify</p></td><td colspan="1" rowspan="1"><p>Spot where something goes wrong or doesn't match expectations</p></td></tr></tbody></table>
+<h3 id="section_18">How to tackle a trace table question</h3>
+<p>Follow these steps to answer trace table questions accurately:</p>
+<ol>
+<li><strong>Read the code carefully</strong>
+Understand what each line does
+Look out for loops, IF statements, and variable changes</li>
+<li><strong>Use the trace table provided</strong><br>
+Use the headings and row count to guide how many iterations or steps are needed</li>
+<li><strong>Work line by line</strong><br>
+Simulate the program in your head or on paper
+Update each variable after every change</li>
+<li><strong>Watch out for variable resets</strong><br>
+Variables declared inside loops often reset every time, don’t carry the wrong value across iterations</li>
+<li><strong>Show the final output clearly</strong><br>
+If you’re asked for the output, make sure it’s written exactly as it would appear on screen</li>
+</ol>
+<h4 id="section_19">Worked example</h4>
+<table><tbody><tr><th colspan="2" rowspan="1"><p>Question</p></th></tr><tr><td colspan="2" rowspan="1"><p>This algorithm inputs three numbers and calculates the total if they are greater than 10:</p><pre><code>01 total ← 0  
+02 count ← 1  
+03 WHILE count ≤ 3  
+04     number ← INPUT  
+05     IF number > 10 THEN  
+06         total ← total + number  
+07     ENDIF  
+08     count ← count + 1  
+09 ENDWHILE  
+10 OUTPUT total</code></pre><p><b>Complete</b> the trace table below when the inputs are: <b>12, 8, 15</b></p><p>You <b>may not</b> need to use all the rows in the table</p><div><table><tbody><tr><th colspan="1" rowspan="1"><p><code>Line number</code></p></th><th colspan="1" rowspan="1"><p><code>count</code></p></th><th colspan="1" rowspan="1"><p><code>number</code></p></th><th colspan="1" rowspan="1"><p><code>total</code></p></th><th colspan="1" rowspan="1"><p><code>Output</code></p></th></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td><td colspan="1" rowspan="1"></td></tr></tbody></table></div></td></tr><tr><td colspan="2" rowspan="1"><ol><li><p><b>Read the code carefully</b></p></li></ol></td></tr><tr><td colspan="2" rowspan="1"><ul><li><p><b>Line 1</b>: Sets <code>total</code> to 0</p></li><li><p><b>Line 2</b>: Sets <code>count</code> to 1</p></li><li><p><b>Lines 3–9</b>: Loop runs 3 times (count from 1 to 3)</p><ul><li><p>Each time, a number is input</p></li><li><p>If it’s greater than 10, it’s added to <code>total</code></p></li><li><p>Then <code>count</code> increases by 1</p></li></ul></li><li><p><b>Line 10</b>: Outputs the final total after the loop finishes</p></li></ul></td></tr><tr><td colspan="2" rowspan="1"><ol><li><p><b>Use the trace table provided</b></p></li></ol></td></tr><tr><td colspan="2" rowspan="1"><ul><li><p>The trace table includes 15 rows, one for each step where a variable changes</p></li><li><p>You should use a new row whenever a variable or output changes</p></li><li><p>If you only use 5–6 rows, something’s probably missing</p></li></ul></td></tr><tr><td colspan="2" rowspan="1"><ol><li><p><b>Work line by line</b></p></li></ol></td></tr><tr><td colspan="1" rowspan="1"><p><code>03 WHILE count ≤ 3</code></p></td><td colspan="1" rowspan="1"><p><code>count</code> <i>= 1 → loop runs</i></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>04 number ← INPUT</code></p></td><td colspan="1" rowspan="1"><p><i>User inputs</i> <code>12</code></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>05 IF number > 10 THEN</code></p></td><td colspan="1" rowspan="1"><p><i>12 > 10 → go to line 6</i></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>06 total ← total + number</code></p></td><td colspan="1" rowspan="1"><p><code>total</code> <i>becomes 12</i></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>08 count ← count + 1</code></p></td><td colspan="1" rowspan="1"><p><code>count</code> <i>becomes 2</i></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>03 WHILE count ≤ 3</code></p></td><td colspan="1" rowspan="1"><p><code>count</code> <i>= 2 → loop runs</i></p></td></tr><tr><td colspan="2" rowspan="1"><ol><li><p><b>Watch out for variable resets</b></p></li></ol></td></tr><tr><td colspan="2" rowspan="1"><ul><li><p><code>number</code> changes each time new input is entered</p></li><li><p><code>total</code> only changes if the input is greater than 10</p></li><li><p><code>count</code> increases on every loop</p></li><li><p>There are <b>no nested loops</b>, so trace line by line in order</p></li></ul></td></tr><tr><td colspan="2" rowspan="1"><ol><li><p><b>Show the final output clearly</b></p></li></ol></td></tr><tr><td colspan="1" rowspan="1"><pre><code>10 OUTPUT total</code></pre></td><td colspan="1" rowspan="1"><p>The output is <b>27</b></p></td></tr><tr><td colspan="2" rowspan="1"><p>Final answer</p></td></tr><tr><td colspan="2" rowspan="1">![|803](image/2781_2025-08-12-0fg-kleki.png)</td></tr></tbody></table>
+<ul>
+<li>You don’t need to fill in Line 7 or Line 9, they just mark the end of IF and WHILE</li>
+<li>Use a dash (–) when a column isn’t relevant</li>
+<li>Keep your trace table neat, it’s easy to lose marks if your working is hard to follow</li>
+<li>If you’re writing by hand, add short notes in the margin to explain any changes</li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="10-boolean-logic.html" title="Previous: 10 Boolean Logic" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">10 Boolean Logic</span></a>
+<a href="bubble-sort-in-computer-science-igcse-revision-notes.html" title="Next: A Bubble Sort in Computer Science" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">A Bubble Sort in Computer Science</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

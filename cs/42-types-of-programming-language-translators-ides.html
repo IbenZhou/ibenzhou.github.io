@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.2 Types of Programming Language, Translators & IDEs — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>4.2 Types of Programming Language, Translators & IDEs</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Levels of Programming Languages</a></li>
+<li><a href="#section_1">What is a programming language?</a></li>
+<li><a href="#section_2">Low-Level Languages</a></li>
+<li><a href="#section_6">High-Level Languages</a></li>
+<li><a href="#section_8">Assembly Language</a></li>
+<li><a href="#section_10">Translators, Compilers &amp; Interpreters</a></li>
+<li><a href="#section_14">Tools &amp; Facilities in IDEs</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Levels of Programming Languages</h2>
+<h2 id="section_1">What is a programming language?</h2>
+<p><em>Cambridge IGCSE 0478 expects you to explain the</em> <em><strong>difference between low-level and high-level languages</strong></em>*, and* <em><strong>name advantages and disadvantages</strong></em> <em>of each. This page is structured to mirror the format used in real exam questions.</em></p>
+<ul>
+<li>A programming language <strong>acts as a bridge</strong> between what <strong>humans understand</strong> and what a <strong>computer understands</strong></li>
+<li>Early computers were <strong>complex</strong> and instructions would have to be in <strong>written in binary code</strong>, 0s and 1s</li>
+<li>This process was <strong>slow</strong>, taking days to program simple tasks</li>
+<li>Over time, new generations of programming languages have enabled people to become <strong>faster</strong> and <strong>more efficient</strong> at writing programs as they <strong>resemble human language</strong></li>
+<li>Generations of programming languages can be split in to two categories:
+<ul>
+<li><strong>Low-level</strong>
+<ul>
+<li><strong>First generation</strong></li>
+<li><strong>Second generation</strong></li>
+</ul>
+</li>
+<li><strong>High-level</strong>
+<ul>
+<li><strong>Third generation</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_2">Low-Level Languages</h2>
+<h3 id="section_3">What is a low-level language?</h3>
+<ul>
+<li>A low-level language is a programming language that <strong>directly translates to machine code</strong> understood by the processor</li>
+<li>Low-level languages allow <strong>direct control over hardware</strong> components such as <strong>memory</strong> and <strong>registers</strong></li>
+<li>These languages are written for <strong>specific processors</strong> to ensure they embed the correct machine architecture</li>
+</ul>
+<h4 id="section_4">First generation</h4>
+<ul>
+<li><strong>Machine code</strong> is a first-generation language</li>
+<li>Instructions are <strong>directly executable by the processor</strong></li>
+<li>Written in <strong>binary code</strong></li>
+</ul>
+<h4 id="section_5">Second generation</h4>
+<ul>
+<li><strong>Assembly code</strong> is a second-generation language</li>
+<li>The code is written using <strong>mnemonics</strong>, abbreviated text commands such as <strong>LDA (Load), STA(Store)</strong></li>
+<li>Using this language programmers can write <strong>human-readable programs</strong> that correspond <strong>almost exactly to machine code</strong></li>
+<li><strong>One assembly language instruction</strong> translates to <strong>one machine code instruction</strong></li>
+<li><strong>Needs to be translated</strong> into machine code for the computer to be able to execute it</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Complete control over the system components</td>
+<td>Difficult to write and understand</td>
+</tr>
+<tr>
+<td>Occupy less memory and execute faster</td>
+<td>Machine dependent</td>
+</tr>
+<tr>
+<td>Direct manipulation of hardware</td>
+<td>More prone to errors</td>
+</tr>
+<tr>
+<td></td>
+<td>Knowledge of computer architecture is key to program effectively</td>
+</tr>
+</tbody>
+</table>
+<p><em>When describing low-level languages, don’t just say “they are faster”, you must say</em> <em><strong>they allow direct control over hardware or memory</strong></em>*, which leads to greater efficiency. Be specific to earn the mark.*</p>
+<h2 id="section_6">High-Level Languages</h2>
+<h3 id="section_7">What is a high-level language?</h3>
+<ul>
+<li>A high-level programming language uses <strong>English-like statements</strong> to allow users to program with easy to use code</li>
+<li>High-level languages allow for clear <strong>debugging</strong> and once programs are created they are <strong>easier to maintain</strong></li>
+<li>High level languages were needed due to the <strong>development of processor speeds</strong> and the <strong>increase in memory capacity</strong></li>
+<li><strong>One instruction</strong> translates into <strong>many machine code instructions</strong></li>
+<li><strong>Needs to be translated</strong> into machine code for the computer to be able to execute it</li>
+<li>Examples of high-level languages include:
+<ul>
+<li><strong>Python</strong></li>
+<li><strong>Java</strong></li>
+<li><strong>Basic</strong></li>
+<li><strong>C++</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Easier to read and write</td>
+<td>The user is not able to directly manipulate the hardware</td>
+</tr>
+<tr>
+<td>Easier to debug</td>
+<td>Needs to be translated to machine code before running</td>
+</tr>
+<tr>
+<td>Portable so can be used on any computer</td>
+<td>The program may be less efficient</td>
+</tr>
+<tr>
+<td>One line of code can perform multiple commands</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Students sometimes confuse machine code and assembly. Remember:</em></p>
+<p><em><strong>Machine code</strong></em> <em>= binary (1st generation)</em></p>
+<p><em><strong>Assembly</strong></em> <em>= mnemonics (2nd generation, needs assembler)</em></p>
+<h2 id="section_8">Assembly Language</h2>
+<h3 id="section_9">What is assembly language?</h3>
+<ul>
+<li>Assembly language is a <strong>second-generation</strong>, <strong>low-level language</strong> designed to simplify the writing of machine code instructions for programmers</li>
+<li>Programmers use assembly language for the following reasons:
+<ul>
+<li>Need to make use of <strong>specific hardware</strong> or parts of the hardware</li>
+<li>To complete <strong>specific machine-dependent</strong> instructions</li>
+<li>To ensure that too much space <strong>is not taken up in RAM</strong></li>
+<li>To ensure code can be completed much <strong>faster</strong></li>
+</ul>
+</li>
+<li>Assembly languages allow programmers to program with <strong>mnemonics,</strong> e.g.
+<ul>
+<li><strong>LDA Load</strong> - this will ensure a value is added to the accumulator</li>
+<li><strong>ADD Addition</strong> - this will add the value input or loaded from memory to the value in the accumulator</li>
+<li><strong>STO Store</strong> - stores the value in the accumulator in RAM</li>
+</ul>
+</li>
+<li>Assembly language allowed continuation of working <strong>directly with the hardware</strong> but removed an element of <strong>complexity</strong></li>
+<li>A <strong>mnemonic</strong> is received by the computer and it is looked up within a specific table</li>
+<li>An <strong>assembler</strong> is needed to check the word so that it can be converted into machine code</li>
+<li>If a <strong>match from the word is found</strong> (e.g. <strong>STO</strong>),the word is replaced with the relevant binary code to match that sequence</li>
+</ul>
+<p>Complete the table to identify whether each example of computer code is <strong>High-level</strong>, <strong>Assembly language</strong> or <strong>Machine code</strong></p>
+<table>
+<thead>
+<tr>
+<th>Computer code</th>
+<th>High-level</th>
+<th>Assembly</th>
+<th>Machine code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10110111</code><br><br><code>00110110</code><br><br><code>11100110</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>FOR X = 1 to 10</code><br><br><code>PRINT x</code><br><br><code>NEXT X</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>INP X</code><br><br><code>STA X</code><br><br><code>LDA Y</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>[3]</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer</strong></p>
+<table>
+<thead>
+<tr>
+<th>Computer code</th>
+<th>High-level</th>
+<th>Assembly</th>
+<th>Machine code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10110111</code><br><br><code>00110110</code><br><br><code>11100110</code></td>
+<td></td>
+<td></td>
+<td><strong>X</strong> <strong>[1 mark]</strong></td>
+</tr>
+<tr>
+<td><code>FOR X = 1 to 10</code><br><br><code>PRINT x</code><br><br><code>NEXT X</code></td>
+<td><strong>X</strong> <strong>[1 mark]</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>INP X</code><br><br><code>STA X</code><br><br><code>LDA Y</code></td>
+<td></td>
+<td><strong>X</strong> <strong>[1 mark]</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_10">Translators, Compilers &amp; Interpreters</h2>
+<h3 id="section_11">What is a translator?</h3>
+<ul>
+<li>A translator is a program that <strong>translates</strong> program <strong>source code</strong> into <strong>machine code</strong> so that it can be executed directly by a processor</li>
+<li><strong>Low-level languages</strong> such as <strong>assembly code</strong> are translated using an <strong>assembler</strong></li>
+<li><strong>High-level languages</strong> such as <strong>Python</strong> are translated using a <strong>compiler</strong> or <strong>interpreter</strong></li>
+</ul>
+<h3 id="section_12">What is a compiler?</h3>
+<ul>
+<li>A compiler translates high-level languages into machine code <strong>all in one go</strong></li>
+<li>Compilers are generally used when <strong>a program is finished</strong> and has been checked for syntax errors</li>
+<li>Compiled code can be <strong>distributed (creates an executable)</strong> and run <strong>without the need for translation software</strong></li>
+<li>If compiled code contains any errors, after fixing, it <strong>will need re-compiling</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speed of execution</td>
+<td>Can be memory intensive</td>
+</tr>
+<tr>
+<td>Optimises the code</td>
+<td>Difficult to debug</td>
+</tr>
+<tr>
+<td>Original source code will not be seen</td>
+<td>Changes mean it must be recompiled</td>
+</tr>
+<tr>
+<td></td>
+<td>It is designed solely for one specific processor</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_13">What is an interpreter?</h3>
+<ul>
+<li>An interpreter translates high-level languages into machine code <strong>one line at a time</strong></li>
+<li>Each line is executed after translation and if <strong>any errors are found</strong>, the <strong>process stops</strong></li>
+<li>Interpreters are generally used when a program <strong>is being written</strong> in the development stage</li>
+<li>Interpreted code is more <strong>difficult to distribute</strong> as <strong>translation software is needed for it to run</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stops when it finds a specific <strong>syntax error</strong> in the code</td>
+<td>Slower execution</td>
+</tr>
+<tr>
+<td>Easier to debug</td>
+<td>Every time the program is run it has to be translated</td>
+</tr>
+<tr>
+<td>Require less RAM to process the code</td>
+<td>Executed as is, no optimisation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_14">Tools &amp; Facilities in IDEs</h2>
+<h3 id="section_15">What is an IDE?</h3>
+<ul>
+<li>An Integrated Development Environment (IDE) is <strong>software</strong> designed to make <strong>writing high-level languages</strong> more <strong>efficient</strong></li>
+<li>IDEs include tools and facilities to make the <strong>process of creating/maintaining code easier,</strong> such as:
+<ul>
+<li><strong>Editor</strong></li>
+<li><strong>Error diagnostics</strong></li>
+<li><strong>Run-time environment</strong></li>
+<li><strong>Translators</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_16">Editor</h4>
+<p><img src="0478-images/ytHHel1c_replit1.png" alt="ytHHel1c_replit1"></p>
+<ul>
+<li>An editor gives users an environment to <strong>write, edit and maintain</strong> high-level code</li>
+<li>Editors can provide:
+<ul>
+<li><strong>Basic code formatting tools</strong> - changing the font, size of the font and making text bold etc</li>
+<li><strong>Prettyprint</strong> - using colour to make it easier to identify keywords, for example ’ <code>print</code> ', ’ <code>input</code> ’ and ’ <code>if</code> ’ in Python</li>
+<li><strong>Code editing</strong> - auto-completion and auto-correction of code, bracket matching and syntax checks</li>
+<li><strong>Commenting code</strong> - allows sections of code to be commented out easily to stop it from being run or as comments on what the program is doing
+<img src="0478-images/LNW3hy4A_replit2.png" alt="LNW3hy4A_replit2"></li>
+</ul>
+</li>
+<li>Tools that help to <strong>identify</strong>, <strong>understand</strong> and <strong>fix errors</strong> in code, such as:
+<ul>
+<li><strong>Identifying errors</strong> - highlight particular areas of code or provide direct error messages where the error may have appeared e.g. indentation errors etc</li>
+<li><strong>Debugger</strong> - provide a ‘step through’ command which provides step by step instructions and shows what is happening to the code line by line, useful for finding <strong>logic errors</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_17">Run-time environment</h4>
+<p><img src="0478-images/replit3.png" alt="replit3"></p>
+<ul>
+<li>Gives users the ability <strong>to run</strong> and see the <strong>corresponding output</strong> of a high-level language</li>
+</ul>
+<h4 id="section_18">Translator</h4>
+<ul>
+<li>Built in to <strong>compile</strong> or <strong>interpret</strong> code without the need for an extra piece of software</li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="41-types-of-software-interrupts.html" title="Previous: 4.1 Types of Software & Interrupts" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">4.1 Types of Software & Interrupts</span></a>
+<a href="51-internet-world-wide-web.html" title="Next: 5.1 The Internet & the World Wide Web" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">5.1 The Internet & the World Wide Web</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

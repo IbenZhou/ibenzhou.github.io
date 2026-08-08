@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.2 Text, Sound & Images — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>1.2 Text, Sound & Images</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Character Sets</a></li>
+<li><a href="#section_2">ASCII</a></li>
+<li><a href="#section_6">UNICODE</a></li>
+<li><a href="#section_9">Representing Sound</a></li>
+<li><a href="#section_10">How Sound is Sampled &amp; Stored</a></li>
+<li><a href="#section_12">Sample Rate &amp; Sample Resolution</a></li>
+<li><a href="#section_16">Representing Images</a></li>
+<li><a href="#section_17">Bitmap Images</a></li>
+<li><a href="#section_19">Resolution &amp; Colour Depth</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Character Sets</h2>
+<h3 id="section_1">What is a character set?</h3>
+<ul>
+<li>A character set is <strong>all the characters and symbols</strong> that can be <strong>represented</strong> by a computer system</li>
+<li>Each character is given a <strong>unique</strong> binary code</li>
+<li>Character sets are <strong>ordered logically</strong>, the code for ‘B’ is one more than the code for ‘A’</li>
+<li>A character set provides a <strong>standard</strong> for computers to communicate and send/receive information</li>
+<li>Without a character set, one system might interpret 01000001 differently from another</li>
+<li>The number of characters that can be represented is determined by the <strong>number of bits used</strong> by the character set</li>
+<li>Two common character sets are:
+<ul>
+<li>American Standard Code for Information Interchange (<strong>ASCII</strong>)</li>
+<li>Universal Character Encoding (<strong>UNICODE</strong>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_2">ASCII</h2>
+<h3 id="section_3">What is ASCII?</h3>
+<ul>
+<li>ASCII is a character set and was an accepted standard for information interchange</li>
+<li>ASCII uses <strong>7 bits</strong>, providing 2 <sup>7</sup> unique codes (128) or a maximum of <strong>128 characters</strong> it can represent
+<img src="0478-images/ascii-table.png" alt="ASCII character set containing character, ASCII and binary codes "></li>
+<li>ASCII only represents basic characters needed for <strong>English</strong>, limiting its use for other languages</li>
+</ul>
+<h4 id="section_4">Extended ASCII</h4>
+<ul>
+<li>Extended ASCII uses <strong>8 bits</strong>, providing 256 unique codes (2 <sup>8</sup> = 256) or a maximum of <strong>256 characters</strong> it can represent</li>
+<li>Extended ASCII provides essential characters such as mathematical operators and more recent symbols such as ©</li>
+</ul>
+<h4 id="section_5">Limitations of ASCII &amp; extended ASCII</h4>
+<ul>
+<li>ASCII has a <strong>limited</strong> number of characters which means it can only represent the <strong>English alphabet</strong>, <strong>numbers</strong> and some special characters
+<ul>
+<li>A, B, C, ………, Z</li>
+<li>a, b, c,…,z</li>
+<li>0, 1, 2,…, 9</li>
+<li>!, @, #, ……</li>
+</ul>
+</li>
+<li>ASCII <strong>cannot</strong> represent characters from languages other than English</li>
+<li>ASCII <strong>does not</strong> include modern symbols or emojis common in today’s digital communication</li>
+</ul>
+<h2 id="section_6">UNICODE</h2>
+<h3 id="section_7">What is UNICODE?</h3>
+<ul>
+<li>UNICODE is a <strong>character set</strong> and was created as a solution to the limitations of ASCII</li>
+<li>UNICODE uses a minimum of <strong>16 bits</strong>, providing 2 <sup>16</sup> unique codes (65,536) or a minimum of <strong>65,536 characters</strong> it can represent</li>
+<li>UNICODE can represent characters from <strong>all the major languages</strong> around the world</li>
+</ul>
+<p>Exam questions often ask you to compare ASCII &amp; UNICODE, for example the number of bits, number of characters and what they store</p>
+<h4 id="section_8">ASCII vs UNICODE</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>ASCII</strong></th>
+<th><strong>UNICODE</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Number of bits</strong></td>
+<td>7-bits</td>
+<td>16-bits</td>
+</tr>
+<tr>
+<td><strong>Number of characters</strong></td>
+<td>128 characters</td>
+<td>65,536 characters</td>
+</tr>
+<tr>
+<td><strong>Uses</strong></td>
+<td>Used to represent characters in the English language.</td>
+<td>Used to represent characters across the world.</td>
+</tr>
+<tr>
+<td><strong>Benefits</strong></td>
+<td>It uses a lot less storage space than UNICODE.</td>
+<td>It can represent more characters than ASCII.<br>It can support all common characters across the world.<br>It can represent special characters such as emoji’s.</td>
+</tr>
+<tr>
+<td><strong>Drawbacks</strong></td>
+<td>It can only represent 128 characters.<br>It cannot store special characters such as emoji’s.</td>
+<td>It uses a lot more storage space than ASCII.</td>
+</tr>
+</tbody>
+</table>
+<p>The computer stores text using the ASCII character set.</p>
+<p>Part of the ASCII character set is shown:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Character</strong></th>
+<th><strong>ASCII Denary Code</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>69</td>
+</tr>
+<tr>
+<td>F</td>
+<td>70</td>
+</tr>
+<tr>
+<td>G</td>
+<td>71</td>
+</tr>
+<tr>
+<td>H</td>
+<td>72</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(a)</strong> <strong>Identify</strong> the character that will be represented by the ASCII denary code 76 <strong>[1]</strong></p>
+<p><strong>(b)</strong> <strong>Identify</strong> a second character set <strong>[1]</strong></p>
+<p><strong>Answers</strong></p>
+<p>(a) L (must be a capital)</p>
+<p>(b) UNICODE</p>
+<h2 id="section_9">Representing Sound</h2>
+<h2 id="section_10">How Sound is Sampled &amp; Stored</h2>
+<h3 id="section_11">How is sound sampled &amp; stored?</h3>
+<ul>
+<li>Measurements of the original sound wave are <strong>captured</strong> and <strong>stored as binary</strong> on secondary storage</li>
+<li>Sound waves begin as <strong>analogue</strong> and for a computer system to understand them they must be converted into a <strong>digital</strong> form</li>
+<li>This process is called <strong>Analogue to Digital conversion</strong> (A2D)</li>
+<li>The process begins by <strong>measuring the amplitude</strong> of the <strong>analogue sound wave</strong> at a point in time, called <strong>samples</strong></li>
+<li>Each measurement (sample) generates a value which can be represented in binary and stored</li>
+<li>Using the samples, a computer is able to create a digital version of the original analogue wave</li>
+<li>The digital wave is stored on secondary storage and can be played back at any time by reversing the process
+<img src="0478-images/analogue-to-digital-image.png" alt="Digital wave represented on a graph on top of an analogue wave to show differences"></li>
+<li>In this example, the grey line represents the digital wave that has been created by taking samples of the original analogue wave</li>
+<li>In order for the digital wave to look more like the analogue wave the sample rate and bit depth can be changed</li>
+</ul>
+<h2 id="section_12">Sample Rate &amp; Sample Resolution</h2>
+<h3 id="section_13">What is sample rate?</h3>
+<ul>
+<li>Sample rate is the amount of <strong>samples taken per second</strong> of the analogue wave</li>
+<li>Samples are taken each second for the <strong>duration</strong> of the sound</li>
+<li>The sample rate is measured in <strong>Hertz</strong> (Hz)</li>
+<li>1 Hertz is equal to 1 sample of the sound wave
+<img src="0478-images/image2---sample-rate-comparisons.png" alt="Diagrams to show the differences between analogue, 8 bit and 16 bits digital waves"></li>
+</ul>
+<p>In this example you can see that the higher the sample rate, the closer to the original sound wave the digital version looks</p>
+<p><img src="0478-images/image-of-sample-rate-comparisons.png" alt="Telephone, CD and DVD with sample rates"></p>
+<ul>
+<li>The sampling rate of a typical audio CD is 44.1kHz (44,100 Hertz or 44,100 samples per second)</li>
+<li>Using the graphic above helps to answer the question, “ <em>Why does telephone hold music sound so bad?</em>”</li>
+</ul>
+<h3 id="section_14">What is sample resolution?</h3>
+<ul>
+<li>Sample resolution is the <strong>number of bits stored per sample</strong> of sound</li>
+<li>Sample resolution is closely related to the <a href="https://www.savemyexams.com/gcse/computer-science/aqa/20/revision-notes/3-fundamentals-of-data-representation/units-of-information/representing-images/">colour depth</a> of a bitmap image, they measure the same thing in different contexts</li>
+</ul>
+<h3 id="section_15">What effect do sample rate and sample resolution have?</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Sample rate</strong></th>
+<th></th>
+<th><strong>Sample resolution</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><strong>High</strong></td>
+<td><strong>Low</strong></td>
+<td><strong>High</strong></td>
+<td><strong>Low</strong></td>
+</tr>
+<tr>
+<td><strong>Playback quality</strong></td>
+<td>⇑</td>
+<td>⇓</td>
+<td>⇑</td>
+<td>⇓</td>
+</tr>
+<tr>
+<td><strong>File size</strong></td>
+<td>⇑</td>
+<td>⇓</td>
+<td>⇑</td>
+<td>⇓</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_16">Representing Images</h2>
+<h2 id="section_17">Bitmap Images</h2>
+<h3 id="section_18">What is a bitmap?</h3>
+<ul>
+<li>A bitmap image is made up of squares called <strong>pixels</strong></li>
+<li>A pixel is the <strong>smallest element</strong> of a bitmap image</li>
+<li>Each pixel is <strong>stored as a binary code</strong></li>
+<li>Binary codes are <strong>unique</strong> to the <strong>colour</strong> in each pixel</li>
+<li>A typical example of a bitmap image is a photograph
+<img src="0478-images/humidity-sensor-photo.png" alt="Humidity sensor bitmap image"></li>
+<li>The more colours and more detail in the image, the higher the quality of the image and the more binary that needs to be stored</li>
+</ul>
+<h2 id="section_19">Resolution &amp; Colour Depth</h2>
+<p><em>Cambridge IGCSE 0478 expects you to define</em> <em><strong>resolution</strong></em> <em>and</em> <em><strong>colour depth</strong></em>*, explain how both affect* <em><strong>file size</strong></em>*, and use formulas like* <code>width × height × colour depth</code> <em>to calculate storage needs. This page keeps everything focused on exam-ready phrasing and examples.</em></p>
+<h3 id="section_20">What is resolution?</h3>
+<ul>
+<li>Resolution is the <strong>total amount of pixels</strong> that make up a bitmap image</li>
+<li>The resolution is calculated by <strong>multiplying the height and width</strong> of the image (in pixels)</li>
+<li>In general, the <strong>higher the resolution the more detail in the image</strong> (higher quality)</li>
+<li>Resolution can also refer to the total amount of pixels horizontally in a display, such as:
+<ul>
+<li><strong>Computer monitors</strong> - 1440p means 1440 pixels horizontally compared to 4K which is 3840 pixels (roughly 4 thousand)</li>
+<li><strong>TVs</strong> - HD (high definition) channels have a resolution of 1080p, 1080 pixels horizontally compared to newer UHD (ultra high definition) channels with 3840 pixels (4K)</li>
+<li><strong>YouTube</strong> - The quality button allows a user to change the video playback resolution from 144p (144 pixels horizontally) up to 4K</li>
+</ul>
+</li>
+</ul>
+<h3 id="section_21">What is colour depth?</h3>
+<ul>
+<li>Colour depth is the <strong>number of bits stored per pixel</strong> in a bitmap image</li>
+<li>The colour depth is dependent on the number of colours needed in the image</li>
+<li>In general, the <strong>higher the colour depth the more detail in the image</strong> (higher quality)</li>
+<li>In a black &amp; white image the colour depth would be 1, meaning 1 bit is enough to create a unique binary code for each colour in the image (1=white, 0=black)
+<img src="0478-images/1-bit-bitmap-image.png" alt="Example 1 bit black and white image"></li>
+<li>In an image with a colour depth of 2, you would have 00, 01, 10 &amp; 11 available binary codes, so 4 colours
+<img src="0478-images/2-bit-bitmap-image.png" alt="Example 2 bit Mario image"></li>
+<li>As colour depth increases, so does the amount of colours available in an image</li>
+<li>The amount of colours can be calculated as 2 <sup>n</sup> (n = colour depth)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Colour Depth</strong></th>
+<th><strong>Amount of Colours</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 bit</strong></td>
+<td>2 (B&amp;W)</td>
+</tr>
+<tr>
+<td><strong>2 bit</strong></td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>4 bit</strong></td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>8 bit</strong></td>
+<td>256</td>
+</tr>
+<tr>
+<td><strong>24 bit</strong></td>
+<td>16,777,216 (True Colour)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_22">What is the impact of resolution and colour depth?</h3>
+<ul>
+<li>As the <strong>resolution and/or colour depth increases</strong>, the <strong>bigger the size of the file</strong> becomes on secondary storage</li>
+<li>The <strong>higher the resolution</strong>, the <strong>more pixels</strong> are in the image, the more bits are stored</li>
+<li>The <strong>higher the colour depth</strong>, the <strong>more bits per pixel</strong> are stored</li>
+<li>Striking a balance between quality and file size is always a consideration</li>
+</ul>
+<p><em>In casual use, people say “higher resolution = better quality”. But in the exam, focus on what it</em> <em><strong>actually means</strong></em>*:*</p>
+<p><em>“Resolution is the number of pixels in an image”</em></p>
+<p><em>Avoid vague terms like “better” and give technical impact: “more bits needed = larger file size.”</em></p>
+<p><img src="0478-images/image-5---seesaw-image-of-balance-vs-quality-here.png" alt="Seesaw to demonstrate the relationship between quality and file size of an image"></p>
+<p>1. Define the term Pixel <strong>[1]</strong></p>
+<p>2. If an image has a colour depth of 2 bits, how many colours can the image represent? <strong>[1]</strong></p>
+<p>3. Describe the impact of changing an images resolution from 500x500 to 1000x1000 <strong>[2]</strong></p>
+<p><strong>Answers</strong></p>
+<ol>
+<li>The smallest element of a bitmap image (1 square)</li>
+<li>4</li>
+<li>The image quality would be higher <strong>[1]</strong> the file size would be larger <strong>[1]</strong></li>
+</ol>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="11-number-system.html" title="Previous: 1.1 Number System" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1.1 Number System</span></a>
+<a href="13-data-storage-compression.html" title="Next: 1.3 Data Storage & Compression" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1.3 Data Storage & Compression</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

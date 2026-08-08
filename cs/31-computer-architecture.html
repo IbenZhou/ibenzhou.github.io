@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3.1 Computer Architecture — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>3.1 Computer Architecture</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">The CPU &amp; Microprocessors</a></li>
+<li><a href="#section_3">Von Neumann Architecture</a></li>
+<li><a href="#section_9">Fetch-Decode-Execute Cycle (FDE)</a></li>
+<li><a href="#section_17">Characteristics of the CPU</a></li>
+<li><a href="#section_25">Embedded Systems</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">The CPU &amp; Microprocessors</h2>
+<h3 id="section_1">What is the purpose of the CPU?</h3>
+<ul>
+<li>The purpose of the Central Processing Unit (CPU) is to <strong>fetch</strong>, <strong>decode</strong> and <strong>execute</strong> instructions</li>
+</ul>
+<p><em>To earn marks, don’t just say “the CPU processes data.” You need to use keywords like</em> <em><strong>fetch</strong></em>*,* <em><strong>decode</strong></em>*, and* <em><strong>execute</strong></em> <em>—these match the language in the mark scheme.</em></p>
+<ul>
+<li>The CPU is the <strong>brain of the computer</strong> and its job is to take an input, process data and produce an output</li>
+<li>It is central to all devices including:
+<ul>
+<li><strong>Laptops</strong></li>
+<li><strong>Desktops</strong></li>
+<li><strong>Games-Consoles</strong></li>
+<li><strong>Mobile Devices</strong></li>
+</ul>
+</li>
+<li>Data and commands are inputted by the user using an input device, the central processing unit (CPU) <strong>processes data</strong> by <strong>executing instructions</strong> and the results are outputted to an output device</li>
+<li>Below is an example of data being inputted, processed and the results being outputted</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Step</b></p></th><th colspan="1" rowspan="1"><p><b>Example</b></p></th></tr><tr><th colspan="1" rowspan="1"><p><b>Input</b></p></th><td colspan="1" rowspan="1"><p>A keyboard is used to input a number</p></td></tr><tr><th colspan="1" rowspan="1"><p><b>Process</b></p></th><td colspan="1" rowspan="1"><p>If the instruction being executed is ADD, the inputted value is added to an existing value</p></td></tr><tr><th colspan="1" rowspan="1"><p><b>Output</b></p></th><td colspan="1" rowspan="1"><p>The result of the calculation is outputted to the user via the monitor<br></p></td></tr></tbody></table>
+<p><img src="0478-images/microprocessor.png" alt="microprocessor" width="1055"></p>
+<p><em><strong>A diagram showing the input, process, output sequence followed by computer systems</strong></em></p>
+<h4 id="section_2">Microprocessors</h4>
+<ul>
+<li>A microprocessor is a type of <strong>integrated circuit</strong> that is contained on a <strong>single chip</strong></li>
+<li>It contains the CPU and sometimes other components such as:
+<ul>
+<li><strong>Memory controllers</strong></li>
+<li><strong>I/O interfaces</strong></li>
+</ul>
+</li>
+<li>It is a hardware chip that <strong>houses the CPU</strong></li>
+</ul>
+<p><em>Examiners sometimes test the difference between a CPU and a microprocessor. The CPU is a</em> <em><strong>component</strong></em>*. The microprocessor is the* <em><strong>chip</strong></em> <em>that may include the CPU and other parts like memory and I/O controllers.</em></p>
+<h2 id="section_3">Von Neumann Architecture</h2>
+<h3 id="section_4">What is the Von Neumann architecture?</h3>
+<p>Cambridge IGCSE 0478 regularly tests your ability to describe the purpose of CPU components and registers in the Von Neumann architecture. Every explanation on this page is written in the format examiners expect—no waffle, no brand names, just mark-ready definitions.</p>
+<ul>
+<li>The Von Neumann Architecture is a design of the CPU which was proposed by Mathematician John Von Neumann in the 1940s, which most general-purpose computers are built upon</li>
+<li>The Von Neumann Architecture outlines how the computer memory, input/output devices and processor all work together</li>
+</ul>
+<p><img src="0478-images/von-neumann-architecture.png" alt="The Von-Neumann-architecture"></p>
+<p>The Von-Neumann architecture</p>
+<ul>
+<li>The Von Neumann architecture consists of:
+<ul>
+<li><strong>Control unit (CU)</strong></li>
+<li><strong>Arithmetic logic unit (ALU)</strong></li>
+<li><strong>Registers</strong></li>
+<li><strong>Buses</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_5">What is the function of each component?</h3>
+<h4 id="section_6">Arithmetic logic unit (ALU)</h4>
+<ul>
+<li>Performs <strong>arithmetic</strong> operations</li>
+<li>Performs <strong>logical</strong> decisions
+<ul>
+<li>IF X &gt; 5 THEN<br>
+DO ……….</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_7">Control unit (CU)</h4>
+<ul>
+<li><strong>Coordinates how data moves around the CPU</strong> by sending a signal to control the movement of the data</li>
+<li><strong>Decodes the instructions</strong> fetched from memory</li>
+<li>Extremely <strong>small</strong>, extremely <strong>fast memory</strong> located <strong>in the CPU</strong></li>
+<li>Hold small amounts of data <strong>needed as part of the fetch-execute cycle</strong></li>
+<li>Each register has its own specific purpose</li>
+<li>It consists of 5 main registers
+<ul>
+<li><strong>The Program Counter (PC)</strong></li>
+<li><strong>The Memory Address Register (MAR)</strong></li>
+<li><strong>The Memory Data Register (MDR)</strong></li>
+<li><strong>The Accumulator (ACC)</strong></li>
+<li><strong>Current Instruction Register (CIR)</strong></li>
+</ul>
+</li>
+<li>For each of the registers you must know
+<ul>
+<li><strong>The name of the register</strong></li>
+<li><strong>Its acronym</strong></li>
+<li><strong>The purpose of the register</strong></li>
+</ul>
+</li>
+</ul>
+<p><em>When describing registers like the</em> <em><strong>PC</strong></em>*,* <em><strong>MAR</strong></em>*, or* <em><strong>MDR</strong></em>*, don’t just name what they “store”, you must also explain* <em><strong>why</strong></em> <em>they store it and</em> <em><strong>how it’s used in the fetch-execute cycle</strong></em>*. The how is where marks are gained or lost.*</p>
+<table>
+<thead>
+<tr>
+<th><strong>Name</strong></th>
+<th>Acronym</th>
+<th><strong>Purpose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Program Counter</strong></td>
+<td><strong>PC</strong></td>
+<td>• <strong>Holds the</strong> <strong>memory address</strong> of the <strong>next instructions</strong> to be executed <br>• <strong>Increments</strong> <strong>by 1</strong> as the fetch-decode-execute cycle runs</td>
+</tr>
+<tr>
+<td><strong>Memory Address Register</strong></td>
+<td><strong>MAR</strong></td>
+<td>• <strong>Holds the memory address</strong> of where data or instructions are <strong>to be fetched from</strong> <strong>memory</strong></td>
+</tr>
+<tr>
+<td><strong>Memory Data Register</strong></td>
+<td><strong>MDR</strong></td>
+<td>• <strong>Stores the data or instruction</strong> which has been fetched from memory</td>
+</tr>
+<tr>
+<td><strong>Current Instruction Register</strong></td>
+<td><strong>CIR</strong></td>
+<td>• <strong>Stores the instruction</strong> the CPU is currently decoding or executing</td>
+</tr>
+<tr>
+<td><strong>Accumulator</strong></td>
+<td><strong>ACC</strong></td>
+<td>• <strong>Stores the</strong> <strong>results</strong> of any calculations that have taken place in the Arithmetic Logic Unit (ALU)</td>
+</tr>
+</tbody>
+</table>
+<p><em>To earn both marks for a register question, use this structure:</em></p>
+<p><em>“[<strong><strong>Register</strong></strong>] holds [<strong><strong>what</strong></strong>], which is used to [<strong><strong>why/how it’s used</strong></strong>].”</em></p>
+<p><em>Example: “The MAR holds the memory address of data to be fetched, which is sent via the address bus.”</em></p>
+<h4 id="section_8">Buses</h4>
+<ul>
+<li>Components within the CPU and wider computer system are connected by buses</li>
+<li>A bus is <strong>a set of parallel wires</strong> through which <strong>data/signals are transmitted</strong> from one component to another</li>
+<li>There are 3 types of bus:
+<ul>
+<li><strong>Address</strong> - <strong>unidirectional</strong>, carries <strong>location data</strong> (addresses), data is written to/read from</li>
+<li><strong>Data</strong> - <strong>bidirectional</strong>, carries <strong>data or instructions</strong></li>
+<li><strong>Control</strong> - bidirectional, carries <strong>commands</strong> and <strong>control signals</strong> to tell components when they should be receiving reads or writes etc.<strong>.</strong>
+<img src="0478-images/3-1-computer-architecture--von-neumann-architecture-1.png" alt="3-1-computer-architecture--von-neumann-architecture-1"></li>
+</ul>
+</li>
+</ul>
+<p><em>Students often confuse the</em> <em><strong>data</strong></em> <em>and</em> <em><strong>address</strong></em> <em>bus. Remember: the</em> <em><strong>address bus</strong></em> <em>only carries memory locations (it’s</em> <em><strong>unidirectional</strong></em>*), while the* <em><strong>data bus</strong></em> <em>carries actual data or instructions (it’s</em> <em><strong>bidirectional</strong></em>*).*</p>
+<p>Describe the role of the control unit, the control bus, the data bus and the address bus when fetching an instruction from memory <strong>[4]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>The address of memory (holding instruction) is placed on the address bus (1)</li>
+<li>The control unit sends a signal (1) on the control bus (to start a read operation) (1)</li>
+<li>The instruction is/the contents of the memory are placed on the data bus (1)</li>
+</ul>
+<h2 id="section_9">Fetch-Decode-Execute Cycle (FDE)</h2>
+<h3 id="section_10">What is the purpose of the CPU?</h3>
+<ul>
+<li>The purpose of the Central Processing Unit (CPU) is to <strong>fetch</strong>, <strong>decode</strong> and <strong>execute</strong> instructions</li>
+<li>The CPU is the brain of the computer and its job is to take an input, process data and produce an output</li>
+</ul>
+<h3 id="section_11">What is the Fetch-Decode-Execute cycle?</h3>
+<ul>
+<li>The <strong>Fetch-Decode-Execute Cycle</strong> is the cycle that the central processing unit (CPU) runs through billions of times per second to make a computer work</li>
+<li>A computer takes an input, processes the input and then delivers an output for the user
+<ul>
+<li><strong>Input:</strong> Clicking a button on the gamepad</li>
+<li><strong>Process:</strong> The CPU inside the console follows a set of instructions to carry out the task</li>
+<li><strong>Output:</strong> The player moving on screen
+<img src="0478-images/the-cpu.png" alt="the-cpu"></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_12">The Fetch-Decode-Execute cycle stages</h3>
+<h4 id="section_13">Fetch stage</h4>
+<ul>
+<li>During the fetch stage of the cycle, the <strong>program counter</strong> holds <strong>the address of the next instruction</strong> to be fetched from memory</li>
+<li><strong>The address of the next instruction or data</strong> to be fetched is <strong>copied into</strong> the memory address register <strong>(MAR)</strong></li>
+<li>The <strong>address</strong> of the instruction or data is then <strong>sent along the address bus</strong> and <strong>awaits a signal</strong> from the <strong>control bus</strong></li>
+<li>The signal sent along the control bus is <strong>sent from the control unit (CU)</strong> to the main memory</li>
+<li>The data or instructions received from main memory is <strong>fetched</strong> to the memory data register <strong>(MDR)</strong> via the <strong>data bus</strong></li>
+<li>A <strong>copy of the instruction or data is stored</strong> in the current instruction register <strong>(CIR)</strong></li>
+<li>The program counter (PC) <strong>increments by 1</strong> so it is pointing to the <strong>next instruction to be executed</strong></li>
+</ul>
+<h4 id="section_14">Decode stage</h4>
+<ul>
+<li>During the decode stage of the cycle, the CPU needs to <strong>work out what is required from the instruction</strong></li>
+<li>This is done as the instruction is split into two parts:
+<ul>
+<li>Opcode - what the instruction is</li>
+<li>Operand - what to do it to</li>
+<li>This could be either data or an address where the data is stored</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_15">Execute stage</h4>
+<ul>
+<li>During the execute stage of the cycle, the CPU will <strong>carry out the instruction that was fetched</strong></li>
+<li>Some examples that would take place at this stage are
+<ul>
+<li><strong>Performing a calculation</strong></li>
+<li><strong>Storing a result or data back in main memory (RAM)</strong></li>
+<li><strong>Going to main memory to fetch data from a different location</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_16">The important things to remember are:</h4>
+<ul>
+<li>An instruction or data is fetched from memory</li>
+<li>The instruction is decoded</li>
+<li>The instruction is executed</li>
+<li>The cycle repeats billions of times per second</li>
+</ul>
+<p>Make sure you read the question carefully and look at the number of marks allocated to judge the level of detail required. Often questions on the fetch-decode-execute cycle only require you to describe the steps rather than explain how the registers and buses are used during each step</p>
+<p>Explain how an instruction is fetched using Von Neumann architecture</p>
+<p><strong>[6]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>The Program Counter (PC) holds the address/location of the next instruction to be fetched [1]</li>
+<li>The address held in the PC is sent to the Memory Address Register (MAR) [1]</li>
+<li>The memory address is sent using the address bus [1]</li>
+<li>The Program Counter is incremented [1]</li>
+<li>The instruction is sent from the address in memory to the Memory Data Register (MDR) [1]</li>
+<li>The instruction is transferred using the data bus [1]</li>
+<li>The instruction is sent to the Current Instruction Register (CIR) [1]</li>
+</ul>
+<h2 id="section_17">Characteristics of the CPU</h2>
+<h3 id="section_18">What are the common characteristics of the CPU?</h3>
+<ul>
+<li>There are 3 common characteristics</li>
+<li>Each of these characteristics has a significant impact on the <strong>performance</strong> of the CPU
+<img src="0478-images/image-1---the-cpu.png" alt="Image of the CPU"></li>
+</ul>
+<h3 id="section_19">How do the characteristics of the CPU affect performance?</h3>
+<h4 id="section_20">Clock speed</h4>
+<ul>
+<li>The clock speed is <strong>measured in Hertz</strong> (Hz)</li>
+<li>The clock speed measures the number of fetch-decode-execute cycles that can take place in 1 second</li>
+<li>The faster the clock speed, the more instructions can be fetched and executed per second</li>
+<li>Modern computers have a clock speed in Gigahertz (GHz), meaning billion</li>
+<li>A clock speed of 3.5GHz can perform up to <strong>3.5 billion</strong> <strong>instructions per second</strong></li>
+</ul>
+<h4 id="section_21">Cache size</h4>
+<ul>
+<li>Cache is very small, <strong>very fast memory</strong> on or close to the CPU</li>
+<li>Cache is used as temporary storage to provide quick access to <strong>a copy of</strong> frequently used instructions and data</li>
+<li>The larger the cache size, the more frequently used instructions or data can be stored</li>
+<li>This results in the CPU having to complete <strong>fewer fetch cycles</strong> from memory (RAM), speeding up the performance</li>
+<li>Cache also has a significantly faster read/write speed than RAM, making it much quicker to retrieve instructions from there instead of from memory (RAM)</li>
+</ul>
+<h4 id="section_22">Number of cores</h4>
+<ul>
+<li>A core <strong>works like it is its own CPU</strong></li>
+<li>Multiple core processors mean they have multiple separate processing units that can fetch, decode and execute instructions <strong>at the same time</strong></li>
+<li>For example, a dual-core processor would have 2 processing units, each with their own
+<ul>
+<li><strong>Control Unit (CU)</strong></li>
+<li><strong>Arithmetic Logic Unit (ALU)</strong></li>
+<li><strong>Accumulator (ACC)</strong></li>
+<li><strong>Registers</strong></li>
+</ul>
+</li>
+<li>Multi-core processors can run more powerful programs with greater ease</li>
+<li>Multiple cores increase the performance of the CPU by working with the clock speed
+<ul>
+<li>Example: A quad-core CPU (4 cores), running at a clock speed of 3Ghz
+<img src="0478-images/cpu-cores-.png" alt="Image of multiple cores"></li>
+</ul>
+</li>
+</ul>
+<p>One computer has a single core processor and the other has a dual core processor.</p>
+<p>Explain why having a dual core processor might improve the performance of the computer</p>
+<p><strong>[2]</strong></p>
+<p><strong>Answer</strong></p>
+<p>Any <strong>2</strong> from:</p>
+<ul>
+<li>The computer with the dual core processor has <strong>two cores</strong> / <strong>double</strong> the amount of cores [1]</li>
+<li><strong>Parallel processing</strong> can take place [1]</li>
+<li>Each core can execute a separate instruction <strong>at the same time</strong> [1]</li>
+<li>Each core can process instructions <strong>independently</strong> of each other [1]</li>
+</ul>
+<h1 id="section_23">CPU Instruction Sets</h1>
+<h3 id="section_24">What is an Instruction set?</h3>
+<ul>
+<li>An instruction set is a list of <strong>all the commands</strong> that can be <strong>processed by a CPU</strong></li>
+<li>Each command has a <strong>binary code</strong> which is called <strong>machine code</strong></li>
+<li>The table below shows an example instruction set</li>
+<li>Each instruction has a <strong>mnemonic</strong> that indicates <strong>what the instruction does</strong> alongside an example binary code</li>
+<li>After an instruction is decoded, the CPU <strong>matches it to an instruction</strong> in its instruction set</li>
+<li>It then knows what operation to perform when executing the instruction</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Mnemonic</th>
+<th>Binary code</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Add</strong></td>
+<td>ADD</td>
+<td>10100001</td>
+<td><strong>Adds</strong> a value to the value currently stored in the accumulator (ACC)</td>
+</tr>
+<tr>
+<td><strong>Subtract</strong></td>
+<td>SUB</td>
+<td>00100010</td>
+<td><strong>Subtract</strong> a value from the values stored in the accumulator</td>
+</tr>
+<tr>
+<td><strong>Load</strong></td>
+<td>LDA</td>
+<td>10111111</td>
+<td><strong>Load</strong> the value stored in a memory location into the accumulator</td>
+</tr>
+<tr>
+<td><strong>Store</strong></td>
+<td>STA</td>
+<td>01100000</td>
+<td><strong>Store</strong> the value in the accumulator in a specific location in memory</td>
+</tr>
+<tr>
+<td><strong>Stop</strong></td>
+<td>HLT</td>
+<td>00000000</td>
+<td><strong>Stop</strong> the program</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Instruction lists are <strong>machine-specific</strong>
+<ul>
+<li>A program created using one computer’s instruction set would not run on a computer containing a processor made by a different manufacturer</li>
+<li>For example, a computer program created using Intel’s instruction set would not run on a device containing an ARM processor</li>
+</ul>
+</li>
+</ul>
+<p>Using the instruction set in the table above, what operation would be performed if the instruction was 00100010 00000010? <strong>[1]</strong></p>
+<p><strong>Answer</strong>
+Either of:</p>
+<ul>
+<li>The operation would be <strong>SUB</strong> <strong>[1]</strong></li>
+<li>This instruction subtracts a value from the value stored in the accumulator <strong>[1]</strong></li>
+</ul>
+<h2 id="section_25">Embedded Systems</h2>
+<h3 id="section_26">What is an embedded system?</h3>
+<ul>
+<li>An embedded system is a computer system which is used to <strong>perform a dedicated function</strong>, inside a larger mechanical unit</li>
+<li>Examples of embedded systems include
+<ul>
+<li><strong>Heating thermostats</strong></li>
+<li><strong>Hospital equipment</strong></li>
+<li><strong>Washing machines</strong></li>
+<li><strong>Dishwashers</strong></li>
+<li><strong>Coffee machines</strong></li>
+<li><strong>Satellite navigation systems</strong></li>
+<li><strong>Factory equipment</strong></li>
+<li><strong>Security systems</strong></li>
+<li><strong>Traffic lights</strong>
+<img src="0478-images/embedded-systems-.png" alt="embedded systems"></li>
+</ul>
+</li>
+</ul>
+<h3 id="section_27">What are the properties of an embedded system?</h3>
+<ul>
+<li>They are <strong>small</strong> in size</li>
+<li>They <strong>use less power</strong> than a general-purpose computer</li>
+<li>They have a <strong>lower cost</strong></li>
+</ul>
+<p>Always use key examples from the list above and don’t try to use different examples such as a fridge or kettle as these will not appear on mark schemes because although they have a single purpose, most fridges and kettles do not have a CPU.</p>
+<ol>
+<li>Tick <strong>two</strong> boxes below to show which are an example of an embedded system <strong>[2]</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Is it an example of an embedded system</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Laptop</td>
+<td></td>
+</tr>
+<tr>
+<td>Washing Machine</td>
+<td></td>
+</tr>
+<tr>
+<td>Mobile Phone</td>
+<td></td>
+</tr>
+<tr>
+<td>Car Engine Management System</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Justify your choice to question 1 <strong>[2]</strong></li>
+</ol>
+<p><strong>Answers</strong></p>
+<ol>
+<li>Tick <strong>two</strong> boxes below to show which are an example of an embedded system. <strong>[2]</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Is it an example of an embedded system</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Laptop</td>
+<td></td>
+</tr>
+<tr>
+<td>Washing Machine</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Mobile Phone</td>
+<td></td>
+</tr>
+<tr>
+<td>Car Engine Management System</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>Justify your choice to question 1 <strong>[2]</strong></li>
+</ol>
+<p><em>Any</em> <em><strong>two</strong></em> <em>of:</em></p>
+<ul>
+<li>A washing machine and car engine management system are not general-purpose computers <strong>[1]</strong></li>
+<li>A washing machine and car engine management system have a single purpose and are both housed inside a larger mechanical unit <strong>[1]</strong></li>
+<li>A washing machine and car engine management system have a microprocessor <strong>[1]</strong></li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="23-encryption.html" title="Previous: 2.3 Encryption" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2.3 Encryption</span></a>
+<a href="31-input-output-devices.html" title="Next: 3.1 Input & Output Devices" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">3.1 Input & Output Devices</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

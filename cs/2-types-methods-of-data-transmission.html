@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2 Types & Methods of Data Transmission — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>2 Types & Methods of Data Transmission</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Data Packets</a></li>
+<li><a href="#section_3">Packet Switching</a></li>
+<li><a href="#section_6">Data Transmission</a></li>
+<li><a href="#section_7">What is data transmission?</a></li>
+<li><a href="#section_8">Serial &amp; Parallel Transmission</a></li>
+<li><a href="#section_13">Simplex, Half-Duplex &amp; Full-Duplex Transmission</a></li>
+<li><a href="#section_19">Universal Serial Bus (USB)</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Data Packets</h2>
+<h3 id="section_1">What are packets?</h3>
+<ul>
+<li>Packets are <strong>small ‘chunks’ of data</strong> that make up a larger piece of data that has been <strong>broken down</strong> by the <strong>TCP</strong> protocol so that it can be <strong>transmitted</strong> over the internet</li>
+<li>TCP stands for <strong>Transmission Control Protocol</strong> and is used for organising data transmission over networks</li>
+<li>Small ‘chunks’ of data are easier and quicker to <strong>route</strong> over the internet than big ‘chunks’ of data
+<ul>
+<li><strong>Routing</strong> involves finding the most optimal path over a network</li>
+</ul>
+</li>
+<li>Data can include anything from text, images, audio, video, animations, etc, or any combination of these</li>
+</ul>
+<h3 id="section_2">What do packets contain?</h3>
+<ul>
+<li>A packet consists of:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Header</strong></th>
+<th><strong>Payload</strong></th>
+<th><strong>Trailer</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source IP address</td>
+<td>Actual data being transported</td>
+<td>Additional security information  <br>(less common)</td>
+</tr>
+<tr>
+<td>Destination IP address</td>
+<td></td>
+<td>End of packet notification</td>
+</tr>
+<tr>
+<td>Packet number</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>To transmit the message “This is a message:)”over the internet, TCP might break the message down into <strong>4 packets</strong>
+<img src="0478-images/2-1-types-and-methods-of-data-transmission-data-packets-01-1.png" alt="Example packet structure" width="969"></li>
+<li>Each packet contains a:
+<ul>
+<li><strong>source IP address</strong></li>
+<li><strong>destination IP address</strong></li>
+<li><strong>payload (the data)</strong></li>
+<li><strong>a packet number</strong></li>
+</ul>
+</li>
+<li>Error checks make sure that when a packet is received there is minimal or <strong>no corruption</strong> of the data</li>
+<li><strong>Corruption</strong> is where packet data is changed or lost in some way, or data is gained that originally was not in the packet</li>
+<li>Read <a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/2-data-transmission/methods-of-error-detection/error-detection-methods/">error detection methods</a> for more detail on <strong>how data packets can be checked</strong> to ensure corruption is avoided/minimised</li>
+</ul>
+<h2 id="section_3">Packet Switching</h2>
+<h3 id="section_4">What is packet switching?</h3>
+<ul>
+<li>Packet switching is a <strong>method of sending and receiving data</strong> (packets) across a network</li>
+<li>Packet switching can be broken down into <strong>five stages</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Stage</strong></th>
+<th><strong>Overview</strong></th>
+<th><strong>Detail</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Data is broken down into packets</td>
+<td>• <em>Learn more by reading our</em> <a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/2-data-transmission/types-and-methods-of-data-transmission/data-packets/">data packets</a> revision note</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Packets are assigned a header</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Each packet makes its way to the destination</td>
+<td>• Like normal car traffic, data traffic builds up on the internet<br>• Routers can see this and decide to send a packet down a different route that avoids traffic</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Routers control the routes taken for each packet</td>
+<td>• Routers know which nearby router is closer to the destination device</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Packets arrive and are reordered correctly</td>
+<td>• If a packet does not reach its destination the receiver can send a resend request to the sender to resend the packet</td>
+</tr>
+</tbody>
+</table>
+<p><img src="0478-images/2-1-types---methods-of-data-transmission--data-packets-2.png" alt="Diagram showing different routes packets can take to get from A to B"></p>
+<h3 id="section_5">What are the advantages of packet switching?</h3>
+<ul>
+<li><strong>Interference</strong> and <strong>corruption</strong> are minimal as individual packets can be resent if they are lost or damaged</li>
+<li>The whole file doesn’t need to be resent if a corruption occurs, this <strong>saves time</strong> and <strong>internet bandwidth</strong></li>
+<li>Packet switching is <strong>quicker</strong> than sending a large packet as each packet finds the quickest way around the network</li>
+<li>It’s <strong>harder to hack</strong> an individual’s data as each packet contains minimal data, and travels through the network separately</li>
+</ul>
+<p>A local market shop wishes to arrange a delivery of goods from a supplier. Anna, the shop owner, decides to send an email to request the delivery of the goods at a certain date and time.</p>
+<p>Describe how packet switching is used to send this email and how it can be protected from corruption.</p>
+<p><strong>[8]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>The business email is first broken down into packets which are given a source address (where it’s come from) and a destination address (where it’s going to) <strong>[1]</strong></li>
+<li>Each packet receives a packet number so that the email can be reassembled when it reaches its destination <strong>[1]</strong></li>
+<li>Each packet also receives an error check such as a parity bit. A parity bit checks whether any bits have been flipped due to corruption <strong>[1]</strong></li>
+<li>Each packet is sent over the internet via routers. Routers contain routing tables that determine the next closest router to the destination <strong>[1]</strong></li>
+<li>Packets may take different routes depending on internet traffic and arrive at their destination in any order <strong>[1]</strong></li>
+<li>Packets are checked for errors using the error checks and missing packets can be requested to be resent <strong>[1]</strong></li>
+<li>Once all packets have been received then they can be put together in order using the packet numbers <strong>[1]</strong></li>
+<li>Once assembled the original email can be read by the other business <strong>[1]</strong></li>
+</ul>
+<p>For high marks make sure your answer is coherent, that is it follows logically from one point to the next.</p>
+<p>Some marks depend on previous points you have made.</p>
+<p>Explaining parity bits without mentioning error checking first may not gain you additional marks</p>
+<h2 id="section_6">Data Transmission</h2>
+<h2 id="section_7">What is data transmission?</h2>
+<ul>
+<li>Data transmission is the process of <strong>transferring data from one device to another</strong> using a <strong>wired</strong> or <strong>wireless</strong> connection</li>
+<li><strong>Wired</strong> data transmission can be completed in two ways:
+<ul>
+<li><strong>Serial</strong></li>
+<li><strong>Parallel</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_8">Serial &amp; Parallel Transmission</h2>
+<h3 id="section_9">What is serial &amp; parallel transmission?</h3>
+<ul>
+<li>Serial and parallel are <strong>methods of transmitting data</strong> (bits) from a <strong>sender to a receiver</strong></li>
+<li>Each method determines <strong>how many bits</strong> can be <strong>transmitted at once</strong></li>
+</ul>
+<h4 id="section_10">Serial transmission</h4>
+<ul>
+<li>A stream of bits is <strong>sent in sequence</strong>, one after the other, <strong>along a single wire</strong></li>
+<li><strong>USB</strong> is an example of a wired serial connection
+<img src="0478-images/wired-connections---serial.png" alt="Diagram showing serial transmission between sender and receiver "></li>
+</ul>
+<h4 id="section_11">Parallel transmission</h4>
+<ul>
+<li>Multiple bits are sent <strong>simultaneously</strong>, with each bit travelling on its <strong>own separate wire</strong></li>
+<li>Parallel transmission is <strong>usually synchronous</strong>, using a <strong>clock signal to keep data aligned</strong></li>
+<li>However, bits can arrive at slightly different times due to <strong>skew</strong> (<strong>timing differences between wires</strong>)</li>
+<li>A traditional printer cable is an example of a wired parallel connection
+<img src="0478-images/a-sender-sends-a-stream-of-bits-in-sequence.png" alt="Diagram showing parallel transmission between sender and reciever"></li>
+</ul>
+<h3 id="section_12">Advantages and disadvantages of serial &amp; parallel transmission</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Transmission</strong></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serial</td>
+<td>• Reliable over longer distance<br>• Cheaper to setup  <br>• Low interference</td>
+<td>• Slow transmission speed</td>
+</tr>
+<tr>
+<td>Parallel</td>
+<td>• Very fast transmission speed</td>
+<td>• Only used on short distances<br>• Prone to high interference</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_13">Simplex, Half-Duplex &amp; Full-Duplex Transmission</h2>
+<h3 id="section_14">What is simplex, half-duplex &amp; full-duplex transmission?</h3>
+<ul>
+<li>Simplex, half-duplex and full-duplex describe the <strong>direction</strong> in which data can be transmitted between a sender and receiver</li>
+</ul>
+<h4 id="section_15">Simplex transmission</h4>
+<ul>
+<li>Data travels in <strong>only one direction</strong></li>
+<li>Sending data from a computer to a monitor is an example of simplex transmission</li>
+</ul>
+<h4 id="section_16">Half-duplex transmission</h4>
+<ul>
+<li>Data can travel in <strong>both directions</strong>, but <strong>only one direction at a time</strong></li>
+<li>A printer cable which <strong>waits for the data to be received</strong> before sending back a ‘low ink’ message is an example of half-duplex transmission</li>
+</ul>
+<h4 id="section_17">Full-duplex transmission</h4>
+<ul>
+<li>Data can travel in <strong>both directions at the same time</strong></li>
+<li>Network cables can <strong>send and receive data at the same time</strong> and are examples of full-duplex data transmission</li>
+<li>Full-duplex is used in local and wide area networks</li>
+</ul>
+<h3 id="section_18">Advantages and disadvantages of simplex, half-duplex &amp; full-duplex transmission</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Transmission</strong></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simplex</td>
+<td>• Simple and low-cost for one-way communication</td>
+<td>• Cannot support two-way communication</td>
+</tr>
+<tr>
+<td>Half-duplex</td>
+<td>• Cheaper than full-duplex for two-way communication</td>
+<td>• Slower due to one-direction-at-a-time</td>
+</tr>
+<tr>
+<td>Full-duplex</td>
+<td>• Fast, supports simultaneous two-way data transfer</td>
+<td>• More expensive to implement</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Wires can be <strong>combinations of</strong> serial, parallel, simplex, half-duplex and full-duplex</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Simplex</strong></th>
+<th><strong>Half-duplex</strong></th>
+<th><strong>Full-duplex</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Serial</strong></td>
+<td>Serial-Simplex</td>
+<td>Serial-Half-duplex</td>
+<td>Serial-Full-duplex</td>
+</tr>
+<tr>
+<td><strong>Parallel</strong></td>
+<td>Parallel-Simplex</td>
+<td>Parallel-Half-duplex</td>
+<td>Parallel-Full-duplex</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Serial-Simplex</strong>
+<ul>
+<li>Data is transmitted <strong>one bit at a time</strong> in <strong>one direction only</strong> on a single wire</li>
+</ul>
+</li>
+<li><strong>Serial-Half-duplex</strong>
+<ul>
+<li>Data is transmitted <strong>one bit at a time</strong>, and can flow in <strong>both directions</strong>, but <strong>not at the same time</strong></li>
+<li>This typically uses a <strong>single shared wire</strong>.</li>
+</ul>
+</li>
+<li><strong>Serial-Full-duplex</strong>
+<ul>
+<li>Data is transmitted <strong>one bit at a time in both directions simultaneously</strong>, but this requires <strong>two wires</strong>, one for each direction.</li>
+</ul>
+</li>
+<li><strong>Parallel-Simplex</strong>
+<ul>
+<li>Multiple bits are <strong>transmitted simultaneously in one direction only</strong>, using <strong>multiple wires</strong></li>
+</ul>
+</li>
+<li><strong>Parallel-Half-duplex</strong>
+<ul>
+<li><strong>Multiple wires send multiple bits</strong> of data in <strong>both directions</strong>, but only <strong>one direction at a time</strong></li>
+</ul>
+</li>
+<li><strong>Parallel-Full-duplex</strong>
+<ul>
+<li><strong>Multiple wires send multiple bits</strong> of data in <strong>both directions simultaneously</strong></li>
+</ul>
+</li>
+</ul>
+<p>A company has a website that is stored on a web server<br>
+The company uses parallel half-duplex data transmission to transmit the data for the new videos to the web server.</p>
+<p><strong>Explain</strong> why parallel half-duplex data transmission is the most appropriate method.<strong>[6]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>Parallel would allow for the fastest transmission <strong>[1]</strong></li>
+<li>as large amounts of data <strong>[1]</strong></li>
+<li>can be uploaded and downloaded <strong>[1]</strong></li>
+<li>but this does not have to be at the same time <strong>[1]</strong></li>
+<li>Data is not required to travel a long distance <strong>[1]</strong></li>
+<li>Therefore, skewing is not a problem <strong>[1]</strong></li>
+</ul>
+<p>Any four of these points qualifies as a full answer, however make sure your answer is cohesive.</p>
+<p>Saying “ <em>Parallel would allow for the fastest transmission but this does not have to be at the same time</em> ” would qualify as one mark as only the first part makes sense and follows logically</p>
+<h2 id="section_19">Universal Serial Bus (USB)</h2>
+<h3 id="section_20">What is USB?</h3>
+<ul>
+<li>The <strong>Universal Serial Bus</strong> (USB) is a widely used standard for transmitting data between devices</li>
+<li>It is a <strong>serial</strong> <strong>communication method</strong>, and it <strong>operates</strong> <strong>asynchronously</strong></li>
+<li>Many devices use USB such as:
+<ul>
+<li><strong>Keyboards</strong></li>
+<li><strong>Mice</strong></li>
+<li><strong>Video cameras</strong></li>
+<li><strong>Printers</strong></li>
+<li><strong>Portable media players</strong></li>
+<li><strong>Mobile phone</strong></li>
+<li><strong>Disk drives</strong></li>
+<li><strong>Network adapters</strong></li>
+</ul>
+</li>
+<li>Different USB <strong>connector types</strong> exist for different devices</li>
+<li>The letters refer to the <strong>physical shape and design</strong> of the USB connector:
+<ul>
+<li><strong>USB-A</strong> - Commonly used for flash drives, mice, keyboards, external HDD</li>
+<li><strong>USB-B</strong> - Found in printers, scanners, and older external storage devices</li>
+<li><strong>USB-C</strong> - Latest standard, known for it’s <strong>small size</strong>, <strong>transfer speeds</strong>, and it’s <strong>ability to carry power</strong></li>
+</ul>
+</li>
+<li>The term USB can also be followed by numbers (USB 2.0, 3.0, 4 etc.)</li>
+<li>The numbers refer to the <strong>generation of USB technology</strong>, which determines the <strong>speed and performance</strong>:
+<ul>
+<li><strong>USB 1.1</strong> - 12 Mbps (very slow)</li>
+<li><strong>USB 2.0</strong> - 480 Mbps (very common but slower compared to modern versions)</li>
+<li><strong>USB 3.0/3.1/3.2</strong> - 5 Gbps to 20 Gbps (much faster, used for external HDDs and gaming devices)</li>
+<li><strong>USB4/ USB4 2.0</strong> - Up to 80 Gbps (the latest and fastest, used for high speed data transfer)</li>
+</ul>
+</li>
+<li>When a device is connected to a USB port the computer:
+<ul>
+<li><strong>Automatically detects</strong> that the device has been <strong>connected</strong></li>
+<li><strong>Looks for the correct driver:</strong>
+<ul>
+<li>If the driver is already installed, the <strong>appropriate device driver is loaded</strong> so that the <strong>device can communicate with the computer</strong></li>
+<li>If the device is <strong>new</strong>, the computer will <strong>look for a compatible device driver</strong></li>
+<li>If one cannot be found, the <strong>user must download and install</strong> an appropriate driver <strong>manually</strong>
+<img src="0478-images/2-1-types-and-methods-of-data-transmission-usb-1.png" alt="USB-A Connector"> <img src="0478-images/2-1-types-and-methods-of-data-transmission-usb-2.png" alt="USB-C Connector"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="section_21">Advantages and disadvantages of USB</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Devices are <strong>automatically detected</strong> and <strong>drivers are automatically loaded</strong> for communication</td>
+<td>The <strong>maximum</strong> cable length is <strong>roughly 5 metres</strong> meaning it cannot be used over long distances, <strong>limiting its use</strong></td>
+</tr>
+<tr>
+<td>Cable connectors fit in only one way.<br><br>This prevents incorrect connections and <strong>ensures compatible data transmission</strong></td>
+<td>Older versions of USB have <strong>limited transmission rates</strong> for example <strong>USB 2.0</strong> has <strong>480Mbps</strong></td>
+</tr>
+<tr>
+<td>As USB usage is standardised, there is a lot of support available online and from retailers</td>
+<td><strong>Very old USB standards</strong> <strong>may not be supported</strong> in the near future (USB 1.1, USB 2.0, etc)</td>
+</tr>
+<tr>
+<td>Several different <strong>data transmission rates</strong> are supported. The newest transmission rate as of 2022 is <strong>USB4 2.0</strong> with <strong>80 Gbps</strong> (81,920 Mbps, 170x faster than USB 2.0)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Newer USB standards</strong> are <strong>backwards compatible</strong> with older USB standards</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Julia uses a USB connection to transfer data onto her USB flash memory drive.</p>
+<p>One benefit of using a USB connection is that it is a universal connection.</p>
+<p>(i) State two other benefits of using a USB connection.<strong>[2]</strong></p>
+<p>(ii) Identify the type of data transmission used in a USB connection.<strong>[1]</strong></p>
+<p><strong>Answers</strong></p>
+<p>(i) Any two of:</p>
+<ul>
+<li>It cannot be inserted incorrectly <strong>[1]</strong></li>
+<li>Supports different transmission speeds <strong>[1]</strong></li>
+<li>High speed transmission <strong>[1]</strong></li>
+<li>Automatically detected <strong>[1]</strong></li>
+<li>Powers the device for data transfer <strong>[1]</strong></li>
+</ul>
+<p>(ii)</p>
+<ul>
+<li>Serial <strong>[1]</strong></li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="13-data-storage-compression.html" title="Previous: 1.3 Data Storage & Compression" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1.3 Data Storage & Compression</span></a>
+<a href="22-methods-of-error-detection.html" title="Next: 2.2 Methods of Error Detection" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2.2 Methods of Error Detection</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

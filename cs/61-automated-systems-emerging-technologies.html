@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6.1 Automated Systems & Emerging Technologies — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>6.1 Automated Systems & Emerging Technologies</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Automated Systems</a></li>
+<li><a href="#section_2">Advantages &amp; Disadvantages of Automated Systems</a></li>
+<li><a href="#section_3">Robotics</a></li>
+<li><a href="#section_4">What is robotics?</a></li>
+<li><a href="#section_5">Characteristics of a Robot</a></li>
+<li><a href="#section_7">The Role of Robots</a></li>
+<li><a href="#section_10">Artificial Intelligence (AI)</a></li>
+<li><a href="#section_11">What is artificial intelligence?</a></li>
+<li><a href="#section_13">Characteristics of AI</a></li>
+<li><a href="#section_14">Expert systems</a></li>
+<li><a href="#section_17">Machine Learning</a></li>
+<li><a href="#section_18">What is machine learning?</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Automated Systems</h2>
+<h3 id="section_1">What is an automated system?</h3>
+<ul>
+<li>An automated system is a computer system that <strong>collects information</strong> and can <strong>react</strong> and <strong>perform tasks</strong> based on the data</li>
+<li>Automated systems are made using <strong>three</strong> components:
+<ul>
+<li><strong>Sensors</strong></li>
+<li><strong>Microprocessors</strong></li>
+<li><strong>Actuators</strong></li>
+</ul>
+</li>
+<li>A <a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/3-hardware/input-and-output-devices/sensors/">sensor</a> <strong>collects information</strong> and provides the microprocessor with it as an input</li>
+<li>A microprocessor <strong>processes the information</strong> and <strong>makes decisions</strong> based on pre-programmed rules</li>
+<li>An actuator <strong>makes physical changes</strong> based on instructions given by the microprocessor (<strong>outputs</strong>)</li>
+<li>Examples of physical changes include:
+<ul>
+<li><strong>Opening/closing a door/valve</strong></li>
+<li><strong>Activating an alarm</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_2">Advantages &amp; Disadvantages of Automated Systems</h2>
+<ul>
+<li>There are general advantages and disadvantages of automated systems</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Advantages</th>
+<th>Disadvantages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cost</strong> - long-term cost saving</td>
+<td><strong>Cost</strong> - short-term expensive to set up</td>
+</tr>
+<tr>
+<td><strong>Safer</strong> - timely interventions</td>
+<td><strong>Testing</strong> - significant testing must be done before being used</td>
+</tr>
+<tr>
+<td><strong>Safer</strong> - keeps humans away from hazardous environments</td>
+<td><strong>Security</strong> - open to cyber attacks</td>
+</tr>
+<tr>
+<td><strong>Efficient</strong> - materials and resources</td>
+<td><strong>Flexibility</strong> - will only react to programmed scenarios</td>
+</tr>
+<tr>
+<td><strong>Consistent</strong> - results are repeatable</td>
+<td><strong>Maintenance</strong> - needs to be well maintained</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Unethical</strong> - can result in major job losses</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>There are also scenarios where specific advantages and disadvantages are important such as:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Scenario</strong></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Industry</td>
+<td>• Increased production<br>• Improved quality control</td>
+<td>• High investment costs<br>• Job losses</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>• Less accidents &amp; traffic congestion<br>• Increased logistical efficiency</td>
+<td>• Transportation drivers lose jobs<br>• Technology reliability</td>
+</tr>
+<tr>
+<td>Agriculture</td>
+<td>• Less manual labour<br>• Increased crop yield &amp; resource management</td>
+<td>• High start-up costs for equipment and sensors</td>
+</tr>
+<tr>
+<td>Weather</td>
+<td>• Accurate forecasting<br>• Improved early warning systems</td>
+<td>• Dependence on accurate sensor data</td>
+</tr>
+<tr>
+<td>Gaming</td>
+<td>• Personalised experience<br>• AI enhanced opponents add challenge</td>
+<td>• Reduced creativity &amp; problem solving for players<br>• Repetitive gameplay</td>
+</tr>
+<tr>
+<td>Lighting</td>
+<td>• Increased energy efficiency<br>• Better security with motion-activated systems</td>
+<td>• Lack of human control with light adjustments</td>
+</tr>
+<tr>
+<td>Science</td>
+<td>• Faster &amp; more precise<br>• Reduced risk of human error</td>
+<td>• High cost development and maintenance<br>• Potential for algorithm bias</td>
+</tr>
+</tbody>
+</table>
+<p>A theme park has a game where a player tries to run from the start to the finish without getting wet.</p>
+<p>The system for the game uses sensors and a microprocessor to spray water at a player as they run past each sensor.</p>
+<p>Describe how the sensors and the microprocessor are used in this system</p>
+<p><strong>[8]</strong></p>
+<p><strong>Answer</strong></p>
+<ul>
+<li>A motion sensor collects data [1]</li>
+<li>This data is converted to digital using ADC [1]</li>
+<li>The sensor sends data to the microprocessor… [1]</li>
+<li>… where the data is compared to stored data [1]</li>
+<li>If the value is outside range, water will be sprayed [1]</li>
+<li>A signal is sent to the actuator to spray water [1]</li>
+<li>If the value is within range no action is taken [1]</li>
+<li>This runs in a continuous loop [1]</li>
+</ul>
+<h2 id="section_3">Robotics</h2>
+<h2 id="section_4">What is robotics?</h2>
+<ul>
+<li>Robotics is the principle of a robot <strong>carrying out a task</strong> by <strong>following a precise set of programmed instructions</strong></li>
+<li>Robots can be categorised into <strong>two</strong> groups:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Dumb robots</strong></th>
+<th><strong>Smart robots</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repeat the same programmed instructions over and over again (<strong>no AI</strong>)</td>
+<td>Carries out more complex tasks and can adapt and learn (<strong>AI</strong>)</td>
+</tr>
+<tr>
+<td>E.g. Car assembly line</td>
+<td>E.g. Assisting surgeons in delicate procedures</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The development of artificial intelligence, including the increased use of machine learning and robotics raises <strong>ethical</strong> and <strong>legal</strong> issues such as:
+<ul>
+<li><strong>Accountability</strong></li>
+<li><strong>Safety</strong></li>
+<li><strong>Algorithmic bias</strong></li>
+<li><strong>Legal liability</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_5">Characteristics of a Robot</h2>
+<h3 id="section_6">What are the characteristics of a robot?</h3>
+<ul>
+<li>Robots share <strong>three</strong> common characteristics:
+<ul>
+<li><strong>Mechanical structure</strong></li>
+<li><strong>Electrical components</strong></li>
+<li><strong>Programmable</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Mechanical structure</strong></th>
+<th><strong>Electrical components</strong></th>
+<th><strong>Programmable</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A physical body that can move and interact with the environment</td>
+<td>Sensors, microprocessors and actuators</td>
+<td>Designed to follow a precise set of instructions</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_7">The Role of Robots</h2>
+<h3 id="section_8">What is the role of robots?</h3>
+<ul>
+<li>Robots play a crucial role in many areas such as:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Scenario</strong></th>
+<th><strong>Role</strong></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Industry</strong></td>
+<td>Quality inspector</td>
+<td>Advanced vision to inspect products for defects, improving quality control</td>
+<td>May not work on defects that might require human judgement</td>
+</tr>
+<tr>
+<td><strong>Transport</strong></td>
+<td>Warehouse worker</td>
+<td>Efficiency in finding, moving and packing, less reliable on manual labour</td>
+<td>High infrastructure costs and potential safety concerns for human workers sharing the same space</td>
+</tr>
+<tr>
+<td><strong>Agriculture</strong></td>
+<td>Planting &amp; seeding machine</td>
+<td>Precise planting (optimum depths and distances)</td>
+<td>High upfront costs, may struggle with uneven terrain and changing weather conditions</td>
+</tr>
+<tr>
+<td><strong>Medicine</strong></td>
+<td>Rehabilitation therapist</td>
+<td>Personalised physical therapy exercises to aid recovery</td>
+<td>Doesn’t provide emotional support</td>
+</tr>
+<tr>
+<td><strong>Domestic</strong></td>
+<td>Sous chef</td>
+<td>Assists with meal prep by doing basic duties (chopping, measuring and following basic recipes)</td>
+<td>Limited ability and capabilities</td>
+</tr>
+<tr>
+<td><strong>Entertainment</strong></td>
+<td>Educational robot</td>
+<td>Interactive learning experiences for children, increased engagement</td>
+<td>High cost, cannot replace the guidance of human teachers</td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_9">Worked Example</h4>
+<p>A company uses robots in its factory to manufacture restaurant tables and chairs</p>
+<p>(i) One characteristic of a robot is that they contain electrical components.</p>
+<p><strong>State</strong> two other characteristics of a robot.<strong>[2]</strong></p>
+<p>(ii) Give <strong>two advantages</strong> to company <strong>employees</strong> of using robots to manufacture tables and chairs.<strong>[2]</strong></p>
+<p>(ii) Give <strong>one disadvantage</strong> to the company’s owners of using robots to manufacture table and chairs <strong>[1]</strong></p>
+<p><strong>Answers</strong></p>
+<p>(i)</p>
+<ul>
+<li>Mechanical structure</li>
+<li>Programmable</li>
+</ul>
+<p>(ii)</p>
+<ul>
+<li>Employees don’t need to lift heavy items</li>
+<li>Employees can be protected from dangerous tasks</li>
+<li>Employees can utilise their skills in other tasks</li>
+<li>Employees don’t need to perform repetitive/mundane tasks</li>
+</ul>
+<p>(iii)</p>
+<ul>
+<li>Expensive to install/purchase/setup</li>
+<li>High ongoing costs/maintenance costs</li>
+<li>May deskill the workforce</li>
+<li>If they malfunction, production may stop</li>
+</ul>
+<h2 id="section_10">Artificial Intelligence (AI)</h2>
+<h2 id="section_11">What is artificial intelligence?</h2>
+<p><em>Cambridge IGCSE 0478 asks you to describe AI systems, list their characteristics, and explain how technologies like expert systems and machine learning work. This page sticks to only what’s covered in the spec and tested in past papers.</em></p>
+<ul>
+<li>Artificial intelligence (<strong>AI</strong>) is a machine that can <strong>simulate intelligent behaviours</strong> similar to that of a <strong>human</strong></li>
+<li>AI is a system that can:
+<ul>
+<li><strong>Learn</strong> - acquire new information</li>
+<li><strong>Decide</strong> - analyse and make choices</li>
+<li><strong>Act autonomously</strong> - take actions without human input</li>
+</ul>
+</li>
+</ul>
+<p><em>In the exam, vague answers like “AI is a robot” won’t earn marks. You must describe AI as a</em> <em><strong>system that learns, makes decisions, and acts autonomously</strong></em>*. Use those three terms—they’re from the spec.*</p>
+<ul>
+<li>There are two main types of AI:
+<ul>
+<li><strong>Weak AI</strong>, also known as <strong>narrow AI</strong>, is designed to perform a specific task or set of tasks</li>
+<li><strong>Strong AI</strong>, also known as artificial general intelligence (<strong>AGI</strong>), is designed to perform any intellectual task that a human can do</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_12">Advantages and disadvantages of AI</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Increased efficiency</td>
+<td>Job losses</td>
+</tr>
+<tr>
+<td>Increased accuracy</td>
+<td>Potential for biased decision making</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>Ethical concerns over its use</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_13">Characteristics of AI</h2>
+<ul>
+<li>AI shares <strong>three</strong> common characteristics:
+<ul>
+<li><strong>Collection of data</strong></li>
+<li><strong>Rules for using data</strong></li>
+<li><strong>Ability to reason</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Collection of data</strong></th>
+<th><strong>Rules for using data</strong></th>
+<th><strong>Ability to reason</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI systems require <strong>large amounts of data</strong> to perform tasks<br><br>The data is processed using <strong>rules or algorithms</strong> that enable the system to make decisions and predictions</td>
+<td>AI systems can use <strong>logical reasoning</strong> to evaluate information and <strong>make decisions</strong> based on that information</td>
+<td>It can <strong>change its own rules</strong> and <strong>data</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_14">Expert systems</h2>
+<h3 id="section_15">What is an expert system?</h3>
+<ul>
+<li>An expert system <strong>mimics human knowledge and experience</strong> and uses a combination of the two to <strong>solve problems</strong> or <strong>answer questions</strong></li>
+<li>Examples of expert systems include:
+<ul>
+<li><strong>Equipment troubleshooting and repair</strong></li>
+<li><strong>Technical support</strong></li>
+<li><strong>Medical diagnosis system</strong></li>
+</ul>
+</li>
+<li>Expert systems share <strong>four</strong> key <strong>characteristics</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Knowledge base</strong></th>
+<th><strong>Rule base</strong></th>
+<th><strong>Inference engine</strong></th>
+<th><strong>Interface</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A database of <strong>facts to generate rules</strong> that are used to solve problems and <strong>make decisions</strong></td>
+<td>A set of rules or logic that is used to <strong>apply the knowledge</strong> in the knowledge base <strong>to specific problems</strong></td>
+<td>A program that <strong>applies the rules</strong> in the rule base <strong>to the facts</strong> in the knowledge base <strong>to solve problems</strong></td>
+<td>A way for <strong>users to interact with the system</strong> and provide input</td>
+</tr>
+</tbody>
+</table>
+<p><em>If asked to describe how an expert system works, structure your answer like this:</em></p>
+<p><em>“The knowledge base</em> <em><strong>holds facts</strong></em>*, the rule base* <em><strong>holds logic</strong></em>*, the inference engine* <em><strong>applies rules</strong></em>*, and the interface allows* <em><strong>user interaction</strong></em>*.”*</p>
+<p><em>List all four parts for full marks.</em></p>
+<h4 id="section_16">Advantages and disadvantages of expert systems</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consistent results</td>
+<td>Only as good as the data entered</td>
+</tr>
+<tr>
+<td>Faster responses</td>
+<td>Responses can be cold and lack human emotion</td>
+</tr>
+<tr>
+<td>Can store large amounts of data</td>
+<td>Requires training to use correctly</td>
+</tr>
+<tr>
+<td>Unbiased</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_17">Machine Learning</h2>
+<h2 id="section_18">What is machine learning?</h2>
+<p><em>Machine learning is</em> <em><strong>part of AI</strong></em>*, not separate from it. In the exam, avoid saying they’re “different things”, say ML is a method used to* <em><strong>train</strong></em> <em>AI systems using data.</em></p>
+<ul>
+<li>Machine learning is <strong>one method that can help</strong> to achieve an artificial intelligence (AI)</li>
+<li>By giving a machine <strong>data</strong> so that it can ’ <strong>learn over time</strong> ’ it helps towards <strong>training</strong> a machine or software to <strong>perform a task</strong> and <strong>improve</strong> its accuracy and efficiency</li>
+<li><strong>Uses algorithms</strong> to analyse data and <strong>identify patterns</strong> or relationships</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reduces the need for manual work, saving time and effort</td>
+<td>Needs vast amounts of quality data to perform well.</td>
+</tr>
+<tr>
+<td>Can detect patterns and make predictions more accurately than humans in many cases</td>
+<td>Requires high processing power and resources.</td>
+</tr>
+<tr>
+<td>Continuously improves performance as it processes more data</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Describe the characteristics of AI</p>
+<p><strong>[3]</strong></p>
+<p><strong>Answer</strong></p>
+<p>Any <strong>three</strong> from:</p>
+<ul>
+<li>Collects data</li>
+<li>Stores rules for using the data</li>
+<li>The ability to reason</li>
+<li>The ability to learn // uses machine learning</li>
+<li>… by adapting what it does</li>
+<li>… for example, from mistakes to not make them again // result from previous decisions impacts future</li>
+<li>… by changing its own rules</li>
+<li>…by changing its own data</li>
+<li>…by being trained</li>
+<li>Makes one or more predictions (to make a decision)</li>
+<li>Find/analyse patterns</li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="53-cyber-security.html" title="Previous: 5.3 Cyber Security" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">5.3 Cyber Security</span></a>
+<a href="7-algorithm-design-problem-solving.html" title="Next: 7 Algorithm Design & Problem-Solving" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">7 Algorithm Design & Problem-Solving</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

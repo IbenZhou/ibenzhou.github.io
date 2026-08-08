@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5.1 The Internet & the World Wide Web — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>5.1 The Internet & the World Wide Web</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">The Internet &amp; the World Wide Web</a></li>
+<li><a href="#section_3">Network Protocols</a></li>
+<li><a href="#section_4">HTTP &amp; HTTPS</a></li>
+<li><a href="#section_6">Web Browser</a></li>
+<li><a href="#section_9">Web Pages</a></li>
+<li><a href="#section_11">Web Servers (1)</a></li>
+<li><a href="#section_13">Uniform ResourceLocator (URL) (2)</a></li>
+<li><a href="#section_15">Domain Name System (DNS) (3)</a></li>
+<li><a href="#section_17">HTML (4)</a></li>
+<li><a href="#section_21">Cookies</a></li>
+<li><a href="#section_22">What is a cookie?</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">The Internet &amp; the World Wide Web</h2>
+<h3 id="section_1">What is the Internet?</h3>
+<p><em>Cambridge IGCSE 0478 expects you to clearly</em> <em><strong>differentiate between the Internet and the World Wide Web</strong></em>*. This page is written to match the definitions and phrasing found in mark schemes.*</p>
+<ul>
+<li>The Internet is a <strong>global network of networks</strong></li>
+<li>The Internet is the most well-known Wide Area Network (<strong>WAN</strong>)</li>
+<li>The Internet is the <strong>infrastructure</strong> used to <strong>provide connectivity</strong> to the World Wide Web</li>
+</ul>
+<h3 id="section_2">What is the World Wide Web?</h3>
+<ul>
+<li>The world wide web, or simply <strong>the web</strong>, is a <strong>collection of websites</strong> and <strong>web pages</strong> that are <strong>accessed using the internet</strong></li>
+<li>It was created in 1989 by <strong>Tim Berners-Lee</strong>, who envisioned it as a way to <strong>share</strong> and <strong>access</strong> information <strong>on a global scale</strong></li>
+<li>The web consists of <strong>interconnected documents</strong> and <strong>multimedia files</strong> that are stored on <strong>web servers</strong> around the world</li>
+<li><strong>Web pages</strong> are accessed using a web browser, which communicates with web servers to retrieve and display the content</li>
+</ul>
+<p><em>Students often say the web</em> <em><strong>is</strong></em> <em>the Internet. It’s not, the Internet includes</em> <em><strong>email, FTP, VoIP</strong></em>*, and other services too, not just websites.*</p>
+<h2 id="section_3">Network Protocols</h2>
+<h2 id="section_4">HTTP &amp; HTTPS</h2>
+<h3 id="section_5">What is HTTP &amp; HTTPS?</h3>
+<p><em>Cambridge IGCSE 0478 expects you to explain the difference between HTTP and HTTPS, including the role of</em> <em><strong>encryption</strong></em> <em>in protecting sensitive data. This page covers only what you need to know to get the marks.</em></p>
+<ul>
+<li>Hypertext Transfer Protocol (<strong>HTTP</strong>) allows communication between clients and servers for <strong>website viewing</strong></li>
+<li>HTTP &amp; HTTPS are <strong>protocols</strong>, a <strong>set of rules</strong> governing communication between devices on a network</li>
+<li>HTTP allows clients to <strong>receive data</strong> from the server (fetching a webpage) and <strong>send data</strong> to the server (submitting a form, uploading a file)</li>
+<li><strong>HTTPS</strong> works in the same way as HTTP but with an <strong>added layer of security</strong></li>
+<li>All data sent and received using HTTPS is <strong>encrypted</strong></li>
+<li>HTTPS is used to <strong>protect sensitive information</strong> such as passwords, financial information and personal data
+<img src="0478-images/http.png" alt="http"></li>
+</ul>
+<p><em>A common 2-mark question is:</em></p>
+<p><em>“Describe one difference between HTTP and HTTPS.”</em></p>
+<p><em>To get both marks, say:</em></p>
+<p><em>“HTTPS encrypts the data being transmitted to keep it secure, unlike HTTP.”</em></p>
+<h2 id="section_6">Web Browser</h2>
+<h3 id="section_7">What is a web browser?</h3>
+<ul>
+<li>A web browser is a <strong>piece of software</strong> used to <strong>access</strong> and <strong>display</strong> information on the internet</li>
+<li>A web browser <strong>displays web pages</strong> by <strong>rendering hypertext markup language (HTML)</strong></li>
+<li>Web browsers <strong>interpret the code in HTML</strong> documents and <strong>translate</strong> it into a visual display for the user</li>
+</ul>
+<h4 id="section_8">Functions of a web browser</h4>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Provide navigation tools</td>
+<td>E.g. back/forward buttons and home button, to help users move between pages</td>
+</tr>
+<tr>
+<td>Storing bookmarks &amp; favourites</td>
+<td>Allow users to save links to frequently visited websites and access them easily</td>
+</tr>
+<tr>
+<td>Storing cookies</td>
+<td><a href="#cookies">Cookies</a></td>
+</tr>
+<tr>
+<td>Record user history</td>
+<td>Allow users to quickly revisit recently viewed web pages</td>
+</tr>
+<tr>
+<td>Provide address bar</td>
+<td>A place for user to type in the URL (link to URL page) of a web page to visit</td>
+</tr>
+<tr>
+<td>Multiple tabs</td>
+<td>Allow multiple web pages to be open at once so users can quickly switch between them</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rendering HTML</strong> is how a web browser displays web pages, but in CIE IGCSE exams, questions about <em>functions</em> usually expect <strong>user-facing features</strong> such as navigation tools, bookmarks, tabs, or cookies.</p>
+<h2 id="section_9">Web Pages</h2>
+<h3 id="section_10">How is a web page loaded?</h3>
+<ul>
+<li>Web pages <strong>are held on web servers</strong> (1), known as ’ <strong>hosting</strong> ’</li>
+<li>To access a web page on a web server, <strong>a web browser is used</strong></li>
+<li>In the browser, a user enters <strong>a web page URL</strong> (2)</li>
+<li>The browser sends the <strong>domain name</strong> to a <strong>DNS</strong> (3)</li>
+<li>The browser connects to the web server and <strong>requests to access the page</strong></li>
+<li><strong>HTML</strong> (4) is transferred and <strong>rendered by the browser</strong>, displaying the web page</li>
+</ul>
+<h2 id="section_11">Web Servers (1)</h2>
+<h3 id="section_12">What is a web server?</h3>
+<ul>
+<li>A web server is <strong>a remote computer</strong> that <strong>stores the files needed to display a web page</strong> on the Internet</li>
+<li>Web servers are generally <strong>available 24/7</strong> and <strong>security is managed</strong> by the owner of the hardware</li>
+<li>Web servers provide access to <strong>multiple users at the same time</strong></li>
+</ul>
+<h2 id="section_13">Uniform ResourceLocator (URL) (2)</h2>
+<h3 id="section_14">What is a URL?</h3>
+<ul>
+<li>A <strong>Uniform Resource Locator</strong> (URL) is a <strong>unique identifier</strong> for a web page, known as the <strong>website address</strong></li>
+<li>It is <strong>text based</strong> to make it easier to remember</li>
+<li>A user <strong>enters a URL</strong> into a web browser to view a web page</li>
+<li>An example of a URL is:</li>
+<li>A URL can typically be split into three parts:
+<ul>
+<li><strong>Protocol</strong></li>
+<li><strong>Domain name</strong></li>
+<li><strong>Web page/file name</strong></li>
+</ul>
+</li>
+<li>Using the example about the URL would be split as follows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>https</th>
+<th>Communication method to transfer data between client and server</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain name</td>
+<td><a href="http://www.google.com">www.google.com</a></td>
+<td>Name of the server where the resource is located</td>
+</tr>
+<tr>
+<td>Web page/file name</td>
+<td>/igcse/computer-science/cie/23/revision-notes/</td>
+<td>Location of the file or resources on the server</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_15">Domain Name System (DNS) (3)</h2>
+<h3 id="section_16">What is a DNS?</h3>
+<ul>
+<li>The Domain Name System (DNS) can be thought of as the Internet’s equivalent to a <strong>phone book</strong></li>
+<li>It is essentially a directory of domain names and is used to translate human-readable domain names to the numeric <strong>IP addresses</strong> that computers use</li>
+<li>When you type a URL into your browser, <strong>the DNS translates the domain name into its associated IP address</strong> so your computer can connect to the server hosting the website</li>
+<li>Without DNS, we would have to remember the IP address of every site we want to visit</li>
+</ul>
+<h2 id="section_17">HTML (4)</h2>
+<h3 id="section_18">What is HTML?</h3>
+<ul>
+<li>Hypertext Markup Language (<strong>HTML</strong>), is the foundational language <strong>used to structure and present content on the web</strong></li>
+<li>HTML consists of a series of elements, often referred to as &quot; <strong>tags</strong> &quot;</li>
+<li>Most tags are <strong>opened and closed e.g.</strong> <code>&lt;html&gt;</code> and <code>&lt;/html&gt;</code>,whereas <strong>some tags are only opened e.g.</strong> <code>&lt;img&gt;</code> and <code>&lt;link&gt;</code></li>
+</ul>
+<h4 id="section_19">Structure</h4>
+<ul>
+<li>HTML is used to <strong>define the basic structure of a webpage</strong> by organising content into <strong>sections</strong> such as headers, paragraphs, and footers</li>
+<li>The <code>&lt;html&gt;</code> tag is the <strong>root element</strong> of an HTML page and includes all other HTML elements used to create a page structure</li>
+</ul>
+<pre><code><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>My Web Page<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">header</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Welcome to My Website<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">header</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">section</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>About Me<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This is a paragraph about me.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">section</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>My Projects<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This is a paragraph about my projects.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">footer</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Contact: myemail@example.com<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">footer</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>In this example, HTML is used to create a structure with a <strong>header</strong>, two sections in the <strong>main body</strong>, and a <strong>footer</strong></li>
+<li>Other examples of HTML being used for structure include:
+<ul>
+<li><strong>Creating lists to structure information</strong></li>
+<li><strong>Positioning of text on the screen</strong></li>
+<li><strong>Embedding media and interactive elements</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_20">Present</h4>
+<ul>
+<li>HTML is also used to <strong>present and display information in a visually</strong> meaningful way</li>
+<li>The content layer of a web page is made up of HTML elements such as <strong>headings</strong> (<code>&lt;h1&gt;, &lt;h2&gt;</code>, etc.), <strong>paragraphs</strong> (<code>&lt;p&gt;</code>), <strong>links</strong> (<code>&lt;a&gt;</code>), <strong>images</strong> (<code>&lt;img&gt;</code>), and more</li>
+<li>This layer is mainly handled by <strong>CSS</strong> (Cascading Style Sheets)</li>
+</ul>
+<pre><code><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Welcome to My Website<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This is a paragraph introducing the content of the website.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Subheading 1<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Here is some detailed information under the first subheading.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Subheading 2<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Another section with more information.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Bold text<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> and <span class="p">&lt;</span><span class="nt">em</span><span class="p">&gt;</span>italic text<span class="p">&lt;/</span><span class="nt">em</span><span class="p">&gt;</span> can emphasise important points.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>In this example, <strong>headings</strong> (<code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>) and <strong>text formatting</strong> tags (<code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>) are used to present the content clearly and with emphasis</li>
+<li>Other examples of HTML being used to present information include:
+<ul>
+<li><strong>Presenting data in a table</strong></li>
+<li><strong>Displaying images with captions</strong></li>
+</ul>
+</li>
+</ul>
+<p>A company sells products over the Internet.</p>
+<p>Explain how the information stored on the company’s website is requested by the customer, sent to the customer’s computer and displayed on the screen.</p>
+<p><strong>[7]</strong></p>
+<p><strong>Answer</strong></p>
+<p><strong>Seven</strong> from:</p>
+<p><strong>Requested</strong></p>
+<ul>
+<li>a web browser is used</li>
+<li>user enters the URL / web address (into the address bar) // clicks a link containing the web address // clicks an element of the webpage</li>
+<li>the URL / web address specifies the protocol</li>
+<li>protocols used are Hyper Text Transfer Protocol (HTTP) / Hyper Text Transfer Protocol Secure (HTTPS)</li>
+</ul>
+<p><strong>Sent</strong></p>
+<ul>
+<li>the URL / web address contains the domain name</li>
+<li>the domain name is used to look up the IP address of the company</li>
+<li>the domain name server (DNS) stores an index of domain names and IP addresses</li>
+<li>web browser sends a request to the web server / IP address</li>
+</ul>
+<p><strong>Received</strong></p>
+<ul>
+<li>Data for the website is stored on the company’s web server</li>
+<li>webserver sends the data for the website back to the web browser</li>
+<li>web server uses the customer’s IP address to return the data</li>
+<li>the data is transferred into Hyper Text Mark-up Language (HTML)</li>
+<li>HTML is interpreted/rendered by the web browser (to display the website)</li>
+</ul>
+<h2 id="section_21">Cookies</h2>
+<h2 id="section_22">What is a cookie?</h2>
+<p><em>Cambridge IGCSE 0478 expects you to describe the</em> <em><strong>purpose of cookies</strong></em>*,* <em><strong>differentiate between session and persistent types</strong></em>*, and explain the* <em><strong>legal requirement for user consent</strong></em>*. This page covers exactly what examiners test, no extra fluff.*</p>
+<h4 id="section_23">Session cookies</h4>
+<ul>
+<li><strong>Stored</strong> in RAM</li>
+<li><strong>Created</strong> each time a user visits a website</li>
+<li><strong>Automatically</strong> deleted when the browser is closed</li>
+<li><strong>Used</strong> to track activity during a single browsing session, such as items in a shopping basket</li>
+</ul>
+<h4 id="section_24">Persistent cookies</h4>
+<ul>
+<li><strong>Stored</strong> on the hard drive</li>
+<li><strong>Created</strong> the first time a user visits a website</li>
+<li><strong>Remain</strong> on the device until they expire or are manually deleted</li>
+<li><strong>Used</strong> to remember login details and user preferences across multiple visits</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Session cookie</th>
+<th>Persistent cookie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Where stored</strong></td>
+<td>RAM</td>
+<td>Hard drive</td>
+</tr>
+<tr>
+<td><strong>When deleted</strong></td>
+<td>When browser is closed</td>
+<td>When expired or manually deleted</td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Track current session activity</td>
+<td>Remember preferences and login details across visits</td>
+</tr>
+</tbody>
+</table>
+<p>Examiners are looking for <strong>what cookies do</strong>, not whether you think they are good or bad. Focus on their purpose: storing login info, preferences, and session data, not “tracking users” or “spying.” When asked to compare the two types, always reference where they are stored and when they are deleted as these are the details that earn marks.</p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="42-types-of-programming-language-translators-ides.html" title="Previous: 4.2 Types of Programming Language, Translators & IDEs" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">4.2 Types of Programming Language, Translators & IDEs</span></a>
+<a href="52-digital-currency.html" title="Next: 5.2 Digital Currency" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">5.2 Digital Currency</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

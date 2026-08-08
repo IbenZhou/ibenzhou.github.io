@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3.3 Data Storage — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>3.3 Data Storage</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_2">RAM</a></li>
+<li><a href="#section_4">ROM</a></li>
+<li><a href="#section_6">Secondary Storage</a></li>
+<li><a href="#section_9">Magnetic Storage</a></li>
+<li><a href="#section_11">Solid-state (Flash Memory)</a></li>
+<li><a href="#section_13">Optical Storage</a></li>
+<li><a href="#section_15">Virtual Memory</a></li>
+<li><a href="#section_18">Cloud Storage</a></li>
+<li><a href="#section_20">Advantages of Cloud Storage</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Primary Storage</h1>
+<p><em>Cambridge IGCSE 0478 expects you to describe</em> <em><strong>RAM, ROM, and other forms of primary storage</strong></em>*, compare them to secondary storage, and apply your knowledge to real-world devices. This page covers the examinable content only—clearly, accurately, and in the language used by examiners.*</p>
+<ul>
+<li>Primary storage is directly accessed by the CPU</li>
+<li>Computer systems need both primary and secondary storage to operate</li>
+<li>Both types of storage play a crucial role in the operation of a computer system</li>
+<li>A quick comparison of primary and secondary storage shows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Primary</strong></th>
+<th><strong>Secondary</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Volatile</strong> (with the exception of ROM)</td>
+<td><strong>Non-volatile</strong></td>
+</tr>
+<tr>
+<td>Small capacity</td>
+<td>Large capacity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_1">Why do you need primary storage?</h3>
+<ul>
+<li>A computer needs primary storage because <strong>access times</strong> are considerably <strong>faster than secondary</strong></li>
+<li>This means the <strong>time taken</strong> to complete operations such as the <a href="https://www.savemyexams.com/gcse/computer-science/ocr/22/revision-notes/1-systems-architecture/cpu-architecture-performance-and-embedded-systems/the-purpose-of-the-cpu/">Fetch-Execute Cycle</a> is <strong>dramatically reduced</strong></li>
+<li>Primary storage holds the <strong>data</strong> and <strong>instructions</strong> that the CPU needs to access whilst the computer is turned on</li>
+<li>Due to the fast access times, primary storage is used as <strong>short-term</strong>, <strong>working memory</strong>, in hardware that is <strong>directly connected to the CPU</strong> such as <strong>RAM</strong>, and components that reside inside the CPU such as <a href="https://www.savemyexams.com/gcse/computer-science/ocr/22/revision-notes/1-systems-architecture/cpu-architecture-performance-and-embedded-systems/cpu-components-and-their-function/">Cache</a> and <a href="https://www.savemyexams.com/gcse/computer-science/ocr/22/revision-notes/1-systems-architecture/cpu-architecture-performance-and-embedded-systems/cpu-components-and-their-function/">Registers</a></li>
+<li>Performance of primary storage means a much higher <strong>cost</strong> which limits the amount that is used</li>
+<li>For example, <strong>RAM</strong> is commonly purchased in 16 or 32 <strong>gigabytes</strong> whereas secondary storage such as a <strong>hard drive</strong> is in <strong>terabytes</strong></li>
+</ul>
+<h2 id="section_2">RAM</h2>
+<h3 id="section_3">What is RAM?</h3>
+<ul>
+<li>RAM (Random Access Memory) is <strong>primary storage</strong> that is directly connected to the CPU and holds the <strong>data</strong> and <strong>instructions</strong> that are <strong>currently in use</strong></li>
+<li>RAM is <strong>volatile</strong> which means the contents of RAM are lost when the power is turned off</li>
+<li>For the CPU to access the data and instructions they must be <strong>copied from secondary storage</strong></li>
+<li>RAM is <strong>very fast</strong> working memory, much faster than secondary storage</li>
+<li>RAM is <strong>read/write</strong> which means data can be read from and written to</li>
+<li>In comparison to ROM, it has a much <strong>larger capacity</strong></li>
+</ul>
+<p><em>Without the mention of current use or CPU access, you’ll lose a mark.</em></p>
+<p><em>IGCSE may ask you to explain how RAM is used in a real product like a smart TV or games console.</em></p>
+<p><em>Example:</em></p>
+<p><em>“RAM stores the current video stream or active game state, allowing smooth performance and fast switching between tasks.”</em></p>
+<p>A smart television allows the user to search the Internet and watch videos online.</p>
+<p>The smart television uses RAM</p>
+<p>Give <strong>two examples</strong> of data that the smart television could store in RAM <strong>[2]</strong></p>
+<p><strong>How to answer this question</strong></p>
+<ul>
+<li>Think about the main function of a smart television, watch channels, use apps to stream content and browse the web etc</li>
+<li>For each function, try to think of what data would have to be in the RAM whilst you were actually doing it (<strong>in use!</strong>)</li>
+</ul>
+<p><strong>Possible answers</strong></p>
+<ul>
+<li>Current channel being watched</li>
+<li>Current volume</li>
+<li>Current video/file/tv program being watched</li>
+<li>Web browser/applications that are <strong>running</strong></li>
+<li>Data being downloaded/buffered</li>
+</ul>
+<h2 id="section_4">ROM</h2>
+<h3 id="section_5">What is ROM?</h3>
+<ul>
+<li>ROM (Read Only Memory) is <strong>primary storage</strong> that holds the <strong>first instructions</strong> a computer needs to <strong>start up</strong> (Bootstrap)</li>
+<li>ROM contains the <strong>BIOS</strong> (Basic Input Output System)</li>
+<li>ROM is a small <strong>memory chip</strong> located on the computers <strong>motherboard</strong></li>
+<li>ROM is <strong>fast</strong> memory, much faster than secondary storage but <strong>slower than RAM</strong></li>
+<li>ROM is <strong>non-volatile</strong> which means the contents of ROM are not lost when the power is turned off</li>
+<li>ROM is <strong>read only</strong> which means data can only be read from</li>
+<li>In comparison to RAM, it has a much <strong>smaller capacity</strong></li>
+</ul>
+<p><em>RAM &amp; ROM are examples of primary storage, they can be referred to as Main Memory or Primary Memory in the exam</em></p>
+<p>Quinn has 512 kilobytes of ROM and 16 gigabytes of RAM in her computer</p>
+<ol>
+<li>Describe the purpose of the ROM in Quinn’s computer <strong>[2]</strong></li>
+<li>Describe the purpose of the RAM in Quinn’s computer <strong>[2]</strong></li>
+</ol>
+<p><strong>Answer</strong></p>
+<ol>
+<li>ROM</li>
+<li>RAM
+<ul>
+<li>Stores the parts of the OS / programs that are running</li>
+<li>Stores data currently in use</li>
+<li>…for access by the CPU</li>
+</ul>
+</li>
+</ol>
+<p><strong>Guidance</strong></p>
+<ul>
+<li>Do not confuse the purpose with characteristics, describe <strong>what it does</strong>, not <strong>what it is</strong></li>
+</ul>
+<p><em>Many students confuse RAM with secondary storage. Remember:</em></p>
+<p><em>RAM is volatile and loses data when power is off</em></p>
+<p><em>Secondary storage is non-volatile and holds data permanently</em></p>
+<h2 id="section_6">Secondary Storage</h2>
+<ul>
+<li>Storage devices are <strong>non-volatile secondary storage</strong>, that retain digital data within a computer system</li>
+<li>They provide a means of storing, accessing, and retrieving data, which can include software applications, documents, images, videos, and more</li>
+<li>There are 3 types of storage:
+<ul>
+<li><strong>Magnetic</strong></li>
+<li><strong>Solid-state (flash memory)</strong></li>
+<li><strong>Optical</strong></li>
+</ul>
+</li>
+<li>Computer systems need both primary and secondary storage to operate</li>
+<li>Both types of storage play a crucial role in the operation of a computer system</li>
+<li>A quick comparison of primary and secondary storage shows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Primary</strong></th>
+<th><strong>Secondary</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Volatile</strong> (with the exception of ROM)</td>
+<td><strong>Non-volatile</strong></td>
+</tr>
+<tr>
+<td>Small capacity</td>
+<td>Large capacity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_7">Why do you need secondary storage?</h3>
+<ul>
+<li>A computer needs secondary storage for <strong>long term storage</strong> of programs and data that are <strong>currently not in use</strong></li>
+<li>Secondary storage is needed as ROM is read only and RAM is volatile</li>
+<li>Secondary storage holds the <strong>programs</strong> and <strong>data</strong> whilst the computer is turned off (<strong>non-volatile</strong>)</li>
+<li>Performance of secondary storage is <strong>slower</strong> than primary storage but <strong>capacity</strong> is much <strong>higher</strong> which makes it perfect for backup &amp; archive of data files</li>
+</ul>
+<h3 id="section_8">What are the characteristics of secondary storage?</h3>
+<ul>
+<li><strong>Capacity</strong> - What is the maximum amount of data that can be stored?</li>
+<li><strong>Speed</strong> - How fast can data be read from and written to? (R/W)</li>
+<li><strong>Cost</strong> - How much does it cost?</li>
+<li><strong>Portability</strong> - How easy is it to move around? What is the physical size? Weight?</li>
+<li><strong>Durability</strong> - How robust is the storage?</li>
+<li><strong>Reliability</strong> - What is the probability that the device will consistently perform its function?</li>
+</ul>
+<p>A games console has secondary storage.</p>
+<p>State, using an example, why the games console needs secondary storage <strong>[2]</strong></p>
+<p><strong>How to answer this question</strong></p>
+<ul>
+<li>They keyword is ’ <strong>why</strong> ', why does a games console need secondary storage? give an example, do not just describe what secondary storage is!</li>
+</ul>
+<p><strong>Answer</strong></p>
+<ul>
+<li>To store data once the power is turned off / permanently // for non-volatile storage</li>
+<li>Examples could include:
+<ul>
+<li>Storing games</li>
+<li>Save games</li>
+<li>User data/profiles</li>
+<li>Downloaded content/applications/updates</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_9">Magnetic Storage</h2>
+<h3 id="section_10">What is magnetic storage?</h3>
+<ul>
+<li>Magnetic storage is a type of <strong>non-volatile media</strong> that uses <strong>magnets</strong> (polarity) to store binary 0s and 1s</li>
+<li>A magnetic hard disk is made up of <strong>several metal discs</strong> coated with a magnetic material
+<ul>
+<li>These are called <strong>platters</strong></li>
+<li>Iron particles on each platter are <strong>magnetised</strong> to <strong>represent a 0 or 1</strong>
+<img src="0478-images/3-3-data-storage-secondary-storage-1.png" alt="Diagram of a hard disk showing labeled components: read head, platter, track, and sector. The read head hovers above the platter and sectors are segments of the platter."></li>
+</ul>
+</li>
+<li>Each platter is divided by concentric circles creating several <strong>tracks</strong> and wedge shaped <strong>sectors</strong></li>
+<li>Where they intersect is a <strong>track sector</strong>
+<img src="0478-images/3-3-data-storage-secondary-storage-2-1.png" alt="Diagram of a hard drive showing platters, tracks, sectors, and disk read-and-write heads. Labels explain components, including magnetic layers and their role in data storage."></li>
+<li>The hard drive <strong>spins the metal disk</strong> (s) at a high speed (typically around 5400-7200 RPM) using a <strong>motor</strong></li>
+<li>A <strong>read/write arm</strong>, controlled by an actuator, <strong>moves the head</strong> over the surface of the disc to the location of the data</li>
+<li>The data is read/written using <strong>electromagnets</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Capacity</strong> - High storage</td>
+<td><strong>Durability</strong> - Moving parts can get damaged if dropped</td>
+</tr>
+<tr>
+<td><strong>Cost</strong> - Low per gigabyte</td>
+<td><strong>Portability</strong> - Heavy &amp; bulky making them less convenient for transport</td>
+</tr>
+<tr>
+<td><strong>Speed</strong> - Moderate read/write access</td>
+<td><strong>Reliability</strong> - Prone to mechanical failure</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Noise</strong> - Loud (spinning disks)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_11">Solid-state (Flash Memory)</h2>
+<h3 id="section_12">What is solid state (flash memory)?</h3>
+<ul>
+<li>Solid-state (flash memory) storage is a type of <strong>non-volatile media</strong> that uses <strong>electronic circuits</strong> to store binary 0s and 1s</li>
+<li>Examples of solid state storage devices include:
+<ul>
+<li><strong>Solid state drives (SSD)</strong> - replacing magnetic hard drives as a computers primary secondary storage device as capacity increases and cost decreases</li>
+<li><strong>USB flash memory</strong> - most common form of portable storage device</li>
+</ul>
+</li>
+<li>It uses <strong>NAND</strong> and <strong>NOR gates</strong> in electrical circuits to <strong>persistently</strong> control the flow of electrons
+<img src="0478-images/63100_2024-09-02-0gu-kleki.png" alt="Diagram showing sections of a floating gate transistor: control gate (orange), oxide layers (gray) above and below floating gate (orange), and oxide layer with electrons (blue dots)."></li>
+<li>Solid-state (flash memory) is memory made up of <strong>tiny cells</strong> that can contain <strong>one bit of data</strong> (1 or 0)</li>
+<li>Each cell <strong>contains a</strong> <strong>transistor</strong> that acts as a <strong>switch</strong> that can be <strong>turned on or off</strong></li>
+<li>The transistor contains <strong>two</strong> main parts:
+<ul>
+<li><strong>Control gate</strong> - top layer of transistor, connects to circuit and controls if current can flow through the transistor</li>
+<li><strong>Floating gate</strong> - can hold a charge (like a tiny rechargeable battery) and is sandwiched between two layers of insulating material (Oxide)</li>
+</ul>
+</li>
+<li>To <strong>store data</strong> a charge is placed on the floating gate
+<ul>
+<li>A <strong>high voltage is applied</strong> to the <strong>control gate</strong>, which allows electrons to be <strong>pushed through the oxide layer</strong> and onto the <strong>floating gate</strong></li>
+</ul>
+</li>
+<li>To <strong>remove data</strong>, a high voltage charge is applied in the <strong>opposite direction</strong>, <strong>pulling the electrons off the floating gate</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Capacity</strong> - Medium/high storage</td>
+<td><strong>Cost</strong> - Very high per gigabyte</td>
+</tr>
+<tr>
+<td><strong>Speed</strong> - Very fast read/write access</td>
+<td><strong>Reliability</strong> - Limited read/write cycles</td>
+</tr>
+<tr>
+<td><strong>Durability</strong> - No moving parts</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Portability</strong> - Small and no moving parts</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Noise</strong> - Silent</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_13">Optical Storage</h2>
+<h3 id="section_14">What is optical storage?</h3>
+<ul>
+<li>Optical storage is a type of <strong>non-volatile media</strong> that uses <strong>lasers</strong> to burn the surface of a disk, creating pits and lands suitable for storing binary 0s and 1s</li>
+<li>Examples of optical storage include:
+<ul>
+<li><strong>Blu-rays</strong> have the largest capacity</li>
+<li><strong>CDs</strong> have the lowest capacity</li>
+<li><strong>CD-R</strong> are read-only (you cannot save data on to them)</li>
+<li><strong>CD-RW</strong> can be written to and read from</li>
+<li><strong>DVD-RW</strong> can be written to and read from
+<img src="0478-images/3-3-data-storage-secondary-storage-3.png" alt="A rectangular waveform diagram with labeled sections 'LAND' and 'PIT'. Below the waveform is a binary sequence: 0001000000000010000100000000100000000001000."></li>
+</ul>
+</li>
+<li>All optical devices work by <strong>shining a laser at the disk</strong> and <strong>processing the reflection</strong></li>
+<li>An arm moves the laser <strong>across the surface of the disk</strong></li>
+<li>In <strong>CD-Rs</strong> a laser burns the data, <strong>permanently</strong> on to the disk, by creating pits and lands</li>
+<li>The laser is also used to <strong>read the data from the pits and lands</strong></li>
+<li>When the laser light <strong>hits the point where the pit changes into a land</strong> or vice versa the <strong>light scatters</strong> and <strong>is not reflected back as well</strong>.</li>
+<li>This is <strong>captured by a sensor</strong> and can be <strong>interpreted as a change in the binary value</strong></li>
+</ul>
+<p>Optical storage devices contain moving parts because the disk spins and the laser mechanism moves, but there is no physical contact with the disk surface</p>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cost</strong> - Very low per gigabyte</td>
+<td><strong>Capacity</strong> - Very low</td>
+</tr>
+<tr>
+<td><strong>Durability</strong> - No physical contact between the laser and the disk surface</td>
+<td><strong>Speed</strong> - Very slow read/write access</td>
+</tr>
+<tr>
+<td><strong>Portability</strong> - Small and lightweight</td>
+<td><strong>Reliability</strong> - Prone to scratches</td>
+</tr>
+<tr>
+<td><strong>Noise</strong> - Silent</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Zarmeen has purchased a new tablet computer. The tablet has an internal secondary storage device.</p>
+<p>The storage device is a solid state device.</p>
+<ol>
+<li>Give <strong>three</strong> benefits of the tablet having a solid state device instead of a magnetic device <strong>[3]</strong></li>
+<li>Give <strong>two</strong> drawbacks of the tablet having a solid state device instead of a magnetic device <strong>[2]</strong></li>
+</ol>
+<p><strong>Answers</strong></p>
+<ul>
+<li>Benefits</li>
+<li>Drawbacks</li>
+</ul>
+<p><strong>Guidance</strong></p>
+<ul>
+<li>Portable is not enough on it’s own</li>
+<li>No moving parts is not enough on it’s own</li>
+</ul>
+<h2 id="section_15">Virtual Memory</h2>
+<h3 id="section_16">What is virtual memory?</h3>
+<p><em>Cambridge IGCSE 0478 requires you to explain</em> <em><strong>what virtual memory is</strong></em>*,* <em><strong>when it is used</strong></em>*, and* <em><strong>how it affects performance</strong></em>*. This page is written using the structure and phrasing examiners expect in 2–4 mark answers.*</p>
+<p><img src="0478-images/39027_2024-09-05-0mu-kleki.png" alt="Diagram illustrating the transfer of pages between RAM and virtual memory within the secondary storage system."></p>
+<ul>
+<li>Virtual memory is an <strong>extension of primary storage</strong> (RAM) located on <strong>secondary storage</strong></li>
+<li>In situations where RAM is close to being <strong>full</strong>, virtual memory can be used so that the computer <strong>remains operational</strong></li>
+<li>Programs and data <strong>not currently</strong> being <strong>executed</strong> are transferred to virtual memory</li>
+<li>Programs and data are transferred back to RAM when they <strong>are needed</strong></li>
+<li>Programs are stored as <strong>pages of data</strong></li>
+<li><strong>Pages</strong> of data are <strong>transferred</strong> between RAM and virtual memory when needed</li>
+<li>Virtual memory is much <strong>slower</strong> than RAM and its use will impact negatively on system performance</li>
+<li>To avoid the use of virtual memory, <strong>increase</strong> the size of the <strong>RAM</strong></li>
+</ul>
+<p><em>Virtual memory does</em> <em><strong>not increase the actual size of RAM</strong></em>*. It creates* <em><strong>temporary space</strong></em> <em>on secondary storage. It makes the system usable,</em> <em><strong>not faster</strong></em>*.*</p>
+<h4 id="section_17">Example</h4>
+<p><img src="0478-images/screenshot-2024-04-15-at-13-55-40.png" alt="Comparison of RAM and Virtual Memory"></p>
+<ul>
+<li>In the example above, the computer is turned on and the elements of the operating system are loaded into RAM</li>
+<li>The user opens some spreadsheet and video editing software but RAM is full</li>
+<li>The program not currently being used (video editing) is transferred to virtual memory</li>
+<li>When the user wants to use the video editing software again, it is transferred back from virtual memory to RAM
+<img src="0478-images/screenshot-2024-04-15-at-13-55-50.png" alt="Comparison of Ram and Virtual Memory when swapping out software in RAM"></li>
+</ul>
+<p>A student uses software to create 3D models.</p>
+<ul>
+<li>3D modelling often means processing large amounts of data</li>
+<li>This takes up a large amount of RAM</li>
+<li>If there is not enough physical RAM, virtual memory is used to:
+<ul>
+<li>Extend the RAMs capacity</li>
+<li>Ensure the software does not freeze/crash when RAM gets full</li>
+</ul>
+</li>
+</ul>
+<p>A computer only has 4GB of RAM, Fynn says that virtual memory can be used instead of adding more RAM.</p>
+<ol>
+<li>Explain how virtual memory can compensate for the lack of RAM in Fynn’s computer <strong>[3]</strong></li>
+<li>Explain why it would be beneficial for Fynn to get more RAM instead of relying on virtual memory <strong>[2]</strong></li>
+</ol>
+<p><strong>How to answer these questions</strong></p>
+<ol>
+<li>What is the definition of virtual memory? how does it work?</li>
+<li>What is the downside of using virtual memory? turn this into an advantage of adding more RAM</li>
+</ol>
+<p><strong>Answers</strong></p>
+<ul>
+<li>How can Virtual Memory compensate
+<ul>
+<li>Virtual Memory is used when RAM is full</li>
+<li>…part of the secondary storage used as (temporary) RAM</li>
+<li>Data from RAM is moved to the secondary storage/Virtual Memory (to make space in RAM)</li>
+<li>RAM can then be filled with new data</li>
+<li>When data in Virtual Memory is needed it is moved back to RAM</li>
+</ul>
+</li>
+<li>Benefit of more RAM
+<ul>
+<li>More RAM will improve the performance of the computer // More RAM will speed up the access to data</li>
+<li>Virtual Memory is slower to access than RAM direct (because it has to go back to RAM first)</li>
+<li>Moving data between RAM and VM takes processor time</li>
+</ul>
+</li>
+</ul>
+<h2 id="section_18">Cloud Storage</h2>
+<h3 id="section_19">What is cloud storage?</h3>
+<ul>
+<li>Cloud storage is a term to describe <strong>long-term (secondary) storage of data</strong> that resides in a <strong>remote location</strong>, accessible only <strong>via a wide area network</strong> (Internet)</li>
+<li>Data is stored on <strong>remote servers</strong>, typically using magnetic storage (<strong>HDD</strong>), but increasingly using solid state (<strong>SSD</strong>)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Reliability</strong> - Access data anywhere, any time, from any device</td>
+<td><strong>Cost</strong> - Typically a monthly/yearly subscription plan</td>
+</tr>
+<tr>
+<td><strong>Security</strong> - Automatic backups</td>
+<td><strong>Availability</strong> - No access without an internet connection</td>
+</tr>
+<tr>
+<td><strong>Capacity</strong> - Endless storage space (cost permitting), uses less space on own device</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Collaboration</strong> - Multiple people can access the same file at the same time</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><img src="0478-images/3-3-data-storage-cloud-storage.png" alt="3-3-data-storage-cloud-storage" width="1041"></p>
+<h2 id="section_20">Advantages of Cloud Storage</h2>
+<ul>
+<li>Cloud storage offers several advantages over storing data on a local secondary storage device</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Benefit</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accessibility</td>
+<td>• Data can be <strong>accessed from anywhere</strong><br>• Data can be accessed by anyone with the <strong>relevant permissions,</strong> making it <strong>quick to share files</strong> and collaborate with others  <br>• Data can be <strong>accessed on any device</strong> with an internet connection</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>• Cloud storage providers allow customers to <strong>increase</strong> or decrease their <strong>storage capacity</strong> as needed</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>• Cloud storage providers often use <strong>multiple servers</strong> to store and <strong>backup data</strong>, reducing the risk of data loss due to hardware failure</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>• Cloud storage providers offer <strong>advanced security features</strong>, such as data <strong>encryption</strong> and <strong>multi-factor authentication</strong>, to protect user data from unauthorised access<br>• There is <strong>no need to hire specialist staff</strong> as IT services being provided by the cloud storage provider</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>You also do not need to purchase local secondary storage devices</li>
+<li>One cloud storage centre is more <strong>environmentally friendly</strong> than millions of individual servers</li>
+<li>There are some drawbacks to using cloud storage
+<ul>
+<li>If the user has a slow or <strong>unreliable internet connection</strong> they would have problems <strong>accessing</strong> their files</li>
+<li>If you are storing a lot of data it can be <strong>expensive</strong></li>
+<li>You have to pay the cloud storage provider</li>
+<li>You may need to commit to an annual subscription</li>
+<li>You may have to pay for high download and upload data transfer limits</li>
+<li>Data being sent over the internet has the potential to be <strong>intercepted</strong></li>
+<li>Security is managed by the cloud storage provider which means the user <strong>does not have complete control</strong> over it but is still legally responsible for ensuring any <strong>personal and sensitive data</strong> is secure</li>
+</ul>
+</li>
+</ul>
+<p>A school currently stores all of their data on local servers. They are considering upgrading their system to utilise cloud storage.</p>
+<p>Explain two disadvantages to the school of storing their data in the cloud.</p>
+<p><strong>[4]</strong></p>
+<ul>
+<li>You need a constant internet connection [1]</li>
+<li>if the internet connection failed, teachers would not be able to access lesson files [1]</li>
+<li>if the internet connection failed, teachers would not be able to access student data/take electronic registers [1]</li>
+<li>if the internet connection failed, students would not be able to access their work/coursework [1]</li>
+<li>Reliant on third party to carry out security procedures [1]</li>
+<li>but the school is still legally responsible if data is accessed by unauthorised people [1]</li>
+<li>Data stored on the cloud could be hacked or intercepted [1]</li>
+</ul>
+<p>Explain two advantages to the school of storing their data in the cloud.</p>
+<p><strong>[4]</strong></p>
+<ul>
+<li>Additional storage can be purchased if needed [1]</li>
+<li>The cloud hosting company provides back up [1]</li>
+<li>The cloud hosting company provides security [1]</li>
+<li>Data can be accessed from anywhere and from any device provided there is an internet connection [1]</li>
+<li>So teachers would be able to access data from home [1]</li>
+<li>So students would be able to access work from home [1]</li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="31-input-output-devices.html" title="Previous: 3.1 Input & Output Devices" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">3.1 Input & Output Devices</span></a>
+<a href="34-network-hardware.html" title="Next: 3.4 Network Hardware" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">3.4 Network Hardware</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

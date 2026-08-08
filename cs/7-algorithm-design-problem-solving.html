@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7 Algorithm Design & Problem-Solving — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>7 Algorithm Design & Problem-Solving</h1>
+    <p>Paper 2: Algorithms, Programming & Logic</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Program Development Life Cycle (Cambridge</a></li>
+<li><a href="#section_1">Analysis</a></li>
+<li><a href="#section_6">Design</a></li>
+<li><a href="#section_8">Coding</a></li>
+<li><a href="#section_10">Testing</a></li>
+<li><a href="#section_12">Computer Sub-Systems</a></li>
+<li><a href="#section_15">Problem Decomposition</a></li>
+<li><a href="#section_19">Designing Algorithms</a></li>
+<li><a href="#section_20">What is an algorithm?</a></li>
+<li><a href="#section_21">Structure Diagrams</a></li>
+<li><a href="#section_23">Flowcharts</a></li>
+<li><a href="#section_26">Pseudocode</a></li>
+<li><a href="#section_29">Explaining Algorithms</a></li>
+<li><a href="#section_31">Linear Search &amp; Bubble Sort</a></li>
+<li><a href="#section_32">Linear Search</a></li>
+<li><a href="#section_33">What is a searching algorithm?</a></li>
+<li><a href="#section_34">What is a linear search?</a></li>
+<li><a href="#section_35">How do you perform a linear search?</a></li>
+<li><a href="#section_36">Bubble Sort</a></li>
+<li><a href="#section_40">Other Standard Methods of a Solution</a></li>
+<li><a href="#section_41">Totalling &amp; Counting</a></li>
+<li><a href="#section_44">Maximum, Minimum &amp; Average</a></li>
+<li><a href="#section_45">Validation &amp; Verification</a></li>
+<li><a href="#section_46">Validation</a></li>
+<li><a href="#section_54">Verification</a></li>
+<li><a href="#section_58">Suitable Test Data</a></li>
+<li><a href="#section_65">Trace Tables</a></li>
+<li><a href="#section_68">Identifying Errors</a></li>
+<li><a href="#section_69">Writing &amp; Amending Algorithms</a></li>
+<li><a href="#section_70">Algorithmic Thinking</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Program Development Life Cycle (Cambridge</h2>
+<h2 id="section_1">Analysis</h2>
+<h3 id="section_2">What is the analysis stage of the program development life cycle?</h3>
+<ul>
+<li>The analysis stage of the program development life cycle is to <strong>precisely understand the problem</strong> the program is intended to solve</li>
+</ul>
+<h4 id="section_3">What role does abstraction play in the analysis?</h4>
+<ul>
+<li>Abstraction is the act of <strong>removing unimportant details</strong> from the problem to <strong>focus on important elements</strong> such as:
+<ul>
+<li><strong>Core functionality</strong></li>
+<li><strong>Requirements</strong></li>
+</ul>
+</li>
+<li>An example of abstraction would be the London underground train route map; travellers do not need to know the geographical layout of the routes, only that getting on at stop A will eventually transport you to stop B
+<img src="0478-images/7-1-development-life-cycle-program-development-life-cycle---analysis-01.png" alt="7-1-development-life-cycle-program-development-life-cycle---analysis-01" width="915"> <img src="0478-images/7-1-development-life-cycle-program-development-life-cycle---analysis-02.png" alt="7-1-development-life-cycle-program-development-life-cycle---analysis-02" width="913"></li>
+</ul>
+<h4 id="section_4">Core functionality</h4>
+<ul>
+<li>Using abstraction helps to <strong>identify the fundamental component</strong> s of what the program is going to solve</li>
+<li>Before tackling a problem, it needs to be clearly <strong>understood by everyone working on it</strong></li>
+<li>The overall goal of the solution needs to be agreed as well as <strong>any constraints</strong> such as limited resources or requiring a <strong>platform</strong> specific solution</li>
+</ul>
+<h4 id="section_5">Requirements</h4>
+<ul>
+<li>To create a solution, <strong>a requirements document is created</strong> to define the problem and break it down into clear, manageable, understandable parts by using abstraction and decomposition</li>
+<li>A requirements document <strong>labels each requirement</strong>, gives it a description as well as <strong>success criteria</strong> which state how we know when the requirement has been achieved</li>
+</ul>
+<h2 id="section_6">Design</h2>
+<h3 id="section_7">What is the design stage of the program development life cycle?</h3>
+<ul>
+<li>The design stage of the program development life cycle involves using <strong>techniques</strong> to come up with a <strong>blueprint for a solution</strong></li>
+<li>Ways the design of a solution to a problem can be presented include:
+<ul>
+<li><strong>Structure diagrams</strong></li>
+<li><strong>Flowchart</strong></li>
+<li><strong>Pseudocode</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_8">Coding</h2>
+<h3 id="section_9">What is the coding stage of the program development life cycle?</h3>
+<ul>
+<li>Developers begin programming <strong>modules</strong> in a <strong>suitable programming language</strong> that works together to provide an overall solution to the problem</li>
+<li>As each developer programs, they <strong>perform iterative testing</strong>
+<ul>
+<li>Iterative testing is where each module is tested and debugged thoroughly to make sure it interacts correctly with other modules and accepts data without crashing or causing any errors</li>
+</ul>
+</li>
+<li>Developers may need to retest modules as new modules are created and changed to make sure they continue to interact correctly and do not cause errors</li>
+</ul>
+<h2 id="section_10">Testing</h2>
+<h3 id="section_11">What is the testing stage of the program development life cycle?</h3>
+<ul>
+<li>Once the overall program or set of programs is created, they are run many times using varying sets of test data</li>
+<li>This ensures the program or programs work as intended as outlined in the initial requirements specification and design and rejects any invalid data that is input</li>
+<li>Examples of test data include <strong>alphanumeric</strong> sequences to test password validation routines</li>
+</ul>
+<h2 id="section_12">Computer Sub-Systems</h2>
+<h3 id="section_13">What is a sub-system?</h3>
+<ul>
+<li>A sub-system is <strong>a smaller part of a computer system</strong> that works together with other sub-systems to create fully functional computer system</li>
+<li>A car is a great example of using sub-systems</li>
+<li>A car will only function if its sub-systems <strong>all work together</strong>, they are:
+<ul>
+<li><strong>Engine</strong></li>
+<li><strong>Breaks</strong></li>
+<li><strong>Wheels etc.</strong></li>
+</ul>
+</li>
+<li>Sub-systems can be <strong>further broken down into even smaller sub-systems</strong> such as:
+<ul>
+<li><strong>Engine</strong> - spark plugs, sensors, pistons</li>
+</ul>
+</li>
+<li>In computers, there are <strong>five</strong> main sub-systems:</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p>Central Processing Unit (CPU)</p></th><th colspan="1" rowspan="1"><p>Memory</p></th><th colspan="1" rowspan="1"><p>Storage</p></th><th colspan="1" rowspan="1"><p>Input devices</p></th><th colspan="1" rowspan="1"><p>Output devices</p></th></tr><tr><td colspan="1" rowspan="1"><p>Executes instructions</p></td><td colspan="1" rowspan="1"><p>Stores data & instructions temporarily for the CPU (RAM)</p></td><td colspan="1" rowspan="1"><p>Stores data and software permanently (HDD, SSD)</p></td><td colspan="1" rowspan="1"><p>Allows a user to enter information (keyboard, mouse)</p></td><td colspan="1" rowspan="1"><p>Displays information or creates a physical output (monitor, printer)</p></td></tr></tbody></table>
+<ul>
+<li>Computer sub-systems can be further broken down into smaller sub-systems such as:
+<ul>
+<li><strong>CPU</strong> - control unit, registers &amp; arithmetic logic unit (<strong>ALU</strong>)</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_14">Advantages of sub-systems</h4>
+<ul>
+<li>Can help <strong>troubleshoot problems in a computer system</strong></li>
+<li>The ability to <strong>isolate</strong> a sub-system makes it <strong>easier to identify and fix issues</strong>, as each sub-system can be examined separately</li>
+<li>Developing software relies on the use of different sub-systems to ensure they <strong>operate efficiently</strong></li>
+<li>Gives developers and designers <strong>a clear picture</strong> of how sub-systems help build complex systems</li>
+</ul>
+<h2 id="section_15">Problem Decomposition</h2>
+<h3 id="section_16">What is decomposition?</h3>
+<ul>
+<li>Decomposition is the process of <strong>breaking down a large problem</strong> into <strong>a set of smaller problems</strong></li>
+<li>Benefits of decomposition are:
+<ul>
+<li><strong>Smaller problems are easier to solve</strong></li>
+<li><strong>Each smaller problem can be solved independently of the others</strong></li>
+<li><strong>Smaller problems can be tested independently</strong></li>
+<li><strong>Smaller problems can be combined to produce a solution to the full problem</strong></li>
+</ul>
+</li>
+<li>Modern computer games are a good example of using decomposition to <strong>break down the complexity</strong> of the problem into more <strong>manageable</strong> ’ <strong>chunks</strong> ’</li>
+<li>Creating an entire game at once would be <strong>challenging</strong> and <strong>inefficient</strong>, so it could be decomposed into:
+<ul>
+<li><strong>Levels</strong> - Levels can be designed/created/tested/ independently of other levels</li>
+<li><strong>Characters</strong> - The mechanics of characters in the game can be designed and created by a separate team</li>
+<li><strong>Landscape</strong> - The art team can work on the visual aspects of the game without needing to understand how the game is programmed</li>
+</ul>
+</li>
+<li>Once all of the smaller problems are completed, joined together a complex game has been created</li>
+</ul>
+<h3 id="section_17">Inputs, processes, outputs and storage</h3>
+<ul>
+<li>Decomposing a problem requires developers to think about four component parts:
+<ul>
+<li><strong>Inputs</strong>: data entered into the system</li>
+<li><strong>Processes</strong>: subroutines and algorithms that turn inputs and stored data into outputs</li>
+<li><strong>Outputs</strong>: data that is produced by the system, such as information on a screen or printed information</li>
+<li><strong>Storage</strong>: data that is stored on a physical device, such as on a hard drive or in memory whilst the program is running</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_18">Example - Area of a rectangle program</h4>
+<table>
+<thead>
+<tr>
+<th>Inputs</th>
+<th>Width of the rectangle<br><br>Height of the rectangle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Processes</td>
+<td>Width x height</td>
+</tr>
+<tr>
+<td>Outputs</td>
+<td>Calculated area of the rectangle</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>Memory: width, height and area stored temporarily</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_19">Designing Algorithms</h2>
+<h2 id="section_20">What is an algorithm?</h2>
+<p><em>Cambridge IGCSE 0478 assesses your ability to</em> <em><strong>understand</strong></em>*,* <em><strong>write</strong></em>*, and* <em><strong>interpret</strong></em> <em>algorithms using</em> <em><strong>pseudocode</strong></em>*,* <em><strong>flowcharts</strong></em>*, and* <em><strong>structured design</strong></em>*. This page gives examples in the format and style seen in Paper 2, focusing only on examinable methods.*</p>
+<ul>
+<li>An algorithm is <strong>precise set of rules or instructions</strong> to solve a specific problem or task</li>
+<li>There are three main ways to design an algorithm
+<ul>
+<li><strong>Structure diagrams</strong></li>
+<li><strong>Flowchart</strong></li>
+<li><strong>Pseudocode</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="section_21">Structure Diagrams</h2>
+<h4 id="section_22">What is a structure diagram?</h4>
+<ul>
+<li>Structure diagrams <strong>show hierarchical top-down design in a visual form</strong></li>
+<li>Each problem is divided into sub-problems and each sub-problem divided into further sub-problems</li>
+<li>At each level the problem is broken down into more detailed tasks that can be implemented using a single subroutine
+<img src="0478-images/unnamed-3.png" alt="unnamed-3" width="673"></li>
+<li>an example of a structure diagram for a mobile application could be:
+<img src="0478-images/unnamed-4.png" alt="unnamed-4" width="677"></li>
+</ul>
+<h2 id="section_23">Flowcharts</h2>
+<h3 id="section_24">What is a flowchart?</h3>
+<ul>
+<li>Flowcharts are a <strong>visual tool</strong> that uses <strong>shapes to represent different functions</strong> to <strong>describe an algorithm</strong></li>
+<li>Flowcharts show the data that is <strong>input</strong> and <strong>output</strong>, the <strong>processes</strong> that take place and any <strong>decisions</strong> or <strong>repetition</strong></li>
+<li>Lines are used to show the <strong>flow of control</strong>
+<img src="0478-images/flow-chart-symbols.png" alt="flow-chart-symbols"></li>
+</ul>
+<h4 id="section_25">Example</h4>
+<blockquote>
+<p>Flowchart
+<img src="0478-images/flow-chart-1.png" alt="Flowchart"></p>
+</blockquote>
+<ul>
+<li>The casino would like the algorithm <strong>refined</strong> so that the user also <strong>enters their first name</strong> and this is used to <strong>greet the user when they access the site</strong></li>
+</ul>
+<blockquote>
+<p>Flow chart
+<img src="0478-images/flow-chart-2-1.png" alt="Flowchart" width="588"></p>
+</blockquote>
+<h2 id="section_26">Pseudocode</h2>
+<h3 id="section_27">What is pseudocode?</h3>
+<ul>
+<li>Pseudocode is a <strong>text-based tool</strong> that uses short <strong>English words/statements</strong> to <strong>describe an algorithm</strong></li>
+<li>Pseudocode is <strong>more structured</strong> than writing sentences in English but is <strong>very flexible</strong></li>
+</ul>
+<h4 id="section_28">Example</h4>
+<ul>
+<li>A casino would like a program that asks users to <strong>enter an age</strong>, if they are 18 or over they can enter the site, if not then they are given a suitable message</li>
+</ul>
+<blockquote>
+<p>Pseudocode</p>
+<pre><code class="language-java"><div class="highlight"><pre><code>INPUT Age
+IF Age >= 18
+</code></pre></div></code></pre>
+</blockquote>
+<pre><code>THEN
+    OUTPUT &quot;Welcome to the site&quot;
+ELSE
+    OUTPUT &quot;Sorry, this site is for users 18 and over&quot;
+    ENDIF
+</code></pre>
+<blockquote>
+<pre><code><div class="highlight"><pre><code></code></pre></div></code></pre>
+</blockquote>
+<p><em>Pseudocode is</em> <em><strong>not real code</strong></em> <em>—don’t use syntax like</em> <code> print()</code> <em>or</em> <code>input()</code> <em>with brackets. Stick to simple statements like:</em></p>
+<p><code>INPUT Age</code></p>
+<p><code>OUTPUT &quot;Welcome&quot;</code></p>
+<p><em>Adding actual language syntax can lose you marks.</em></p>
+<ul>
+<li>The casino would like the algorithm <strong>refined</strong> so that the user also <strong>enters their first name</strong> and this is used to greet the user when they access the site</li>
+</ul>
+<blockquote>
+<p>Pseudocode</p>
+<pre><code><div class="highlight"><pre><code>INPUT Age
+IF Age >= 18
+</code></pre></div></code></pre>
+</blockquote>
+<pre><code> THEN
+     OUTPUT &quot;Welcome to the site&quot;, FName
+ ELSE
+    OUTPUT &quot;Sorry, this site is for users 18 and over&quot;
+</code></pre>
+<p>ENDIF</p>
+<blockquote>
+<pre><code><div class="highlight"><pre><code></code></pre></div></code></pre>
+</blockquote>
+<p><em>If the question asks you to write an algorithm, default to</em> <em><strong>pseudocode</strong></em>*. Use* <em><strong>flowcharts</strong></em> <em>only when asked or when visual logic helps. Examiners reward clarity, not decoration.</em></p>
+<h2 id="section_29">Explaining Algorithms</h2>
+<h3 id="section_30">How do you explain an algorithm?</h3>
+<ul>
+<li>A well designed algorithm should be able to be <strong>interpreted</strong> by a new user and they should <strong>be able to explain what it does</strong></li>
+<li>Algorithms can be written using <strong>flowcharts</strong>, <strong>pseudocode</strong> or <strong>high-level programming language</strong> code such as Python</li>
+<li>The purpose of an algorithm is to solve a problem, if a user does not know the goal of the algorithm, then <strong>following the algorithm instructions</strong> should make its purpose clear</li>
+<li>If the algorithm is <strong>complex</strong> then additional ways to understand the problem could be:
+<ul>
+<li>Look for <strong>comments</strong> in the code</li>
+<li>Consider the <strong>context</strong> of where the algorithm is being used</li>
+<li><strong>Test</strong> the algorithm with different inputs</li>
+</ul>
+</li>
+<li>Look at the following algorithm, can you explain what it does?</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+
+<span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">Number</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Number</span>
+<span class="w">    </span><span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w">  </span><span class="n">Total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Number</span>
+<span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">Total</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>The purpose of the algorithm is to add ten user-entered numbers together and output the total</li>
+<li>The processes are:
+<ul>
+<li>initializing three variables (Count, Number, Total)</li>
+<li>inputting a user number</li>
+<li>adding to two variables (Total, Count)</li>
+<li>repeating nine more times</li>
+<li>outputting the final Total value</li>
+</ul>
+</li>
+</ul>
+<p>The pseudocode algorithm shown has been written by a teacher to enter marks for the students in her class and then to apply some simple processing.</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="n">REPEAT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Score</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Score</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">Grade</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;A&quot;</span>
+<span class="w">    </span><span class="n">ELSE</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">Score</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">Grade</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;B&quot;</span>
+<span class="w">        </span><span class="n">ELSE</span>
+<span class="w">            </span><span class="n">IF</span><span class="w"> </span><span class="n">Score</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                </span><span class="n">Grade</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;C&quot;</span>
+<span class="w">            </span><span class="n">ELSE</span>
+<span class="w">                </span><span class="n">IF</span><span class="w"> </span><span class="n">Score</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                    </span><span class="n">Grade</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;D&quot;</span>
+<span class="w">                </span><span class="n">ELSE</span>
+<span class="w">                    </span><span class="n">IF</span><span class="w"> </span><span class="n">Score</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">                        </span><span class="n">Grade</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;E&quot;</span>
+<span class="w">                    </span><span class="n">ELSE</span>
+<span class="w">                        </span><span class="n">Grade</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;F&quot;</span>
+<span class="w">                    </span><span class="n">ENDIF</span>
+<span class="w">                </span><span class="n">ENDIF</span>
+<span class="w">            </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+
+<span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span>
+</pre></div>
+</code></pre>
+<p><strong>Describe</strong> what happens in this algorithm.</p>
+<p><strong>[3]</strong></p>
+<p><strong>Answer</strong></p>
+<p>Any <strong>3</strong> of:</p>
+<ul>
+<li>Inputted marks are stored in the array Score[] [1]</li>
+<li>Marks are then checked against a range of boundaries [1]</li>
+<li>A matching grade is assigned to each mark that has been input [1]</li>
+<li>The grade is then stored in the array Grade[] [1]</li>
+<li>At the same index as the inputted mark [1]</li>
+<li>The algorithm finishes after 30 marks have been input [1]</li>
+</ul>
+<h2 id="section_31">Linear Search &amp; Bubble Sort</h2>
+<h2 id="section_32">Linear Search</h2>
+<h2 id="section_33">What is a searching algorithm?</h2>
+<ul>
+<li>Searching algorithms are <strong>precise step-by-step instructions</strong> that a computer can follow to <strong>efficiently locate specific data</strong> in massive datasets</li>
+</ul>
+<h2 id="section_34">What is a linear search?</h2>
+<ul>
+<li>A linear search <strong>starts with the first value</strong> in a dataset and <strong>checks every value one at a time</strong> until all values have been checked</li>
+<li>A linear search can be performed <strong>even if the values are not in order</strong></li>
+</ul>
+<h2 id="section_35">How do you perform a linear search?</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Instruction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Check the first value</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>IF</strong> it is the value you are looking for<br><br>- STOP!</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>ELSE</strong> move to the next value and check</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>REPEAT UNTIL</strong> you have checked all values and not found the value you are looking for</td>
+</tr>
+</tbody>
+</table>
+<p>You will not be asked to perform a linear search on a dataset in the exam, you will be expected to understand how to do it and know the advantages and disadvantages of performing it</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// A linear search in Pseudocode</span>
+
+<span class="c1">// Declare variables</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span><span class="w"> </span>
+
+<span class="c1">// Assign values to the array and target</span>
+<span class="n">data</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="o">]</span>
+<span class="n">target</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">11</span>
+<span class="n">found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span><span class="w">  </span><span class="c1">// Start with the assumption that the target is not found</span>
+
+<span class="c1">// Loop through each element in the array</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="c1">// Check if the current element matches the target</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">data</span><span class="o">[</span><span class="n">index</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">        </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Target found&quot;</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">index</span>
+
+<span class="c1">// After the loop, check if the target was never found</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Target not found&quot;</span>
+<span class="n">ENDIF</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># A linear search in Python code</span>
+<span class="c1"># Identify the dataset to search, the target value and set the initial flag</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Loop through each element in the data</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>  <span class="c1"># loop to go through all elements</span>
+    <span class="c1"># Check if the current element matches the target</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+        <span class="c1"># If found, output message</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target found&quot;</span><span class="p">)</span>
+        <span class="k">break</span>  <span class="c1"># Exit the loop if the target is found</span>
+
+<span class="c1"># If the target is not found, output a message</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target not found&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_36">Bubble Sort</h2>
+<h3 id="section_37">What is a sorting algorithm?</h3>
+<ul>
+<li>Sorting algorithms are <strong>precise step-by-step instructions</strong> that a computer can follow to <strong>efficiently sort data</strong> in massive datasets</li>
+</ul>
+<h3 id="section_38">What is a bubble sort?</h3>
+<ul>
+<li>A bubble sort is a simple sorting algorithm that starts at the beginning of a dataset and <strong>checks values</strong> in <strong>‘pairs’</strong> and <strong>swaps them</strong> if they are <strong>not in the correct order</strong></li>
+<li>One full run of comparisons from beginning to end is called a ’ <strong>pass</strong> ', a bubble sort may require multiple ’ <strong>passes</strong> ’ to sort the dataset</li>
+<li>The algorithm is finished when there are <strong>no more swaps to make</strong></li>
+</ul>
+<h3 id="section_39">How do you perform a bubble sort?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Instruction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Compare the first two values in the dataset</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>IF</strong> they are in the wrong order…<br><br>- Swap them</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Compare the next two values</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>REPEAT</strong> step 2 &amp; 3 until you reach the end of the dataset (<strong>pass 1</strong>)</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>IF</strong> you have made any swaps…<br><br>- <strong>REPEAT</strong> from the start (pass 2,3,4…)</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>ELSE</strong> you have not made any swaps…<br><br>- STOP! the list is in the correct order</td>
+</tr>
+</tbody>
+</table>
+<p><img src="0478-images/1205_bubble-sort-fixed.png" alt="Bubble sort algorithm illustration showing two passes on the list: 9, 2, 4, 7, 10, 3, 1. Arrows indicate comparisons and swaps."></p>
+<p>In the exam you do not have to show every swap that takes place in a bubble sort. You can show the outcome of a bubble sort at the end of each pass. If you have the outcome of each pass correct then a bubble sort has been implemented correctly and all marks will be given!</p>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// A bubble sort in Pseudocode</span>
+<span class="c1">// Declare the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">nums</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">11</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">nums</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="mi">66</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">69</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">71</span><span class="p">,</span><span class="w"> </span><span class="mi">321</span><span class="p">,</span><span class="w"> </span><span class="mi">67</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">39</span><span class="o">]</span>
+
+<span class="c1">// Store the length of the array</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">numlength</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="n">numlength</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">11</span>
+
+<span class="c1">// Set a flag to check if any swaps are made</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">swaps</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span><span class="w"> </span>
+<span class="n">swaps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
+
+<span class="c1">// Repeat the loop while swaps are being made</span>
+<span class="n">WHILE</span><span class="w"> </span><span class="n">swaps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span>
+<span class="w">    </span><span class="n">swaps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">FALSE</span>
+
+<span class="w">    </span><span class="c1">// Loop through the array from the start to the second-last unsorted element</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">numlength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="c1">// If the current number is greater than the next number, swap them</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="w"> </span>
+<span class="w">            </span><span class="n">temp</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="o">]</span>
+<span class="w">            </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span>
+<span class="w">            </span><span class="n">nums</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">temp</span>
+
+<span class="w">            </span><span class="n">swaps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span><span class="w">  </span><span class="c1">// A swap was made</span>
+<span class="w">        </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">y</span>
+
+<span class="w">    </span><span class="c1">// Decrease the range as the last value is now sorted</span>
+<span class="w">    </span><span class="n">numlength</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">numlength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+
+<span class="c1">// Output the sorted array</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="mi">11</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># A bubble sort in Python code</span>
+<span class="c1"># Unsorted dataset</span>
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">66</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">321</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">39</span><span class="p">]</span>
+
+<span class="c1"># Count the length of the dataset</span>
+<span class="n">numlength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+
+<span class="c1"># Set a flag to initiate the loop</span>
+<span class="n">swaps</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">while</span> <span class="n">swaps</span><span class="p">:</span>  <span class="c1"># While any swap is made, continue</span>
+    <span class="n">swaps</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Loop through the dataset</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numlength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># Compare adjacent elements</span>
+        <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>  <span class="c1"># If the first number is bigger</span>
+            <span class="c1"># Swap the numbers using a temporary variable</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
+            <span class="n">swaps</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Mark that a swap was made</span>
+
+    <span class="c1"># Each iteration confirms that the last element is in place</span>
+    <span class="n">numlength</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="c1"># Print the sorted list</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_40">Other Standard Methods of a Solution</h2>
+<h2 id="section_41">Totalling &amp; Counting</h2>
+<h3 id="section_42">What is totalling?</h3>
+<ul>
+<li>Totalling is keeping <strong>a running total</strong> of values entered into the algorithm</li>
+<li>An example may be totalling a receipt for purchases made at a shop</li>
+<li>In the example below, the total starts at 0 and adds up the user inputted value for each item in the list</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">ReceiptLength</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">ItemValue</span>
+<span class="w">    </span><span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">itemValue</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Count</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">Total</span>
+</pre></div>
+</code></pre>
+<h3 id="section_43">What is counting?</h3>
+<ul>
+<li>Counting is when a count <strong>is incremented or decremented by a fixed value</strong>, usually 1, each time it iterates</li>
+<li>Counting <strong>keeps track of the number of times an action has been performed</strong></li>
+<li>Many algorithms use counting, including the linear search to track which element is currently being considered</li>
+<li>In the example below, the count is <strong>incremented</strong> and each pass number is output until fifty outputs have been produced</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">DO</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Pass</span><span class="w"> </span><span class="n">number</span><span class="err">”</span><span class="p">,</span><span class="w"> </span><span class="n">Count</span>
+<span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>In the example below, the count is <strong>decremented</strong> from fifty until the count reaches zero. An output is produced for each pass</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">50</span>
+<span class="n">DO</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Pass</span><span class="w"> </span><span class="n">number</span><span class="err">”</span><span class="p">,</span><span class="w"> </span><span class="n">Count</span>
+<span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span>
+</pre></div>
+</code></pre>
+<h2 id="section_44">Maximum, Minimum &amp; Average</h2>
+<ul>
+<li>Finding the largest (<strong>max</strong>), smallest (<strong>min</strong>) and average (<strong>mean</strong>) values in a list are frequently used method in algorithms</li>
+<li>Examples could include:
+<ul>
+<li>Calculating the maximum and minimum student grades or scores in a game
+<ul>
+<li>Calculating the average grade of students in a class test</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In the example below, in a list of student test scores, the highest, lowest and average scores are calculated and displayed to the screen</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Scores</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">84</span><span class="p">,</span><span class="w"> </span><span class="mi">91</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="o">]</span>
+
+<span class="n">Highest</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">Scores</span><span class="p">)</span>
+<span class="n">Lowest</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">Scores</span><span class="p">)</span>
+
+<span class="err">#</span><span class="w"> </span><span class="n">Loop</span><span class="w"> </span><span class="n">through</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nf">list</span><span class="w"> </span><span class="p">(</span><span class="n">indexing</span><span class="w"> </span><span class="n">starts</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="n">FOR</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="nf">LENGTH</span><span class="p">(</span><span class="n">Scores</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="kd">to</span><span class="w"> </span><span class="n">total</span>
+<span class="w">    </span><span class="n">Total</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Scores</span><span class="o">[</span><span class="n">Count</span><span class="o">]</span>
+<span class="n">NEXT</span><span class="w"> </span><span class="n">Count</span>
+
+<span class="err">#</span><span class="w"> </span><span class="n">Calculate</span><span class="w"> </span><span class="n">average</span>
+<span class="n">Average</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">LENGTH</span><span class="p">(</span><span class="n">Scores</span><span class="p">)</span>
+
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The highest score is:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Highest</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The lowest score is:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Lowest</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The average score is:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Average</span>
+</pre></div>
+</code></pre>
+<h2 id="section_45">Validation &amp; Verification</h2>
+<h2 id="section_46">Validation</h2>
+<h3 id="section_47">What is validation?</h3>
+<ul>
+<li>Validation is an <strong>automated process</strong> where <strong>a computer checks</strong> if a user input is <strong>sensible</strong> and meets the program’s requirements.</li>
+<li>There are <strong>six categories</strong> of validation which can be carried out on <strong>fields</strong> and <strong>data types,</strong> these are</li>
+<li>There can be occasions where <strong>more than one type of validation will be used</strong> on a field</li>
+<li>An example of this could be a password field which could have a <strong>length</strong>, <strong>presence</strong> and <strong>type</strong> check on it
+<img src="0478-images/input-validation.png" alt="input-validation"></li>
+</ul>
+<h4 id="section_48">Range check</h4>
+<ul>
+<li>Ensures the data entered as a number <strong>falls within a particular range</strong></li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">// Ensures a percentage number is between 0-100 inclusive</span>
+
+<span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Enter</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="mi">100</span><span class="err">”</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Number</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span>
+<span class="w">        </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Number</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">again</span><span class="err">”</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Ensures a user&#39;s age has been entered and falls between the digits of &lt;b&gt;0-110 inclusive</span>
+<span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your age&quot;</span><span class="p">))</span>
+<span class="k">while</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">age</span> <span class="o">&gt;</span> <span class="mi">110</span><span class="p">:</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your age, ensure it is between 0-110&quot;</span><span class="p">))</span>
+</pre></div>
+</code></pre>
+<h4 id="section_49">Length check</h4>
+<ul>
+<li>Checks the <strong>length of a string</strong></li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">//Ensures a pin number can only contain 4 digits</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Please</span><span class="w"> </span><span class="n">enter</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">digit</span><span class="w"> </span><span class="n">bank</span><span class="w"> </span><span class="n">PIN</span><span class="w"> </span><span class="n">number</span><span class="err">”</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Pin</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="nf">LENGTH</span><span class="p">(</span><span class="n">Pin</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span>
+<span class="w">        </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Your</span><span class="w"> </span><span class="n">pin</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">four</span><span class="w"> </span><span class="n">characters</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">again</span><span class="err">”</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="nf">LENGTH</span><span class="p">(</span><span class="n">Pin</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Ensures a password is 8 characters or more</span>
+<span class="n">password_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">password_length</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+   <span class="n">password</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a password which is 8 or more characters&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h4 id="section_50">Type check</h4>
+<ul>
+<li>Check the <strong>data type</strong> of a field</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">// Ensures an age should be entered as an integer (whole number)</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Enter</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">integer</span><span class="w"> </span><span class="n">number</span><span class="err">”</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Number</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">DIV</span><span class="p">(</span><span class="n">Number</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Not</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">whole</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">again</span><span class="err">”</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DIV</span><span class="p">(</span><span class="n">Number</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Ensures an age should be entered as an integer (whole number)</span>
+<span class="n">age</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your age&quot;</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">age</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;enter a number&quot;</span><span class="p">)</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your age as a number&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h4 id="section_51">Presence check</h4>
+<ul>
+<li>Looks to see if <strong>any data has been entered</strong> in a field</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">// Ensures username and password are both entered</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Enter</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">username</span><span class="err">”</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Username</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">“”</span><span class="w"> </span>
+<span class="w">        </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">No</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="n">entered</span><span class="p">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">again</span><span class="err">”</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="err">“”</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Ensures when registering for a website the name field is not left blank</span>
+<span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your name&quot;</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+     <span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;You must enter your name here&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h4 id="section_52">Format check</h4>
+<ul>
+<li>Ensures that the data has been entered in the <strong>correct format</strong></li>
+<li>Format checks are done using <strong>pattern matching</strong> and string handling</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="c1">// Ensures a six digit ID number is entered against the format &quot;XX9999&quot; where X is an uppercase alphabetical letter and 9999 is a four digit number</span>
+
+<span class="n">INPUT</span><span class="w"> </span><span class="n">IDNumber</span>
+
+<span class="n">IF</span><span class="w"> </span><span class="nf">LENGTH</span><span class="p">(</span><span class="n">IDNumber</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;ID number must be 6 characters long&quot;</span>
+<span class="n">ENDIF</span>
+
+<span class="n">ValidChars</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>
+
+<span class="n">FirstChar</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">IDNumber</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ValidChar</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">False</span>
+<span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="n">WHILE</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">LENGTH</span><span class="p">(</span><span class="n">ValidChars</span><span class="p">)</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">ValidChar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">FirstChar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">ValidChars</span><span class="p">,</span><span class="w"> </span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">ValidChar</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">True</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+
+<span class="n">IF</span><span class="w"> </span><span class="n">ValidChar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;First character is not a valid uppercase alphabetical character&quot;</span>
+<span class="n">ENDIF</span>
+
+<span class="n">SecondChar</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">IDNumber</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ValidChar</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">False</span>
+<span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="n">WHILE</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">LENGTH</span><span class="p">(</span><span class="n">ValidChars</span><span class="p">)</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">ValidChar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="w"> </span><span class="n">DO</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">SecondChar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">ValidChars</span><span class="p">,</span><span class="w"> </span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">        </span><span class="n">ValidChar</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">True</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="w">    </span><span class="n">Index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">ENDWHILE</span>
+
+<span class="n">IF</span><span class="w"> </span><span class="n">ValidChar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Second character is not a valid uppercase alphabetical character&quot;</span>
+<span class="n">ENDIF</span>
+
+<span class="n">Digits</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">INT</span><span class="p">(</span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">IDNumber</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">IF</span><span class="w"> </span><span class="n">Digits</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">Digits</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">9999</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Digits invalid. Enter four valid digits in the range 0000-9999&quot;</span>
+<span class="n">ENDIF</span>
+
+<span class="c1">//Explanation</span>
+<span class="c1">// The first two characters are checked against a list of approved characters</span>
+<span class="c1">//The first character is compared one at a time to each valid character in the ValidChars array</span>
+<span class="c1">//If it finds a match it stops looping and sets ValidChar to True</span>
+<span class="c1">//The second character is then compared one at a time to each valid character in the ValidChars array</span>
+<span class="c1">//If it finds a match then it also stops looping and sets ValidChar to True</span>
+<span class="c1">//Casting is used on the digits to turn the digit characters into numbers</span>
+<span class="c1">//Once the digits are considered a proper integer they can be checked to see if they are in the appropriate range of 0-9999</span>
+<span class="c1">//If any of these checks fail then an appropriate message is output</span>
+</pre></div>
+</code></pre>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="c1"># Ensures an email contains a &#39;@&#39; and &#39; full stop (.) which follows the format &quot;email@address.com&quot;</span>
+<span class="n">email</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your email address&quot;</span><span class="p">)</span>
+<span class="k">while</span> <span class="s2">&quot;@&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">email</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">email</span><span class="p">:</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Please enter a valid email address&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h4 id="section_53">Check digits</h4>
+<ul>
+<li>Check digits are <strong>numerical values</strong> that are the <strong>final digit of a larger code</strong> such as a <strong>barcode</strong> or an International Standard Book Number (<strong>ISBN</strong>)</li>
+<li>They are calculated by <strong>applying an algorithm</strong> to the code and are then attached to the overall code</li>
+</ul>
+<h2 id="section_54">Verification</h2>
+<h3 id="section_55">What is verification?</h3>
+<ul>
+<li>Verification is the act of checking data <strong>is accurate</strong> when entered into a system</li>
+<li>Mistakes such as creating a new account and entering a password incorrectly mean being locked out of the account immediately</li>
+<li>Verification methods include:
+<ul>
+<li><strong>double entry checking</strong></li>
+<li><strong>visual checks</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_56">Double entry checking</h4>
+<ul>
+<li>Double entry checking involves <strong>entering the data twice</strong> in separate input boxes and then comparing the data to ensure they both match</li>
+<li>If they do not, an error message is shown</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Enter</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">password</span><span class="err">”</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Password</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Please</span><span class="w"> </span><span class="n">confirm</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">password</span><span class="err">”</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">ConfirmPassword</span>
+<span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">Password</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">ConfirmPassword</span><span class="w"> </span>
+<span class="w">        </span><span class="n">THEN</span>
+<span class="w">            </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Passwords</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">match</span><span class="p">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">again</span><span class="err">”</span>
+<span class="w">    </span><span class="n">ENDIF</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmPassword</span>
+</pre></div>
+</code></pre>
+<h4 id="section_57">Visual checks</h4>
+<ul>
+<li>Visual checks involve the user <strong>visually checking the data on the screen</strong></li>
+<li>A popup or message then asks if the data is correct before proceeding</li>
+<li>If it isn’t the user then enters the data again</li>
+</ul>
+<pre><code class="language-java"><div class="highlight"><pre><span></span><span class="c1">// Pseudocode</span>
+<span class="n">REPEAT</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Enter</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">name</span><span class="err">”</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Name</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="err">“</span><span class="n">Your</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">is</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="err">“</span><span class="p">.</span><span class="w"> </span><span class="n">Is</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">correct</span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="err">”</span>
+<span class="w">    </span><span class="n">INPUT</span><span class="w"> </span><span class="n">Answer</span>
+<span class="n">UNTIL</span><span class="w"> </span><span class="n">Answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">“</span><span class="n">y</span><span class="err">”</span>
+</pre></div>
+</code></pre>
+<p>Describe the purpose of validation and verification checks during data entry. Include an example for each.</p>
+<p><strong>[4]</strong></p>
+<p><strong>Answers</strong></p>
+<p><strong>Validation check</strong></p>
+<p>[1] for description:</p>
+<ul>
+<li>To test if the data entered is possible / reasonable / sensible</li>
+<li>A range check tests that data entered fits within specified values</li>
+</ul>
+<p>[1] for example:</p>
+<ul>
+<li>Range / length / type / presence / format</li>
+</ul>
+<p><strong>Verification check</strong></p>
+<p>[1] for description:</p>
+<ul>
+<li>To test if the data input is the same as the data that was intended to be input</li>
+<li>A double entry check expects each item of data to be entered twice and compares both entries to check they are the same</li>
+</ul>
+<p>[1]
+for example:</p>
+<ul>
+<li>Visual / double entry</li>
+</ul>
+<h2 id="section_58">Suitable Test Data</h2>
+<h3 id="section_59">What is suitable test data?</h3>
+<ul>
+<li>Suitable test data is <strong>specially chosen to test the functionality</strong> of a program or design</li>
+<li>Developers or test-users would pick <strong>a selection of test data</strong> from the following categories</li>
+<li>The results would be <strong>compared to the expected results</strong> to check if the algorithm/program works as intended</li>
+<li>Each category is explained within the context of a simple Python program below, comments have been added to help explain the processes</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="c1"># Ask for user&#39;s name</span>
+<span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;What is your name? &quot;</span><span class="p">)</span>
+
+<span class="c1"># Ask for user&#39;s age</span>
+<span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;How old are you? &quot;</span><span class="p">))</span>
+
+<span class="c1"># Check if age is between 12 and 18</span>
+<span class="k">if</span> <span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">12</span> <span class="ow">and</span> <span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Welcome, &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;! Your age is accepted.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sorry, &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;. Your age is not accepted.&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h4 id="section_60">Normal data</h4>
+<ul>
+<li>Normal test data is data that <strong>should be accepted</strong> in the program</li>
+<li>An example would be a user entering their age as 16 into the age field of the program</li>
+</ul>
+<h4 id="section_61">Abnormal data</h4>
+<ul>
+<li>Abnormal test data is data that is the <strong>wrong data type</strong></li>
+<li>An example would be a user entering their age as “F” into the age field of the program</li>
+</ul>
+<h4 id="section_62">Extreme data</h4>
+<ul>
+<li>Extreme test data is the <strong>maximum</strong> and <strong>minimum</strong> values of normal data that are <strong>accepted</strong> by the system</li>
+<li>An example would be a user entering their age as 18 or 12 into the age field of the program</li>
+</ul>
+<h4 id="section_63">Boundary data</h4>
+<ul>
+<li>Boundary test data is similar to extreme data except that the values <strong>on either side of</strong> the <strong>maximum</strong> and <strong>minimum</strong> values are tested</li>
+<li>The largest and smallest acceptable value is tested as well as the largest and smallest unacceptable value</li>
+<li>An example would be a user entering their age as 11 or 19 into the age field of the program</li>
+</ul>
+<h3 id="section_64">Selecting suitable test data</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Type of Test</strong></th>
+<th><strong>Input</strong></th>
+<th><strong>Expected Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal</strong></td>
+<td>14</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Normal</strong></td>
+<td>16</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Extreme</strong></td>
+<td>12</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Extreme</strong></td>
+<td>18</td>
+<td>Accepted</td>
+</tr>
+<tr>
+<td><strong>Abnormal</strong></td>
+<td>H</td>
+<td>Rejected</td>
+</tr>
+<tr>
+<td><strong>Abnormal</strong></td>
+<td>@</td>
+<td>Rejected</td>
+</tr>
+<tr>
+<td><strong>Boundary</strong></td>
+<td>11</td>
+<td>Rejected</td>
+</tr>
+<tr>
+<td><strong>Boundary</strong></td>
+<td>19</td>
+<td>Rejected</td>
+</tr>
+</tbody>
+</table>
+<p>A programmer has written an algorithm to check that prices are less than $10.00</p>
+<p>These values are used as test data: 10.00 9.99 ten</p>
+<p>State why each value was chosen as test data.</p>
+<p><strong>[3]</strong></p>
+<p><strong>Answers</strong></p>
+<p>10.00 is boundary or abnormal data and should be rejected as it is out of range [1]</p>
+<p>9.99 is boundary, extreme and normal data and should be accepted as it is within the normal range [1]</p>
+<p>Ten is abnormal data and should be rejected as it is the wrong value type [1]</p>
+<h2 id="section_65">Trace Tables</h2>
+<h3 id="section_66">What is a trace table?</h3>
+<ul>
+<li>A trace table is <strong>used to test algorithms and programs for logic errors</strong> that appear when an algorithm or program executes</li>
+<li>Trace tables can be used with <strong>flowcharts, pseudocode</strong> or <strong>program code</strong></li>
+<li>A trace table can be used to:
+<ul>
+<li><strong>Discover the purpose of an algorithm</strong> by showing output data and intermediary steps</li>
+<li><strong>Record the state of the algorithm</strong> at each step or iteration</li>
+</ul>
+</li>
+<li>Each <strong>stage of the algorithm is executed step by step</strong>.</li>
+<li>Inputs, outputs, variables and processes can be <strong>checked for the correct value</strong> when the stage is completed</li>
+</ul>
+<h4 id="section_67">Trace table walkthrough</h4>
+<ul>
+<li>Below is a flowchart to determine the <strong>highest number of ten user-entered numbers</strong></li>
+<li>The algorithm prompts the user to enter the first number which automatically becomes the highest number entered</li>
+<li>The user is then prompted to enter nine more numbers.
+<ul>
+<li>If a new number is higher than an older number then it is replaced</li>
+</ul>
+</li>
+<li>Once all ten numbers are entered, the algorithm outputs which number was the highest</li>
+<li>Example test data to be used is: <strong>4, 3, 7, 1, 8, 3, 6, 9, 12, 10</strong>
+<img src="0478-images/unnamed-8.png" alt="flowchart question" width="644"></li>
+</ul>
+<p><strong>Trace Table: Highest number</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Count</strong></th>
+<th><strong>Highest</strong></th>
+<th><strong>Number</strong></th>
+<th><strong>Output</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+<td>Enter ten numbers</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td></td>
+<td>Enter your first number</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>3</td>
+<td>Enter your next number</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>8</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+<td>6</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>12</td>
+<td>12</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td></td>
+<td>10</td>
+<td>12 is your highest number</td>
+</tr>
+</tbody>
+</table>
+<p>The flowchart represents an algorithm. The algorithm will terminate if –1 is entered.</p>
+<p><img src="0478-images/unnamed-9.png" alt="unnamed-9"></p>
+<p>Complete the trace table for the input data: 50, 75, 99, 28, 82, 150, –1, 672, 80</p>
+<p><strong>[4]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Diff1</th>
+<th>Diff2</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer</strong></p>
+<p>[1] for each correct column</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Diff1</th>
+<th>Diff2</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50</td>
+<td>50</td>
+<td>0</td>
+<td>Accept: Extreme</td>
+</tr>
+<tr>
+<td>75</td>
+<td>25</td>
+<td>25</td>
+<td>Accept: Normal</td>
+</tr>
+<tr>
+<td>99</td>
+<td>1</td>
+<td>49</td>
+<td>Accept: Normal</td>
+</tr>
+<tr>
+<td>28</td>
+<td></td>
+<td></td>
+<td>Reject: Abnormal</td>
+</tr>
+<tr>
+<td>82</td>
+<td>18</td>
+<td>32</td>
+<td>Accept: Normal</td>
+</tr>
+<tr>
+<td>150</td>
+<td></td>
+<td></td>
+<td>Reject: Abnormal</td>
+</tr>
+<tr>
+<td>-1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_68">Identifying Errors</h2>
+<p><em>Cambridge IGCSE 0478 regularly assesses your ability to identify, describe, and fix</em> <em><strong>syntax</strong></em>*,* <em><strong>logic</strong></em>*, and* <em><strong>runtime errors</strong></em>*, especially using* <em><strong>trace tables</strong></em> <em>and</em> <em><strong>dry runs</strong></em>*. This page mirrors the question style and mark scheme language of Paper 2.*</p>
+<ul>
+<li>Designing algorithms is a skill that must be developed and when designing algorithms, mistakes and issues will occur</li>
+<li>Trace tables can also help to find any kind of error in a program or algorithm</li>
+<li>There are three main categories of errors that when designing algorithms a programmer must be able to identify &amp; fix, they are:
+<ul>
+<li><strong>Syntax errors</strong></li>
+<li><strong>Logic errors</strong></li>
+<li><strong>Runtime errors</strong></li>
+</ul>
+</li>
+</ul>
+<p><em>When describing an error:</em></p>
+<ul>
+<li><em>Use “</em> <em><strong>prevents the program from running</strong></em> <em>” for syntax</em></li>
+<li><em>Use “</em> <em><strong>produces incorrect output</strong></em> <em>” for logic</em></li>
+<li><em>Use “</em> <em><strong>causes the program to crash</strong></em> <em>” for runtime</em></li>
+</ul>
+<p><em>These are the exact phrases that earn marks in the exam.</em></p>
+<ul>
+<li>A syntax error is <strong>an error that breaks the grammatical rules of a programming language</strong> and <strong>stops it from running</strong></li>
+<li>Examples of syntax errors are:
+<ul>
+<li><strong>Typos and spelling errors</strong></li>
+<li><strong>Missing or extra brackets or quotes</strong></li>
+<li><strong>Misplaced or missing semicolons</strong></li>
+<li><strong>Invalid variable or function names</strong></li>
+<li><strong>Incorrect use of operators</strong></li>
+<li><strong>Incorrectly nested loops &amp; blocks of code</strong></li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">first_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="n">last_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="n">last_name</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">username</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+  <span class="c1"># -----------------------------------------------------------------------</span>
+  <span class="c1"># Prompts the user for personal information and displays a suggested username</span>
+  <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">imput</span><span class="p">(</span><span class="s2">&quot;Enter your first name: &quot;</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your last name: &quot;</span><span class="p">)</span>
+    <span class="n">usdrname</span> <span class="o">=</span> <span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Here&#39;s a suggested username: </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="c1"># Main program</span>
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="n">main</span><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">th</span> <span class="n">colspan</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="n">rowspan</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="o">&gt;&lt;</span><span class="n">p</span><span class="o">&gt;&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">Python</span> <span class="n">code</span> <span class="o">-</span> <span class="n">without</span> <span class="n">syntax</span> <span class="n">errors</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;&lt;/</span><span class="n">th</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">colspan</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="n">rowspan</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="o">&gt;&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">def</span><span class="w"> </span><span class="nf">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">):</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">first_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="n">last_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="n">last_name</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">username</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+  <span class="c1"># -----------------------------------------------------------------------</span>
+  <span class="c1"># Prompts the user for personal information and displays a suggested username</span>
+  <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your first name: &quot;</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your last name: &quot;</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Here&#39;s a suggested username: </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="c1"># Main program</span>
+<span class="c1"># ------------------------------------------------------------------------</span>
+<span class="n">main</span><span class="p">()</span>
+<span class="c1"># Syntax errors</span>
+<span class="c1"># Missing semicolon &lt;code&gt;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span> <span class="c1"># Incorrectly spelt function name</span>
+<span class="n">first_name</span> <span class="o">=</span> <span class="n">imput</span><span class="p">(</span><span class="s2">&quot;Enter your first name: &quot;</span><span class="p">)</span><span class="c1"># Typo in variable name</span>
+<span class="n">usdrname</span> <span class="o">=</span> <span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span><span class="c1"># Missing parenthesis </span>
+</pre></div>
+</code></pre>
+<p><em>Examiners won’t give marks for vague phrases like “the program didn’t work.”</em><br>
+<em>You must</em> <em><strong>name the error type</strong></em>*,* <em><strong>locate it</strong></em>*, and* <em><strong>explain the impact</strong></em> <em>on the output or execution.</em></p>
+<ul>
+<li>A logic error is where <strong>incorrect code is used that causes the program to run</strong>, but <strong>produces an incorrect output or result</strong></li>
+<li>Logic errors can be difficult to identify by the person who wrote the program, so one method of finding them is to use ’ <strong>Trace Tables</strong> ’</li>
+<li>Examples of logic errors are:</li>
+<li><strong>Incorrect use of operators (&lt; and &gt;)</strong></li>
+<li><strong>Logical operator confusion (AND for OR)</strong></li>
+<li><strong>Looping one extra time</strong></li>
+<li><strong>Indexing arrays incorrectly (arrays indexing starts from 0)</strong></li>
+<li><strong>Using variables before they are assigned</strong></li>
+<li><strong>Infinite loops</strong></li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+    <span class="c1">###</span>
+    <span class="n">Calculates</span> <span class="n">the</span> <span class="n">area</span> <span class="n">of</span> <span class="n">a</span> <span class="n">rectangle</span>
+    <span class="n">Inputs</span><span class="p">:</span>
+        <span class="n">length</span> <span class="p">(</span><span class="nb">float</span><span class="p">):</span> <span class="n">The</span> <span class="n">length</span> <span class="n">of</span> <span class="n">the</span> <span class="n">rectangle</span> <span class="p">(</span><span class="n">positive</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">width</span> <span class="p">(</span><span class="nb">float</span><span class="p">):</span> <span class="n">The</span> <span class="n">width</span> <span class="n">of</span> <span class="n">the</span> <span class="n">rectangle</span> <span class="p">(</span><span class="n">positive</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">Returns</span><span class="p">:</span>
+        <span class="nb">float</span><span class="p">:</span> <span class="n">The</span> <span class="n">calculated</span> <span class="n">area</span> <span class="n">of</span> <span class="n">the</span> <span class="n">rectangle</span>
+    <span class="n">Raises</span><span class="p">:</span>
+        <span class="ne">ValueError</span><span class="p">:</span> <span class="n">If</span> <span class="n">either</span> <span class="n">length</span> <span class="ow">or</span> <span class="n">width</span> <span class="ow">is</span> <span class="n">non</span><span class="o">-</span><span class="n">positive</span>
+    <span class="c1">###</span>
+    <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">width</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length and width must be positive values.&quot;</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="n">width</span>
+    <span class="k">return</span> <span class="n">area</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="n">Prompts</span> <span class="n">the</span> <span class="n">user</span> <span class="k">for</span> <span class="n">rectangle</span> <span class="n">dimensions</span> <span class="ow">and</span> <span class="n">prints</span> <span class="n">the</span> <span class="n">calculated</span> <span class="n">area</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the length of the rectangle: &quot;</span><span class="p">))</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the width of the rectangle: &quot;</span><span class="p">))</span>
+        <span class="c1"># Call the area calculation function</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The area of the rectangle is approximately </span><span class="si">{</span><span class="n">area</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> square units.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="c1"># Main program</span>
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Test number</th>
+<th><strong>Test data</strong></th>
+<th><strong>Expected outcome</strong></th>
+<th><strong>Actual outcome</strong></th>
+<th><strong>Changes needed? (Y/N)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Length = 5<br><br>Width = 5</td>
+<td>“The area of the rectangle is approximately 25 square units.”</td>
+<td>“The area of the rectangle is approximately 25.00 square units.”</td>
+<td><strong>N</strong></td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Length = 10<br><br>Width = 0</td>
+<td>“Length and width must be positive values.”</td>
+<td>“The area of the rectangle is approximately 0.00 square units.”</td>
+<td><strong>Y</strong>  <br><strong>should not accept 0 input as not positive</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>Logic error <strong>located</strong> on line <code>if length &lt; 0 or width &lt; 0:</code></p>
+</li>
+<li>
+<p>Logic error <strong>identified</strong> in expression <code> &lt; 0</code>, should be <code> &lt;= 0 </code> so that 0 is not accepted as valid input for length or width</p>
+</li>
+<li>
+<p>A runtime error is where <strong>an error causes a program to crash</strong></p>
+</li>
+<li>
+<p>Examples of runtime errors are:</p>
+<ul>
+<li><strong>Dividing a number by 0</strong></li>
+<li><strong>Index out of the range of an array</strong></li>
+<li><strong>Unable to read or write a drive</strong></li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Calculates the area of a rectangle</span>
+<span class="sd">  Inputs:</span>
+<span class="sd">      length (float): The length of the rectangle (positive value)</span>
+<span class="sd">      width (float): The width of the rectangle (positive value)</span>
+<span class="sd">  Returns:</span>
+<span class="sd">      float: The calculated area of the rectangle</span>
+<span class="sd">  Raises:</span>
+<span class="sd">      ValueError: If either length or width is non-positive</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">width</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length and width must be positive values.&quot;</span><span class="p">)</span>
+  <span class="n">area</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="n">width</span>
+  <span class="k">return</span> <span class="n">area</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+  <span class="c1"># -----------------------------------------------------------------------</span>
+  <span class="n">Prompts</span> <span class="n">the</span> <span class="n">user</span> <span class="k">for</span> <span class="n">rectangle</span> <span class="n">dimensions</span> <span class="ow">and</span> <span class="n">prints</span> <span class="n">the</span> <span class="n">calculated</span> <span class="n">area</span>
+  <span class="c1"># -----------------------------------------------------------------------</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the length of the rectangle: &quot;</span><span class="p">))</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the width of the rectangle: &quot;</span><span class="p">))</span>
+    <span class="c1"># Call the area calculation function</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The area of the rectangle is approximately </span><span class="si">{</span><span class="n">area</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> square units.&quot;</span><span class="p">)</span>
+  <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="c1"># Main program</span>
+<span class="c1"># -----------------------------------------------------------------------</span>
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Test number</th>
+<th><strong>Test data</strong></th>
+<th><strong>Expected outcome</strong></th>
+<th><strong>Actual outcome</strong></th>
+<th><strong>Changes needed? (Y/N)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Length = 10<br><br>Width = 10</td>
+<td>“The area of the rectangle is approximately 100 square units.”</td>
+<td>“The area of the rectangle is approximately 100.00 square units.”</td>
+<td><strong>N</strong></td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Length = “abc”<br><br>Width = 0</td>
+<td>“Program could not convert string to float, try again”</td>
+<td>Program crashed</td>
+<td><strong>Y</strong>  <br><strong>should give error message and ask user to enter again</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Runtime error <strong>located</strong> in</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the length of the rectangle: &quot;</span><span class="p">))</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the width of the rectangle: &quot;</span><span class="p">))</span>
+    <span class="c1"># Call the area calculation function</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The area of the rectangle is approximately </span><span class="si">{</span><span class="n">area</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> square units.&quot;</span><span class="p">)</span>
+  <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<ul>
+<li>Runtime error <strong>identified</strong> as <strong>missing iteration</strong> (while loop) so program does not ask user to enter width and height again</li>
+<li>Corrected code now includes a while loop</li>
+</ul>
+<pre><code class="language-python"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+  <span class="k">try</span><span class="p">:</span>
+      <span class="n">length</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the length of the rectangle: &quot;</span><span class="p">))</span>
+      <span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the width of the rectangle: &quot;</span><span class="p">))</span>
+      <span class="c1"># Call the area calculation function</span>
+      <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span> 
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The area of the rectangle is approximately </span><span class="si">{</span><span class="n">area</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> square units.&quot;</span><span class="p">)</span>
+      <span class="k">break</span>  <span class="c1"># Exit the loop if successful</span>
+   <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter positive values for length and width.&quot;</span><span class="p">)</span>
+</pre></div>
+</code></pre>
+<h2 id="section_69">Writing &amp; Amending Algorithms</h2>
+<h2 id="section_70">Algorithmic Thinking</h2>
+<h3 id="section_71">What is algorithmic thinking?</h3>
+<ul>
+<li>Algorithmic thinking is the process of <strong>creating step-by-step instructions in order to produce a solution to a problem</strong></li>
+<li>Algorithmic thinking requires the use of <strong>abstraction</strong> and <strong>decomposition</strong> to identify each individual step</li>
+<li>Once each step has been identified, <strong>a precise set of rules (algorithm)</strong> can be created and the problem will be solved</li>
+<li>An example of algorithmic thinking is following a recipe, if the recipe is followed <strong>precisely</strong> it should lead to the desired outcome</li>
+<li>A set of traffic lights is an example of how algorithmic thinking can lead to <strong>solutions being automated</strong></li>
+</ul>
+<p>Writing algorithms in an exam can be challenging and time consuming. It’s important to allocate your time carefully to not spend too little or too long writing an algorithm</p>
+<p>You will likely make mistakes and rewrite your algorithm a few times. Use scrap paper or the back of your exam paper if possible to sketch out your ideas before committing to your answer. This will make your answer clearer, neater and easier to read, follow and understand</p>
+<p>You may wish to chunk your algorithm into parts initially, for example, “This part will enter the grades”, “this part will calculate the total”, and “This part will allocate grades”. You can then put the whole algorithm together in order later</p>
+<p>Make a plan before you start answering the question and writing your algorithm. A plan can be simple but allows you to order your thoughts, for example:</p>
+<p>Part 1: Declare and initialise variables</p>
+<p>Part 2: Allocate marks for each subject</p>
+<p>Part 3: Allocate grades for each student’s subject</p>
+<p>Part 4: Include a loop</p>
+<p>Part 5: Output all necessary data</p>
+<p>Pseudocode does not have a syntax, therefore you can write an algorithm in any way which is easily understandable. Caution is advised to stick to IGCSE specification standards to ensure your answer is consistent and easy for examiners to follow</p>
+<p>Be sure to use variable names and data provided in the question as given. Failure to do so will lose you marks</p>
+<p>Remember to comment on your code. It helps both you and the examiner understand your answer and also awards marks in the mark scheme!</p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="61-automated-systems-emerging-technologies.html" title="Previous: 6.1 Automated Systems & Emerging Technologies" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">6.1 Automated Systems & Emerging Technologies</span></a>
+<a href="8-programming.html" title="Next: 8 Programming" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">8 Programming</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

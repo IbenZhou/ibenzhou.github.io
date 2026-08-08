@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.3 Data Storage & Compression — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>1.3 Data Storage & Compression</h1>
+    <p>Paper 1: Computer Systems</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Units of Data Storage</a></li>
+<li><a href="#section_4">Calculating File Sizes</a></li>
+<li><a href="#section_9">Compression</a></li>
+<li><a href="#section_10">The Need For Compression</a></li>
+<li><a href="#section_12">Lossy Compression</a></li>
+<li><a href="#section_14">Lossless Compression</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Units of Data Storage</h2>
+<h3 id="section_1">What are units of data storage?</h3>
+<ul>
+<li>A unit of data is a <strong>term</strong> given to describe <strong>different amounts of binary digits</strong> stored on a digital device</li>
+<li>These are the units you need to know for IGCSE:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Unit</strong></th>
+<th><strong>Symbol</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bit</strong></td>
+<td>b</td>
+<td>1 or 0</td>
+</tr>
+<tr>
+<td><strong>Nibble</strong></td>
+<td></td>
+<td>4 b</td>
+</tr>
+<tr>
+<td><strong>Byte</strong></td>
+<td>B</td>
+<td>8 b</td>
+</tr>
+<tr>
+<td><strong>Kibibyte</strong></td>
+<td>KiB</td>
+<td>1,024 B (2 10)</td>
+</tr>
+<tr>
+<td><strong>Mebibyte</strong></td>
+<td>MiB</td>
+<td>1,024 KiB (2 20)</td>
+</tr>
+<tr>
+<td><strong>Gibibyte</strong></td>
+<td>GiB</td>
+<td>1.024 MiB (2 30)</td>
+</tr>
+<tr>
+<td><strong>Tebibyte</strong></td>
+<td>TiB</td>
+<td>1,024 GiB (2 40)</td>
+</tr>
+<tr>
+<td><strong>Pebibyte</strong></td>
+<td>PiB</td>
+<td>1,024 TiB (2 50)</td>
+</tr>
+<tr>
+<td><strong>Exbibyte</strong></td>
+<td>EiB</td>
+<td>1,024 PiB (2 60)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_2">Megabyte vs Mebibyte</h4>
+<ul>
+<li>1 kibibyte (<strong>1KiB</strong>) = 1024 bytes (<strong>1024 B</strong>) - binary prefixes (to the <strong>power of 2</strong>)</li>
+<li>1 kilobyte (<strong>1KB</strong>) = 1000 bytes (<strong>1000 B</strong>) - decimal prefixes (to the <strong>power of 10</strong>)</li>
+</ul>
+<h3 id="section_3">Converting between units</h3>
+<ul>
+<li>It is often a requirement of the exam to be able to <strong>convert between different units</strong> of data, for example bytes to mebibytes (larger) or kibibytes to bytes (smaller)</li>
+<li>This process involves <strong>division</strong>, <strong>moving up in size</strong> of unit and <strong>multiplication</strong>, <strong>moving down in size</strong> of unit</li>
+<li>When dealing with all units <strong>bigger than a byte</strong> we use multiples of <strong>1024</strong> (2 <sup>10</sup>)</li>
+<li>For example, 2000 kibibytes in mebibytes would be 2000 / 1024 = <strong>1.95 MiB</strong> and 2 tebibytes in gibibytes would be 2 * 1024 = <strong>2048 GiB</strong></li>
+<li>When dealing with <strong>bits and bytes</strong> the same process is used with the value <strong>8</strong> as there are 8 bits in a byte</li>
+<li>For example, 24 bits in bytes would be 24 / 8 = <strong>3 B</strong> and 10 bytes in bits would be 10 * 8 = <strong>80 b</strong></li>
+<li>The same multiply or divide by <strong>1024</strong> rule applies when converting beyond <strong>TiB</strong> to <strong>PiB</strong> and <strong>EiB</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Unit</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Multiply by 8 ⇑</strong></td>
+<td>Bit</td>
+<td><strong>Divide by 8 ⇓</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>Byte</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Multiply by 1024 ⇑</strong></td>
+<td>Kibibyte</td>
+<td><strong>Divide by 1024 ⇓</strong></td>
+</tr>
+<tr>
+<td>Mebibyte</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Gibibyte</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Tebibyte</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Pebibyte</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Exbibyte</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Convert <strong>1 PiB</strong> to <strong>GiB</strong> <strong>[2]</strong></p>
+<p><strong>Answer</strong>
+So:</p>
+<ul>
+<li>1 PiB = 1024 × 1024 GiB [1 mark]</li>
+<li>1 PiB = <strong>1,048,576 GiB</strong> [1 mark]</li>
+</ul>
+<h2 id="section_4">Calculating File Sizes</h2>
+<h3 id="section_5">How do you calculate the size of a bitmap image?</h3>
+<ul>
+<li>Calculating the size of a bitmap image can be carried out with either of the following formulas:
+<ul>
+<li><strong>Resolution x colour depth</strong></li>
+<li><strong>Image width x image height x colour depth</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_6">Example</h4>
+<p><strong>Image Files</strong></p>
+<p>(Resolution) <strong>x</strong> (Colour Depth)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Size of bitmap image =</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resolution</td>
+<td><strong>250,000</strong></td>
+<td>Resolution = width x height</td>
+</tr>
+<tr>
+<td>Colour Depth</td>
+<td><strong>24 bits (3 bytes)</strong></td>
+<td>24 bits = 3 bytes</td>
+</tr>
+<tr>
+<td><strong>250,000 x 24</strong></td>
+<td><strong>=</strong><br><strong>(bit to bytes) /8</strong><br><strong>(bytes to KiB) /1024</strong></td>
+<td><strong>6,000,000 bits</strong><br><strong>750,000 bytes</strong><br><strong>732 KiB</strong></td>
+</tr>
+<tr>
+<td><strong>250000 x 3</strong></td>
+<td>= <strong>(bytes to KiB) /1024</strong></td>
+<td><strong>750,000 bytes</strong><br><strong>732 KiB</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>OR</strong></p>
+<p><strong>Image Files</strong></p>
+<p>(Image width) <strong>x</strong> (Image height) <strong>x</strong> (Colour Depth)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Size of bitmap image =</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Image width</td>
+<td><strong>500</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Image height</td>
+<td><strong>500</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Colour Depth</td>
+<td><strong>24 bits</strong></td>
+<td>24 bits = 3 bytes</td>
+</tr>
+<tr>
+<td><strong>(500 x 500 x 24)</strong></td>
+<td><strong>=</strong><br><br><strong>(bit to bytes) /8</strong><br><br><strong>(bytes to KiB) /1024</strong></td>
+<td><strong>6,000,000 bits</strong><br><br><strong>750,000 bytes</strong><br><br><strong>732 KiB</strong></td>
+</tr>
+<tr>
+<td><strong>(500 x 500 x 3)</strong></td>
+<td>=<br><br><strong>(bytes to KiB) /1024</strong></td>
+<td><strong>750,000 bytes</strong><br><br><strong>732 KiB</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_7">How do you calculate the size of a sound file?</h3>
+<ul>
+<li>Calculating the size of a sound file is carried out with the following formula:
+<ul>
+<li><strong>Sample rate x duration x sample resolution</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_8">Example</h4>
+<p><strong>Sound Files</strong></p>
+<p>(Sample Rate) <strong>x</strong> (Duration in seconds) <strong>x</strong> (Sample Resolution)</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Size of sound file =</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Sample rate</td>
+<td><strong>100</strong></td>
+<td>Samples per second</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td><strong>60</strong></td>
+<td>Seconds</td>
+</tr>
+<tr>
+<td>Sample resolution</td>
+<td><strong>24</strong></td>
+<td>Number of bits stored per sample</td>
+</tr>
+<tr>
+<td><strong>100 x 60 x 24</strong></td>
+<td><strong>=</strong><br><br><strong>(bit to bytes) /8</strong><br><br><strong>(bytes to KiB) /1024</strong></td>
+<td><strong>144,000 bits</strong><br><br><strong>18,000 bytes</strong><br><br><strong>18 KiB</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_9">Compression</h2>
+<h2 id="section_10">The Need For Compression</h2>
+<h3 id="section_11">What is compression?</h3>
+<ul>
+<li>Compression is <strong>reducing the size of a file</strong> so that it <strong>takes up less space on secondary storage</strong></li>
+<li>The impact of compression is:
+<ul>
+<li><strong>Less storage space required</strong></li>
+<li><strong>Less bandwidth required</strong></li>
+<li><strong>Shorter transmission time</strong></li>
+</ul>
+</li>
+<li>Compression can be achieved using two methods, <strong>lossy</strong> and <strong>lossless</strong></li>
+</ul>
+<h2 id="section_12">Lossy Compression</h2>
+<h3 id="section_13">What is lossy compression?</h3>
+<ul>
+<li>Lossy compression is when <strong>data is lost</strong> in order to <strong>reduce the size</strong> on secondary storage</li>
+<li>Lossy compression is <strong>irreversible</strong></li>
+<li>Lossy can <strong>greatly reduce the size</strong> of a file but at the <strong>expense of losing quality</strong></li>
+<li>Lossy is only suitable for data <strong>where reducing quality is acceptable</strong>, for example images, video and sound</li>
+<li>In photographs, lossy compression will try to group similar colours together, reducing the amount of colours in the image without compromising the overall quality of the image
+<img src="0478-images/lossy-images.png" alt="3 images of a husky dog, 1 with no compression, 1 at 50% and 1 at 80%" width="1007"></li>
+<li>In the images above, lossy compression is applied to a photograph and dramatically reduces the file size</li>
+<li>Data has been removed and the overall quality has been reduced, however it is acceptable as it is difficult to visually see a difference</li>
+<li>Lossy compressed photographs take up less storage space which means you can store more and they are quicker to share across a network</li>
+</ul>
+<h2 id="section_14">Lossless Compression</h2>
+<h3 id="section_15">What is lossless compression?</h3>
+<ul>
+<li>Lossless compression is when data is <strong>encoded</strong> in order to <strong>reduce the size on secondary storage</strong></li>
+<li>Lossless compression is <strong>reversible</strong>, the file <strong>can be returned to its original state</strong></li>
+<li>Lossless can reduce the size of a file <strong>but not as dramatically</strong> as lossy</li>
+<li>Lossless can be used on all data but is more suitable for data where <strong>a loss in quality is unacceptable</strong>, for example documents</li>
+<li>In a document, lossless compression algorithms such as <strong>run length encoding (RLE)</strong> can be used to analyse the contents looking for <strong>patterns</strong> and <strong>repetition</strong>.</li>
+</ul>
+<h4 id="section_16">What is run length encoding?</h4>
+<ul>
+<li>Run length encoding (<strong>RLE</strong>) is a form of lossless data compression that <strong>condenses identical elements into a single value</strong> with a count</li>
+<li>For a text file, &quot; <strong>AAAABBBCCDAA</strong> &quot; is compressed to &quot; <strong>4A3B2C1D2A</strong> &quot;</li>
+<li>The string has <strong>four 'A’s</strong>, followed by <strong>three 'B’s</strong>, <strong>two 'C’s</strong>, <strong>one ‘D’</strong>, and <strong>two 'A’s</strong></li>
+<li>RLE is used in <strong>bitmap images</strong> to compress <strong>sequences of the same colour</strong></li>
+<li>For example, a line in an image with 5 red pixels followed by 3 blue pixels could be represented as &quot; <strong>5R3B</strong> &quot;</li>
+</ul>
+<h4 id="section_17">Lossless file formats</h4>
+<p><img src="0478-images/lossless-compression-demo---word-vs-pdf.png" alt="Diagram to show loss in file size from DOCX to PDF"></p>
+<ul>
+<li>In the image above, lossless compression is <strong>automatically applied to document formats</strong> such as <strong>DOCX</strong> and <strong>PDF</strong> with a different rate of success</li>
+<li>When you open a lossless compressed document the <strong>decompression process reverses the algorithms</strong> and returns the data <strong>back to its original state</strong></li>
+<li>Lossless compressed documents <strong>take up less storage space</strong> which means you can <strong>store more</strong> and they are <strong>quicker to share</strong> across a network</li>
+</ul>
+<p>An email is sent containing a sound file.</p>
+<p>Lossy compression is used to compress the sound file.</p>
+<p>Explain two reasons why using <strong>lossy</strong> compression is beneficial. <strong>[4]</strong></p>
+<p><strong>How to answer this question</strong></p>
+<ul>
+<li>What are the differences between lossy and lossless?</li>
+<li>Can you state two differences? [2 marks]</li>
+<li>Can you say why each point is a benefit? [2 marks]</li>
+</ul>
+<p><strong>Answer</strong></p>
+<ul>
+<li>Lossy will decrease the file size <strong>[1]</strong></li>
+<li>**…**so it can sent via email quicker <strong>[1]</strong></li>
+<li>Lossy means data is lost <strong>[1]</strong></li>
+<li>**…**the difference is unlikely to be noticed by humans <strong>[1]</strong></li>
+</ul>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="12-text-sound-images.html" title="Previous: 1.2 Text, Sound & Images" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1.2 Text, Sound & Images</span></a>
+<a href="2-types-methods-of-data-transmission.html" title="Next: 2 Types & Methods of Data Transmission" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2 Types & Methods of Data Transmission</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

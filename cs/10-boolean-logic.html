@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Boolean Logic — CS 0478 IGCSE Notes</title>
+<style>
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #6b4a28;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #8a4a12;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #ffe9a8; color: #5a3d00; padding: 0 3px; border-radius: 2px; }
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1100px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* Code highlighting — warm dark theme (同 9618) */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 }
+.highlight .k { color: #d4a574 }
+.highlight .s { color: #c8b896 }
+.highlight .n { color: #e8dcc8 }
+.highlight .p { color: #b8a890 }
+.highlight .o { color: #c09870 }
+.highlight .mi { color: #d4a574 }
+.highlight .mf { color: #d4a574 }
+.highlight .m { color: #d4a574 }
+.highlight .nb { color: #d4a574 }
+.highlight .nc { color: #e8b98a }
+.highlight .nd { color: #e8b98a }
+.highlight .nf { color: #e8b98a }
+.highlight .nn { color: #e8b98a }
+.highlight .kt { color: #d4a574 }
+.highlight .bp { color: #e8dcc8 }
+.highlight .kn { color: #c09870 }
+.highlight .ow { color: #c09870 }
+.highlight .kc { color: #d4a574 }
+.highlight .kd { color: #d4a574 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8b896 }
+.highlight .err { color: #e8dcc8; background: none }
+.highlight .w { color: #e8dcc8 }
+.highlight .nt { color: #e8b98a }
+.highlight .na { color: #c8b896 }
+.highlight .nl { color: #e8dcc8 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="0478.html" style="color:inherit;text-decoration:none;opacity:.7">← 0478 Notes</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>10 Boolean Logic</h1>
+    <p>Paper 2: Algorithms, Programming & Logic</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section">Logic Gates</a></li>
+<li><a href="#section_9">Logic Circuits</a></li>
+<li><a href="#section_12">Truth Tables</a></li>
+<li><a href="#section_20">Truth Tables for Logic Circuits</a></li>
+<li><a href="#section_24">Logic Expressions</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h2 id="section">Logic Gates</h2>
+<h3 id="section_1">What is Boolean logic?</h3>
+<p><em>Cambridge IGCSE 0478 expects you to identify logic gates, write Boolean expressions, and interpret simple logic circuits. This page covers exactly the gates and formats examiners use—nothing more, nothing less.</em></p>
+<ul>
+<li>Boolean logic is used in computer science and electronics to make <strong>logical decisions</strong></li>
+<li>Boolean operators are either <strong>TRUE</strong> or <strong>FALSE</strong>, often represented as <strong>1</strong> or <strong>0</strong></li>
+<li>Inputs and outputs are given <strong>letters to represent them</strong></li>
+<li>To define Boolean logic we use <strong>special symbols</strong> to make <strong>writing expressions</strong> much <strong>easier</strong></li>
+</ul>
+<h3 id="section_2">What are logic gates?</h3>
+<ul>
+<li>Logic gates are a <strong>visual way</strong> of representing a <strong>Boolean expression</strong></li>
+<li>The logic gates covered in this course are:
+<ul>
+<li><strong>AND</strong></li>
+<li><strong>OR</strong></li>
+<li><strong>NOT</strong></li>
+<li><strong>XOR</strong></li>
+<li><strong>NAND</strong></li>
+<li><strong>NOR</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="section_3">AND</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>AND</strong> B)</td>
+<td><img src="0478-images/and-gate.png" alt=""></td>
+<td>Returns TRUE only if <strong>both</strong> inputs are TRUE<br><br><strong>TRUE</strong> AND <strong>TRUE</strong> = <strong>TRUE</strong><br><br>Otherwise = FALSE</td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_4">OR</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>OR</strong> B)</td>
+<td><img src="0478-images/or-gate.png" alt=""></td>
+<td>Returns TRUE if <strong>either</strong> input is TRUE<br><br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>FALSE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_5">NOT</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(<strong>NOT</strong> A)</td>
+<td><img src="0478-images/not-gate.png" alt=""></td>
+<td><strong>Reverses</strong> the input value<br>NOT <strong>TRUE</strong> = <strong>FALSE</strong><br>NOT <strong>FALSE</strong> = <strong>TRUE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_6">XOR (exclusive OR)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>XOR</strong> B)</td>
+<td><img src="0478-images/screenshot-2023-05-30-at-08-25-28.png" alt="129"></td>
+<td>Returns TRUE if <strong>either</strong> input is TRUE but <strong>NOT</strong> both<br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>FALSE</strong><br><strong>TRUE</strong> OR <strong>TRUE</strong> = <strong>FALSE</strong></td>
+</tr>
+<tr>
+<td><em>The most common exam mistake is confusing</em> <code>OR</code> <em>and</em> <code>XOR</code><em>. Remember:</em> <code>XOR</code> <em>is only</em> <em><strong>true if exactly one input is true</strong></em>*. It’s false if both are true or both are false.*</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_7">NAND (not and)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>NAND</strong> B)</td>
+<td><img src="0478-images/screenshot-2023-05-30-at-08-25-01.png" alt="136"></td>
+<td>Returns TRUE if <strong>either or both</strong> inputs are FALSE<br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><strong>TRUE</strong> OR <strong>TRUE</strong> = <strong>FALSE</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="section_8">NOR (not OR)</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Expression operator</strong></th>
+<th><strong>Circuit symbol</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A <strong>NOR</strong> B)</td>
+<td><img src="0478-images/screenshot-2023-05-30-at-08-25-22.png" alt="174"></td>
+<td>Returns TRUE if <strong>both</strong> inputs are FALSE<br><strong>TRUE</strong> OR <strong>FALSE</strong> = <strong>FALSE</strong><br><strong>FALSE</strong> OR <strong>FALSE</strong> = <strong>TRUE</strong><br><strong>TRUE</strong> OR <strong>TRUE</strong> = <strong>FALSE</strong></td>
+</tr>
+<tr>
+<td><em>“Draw the logic circuit for the expression (A AND B) OR (NOT C)”</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Tip: <strong>Draw from left to right</strong>, and label all inputs clearly. Mislabelled inputs = lost marks</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section_9">Logic Circuits</h2>
+<h3 id="section_10">What is a logic circuit?</h3>
+<ul>
+<li>A logic circuit <strong>performs logical operations</strong> on binary information</li>
+<li>Logic gates are <strong>core components</strong> of logic circuits</li>
+<li>Based on the <strong>arrangement of logic gates</strong> and the <strong>input signals</strong>, the circuit performs a specific function</li>
+<li>A logic diagram is a <strong>visual representation</strong> of a combinations of logic gates within a logic circuit</li>
+<li><strong>Brackets</strong> are used to clarify the <strong>order</strong> of operations</li>
+<li>An example logic diagram for the Boolean expression <strong>Q =</strong> <strong>NOT(A OR B)</strong> would be:
+<img src="0478-images/screenshot-2023-05-30-at-08-31-16.png" alt="logic circuit1" width="561"></li>
+<li>In the logic diagram above, the <strong>inputs</strong> are represented by <strong>A and B</strong></li>
+<li><strong>P</strong> is the <strong>output</strong> of the OR gate on the left and becomes the input of the NOT gate</li>
+<li><strong>Q</strong> is the <strong>final output</strong> of the logic circuit</li>
+</ul>
+<p>You may be asked to draw a logic circuit from a logic statement or a Boolean expression <strong>OR</strong> write the logical expression that is expressed in the logic diagram using Boolean expression operators</p>
+<p>Logic circuits will be limited to a <strong>maximum of three inputs and one output</strong></p>
+<h4 id="section_11">Example of combining logic gates</h4>
+<p><img src="0478-images/10-boolean-logic.png" alt="10-boolean-logic" width="622"></p>
+<ul>
+<li><strong>P = (A OR B) AND NOT C</strong></li>
+</ul>
+<p>A sprinkler system switches on if it is not daytime (input A) and the temperature is greater than 40 (input B)</p>
+<p>Draw a logic circuit to represent the problem statement above</p>
+<p><strong>[2]</strong></p>
+<p><img src="0478-images/screenshot-2023-05-30-at-08-34-38.png" alt="screenshot-2023-05-30-at-08-34-38" width="648"></p>
+<h2 id="section_12">Truth Tables</h2>
+<h3 id="section_13">What is a truth table?</h3>
+<ul>
+<li>A truth table is a tool used in logic and computer science to <strong>visualise</strong> the <strong>results</strong> of <strong>Boolean expressions</strong></li>
+<li>They represent <strong>all possible inputs</strong> and the <strong>associated outputs</strong> for a <strong>given Boolean expression</strong></li>
+</ul>
+<h4 id="section_14">AND</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1">![|422](image/screenshot-2023-05-30-at-08-24-36.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>B</p></th><th colspan="1" rowspan="1"><p>A AND B</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="section_15">OR</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1">![|422](image/screenshot-2023-05-30-at-08-24-49.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>B</p></th><th colspan="1" rowspan="1"><p>A OR B</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="section_16">NOT</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p>Circuit symbol</p></th><th colspan="1" rowspan="1"><p>Truth Table</p></th></tr><tr><td colspan="1" rowspan="1">![|428](image/screenshot-2023-05-30-at-08-24-28.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>NOT</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="section_17">XOR (exclusive)</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1">![|422](image/screenshot-2023-05-30-at-08-25-28.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>B</p></th><th colspan="1" rowspan="1"><p>A XOR B</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="section_18">NAND (not and)</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1">![|420](image/screenshot-2023-05-30-at-08-25-01.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>B</p></th><th colspan="1" rowspan="1"><p>NOT (A AND B)</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h4 id="section_19">NOR (not or)</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Circuit symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th></tr><tr><td colspan="1" rowspan="1">![|414](image/screenshot-2023-05-30-at-08-25-22.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>B</p></th><th colspan="1" rowspan="1"><p>NOT (A OR B)</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td></tr></tbody></table>
+<h2 id="section_20">Truth Tables for Logic Circuits</h2>
+<h3 id="section_21">How do you create truth tables for logic circuits?</h3>
+<ul>
+<li>To create a truth table for the expression <strong>P = (A AND B) AND NOT C</strong>
+<ul>
+<li>Calculate the numbers of rows needed (<strong>2</strong> <sup><b>number of inputs</b></sup>)</li>
+<li>In this example there are 3 inputs (<strong>A, B, C</strong>) so a total of <strong>8 rows</strong> are needed (<strong>2</strong> <sup><b>3</b></sup>)</li>
+<li>To not miss any combination of inputs, start with <strong>000</strong> and <strong>count</strong> up in <strong>3-bit binary (0-7)</strong></li>
+</ul>
+</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>C</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr></tbody></table>
+<ul>
+<li>Add a new column to show the <strong>results</strong> of the brackets first (A AND B)</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>C</b></p></th><th colspan="1" rowspan="1"><p><b>A AND B</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr></tbody></table>
+<ul>
+<li>Add a new column to show the <strong>results</strong> of NOT C</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>C</b></p></th><th colspan="1" rowspan="1"><p><b>A AND B</b></p></th><th colspan="1" rowspan="1"><p><b>NOT C</b></p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr></tbody></table>
+<ul>
+<li>The last column shows the <strong>result</strong> of the Boolean expression (<strong>P</strong>) by comparing (A AND B) AND NOT C//</li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p>A</p></th><th colspan="1" rowspan="1"><p>B</p></th><th colspan="1" rowspan="1"><p>C</p></th><th colspan="1" rowspan="1"><p><b>A AND B</b></p></th><th colspan="1" rowspan="1"><p><b>NOT C</b></p></th><th colspan="1" rowspan="1"><p>P</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>1</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr></tbody></table>
+<p>It is possible to create a truth table when combining expressions that show only the inputs and the final outputs.</p>
+<p>The inclusion of the extra columns supports the process but can be skipped if you feel able to do those in your head as you go.</p>
+<h3 id="section_22">How do you create logic circuits from a truth table?</h3>
+<ul>
+<li>To create a logic circuit from a truth table you need to:
+<ul>
+<li>Find the rows where the <strong>output = 1</strong></li>
+<li><strong>Build a logic branch</strong> for each of the rows</li>
+<li><strong>Combine</strong> the branches</li>
+<li>Determine the <strong>gates needed</strong></li>
+<li>Construct a <a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/10-boolean-logic/boolean-logic/logic-expressions/">logic expression</a></li>
+<li><strong>Create</strong> the logic circuit</li>
+</ul>
+</li>
+</ul>
+<h4 id="section_23">Example</h4>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>A</b></p></th><th colspan="1" rowspan="1"><p><b>B</b></p></th><th colspan="1" rowspan="1"><p><b>C</b></p></th><th colspan="1" rowspan="1"><p>X</p></th></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>1</code></p></td><td colspan="1" rowspan="1"><p><code>0</code></p></td><td colspan="1" rowspan="1"><p><code>0</code></p></td><td colspan="1" rowspan="1"><p><code>1</code></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p><b>0</b></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>1</code></p></td><td colspan="1" rowspan="1"><p><code>1</code></p></td><td colspan="1" rowspan="1"><p><code>1</code></p></td><td colspan="1" rowspan="1"><p><code>1</code></p></td></tr></tbody></table>
+<ul>
+<li>Look at the truth table and <strong>find the rows where X = 1</strong></li>
+<li>This happens when:
+<ul>
+<li><strong>A = 1, B = 0, C = 0</strong></li>
+<li><strong>A = 1, B = 1, C = 1</strong></li>
+</ul>
+</li>
+<li>Build a logic branch:
+<ul>
+<li><strong>A = 1, B = 0, C = 0</strong>
+<ul>
+<li>Use a <strong>NOT gate</strong> on B</li>
+<li>Use a <strong>NOT gate</strong> on C</li>
+<li><strong>AND A</strong>, <strong>NOT B</strong>, and <strong>NOT C</strong> together</li>
+<li>This gives output = 1 for that row</li>
+</ul>
+</li>
+<li><strong>A = 1, B = 1, C = 1</strong>
+<ul>
+<li>Just <strong>AND</strong> A, B, and C together</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Combine the branches
+<ul>
+<li>Use an <strong>OR gate</strong> to combine the two outputs
+<ul>
+<li>This way, X = 1 if either input combination happens</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Determine the gates needed:
+<ul>
+<li><strong>NOT gates</strong>:
+<ul>
+<li>NOT B</li>
+<li>NOT C</li>
+</ul>
+</li>
+<li><strong>AND gates</strong>:
+<ul>
+<li>A AND NOT B → first AND</li>
+<li>that result AND NOT C → second AND</li>
+<li>A AND B → third AND</li>
+<li>that result AND C → fourth AND</li>
+</ul>
+</li>
+<li><strong>OR gate</strong>:
+<ul>
+<li>Combines the outputs of the second and fourth AND gates</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Construct the <a href="https://www.savemyexams.com/igcse/computer-science/cie/23/revision-notes/10-boolean-logic/boolean-logic/logic-expressions/">logic expression</a>
+<ul>
+<li>Final logic:
+<ul>
+<li><strong>(A AND NOT B AND NOT C) OR (A AND B AND C)</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Create the logic circuit
+<img src="0478-images/6360_2025-07-17-0hi-kleki.png" alt="Logic circuit diagram with inputs A, B, and C, using AND, OR, and NOT gates, connected to output X."></li>
+</ul>
+<h2 id="section_24">Logic Expressions</h2>
+<ul>
+<li>A <strong>logic expression</strong> is a way of expressing a logic gate or logic circuit as an <strong>equation</strong></li>
+<li>The <strong>output</strong> appears on the <strong>left</strong> of the equals sign with the <strong>inputs</strong> and <strong>logic gates</strong> on the <strong>right</strong></li>
+</ul>
+<table><tbody><tr><th colspan="1" rowspan="1"><p><b>Gate</b></p></th><th colspan="1" rowspan="1"><p><b>Symbol</b></p></th><th colspan="1" rowspan="1"><p><b>Truth Table</b></p></th><th colspan="1" rowspan="1"><p><b>Logic Expression</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>NOT</b></p></td><td colspan="1" rowspan="1">![|428](image/screenshot-2023-05-30-at-08-24-28.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><td colspan="1" rowspan="1"><p><b>A</b></p></td><td colspan="1" rowspan="1"><p><b>Z</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td><td colspan="1" rowspan="1"><p>Z = NOT A</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>AND</b></p></td><td colspan="1" rowspan="1">![|422](image/screenshot-2023-05-30-at-08-24-36.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><td colspan="1" rowspan="1"><p><b>A</b></p></td><td colspan="1" rowspan="1"><p><b>B</b></p></td><td colspan="1" rowspan="1"><p><b>Z</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr></tbody></table></div></td><td colspan="1" rowspan="1"><p>Z = A AND B</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>OR</b></p></td><td colspan="1" rowspan="1">![|199](image/screenshot-2023-05-30-at-08-24-49.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><td colspan="1" rowspan="1"><p><b>A</b></p></td><td colspan="1" rowspan="1"><p><b>B</b></p></td><td colspan="1" rowspan="1"><p><b>Z</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr></tbody></table></div></td><td colspan="1" rowspan="1"><p>Z = A OR B</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>NAND</b></p></td><td colspan="1" rowspan="1">![|199](image/screenshot-2023-05-30-at-08-25-01.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><td colspan="1" rowspan="1"><p><b>A</b></p></td><td colspan="1" rowspan="1"><p><b>B</b></p></td><td colspan="1" rowspan="1"><p><b>Z</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td><td colspan="1" rowspan="1"><p>Z = A NAND B</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>NOR</b></p></td><td colspan="1" rowspan="1">![|200](image/screenshot-2023-05-30-at-08-25-22.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><td colspan="1" rowspan="1"><p><b>A</b></p></td><td colspan="1" rowspan="1"><p><b>B</b></p></td><td colspan="1" rowspan="1"><p><b>Z</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td><td colspan="1" rowspan="1"><p>Z = A NOR B</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>XOR</b></p></td><td colspan="1" rowspan="1">![|200](image/screenshot-2023-05-30-at-08-25-28.png)</td><td colspan="1" rowspan="1"><div><table><tbody><tr><td colspan="1" rowspan="1"><p><b>A</b></p></td><td colspan="1" rowspan="1"><p><b>B</b></p></td><td colspan="1" rowspan="1"><p><b>Z</b></p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr><tr><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>1</p></td></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody></table></div></td><td colspan="1" rowspan="1"><p>Z = A XOR B</p></td></tr></tbody></table>
+<ul>
+<li>Logic circuits containing multiple gates can also be expressed as logic expressions/statements</li>
+</ul>
+<p><strong>An example logic circuit containing two inputs</strong></p>
+<p><img src="0478-images/screenshot-2023-05-30-at-09-28-55.png" alt="screenshot-2023-05-30-at-09-28-55"></p>
+<ul>
+<li>The logic circuit above can be expressed as the logic expression <strong>Q= NOT(A OR B)</strong></li>
+</ul>
+<p><strong>An example logic circuit containing two inputs</strong></p>
+<p><img src="0478-images/screenshot-2023-05-30-at-09-29-06.png" alt="screenshot-2023-05-30-at-09-29-06"></p>
+<ul>
+<li>The logic circuit above can be expressed as the logic expression <strong>Q= (NOT A) AND B</strong></li>
+</ul>
+<p><strong>An example logic circuit containing three inputs</strong></p>
+<ul>
+<li>The logic circuit above can be expressed as the logic expression <strong>P = ((NOT A) OR B) NAND C</strong></li>
+</ul>
+<p><strong>An example logic circuit containing three inputs</strong></p>
+<p><img src="0478-images/screenshot-2023-05-30-at-09-35-30.png" alt="screenshot-2023-05-30-at-09-35-30"></p>
+<ul>
+<li>
+<p>This logic circuit above can be expressed as <strong>X = NOT (A NAND B) OR (B NOR C)</strong></p>
+</li>
+<li>
+<p>You may be required to write a logic expression/statement from a <strong>truth table</strong> or a <strong>logic circuit</strong>. You may also have to do the opposite - <strong>draw a logic circuit</strong> and <strong>complete a truth table for a logic expression</strong></p>
+</li>
+</ul>
+<p>Consider the logic statement: <strong>X = (((A AND B) OR (C AND NOT B)) XOR NOT C)</strong></p>
+<p>a. Draw a logic circuit to represent the given logic statement. <strong>[6]</strong></p>
+<p><strong>Answer</strong></p>
+<p><img src="0478-images/screenshot-2023-05-30-at-09-37-21.png" alt="screenshot-2023-05-30-at-09-37-21"></p>
+<p>One mark per correct logic gate, with the correct input</p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="9-database.html" title="Previous: 9 Database" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">9 Database</span></a>
+<a href="11-exam-technique.html" title="Next: 11 Exam Technique" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">11 Exam Technique</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
+</body>
+</html>

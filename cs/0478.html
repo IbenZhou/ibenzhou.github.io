@@ -1,50 +1,257 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IGCSE 0478 — 整理中 · iben.fun</title>
+<title>Home — CS 0478 IGCSE Notes</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html {
-    --paper: #f7f2e9; --paper-light: #fdfaf5;
-    --ink: #2c2416; --ink-faded: #8c8273; --ink-light: #b8ae9e;
-    --accent: #b8772f; --border: #e8e0d3;
-    background: var(--paper);
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
-    color: var(--ink); line-height: 1.8; -webkit-font-smoothing: antialiased;
-  }
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; position: relative; z-index: 1; padding: 2rem; }
-  .box {
-    background: var(--paper-light); border: 1px solid var(--border); border-radius: 2px;
-    padding: 3.5rem 3rem; text-align: center; max-width: 460px; width: 100%;
-    box-shadow: 0 2px 12px rgba(44,36,22,.05);
-  }
-  .box .mark {
-    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
-    font-size: 3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; line-height: 1;
-  }
-  .box h1 { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .05em; margin-bottom: .5rem; }
-  .box .code { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--ink-faded); border: 1px solid var(--border); border-radius: 2px; padding: .1rem .6rem; margin-bottom: 1rem; }
-  .box p { font-size: .95rem; color: var(--ink-faded); margin-bottom: 2rem; letter-spacing: .03em; }
-  .box a {
-    display: inline-block; font-size: .85rem; color: var(--ink-faded); text-decoration: none;
-    letter-spacing: .06em; transition: color .2s; border-bottom: 1px solid transparent;
-  }
-  .box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+:root {
+  --bg: #faf5ec;
+  --card-bg: #fffdf7;
+  --text: #3d3423;
+  --text-secondary: #93856f;
+  --accent: #d9772a;
+  --accent-light: #fbead9;
+  --border: #e8dcc9;
+  --code-bg: #f6eddd;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,160,110,0.015) 2px, rgba(200,160,110,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.site-header {
+  background: rgba(255,253,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #7a3e12 0%, #c96a1e 40%, #e08a3c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(240,190,130,0.5), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.78; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 40px 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 860px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
 </style>
 </head>
 <body>
-<div class="box">
-  <div class="mark">础</div>
-  <h1>IGCSE Computer Science</h1>
-  <span class="code">CIE 0478</span>
-  <p>复习笔记整理中 · 敬请期待</p>
-  <a href="index.html">← 返回计算机科学</a>
+<header class="site-header">
+  <div class="container">
+    <a href="0478.html" class="site-title">CS 0478 IGCSE Notes</a>
+    <span class="site-subtitle"><a href="../" style="color:inherit;text-decoration:none;opacity:.7">← iben.fun</a> &nbsp;·&nbsp; 22 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>CS 0478 IGCSE Computer Science</h1>
+    <p>Complete revision notes — 22 topics covering the Cambridge IGCSE Computer Science syllabus</p>
+  </div>
 </div>
+<main class="content">
+  <div class="container">
+    <div class="card">
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">1. Data Representation</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="11-number-system.html">1.1 Number System</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="12-text-sound-images.html">1.2 Text, Sound & Images</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="13-data-storage-compression.html">1.3 Data Storage & Compression</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">2. Data Transmission</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="2-types-methods-of-data-transmission.html">2. Types & Methods of Data Transmission</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="22-methods-of-error-detection.html">2.2 Methods of Error Detection</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="23-encryption.html">2.3 Encryption</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">3. Hardware</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="31-computer-architecture.html">3.1 Computer Architecture</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="31-input-output-devices.html">3.1 Input & Output Devices</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="33-data-storage.html">3.3 Data Storage</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="34-network-hardware.html">3.4 Network Hardware</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">4. Software</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="41-types-of-software-interrupts.html">4.1 Types of Software & Interrupts</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="42-types-of-programming-language-translators-ides.html">4.2 Types of Programming Language, Translators & IDEs</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">5. The Internet & Its Uses</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="51-internet-world-wide-web.html">5.1 The Internet & the World Wide Web</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="52-digital-currency.html">5.2 Digital Currency</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="53-cyber-security.html">5.3 Cyber Security</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">6. Automated & Emerging Technologies</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="61-automated-systems-emerging-technologies.html">6.1 Automated Systems & Emerging Technologies</a>
+    <span class="post-category">Paper 1: Computer Systems</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">7. Algorithm Design & Problem-Solving</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="7-algorithm-design-problem-solving.html">7. Algorithm Design & Problem-Solving</a>
+    <span class="post-category">Paper 2: Algorithms, Programming & Logic</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">8. Programming</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="8-programming.html">8. Programming</a>
+    <span class="post-category">Paper 2: Algorithms, Programming & Logic</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">9. Databases</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="9-database.html">9. Database</a>
+    <span class="post-category">Paper 2: Algorithms, Programming & Logic</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">10. Boolean Logic</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="10-boolean-logic.html">10. Boolean Logic</a>
+    <span class="post-category">Paper 2: Algorithms, Programming & Logic</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+<h2 style="font-size:18px; margin:28px 0 8px; color:var(--text);">Supplementary</h2>
+<ul class="post-list">
+  <li class="post-item">
+    <a href="11-exam-technique.html">11. Exam Technique</a>
+    <span class="post-category">Supplementary</span>
+    <span class="date">2026-08-08</span>
+  </li>
+  <li class="post-item">
+    <a href="bubble-sort-in-computer-science-igcse-revision-notes.html">A. Bubble Sort in Computer Science</a>
+    <span class="post-category">Supplementary</span>
+    <span class="date">2026-08-08</span>
+  </li>
+</ul>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge IGCSE Computer Science 0478 — Revision Notes</p>
+</footer>
 </body>
 </html>
