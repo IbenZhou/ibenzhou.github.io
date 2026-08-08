@@ -6,14 +6,14 @@
 <title>Unit 2 Selection and Iteration — AP CSA Review Notes</title>
 <style>
 :root {
-  --bg: #f3f5ee;
+  --bg: #f1f6f4;
   --card-bg: #fbfcf7;
   --text: #33382f;
   --text-secondary: #8a9183;
-  --accent: #4a6741;
-  --accent-light: #e7eee1;
-  --border: #dde4d3;
-  --code-bg: #edf1e6;
+  --accent: #329689;
+  --accent-light: #dcecea;
+  --border: #d2e0dc;
+  --code-bg: #e6efec;
   --ink: #252b21;
   --radius: 6px;
   --shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -30,8 +30,8 @@ body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px),
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(140,160,120,0.02) 2px, rgba(140,160,120,0.02) 4px);
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(130,190,180,0.02) 2px, rgba(130,190,180,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(130,190,180,0.02) 2px, rgba(130,190,180,0.02) 4px);
 }
 .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 .post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
@@ -48,7 +48,7 @@ body::before {
 .site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
 .site-subtitle { font-size: 12px; color: var(--text-secondary); }
 .hero {
-  background: linear-gradient(160deg, #2e4527 0%, #4a6741 45%, #6f8f60 100%);
+  background: linear-gradient(160deg, #1e4a47 0%, #329689 45%, #5cb8ac 100%);
   color: #f3f7ee;
   padding: 44px 0 40px;
   margin-bottom: 36px;
@@ -56,7 +56,7 @@ body::before {
 }
 .hero::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(200,220,180,0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(160,220,210,0.45), transparent);
 }
 .hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
 .hero p { font-size: 14px; opacity: 0.8; }
@@ -90,7 +90,7 @@ body::before {
   margin: 16px 0;
   border-radius: 0 var(--radius) var(--radius) 0;
   font-size: 15px;
-  color: #3d5235;
+  color: #1e524c;
 }
 .card blockquote p { margin: 0; }
 .card code {
@@ -99,23 +99,23 @@ body::before {
   border-radius: 3px;
   font-size: 14px;
   font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  color: #3d5c35;
+  color: #1e6b63;
 }
 .card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
 .card pre {
-  background: #262e22;
-  color: #e2ead8;
+  background: #1d3432;
+  color: #dcebe6;
   padding: 16px 20px;
   border-radius: var(--radius);
   overflow-x: auto;
   margin: 16px 0;
   font-size: 14px;
   line-height: 1.5;
-  border: 1px solid #3d4a36;
+  border: 1px solid #2f4d4a;
 }
 .card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 .card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
-.card mark { background: #e6f0c8; color: #43501f; padding: 0 3px; border-radius: 2px; }
+.card mark { background: #d6eae6; color: #1e5c55; padding: 0 3px; border-radius: 2px; }
 .toc {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -144,8 +144,8 @@ body::before {
 .callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
 .callout-body li { margin: 3px 0; }
 .callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
-.callout-exercise { background: #eef3e9; border-color: #c9d9bf; }
-.callout-exercise .callout-title { background: #e0ebd8; color: #33502a; }
+.callout-exercise { background: #e4f0ee; border-color: #b5d5d0; }
+.callout-exercise .callout-title { background: #d0e7e3; color: #1e5c55; }
 .callout-exam { background: #faf0e0; border-color: #ecd9b4; }
 .callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
 .callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
@@ -164,34 +164,34 @@ body::before {
 .callout-answer summary::before { content: '▸ '; }
 .callout-answer[open] summary::before { content: '▾ '; }
 /* Code highlighting — warm dark theme (同 9618) */
-.highlight { background: #262e22; border-radius: 4px; padding: 12px 16px; }
-.highlight .hll { background-color: #3d4a36 }
-.highlight .c { color: #8c9a80 }
-.highlight .k { color: #a8c79a }
-.highlight .s { color: #c8d8b6 }
-.highlight .n { color: #e2ead8 }
-.highlight .p { color: #b0bca4 }
-.highlight .o { color: #9cbc88 }
-.highlight .mi { color: #a8c79a }
-.highlight .mf { color: #a8c79a }
-.highlight .m { color: #a8c79a }
-.highlight .nb { color: #a8c79a }
-.highlight .nc { color: #b8d4a8 }
-.highlight .nd { color: #b8d4a8 }
-.highlight .nf { color: #b8d4a8 }
-.highlight .nn { color: #b8d4a8 }
-.highlight .kt { color: #a8c79a }
-.highlight .bp { color: #e2ead8 }
-.highlight .kn { color: #9cbc88 }
-.highlight .ow { color: #9cbc88 }
-.highlight .kc { color: #a8c79a }
-.highlight .kd { color: #a8c79a }
-.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #c8d8b6 }
-.highlight .err { color: #e2ead8; background: none }
-.highlight .w { color: #e2ead8 }
-.highlight .nt { color: #b8d4a8 }
-.highlight .na { color: #c8d8b6 }
-.highlight .nl { color: #e2ead8 }
+.highlight { background: #1d3432; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #2f4d4a }
+.highlight .c { color: #7e9c96 }
+.highlight .k { color: #8fd4c6 }
+.highlight .s { color: #b8d9d0 }
+.highlight .n { color: #dcebe6 }
+.highlight .p { color: #9cb8b1 }
+.highlight .o { color: #7fc9bd }
+.highlight .mi { color: #8fd4c6 }
+.highlight .mf { color: #8fd4c6 }
+.highlight .m { color: #8fd4c6 }
+.highlight .nb { color: #8fd4c6 }
+.highlight .nc { color: #9fd9cd }
+.highlight .nd { color: #9fd9cd }
+.highlight .nf { color: #9fd9cd }
+.highlight .nn { color: #9fd9cd }
+.highlight .kt { color: #8fd4c6 }
+.highlight .bp { color: #dcebe6 }
+.highlight .kn { color: #7fc9bd }
+.highlight .ow { color: #7fc9bd }
+.highlight .kc { color: #8fd4c6 }
+.highlight .kd { color: #8fd4c6 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #b8d9d0 }
+.highlight .err { color: #dcebe6; background: none }
+.highlight .w { color: #dcebe6 }
+.highlight .nt { color: #9fd9cd }
+.highlight .na { color: #b8d9d0 }
+.highlight .nl { color: #dcebe6 }
 </style>
 </head>
 <body>
