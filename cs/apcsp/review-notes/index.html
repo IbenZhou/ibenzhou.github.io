@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP CSP Review Notes — AP CSP Review Notes</title>
+<style>
+:root {
+  --bg: #f4f3f8;
+  --card-bg: #fcfbfd;
+  --text: #33303e;
+  --text-secondary: #8d8798;
+  --accent: #6d5cc9;
+  --accent-light: #e6e0f3;
+  --border: #dcd5e8;
+  --code-bg: #ece8f3;
+  --ink: #252033;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2a2450 0%, #6d5cc9 50%, #9d8fe8 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(190,175,240,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #4a3e82;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #5b4bb0;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #f0edf6;
+  color: #332e45;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #dcd5e8;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e2daf2; color: #4a3e82; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #ece8f6; border-color: #c9c0e2; }
+.callout-exercise .callout-title { background: #ddd3f0; color: #4a3e82; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme */
+.highlight { background: #f0edf6; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #e8e2f4 }
+.highlight .c { color: #8b83a0 }
+.highlight .k { color: #5b4bb0 }
+.highlight .s { color: #a8612f }
+.highlight .n { color: #332e45 }
+.highlight .p { color: #6a6480 }
+.highlight .o { color: #5b4bb0 }
+.highlight .mi { color: #5b4bb0 }
+.highlight .mf { color: #5b4bb0 }
+.highlight .m { color: #5b4bb0 }
+.highlight .nb { color: #5b4bb0 }
+.highlight .nc { color: #7a63b8 }
+.highlight .nd { color: #7a63b8 }
+.highlight .nf { color: #7a63b8 }
+.highlight .nn { color: #7a63b8 }
+.highlight .kt { color: #5b4bb0 }
+.highlight .bp { color: #332e45 }
+.highlight .kn { color: #5b4bb0 }
+.highlight .ow { color: #5b4bb0 }
+.highlight .kc { color: #5b4bb0 }
+.highlight .kd { color: #5b4bb0 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #a8612f }
+.highlight .err { color: #332e45; background: none }
+.highlight .w { color: #332e45 }
+.highlight .nt { color: #7a63b8 }
+.highlight .na { color: #a8612f }
+.highlight .nl { color: #332e45 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../../apcsp.html" class="site-title">AP CSP Review Notes</a>
+    <span class="site-subtitle"><a href="../../apcsp.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSP 版块</a> &nbsp;·&nbsp; 5 big ideas · 169 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>AP CSP Review Notes</h1>
+    <p>Complete review notes for AP Computer Science Principles — CED, Effective Fall 2020 · 5 big ideas · 169 exercises</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">About These Notes</a></li>
+<li><a href="#section_2">Big Idea Guides</a></li>
+<li><a href="#section_8">Topic Map (All 35 Topics)</a></li>
+<li><a href="#section_9">How to Use These Notes</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">🏠 AP CSP Review Notes — Index</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science Principles — Course and Exam Description, Effective Fall 2020 (College Board)<br>
+<strong>Exam Format:</strong> Section I — 70 multiple-choice questions (70%, 120 min) · Section II — Create Performance Task (30%, ≥12 hrs class time)<br>
+<strong>Reference:</strong> Full CED outline → APCSP outline<br>
+<strong>Coverage note:</strong> All notes cross-checked against the official AP Classroom Progress Check quizzes (Quiz 1–5, TB/SG files); quiz-extracted exam points are appended to each topic as “Ext” knowledge points with extra exercises (169 exercises total).<br>
+<strong>Bilingual note:</strong> Every Learning Objective carries a Chinese annotation below it (81 in total) — professional Chinese translation of the core concepts, with key terms in 中文（English）form, so students can study the English original with Chinese support.</p>
+</blockquote>
+<hr>
+<h2 id="section_1">About These Notes</h2>
+<p>These review notes follow the official AP CSP course framework, organized by the <strong>five Big Ideas</strong>. Each file covers the specific exam requirements (Learning Objectives &amp; Essential Knowledge), explains every knowledge point, and provides <strong>practice exercises with foldable reference answers</strong> in Obsidian callout format.</p>
+<p><strong>Big Idea Exam Weighting (multiple-choice section):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Big Idea</th>
+<th>Abbreviation</th>
+<th>Exam Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Idea 1: Creative Development</td>
+<td>CRD</td>
+<td>10–13%</td>
+</tr>
+<tr>
+<td>Big Idea 2: Data</td>
+<td>DAT</td>
+<td>17–22%</td>
+</tr>
+<tr>
+<td>Big Idea 3: Algorithms and Programming</td>
+<td>AAP</td>
+<td>30–35%</td>
+</tr>
+<tr>
+<td>Big Idea 4: Computer Systems and Networks</td>
+<td>CSN</td>
+<td>11–15%</td>
+</tr>
+<tr>
+<td>Big Idea 5: Impact of Computing</td>
+<td>IOC</td>
+<td>21–26%</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="section_2">Big Idea Guides</h2>
+<h3 id="section_3">Big Idea 1 — Creative Development (CRD) · 10–13%</h3>
+<ul>
+<li><a href="big-idea-1-creative-development.html">Big Idea 1 — Creative Development</a> — Topics 1.1–1.4</li>
+</ul>
+<h3 id="section_4">Big Idea 2 — Data (DAT) · 17–22%</h3>
+<ul>
+<li><a href="big-idea-2-data.html">Big Idea 2 — Data</a> — Topics 2.1–2.4</li>
+</ul>
+<h3 id="section_5">Big Idea 3 — Algorithms and Programming (AAP) · 30–35%</h3>
+<ul>
+<li><a href="big-idea-3-algorithms-and-programming.html">Big Idea 3 — Algorithms and Programming</a> — Topics 3.1–3.18</li>
+</ul>
+<h3 id="section_6">Big Idea 4 — Computer Systems and Networks (CSN) · 11–15%</h3>
+<ul>
+<li><a href="big-idea-4-computer-systems-and-networks.html">Big Idea 4 — Computer Systems and Networks</a> — Topics 4.1–4.3</li>
+</ul>
+<h3 id="section_7">Big Idea 5 — Impact of Computing (IOC) · 21–26%</h3>
+<ul>
+<li><a href="big-idea-5-impact-of-computing.html">Big Idea 5 — Impact of Computing</a> — Topics 5.1–5.6</li>
+</ul>
+<hr>
+<h2 id="section_8">Topic Map (All 35 Topics)</h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Title</th>
+<th>Key Learning Objectives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>Collaboration</td>
+<td>CRD-1.A, CRD-1.B, CRD-1.C</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>Program Function and Purpose</td>
+<td>CRD-2.A, CRD-2.B, CRD-2.C, CRD-2.D</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>Program Design and Development</td>
+<td>CRD-2.E, CRD-2.F, CRD-2.G, CRD-2.H</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>Identifying and Correcting Errors</td>
+<td>CRD-2.I, CRD-2.J</td>
+</tr>
+<tr>
+<td>2.1</td>
+<td>Binary Numbers</td>
+<td>DAT-1.A, DAT-1.B, DAT-1.C</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>Data Compression</td>
+<td>DAT-1.D</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>Extracting Information from Data</td>
+<td>DAT-2.A, DAT-2.B, DAT-2.C</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>Using Programs with Data</td>
+<td>DAT-2.D, DAT-2.E</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>Variables and Assignments</td>
+<td>AAP-1.A, AAP-1.B</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>Data Abstraction</td>
+<td>AAP-1.C, AAP-1.D</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>Mathematical Expressions</td>
+<td>AAP-2.A, AAP-2.B, AAP-2.C</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>Strings</td>
+<td>AAP-2.D</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>Boolean Expressions</td>
+<td>AAP-2.E, AAP-2.F</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td>Conditionals</td>
+<td>AAP-2.G, AAP-2.H</td>
+</tr>
+<tr>
+<td>3.7</td>
+<td>Nested Conditionals</td>
+<td>AAP-2.I</td>
+</tr>
+<tr>
+<td>3.8</td>
+<td>Iteration</td>
+<td>AAP-2.J, AAP-2.K</td>
+</tr>
+<tr>
+<td>3.9</td>
+<td>Developing Algorithms</td>
+<td>AAP-2.L, AAP-2.M</td>
+</tr>
+<tr>
+<td>3.10</td>
+<td>Lists</td>
+<td>AAP-2.N, AAP-2.O</td>
+</tr>
+<tr>
+<td>3.11</td>
+<td>Binary Search</td>
+<td>AAP-2.P</td>
+</tr>
+<tr>
+<td>3.12</td>
+<td>Calling Procedures</td>
+<td>AAP-3.A</td>
+</tr>
+<tr>
+<td>3.13</td>
+<td>Developing Procedures</td>
+<td>AAP-3.B, AAP-3.C</td>
+</tr>
+<tr>
+<td>3.14</td>
+<td>Libraries</td>
+<td>AAP-3.D</td>
+</tr>
+<tr>
+<td>3.15</td>
+<td>Random Values</td>
+<td>AAP-3.E</td>
+</tr>
+<tr>
+<td>3.16</td>
+<td>Simulations</td>
+<td>AAP-3.F</td>
+</tr>
+<tr>
+<td>3.17</td>
+<td>Algorithmic Efficiency</td>
+<td>AAP-4.A</td>
+</tr>
+<tr>
+<td>3.18</td>
+<td>Undecidable Problems</td>
+<td>AAP-4.B</td>
+</tr>
+<tr>
+<td>3.9A</td>
+<td>Robot Programming <em>(quiz supplement)</em></td>
+<td>MOVE_FORWARD / ROTATE / CAN_MOVE</td>
+</tr>
+<tr>
+<td>4.1</td>
+<td>The Internet</td>
+<td>CSN-1.A, CSN-1.B, CSN-1.C, CSN-1.D</td>
+</tr>
+<tr>
+<td>4.2</td>
+<td>Fault Tolerance</td>
+<td>CSN-1.E</td>
+</tr>
+<tr>
+<td>4.3</td>
+<td>Parallel and Distributed Computing</td>
+<td>CSN-2.A, CSN-2.B</td>
+</tr>
+<tr>
+<td>5.1</td>
+<td>Beneficial and Harmful Effects</td>
+<td>IOC-1.A, IOC-1.B</td>
+</tr>
+<tr>
+<td>5.2</td>
+<td>Digital Divide</td>
+<td>IOC-1.C</td>
+</tr>
+<tr>
+<td>5.3</td>
+<td>Computing Bias</td>
+<td>IOC-1.D</td>
+</tr>
+<tr>
+<td>5.4</td>
+<td>Crowdsourcing</td>
+<td>IOC-1.E</td>
+</tr>
+<tr>
+<td>5.5</td>
+<td>Legal and Ethical Concerns</td>
+<td>IOC-1.F</td>
+</tr>
+<tr>
+<td>5.6</td>
+<td>Safe Computing</td>
+<td>IOC-2.A, IOC-2.B, IOC-2.C</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="section_9">How to Use These Notes</h2>
+<ol>
+<li><strong>Read the Overview</strong> of each big idea first to get the big picture and the exam weight.</li>
+<li><strong>Study Key Concepts</strong> — every Learning Objective and Essential Knowledge statement from the CED is included verbatim.</li>
+<li><strong>Try the exercises</strong> after each knowledge point — the <code>[!exercise]</code> callouts show the question; click the <code>[!example]-</code> callout below to reveal the foldable reference answer with mark allocations.</li>
+<li><strong>Before the exam:</strong> re-trace every pseudocode example by hand, and re-do the exercises from the hardest topics (3.10 Lists, 3.11 Binary Search, 3.17 Algorithmic Efficiency, 3.18 Undecidable Problems, 5.6 Safe Computing).</li>
+</ol>
+<hr>
+<p><em>AP CSP Review Notes · Compiled from the official AP Computer Science Principles Course and Exam Description, Effective Fall 2020. © 2020 College Board.</em></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<div style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);min-width:0;opacity:.35;pointer-events:none;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;">—</span></div>
+<div style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);min-width:0;opacity:.35;pointer-events:none;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;">—</span></div>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science Principles (Course &amp; Exam Description, Effective Fall 2020) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Idea 5 Impact of Computing — AP CSP Review Notes</title>
+<style>
+:root {
+  --bg: #f4f3f8;
+  --card-bg: #fcfbfd;
+  --text: #33303e;
+  --text-secondary: #8d8798;
+  --accent: #6d5cc9;
+  --accent-light: #e6e0f3;
+  --border: #dcd5e8;
+  --code-bg: #ece8f3;
+  --ink: #252033;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2a2450 0%, #6d5cc9 50%, #9d8fe8 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(190,175,240,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #4a3e82;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #5b4bb0;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #f0edf6;
+  color: #332e45;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #dcd5e8;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e2daf2; color: #4a3e82; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #ece8f6; border-color: #c9c0e2; }
+.callout-exercise .callout-title { background: #ddd3f0; color: #4a3e82; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme */
+.highlight { background: #f0edf6; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #e8e2f4 }
+.highlight .c { color: #8b83a0 }
+.highlight .k { color: #5b4bb0 }
+.highlight .s { color: #a8612f }
+.highlight .n { color: #332e45 }
+.highlight .p { color: #6a6480 }
+.highlight .o { color: #5b4bb0 }
+.highlight .mi { color: #5b4bb0 }
+.highlight .mf { color: #5b4bb0 }
+.highlight .m { color: #5b4bb0 }
+.highlight .nb { color: #5b4bb0 }
+.highlight .nc { color: #7a63b8 }
+.highlight .nd { color: #7a63b8 }
+.highlight .nf { color: #7a63b8 }
+.highlight .nn { color: #7a63b8 }
+.highlight .kt { color: #5b4bb0 }
+.highlight .bp { color: #332e45 }
+.highlight .kn { color: #5b4bb0 }
+.highlight .ow { color: #5b4bb0 }
+.highlight .kc { color: #5b4bb0 }
+.highlight .kd { color: #5b4bb0 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #a8612f }
+.highlight .err { color: #332e45; background: none }
+.highlight .w { color: #332e45 }
+.highlight .nt { color: #7a63b8 }
+.highlight .na { color: #a8612f }
+.highlight .nl { color: #332e45 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../../apcsp.html" class="site-title">AP CSP Review Notes</a>
+    <span class="site-subtitle"><a href="../../apcsp.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSP 版块</a> &nbsp;·&nbsp; 5 big ideas · 169 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Big Idea 5 · Impact of Computing</h1>
+    <p>AP Exam Weight 21–26% · 5.1–5.6 class periods · 6 topics</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 5.1 — Beneficial and Harmful Effects</a></li>
+<li><a href="#section_6">Topic 5.2 — Digital Divide</a></li>
+<li><a href="#section_10">Topic 5.3 — Computing Bias</a></li>
+<li><a href="#section_13">Topic 5.4 — Crowdsourcing</a></li>
+<li><a href="#section_17">Topic 5.5 — Legal and Ethical Concerns</a></li>
+<li><a href="#section_20">Topic 5.6 — Safe Computing</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Big Idea 5 — Impact of Computing (IOC): Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science Principles — Course and Exam Description, Effective Fall 2020<br>
+<strong>Exam Weight:</strong> 21–26% of AP Exam<br>
+<strong>Topics:</strong> 5.1–5.6<br>
+<strong>AP Classroom:</strong> Topic Questions ~20 multiple-choice</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>The creation of computer programs can have extensive impacts, some unintended, on societies, economies, and cultures. This big idea explores those effects, the legal and ethical concerns that come with programs, and the responsibilities of programmers. When using computing innovations and transmitting information via the Internet, students should be aware of the risk of sharing personally identifiable information about themselves, such as their age or address, and actively take steps to keep this information safe. This big idea can be integrated throughout the course and works well with the Creative Development, Data, and Computing Systems and Networks big ideas.</p>
+<p><strong>In this big idea you will learn to:</strong></p>
+<ul>
+<li>Explain how an effect of a computing innovation can be both beneficial and harmful, and how a computing innovation can have an impact beyond its intended purpose</li>
+<li>Describe issues that contribute to the digital divide</li>
+<li>Explain how bias exists in computing innovations</li>
+<li>Explain how people participate in problem-solving processes at scale</li>
+<li>Explain how the use of computing can raise legal and ethical concerns</li>
+<li>Describe the risks to privacy from collecting and storing personal data on a computer system</li>
+<li>Explain how computing resources can be protected and can be misused</li>
+<li>Explain how unauthorized access to computing resources is gained</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li>
+<p><strong>Know your vocabulary cold.</strong> This big idea is definition-heavy: <em>digital divide</em>, <em>citizen science</em>, <em>crowdsourcing</em>, <em>plagiarism</em>, <em>Creative Commons</em>, <em>open source</em>, <em>open access</em>, <em>PII</em>, <em>multifactor authentication</em>, <em>phishing</em>, <em>keylogging</em>, <em>rogue access point</em>, and <em>encryption</em> are all classic AP CSP multiple-choice targets.</p>
+</li>
+<li>
+<p><strong>Answer the “both beneficial and harmful” questions with both sides.</strong> Whenever a scenario asks whether an effect is beneficial or harmful, remember IOC-1.A.4: a single effect can be viewed as both beneficial and harmful by different people, or even by the same person. Name one benefit <strong>and</strong> one harm to be safe.</p>
+</li>
+<li>
+<p><strong>Memorize the security triad of 5.6:</strong> (1) the three MFA categories — <em>knowledge</em>, <em>possession</em>, <em>inherence</em>; (2) the two encryption approaches — <em>symmetric key</em> (one key) vs. <em>public key</em> (public key encrypts, private key decrypts); (3) the three unauthorized-access techniques — <em>phishing</em>, <em>keylogging</em>, <em>rogue access point</em>. Expect scenario-based questions that ask you to classify an attack.</p>
+</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 5.1 — Beneficial and Harmful Effects</h2>
+<p><strong>Skill:</strong> 5.C (Describe the impact of a computing innovation)<br>
+<strong>Enduring Understanding IOC-1:</strong> While computing innovations are typically designed to achieve a specific purpose, they may have unintended consequences.</p>
+<h3 id="section_3">Key Concepts</h3>
+<p><strong>Learning Objective [IOC-1.A] — Explain how an effect of a computing innovation can be both beneficial and harmful.</strong></p>
+<blockquote>
+<p>解释计算创新（computing innovation）的某一影响为何可能既有益又有害。核心概念：计算创新由人创造（people create computing innovations），人们完成任务的方式常随之改变；并非所有影响都能被预先预料（unintended consequences 非预期后果）；同一影响对不同人甚至同一个人既可能算有益也可能算有害（IOC-1.A.4）；计算进步也提升了医学、工程、通信、艺术等其他领域的创造力。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-1.A.1]:</strong> People create computing innovations.</li>
+<li><strong>[IOC-1.A.2]:</strong> The way people complete tasks often changes to incorporate new computing innovations.</li>
+<li><strong>[IOC-1.A.3]:</strong> Not every effect of a computing innovation is anticipated in advance.</li>
+<li><strong>[IOC-1.A.4]:</strong> A single effect can be viewed as both beneficial and harmful by different people, or even by the same person.</li>
+<li><strong>[IOC-1.A.5]:</strong> Advances in computing have generated and increased creativity in other fields, such as medicine, engineering, communications, and the arts.</li>
+<li><strong>[IOC-1.A-Ext1]:</strong> Cloud computing — the use of remote servers accessed over the Internet to store, manage, and process data — can enhance collaboration and accessibility (users can share documents and work together from anywhere, on any device), but it also introduces new data security and privacy concerns because data is stored on third-party servers outside the user’s control.</li>
+</ul>
+<p><strong>Learning Objective [IOC-1.B] — Explain how a computing innovation can have an impact beyond its intended purpose.</strong></p>
+<blockquote>
+<p>解释计算创新为何可能产生超出其预期用途（intended purpose）的影响。核心概念：计算创新常被用于创作者原本未设想的方式（如万维网最初仅为科学界信息交流设计，却催生了社交媒体与电子商务）；某些用途可能对社会、经济或文化造成危害；负责任的程序员（responsible programmers）会尽力考虑非预期用途及其利弊，但不可能预见所有用途；程序被快速传播并拥有大量用户时，可能带来远超程序员预期或控制的影响。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-1.B.1]:</strong> Computing innovations can be used in ways that their creators had not originally intended: The World Wide Web was originally intended only for rapid and easy exchange of information within the scientific community; Targeted advertising is used to help businesses, but it can be misused at both individual and aggregate levels; Machine learning and data mining have enabled innovation in medicine, business, and science, but information discovered in this way has also been used to discriminate against groups of individuals.</li>
+<li><strong>[IOC-1.B.2]:</strong> Some of the ways computing innovations can be used may have a harmful impact on society, the economy, or culture.</li>
+<li><strong>[IOC-1.B.3]:</strong> Responsible programmers try to consider the unintended ways their computing innovations can be used and the potential beneficial and harmful effects of these new uses.</li>
+<li><strong>[IOC-1.B.4]:</strong> It is not possible for a programmer to consider all the ways a computing innovation can be used.</li>
+<li><strong>[IOC-1.B.5]:</strong> Computing innovations have often had unintended beneficial effects by leading to advances in other fields.</li>
+<li><strong>[IOC-1.B.6]:</strong> Rapid sharing of a program or running a program with a large number of users can result in significant impacts beyond the intended purpose or control of the programmer.</li>
+<li><strong>[IOC-1.B-Ext1]:</strong> Machine learning is a computing innovation used to analyze large datasets, identify patterns, and make predictions. Its uses can be beneficial (e.g., machine learning helps detect diseases in medicine), but it can also be misused (e.g., information discovered through machine learning has been used to discriminate against groups of individuals).</li>
+</ul>
+<h3 id="section_4">Example — Innovations Used Beyond Their Original Purpose</h3>
+<table>
+<thead>
+<tr>
+<th>Innovation</th>
+<th>Intended purpose</th>
+<th>Unintended / secondary use</th>
+<th>Beneficial effect</th>
+<th>Harmful effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>World Wide Web</td>
+<td>Rapid, easy exchange of information within the scientific community</td>
+<td>Global communication, social media, e-commerce, streaming</td>
+<td>Instant worldwide access to information and services</td>
+<td>Misinformation spreads; privacy and distraction concerns</td>
+</tr>
+<tr>
+<td>Targeted advertising</td>
+<td>Help businesses reach likely customers</td>
+<td>Personalized recommendations, market analysis</td>
+<td>Businesses grow; users see relevant content</td>
+<td>Misused at individual and aggregate levels to manipulate or discriminate</td>
+</tr>
+<tr>
+<td>Machine learning / data mining</td>
+<td>Enable innovation in medicine, business, and science</td>
+<td>Pattern discovery in large datasets</td>
+<td>Faster medical diagnosis, better products, new science</td>
+<td>Discovered information used to discriminate against groups of individuals</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_5">Example — How Tasks Change with New Innovations</h3>
+<ul>
+<li>Before smartphones: getting directions meant asking someone, using paper maps, or stopping to print directions. Now: navigation apps (a computing innovation) change <em>how people complete the task</em> of traveling (IOC-1.A.2).</li>
+<li>Before streaming: people rented or bought physical media. Now: on-demand streaming changes how people consume entertainment — and creates new legal and ethical concerns about digital media downloads (IOC-1.B.1, IOC-1.F.11).</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.1.1 — A Single Effect, Both Beneficial and Harmful (4 marks)</div><div class="callout-body"><p>Social media is used by hundreds of millions of people, although it was not originally created with every one of its current uses in mind.</p>
+<p>(a) Explain how one specific effect of social media can be viewed as <em>both</em> beneficial and harmful by the same person. [2]</p>
+<p>(b) State why it is not possible for the programmers who built a social media platform to consider all the ways it will be used. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A single effect can be viewed as both beneficial and harmful by different people, or even by the same person. For example, the ability to share photos instantly can be beneficial (connecting friends and family) and harmful (posting a photo that a future employer sees and judges) — the very same feature is both a benefit and a risk. [2]</p>
+<p>(b) It is not possible for a programmer to consider all the ways a computing innovation can be used, because users continuously invent new uses that the creator did not anticipate, and the innovation spreads quickly to a large number of users beyond the programmer’s control. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.1.2 — The World Wide Web: Beyond Its Original Purpose (6 marks)</div><div class="callout-body"><p>The World Wide Web was originally intended only for rapid and easy exchange of information within the scientific community.</p>
+<p>(a) Give two examples of uses of the Web that its creators did not originally intend. [2]</p>
+<p>(b) For each use in (a), state one way it benefits society and one way it can harm society, the economy, or culture. [4]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Examples: social media; online streaming of movies and music; e-commerce (online shopping); video-conferencing. (Any reasonable modern use is accepted.) [2]</p>
+<p>(b) Example using social media: beneficial — connects people across the world and supports social causes; harmful — enables the rapid spread of misinformation and can damage privacy. Example using e-commerce: beneficial — businesses can reach a global market; harmful — small local stores may lose customers, and consumer data is collected and exploited. [4]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.1.3 — Machine Learning and Data Mining: Benefits and Harms (5 marks)</div><div class="callout-body"><p>Machine learning and data mining have enabled innovation in medicine, business, and science, but information discovered in this way has also been used to discriminate against groups of individuals.</p>
+<p>(a) Give one beneficial example of machine learning in medicine or science. [1]</p>
+<p>(b) Explain how a programmer’s responsibility relates to the harmful use of such innovations, and why responsibility alone cannot prevent every misuse. [2]</p>
+<p>© State why advances in computing have also increased creativity in other fields, giving one example. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: machine learning analyzes medical images to help detect diseases such as cancer earlier and more accurately. (Any reasonable example is accepted.) [1]</p>
+<p>(b) Responsible programmers try to consider the unintended ways their computing innovations can be used and the potential beneficial and harmful effects of these new uses. However, it is not possible for a programmer to consider all the ways a computing innovation can be used, so some harmful uses cannot be prevented in advance. [2]</p>
+<p>© Advances in computing have generated and increased creativity in other fields such as medicine, engineering, communications, and the arts — for example, digital tools let artists create and share work in new ways, and simulation software helps engineers design better structures. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.1.4 — Cloud Computing: Beneficial and Harmful (5 marks)</div><div class="callout-body"><p>Cloud computing stores and processes data on remote servers accessed over the Internet.</p>
+<p>(a) State two beneficial effects of cloud computing on collaboration and accessibility. [2]</p>
+<p>(b) Explain one new data security or privacy concern introduced by cloud computing, and why it is new. [2]</p>
+<p>© State whether a single effect of cloud computing can be viewed as both beneficial and harmful, referencing the relevant learning objective. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: multiple users can share and edit the same documents in real time from anywhere (collaboration); files and data are accessible from any device with an Internet connection (accessibility). [2]</p>
+<p>(b) Because data is stored on third-party servers outside the user’s control, the user must trust the provider’s security — if the provider’s servers are breached, the user’s data is exposed, and the provider may also access or use the data. This is a new concern because the user no longer controls where or how their data is stored and protected. [2]</p>
+<p>© Yes — a single effect can be viewed as both beneficial and harmful by different people, or even by the same person (IOC-1.A.4): cloud computing is beneficial for collaboration and accessibility, yet harmful in terms of data security and privacy. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.1.5 — Machine Learning: Analyzing Data, Identifying Patterns (5 marks)</div><div class="callout-body"><p>Machine learning is used to analyze large datasets, identify patterns, and make predictions.</p>
+<p>(a) Define machine learning in terms of what it does with data. [2]</p>
+<p>(b) Give one beneficial use of machine learning and one way it can be misused. [2]</p>
+<p>© Explain how the beneficial and harmful uses of machine learning relate to a programmer’s responsibility. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Machine learning is used to analyze large datasets, identify patterns, and make predictions. [2]</p>
+<p>(b) Beneficial: machine learning analyzes medical images to help detect diseases such as cancer earlier. Misused: information discovered through machine learning has been used to discriminate against groups of individuals, for example in hiring or loan decisions. [2]</p>
+<p>© Responsible programmers try to consider the unintended ways their computing innovations can be used and the potential beneficial and harmful effects of these new uses; however, it is not possible for a programmer to consider all the ways a computing innovation can be used, so some harmful uses cannot be prevented in advance. [1]</p>
+</div></details><hr>
+<h2 id="section_6">Topic 5.2 — Digital Divide</h2>
+<p><strong>Skill:</strong> 5.C (Describe the impact of a computing innovation)<br>
+<strong>Enduring Understanding IOC-1:</strong> While computing innovations are typically designed to achieve a specific purpose, they may have unintended consequences.</p>
+<h3 id="section_7">Key Concepts</h3>
+<p><strong>Learning Objective [IOC-1.C] — Describe issues that contribute to the digital divide.</strong></p>
+<blockquote>
+<p>描述造成数字鸿沟（digital divide）的问题。核心概念：互联网接入会因社会经济（socioeconomic）、地理（geographic）、人口统计（demographic）特征以及国家之间的差异而不同；数字鸿沟指基于上述特征而导致的计算设备与互联网接入差异，它既影响群体也影响个人，并引发公平（equity）、接入（access）与影响力（influence）等议题；个人、组织与政府的行为都会影响数字鸿沟。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-1.C.1]:</strong> Internet access varies between socioeconomic, geographic, and demographic characteristics, as well as between countries.</li>
+<li><strong>[IOC-1.C.2]:</strong> The “digital divide” refers to differing access to computing devices and the Internet, based on socioeconomic, geographic, or demographic characteristics.</li>
+<li><strong>[IOC-1.C.3]:</strong> The digital divide can affect both groups and individuals.</li>
+<li><strong>[IOC-1.C.4]:</strong> The digital divide raises issues of equity, access, and influence, both globally and locally.</li>
+<li><strong>[IOC-1.C.5]:</strong> The digital divide is affected by the actions of individuals, organizations, and governments.</li>
+</ul>
+<h3 id="section_8">Example — Factors Contributing to the Digital Divide</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Socioeconomic</td>
+<td>A family cannot afford a computer or a monthly Internet subscription; a school district lacks funding for devices and broadband</td>
+</tr>
+<tr>
+<td>Geographic</td>
+<td>Rural areas have slower or no broadband service; urban areas have fast, reliable connections</td>
+</tr>
+<tr>
+<td>Demographic</td>
+<td>Older adults may be less likely to use the Internet; people with disabilities may lack accessible devices and content</td>
+</tr>
+<tr>
+<td>Between countries</td>
+<td>Developed nations generally have higher Internet access rates than developing nations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_9">Example — Who Is Affected, and Who Can Act?</h3>
+<ul>
+<li>The digital divide can affect both <em>groups and individuals</em>: a whole community may lack access, or a single student may have no device at home.</li>
+<li>It raises issues of <em>equity, access, and influence</em> both globally and locally: those without access are left out of online education, jobs, and civic participation.</li>
+<li>It is affected by the actions of <em>individuals</em> (donating devices), <em>organizations</em> (companies offering free Wi-Fi or low-cost plans), and <em>governments</em> (building broadband infrastructure and funding public Wi-Fi).</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.2.1 — Defining the Digital Divide (4 marks)</div><div class="callout-body"><p>(a) Define the <em>digital divide</em>, naming the characteristics on which it is based. [2]</p>
+<p>(b) Give one example of each characteristic from part (a) that causes Internet access to vary. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The “digital divide” refers to differing access to computing devices and the Internet, based on socioeconomic, geographic, or demographic characteristics. [2]</p>
+<p>(b) Example socioeconomic: a household cannot afford broadband. Example geographic: a rural area has no high-speed Internet. Example demographic: an elderly person without digital skills. Example between countries: developing countries have lower access rates. (Any one example per characteristic is accepted.) [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.2.2 — Groups vs. Individuals and Equity (6 marks)</div><div class="callout-body"><p>A small rural town has no broadband provider, while the state capital 200 km away offers cheap, high-speed Internet to every household.</p>
+<p>(a) Explain why this situation is an example of the digital divide, naming the characteristic involved. [2]</p>
+<p>(b) State whether the divide described affects a group, an individual, or both, and justify your answer. [2]</p>
+<p>© Describe one issue of equity, access, or influence that this divide raises for the town’s residents. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It is a digital divide because access to computing devices and the Internet differs based on a characteristic — here, geography (rural vs. urban). [2]</p>
+<p>(b) Both: the whole town as a group lacks access, and each individual resident is also affected (e.g., a student who cannot complete online homework is an individual who is affected). [2]</p>
+<p>© Example: equity — residents cannot access online education, telehealth, or job applications available to people in the capital, so they are unfairly left out; or access — without broadband they cannot participate in online services at all; or influence — they have less voice in issues that are decided online. (Any reasonable issue is accepted.) [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.2.3 — Who Affects the Digital Divide (4 marks)</div><div class="callout-body"><p>(a) State three kinds of actors whose actions affect the digital divide, and give one concrete action each could take to reduce it. [3]</p>
+<p>(b) Explain why the digital divide raises ethical concerns around computing. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Individuals — e.g., donating used computers or teaching digital skills; organizations — e.g., a company providing low-cost or free Internet plans; governments — e.g., building broadband infrastructure or funding public Wi-Fi in underserved areas. [3]</p>
+<p>(b) The digital divide raises ethical concerns around computing because unequal access creates unfairness in education, jobs, and civic life — those without access are denied opportunities that others receive. [1]</p>
+</div></details><hr>
+<h2 id="section_10">Topic 5.3 — Computing Bias</h2>
+<p><strong>Skill:</strong> 5.E (Evaluate the use of computing based on legal and ethical factors)<br>
+<strong>Enduring Understanding IOC-1:</strong> While computing innovations are typically designed to achieve a specific purpose, they may have unintended consequences.</p>
+<h3 id="section_11">Key Concepts</h3>
+<p><strong>Learning Objective [IOC-1.D] — Explain how bias exists in computing innovations.</strong></p>
+<blockquote>
+<p>解释偏差（bias）如何存在于计算创新之中。核心概念：计算创新会反映既有的人类偏见，原因可能是算法中被写入了偏见（bias written into the algorithm），也可能是创新所使用的数据本身带有偏见（bias in the data）；程序员应采取行动减少算法中的偏差，以此对抗既有的人类偏见；偏差可能嵌入软件开发的各个层面（all levels of software development）。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-1.D.1]:</strong> Computing innovations can reflect existing human biases because of biases written into the algorithms or biases in the data used by the innovation.</li>
+<li><strong>[IOC-1.D.2]:</strong> Programmers should take action to reduce bias in algorithms used for computing innovations as a way of combating existing human biases.</li>
+<li><strong>[IOC-1.D.3]:</strong> Biases can be embedded at all levels of software development.</li>
+</ul>
+<h3 id="section_12">Example — Where Bias Comes From</h3>
+<table>
+<thead>
+<tr>
+<th>Source of bias</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bias in the data</td>
+<td>A face-recognition system trained mostly on light-skinned faces performs poorly on darker-skinned faces — the data does not represent all groups</td>
+</tr>
+<tr>
+<td>Bias in the algorithm</td>
+<td>A hiring algorithm is written with criteria that systematically disadvantage certain applicants</td>
+</tr>
+<tr>
+<td>Bias at all levels of development</td>
+<td>Bias can enter during planning, algorithm design, data collection, coding, testing, and deployment</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.3.1 — Two Sources of Bias (4 marks)</div><div class="callout-body"><p>(a) State the two ways in which computing innovations can reflect existing human biases. [2]</p>
+<p>(b) For each way, give a short example of a computing innovation that could show that bias. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Biases written into the algorithms, or biases in the data used by the innovation. [2]</p>
+<p>(b) Algorithm bias: a loan-approval algorithm whose rules unfairly reject applicants of one group. Data bias: a speech-recognition system trained mostly on one accent, so it misunderstands other accents. (Any reasonable examples are accepted.) [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.3.2 — Recognizing Bias in a Scenario (6 marks)</div><div class="callout-body"><p>A company develops an app that matches job applicants with open positions. The app was trained on the company’s past hiring records, in which most successful hires were male, and the app now ranks male applicants higher.</p>
+<p>(a) Identify whether the bias comes from the data, the algorithm, or both, and explain your reasoning. [2]</p>
+<p>(b) State what action the programmers should take, and why. [2]</p>
+<p>© Explain why the bias in this app raises both legal and ethical concerns. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Both: the data used by the innovation reflects existing human bias (past hiring records were already biased), and that bias is then embedded in the algorithm, which ranks applicants unfairly. [2]</p>
+<p>(b) Programmers should take action to reduce bias in algorithms used for computing innovations as a way of combating existing human biases — e.g., retrain the model on balanced, representative data and test it for unfair outcomes. [2]</p>
+<p>© It raises ethical concerns because it unfairly discriminates against groups of individuals; it raises legal concerns because using computing to harm individuals or groups can have legal consequences. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.3.3 — Bias at All Levels (3 marks)</div><div class="callout-body"><p>(a) Explain what it means that biases can be embedded at <em>all levels of software development</em>. [2]</p>
+<p>(b) State one practice a programmer can adopt to reduce bias in a computing innovation. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Bias is not only a “testing” problem: it can enter at any stage — when the problem is defined, when the algorithm is designed, when data is collected (unrepresentative data), when the code is written, when the system is tested, and when it is deployed. [2]</p>
+<p>(b) Example: use diverse and representative data; involve diverse perspectives in development; test the innovation on different groups and adjust the algorithm. (Any reasonable practice is accepted.) [1]</p>
+</div></details><hr>
+<h2 id="section_13">Topic 5.4 — Crowdsourcing</h2>
+<p><strong>Skill:</strong> 1.C (Explain how collaboration affects the development of a solution)<br>
+<strong>Enduring Understanding IOC-1:</strong> While computing innovations are typically designed to achieve a specific purpose, they may have unintended consequences.</p>
+<h3 id="section_14">Key Concepts</h3>
+<p><strong>Learning Objective [IOC-1.E] — Explain how people participate in problem-solving processes at scale.</strong></p>
+<blockquote>
+<p>解释人们如何大规模参与问题解决的过程。核心概念：信息与公共数据（public data）的广泛可及促进了问题识别、方案开发与结果传播；公民科学（citizen science）指由分布各地、许多并非科学家的个人，使用自己的计算设备为科学研究贡献数据；众包（crowdsourcing）指通过互联网从大量人群获取输入或信息的做法；经由计算的协作（collaboration via computing）能增强人类能力，并催生新的协作模式（如为商业或公益事业募集资金）。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-1.E.1]:</strong> Widespread access to information and public data facilitates the identification of problems, development of solutions, and dissemination of results.</li>
+<li><strong>[IOC-1.E.2]:</strong> Science has been affected by using distributed and “citizen science” to solve scientific problems.</li>
+<li><strong>[IOC-1.E.3]:</strong> Citizen science is scientific research conducted in whole or part by distributed individuals, many of whom may not be scientists, who contribute relevant data to research using their own computing devices.</li>
+<li><strong>[IOC-1.E.4]:</strong> Crowdsourcing is the practice of obtaining input or information from a large number of people via the Internet.</li>
+<li><strong>[IOC-1.E.5]:</strong> Human capabilities can be enhanced by collaboration via computing.</li>
+<li><strong>[IOC-1.E.6]:</strong> Crowdsourcing offers new models for collaboration, such as connecting businesses or social causes with funding.</li>
+</ul>
+<h3 id="section_15">Example — Crowdsourcing in Action</h3>
+<table>
+<thead>
+<tr>
+<th>Innovation</th>
+<th>How crowdsourcing is used</th>
+<th>Scale of participation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wikipedia</td>
+<td>Volunteers worldwide write and edit encyclopedia articles</td>
+<td>Millions of contributors</td>
+</tr>
+<tr>
+<td>Waze / traffic apps</td>
+<td>Drivers report accidents and traffic in real time</td>
+<td>Tens of millions of users</td>
+</tr>
+<tr>
+<td>Zooniverse</td>
+<td>Volunteers classify galaxies or identify animals in photos for scientific research</td>
+<td>Hundreds of thousands of volunteers</td>
+</tr>
+<tr>
+<td>Kickstarter / crowdfunding</td>
+<td>Businesses and social causes connect with funding from many individuals</td>
+<td>Millions of backers</td>
+</tr>
+<tr>
+<td>Translation platforms</td>
+<td>Volunteers translate text and captions into many languages</td>
+<td>Distributed individuals worldwide</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_16">Example — Citizen Science vs. Crowdsourcing</h3>
+<ul>
+<li><em>Citizen science</em> is scientific research conducted in whole or part by <strong>distributed individuals</strong>, many of whom may <strong>not be scientists</strong>, who contribute relevant data to research using <strong>their own computing devices</strong> (e.g., birdwatchers submitting sightings to a research database).</li>
+<li><em>Crowdsourcing</em> is the broader practice of obtaining input or information from a <strong>large number of people via the Internet</strong> (e.g., Wikipedia articles, product reviews, funding a project).</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.4.1 — Crowdsourcing vs. Citizen Science (6 marks)</div><div class="callout-body"><p>(a) Define <em>crowdsourcing</em>. [2]</p>
+<p>(b) Define <em>citizen science</em>, naming the three key characteristics of the participants. [2]</p>
+<p>© Explain how citizen science is a special kind of crowdsourcing. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Crowdsourcing is the practice of obtaining input or information from a large number of people via the Internet. [2]</p>
+<p>(b) Citizen science is scientific research conducted in whole or part by distributed individuals, many of whom may not be scientists, who contribute relevant data to research using their own computing devices. [2]</p>
+<p>© Citizen science obtains data from a large number of distributed people via the Internet (crowdsourcing), but the data is used for scientific research and the contributors use their own computing devices — so it is crowdsourcing applied to science. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.4.2 — Matching Crowdsourcing Examples (5 marks)</div><div class="callout-body"><p>Match each scenario with the relevant idea from this topic (widespread access facilitates problem-solving, citizen science, human capabilities enhanced by collaboration, or new funding models).</p>
+<p>(a) Drivers share live traffic reports so everyone’s commute time drops. [1]</p>
+<p>(b) A charity raises donations from thousands of individuals online. [1]</p>
+<p>© Amateur astronomers submit telescope photos to help researchers map the sky. [1]</p>
+<p>(d) Researchers download a public dataset of disease statistics and publish findings openly. [1]</p>
+<p>(e) For each of (a)–(d), state whether it is an example of <em>crowdsourcing</em>. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Human capabilities can be enhanced by collaboration via computing (shared data improves routing for everyone). [1]</p>
+<p>(b) Crowdsourcing offers new models for collaboration, such as connecting businesses or social causes with funding. [1]</p>
+<p>© Citizen science — scientific research conducted by distributed individuals using their own computing devices. [1]</p>
+<p>(d) Widespread access to information and public data facilitates the identification of problems, development of solutions, and dissemination of results. [1]</p>
+<p>(e) Yes — all four obtain input or information from a large number of people via the Internet, which is the definition of crowdsourcing. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.4.3 — Problem-Solving at Scale (5 marks)</div><div class="callout-body"><p>A city wants to find the most dangerous potholes to repair first. It releases a free app that lets any driver report the exact location of a pothole with a photo; the city publishes an open map of all reports.</p>
+<p>(a) Identify the problem, the solution, and the dissemination of results in this scenario, and explain how widespread access made each step possible. [3]</p>
+<p>(b) State how human capabilities are enhanced by collaboration via computing in this scenario. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Problem identification — drivers see potholes daily but no one could compile them all; solution development — the city built the app and collects data from many people; dissemination — the open map distributes the results to the public. Widespread access to information (the open map) and public data (driver reports) facilitated all three steps. [3]</p>
+<p>(b) A single person cannot inspect every street, but collaboration via computing — many people reporting via their own devices — combines everyone’s observations, so the group’s capability exceeds any individual’s. [2]</p>
+</div></details><hr>
+<h2 id="section_17">Topic 5.5 — Legal and Ethical Concerns</h2>
+<p><strong>Skill:</strong> 5.E (Evaluate the use of computing based on legal and ethical factors)<br>
+<strong>Enduring Understanding IOC-1:</strong> While computing innovations are typically designed to achieve a specific purpose, they may have unintended consequences.</p>
+<h3 id="section_18">Key Concepts</h3>
+<p><strong>Learning Objective [IOC-1.F] — Explain how the use of computing can raise legal and ethical concerns.</strong></p>
+<blockquote>
+<p>解释使用计算为何会引发法律与伦理问题。核心概念：计算机上创作的材料是创作者或组织的知识产权（intellectual property），数字信息的易获取与易传播会引发关于所有权、价值与使用的担忧；未经许可使用他人材料并据为己有属于抄袭（plagiarism），可能带来法律后果；合法的使用方式包括知识共享（Creative Commons）、开源（open source）与开放获取（open access），且引用他人材料必须注明来源；用计算伤害个人或群体，或让计算介入社会与政治议题，都会引发法律与伦理问题。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-1.F.1]:</strong> Material created on a computer is the intellectual property of the creator or an organization.</li>
+<li><strong>[IOC-1.F.2]:</strong> Ease of access and distribution of digitized information raises intellectual property concerns regarding ownership, value, and use.</li>
+<li><strong>[IOC-1.F.3]:</strong> Measures should be taken to safeguard intellectual property.</li>
+<li><strong>[IOC-1.F.4]:</strong> The use of material created by someone else without permission and presented as one’s own is plagiarism and may have legal consequences.</li>
+<li><strong>[IOC-1.F.5]:</strong> Some examples of legal ways to use materials created by someone else include: Creative Commons—a public copyright license that enables the free distribution of an otherwise copyrighted work. This is used when the content creator wants to give others the right to share, use, and build upon the work they have created; open source—programs that are made freely available and may be redistributed and modified; open access—online research output free of any and all restrictions on access and free of many restrictions on use, such as copyright or license restrictions.</li>
+<li><strong>[IOC-1.F.6]:</strong> The use of material created by someone other than you should always be cited.</li>
+<li><strong>[IOC-1.F.7]:</strong> Creative Commons, open source, and open access have enabled broad access to digital information.</li>
+<li><strong>[IOC-1.F.8]:</strong> As with any technology or medium, using computing to harm individuals or groups of people raises legal and ethical concerns.</li>
+<li><strong>[IOC-1.F.9]:</strong> Computing can play a role in social and political issues, which in turn often raises legal and ethical concerns.</li>
+<li><strong>[IOC-1.F.10]:</strong> The digital divide raises ethical concerns around computing.</li>
+<li><strong>[IOC-1.F.11]:</strong> Computing innovations can raise legal and ethical concerns. Some examples of these include: the development of software that allows access to digital media downloads and streaming; the development of algorithms that include bias; the existence of computing devices that collect and analyze data by continuously monitoring activities.</li>
+<li><strong>[IOC-1.F-Ext1]:</strong> A CC0 (Creative Commons Zero) license is a “no rights reserved” license: the author waives all rights to the work, so the work can be freely distributed, modified, and even used commercially without asking for permission. It differs from other Creative Commons licenses such as CC BY, which still require attribution — credit to the author.</li>
+<li><strong>[IOC-1.F-Ext2]:</strong> The Digital Millennium Copyright Act (DMCA) is a law that addresses copyright in the digital age. Downloading or purchasing digital content from an authorized source does not violate the DMCA; distributing copyrighted content without authorization does violate the DMCA.</li>
+<li><strong>[IOC-1.F-Ext3]:</strong> Software license agreements must be followed: installing a single-user license on multiple computers is not compliant with the license, and sharing software with others requires permission from the copyright holder.</li>
+</ul>
+<h3 id="section_19">Example — Legal Ways to Use Someone Else’s Work</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition (IOC-1.F.5)</th>
+<th>Key idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Creative Commons</strong></td>
+<td>A public copyright license that enables the free distribution of an otherwise copyrighted work. Used when the content creator wants to give others the right to share, use, and build upon the work they have created</td>
+<td>The <em>creator</em> chooses to allow sharing, use, and building upon the work</td>
+</tr>
+<tr>
+<td><strong>Open source</strong></td>
+<td>Programs that are made freely available and may be redistributed and modified</td>
+<td><em>Software</em> that anyone can modify and redistribute</td>
+</tr>
+<tr>
+<td><strong>Open access</strong></td>
+<td>Online research output free of any and all restrictions on access and free of many restrictions on use, such as copyright or license restrictions</td>
+<td><em>Research</em> freely available to read and use</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.5.1 — Intellectual Property and Plagiarism (6 marks)</div><div class="callout-body"><p>(a) Explain what <em>intellectual property</em> is, and why the ease of access and distribution of digitized information raises concerns about it. [2]</p>
+<p>(b) Define <em>plagiarism</em> and state what legal consequences it may have. [2]</p>
+<p>© A student copies a paragraph from a website into their report without permission or citation. Identify which concept in (a)–(b) applies and what the student should do instead. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Material created on a computer is the intellectual property of the creator or an organization. Because digitized information is so easy to access and distribute, concerns arise about its ownership, value, and use — copies can be made and shared almost instantly. [2]</p>
+<p>(b) Plagiarism is the use of material created by someone else without permission and presented as one’s own, and it may have legal consequences. [2]</p>
+<p>© This is plagiarism — using someone else’s material without permission and presenting it as one’s own. The student should use the material in a legal way (e.g., a Creative Commons-licensed source) and always cite the material created by someone else. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.5.2 — Creative Commons vs. Open Source vs. Open Access (5 marks)</div><div class="callout-body"><p>Match each scenario with the correct term — <em>Creative Commons</em>, <em>open source</em>, or <em>open access</em>.</p>
+<p>(a) A researcher publishes their scientific paper online where anyone may read it without any restrictions on access. [1]</p>
+<p>(b) A photographer releases their photo under a license that lets others freely share and build upon it, as long as they credit the photographer. [1]</p>
+<p>© A developer releases their program’s source code so that anyone may redistribute and modify it. [1]</p>
+<p>(d) State what all three have in common. [1]</p>
+<p>(e) Explain how these models affect access to digital information. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Open access — online research output free of any and all restrictions on access. [1]</p>
+<p>(b) Creative Commons — a public copyright license that enables the free distribution of an otherwise copyrighted work and lets others share, use, and build upon it. [1]</p>
+<p>© Open source — programs made freely available that may be redistributed and modified. [1]</p>
+<p>(d) All three are legal ways to use materials created by someone else, and all three broaden access to digital information. [1]</p>
+<p>(e) Creative Commons, open source, and open access have enabled broad access to digital information — users may legally share, use, and build upon work without infringing intellectual property rights. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.5.3 — Legal and Ethical Concerns of Computing (6 marks)</div><div class="callout-body"><p>For each computing innovation below, state one legal or ethical concern it raises.</p>
+<p>(a) Software that allows access to digital media downloads and streaming. [2]</p>
+<p>(b) An algorithm used to approve loans that includes bias against a group of individuals. [2]</p>
+<p>© A fitness device that continuously monitors and analyzes a user’s activities. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: it raises intellectual property concerns regarding ownership, value, and use — media creators may lose control and income from unauthorized downloads and streaming. [2]</p>
+<p>(b) Using computing to harm individuals or groups raises legal and ethical concerns — a biased loan algorithm unfairly discriminates and may violate laws, while ethically it treats groups unfairly. [2]</p>
+<p>© The device collects and analyzes data by continuously monitoring activities, raising privacy and ethical concerns about how the collected personal data is used and protected. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.5.4 — CC0: No Rights Reserved (5 marks)</div><div class="callout-body"><p>A photographer releases one of her photos under the CC0 license.</p>
+<p>(a) State what rights the photographer gives up under CC0, and what users may do with the work. [2]</p>
+<p>(b) Distinguish CC0 from a CC BY license in terms of attribution. [2]</p>
+<p>© State whether users must seek permission from the author before modifying a CC0 work for commercial use. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) CC0 is a “no rights reserved” license: the author waives all rights to the work, so the work can be freely distributed, modified, and even used commercially without asking for permission. [2]</p>
+<p>(b) CC0 requires no attribution at all — the author has waived all rights — whereas CC BY still requires anyone who shares, uses, or builds upon the work to credit (attribute) the author. [2]</p>
+<p>© No — under CC0 the author has given up all rights, so no permission is needed for modification or commercial use. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.5.5 — DMCA: Authorized vs. Unauthorized Use (5 marks)</div><div class="callout-body"><p>(a) Identify what the abbreviation DMCA stands for and what kind of law it is. [1]</p>
+<p>(b) State whether downloading digital content from an authorized source violates the DMCA, and whether distributing that content without authorization does. [2]</p>
+<p>© Explain why digital media downloads and streaming raise legal concerns related to this law. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The Digital Millennium Copyright Act (DMCA) — a law that addresses copyright in the digital age. [1]</p>
+<p>(b) Downloading or purchasing digital content from an authorized source does not violate the DMCA; distributing copyrighted content without authorization does violate the DMCA. [2]</p>
+<p>© Ease of access and distribution of digitized information raises intellectual property concerns regarding ownership, value, and use — software that allows unauthorized access to digital media lets users distribute copyrighted content without permission, which violates the DMCA and harms creators’ rights and income. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.5.6 — Software License Compliance (5 marks)</div><div class="callout-body"><p>(a) A school buys one copy of a program with a single-user license. State whether installing it on many classroom computers is compliant with the license, and why. [2]</p>
+<p>(b) Explain why sharing software with others requires permission from the copyright holder. [2]</p>
+<p>© State one measure that should be taken to safeguard the intellectual property represented by software. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) No — a single-user license permits installation on only one computer, so installing it on many classroom computers is not compliant with the license. [2]</p>
+<p>(b) Material created on a computer is the intellectual property of the creator or an organization, and measures should be taken to safeguard it — so sharing software without the copyright holder’s permission uses their intellectual property without authorization. [2]</p>
+<p>© Example: obtain the appropriate license for each installation and follow its terms; use authorized distribution channels. (Any reasonable measure is accepted.) [1]</p>
+</div></details><hr>
+<h2 id="section_20">Topic 5.6 — Safe Computing</h2>
+<p><strong>Skills:</strong> 5.D (Describe the impact of gathering data), 5.E (Evaluate the use of computing based on legal and ethical factors)<br>
+<strong>Enduring Understanding IOC-2:</strong> The use of computing innovations may involve risks to personal safety and identity.</p>
+<h3 id="section_21">Key Concepts</h3>
+<p><strong>Learning Objective [IOC-2.A] — Describe the risks to privacy from collecting and storing personal data on a computer system.</strong></p>
+<blockquote>
+<p>描述在计算机系统上收集与存储个人数据（personal data）所带来的隐私风险。核心概念：个人身份信息（PII, personally identifiable information）指能够识别、关联、联系或描述某人的信息（如社保号、年龄、电话、医疗与财务信息、生物识别数据）；搜索引擎、网站、设备与网络会记录搜索历史、浏览历史与位置信息；定位、cookies、浏览历史等分散数据可被聚合（aggregated）出关于个人的知识；信息一旦上网便难以删除（difficult to delete），并可能被用于跟踪、身份盗用（identity theft）或协助实施其他犯罪。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-2.A.1]:</strong> Personally identifiable information (PII) is information about an individual that identifies, links, relates, or describes them. Examples of PII include: Social Security number; age; race; phone number(s); medical information; financial information; biometric data.</li>
+<li><strong>[IOC-2.A.2]:</strong> Search engines can record and maintain a history of searches made by users.</li>
+<li><strong>[IOC-2.A.3]:</strong> Websites can record and maintain a history of individuals who have viewed their pages.</li>
+<li><strong>[IOC-2.A.4]:</strong> Devices, websites, and networks can collect information about a user’s location.</li>
+<li><strong>[IOC-2.A.5]:</strong> Technology enables the collection, use, and exploitation of information about, by, and for individuals, groups, and institutions.</li>
+<li><strong>[IOC-2.A.6]:</strong> Search engines can use search history to suggest websites or for targeted marketing.</li>
+<li><strong>[IOC-2.A.7]:</strong> Disparate personal data, such as geolocation, cookies, and browsing history, can be aggregated to create knowledge about an individual.</li>
+<li><strong>[IOC-2.A.8]:</strong> PII and other information placed online can be used to enhance a user’s online experiences.</li>
+<li><strong>[IOC-2.A.9]:</strong> PII stored online can be used to simplify making online purchases.</li>
+<li><strong>[IOC-2.A.10]:</strong> Commercial and governmental curation of information may be exploited if privacy and other protections are ignored.</li>
+<li><strong>[IOC-2.A.11]:</strong> Information placed online can be used in ways that were not intended and that may have a harmful impact. For example, an email message may be forwarded, tweets can be retweeted, and social media posts can be viewed by potential employers.</li>
+<li><strong>[IOC-2.A.12]:</strong> PII can be used to stalk or steal the identity of a person or to aid in the planning of other criminal acts.</li>
+<li><strong>[IOC-2.A.13]:</strong> Once information is placed online, it is difficult to delete.</li>
+<li><strong>[IOC-2.A.14]:</strong> Programs can collect your location and record where you have been, how you got there, and how long you were at a given location.</li>
+<li><strong>[IOC-2.A.15]:</strong> Information posted to social media services can be used by others. Combining information posted on social media and other sources can be used to deduce private information about you.</li>
+<li><strong>[IOC-2.A-Ext1]:</strong> Private or incognito browsing does not record browsing history and does not retain cookies on the user’s device, but it does not hide activity from the user’s Internet service provider (ISP) or network administrator, and it does not protect the user from viruses or malware.</li>
+</ul>
+<p><strong>Learning Objective [IOC-2.B] — Explain how computing resources can be protected and can be misused.</strong></p>
+<blockquote>
+<p>解释计算资源（computing resources）如何得到保护，以及可能被如何滥用。核心概念：身份验证（authentication）措施——如强密码与多因素认证（multifactor authentication）——可保护设备与信息免受未经授权的访问；加密（encryption）是对数据编码以防未授权访问，解密（decryption）是解码过程，常见方案包括对称密钥（symmetric key）与公钥（public key）加密，证书颁发机构（certificate authority）通过信任模型验证加密密钥的所有权；病毒（virus）与恶意软件（malware）扫描软件及定期软件更新可保护系统，用户还应审查程序权限（permissions）以保护隐私。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-2.B.1]:</strong> Authentication measures protect devices and information from unauthorized access. Examples of authentication measures include strong passwords and multifactor authentication.</li>
+<li><strong>[IOC-2.B.2]:</strong> A strong password is something that is easy for a user to remember but would be difficult for someone else to guess based on knowledge of that user.</li>
+<li><strong>[IOC-2.B.3]:</strong> Multifactor authentication is a method of computer access control in which a user is only granted access after successfully presenting several separate pieces of evidence to an authentication mechanism, typically in at least two of the following categories: knowledge (something they know), possession (something they have), and inherence (something they are).</li>
+<li><strong>[IOC-2.B.4]:</strong> Multifactor authentication requires at least two steps to unlock protected information; each step adds a new layer of security that must be broken to gain unauthorized access.</li>
+<li><strong>[IOC-2.B.5]:</strong> Encryption is the process of encoding data to prevent unauthorized access. Decryption is the process of decoding the data. Two common encryption approaches are: Symmetric key encryption involves one key for both encryption and decryption; Public key encryption pairs a public key for encryption and a private key for decryption. The sender does not need the receiver’s private key to encrypt a message, but the receiver’s private key is required to decrypt the message.
+<blockquote>
+<p>⚠️ <strong>EXCLUSION STATEMENT (EK IOC-2.B.5):</strong> Specific mathematical procedures for encryption and decryption are beyond the scope of this course and the AP Exam.</p>
+</blockquote>
+</li>
+<li><strong>[IOC-2.B.6]:</strong> Certificate authorities issue digital certificates that validate the ownership of encryption keys used in secure communications and are based on a trust model.</li>
+<li><strong>[IOC-2.B.7]:</strong> Computer virus and malware scanning software can help protect a computing system against infection.</li>
+<li><strong>[IOC-2.B.8]:</strong> A computer virus is a malicious program that can copy itself and gain access to a computer in an unauthorized way. Computer viruses often attach themselves to legitimate programs and start running independently on a computer.</li>
+<li><strong>[IOC-2.B.9]:</strong> Malware is software intended to damage a computing system or to take partial control over its operation.</li>
+<li><strong>[IOC-2.B.10]:</strong> All real-world systems have errors or design flaws that can be exploited to compromise them. Regular software updates help fix errors that could compromise a computing system.</li>
+<li><strong>[IOC-2.B.11]:</strong> Users can control the permissions programs have for collecting user information. Users should review the permission settings of programs to protect their privacy.</li>
+</ul>
+<p><strong>Learning Objective [IOC-2.C] — Explain how unauthorized access to computing resources is gained.</strong></p>
+<blockquote>
+<p>解释未经授权的访问（unauthorized access）是如何获得的。核心概念：网络钓鱼（phishing）诱骗用户提供个人信息以访问敏感资源；键盘记录（keylogging）记录用户的每一次击键，以窃取密码等机密信息；经公共网络发送的数据可能被拦截、分析与篡改，例如通过恶意接入点（rogue access point）；网页或邮件中的恶意链接（malicious link）可被伪装；来自未知发件人或其安全已被攻破的已知发件人的垃圾邮件、附件、链接与表单，以及不可信（常为免费）下载都可能危及系统安全或包含恶意软件（malware）。</p>
+</blockquote>
+<ul>
+<li><strong>[IOC-2.C.1]:</strong> Phishing is a technique that attempts to trick a user into providing personal information. That personal information can then be used to access sensitive online resources, such as bank accounts and emails.</li>
+<li><strong>[IOC-2.C.2]:</strong> Keylogging is the use of a program to record every keystroke made by a computer user in order to gain fraudulent access to passwords and other confidential information.</li>
+<li><strong>[IOC-2.C.3]:</strong> Data sent over public networks can be intercepted, analyzed, and modified. One way that this can happen is through a rogue access point.</li>
+<li><strong>[IOC-2.C.4]:</strong> A rogue access point is a wireless access point that gives unauthorized access to secure networks.</li>
+<li><strong>[IOC-2.C.5]:</strong> A malicious link can be disguised on a web page or in an email message.</li>
+<li><strong>[IOC-2.C.6]:</strong> Unsolicited emails, attachments, links, and forms in emails can be used to compromise the security of a computing system. These can come from unknown senders or from known senders whose security has been compromised.</li>
+<li><strong>[IOC-2.C.7]:</strong> Untrustworthy (often free) downloads from freeware or shareware sites can contain malware.</li>
+</ul>
+<h3 id="section_22">Example — PII and What Is Collected</h3>
+<table>
+<thead>
+<tr>
+<th>What is collected</th>
+<th>How</th>
+<th>Risk (IOC-2.A)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search history</td>
+<td>Search engines record and maintain a history of searches</td>
+<td>Used to suggest websites or for targeted marketing (IOC-2.A.2, IOC-2.A.6)</td>
+</tr>
+<tr>
+<td>Pages viewed</td>
+<td>Websites record a history of visitors</td>
+<td>Profile of a user’s interests built over time (IOC-2.A.3)</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Devices, websites, and networks collect location data; programs record where you have been, how you got there, and how long you stayed (IOC-2.A.4, IOC-2.A.14)</td>
+<td>Physical whereabouts revealed; used for tracking</td>
+</tr>
+<tr>
+<td>Aggregated data</td>
+<td>Geolocation, cookies, and browsing history are combined into knowledge about an individual (IOC-2.A.7)</td>
+<td>Private facts deduced that were never revealed directly (IOC-2.A.15)</td>
+</tr>
+<tr>
+<td>PII (Social Security number, age, race, phone numbers, medical and financial information, biometric data)</td>
+<td>Provided by users to services</td>
+<td>Stalking, identity theft, or aiding criminal acts (IOC-2.A.12); hard to delete once online (IOC-2.A.13)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_23">Example — Authentication: Three Factors of Multifactor Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Factor category</th>
+<th>Meaning</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Knowledge</strong></td>
+<td>Something they know</td>
+<td>Password, PIN, answer to a security question</td>
+</tr>
+<tr>
+<td><strong>Possession</strong></td>
+<td>Something they have</td>
+<td>Smartphone, security token, SMS code, physical key</td>
+</tr>
+<tr>
+<td><strong>Inherence</strong></td>
+<td>Something they are</td>
+<td>Fingerprint, face scan, retina scan (biometrics)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_24">Example — Encryption: Two Approaches</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Keys</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Symmetric key encryption</strong></td>
+<td>One key for <em>both</em> encryption and decryption</td>
+<td>Fast; both parties must share the same secret key</td>
+</tr>
+<tr>
+<td><strong>Public key encryption</strong></td>
+<td>A <em>public key</em> for encryption paired with a <em>private key</em> for decryption</td>
+<td>The sender does not need the receiver’s private key to encrypt a message, but the receiver’s private key is required to decrypt it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_25">Example — How Unauthorized Access Is Gained</h3>
+<table>
+<thead>
+<tr>
+<th>Attack</th>
+<th>Definition (verbatim)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phishing</strong></td>
+<td>A technique that attempts to trick a user into providing personal information. That personal information can then be used to access sensitive online resources, such as bank accounts and emails.</td>
+</tr>
+<tr>
+<td><strong>Keylogging</strong></td>
+<td>The use of a program to record every keystroke made by a computer user in order to gain fraudulent access to passwords and other confidential information.</td>
+</tr>
+<tr>
+<td><strong>Rogue access point</strong></td>
+<td>A wireless access point that gives unauthorized access to secure networks; data sent over public networks can be intercepted, analyzed, and modified through it.</td>
+</tr>
+<tr>
+<td><strong>Malicious link / email</strong></td>
+<td>A malicious link can be disguised on a web page or in an email message; unsolicited emails, attachments, links, and forms can be used to compromise a computing system, from unknown senders or known senders whose security has been compromised.</td>
+</tr>
+<tr>
+<td><strong>Untrustworthy downloads</strong></td>
+<td>Untrustworthy (often free) downloads from freeware or shareware sites can contain malware.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.6.1 — PII and Aggregation (8 marks)</div><div class="callout-body"><p>(a) Define <em>personally identifiable information (PII)</em> and list four examples. [4]</p>
+<p>(b) Maya posts photos of her new job on social media, uses a fitness app that tracks her running route every morning, and searches for apartments in a certain neighborhood. Explain how these <em>disparate</em> pieces of data can be aggregated to create knowledge about her, and state one harmful way this knowledge could be used. [3]</p>
+<p>© Maya later tries to delete everything she posted. Explain the difficulty she faces. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) PII is information about an individual that identifies, links, relates, or describes them. Examples include: Social Security number; age; race; phone number(s); medical information; financial information; biometric data. (Any four examples are accepted.) [4]</p>
+<p>(b) Disparate personal data, such as geolocation, cookies, and browsing history, can be aggregated to create knowledge about an individual. Combining her job post, running route, and apartment searches could deduce where she lives, where she works, and that she is planning to move — private information she never stated directly. This knowledge could be used to stalk her, steal her identity, or aid in planning other criminal acts. [3]</p>
+<p>© Once information is placed online, it is difficult to delete — copies, forwards, and re-postings by others cannot be fully removed by her. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.6.2 — Strong Passwords and Multifactor Authentication (7 marks)</div><div class="callout-body"><p>(a) Define a <em>strong password</em> in terms of the user and of a person trying to guess it. [2]</p>
+<p>(b) State the three categories of evidence used in multifactor authentication, and give one example of each. [3]</p>
+<p>© A bank requires a password <strong>and</strong> a one-time code sent to the customer’s phone to log in. Identify the authentication measure used and the two factor categories involved. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A strong password is something that is easy for a user to remember but would be difficult for someone else to guess based on knowledge of that user. [2]</p>
+<p>(b) Knowledge (something they know) — a password or PIN; possession (something they have) — a smartphone or security token; inherence (something they are) — a fingerprint or face scan. [3]</p>
+<p>© This is multifactor authentication: the user must present several separate pieces of evidence (at least two steps) to be granted access. The categories are knowledge (the password, something the user knows) and possession (the phone receiving the code, something the user has). [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.6.3 — Encryption and Secure Communication (7 marks)</div><div class="callout-body"><p>(a) Define <em>encryption</em> and <em>decryption</em>. [2]</p>
+<p>(b) Distinguish symmetric key encryption from public key encryption in terms of the keys used. [2]</p>
+<p>© Ali wants to send Bob a private message over the Internet. Using public key encryption, which key does Ali use to encrypt the message, and which key is required to decrypt it? [2]</p>
+<p>(d) What role do certificate authorities play in secure communications? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Encryption is the process of encoding data to prevent unauthorized access. Decryption is the process of decoding the data. [2]</p>
+<p>(b) Symmetric key encryption involves one key for both encryption and decryption. Public key encryption pairs a public key for encryption and a private key for decryption. [2]</p>
+<p>© Ali encrypts the message with Bob’s public key; the receiver’s private key is required to decrypt the message. Ali does not need Bob’s private key to encrypt the message. [2]</p>
+<p>(d) Certificate authorities issue digital certificates that validate the ownership of encryption keys used in secure communications and are based on a trust model. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.6.4 — Recognizing Attacks on Security (8 marks)</div><div class="callout-body"><p>For each scenario, name the security concept or attack being described and justify your answer.</p>
+<p>(a) Leo receives an email that looks like it is from his bank, asking him to click a link and “verify” his account number and password. [2]</p>
+<p>(b) Sara connects to a free Wi-Fi network set up near a coffee shop; when she later logs into her email, an attacker who set up the network captures her password. [2]</p>
+<p>© A program installed on Tara’s computer records every key she types, including her online banking password. [2]</p>
+<p>(d) Danny downloads a free game from an untrustworthy shareware site, and his computer begins to run slowly and shows unwanted ads. State what his download likely contained and what software could have protected his system in advance. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Phishing — a technique that attempts to trick a user into providing personal information (here, by a disguised malicious link in a fake email), which can then be used to access sensitive online resources such as bank accounts. [2]</p>
+<p>(b) Rogue access point — a wireless access point that gives unauthorized access to secure networks; data sent over public networks can be intercepted, analyzed, and modified, so her password is captured. [2]</p>
+<p>© Keylogging — the use of a program to record every keystroke made by a computer user in order to gain fraudulent access to passwords and other confidential information. [2]</p>
+<p>(d) Untrustworthy (often free) downloads from freeware or shareware sites can contain malware — software intended to damage a computing system or take partial control over its operation. Virus and malware scanning software (and regular software updates) could have helped protect the system against infection. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.6.5 — Protecting Computing Resources (6 marks)</div><div class="callout-body"><p>(a) Give two examples of authentication measures that protect devices and information from unauthorized access. [2]</p>
+<p>(b) Explain why multifactor authentication is more secure than a password alone. [2]</p>
+<p>© State two ways users can protect their privacy and their systems, based on IOC-2.B.10 and IOC-2.B.11. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Strong passwords and multifactor authentication. [2]</p>
+<p>(b) Multifactor authentication requires at least two steps to unlock protected information; each step adds a new layer of security that must be broken to gain unauthorized access — an attacker who steals the password (knowledge) still cannot get in without the second factor, e.g., the phone (possession). [2]</p>
+<p>© Example: regularly install software updates, which fix errors and design flaws that could be exploited to compromise the system; and review the permission settings of programs to control what user information they collect, protecting privacy. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 5.6.6 — Private Browsing: What It Does and Does Not Do (5 marks)</div><div class="callout-body"><p>(a) State what private or incognito browsing does not record and does not retain on the user’s device. [2]</p>
+<p>(b) State two limitations of private browsing. [2]</p>
+<p>© Explain whether private browsing prevents viruses and malware from infecting the system. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Private or incognito browsing does not record browsing history and does not retain cookies on the user’s device. [2]</p>
+<p>(b) Private browsing does not hide activity from the user’s Internet service provider (ISP) or network administrator, and it does not protect the user from viruses or malware. [2]</p>
+<p>© No — private browsing only limits what is recorded on the device; it does not protect the computing system against infection, so virus and malware scanning software is still needed. [1]</p>
+</div></details><hr>
+<p>Previous: <a href="big-idea-4-computer-systems-and-networks.html">Big Idea 4 — Computer Systems and Networks</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="big-idea-4-computer-systems-and-networks.html" title="Big Idea 4 Computer Systems and Networks" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Big Idea 4 Computer Systems and Networks</span></a>
+<a href="index.html" title="AP CSA Review Notes (Index)" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AP CSA Review Notes (Index)</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science Principles (Course &amp; Exam Description, Effective Fall 2020) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

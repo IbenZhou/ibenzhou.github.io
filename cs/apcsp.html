@@ -1,50 +1,115 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AP Computer Science Principles — 整理中 · iben.fun</title>
+<title>AP Computer Science Principles — Review Notes · iben.fun</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html {
-    --paper: #f7f2e9; --paper-light: #fdfaf5;
-    --ink: #2c2416; --ink-faded: #8c8273; --ink-light: #b8ae9e;
-    --accent: #7a9e6e; --border: #e8e0d3;
-    background: var(--paper);
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
-    color: var(--ink); line-height: 1.8; -webkit-font-smoothing: antialiased;
-  }
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; position: relative; z-index: 1; padding: 2rem; }
-  .box {
-    background: var(--paper-light); border: 1px solid var(--border); border-radius: 2px;
-    padding: 3.5rem 3rem; text-align: center; max-width: 460px; width: 100%;
-    box-shadow: 0 2px 12px rgba(44,36,22,.05);
-  }
-  .box .mark {
-    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
-    font-size: 3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; line-height: 1;
-  }
-  .box h1 { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .05em; margin-bottom: .5rem; }
-  .box .code { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .1em; color: var(--ink-faded); border: 1px solid var(--border); border-radius: 2px; padding: .1rem .6rem; margin-bottom: 1rem; }
-  .box p { font-size: .95rem; color: var(--ink-faded); margin-bottom: 2rem; letter-spacing: .03em; }
-  .box a {
-    display: inline-block; font-size: .85rem; color: var(--ink-faded); text-decoration: none;
-    letter-spacing: .06em; transition: color .2s; border-bottom: 1px solid transparent;
-  }
-  .box a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+:root {
+  --bg: #f4f3f8;
+  --card-bg: #fcfbfd;
+  --text: #33303e;
+  --text-secondary: #8d8798;
+  --accent: #6d5cc9;
+  --accent-light: #e6e0f3;
+  --border: #dcd5e8;
+  --code-bg: #ece8f3;
+  --ink: #252033;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; font-size: 16px; }
+body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px),
+              repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px); }
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.site-header { background: rgba(251,252,247,0.92); border-bottom: 1px solid var(--border); padding: 14px 0; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero { background: linear-gradient(160deg, #2a2450 0%, #6d5cc9 50%, #9d8fe8 100%); color: #f3f7ee; padding: 48px 0 44px; margin-bottom: 36px; position: relative; z-index: 1; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, rgba(190,175,240,0.45), transparent); }
+.hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.2px; }
+.hero p { font-size: 15px; opacity: 0.82; }
+.content { padding: 0 0 40px; }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 40px; margin-bottom: 24px; box-shadow: var(--shadow); position: relative; z-index: 1; }
+.card h2 { font-size: 18px; margin: 28px 0 10px; color: var(--ink); font-weight: 600; }
+.card p { margin: 12px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.post-list { list-style: none; }
+.post-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.post-item:hover { background: var(--code-bg); }
+.post-item a { color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500; flex: 1; }
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+.enter { display: inline-block; margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--accent); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 860px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
 </style>
 </head>
 <body>
-<div class="box">
-  <div class="mark">思</div>
-  <h1>AP Computer Science Principles</h1>
-  <span class="code">AP CSP</span>
-  <p>复习笔记整理中 · 敬请期待</p>
-  <a href="index.html">← 返回计算机科学</a>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-title">AP Computer Science Principles</a>
+    <span class="site-subtitle"><a href="index.html" style="color:inherit;text-decoration:none;opacity:.7">← iben.fun / CS</a> &nbsp;·&nbsp; Review Notes</span>
+  </div>
+</header>
+<div class="hero">
+  <div class="container">
+    <h1>AP Computer Science Principles</h1>
+    <p>Complete review notes — Course &amp; Exam Description, Effective Fall 2020 · 5 big ideas · 36 topics · 169 exercises</p>
+  </div>
 </div>
+<main class="content">
+  <div class="container">
+    <div class="card">
+      <h2 style="margin-top:4px;">Big Ideas</h2>
+      <ul class="post-list">
+
+  <li class="post-item">
+    <a href="apcsp/review-notes/big-idea-1-creative-development.html">Big Idea 1 Creative Development</a>
+    <span class="post-category">10–13%</span>
+    <span class="date">25 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsp/review-notes/big-idea-2-data.html">Big Idea 2 Data</a>
+    <span class="post-category">17–22%</span>
+    <span class="date">24 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsp/review-notes/big-idea-3-algorithms-and-programming.html">Big Idea 3 Algorithms and Programming</a>
+    <span class="post-category">30–35%</span>
+    <span class="date">76 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsp/review-notes/big-idea-4-computer-systems-and-networks.html">Big Idea 4 Computer Systems and Networks</a>
+    <span class="post-category">11–15%</span>
+    <span class="date">18 exercises</span>
+  </li>
+
+  <li class="post-item">
+    <a href="apcsp/review-notes/big-idea-5-impact-of-computing.html">Big Idea 5 Impact of Computing</a>
+    <span class="post-category">21–26%</span>
+    <span class="date">26 exercises</span>
+  </li>
+      </ul>
+      <p style="margin-top:22px;"><a class="enter" href="apcsp/review-notes/index.html">进入复习笔记总览 →</a></p>
+    </div>
+    <div class="card">
+      <h2>About These Notes</h2>
+      <p>Each big idea follows the official CED: every Learning Objective and Essential Knowledge statement, worked pseudocode examples per topic, and exercises right after each knowledge point with <strong>collapsible reference answers</strong> — cross-checked against the official AP Classroom Progress Check quizzes.</p>
+      <p>Exam weighting: Big Idea 1 10–13% · Big Idea 2 17–22% · Big Idea 3 30–35% · Big Idea 4 11–15% · Big Idea 5 21–26%.</p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science Principles (Course &amp; Exam Description, Effective Fall 2020) — Review Notes</p>
+</footer>
 </body>
 </html>

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Idea 2 Data — AP CSP Review Notes</title>
+<style>
+:root {
+  --bg: #f4f3f8;
+  --card-bg: #fcfbfd;
+  --text: #33303e;
+  --text-secondary: #8d8798;
+  --accent: #6d5cc9;
+  --accent-light: #e6e0f3;
+  --border: #dcd5e8;
+  --code-bg: #ece8f3;
+  --ink: #252033;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2a2450 0%, #6d5cc9 50%, #9d8fe8 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(190,175,240,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #4a3e82;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #5b4bb0;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #f0edf6;
+  color: #332e45;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #dcd5e8;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e2daf2; color: #4a3e82; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #ece8f6; border-color: #c9c0e2; }
+.callout-exercise .callout-title { background: #ddd3f0; color: #4a3e82; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme */
+.highlight { background: #f0edf6; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #e8e2f4 }
+.highlight .c { color: #8b83a0 }
+.highlight .k { color: #5b4bb0 }
+.highlight .s { color: #a8612f }
+.highlight .n { color: #332e45 }
+.highlight .p { color: #6a6480 }
+.highlight .o { color: #5b4bb0 }
+.highlight .mi { color: #5b4bb0 }
+.highlight .mf { color: #5b4bb0 }
+.highlight .m { color: #5b4bb0 }
+.highlight .nb { color: #5b4bb0 }
+.highlight .nc { color: #7a63b8 }
+.highlight .nd { color: #7a63b8 }
+.highlight .nf { color: #7a63b8 }
+.highlight .nn { color: #7a63b8 }
+.highlight .kt { color: #5b4bb0 }
+.highlight .bp { color: #332e45 }
+.highlight .kn { color: #5b4bb0 }
+.highlight .ow { color: #5b4bb0 }
+.highlight .kc { color: #5b4bb0 }
+.highlight .kd { color: #5b4bb0 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #a8612f }
+.highlight .err { color: #332e45; background: none }
+.highlight .w { color: #332e45 }
+.highlight .nt { color: #7a63b8 }
+.highlight .na { color: #a8612f }
+.highlight .nl { color: #332e45 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../../apcsp.html" class="site-title">AP CSP Review Notes</a>
+    <span class="site-subtitle"><a href="../../apcsp.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSP 版块</a> &nbsp;·&nbsp; 5 big ideas · 169 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Big Idea 2 · Data</h1>
+    <p>AP Exam Weight 17–22% · 2.1–2.4 class periods · 4 topics</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 2.1 — Binary Numbers</a></li>
+<li><a href="#section_7">Topic 2.2 — Data Compression</a></li>
+<li><a href="#section_12">Topic 2.3 — Extracting Information from Data</a></li>
+<li><a href="#section_17">Topic 2.4 — Using Programs with Data</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Big Idea 2 — Data (DAT): Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science Principles — Course and Exam Description, Effective Fall 2020<br>
+<strong>Exam Weight:</strong> 17–22% of AP Exam<br>
+<strong>Topics:</strong> 2.1–2.4<br>
+<strong>AP Classroom:</strong> Topic Questions ~20 multiple-choice</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>Big Idea 2 introduces how computing devices represent data internally with bits, and how data can be processed to discover new knowledge. You will learn how data values — numbers, characters, and colors — are stored digitally and how smooth, real-world <em>analog</em> data are closely approximated through <em>sampling</em>, along with the consequences of representing data with a fixed number of bits, such as <em>overflow</em> and <em>round-off</em> error. You will practice converting between binary (base 2) and decimal (base 10), compare data compression algorithms (<em>lossless</em> vs. <em>lossy</em>), and learn how information is extracted from data and from <em>metadata</em>, including the challenges of cleaning data, the limits of a single computer for big data, and the danger of mistaking <em>correlation</em> for <em>causation</em>. Finally, you will see how programs transform, filter, combine, and visualize data to gain insight and knowledge, and why processes must be iterative, interactive, and scalable.</p>
+<p><strong>In this big idea you will learn to:</strong></p>
+<ul>
+<li>Explain how data can be represented using bits, and explain the consequences of using bits to represent data (overflow and round-off)</li>
+<li>Calculate the binary (base 2) equivalent of a positive integer (base 10) and vice versa, and compare and order binary numbers</li>
+<li>Compare data compression algorithms to determine which is best in a particular context</li>
+<li>Describe what information can be extracted from data and from metadata, and identify the challenges associated with processing data</li>
+<li>Extract information from data using a program, and explain how programs can be used to gain insight and knowledge from data</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li>
+<p><strong>Practice binary↔decimal conversions until they are automatic.</strong> The exam asks you to calculate binary and decimal equivalents and to compare and order binary numbers. Memorize the 8-bit place values (128, 64, 32, 16, 8, 4, 2, 1) and remember that positions are numbered starting at 0 from the right.</p>
+</li>
+<li>
+<p><strong>Know when each type of compression is chosen.</strong> <em>Lossless</em> (guarantees complete reconstruction) is chosen when quality or the ability to reconstruct the original is maximally important; <em>lossy</em> (only an approximation, but usually much smaller) is chosen when minimizing data size or transmission time is maximally important. Questions describe a context and ask which algorithm is best.</p>
+</li>
+<li>
+<p><strong>Correlation ≠ causation</strong>, and <strong>metadata ≠ primary data</strong>. A correlation found in data never proves a causal relationship — additional research is needed. Changing or deleting metadata never changes the primary data. Also remember: cleaning data makes it uniform <em>without changing its meaning</em>, and bias is not eliminated by simply collecting more data.</p>
+</li>
+<li>
+<p><strong>Big data = parallel systems + scalability.</strong> Large data sets are difficult to process using a single computer and may require parallel systems; the computational capacity of a system affects how data sets can be processed and stored.</p>
+</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 2.1 — Binary Numbers</h2>
+<h3 id="section_3">Key Concepts</h3>
+<p><strong>Learning Objective [DAT-1.A] — Explain how data can be represented using bits.</strong></p>
+<blockquote>
+<p>解释数据如何用位（bit）表示。核心概念：位是二进制数字（binary digit，0 或 1），字节（byte）为 8 位；数据以数字形式（digital）存储；位分组形成抽象（abstraction），可表示数字、字符、颜色；模拟数据（analog data）通过采样（sampling）近似为数字数据。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-1.A.1]:</strong> Data values can be stored in variables, lists of items, or standalone constants and can be passed as input to (or output from) procedures.</li>
+<li><strong>[DAT-1.A.2]:</strong> Computing devices represent data digitally, meaning that the lowest-level components of any value are bits.</li>
+<li><strong>[DAT-1.A.3]:</strong> Bit is shorthand for binary digit and is either 0 or 1.</li>
+<li><strong>[DAT-1.A.4]:</strong> A byte is 8 bits.</li>
+<li><strong>[DAT-1.A.5]:</strong> Abstraction is the process of reducing complexity by focusing on the main idea. By hiding details irrelevant to the question at hand and bringing together related and useful details, abstraction reduces complexity and allows one to focus on the idea.</li>
+<li><strong>[DAT-1.A.6]:</strong> Bits are grouped to represent abstractions. These abstractions include, but are not limited to, numbers, characters, and color.</li>
+<li><strong>[DAT-1.A.7]:</strong> The same sequence of bits may represent different types of data in different contexts.</li>
+<li><strong>[DAT-1.A.8]:</strong> Analog data have values that change smoothly, rather than in discrete intervals, over time. Some examples of analog data include pitch and volume of music, colors of a painting, or position of a sprinter during a race.</li>
+<li><strong>[DAT-1.A.9]:</strong> The use of digital data to approximate real-world analog data is an example of abstraction.</li>
+<li><strong>[DAT-1.A.10]:</strong> Analog data can be closely approximated digitally using a sampling technique, which means measuring values of the analog signal at regular intervals called samples. The samples are measured to figure out the exact bits required to store each sample.</li>
+</ul>
+<p><strong>Learning Objective [DAT-1.B] — Explain the consequences of using bits to represent data.</strong></p>
+<blockquote>
+<p>解释用位表示数据的后果。核心概念：整数（integer）以固定位数表示会限制取值范围及运算，可能导致溢出（overflow）；实数（real number）以固定位数存储时只能作为近似值（approximation），可能导致舍入误差（round-off error）。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-1.B.1]:</strong> In many programming languages, integers are represented by a fixed number of bits, which limits the range of integer values and mathematical operations on those values. This limitation can result in overflow or other errors.</li>
+<li><strong>[DAT-1.B.2]:</strong> Other programming languages provide an abstraction through which the size of representable integers is limited only by the size of the computer’s memory; this is the case for the language defined in the exam reference sheet.</li>
+<li><strong>[DAT-1.B.3]:</strong> In programming languages, the fixed number of bits used to represent real numbers limits the range and mathematical operations on these values; this limitation can result in round-off and other errors. Some real numbers are represented as approximations in computer storage.
+<blockquote>
+<p>⚠️ <strong>EXCLUSION STATEMENT (EK DAT-1.B.3):</strong> Specific range limitations for real numbers are outside the scope of this course and the AP Exam.</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>Learning Objective [DAT-1.C] — For binary numbers: a. Calculate the binary (base 2) equivalent of a positive integer (base 10) and vice versa. b. Compare and order binary numbers.</strong></p>
+<blockquote>
+<p>计算二进制（binary，base 2）与十进制（decimal，base 10）正整数的相互转换，并比较、排序二进制数。核心概念：位置记数法——每一位的数值等于该位数字乘以位权（place value），位权为进制（base）的位数次幂，位置从最右侧的第 0 位起依次递增。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-1.C.1]:</strong> Number bases, including binary and decimal, are used to represent data.</li>
+<li><strong>[DAT-1.C.2]:</strong> Binary (base 2) uses only combinations of the digits zero and one.</li>
+<li><strong>[DAT-1.C.3]:</strong> Decimal (base 10) uses only combinations of the digits 0–9.</li>
+<li><strong>[DAT-1.C.4]:</strong> As with decimal, a digit’s position in the binary sequence determines its numeric value. The numeric value is equal to the bit’s value (0 or 1) multiplied by the place value of its position.</li>
+<li><strong>[DAT-1.C.5]:</strong> The place value of each position is determined by the base raised to the power of the position. Positions are numbered starting at the rightmost position with 0 and increasing by 1 for each subsequent position to the left.</li>
+</ul>
+<h3 id="section_4">Example — Binary ↔ Decimal Conversion and Sampling</h3>
+<p>Each position in a binary number has a place value equal to 2 raised to the power of the position (positions numbered from 0 at the rightmost bit):</p>
+<table>
+<thead>
+<tr>
+<th>Bit position (from right)</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Place value (2^position)</td>
+<td>128</td>
+<td>64</td>
+<td>32</td>
+<td>16</td>
+<td>8</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decimal → Binary</strong> (write 42 as a sum of place values): 42 = 32 + 8 + 2 → the bits for 32, 8, and 2 are 1; the rest are 0 → <strong>101010₂</strong>.</p>
+<p><strong>Binary → Decimal</strong> (101101₂): 1×32 + 0×16 + 1×8 + 1×4 + 0×2 + 1×1 = 32 + 8 + 4 + 1 = <strong>45</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Decimal</th>
+<th>Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>11</td>
+</tr>
+<tr>
+<td>4</td>
+<td>100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>101</td>
+</tr>
+<tr>
+<td>6</td>
+<td>110</td>
+</tr>
+<tr>
+<td>7</td>
+<td>111</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1001</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1010</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sampling an analog signal:</strong> analog data (e.g., the volume of a song, the position of a sprinter) change smoothly over time. To store them digitally, a sampling technique measures values of the analog signal at regular intervals called samples, and each sample is stored as bits:</p>
+<table>
+<thead>
+<tr>
+<th>Time (s)</th>
+<th>0.0</th>
+<th>0.5</th>
+<th>1.0</th>
+<th>1.5</th>
+<th>2.0</th>
+<th>2.5</th>
+<th>3.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analog signal value</td>
+<td>0.0</td>
+<td>0.7</td>
+<td>1.0</td>
+<td>0.7</td>
+<td>0.0</td>
+<td>−0.7</td>
+<td>−1.0</td>
+</tr>
+<tr>
+<td>Stored sample (bits)</td>
+<td>0000</td>
+<td>0110</td>
+<td>1000</td>
+<td>0110</td>
+<td>0000</td>
+<td>1001</td>
+<td>1111</td>
+</tr>
+</tbody>
+</table>
+<p>The stored samples approximate the smooth original; the more samples taken, the closer the approximation. Using digital data to approximate real-world analog data is an example of abstraction (DAT-1.A.9).</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.1 — Converting Between Binary and Decimal (6 marks)</div><div class="callout-body"><p>(a) Convert each decimal number to binary. [3]</p>
+<p>(i) 13</p>
+<p>(ii) 42</p>
+<p>(iii) 100</p>
+<p>(b) Convert each binary number to decimal. [2]</p>
+<p>(i) 1011</p>
+<p>(ii) 11010</p>
+<p>© What is the largest decimal value that can be represented with 4 bits? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) 13 = 8 + 4 + 1 → <strong>1101₂</strong>. [1]</p>
+<p>(ii) 42 = 32 + 8 + 2 → <strong>101010₂</strong>. [1]</p>
+<p>(iii) 100 = 64 + 32 + 4 → <strong>1100100₂</strong>. [1]</p>
+<p>(b) (i) 1011₂ = 1×8 + 0×4 + 1×2 + 1×1 = 8 + 2 + 1 = <strong>11</strong>. [1]</p>
+<p>(ii) 11010₂ = 1×16 + 1×8 + 0×4 + 1×2 + 0×1 = 16 + 8 + 2 = <strong>26</strong>. [1]</p>
+<p>© 1111₂ = 8 + 4 + 2 + 1 = <strong>15</strong> — with 4 bits you can represent the values 0 through 15. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.2 — Comparing and Ordering Binary Numbers (4 marks)</div><div class="callout-body"><p>(a) Place the following binary numbers in order from smallest to largest. [2]</p>
+<p>1011, 1100, 1010, 1111</p>
+<p>(b) The binary number 1101 is greater than 1011 even though both use four bits. Explain why, referring to place values in your explanation. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Smallest to largest: <strong>1010₂, 1011₂, 1100₂, 1111₂</strong> (these are 10, 11, 12, and 15 in decimal). [2]</p>
+<p>(b) A digit’s position in the binary sequence determines its numeric value: the numeric value equals the bit’s value (0 or 1) multiplied by the place value of its position (the base, 2, raised to the power of the position). Both numbers have a 1 in the position with place value 8, but in 1101₂ the next bit is 1 (contributing 1×2² = 4) while in 1011₂ it is 0, so 1101₂ (13) &gt; 1011₂ (11). [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.3 — Overflow and Round-Off Error (5 marks)</div><div class="callout-body"><p>(a) In many programming languages, integers are represented by a fixed number of bits. What consequence does this have for the range of integer values, and what error can result? [2]</p>
+<p>(b) Give a concrete scenario in which overflow could occur. [1]</p>
+<p>© Why are some real numbers represented as approximations in computer storage, and what error can this cause? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Integers are represented by a fixed number of bits, which limits the range of integer values and mathematical operations on those values; this limitation can result in overflow or other errors. [2]</p>
+<p>(b) Example: a game score stored in an integer type with a fixed number of bits that increases beyond the largest representable integer value — the result is out of the allowed range and overflow occurs. (Any reasonable scenario is accepted.) [1]</p>
+<p>© The fixed number of bits used to represent real numbers limits the range and mathematical operations on these values, so some real numbers are represented as approximations in computer storage; this limitation can result in round-off and other errors. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.4 — Analog Data, Digital Data, and Sampling (5 marks)</div><div class="callout-body"><p>(a) What is analog data? Give one example. [1]</p>
+<p>(b) Describe how analog data can be closely approximated digitally using a sampling technique. [2]</p>
+<p>© Why is the use of digital data to approximate real-world analog data considered an example of abstraction? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Analog data have values that change smoothly, rather than in discrete intervals, over time. Example: the pitch and volume of music, the colors of a painting, or the position of a sprinter during a race. [1]</p>
+<p>(b) A sampling technique measures values of the analog signal at regular intervals called samples; the samples are measured to figure out the exact bits required to store each sample, allowing the smooth analog data to be closely approximated digitally. [2]</p>
+<p>© Abstraction is the process of reducing complexity by focusing on the main idea and hiding details irrelevant to the question at hand. Representing smoothly changing analog data with discrete digital samples focuses on the essential values and hides the continuous detail, so it is an example of abstraction. [2]</p>
+</div></details><h3 id="section_5">Additional Quiz 2.1 Topics (from Progress Check Quiz 2)</h3>
+<p><strong>Learning Objective [DAT-1.C-Ext] — Apply additional facts about binary representation: the minimum number of bits needed, ASCII character encoding, hexadecimal notation, and binary arithmetic patterns.</strong></p>
+<blockquote>
+<p>运用关于二进制表示的其他事实：最少所需位数、ASCII 字符编码、十六进制记法和二进制运算规律。核心概念：表示 N 个不同值至少需要满足 2ⁿ ≥ N 的 n 位（每增加 1 位，可表示的值数量翻倍）；ASCII 用 7 位编码字符（‘A’ = 65）；十六进制（hexadecimal，base 16）每位对应恰好 4 位二进制；二进制数末尾补 n 个 0 使数值乘以 2ⁿ。</p>
+</blockquote>
+<ul>
+<li><strong>[Quiz2-Ext1]:</strong> The minimum number of bits needed to represent N distinct values is the smallest n such that 2ⁿ ≥ N (n bits can represent 2ⁿ different values). Each additional bit doubles the number of representable values — adding 1 bit doubles the range — so going from 32 bits to 64 bits multiplies the number of representable values by 2³².</li>
+<li><strong>[Quiz2-Ext2]:</strong> Bits are grouped to represent characters as well as numbers (DAT-1.A.6). ASCII encodes characters using 7 bits per character; decimal values 65–90 correspond to the letters A–Z (for example, the character ‘A’ is 65, or 01000001₂). The same bit pattern may represent a character in one context and a number in another (DAT-1.A.7).</li>
+<li><strong>[Quiz2-Ext3]:</strong> Hexadecimal (base 16) uses the digits 0–9 and the letters A–F. Because 16 = 2⁴, each hexadecimal digit corresponds to exactly 4 bits, so binary and hexadecimal convert quickly by grouping the binary digits into sets of 4 from the right (e.g., 0100 0001₂ = 41₁₆, which is also the hex code for the ASCII character ‘A’).</li>
+<li><strong>[Quiz2-Ext4]:</strong> Binary numbers follow the same arithmetic rules as decimal: adding 1 to a binary number increments its value by 1; appending n zeros to the right of a binary number multiplies its value by 2ⁿ (e.g., appending three zeros multiplies the value by 2³ = 8).</li>
+</ul>
+<h3 id="section_6">Example — Minimum Bits, ASCII, Hexadecimal, and Binary Arithmetic</h3>
+<p><strong>Minimum bits:</strong> 3 bits represent 2³ = 8 values (000–111); 4 bits represent 2⁴ = 16 values. To represent 100 values you need 7 bits, since 2⁶ = 64 &lt; 100 and 2⁷ = 128 ≥ 100.</p>
+<p><strong>ASCII character encoding:</strong> ‘A’ = 65 = 01000001₂, ‘B’ = 66, …, ‘Z’ = 90. The bit pattern 01000001 01000010 read as ASCII text is “AB”.</p>
+<p><strong>Hexadecimal:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Hex digit</th>
+<th>Binary (4 bits)</th>
+<th>Hex digit</th>
+<th>Binary (4 bits)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0000</td>
+<td>8</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0001</td>
+<td>9</td>
+<td>1001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0010</td>
+<td>A</td>
+<td>1010</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0011</td>
+<td>B</td>
+<td>1011</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0100</td>
+<td>C</td>
+<td>1100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0101</td>
+<td>D</td>
+<td>1101</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0110</td>
+<td>E</td>
+<td>1110</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0111</td>
+<td>F</td>
+<td>1111</td>
+</tr>
+</tbody>
+</table>
+<p>Binary → hex: split into groups of 4 bits from the right: 0100 0001₂ = 41₁₆. Hex → binary: expand each digit to its 4 bits: A3₁₆ = 1010 0011₂ = 10100011₂.</p>
+<p><strong>Binary arithmetic:</strong> counting up in binary is just adding 1 (0, 1, 10, 11, 100, 101, …). Appending zeros multiplies by powers of 2: 10₂ (2) → 10000₂ (16) after four zeros, a factor of 2⁴ = 16.</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.5 — Minimum Number of Bits (5 marks)</div><div class="callout-body"><p>(a) What is the minimum number of bits needed to represent 100 distinct values? Show how you know. [2]</p>
+<p>(b) A computer uses 32-bit integers; a newer one uses 64-bit integers. How many times more values can the 64-bit integer represent? [1]</p>
+<p>© Explain why adding 1 bit to a binary representation doubles the number of distinct values. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>7 bits</strong> — n bits represent 2ⁿ values, and 7 is the smallest n with 2ⁿ ≥ 100 (2⁶ = 64 &lt; 100, 2⁷ = 128 ≥ 100). [2]</p>
+<p>(b) <strong>2³² times more</strong> — each additional bit doubles the number of representable values, so going from 32 to 64 bits multiplies by 2³². [1]</p>
+<p>© Each bit can independently be 0 or 1, so every value that fits in n bits has two versions in n+1 bits — one with the new bit set to 0 and one with it set to 1. Thus n+1 bits represent exactly 2 × 2ⁿ = 2ⁿ⁺¹ values. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.6 — ASCII Character Encoding (4 marks)</div><div class="callout-body"><p>(a) How many bits does ASCII use per character, and which decimal values correspond to A–Z? [2]</p>
+<p>(b) The character ‘A’ is 65 in decimal (01000001₂). What is the decimal value of ‘C’? [1]</p>
+<p>© Interpreted as ASCII text, what two characters do the bit patterns 01000001 and 01000010 represent? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) ASCII uses <strong>7 bits</strong> per character; decimal values <strong>65–90</strong> correspond to the letters A–Z. [2]</p>
+<p>(b) <strong>67</strong> — the letters are consecutive, so ‘C’ = ‘A’ + 2 = 65 + 2. [1]</p>
+<p>© 01000001₂ = 65 = ‘A’ and 01000010₂ = 66 = ‘B’, so the patterns represent the text “AB”. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.7 — Hexadecimal (6 marks)</div><div class="callout-body"><p>(a) Which digits does hexadecimal (base 16) use, and why is conversion between binary and hexadecimal so fast? [2]</p>
+<p>(b) Convert 0100 0001₂ to hexadecimal, and state which ASCII character this hex value represents. [2]</p>
+<p>© Convert A3₁₆ to binary. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Hexadecimal uses the digits <strong>0–9 and the letters A–F</strong>. Conversion is fast because each hex digit corresponds to exactly 4 bits (16 = 2⁴), so you simply group the binary digits into sets of 4 from the right. [2]</p>
+<p>(b) 0100 0001₂ = <strong>41₁₆</strong> (0100 = 4, 0001 = 1); 41₁₆ is the hex code for the ASCII character <strong>‘A’</strong> (65 decimal). [2]</p>
+<p>© A = 1010, 3 = 0011 → A3₁₆ = <strong>10100011₂</strong>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.8 — Binary Arithmetic Patterns (4 marks)</div><div class="callout-body"><p>(a) The binary number 1011₂ is incremented by 1. What is the result? [1]</p>
+<p>(b) What happens to the value of a binary number when three zeros are appended to its right end? Give a decimal example. [2]</p>
+<p>© Starting from 1, list the next three binary numbers in counting order. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) 1011₂ + 1 = <strong>1100₂</strong>. [1]</p>
+<p>(b) Appending n zeros multiplies the value by 2ⁿ, so appending three zeros multiplies it by 2³ = <strong>8</strong>. Example: 10₂ (2) → 10000₂ (16), and 16 = 2 × 8. [2]</p>
+<p>© <strong>10₂, 11₂, 100₂</strong> (2, 3, 4 in decimal). [1]</p>
+</div></details><hr>
+<h2 id="section_7">Topic 2.2 — Data Compression</h2>
+<h3 id="section_8">Key Concepts</h3>
+<p><strong>Learning Objective [DAT-1.D] — Compare data compression algorithms to determine which is best in a particular context.</strong></p>
+<blockquote>
+<p>比较数据压缩（compression）算法，判断在特定情境下哪种最优。核心概念：压缩可减少存储或传输的位数，但更少的位不一定意味着更少的信息；压缩幅度取决于数据的冗余度（redundancy）与所用算法；无损压缩（lossless）保证完整重建原数据，有损压缩（lossy）只允许重建近似数据但通常压缩率更高；重质量或重建能力时选无损，重减小体积或传输时间时选有损。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-1.D.1]:</strong> Data compression can reduce the size (number of bits) of transmitted or stored data.</li>
+<li><strong>[DAT-1.D.2]:</strong> Fewer bits does not necessarily mean less information.</li>
+<li><strong>[DAT-1.D.3]:</strong> The amount of size reduction from compression depends on both the amount of redundancy in the original data representation and the compression algorithm applied.</li>
+<li><strong>[DAT-1.D.4]:</strong> Lossless data compression algorithms can usually reduce the number of bits stored or transmitted while guaranteeing complete reconstruction of the original data.</li>
+<li><strong>[DAT-1.D.5]:</strong> Lossy data compression algorithms can significantly reduce the number of bits stored or transmitted but only allow reconstruction of an approximation of the original data.</li>
+<li><strong>[DAT-1.D.6]:</strong> Lossy data compression algorithms can usually reduce the number of bits stored or transmitted more than lossless compression algorithms.</li>
+<li><strong>[DAT-1.D.7]:</strong> In situations where quality or ability to reconstruct the original is maximally important, lossless compression algorithms are typically chosen.</li>
+<li><strong>[DAT-1.D.8]:</strong> In situations where minimizing data size or transmission time is maximally important, lossy compression algorithms are typically chosen.</li>
+</ul>
+<h3 id="section_9">Example — Lossless vs. Lossy Compression</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Lossless Compression</th>
+<th>Lossy Compression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reconstruction</td>
+<td>Guarantees complete reconstruction of the original data</td>
+<td>Only an approximation of the original data</td>
+</tr>
+<tr>
+<td>Typical bit reduction</td>
+<td>Usually reduces bits</td>
+<td>Can significantly reduce bits — usually more than lossless</td>
+</tr>
+<tr>
+<td>Chosen when</td>
+<td>Quality or ability to reconstruct the original is maximally important</td>
+<td>Minimizing data size or transmission time is maximally important</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>ZIP files, PNG images, text/software</td>
+<td>JPEG images, MP3 audio, streaming video</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.2.1 — Lossless vs. Lossy Compression (4 marks)</div><div class="callout-body"><p>(a) Define lossless data compression and state what it guarantees. [2]</p>
+<p>(b) Define lossy data compression and state what it allows. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Lossless data compression algorithms can usually reduce the number of bits stored or transmitted while guaranteeing complete reconstruction of the original data. [2]</p>
+<p>(b) Lossy data compression algorithms can significantly reduce the number of bits stored or transmitted but only allow reconstruction of an approximation of the original data. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.2.2 — Choosing the Best Compression Algorithm (6 marks)</div><div class="callout-body"><p>For each scenario, state whether lossless or lossy compression is typically chosen and justify your choice.</p>
+<p>(a) A bank compressing a database of account records that must be reconstructed exactly. [2]</p>
+<p>(b) A video streaming service compressing movie files so they transmit faster over the internet. [2]</p>
+<p>© A doctor storing medical scan images that must be examined pixel by pixel. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>Lossless</strong> — in situations where the ability to reconstruct the original is maximally important, lossless compression algorithms are typically chosen; the records must be reconstructed exactly. [2]</p>
+<p>(b) <strong>Lossy</strong> — in situations where minimizing data size or transmission time is maximally important, lossy compression algorithms are typically chosen, and they can usually reduce the number of bits more than lossless algorithms. [2]</p>
+<p>© <strong>Lossless</strong> — the ability to reconstruct the original image completely is maximally important for accurate examination, so lossless compression is chosen. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.2.3 — Redundancy and Information (4 marks)</div><div class="callout-body"><p>(a) Data compression can reduce the size (number of bits) of transmitted or stored data, but “fewer bits does not necessarily mean less information.” Explain what this statement means. [2]</p>
+<p>(b) On what does the amount of size reduction from compression depend? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The amount of information is not measured simply by the number of bits. Compression works by removing <em>redundancy</em> — repeated or predictable patterns in the original representation — so a compressed representation can carry the same information using fewer bits. [2]</p>
+<p>(b) The amount of size reduction depends on both the amount of redundancy in the original data representation and the compression algorithm applied. [2]</p>
+</div></details><h3 id="section_10">Additional Quiz 2.2 Topic (from Progress Check Quiz 2)</h3>
+<p><strong>Learning Objective [DAT-1.D-Ext] — Explain how a named lossless compression algorithm, byte pair encoding, works.</strong></p>
+<blockquote>
+<p>解释一种指定的无损压缩算法——字节对编码（byte pair encoding）的工作原理。核心概念：反复找出数据中出现频率最高的相邻字节对，用一个数据中未出现的新符号整体替换，并在映射表（mapping table）中记录每次替换；因为所有替换都有记录，可以逆向完全重建原数据，因此它是无损（lossless）的。</p>
+</blockquote>
+<ul>
+<li><strong>[Quiz2-Ext5]:</strong> Byte pair encoding is a named compression algorithm. It repeatedly finds the most frequent adjacent pair of bytes (or characters) in the data, replaces every occurrence with a single new symbol that does not already appear in the data, and records each replacement in a mapping table. Because every replacement is recorded in the table, the original data can be completely reconstructed by reversing the replacements — so byte pair encoding is <strong>lossless</strong>. The amount of compression depends on the redundancy in the data (DAT-1.D.3): data with many repeated patterns compress well, while data with little or no redundancy compress poorly.</li>
+</ul>
+<h3 id="section_11">Example — Byte Pair Encoding</h3>
+<p>Original text: <code>ababacac</code> (8 characters)</p>
+<ol>
+<li>Count adjacent pairs. “ab”, “ba”, and “ac” each appear twice — tie broken by picking “ab”.</li>
+<li>Replace every “ab” with the new symbol X: <code>ababacac</code> → <code>XXacac</code> (6 characters). Record X → “ab”.</li>
+<li>Count again. “ac” now appears twice. Replace every “ac” with Y: <code>XXacac</code> → <code>XXYY</code> (4 characters). Record Y → “ac”.</li>
+</ol>
+<p>Mapping table: X → “ab”, Y → “ac”</p>
+<p>Restoring: apply the mappings in reverse order — <code>XXYY</code> → <code>ab</code> <code>ab</code> <code>ac</code> <code>ac</code> → <code>ababacac</code>, the exact original. Because the original is fully recoverable, byte pair encoding is lossless.</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.2.4 — Byte Pair Encoding (5 marks)</div><div class="callout-body"><p>(a) Is byte pair encoding lossless or lossy? Justify your answer. [2]</p>
+<p>(b) The text “ababab” is compressed with byte pair encoding. Describe the steps and give the compressed result. [2]</p>
+<p>© Data with almost no redundancy are compressed with byte pair encoding. What happens, and why? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>Lossless</strong> — byte pair encoding records every replacement it makes in a mapping table, so the original data can be completely reconstructed by reversing the replacements. [2]</p>
+<p>(b) The pair “ab” is the most frequent adjacent pair (appears 3 times). Replace every “ab” with the new symbol X: <code>ababab</code> → <code>XXX</code>. Compressed result: <strong>“XXX”</strong> with mapping X → “ab”. [2]</p>
+<p>© Little or no size reduction — compression works by removing redundancy, and data with no repeated patterns contain nothing to compress. [1]</p>
+</div></details><hr>
+<h2 id="section_12">Topic 2.3 — Extracting Information from Data</h2>
+<h3 id="section_13">Key Concepts</h3>
+<p><strong>Learning Objective [DAT-2.A] — Describe what information can be extracted from data.</strong></p>
+<blockquote>
+<p>描述可以从数据（data）中提取哪些信息。核心概念：信息是从数据中提取的事实与模式（patterns）；数据可用于识别趋势、建立联系和解决问题；数据中出现的相关性（correlation）并不必然表明存在因果关系（causation），需要进一步研究；单一数据源常常不足，可能需要合并多个来源的数据才能得出结论。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-2.A.1]:</strong> Information is the collection of facts and patterns extracted from data.</li>
+<li><strong>[DAT-2.A.2]:</strong> Data provide opportunities for identifying trends, making connections, and addressing problems.</li>
+<li><strong>[DAT-2.A.3]:</strong> Digitally processed data may show correlation between variables. A correlation found in data does not necessarily indicate that a causal relationship exists. Additional research is needed to understand the exact nature of the relationship.</li>
+<li><strong>[DAT-2.A.4]:</strong> Often, a single source does not contain the data needed to draw a conclusion. It may be necessary to combine data from a variety of sources to formulate a conclusion.</li>
+</ul>
+<p><strong>Learning Objective [DAT-2.B] — Describe what information can be extracted from metadata.</strong></p>
+<blockquote>
+<p>描述可以从元数据（metadata）中提取哪些信息。核心概念：元数据是关于数据的数据（data about data），例如图片的创建日期或文件大小；修改或删除元数据不会改变主数据（primary data）；元数据用于查找、组织和管理信息，能通过提供附加信息提高数据的有效使用，并使数据得以结构化组织。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-2.B.1]:</strong> Metadata are data about data. For example, the piece of data may be an image, while the metadata may include the date of creation or the file size of the image.</li>
+<li><strong>[DAT-2.B.2]:</strong> Changes and deletions made to metadata do not change the primary data.</li>
+<li><strong>[DAT-2.B.3]:</strong> Metadata are used for finding, organizing, and managing information.</li>
+<li><strong>[DAT-2.B.4]:</strong> Metadata can increase the effective use of data or data sets by providing additional information.</li>
+<li><strong>[DAT-2.B.5]:</strong> Metadata allow data to be structured and organized.</li>
+</ul>
+<p><strong>Learning Objective [DAT-2.C] — Identify the challenges associated with processing data.</strong></p>
+<blockquote>
+<p>识别处理数据所面临的挑战。核心概念：处理数据的能力取决于用户及其工具；无论数据规模大小都存在清理、不完整、无效、合并数据源等挑战；数据清理（cleaning）使数据统一而不改变其含义；偏差（bias）常由数据收集的类型或来源造成，多收集数据并不能消除偏差；数据规模影响可提取的信息量，大数据（big data）单台计算机难以处理、可能需要并行系统（parallel systems），且必须考虑系统的可扩展性（scalability）。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-2.C.1]:</strong> The ability to process data depends on the capabilities of the users and their tools.</li>
+<li><strong>[DAT-2.C.2]:</strong> Data sets pose challenges regardless of size, such as: the need to clean data; incomplete data; invalid data; the need to combine data sources.</li>
+<li><strong>[DAT-2.C.3]:</strong> Depending on how data were collected, they may not be uniform. For example, if users enter data into an open field, the way they choose to abbreviate, spell, or capitalize something may vary from user to user.</li>
+<li><strong>[DAT-2.C.4]:</strong> Cleaning data is a process that makes the data uniform without changing their meaning (e.g., replacing all equivalent abbreviations, spellings, and capitalizations with the same word).</li>
+<li><strong>[DAT-2.C.5]:</strong> Problems of bias are often created by the type or source of data being collected. Bias is not eliminated by simply collecting more data.</li>
+<li><strong>[DAT-2.C.6]:</strong> The size of a data set affects the amount of information that can be extracted from it.</li>
+<li><strong>[DAT-2.C.7]:</strong> Large data sets are difficult to process using a single computer and may require parallel systems.</li>
+<li><strong>[DAT-2.C.8]:</strong> Scalability of systems is an important consideration when working with data sets, as the computational capacity of a system affects how data sets can be processed and stored.</li>
+</ul>
+<h3 id="section_14">Example — Data vs. Metadata, and Cleaning Data</h3>
+<p><strong>Metadata are data about data.</strong> For a photo, the primary data is the image itself; the metadata describes it:</p>
+<table>
+<thead>
+<tr>
+<th>Primary data</th>
+<th>Metadata (data about data)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The image (the pixel data)</td>
+<td>Date of creation, file size, camera model, GPS location, author</td>
+</tr>
+</tbody>
+</table>
+<p>Deleting or editing the metadata does not change the image itself (DAT-2.B.2). Metadata are used for finding, organizing, and managing information (DAT-2.B.3).</p>
+<p><strong>Cleaning data makes it uniform without changing meaning:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Raw entries from an open field</th>
+<th>After cleaning (uniform)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“St.”, “st.”, “Street”, “street”</td>
+<td>Street</td>
+</tr>
+<tr>
+<td>“USA”, “U.S.A”, “us”, “United States”</td>
+<td>United States</td>
+</tr>
+<tr>
+<td>“AP CSP”, “apcsp”, “Ap csp”</td>
+<td>AP CSP</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.1 — Information and Correlation vs. Causation (5 marks)</div><div class="callout-body"><p>(a) What is information, in the context of data? [1]</p>
+<p>(b) A data set shows that ice cream sales and drowning incidents both rise in summer and are strongly correlated. Can you conclude that buying ice cream causes drowning? Explain. [2]</p>
+<p>© A single data source does not contain the data needed to draw a conclusion. What may be necessary? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Information is the collection of facts and patterns extracted from data. [1]</p>
+<p>(b) No. Digitally processed data may show correlation between variables, but a correlation found in data does not necessarily indicate that a causal relationship exists; additional research is needed to understand the exact nature of the relationship. (Here both variables are likely related to warm summer weather rather than to each other.) [2]</p>
+<p>© It may be necessary to combine data from a variety of sources to formulate a conclusion. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.2 — Metadata (5 marks)</div><div class="callout-body"><p>(a) Define metadata and give an example involving an image. [2]</p>
+<p>(b) A user deletes all the metadata from a photo. Does the primary data change? Explain. [1]</p>
+<p>© State two ways metadata are used. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Metadata are data about data. For example, the piece of data may be an image, while the metadata may include the date of creation or the file size of the image. [2]</p>
+<p>(b) No — changes and deletions made to metadata do not change the primary data (the image itself remains unchanged). [1]</p>
+<p>© Metadata are used for finding, organizing, and managing information; metadata can increase the effective use of data by providing additional information; and metadata allow data to be structured and organized. (Any two are accepted.) [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.3 — Cleaning Data, Bias, and Big Data (6 marks)</div><div class="callout-body"><p>(a) Why might data collected from users not be uniform, and what is cleaning data? [2]</p>
+<p>(b) True or False: Bias in data is eliminated by simply collecting more data. Explain. [2]</p>
+<p>© Why are large data sets difficult to process using a single computer, and what may be required? [1]</p>
+<p>(d) What is scalability, and why is it an important consideration when working with data sets? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Depending on how data were collected, they may not be uniform — for example, if users enter data into an open field, the way they choose to abbreviate, spell, or capitalize something may vary from user to user. Cleaning data is a process that makes the data uniform without changing their meaning (e.g., replacing all equivalent abbreviations, spellings, and capitalizations with the same word). [2]</p>
+<p>(b) <strong>False</strong> — problems of bias are often created by the type or source of data being collected, and bias is not eliminated by simply collecting more data. [2]</p>
+<p>© Large data sets are difficult to process using a single computer and may require parallel systems. [1]</p>
+<p>(d) Scalability of systems is an important consideration when working with data sets, as the computational capacity of a system affects how data sets can be processed and stored. [1]</p>
+</div></details><h3 id="section_15">Additional Quiz 2.3 Topics (from Progress Check Quiz 2)</h3>
+<p><strong>Learning Objective [DAT-2.C-Ext] — Identify further challenges and trade-offs when combining, analyzing, and storing data: unique identifiers, unrecorded data, scaling operation costs, and privacy.</strong></p>
+<blockquote>
+<p>识别合并、分析和存储数据时更进一步的挑战与权衡：唯一标识符、未记录数据、运算成本随规模增长以及隐私。核心概念：合并数据需要唯一标识符（unique identifier）或连接键（join key），否则同名记录可能错配；数据库只记录实际发生的事，未记录的数据无法被推断，聚合数据（aggregate data）会隐藏个体值；不同操作的成本随数据规模增长的速率不同；存储用户访问数据的副本可加速处理并支持个性化，但带来隐私（privacy）权衡。</p>
+</blockquote>
+<ul>
+<li><strong>[Quiz2-Ext6]:</strong> Combining data from multiple sources requires a common field or unique identifier (a “join key”) to link records correctly. If the data sets are joined only on a non-unique field — for example, two schools’ student records are matched on students’ names — records can be mismatched, such as two students with the same name being confused with each other. Joining multiple tables step by step on their shared IDs lets a program combine all the data (for example, linking a student table, a course table, and an email table to send each student a targeted email).</li>
+<li><strong>[Quiz2-Ext7]:</strong> A database records only what actually happened, so it cannot be used to infer things that were never recorded. If the only record is a log of books that were borrowed, the number of books that were <em>never</em> borrowed cannot be determined from it, because such books have no entries in the log. Aggregate data hide individual values: from the average score you cannot determine the highest score, and from a total you cannot recover any individual value.</li>
+<li><strong>[Quiz2-Ext8]:</strong> Different operations grow in cost at different rates as data scale. In a database of 100,000 customers, operations that must examine or compare many (or all) records — such as sorting all customers or finding a maximum — take far longer than operations that touch a single record, such as looking up one customer. Operations that process the whole data set (backup, deletion, sorting) scale with the data set’s size; the computational capacity of a system affects how data sets can be processed and stored (DAT-2.C.8).</li>
+<li><strong>[Quiz2-Ext9]:</strong> Storing a copy of users’ access data (for example, logging every page a user visits) can speed up later processing and allow personalization, but it creates a privacy trade-off: the stored copies can be analyzed, leaked, or used for purposes the user did not consent to. Storing more data about people always raises the stakes of a privacy violation.</li>
+</ul>
+<h3 id="section_16">Example — Combining Data, Unrecorded Data, and Scaling Costs</h3>
+<p><strong>Joining data with a unique ID:</strong> a school links its student table to a course table using student ID:</p>
+<table>
+<thead>
+<tr>
+<th>Student ID (join key)</th>
+<th>Name</th>
+<th>Course (from course table)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S001</td>
+<td>Ana</td>
+<td>Biology</td>
+</tr>
+<tr>
+<td>S002</td>
+<td>Ben</td>
+<td>History</td>
+</tr>
+</tbody>
+</table>
+<p>Matching only on names would fail if two students are both called “Ben”: their courses could be swapped. With a unique ID, each student is linked to exactly their own records, so a targeted email can combine name, course, and email address across tables.</p>
+<p><strong>Unrecorded data cannot be inferred:</strong> a borrow log contains only entries for books that were borrowed; it tells you nothing about books that were never borrowed. If you know a class average is 80, you cannot determine the highest score — the average hides the individual values.</p>
+<p><strong>Scaling costs differ by operation:</strong> with 100,000 customer records, looking up one customer touches one record; sorting all 100,000 must compare records throughout the data set. As the data set grows, whole-data operations (backup, delete, sort) grow much more expensive than single-record operations.</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.4 — Combining Data with Unique Identifiers (5 marks)</div><div class="callout-body"><p>(a) Why is a unique identifier (join key) needed when combining data from multiple sources? [2]</p>
+<p>(b) Two schools join their student records using only students’ names. What problem may result? [1]</p>
+<p>© A program links a student table, a course table, and an email table by student ID, then sends each student a targeted email. Explain how the joins make this possible. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Data from multiple sources can only be linked by a common field or unique identifier; without a shared unique ID, records cannot be matched correctly. [2]</p>
+<p>(b) Two students with the same name would be confused with each other — records get mismatched (for example, the wrong course or score attached to a student). [1]</p>
+<p>© Student ID appears in all three tables, so the program can match each student’s record to exactly that student’s course and email address; joining the tables step by step on the shared ID lets the program draw on data from all the tables when composing the email. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.5 — Unrecorded Data Cannot Be Inferred (5 marks)</div><div class="callout-body"><p>(a) A library keeps only a log of every book borrowed. Can the library determine how many books were never borrowed? Explain. [2]</p>
+<p>(b) A teacher knows the average score of a class but not the individual scores. Can the teacher determine the highest score? Explain. [1]</p>
+<p>© From aggregate data such as a total or an average, which individual values can be recovered? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) No — the log records only what actually happened (borrowings). A book that was never borrowed has no entry in the log, so the log contains no information about books that were never borrowed. [2]</p>
+<p>(b) No — aggregate data hide the individual values; the highest score cannot be recovered from the average alone. [1]</p>
+<p>© None — the data record only what happened, and aggregates such as a total or an average cannot be decomposed back into individual values. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.6 — Operation Costs and Data Scale (5 marks)</div><div class="callout-body"><p>(a) In a database of 100,000 customer records, looking up a single customer takes much less time than sorting all 100,000 records. Why? [2]</p>
+<p>(b) As a data set grows, which of the following operations grows more expensive with the data size: backing up the data, deleting the data, sorting the data? [2]</p>
+<p>© What does the computational capacity of a system affect? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Looking up a single record touches only one record, while sorting must examine and compare many (or all) of the records — the cost of different operations grows at different rates as the data set scales. [2]</p>
+<p>(b) All of them — backup, deletion, and sorting each process the whole data set, so their cost grows with its size. [2]</p>
+<p>© The computational capacity of a system affects how data sets can be processed and stored. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.3.7 — Stored Data Copies and Privacy (4 marks)</div><div class="callout-body"><p>(a) What is one benefit of a company storing a copy of its users’ access (visit) data? [1]</p>
+<p>(b) What privacy concern does storing such copies raise? [2]</p>
+<p>© Give one way stored copies of user data could be used in a way the user did not consent to. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Storing copies of access data can speed up later processing, such as personalization or making recommendations. [1]</p>
+<p>(b) The stored copies can be analyzed, leaked, or used for purposes the user did not consent to — storing data about people always creates a risk that private information is exposed or misused. [2]</p>
+<p>© Example: selling browsing history to advertisers, or a data breach exposing the stored records. (Any reasonable answer is accepted.) [1]</p>
+</div></details><hr>
+<h2 id="section_17">Topic 2.4 — Using Programs with Data</h2>
+<h3 id="section_18">Key Concepts</h3>
+<p><strong>Learning Objective [DAT-2.D] — Extract information from data using a program.</strong></p>
+<blockquote>
+<p>使用程序（program）从数据中提取信息。核心概念：程序可用于处理数据以获取信息；变换（transforming，如把列表中每个元素加倍）、筛选（filtering，如只保留正数）、合并或比较数据（combining/comparing）、可视化（visualizing）都是从数据中提取或修改信息的处理过程；表格、图表等可视化工具、搜索工具以及电子表格（spreadsheet）程序有助于高效地组织并发现信息中的趋势。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-2.D.1]:</strong> Programs can be used to process data to acquire information.</li>
+<li><strong>[DAT-2.D.2]:</strong> Tables, diagrams, text, and other visual tools can be used to communicate insight and knowledge gained from data.</li>
+<li><strong>[DAT-2.D.3]:</strong> Search tools are useful for efficiently finding information.</li>
+<li><strong>[DAT-2.D.4]:</strong> Data filtering systems are important tools for finding information and recognizing patterns in data.</li>
+<li><strong>[DAT-2.D.5]:</strong> Programs such as spreadsheets help efficiently organize and find trends in information.</li>
+<li><strong>[DAT-2.D.6]:</strong> Some processes that can be used to extract or modify information from data include the following: transforming every element of a data set, such as doubling every element in a list, or adding a parent’s email to every student record; filtering a data set, such as keeping only the positive numbers from a list, or keeping only students who signed up for band from a record of all the students; combining or comparing data in some way, such as adding up a list of numbers, or finding the student who has the highest GPA; visualizing a data set through a chart, graph, or other visual representation.</li>
+</ul>
+<p><strong>Learning Objective [DAT-2.E] — Explain how programs can be used to gain insight and knowledge from data.</strong></p>
+<blockquote>
+<p>解释程序如何被用于从数据中获得洞察（insight）与知识。核心概念：处理信息时程序以迭代（iterative）和交互（interactive）的方式使用；程序员可用程序筛选和清理数字数据，通过合并数据源、聚类（clustering）和分类（classifying）数据来获得洞察；翻译和变换数字表示的信息也能产生洞察；数据经程序变换后可能浮现出模式（patterns）。</p>
+</blockquote>
+<ul>
+<li><strong>[DAT-2.E.1]:</strong> Programs are used in an iterative and interactive way when processing information to allow users to gain insight and knowledge about data.</li>
+<li><strong>[DAT-2.E.2]:</strong> Programmers can use programs to filter and clean digital data, thereby gaining insight and knowledge.</li>
+<li><strong>[DAT-2.E.3]:</strong> Combining data sources, clustering data, and classifying data are parts of the process of using programs to gain insight and knowledge from data.</li>
+<li><strong>[DAT-2.E.4]:</strong> Insight and knowledge can be obtained from translating and transforming digitally represented information.</li>
+<li><strong>[DAT-2.E.5]:</strong> Patterns can emerge when data are transformed using programs.</li>
+</ul>
+<h3 id="section_19">Example — Pseudocode for Transforming, Filtering, and Combining Data</h3>
+<p><strong>Transforming</strong> every element of a data set — doubling every element in a list:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">temps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="n">10, 20, 30</span><span class="o">]</span>
+<span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">LENGTH</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">temps</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">temps</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span>
+<span class="o">//</span><span class="w"> </span><span class="n">temps</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">[</span><span class="n">20, 40, 60</span><span class="o">]</span>
+</pre></div>
+</code></pre>
+<p><strong>Filtering</strong> a data set — keeping only the positive numbers from a list:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="err">←</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">positives</span> <span class="err">←</span> <span class="p">[]</span>
+<span class="kr">FOR</span> <span class="mh">EACH</span> <span class="n">n</span> <span class="kr">IN</span> <span class="n">nums</span>
+    <span class="kr">IF</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">APPEND</span> <span class="n">n</span> <span class="kr">TO</span> <span class="n">positives</span>
+<span class="o">//</span> <span class="n">positives</span> <span class="n">is</span> <span class="n">now</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</code></pre>
+<p><strong>Combining</strong> — adding up a list of numbers, or finding the student with the highest GPA. <strong>Visualizing</strong> — showing the data through a chart, graph, or other visual representation.</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.1 — Transforming and Filtering Data with a Program (5 marks)</div><div class="callout-body"><p>(a) Write pseudocode (or describe the steps) that filters a list of student records, keeping only the students who signed up for band. [2]</p>
+<p>(b) Doubling every element in a list is an example of transforming a data set. Give another example of transforming every element of a data set. [1]</p>
+<p>© Give one example of (i) combining or comparing data, and (ii) visualizing a data set. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">records</span> <span class="err">←</span> <span class="n">list</span> <span class="n">of</span> <span class="n">all</span> <span class="n">students</span> <span class="p">(</span><span class="n">each</span> <span class="n">record</span> <span class="n">has</span> <span class="n">a</span> <span class="s">&quot;band&quot;</span> <span class="n">field</span><span class="p">)</span>
+<span class="n">result</span> <span class="err">←</span> <span class="p">[]</span>
+<span class="kr">FOR</span> <span class="mh">EACH</span> <span class="n">student</span> <span class="kr">IN</span> <span class="n">records</span>
+    <span class="kr">IF</span> <span class="n">student</span><span class="p">.</span><span class="n">band</span> <span class="o">=</span> <span class="n">true</span>
+        <span class="n">APPEND</span> <span class="n">student</span> <span class="kr">TO</span> <span class="n">result</span>
+</pre></div>
+</code></pre>
+<p>Any reasonable step-by-step description that keeps only the students who signed up for band is accepted. [2]</p>
+<p>(b) Example: adding a parent’s email to every student record. (Any equivalent transform of every element is accepted.) [1]</p>
+<p>© (i) Combining/comparing: adding up a list of numbers, or finding the student who has the highest GPA. (ii) Visualizing: showing a data set through a chart, graph, or other visual representation. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.2 — Gaining Insight and Knowledge (4 marks)</div><div class="callout-body"><p>(a) In what way are programs used when processing information to allow users to gain insight and knowledge about data? [1]</p>
+<p>(b) State two parts of the process of using programs to gain insight and knowledge from data. [1]</p>
+<p>© How can patterns emerge in data, and what tools help communicate the insight gained? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Programs are used in an iterative and interactive way when processing information to allow users to gain insight and knowledge about data. [1]</p>
+<p>(b) Combining data sources, clustering data, and classifying data are parts of the process of using programs to gain insight and knowledge from data. (Any two are accepted.) [1]</p>
+<p>© Patterns can emerge when data are transformed using programs; tables, diagrams, text, and other visual tools can be used to communicate insight and knowledge gained from data. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.3 — Search, Filtering, and Spreadsheets (4 marks)</div><div class="callout-body"><p>(a) Why are search tools and data filtering systems useful when working with data? [2]</p>
+<p>(b) What do programs such as spreadsheets help you do? [1]</p>
+<p>© A student adds up all the numbers in a spreadsheet column and then creates a graph of the totals. Identify the two processes from the course that are being applied. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Search tools are useful for efficiently finding information; data filtering systems are important tools for finding information and recognizing patterns in data. [2]</p>
+<p>(b) Programs such as spreadsheets help efficiently organize and find trends in information. [1]</p>
+<p>© Combining data in some way (adding up a list of numbers) and visualizing a data set through a chart or graph. [1]</p>
+</div></details><h3 id="section_20">Additional Quiz 2.4 Topics (from Progress Check Quiz 2)</h3>
+<p><strong>Learning Objective [DAT-2.D-Ext] — Interpret charts and graphs, extrapolate trends, and use Boolean filter expressions to extract information from data.</strong></p>
+<blockquote>
+<p>解读图表（charts and graphs）、外推趋势，并使用布尔（Boolean）过滤表达式从数据中提取信息。核心概念：图表可传达从数据中获得的洞察——折线图可显示恒定增长率（直线）或指数增长（曲线越来越陡），饼图显示各类别所占比例，过去数据的线性趋势可外推（extrapolate）以估计未来值；数据过滤系统常用布尔逻辑条件组合：AND 条件需每个子条件都为真，OR 条件满足任一子条件即可保留记录。</p>
+</blockquote>
+<ul>
+<li><strong>[Quiz2-Ext10]:</strong> Charts and graphs communicate insight and knowledge gained from data (DAT-2.D.2), and reading them requires interpreting the growth or proportion shown. A line graph can show a constant rate of increase (a straight line) or exponential growth such as a value that doubles each interval (an increasingly steep curve); a pie chart shows what fraction of the whole each category represents; a linear trend in past data can be extended (extrapolated) to estimate a future value. Patterns can emerge when data are transformed using programs (DAT-2.E.5).</li>
+<li><strong>[Quiz2-Ext11]:</strong> Data filtering systems (DAT-2.D.4) often use Boolean (logical) conditions to keep only records that match a compound requirement. In an AND condition every sub-condition must be true for the record to be kept (e.g., genre = “mystery” AND pages ≥ 100 AND cost &lt; 10); in an OR condition the record is kept when any sub-condition is true. A single record fails an AND filter as soon as one condition fails.</li>
+</ul>
+<h3 id="section_21">Example — Reading Charts and Boolean Filters</h3>
+<p><strong>Growth shown by a line graph:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>2020</th>
+<th>2021</th>
+<th>2022</th>
+<th>2023</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Constant rate (linear)</td>
+<td>100</td>
+<td>120</td>
+<td>140</td>
+<td>160</td>
+</tr>
+<tr>
+<td>Doubling (exponential)</td>
+<td>100</td>
+<td>200</td>
+<td>400</td>
+<td>800</td>
+</tr>
+</tbody>
+</table>
+<p>The first row plots as a straight line — a constant rate of increase. The second row plots as a curve that gets steeper — the value doubles each interval. A linear trend can be extrapolated: if the first row’s pattern continues, 2024 ≈ 180.</p>
+<p><strong>Boolean filter conditions:</strong> keeping mystery books that are long and cheap:</p>
+<pre><code><div class="highlight"><pre><span></span>genre = &quot;mystery&quot; AND pages ≥ 100 AND cost &lt; 10
+</pre></div>
+</code></pre>
+<ul>
+<li>Record 1: mystery, 150 pages, $12 → rejected (fails cost &lt; 10).</li>
+<li>Record 2: mystery, 250 pages, $8 → kept (passes all three conditions).</li>
+<li>Record 3: romance, 120 pages, $6 → rejected (fails genre = “mystery”).</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.4 — Chart Interpretation and Extrapolation (5 marks)</div><div class="callout-body"><p>(a) A line graph shows a value that doubles every year (100, 200, 400, 800). Describe the shape of the graph and the growth rate. [2]</p>
+<p>(b) A company’s sales increase by a constant amount each month, plotting as a straight line. If sales were 50, 60, and 70 in the first three months, extrapolate the sales for month 4. [1]</p>
+<p>© In a pie chart, the slice labeled “Science” occupies one quarter of the chart. What fraction of students chose Science? [1]</p>
+<p>(d) What does a linear trend in past data allow you to estimate? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The graph is a curve that gets steeper over time — the value grows exponentially (it doubles each interval) rather than at a constant rate. [2]</p>
+<p>(b) <strong>80</strong> — the constant increase is +10 per month (50 → 60 → 70), so month 4 ≈ 70 + 10 = 80. [1]</p>
+<p>© One quarter — 25% of the students. [1]</p>
+<p>(d) A future value beyond the measured data, by extending the trend (extrapolation). [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.5 — Boolean Filter Expressions (5 marks)</div><div class="callout-body"><p>(a) The filter genre = “mystery” AND pages ≥ 100 AND cost &lt; 10 is applied to a library catalog. Which record is kept, and why? [2]</p>
+<ul>
+<li>
+<p>Record 1: mystery, 150 pages, $12</p>
+</li>
+<li>
+<p>Record 2: mystery, 250 pages, $8</p>
+</li>
+<li>
+<p>Record 3: romance, 120 pages, $6</p>
+</li>
+</ul>
+<p>(b) Write a Boolean filter that keeps a book if it is a mystery OR has fewer than 50 pages. [2]</p>
+<p>© A record passes an AND filter only when ______. Complete the sentence. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>Record 2</strong> — it satisfies all three AND conditions. Record 1 fails cost &lt; 10 ($12), and Record 3 fails genre = “mystery”. [2]</p>
+<p>(b) <code>genre = &quot;mystery&quot; OR pages &lt; 50</code> — with an OR condition, the record is kept when any sub-condition is true. [2]</p>
+<p>© … every one of the conditions joined by AND is true. [1]</p>
+</div></details><hr>
+<p>Next: <a href="big-idea-3-algorithms-and-programming.html">Big Idea 3 — Algorithms and Programming</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="big-idea-1-creative-development.html" title="Big Idea 1 Creative Development" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Big Idea 1 Creative Development</span></a>
+<a href="big-idea-2-data.html" title="Big Idea 2 Data" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Big Idea 2 Data</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science Principles (Course &amp; Exam Description, Effective Fall 2020) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

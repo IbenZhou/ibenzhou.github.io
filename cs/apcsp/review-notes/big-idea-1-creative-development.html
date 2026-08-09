@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Idea 1 Creative Development — AP CSP Review Notes</title>
+<style>
+:root {
+  --bg: #f4f3f8;
+  --card-bg: #fcfbfd;
+  --text: #33303e;
+  --text-secondary: #8d8798;
+  --accent: #6d5cc9;
+  --accent-light: #e6e0f3;
+  --border: #dcd5e8;
+  --code-bg: #ece8f3;
+  --ink: #252033;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2a2450 0%, #6d5cc9 50%, #9d8fe8 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(190,175,240,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #4a3e82;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #5b4bb0;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #f0edf6;
+  color: #332e45;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #dcd5e8;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e2daf2; color: #4a3e82; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #ece8f6; border-color: #c9c0e2; }
+.callout-exercise .callout-title { background: #ddd3f0; color: #4a3e82; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme */
+.highlight { background: #f0edf6; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #e8e2f4 }
+.highlight .c { color: #8b83a0 }
+.highlight .k { color: #5b4bb0 }
+.highlight .s { color: #a8612f }
+.highlight .n { color: #332e45 }
+.highlight .p { color: #6a6480 }
+.highlight .o { color: #5b4bb0 }
+.highlight .mi { color: #5b4bb0 }
+.highlight .mf { color: #5b4bb0 }
+.highlight .m { color: #5b4bb0 }
+.highlight .nb { color: #5b4bb0 }
+.highlight .nc { color: #7a63b8 }
+.highlight .nd { color: #7a63b8 }
+.highlight .nf { color: #7a63b8 }
+.highlight .nn { color: #7a63b8 }
+.highlight .kt { color: #5b4bb0 }
+.highlight .bp { color: #332e45 }
+.highlight .kn { color: #5b4bb0 }
+.highlight .ow { color: #5b4bb0 }
+.highlight .kc { color: #5b4bb0 }
+.highlight .kd { color: #5b4bb0 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #a8612f }
+.highlight .err { color: #332e45; background: none }
+.highlight .w { color: #332e45 }
+.highlight .nt { color: #7a63b8 }
+.highlight .na { color: #a8612f }
+.highlight .nl { color: #332e45 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../../apcsp.html" class="site-title">AP CSP Review Notes</a>
+    <span class="site-subtitle"><a href="../../apcsp.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSP 版块</a> &nbsp;·&nbsp; 5 big ideas · 169 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Big Idea 1 · Creative Development</h1>
+    <p>AP Exam Weight 10–13% · 1.1–1.4 class periods · 4 topics</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 1.1 — Collaboration</a></li>
+<li><a href="#section_5">Topic 1.2 — Program Function and Purpose</a></li>
+<li><a href="#section_8">Topic 1.3 — Program Design and Development</a></li>
+<li><a href="#section_12">Topic 1.4 — Identifying and Correcting Errors</a></li>
+<li><a href="#section_16">Create Performance Task (CPT) — Official Requirements</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Big Idea 1 — Creative Development (CRD): Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science Principles — Course and Exam Description, Effective Fall 2020<br>
+<strong>Exam Weight:</strong> 10–13% of AP Exam<br>
+<strong>Topics:</strong> 1.1–1.4<br>
+<strong>AP Classroom:</strong> Topic Questions ~20 multiple-choice</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>Big Idea 1 introduces how computing innovations are created, starting with collaboration — how diverse perspectives, online tools, and interpersonal skills improve the development of computing innovations. It then defines what programs and code segments are and how they function, including inputs, outputs, and event-driven programming. Next, it covers the program development process: investigation, design, prototyping, testing, documentation, and acknowledging the work of others. Finally, it addresses identifying and correcting errors — logic, syntax, run-time, and overflow errors — and using test cases to check correctness. These ideas form the foundation of the course’s computational thinking practices and are especially important for the Create performance task, where you will collaborate, iterate, document, and test a program of your own.</p>
+<p><strong>In this big idea you will learn to:</strong></p>
+<ul>
+<li>Explain how computing innovations are improved through collaboration, explain how they are developed by groups of people, and demonstrate effective interpersonal skills during collaboration</li>
+<li>Describe the purpose of a computing innovation and explain how a program or code segment functions</li>
+<li>Identify the input(s) to a program and the output(s) it produces, including how events trigger event-driven programs</li>
+<li>Develop a program using an iterative and incremental development process, and design a program and its user interface</li>
+<li>Describe the purpose of a code segment or program by writing documentation, and acknowledge code segments used from other sources</li>
+<li>Identify and correct errors in algorithms and programs, and identify inputs and expected outputs that can be used to check correctness</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li>
+<p>Learn the two Enduring Understandings cold: <strong>CRD-1</strong> (incorporating multiple perspectives through collaboration improves computing innovations) and <strong>CRD-2</strong> (developers create using an iterative design process that is user-focused, incorporates implementation/feedback cycles, and leaves room for experimentation and risk-taking). Most multiple-choice answers about “why collaborate” map to <em>diverse perspectives help avoid bias</em> or <em>the innovation reflects the diversity of talents of its designers</em>.</p>
+</li>
+<li>
+<p>Know the four development phases (<strong>investigating and reflecting; designing; prototyping; testing</strong>) and that the process is <strong>iterative</strong> (revisits earlier phases) and <strong>incremental</strong> (breaks the problem into smaller pieces). Questions frequently describe an activity and ask which phase it belongs to — a survey is investigation, a storyboard is design, testing at extremes is testing.</p>
+</li>
+<li>
+<p>Be able to classify the four error types (<strong>logic, syntax, run-time, overflow</strong>) from a scenario, and memorize the debugging techniques (<strong>test cases; hand tracing; visualizations; debuggers; adding extra output statements</strong>). AP CSP MCQs often present a buggy code segment and ask for the error type or the correct test case (inputs at or just beyond the extremes).</p>
+</li>
+<li>
+<p>Distinguish <strong>input</strong> from <strong>output</strong>, and recognize <strong>event-driven programming</strong>: program statements are executed when <em>triggered</em> by an event (a key pressed, a mouse clicked, a program started) rather than through the sequential flow of control.</p>
+</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 1.1 — Collaboration</h2>
+<h3 id="section_3">Key Concepts</h3>
+<p><strong>Learning Objective [CRD-1.A] — Explain how computing innovations are improved through collaboration.</strong></p>
+<blockquote>
+<p>协作（collaboration）如何改进计算创新（computing innovation）的开发。核心概念：计算创新以程序（program）为功能核心；可分为物理设备、非物理计算软件或非物理计算概念三类；有效协作能融合多元才能与视角、帮助避免偏见（bias）；与用户沟通咨询（user feedback）对开发至关重要。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-1.A.1]:</strong> A computing innovation includes a program as an integral part of its function.</li>
+<li><strong>[CRD-1.A.2]:</strong> A computing innovation can be physical (e.g., self-driving car), nonphysical computing software (e.g., picture editing software), or a nonphysical computing concept (e.g., e-commerce).</li>
+<li><strong>[CRD-1.A.3]:</strong> Effective collaboration produces a computing innovation that reflects the diversity of talents and perspectives of those who designed it.</li>
+<li><strong>[CRD-1.A.4]:</strong> Collaboration that includes diverse perspectives helps avoid bias in the development of computing innovations.</li>
+<li><strong>[CRD-1.A.5]:</strong> Consultation and communication with users are important aspects of the development of computing innovations.</li>
+<li><strong>[CRD-1.A.6]:</strong> Information gathered from potential users can be used to understand the purpose of a program from diverse perspectives and to develop a program that fully incorporates these perspectives.</li>
+</ul>
+<p><strong>Learning Objective [CRD-1.B] — Explain how computing innovations are developed by groups of people.</strong></p>
+<blockquote>
+<p>计算创新（computing innovation）如何由多人团队开发。核心概念：在线工具（online tools）支持共享与反馈，促进协作；结对编程（pair programming）是常见的协作模型，两人在同一工作台合作编写代码。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-1.B.1]:</strong> Online tools support collaboration by allowing programmers to share and provide feedback on ideas and documents.</li>
+<li><strong>[CRD-1.B.2]:</strong> Common models such as pair programming exist to facilitate collaboration.</li>
+</ul>
+<p><strong>Learning Objective [CRD-1.C] — Demonstrate effective interpersonal skills during collaboration.</strong></p>
+<blockquote>
+<p>在协作（collaboration）过程中展现有效的人际交往技能。核心概念：包括沟通（communication）、达成共识（consensus building）、解决冲突（conflict resolution）与协商谈判（negotiation）。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-1.C.1]:</strong> Effective collaborative teams practice interpersonal skills, including but not limited to: communication; consensus building; conflict resolution; negotiation.</li>
+</ul>
+<h3 id="section_4">Example — Collaboration Scenario</h3>
+<p>A team of four students is developing a mobile app that helps users plan meals. Each teammate brings a different talent — one designs the user interface, one writes the program, one tests it, and one interviews potential users. Because the team includes students with different dietary needs, ages, and skill levels, they catch early that the app should offer vegetarian filters and larger text. When two members disagree about the layout, they reach a consensus through discussion. The team uses an online document to share ideas and give feedback, and the two programmers use pair programming at the same workstation. The final app reflects the diverse perspectives of the whole team rather than any single member.</p>
+<p>The three types of computing innovation (CRD-1.A.2):</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Physical</td>
+<td>A physical device that includes a program as an integral part of its function</td>
+<td>Self-driving car</td>
+</tr>
+<tr>
+<td>Nonphysical computing software</td>
+<td>Software that runs on a device</td>
+<td>Picture editing software</td>
+</tr>
+<tr>
+<td>Nonphysical computing concept</td>
+<td>An idea or practice that depends on computing</td>
+<td>E-commerce</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.1.1 — Types of Computing Innovations (5 marks)</div><div class="callout-body"><p>(a) Classify each item as a <em>physical</em> computing innovation, <em>nonphysical computing software</em>, or a <em>nonphysical computing concept</em>. [3]</p>
+<p>(i) A self-driving car</p>
+<p>(ii) Picture editing software</p>
+<p>(iii) E-commerce</p>
+<p>(b) A computing innovation includes a program as an integral part of its function. Explain what this means, using the self-driving car as your example. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) Physical — a self-driving car is a physical device whose function depends on the program inside it. [1]</p>
+<p>(ii) Nonphysical computing software — picture editing software is software that runs on a device. [1]</p>
+<p>(iii) Nonphysical computing concept — e-commerce is a concept (online buying and selling) that depends on computing. [1]</p>
+<p>(b) The program is a required, built-in part of how the innovation works: without the program that processes sensor data, makes driving decisions, and controls the steering, brakes, and speed, the self-driving car could not drive itself. The program is not an optional add-on — it is integral to the innovation’s function. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.1.2 — Collaboration Improves Innovations (6 marks)</div><div class="callout-body"><p>(a) Explain how effective collaboration produces a computing innovation that reflects the diversity of talents and perspectives of those who designed it. [2]</p>
+<p>(b) How does collaboration that includes diverse perspectives help avoid bias in the development of computing innovations? Give a short example. [2]</p>
+<p>© Give two reasons why consultation and communication with users are important aspects of the development of computing innovations. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) When team members bring different talents (e.g., design, programming, testing) and different perspectives (e.g., backgrounds, experiences), the design incorporates a wider range of ideas and viewpoints, so the resulting innovation reflects the diversity of the team rather than a single person’s point of view. [2]</p>
+<p>(b) Diverse perspectives help the team notice assumptions or preferences that would unfairly favor one group of users over another, so the innovation works fairly for more people. Example: a team whose members have different ages and abilities might catch that a color scheme is hard for colorblind users to read or that the wording is confusing to new users. [2]</p>
+<p>© Consultation and communication with users let developers understand the purpose of the program from diverse perspectives and develop a program that fully incorporates these perspectives (CRD-1.A.6). Users can also reveal needs and problems that the developers would not have anticipated on their own. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.1.3 — Online Tools and Pair Programming (4 marks)</div><div class="callout-body"><p>(a) How do online tools support collaboration among programmers who are developing a computing innovation? [2]</p>
+<p>(b) Describe the pair programming model, and state one benefit of using it. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Online tools support collaboration by allowing programmers to share and provide feedback on ideas and documents, so teammates in different locations can view, edit, and comment on the same files. [2]</p>
+<p>(b) In pair programming, two programmers work together at one workstation — typically one writes the code while the other reviews each step and thinks ahead, and the two switch roles regularly. One benefit is that every line of code is reviewed as it is written, which catches mistakes early and produces higher-quality code. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.1.4 — Interpersonal Skills (3 marks)</div><div class="callout-body"><p>(a) List the four interpersonal skills practiced by effective collaborative teams, as given in the course framework. [2]</p>
+<p>(b) Choose one of these skills and give a short example of how a student might use it during a group programming project. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Communication; consensus building; conflict resolution; negotiation. [2]</p>
+<p>(b) Example for communication: a student explains to the team a bug found in the section of the program they wrote, describing the symptoms and the fix so everyone understands the change. (Any reasonable example tied to one of the four skills is accepted.) [1]</p>
+</div></details><hr>
+<h2 id="section_5">Topic 1.2 — Program Function and Purpose</h2>
+<h3 id="section_6">Key Concepts</h3>
+<p><strong>Learning Objective [CRD-2.A] — Describe the purpose of a computing innovation.</strong></p>
+<blockquote>
+<p>描述计算创新（computing innovation）的目的。核心概念：其目的是解决问题（solve problems）或通过创造性表达（creative expression）追求兴趣；理解创新目的能让开发者更好地开发该创新。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.A.1]:</strong> The purpose of computing innovations is to solve problems or to pursue interests through creative expression.</li>
+<li><strong>[CRD-2.A.2]:</strong> An understanding of the purpose of a computing innovation provides developers with an improved ability to develop that computing innovation.</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.B] — Explain how a program or code segment functions.</strong></p>
+<blockquote>
+<p>解释程序（program）或代码段（code segment）如何运作。核心概念：程序是执行特定任务的一组语句集合，常称为软件（software）；代码段是程序的一部分；程序需适应多种输入与情境；行为（behavior）指程序执行时的表现，常通过用户交互来描述。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.B.1]:</strong> A program is a collection of program statements that performs a specific task when run by a computer. A program is often referred to as software.</li>
+<li><strong>[CRD-2.B.2]:</strong> A code segment is a collection of program statements that is part of a program.</li>
+<li><strong>[CRD-2.B.3]:</strong> A program needs to work for a variety of inputs and situations.</li>
+<li><strong>[CRD-2.B.4]:</strong> The behavior of a program is how a program functions during execution and is often described by how a user interacts with it.</li>
+<li><strong>[CRD-2.B.5]:</strong> A program can be described broadly by what it does, or in more detail by both what the program does and how the program statements accomplish this function.</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.C] — Identify input(s) to a program.</strong></p>
+<blockquote>
+<p>识别程序的输入（input）。核心概念：输入是发送给计算机处理的数据，形式可为触觉、音频、视觉或文本；事件（event）与某一动作关联并提供输入数据；在事件驱动编程（event-driven programming）中，语句由事件触发执行，而非按顺序控制流执行。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.C.1]:</strong> Program inputs are data sent to a computer for processing by a program. Input can come in a variety of forms, such as tactile, audio, visual, or text.</li>
+<li><strong>[CRD-2.C.2]:</strong> An event is associated with an action and supplies input data to a program.</li>
+<li><strong>[CRD-2.C.3]:</strong> Events can be generated when a key is pressed, a mouse is clicked, a program is started, or any other defined action occurs that affects the flow of execution.</li>
+<li><strong>[CRD-2.C.4]:</strong> Inputs usually affect the output produced by a program.</li>
+<li><strong>[CRD-2.C.5]:</strong> In event-driven programming, program statements are executed when triggered rather than through the sequential flow of control.</li>
+<li><strong>[CRD-2.C.6]:</strong> Input can come from a user or other programs.</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.D] — Identify output(s) produced by a program.</strong></p>
+<blockquote>
+<p>识别程序产生的输出（output）。核心概念：输出是程序发送到设备（如屏幕）的任何数据，形式可为触觉、音频、视觉或文本；输出通常基于程序的输入或先前的状态（prior state，如内部变量值）。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.D.1]:</strong> Program outputs are any data sent from a program to a device. Program output can come in a variety of forms, such as tactile, audio, visual, or text.</li>
+<li><strong>[CRD-2.D.2]:</strong> Program output is usually based on a program’s input or prior state (e.g., internal values).</li>
+</ul>
+<h3 id="section_7">Example — Pseudocode (Event-Driven Program)</h3>
+<pre><code><div class="highlight"><pre><span></span><span class="c1">// Program: Hydration Tracker (event-driven pseudocode)</span>
+<span class="c1">// Purpose: record each glass of water a user drinks and display the daily total.</span>
+
+<span class="n">glassCount</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+
+<span class="c1">// Event 1: the app starts — supplies input and sets up the display</span>
+<span class="n">onEvent</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;start&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">display</span><span class="p">(</span><span class="s">&quot;Today&#39;s glasses: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">glassCount</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1">// Event 2: the user clicks the &quot;Add Glass&quot; button — the click is an event</span>
+<span class="n">onEvent</span><span class="p">(</span><span class="s">&quot;addButton&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">glassCount</span><span class="w"> </span>←<span class="w"> </span><span class="n">glassCount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">                          </span><span class="c1">// process the input</span>
+<span class="w">    </span><span class="n">display</span><span class="p">(</span><span class="s">&quot;Today&#39;s glasses: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">glassCount</span><span class="p">)</span><span class="w">            </span><span class="c1">// output to the screen</span>
+<span class="p">})</span>
+</pre></div>
+</code></pre>
+<p>Notice that the statements are <strong>not</strong> executed in a simple top-to-bottom sequence: they run only when an <strong>event triggers</strong> them (CRD-2.C.5). The click is a tactile input (CRD-2.C.1) that supplies input data to the program, and the updated count displayed on screen is the <strong>output</strong> (CRD-2.D.1), which depends on the program’s prior state <code>glassCount</code> (CRD-2.D.2).</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.1 — Purpose of Computing Innovations (4 marks)</div><div class="callout-body"><p>(a) The purpose of computing innovations is to solve problems or to pursue interests through creative expression. Classify the purpose of each innovation. [2]</p>
+<p>(i) An app that reminds users to drink water throughout the day.</p>
+<p>(ii) A music-making program that lets users compose and share songs.</p>
+<p>(b) Explain why an understanding of the purpose of a computing innovation provides developers with an improved ability to develop that computing innovation. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) Solving a problem — helping people remember to stay hydrated. [1]</p>
+<p>(ii) Pursuing interests through creative expression — composing and sharing music. [1]</p>
+<p>(b) If developers clearly understand what the innovation is for, they can make better decisions about which features to include, how the user interface should work, and what inputs and outputs are needed — so the finished program is more likely to fulfill its purpose. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.2 — Program, Code Segment, and Behavior (5 marks)</div><div class="callout-body"><p>(a) What is a program? [1]</p>
+<p>(b) What is a code segment? [1]</p>
+<p>© A program needs to work for a variety of inputs and situations. Give one example of an input situation a student-check-in program might need to handle. [1]</p>
+<p>(d) The behavior of a program is how it functions during execution and is often described by how a user interacts with it. Describe the behavior of a music app each time the user taps “Next”. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A program is a collection of program statements that performs a specific task when run by a computer; a program is often referred to as software. [1]</p>
+<p>(b) A code segment is a collection of program statements that is part of a program. [1]</p>
+<p>© Example: a user who enters a student ID that is not in the system, or who enters an ID with leading zeros, or who enters letters instead of digits. (Any reasonable input situation is accepted.) [1]</p>
+<p>(d) Each time the user taps “Next”, the program advances to the following song and begins playing it. This observable response — what the user sees and hears in reaction to their tap — is the program’s behavior during execution. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.3 — Identifying Inputs and Events (5 marks)</div><div class="callout-body"><p>(a) What are program inputs, and what forms can input take? [2]</p>
+<p>(b) What is an event in programming? [1]</p>
+<p>© Give two examples of events that can supply input data to a program. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Program inputs are data sent to a computer for processing by a program. Input can come in a variety of forms, such as tactile, audio, visual, or text. [2]</p>
+<p>(b) An event is associated with an action and supplies input data to a program. [1]</p>
+<p>© Any two of the following: a key is pressed, a mouse is clicked, a program is started, or any other defined action that occurs and affects the flow of execution. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.4 — Analyzing an Event-Driven Code Segment (4 marks)</div><div class="callout-body"><p>Consider the following pseudocode segment from a quiz app.</p>
+<pre><code><div class="highlight"><pre><span></span><span class="c1">// when the &quot;Submit&quot; button is clicked</span>
+<span class="n">onEvent</span><span class="p">(</span><span class="s">&quot;submitButton&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">score</span><span class="w"> </span>←<span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">    </span><span class="n">display</span><span class="p">(</span><span class="s">&quot;Score: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">score</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</code></pre>
+<p>(a) Identify the event that triggers the code segment. [1]</p>
+<p>(b) Identify the input data supplied to the program by this event. [1]</p>
+<p>© Identify the output produced by the code segment. [1]</p>
+<p>(d) Explain why this program is event-driven, rather than executing statements in sequential flow. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The click on the “Submit” button (a mouse click). [1]</p>
+<p>(b) The click action itself supplies input data to the program — the program “knows” the Submit button was clicked. [1]</p>
+<p>© The text &quot;Score: &quot; followed by the updated value of <code>score</code> displayed on the screen. [1]</p>
+<p>(d) The statements inside the function are not run in a fixed top-to-bottom order when the program starts; they are executed only when the click event triggers them. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.5 — Inputs and Outputs (5 marks)</div><div class="callout-body"><p>A weather app displays “Pack an umbrella” on the phone screen whenever the rain-probability input value is above 50.</p>
+<p>(a) Identify the input to the program and the form it takes. [2]</p>
+<p>(b) Identify the output produced by the program and the form it takes. [2]</p>
+<p>© State why program output is usually based on a program’s input or prior state, using this app as an example. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The input is the rain-probability value (a number sent to the program for processing); it is a text/visual form of data, e.g., supplied by the weather service or by user entry. [2]</p>
+<p>(b) The output is the message “Pack an umbrella” sent from the program to the device’s screen; it is a visual (text) form of output. [2]</p>
+<p>© Program output is usually based on a program’s input or prior state. Here the message shown depends directly on the rain-probability input — the same input processed by the same internal rules determines what the program displays. [1]</p>
+</div></details><hr>
+<h2 id="section_8">Topic 1.3 — Program Design and Development</h2>
+<h3 id="section_9">Key Concepts</h3>
+<p><strong>Learning Objective [CRD-2.E] — Develop a program using a development process.</strong></p>
+<blockquote>
+<p>使用开发过程（development process）开发程序。核心概念：开发过程可以是条理有序的，也可以是探索性的；常用阶段包括调查与反思、设计、原型制作、测试；迭代（iterative）指基于反馈、测试或反思不断修订并可能重访早期阶段；增量（incremental）指把问题拆分为小块，确保每块先可用再加入整体。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.E.1]:</strong> A development process can be ordered and intentional, or exploratory in nature.</li>
+<li><strong>[CRD-2.E.2]:</strong> There are multiple development processes. The following phases are commonly used when developing a program: investigating and reflecting; designing; prototyping; testing.</li>
+<li><strong>[CRD-2.E.3]:</strong> A development process that is iterative requires refinement and revision based on feedback, testing, or reflection throughout the process. This may require revisiting earlier phases of the process.</li>
+<li><strong>[CRD-2.E.4]:</strong> A development process that is incremental is one that breaks the problem into smaller pieces and makes sure each piece works before adding it to the whole.</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.F] — Design a program and its user interface.</strong></p>
+<blockquote>
+<p>设计程序及其用户界面（user interface）。核心概念：设计以调查（investigation）确定需求（requirements）；调查方式包括问卷调查、用户测试、访谈与直接观察；规格说明（specification）定义程序需求；设计阶段包含头脑风暴、规划与故事板、模块化组织、界面布局图以及测试策略的制定。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.F.1]:</strong> The design of a program incorporates investigation to determine its requirements.</li>
+<li><strong>[CRD-2.F.2]:</strong> Investigation in a development process is useful for understanding and identifying the program constraints, as well as the concerns and interests of the people who will use the program.</li>
+<li><strong>[CRD-2.F.3]:</strong> Some ways investigation can be performed are as follows: collecting data through surveys; user testing; interviews; direct observations.</li>
+<li><strong>[CRD-2.F.4]:</strong> Program requirements describe how a program functions and may include a description of user interactions that a program must provide.</li>
+<li><strong>[CRD-2.F.5]:</strong> A program’s specification defines the requirements for the program.</li>
+<li><strong>[CRD-2.F.6]:</strong> In a development process, the design phase outlines how to accomplish a given program specification.</li>
+<li><strong>[CRD-2.F.7]:</strong> The design phase of a program may include: brainstorming; planning and storyboarding; organizing the program into modules and functional components; creation of diagrams that represent the layouts of the user interface; development of a testing strategy for the program.</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.G] — Describe the purpose of a code segment or program by writing documentation.</strong></p>
+<blockquote>
+<p>通过编写文档（documentation）描述代码段或程序的目的。核心概念：程序文档是对代码段、事件、过程（procedure）或程序的功能及其开发过程的书面描述；注释（comments）是写给程序员阅读的文档形式，不影响程序运行；应在开发全程持续记录，便于独立或协作环境下开发与维护正确程序。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.G.1]:</strong> Program documentation is a written description of the function of a code segment, event, procedure, or program and how it was developed.</li>
+<li><strong>[CRD-2.G.2]:</strong> Comments are a form of program documentation written into the program to be read by people and do not affect how a program runs.</li>
+<li><strong>[CRD-2.G.3]:</strong> Programmers should document a program throughout its development.</li>
+<li><strong>[CRD-2.G.4]:</strong> Program documentation helps in developing and maintaining correct programs when working individually or in collaborative programming environments.</li>
+<li><strong>[CRD-2.G.5]:</strong> Not all programming environments support comments, so other methods of documentation may be required.</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.H] — Acknowledge code segments used from other sources.</strong></p>
+<blockquote>
+<p>注明（acknowledge）来自其他来源的代码段。核心概念：必须注明协作开发或他人编写的代码段；致谢可写在程序文档中，并应包含来源或原作者姓名（origin / original author’s name）。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.H.1]:</strong> It is important to acknowledge any code segments that were developed collaboratively or by another source.</li>
+<li><strong>[CRD-2.H.2]:</strong> Acknowledgement of a code segment(s) written by someone else and used in a program can be in the program documentation. The acknowledgement should include the origin or original author’s name.</li>
+</ul>
+<h3 id="section_10">Example — Pseudocode with Documentation</h3>
+<pre><code><div class="highlight"><pre><span></span><span class="o">//</span><span class="w"> </span><span class="n">findLargest</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+<span class="o">//</span><span class="w"> </span><span class="n">PURPOSE</span><span class="p">:</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">largest</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">nums</span><span class="o">.</span>
+<span class="o">//</span><span class="w"> </span><span class="n">DEVELOPED</span><span class="p">:</span><span class="w"> </span><span class="n">written</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">brainstorming</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">storyboarding</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">team</span><span class="p">;</span>
+<span class="o">//</span><span class="w">            </span><span class="n">revised</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">testing</span><span class="w"> </span><span class="n">phase</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">found</span><span class="o">.</span>
+<span class="n">PROCEDURE</span><span class="w"> </span><span class="n">findLargest</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+<span class="w">    </span><span class="n">largest</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">nums</span>
+<span class="w">        </span><span class="n">IF</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">largest</span>
+<span class="w">            </span><span class="n">largest</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">item</span>
+<span class="w">        </span><span class="n">END</span><span class="w"> </span><span class="n">IF</span>
+<span class="w">    </span><span class="n">END</span><span class="w"> </span><span class="n">FOR</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">largest</span>
+<span class="n">END</span><span class="w"> </span><span class="n">PROCEDURE</span>
+
+<span class="o">//</span><span class="w"> </span><span class="n">Code</span><span class="w"> </span><span class="n">below</span><span class="w"> </span><span class="n">written</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">J</span><span class="o">.</span><span class="w"> </span><span class="n">Alvarez</span><span class="w"> </span><span class="p">(</span><span class="n">source</span><span class="p">:</span><span class="w"> </span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">library</span><span class="p">),</span>
+<span class="o">//</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="n">acknowledged</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">program</span><span class="w"> </span><span class="n">documentation</span><span class="o">.</span>
+</pre></div>
+</code></pre>
+<p>The comment at the top is a form of <strong>program documentation</strong> (CRD-2.G.1, CRD-2.G.2): it is written to be read by people and does not affect how the program runs. Programmers document throughout development (CRD-2.G.3), and the acknowledgement at the bottom includes the origin and original author’s name for a code segment taken from another source (CRD-2.H.2).</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.1 — Phases of a Development Process (4 marks)</div><div class="callout-body"><p>(a) List the four phases commonly used when developing a program. [2]</p>
+<p>(b) A team surveys classmates to learn which features they want before writing any code. Which phase are they in, and what investigation method are they using? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Investigating and reflecting; designing; prototyping; testing. [2]</p>
+<p>(b) They are in the investigating and reflecting phase, and they are collecting data through surveys. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.2 — Iterative vs. Incremental Development (4 marks)</div><div class="callout-body"><p>(a) What makes a development process <em>iterative</em>? [2]</p>
+<p>(b) What makes a development process <em>incremental</em>? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) An iterative development process requires refinement and revision based on feedback, testing, or reflection throughout the process; this may require revisiting earlier phases of the process (for example, returning to the design after testing reveals a problem). [2]</p>
+<p>(b) An incremental development process is one that breaks the problem into smaller pieces and makes sure each piece works before adding it to the whole. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.3 — Investigation, Requirements, and Design (6 marks)</div><div class="callout-body"><p>(a) Name the four ways investigation can be performed, as given in the course framework. [2]</p>
+<p>(b) What are program requirements, and what may they include? [2]</p>
+<p>© List three activities that may be included in the design phase of a program. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Collecting data through surveys; user testing; interviews; direct observations. [2]</p>
+<p>(b) Program requirements describe how a program functions and may include a description of user interactions that a program must provide. [2]</p>
+<p>© Any three of: brainstorming; planning and storyboarding; organizing the program into modules and functional components; creation of diagrams that represent the layouts of the user interface; development of a testing strategy for the program. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.4 — Documentation and Comments (5 marks)</div><div class="callout-body"><p>(a) What is program documentation? [1]</p>
+<p>(b) What are comments, and do they affect how a program runs? [2]</p>
+<p>© Why should programmers document a program throughout its development? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Program documentation is a written description of the function of a code segment, event, procedure, or program and how it was developed. [1]</p>
+<p>(b) Comments are a form of program documentation written into the program to be read by people and do not affect how a program runs. [2]</p>
+<p>© Program documentation helps in developing and maintaining correct programs when working individually or in collaborative programming environments; documenting throughout development keeps the record accurate as the program changes and lets other team members understand each part. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.5 — Acknowledging Code Segments (4 marks)</div><div class="callout-body"><p>(a) Why is it important to acknowledge any code segments that were developed collaboratively or by another source? [2]</p>
+<p>(b) Where can the acknowledgement of a code segment written by someone else be placed, and what should it include? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It is important to acknowledge any code segments that were developed collaboratively or by another source so that credit is given where it is due and the origin of the work is honest and transparent. [2]</p>
+<p>(b) The acknowledgement can be in the program documentation. It should include the origin or the original author’s name. [2]</p>
+</div></details><h3 id="section_11">Quiz-Extension — Documenting Preconditions (Parameter Constraints)</h3>
+<p>Quiz 1 (Questions 29 and 31) checks that a program’s documentation should include the constraints — <em>preconditions</em> — on the values a procedure accepts. The framework’s documentation EKs (CRD-2.G.1–CRD-2.G.5) do not state this explicitly, so add the following extension.</p>
+<p><strong>Learning Objective [CRD-2.K] — Describe preconditions (input constraints) in program documentation.</strong></p>
+<blockquote>
+<p>在程序文档中描述前置条件（preconditions）。核心概念：前置条件是对输入或参数（parameter）值的约束，在代码段正确运行前必须满足；例如除数不能为 0、列表索引必须在 1 到列表长度范围内；记录前置条件可帮助其他程序员正确调用过程，并使程序更易开发与维护。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.K.1]:</strong> A precondition is a constraint on the input or parameter values that must hold before a code segment runs correctly; documenting it is part of program documentation (extends CRD-2.G.1).</li>
+<li><strong>[CRD-2.K.2]:</strong> Example — a procedure that divides two numbers must document that the denominator must not be 0 (<code>x ≠ 0</code>), because division by 0 is undefined (and causes a run-time error in most languages).</li>
+<li><strong>[CRD-2.K.3]:</strong> Example — a procedure that accesses a list element by index must document that the index must be in the range 1 to <code>LENGTH(list)</code>; an index outside this range is invalid.</li>
+<li><strong>[CRD-2.K.4]:</strong> Documenting preconditions helps other programmers call the procedure correctly and makes the program easier to develop and maintain (CRD-2.G.4).</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.6 — Documenting Preconditions (5 marks)</div><div class="callout-body"><p>(a) What is a precondition in program documentation? [2]</p>
+<p>(b) A procedure <code>divide(a, b)</code> computes <code>a / b</code>. State the precondition that must be documented for <code>b</code>, and explain why it is necessary. [2]</p>
+<p>© A procedure <code>getElement(lst, index)</code> returns the element of list <code>lst</code> at position <code>index</code>. State the precondition that must be documented for <code>index</code>. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A precondition is a constraint on the input or parameter values that must be satisfied before a code segment runs correctly; it should be described in the program documentation so that users of the code know how to call it properly. [2]</p>
+<p>(b) The precondition is <code>b ≠ 0</code> — the denominator must not be 0. Dividing by 0 is undefined, and in most programming languages it causes a run-time error, so the documentation must warn callers not to pass 0. [2]</p>
+<p>© The precondition is that <code>index</code> must be in the range 1 to <code>LENGTH(lst)</code>, because an index outside the list’s valid range is invalid. [1]</p>
+</div></details><div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><p>In questions about documented procedures, look for the constraint on the inputs: division requires <code>x ≠ 0</code>, and list access requires an index inside <code>1..LENGTH</code>. A documented restriction on the parameters is a <em>precondition</em>.</p>
+</div></div><hr>
+<h2 id="section_12">Topic 1.4 — Identifying and Correcting Errors</h2>
+<h3 id="section_13">Key Concepts</h3>
+<p><strong>Learning Objective [CRD-2.I] — For errors in an algorithm or program: a. Identify the error. b. Correct the error.</strong></p>
+<blockquote>
+<p>针对算法（algorithm）或程序中的错误：a. 识别错误；b. 修正错误。核心概念：四种错误类型——逻辑错误（logic error，行为不正确）、语法错误（syntax error，违反语言规则）、运行时错误（run-time error，执行时发生）、溢出错误（overflow error，数值超出存储范围）；有效的查找与修正方法包括测试用例、手工追踪、可视化、调试器及增加额外输出语句。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.I.1]:</strong> A logic error is a mistake in the algorithm or program that causes it to behave incorrectly or unexpectedly.</li>
+<li><strong>[CRD-2.I.2]:</strong> A syntax error is a mistake in the program where the rules of the programming language are not followed.</li>
+<li><strong>[CRD-2.I.3]:</strong> A run-time error is a mistake in the program that occurs during the execution of a program. Programming languages define their own run-time errors.</li>
+<li><strong>[CRD-2.I.4]:</strong> An overflow error is an error that occurs when a computer attempts to handle a number that is outside of the defined range of values.</li>
+<li><strong>[CRD-2.I.5]:</strong> The following are effective ways to find and correct errors: test cases; hand tracing; visualizations; debuggers; adding extra output statement(s).</li>
+</ul>
+<p><strong>Learning Objective [CRD-2.J] — Identify inputs and corresponding expected outputs or behaviors that can be used to check the correctness of an algorithm or program.</strong></p>
+<blockquote>
+<p>识别可用于检验算法或程序正确性的输入及对应的预期输出或行为。核心概念：测试使用定义好的输入（defined inputs）确保程序产生预期结果，并据此修订程序；测试输入应展示输入数据极值处（最小值和最大值）及其边界外的不同预期结果；识别合适的测试输入需要程序需求（requirements）。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.J.1]:</strong> In the development process, testing uses defined inputs to ensure that an algorithm or program is producing the expected outcomes. Programmers use the results from testing to revise their algorithms or programs.</li>
+<li><strong>[CRD-2.J.2]:</strong> Defined inputs used to test a program should demonstrate the different expected outcomes that are at or just beyond the extremes (minimum and maximum) of input data.</li>
+<li><strong>[CRD-2.J.3]:</strong> Program requirements are needed to identify appropriate defined inputs for testing.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Error Type</th>
+<th>Definition (from the framework)</th>
+<th>When It Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logic error</td>
+<td>A mistake in the algorithm or program that causes it to behave incorrectly or unexpectedly</td>
+<td>The program runs but produces wrong results</td>
+</tr>
+<tr>
+<td>Syntax error</td>
+<td>A mistake in the program where the rules of the programming language are not followed</td>
+<td>The code cannot be translated/recognized correctly by the language</td>
+</tr>
+<tr>
+<td>Run-time error</td>
+<td>A mistake in the program that occurs during the execution of a program</td>
+<td>While the program is executing</td>
+</tr>
+<tr>
+<td>Overflow error</td>
+<td>An error that occurs when a computer attempts to handle a number that is outside of the defined range of values</td>
+<td>When a value exceeds the range a data type can store</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_14">Example — Pseudocode (Buggy Program)</h3>
+<pre><code><div class="highlight"><pre><span></span><span class="c1">// Buggy version: computes the average of three quiz scores.</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">score1</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">score2</span>
+<span class="n">INPUT</span><span class="w"> </span><span class="n">score3</span>
+<span class="n">average</span><span class="w"> </span>←<span class="w"> </span><span class="p">(</span><span class="n">score1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">score2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="w">        </span><span class="c1">// LOGIC ERROR: score3 is left out</span>
+<span class="n">OUTPUT</span><span class="w"> </span><span class="n">average</span>
+</pre></div>
+</code></pre>
+<p>The program runs without crashing, but the result is wrong whenever <code>score3</code> differs from <code>score1</code> or <code>score2</code> — a <strong>logic error</strong> (CRD-2.I.1). To find and correct it, a programmer could <strong>hand trace</strong> the code, add an <strong>extra output statement</strong> to display intermediate values, or run <strong>test cases</strong> with known inputs, e.g., <code>score1 = 90</code>, <code>score2 = 80</code>, <code>score3 = 100</code> (expected average 90) — the buggy version would output 56.67, revealing the mistake. The correction is <code>average ← (score1 + score2 + score3) / 3</code>.</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.1 — Classifying Errors (6 marks)</div><div class="callout-body"><p>(a) Classify each error below as a <em>logic error</em>, a <em>syntax error</em>, a <em>run-time error</em>, or an <em>overflow error</em>. [4]</p>
+<p>(i) A programmer writes <code>IF temperature =&gt; 30 THEN</code>, but the language requires the operator <code>&gt;=</code>.</p>
+<p>(ii) A discount-calculating program always produces a result that is 5% too high.</p>
+<p>(iii) A program crashes when the user enters a word instead of a number, because the language cannot convert the text.</p>
+<p>(iv) A counter that is incremented beyond the largest value the data type can store wraps around and becomes negative.</p>
+<p>(b) Explain the difference between a syntax error and a run-time error. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) Syntax error — the rules of the programming language are not followed (<code>=&gt;</code> is not a valid operator). [1]</p>
+<p>(ii) Logic error — the algorithm has a mistake that causes the program to behave incorrectly (it runs, but produces wrong results). [1]</p>
+<p>(iii) Run-time error — a mistake that occurs during the execution of a program. [1]</p>
+<p>(iv) Overflow error — the computer attempts to handle a number outside of the defined range of values. [1]</p>
+<p>(b) A syntax error is a mistake in the program where the rules of the programming language are not followed. A run-time error is a mistake that occurs during the execution of a program; programming languages define their own run-time errors. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.2 — Finding and Correcting Errors (5 marks)</div><div class="callout-body"><p>(a) List the five effective ways to find and correct errors given in the course framework. [3]</p>
+<p>(b) Explain how adding extra output statement(s) can help a programmer find an error. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Test cases; hand tracing; visualizations; debuggers; adding extra output statement(s). [3]</p>
+<p>(b) Extra output statements display intermediate values during execution, so the programmer can see exactly where the program’s results begin to differ from what is expected and locate the faulty code segment. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.3 — Test Cases and Extreme Inputs (4 marks)</div><div class="callout-body"><p>A program is designed to compute a final grade. Grades can range from 0 to 100.</p>
+<p>(a) In the development process, what are defined inputs used for? [2]</p>
+<p>(b) State two defined inputs the programmer should test that demonstrate the expected outcomes at or just beyond the extremes (minimum and maximum) of the input data, and state the expected outcome of each. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) In the development process, testing uses defined inputs to ensure that an algorithm or program is producing the expected outcomes, and programmers use the results from testing to revise their algorithms or programs. [2]</p>
+<p>(b) Any two of: <code>0</code> (the minimum, expected grade 0), <code>100</code> (the maximum, expected grade 100), and values just beyond the extremes such as <code>-1</code> or <code>101</code> (expected: an error message or a clearly defined “invalid input” outcome). Program requirements are needed to identify the appropriate defined inputs. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.4 — Hand-Tracing Pseudocode (5 marks)</div><div class="callout-body"><p>Trace the following pseudocode segment with the input value 6.</p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">INPUT</span> <span class="n">number</span>
+<span class="n">sum</span> <span class="err">←</span> <span class="mi">0</span>
+<span class="n">i</span> <span class="err">←</span> <span class="mi">1</span>
+<span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">number</span>
+    <span class="n">sum</span> <span class="err">←</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span>
+    <span class="n">i</span> <span class="err">←</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="kr">END</span> <span class="kr">REPEAT</span>
+<span class="n">OUTPUT</span> <span class="n">sum</span>
+</pre></div>
+</code></pre>
+<p>(a) Show the values of <code>sum</code> and <code>i</code> after each repetition of the loop. [3]</p>
+<p>(b) State the final output. [1]</p>
+<p>© Give one test case that checks behavior at an extreme of the input data, and state the expected output. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Starting values: <code>sum = 0</code>, <code>i = 1</code>.</p>
+<ul>
+<li>
+<p>After repetition 1: <code>sum = 0 + 1 = 1</code>, <code>i = 2</code></p>
+</li>
+<li>
+<p>After repetition 2: <code>sum = 1 + 2 = 3</code>, <code>i = 3</code></p>
+</li>
+<li>
+<p>After repetition 3: <code>sum = 3 + 3 = 6</code>, <code>i = 4</code></p>
+</li>
+<li>
+<p>After repetition 4: <code>sum = 6 + 4 = 10</code>, <code>i = 5</code></p>
+</li>
+<li>
+<p>After repetition 5: <code>sum = 10 + 5 = 15</code>, <code>i = 6</code></p>
+</li>
+<li>
+<p>After repetition 6: <code>sum = 15 + 6 = 21</code>, <code>i = 7</code> — now <code>i &gt; number</code> (7 &gt; 6), so the loop stops.</p>
+</li>
+</ul>
+<p>[3]</p>
+<p>(b) The output is <code>21</code> (the sum of the integers from 1 to 6). [1]</p>
+<p>© Example: input <code>0</code> (the minimum extreme) — the condition <code>1 &gt; 0</code> is true immediately, so the loop body never runs, <code>sum</code> stays <code>0</code>, and the expected output is <code>0</code>. (Any reasonable extreme test case with its expected output is accepted.) [1]</p>
+</div></details><h3 id="section_15">Quiz-Extension Notes — Non-Terminating Loops, Test Sufficiency, and Commenting Out Code</h3>
+<p>Quiz 1 (the Progress Check) tested three additional points beyond the official EKs: loops that never terminate, why a single passing test case is not enough, and a sixth debugging strategy (commenting out lines of code).</p>
+<p><strong>Learning Objective [CRD-2.L] — Identify and correct errors that cause a loop to run forever (non-terminating / infinite loop).</strong></p>
+<blockquote>
+<p>识别并修正导致循环永不停止（非终止循环 / 死循环，infinite loop）的错误。核心概念：非终止循环因其终止条件永远不为真而永不结束；常见成因是循环体内未更新循环变量或终止条件所检查的变量；修正方法是在循环体内更新循环变量，使终止条件最终成立。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.L.1]:</strong> A non-terminating (infinite) loop is a loop that never stops executing because its terminating condition never becomes true.</li>
+<li><strong>[CRD-2.L.2]:</strong> A common cause is that the loop variable — or the variable the terminating condition checks — is never updated inside the loop body.</li>
+<li><strong>[CRD-2.L.3]:</strong> Quiz 1 tests this repeatedly: in a <code>REPEAT UNTIL</code> loop, if the counter tested by the condition is not updated inside the loop, the condition stays false forever and the loop never ends, so the program never reaches its output.</li>
+<li><strong>[CRD-2.L.4]:</strong> To correct the error, update the loop variable inside the loop body so that the terminating condition eventually becomes true.</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.5 — Non-Terminating Loop (5 marks)</div><div class="callout-body"><p>Consider the following pseudocode, which is intended to output the sum of the integers from 1 to 5.</p>
+<pre><code><div class="highlight"><pre><span></span><span class="n">sum</span> <span class="err">←</span> <span class="mi">0</span>
+<span class="n">i</span> <span class="err">←</span> <span class="mi">1</span>
+<span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">5</span>
+    <span class="n">sum</span> <span class="err">←</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span>
+<span class="kr">END</span> <span class="kr">REPEAT</span>
+<span class="n">OUTPUT</span> <span class="n">sum</span>
+</pre></div>
+</code></pre>
+<p>(a) Identify the error in the code segment, and state whether the program ever produces its output. [2]</p>
+<p>(b) Explain why this error causes the loop never to terminate. [1]</p>
+<p>© Show the corrected loop body. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The loop variable <code>i</code> is never updated inside the loop body, so the condition <code>i &gt; 5</code> never becomes true; the loop repeats forever and the program never reaches the <code>OUTPUT</code> statement. [2]</p>
+<p>(b) The terminating condition depends on <code>i</code>, and <code>i</code> never changes (it stays 1), so <code>1 &gt; 5</code> is always false and the <code>REPEAT UNTIL</code> loop never stops. [1]</p>
+<p>© The corrected loop body adds an update so that <code>i</code> increases toward 5:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">5</span>
+    <span class="n">sum</span> <span class="err">←</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span>
+    <span class="n">i</span> <span class="err">←</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="kr">END</span> <span class="kr">REPEAT</span>
+</pre></div>
+</code></pre>
+<p>Now <code>i</code> grows each repetition until the condition becomes true and the loop ends. [2]</p>
+</div></details><p><strong>Learning Objective [CRD-2.M] — Explain why a single passing test case does not prove a program is correct.</strong></p>
+<blockquote>
+<p>解释为何单个通过的测试用例（test case）不能证明程序正确。核心概念：一个通过的用例只能确认程序对该特定输入产生预期结果；其他输入仍可能暴露错误，因此不能证明程序对所有输入都正确；通过测试提供的是证据（evidence）而非证明（proof），故需测试极值及边界处的输入。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.M.1]:</strong> A test case that produces the expected outcome confirms only that the program behaves correctly for that specific input.</li>
+<li><strong>[CRD-2.M.2]:</strong> One passing test case cannot prove that the program is correct for every possible input — other inputs can still expose errors.</li>
+<li><strong>[CRD-2.M.3]:</strong> This is why testing uses defined inputs at or just beyond the extremes of the input range (CRD-2.J.2): passing tests provide evidence, not proof, of correctness.</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.6 — Why One Test Case Is Not Enough (4 marks)</div><div class="callout-body"><p>A programmer tests a grading program with the single input <code>92</code>; the program correctly outputs <code>A</code>. The programmer concludes that the program is fully correct.</p>
+<p>(a) What does the single passing test case actually confirm? [2]</p>
+<p>(b) Explain why the programmer’s conclusion is unjustified. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It confirms only that the program produces the expected outcome for the input <code>92</code>; it provides no evidence about any other input. [2]</p>
+<p>(b) A single passing case cannot prove the program is correct for all inputs: the program may still have a logic error that appears only for other values — for example, inputs at the extremes (0 or 100) or just beyond them. Passing tests are evidence, not proof, of correctness. [2]</p>
+</div></details><p><strong>Learning Objective [CRD-2.N] — Use “commenting out” lines of code as a debugging strategy.</strong></p>
+<blockquote>
+<p>使用&quot;注释掉（commenting out）&quot;代码行作为调试（debugging）策略。核心概念：注释掉某行可临时禁用该行而不从文件中删除；逐个注释可疑代码行可隔离导致错误行为的代码段；这是在 CRD-2.I.5 五种方法之外新增的第六种有效查错方法。</p>
+</blockquote>
+<ul>
+<li><strong>[CRD-2.N.1]:</strong> Commenting out a line of code temporarily disables it — the program ignores it during execution — without deleting it from the file.</li>
+<li><strong>[CRD-2.N.2]:</strong> By commenting out suspected lines one at a time, a programmer can isolate which code segment causes the incorrect behavior.</li>
+<li><strong>[CRD-2.N.3]:</strong> This is the sixth effective way to find and correct errors (added in the Quiz 1 rubric), extending the five ways listed in CRD-2.I.5: test cases; hand tracing; visualizations; debuggers; adding extra output statements; commenting out lines of code.</li>
+</ul>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.7 — Commenting Out Lines of Code (4 marks)</div><div class="callout-body"><p>(a) What does it mean to “comment out” a line of code, and how is it different from deleting it? [2]</p>
+<p>(b) A program outputs an incorrect total. Describe how a programmer could use commenting out to find the error. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Commenting out a line turns it into a comment, so the program ignores it during execution, but the line remains in the file and can easily be restored. Deleting removes the line permanently. [2]</p>
+<p>(b) The programmer comments out lines one at a time (or in small groups), running the program after each change and checking whether the total becomes correct; the line whose removal fixes the output is the one causing the error. [2]</p>
+</div></details><hr>
+<h2 id="section_16">Create Performance Task (CPT) — Official Requirements</h2>
+<p>The Create Performance Task is worth 30% of the AP CSP exam score. Quiz 1 (the Progress Check) revealed several official requirements that students commonly miss; this section collects them all.</p>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><p>CPT scoring is all-or-nothing within each row. When reviewing a response, ask: <em>Does it meet EVERY criterion in this row?</em> A single missing criterion means the whole row scores 0.</p>
+<ul>
+<li>
+<p><strong>Video:</strong> ≤ 1 minute; ≤ 30 MB; .mp4/.wmv/.avi/.mov (some versions add .webm); no personal identifying information; no narration (text captions encouraged); must demonstrate the running program including input, at least one functionality, and output.</p>
+</li>
+<li>
+<p><strong>Written responses:</strong> about 50–200 words each (exclusive of program code); identify the output; describe how input affects functionality; describe the functionality; describe the overall purpose.</p>
+</li>
+<li>
+<p><strong>PPR:</strong> screenshots at ≥ 10 pt font with no comments; a Procedure section (name, return type, parameters; sequencing + selection + iteration); a List section (how the data is stored and how it is used).</p>
+</li>
+<li>
+<p><strong>Code:</strong> input from one of four sources (user, device, online data stream, file); output in one of four forms (tactile, audible, visual, textual); at least one list managing complexity; the algorithm inside the selected procedure’s body; a call to the procedure.</p>
+</li>
+</ul>
+</div></div><h3 id="section_17">Submission Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What is submitted</th>
+<th>Key official requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component A — Program Code</td>
+<td>Full program code</td>
+<td>Input from user/device/online data stream/file; output in tactile/audible/visual/textual form; at least one list managing complexity; the algorithm inside the body of a selected procedure; a call to that procedure</td>
+</tr>
+<tr>
+<td>Component B — Video</td>
+<td>A video of the program running</td>
+<td>≤ 1 minute; ≤ 30 MB; .mp4/.wmv/.avi/.mov (some versions include .webm); no personal identifying information; no narration (text captions encouraged); must show input, at least one functionality, and output</td>
+</tr>
+<tr>
+<td>Component C — PPR</td>
+<td>Screenshots of code and written descriptions</td>
+<td>Screenshots at ≥ 10 pt font, no comments; Procedure section (name, return type, parameters; sequencing + selection + iteration); List section (storage and use of data)</td>
+</tr>
+<tr>
+<td>Component D — Written Responses</td>
+<td>Short written responses (about 50–200 words each, exclusive of code)</td>
+<td>Identify the output; describe how input affects functionality; describe the functionality; describe the overall purpose</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_18">Video Requirements</h3>
+<p><strong>Learning Objective [CPT-1.A] — Meet the official video requirements for the Create Performance Task.</strong></p>
+<blockquote>
+<p>满足 Create Performance Task（CPT）的官方视频要求。核心概念：视频时长不超过 1 分钟、文件大小不超过 30 MB；可接受格式为 .mp4、.wmv、.avi、.mov（部分版本含 .webm）；不得包含个人身份信息；不允许旁白（鼓励使用文字字幕）；视频须演示程序实际运行，包括输入、至少一项功能与输出。</p>
+</blockquote>
+<ul>
+<li><strong>[CPT-1.A.1]:</strong> The video must be at most 1 minute long and at most 30 MB in file size.</li>
+<li><strong>[CPT-1.A.2]:</strong> Acceptable formats are .mp4, .wmv, .avi, and .mov (some versions also accept .webm).</li>
+<li><strong>[CPT-1.A.3]:</strong> The video must not contain any personal identifying information.</li>
+<li><strong>[CPT-1.A.4]:</strong> Narration is not allowed; text captions are encouraged.</li>
+<li><strong>[CPT-1.A.5]:</strong> The video must demonstrate the program running, including the input to the program, at least one functionality, and the output produced.</li>
+</ul>
+<h3 id="section_19">Written Response Requirements</h3>
+<p><strong>Learning Objective [CPT-1.B] — Meet the official written-response requirements.</strong></p>
+<blockquote>
+<p>满足官方书面作答（written response）要求。核心概念：每份书面回答约 50–200 词（不含程序代码）；须识别程序产生的输出、描述输入如何影响程序功能、描述程序的功能，并描述程序的整体目的。</p>
+</blockquote>
+<ul>
+<li><strong>[CPT-1.B.1]:</strong> Each written response should be about 50–200 words, exclusive of program code.</li>
+<li><strong>[CPT-1.B.2]:</strong> The response must identify the output produced by the program.</li>
+<li><strong>[CPT-1.B.3]:</strong> The response must describe how the input affects the functionality of the program.</li>
+<li><strong>[CPT-1.B.4]:</strong> The response must describe the functionality of the program.</li>
+<li><strong>[CPT-1.B.5]:</strong> The response must describe the overall purpose of the program.</li>
+</ul>
+<h3 id="section_20">PPR — Personalized Project Reference</h3>
+<p><strong>Learning Objective [CPT-1.C] — Meet the official PPR requirements.</strong></p>
+<blockquote>
+<p>满足个性化项目参考（Personalized Project Reference, PPR）的官方要求。核心概念：代码截图字号至少 10 pt 且不得包含注释；Procedure 部分须写明过程（procedure）的名称、返回类型与参数，并展示顺序（sequencing）、选择（selection）与迭代（iteration）；List 部分须描述数据如何存储及如何被程序使用。</p>
+</blockquote>
+<ul>
+<li><strong>[CPT-1.C.1]:</strong> Screenshots must be in a font of at least 10 points.</li>
+<li><strong>[CPT-1.C.2]:</strong> Screenshots must not contain any comments.</li>
+<li><strong>[CPT-1.C.3]:</strong> The Procedure section must identify the procedure’s name, return type, and parameters, and must demonstrate sequencing, selection, and iteration.</li>
+<li><strong>[CPT-1.C.4]:</strong> The List section must describe how the data is stored and how it is used by the program.</li>
+</ul>
+<h3 id="section_21">Component A — Program Code</h3>
+<p><strong>Learning Objective [CPT-1.D] — Meet the official program-code requirements.</strong></p>
+<blockquote>
+<p>满足官方程序代码（program code）要求。核心概念：输入须来自四种来源之一——用户、设备、在线数据流或文件；输出须为触觉、听觉、视觉或文本形式之一；程序须包含至少一个管理复杂度的列表（list）；算法须位于所选过程（procedure）的函数体内，且程序必须包含对该过程的调用。</p>
+</blockquote>
+<ul>
+<li><strong>[CPT-1.D.1]:</strong> The program must include input from one of four sources: a user, a device, an online data stream, or a file.</li>
+<li><strong>[CPT-1.D.2]:</strong> The program must include output in one of four forms: tactile, audible, visual, or textual.</li>
+<li><strong>[CPT-1.D.3]:</strong> The program must include at least one list (or other collection type) to manage the complexity of the program.</li>
+<li><strong>[CPT-1.D.4]:</strong> The algorithm must be contained within the body of the selected procedure.</li>
+<li><strong>[CPT-1.D.5]:</strong> The program must include a call to the selected procedure.</li>
+</ul>
+<h3 id="section_22">Scoring — Rows 1–6</h3>
+<p><strong>Learning Objective [CPT-1.E] — Understand the row-based scoring of the Create Performance Task.</strong></p>
+<blockquote>
+<p>理解 Create Performance Task 的逐行评分（row-based scoring）。核心概念：CPT 按第 1–6 行评分，每行得 1 或 0 分，行内无部分分；某行只有在其全部标准都满足时才得分，缺任一标准即得 0；截图与故事板不能作为程序运行的演示，不计分。</p>
+</blockquote>
+<ul>
+<li><strong>[CPT-1.E.1]:</strong> The CPT is scored on Rows 1–6, and each row scores either 1 or 0 — there is no partial credit within a row.</li>
+<li><strong>[CPT-1.E.2]:</strong> A row earns its point only if the response meets ALL of that row’s criteria; if even one criterion is missing, the row scores 0.</li>
+<li><strong>[CPT-1.E.3]:</strong> Screenshots and storyboards are not accepted as demonstrations of the program and earn no points.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Row</th>
+<th>Criterion for the point</th>
+<th>What the response must provide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Row 1</td>
+<td>Program purpose and function</td>
+<td>Identify the purpose of the program and describe the functionality demonstrated in the video (input, at least one functionality, output)</td>
+</tr>
+<tr>
+<td>Row 2</td>
+<td>Multiple program statements</td>
+<td>Describe a program segment that includes multiple programming statements</td>
+</tr>
+<tr>
+<td>Row 3</td>
+<td>Mathematical and logical concepts</td>
+<td>Describe how the program uses mathematical and/or logical concepts</td>
+</tr>
+<tr>
+<td>Row 4</td>
+<td>Procedures</td>
+<td>Describe a student-developed procedure (name, return type, parameters) that includes sequencing, selection, and iteration, and is called by the program</td>
+</tr>
+<tr>
+<td>Row 5</td>
+<td>Algorithm implementation</td>
+<td>Describe how the program uses a list (or other collection type) to manage complexity; the algorithm is inside the selected procedure’s body</td>
+</tr>
+<tr>
+<td>Row 6</td>
+<td>Testing</td>
+<td>Describe two calls to the procedure, the conditions being tested, and the results</td>
+</tr>
+</tbody>
+</table>
+<h3 id="section_23">Scoring Exclusions</h3>
+<p><strong>Learning Objective [CPT-1.F] — Recognize items that do not earn credit.</strong></p>
+<blockquote>
+<p>识别不计分的内容。核心概念：内置函数、事件处理器（event handler）或 main 方法不计为学生自建过程；单元素列表不计为管理复杂度的列表；琐碎的选择与迭代不计分；内容与程序不实、不准确或不一致时也不计分。</p>
+</blockquote>
+<ul>
+<li><strong>[CPT-1.F.1]:</strong> A built-in function, an event handler, or a main method does not count as a student-developed procedure.</li>
+<li><strong>[CPT-1.F.2]:</strong> A one-element list does not count as a list that manages complexity.</li>
+<li><strong>[CPT-1.F.3]:</strong> Trivial selection and trivial iteration do not count.</li>
+<li><strong>[CPT-1.F.4]:</strong> Content that is implausible, inaccurate, or inconsistent with the program does not count toward the requirements.</li>
+</ul>
+<h3 id="section_24">Exercises</h3>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise CPT.1 — Video and Written Response Requirements (6 marks)</div><div class="callout-body"><p>(a) State the maximum duration, maximum file size, and acceptable formats for the Create Performance Task video. [3]</p>
+<p>(b) Give two rules about the video’s content, besides its format and size limits. [2]</p>
+<p>© About how long, exclusive of program code, should each written response be? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) At most 1 minute long; at most 30 MB; formats .mp4, .wmv, .avi, and .mov (some versions also accept .webm). [3]</p>
+<p>(b) Any two of: the video must not contain personal identifying information; narration is not allowed (text captions are encouraged); the video must demonstrate the program running and show the input, at least one functionality, and the output. [2]</p>
+<p>© About 50–200 words, exclusive of program code. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise CPT.2 — PPR and Component A Requirements (6 marks)</div><div class="callout-body"><p>(a) Give two requirements for the screenshots in the Personalized Project Reference. [2]</p>
+<p>(b) What must the PPR’s Procedure section identify, and what three constructs must it demonstrate? [2]</p>
+<p>© A student’s program only reads a value typed by the user and displays it on the screen. Identify the input source category and the output form used, and explain why the program would NOT satisfy the list requirement. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The screenshots must be in a font of at least 10 points, and they must not contain any comments. [2]</p>
+<p>(b) The Procedure section must identify the procedure’s name, return type, and parameters, and it must demonstrate sequencing, selection, and iteration. [2]</p>
+<p>© The input source category is a user, and the output form is textual (visual). The program contains no list (or other collection type) that manages complexity, so it fails the requirement that the program include at least one list to manage the complexity of the program. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise CPT.3 — Scoring Rows and Exclusions (6 marks)</div><div class="callout-body"><p>(a) The CPT is scored on Rows 1–6. For a row to earn its point, what must be true of every criterion in that row? [2]</p>
+<p>(b) Explain why screenshots and storyboards earn no points as demonstrations. [2]</p>
+<p>© A student claims that the <code>onEvent</code> event handler provided by their programming platform is their student-developed procedure. Explain why this does not count. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Every criterion in the row must be met: a row earns its point only if ALL of its criteria are satisfied, and a single missing criterion means the row scores 0. [2]</p>
+<p>(b) Screenshots and storyboards are static materials; they do not demonstrate the program running. The demonstration must be the video, which shows the actual running program including the input, at least one functionality, and the output. [2]</p>
+<p>© A built-in function, an event handler, or a main method does not count as a student-developed procedure. The <code>onEvent</code> handler is provided by the platform, so it cannot be the student-developed procedure that the rubric requires. [2]</p>
+</div></details><hr>
+<p>Next: <a href="big-idea-2-data.html">Big Idea 2 — Data</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="index.html" title="AP CSA Review Notes (Index)" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AP CSA Review Notes (Index)</span></a>
+<a href="big-idea-1-creative-development.html" title="Big Idea 1 Creative Development" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Big Idea 1 Creative Development</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science Principles (Course &amp; Exam Description, Effective Fall 2020) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>

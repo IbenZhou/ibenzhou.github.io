@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Idea 4 Computer Systems and Networks — AP CSP Review Notes</title>
+<style>
+:root {
+  --bg: #f4f3f8;
+  --card-bg: #fcfbfd;
+  --text: #33303e;
+  --text-secondary: #8d8798;
+  --accent: #6d5cc9;
+  --accent-light: #e6e0f3;
+  --border: #dcd5e8;
+  --code-bg: #ece8f3;
+  --ink: #252033;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+.site-header {
+  background: rgba(251,252,247,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+.hero {
+  background: linear-gradient(160deg, #2a2450 0%, #6d5cc9 50%, #9d8fe8 100%);
+  color: #f3f7ee;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(190,175,240,0.45), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.8; }
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #4a3e82;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #5b4bb0;
+}
+.card code.table-inline { display: block; white-space: pre-wrap; padding: 8px 10px; margin: 2px 0; font-size: 13px; }
+.card pre {
+  background: #f0edf6;
+  color: #332e45;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #dcd5e8;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.card mark { background: #e2daf2; color: #4a3e82; padding: 0 3px; border-radius: 2px; }
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+.site-footer { border-top: 1px solid var(--border); }
+.site-footer p { max-width: 1120px; margin: 0 auto; padding: 18px 24px; font-size: 13px; color: var(--text-secondary); }
+/* callout 样式 */
+.callout { border: 1px solid var(--border); border-radius: var(--radius); margin: 18px 0; overflow: hidden; box-shadow: var(--shadow); }
+.callout-title { padding: 9px 16px; font-size: 14px; font-weight: 700; letter-spacing: .2px; }
+.callout-body { padding: 10px 18px 14px; font-size: 15px; }
+.callout-body > :first-child { margin-top: 6px; }
+.callout-body > :last-child { margin-bottom: 4px; }
+.callout-body p { margin: 8px 0; }
+.callout-body ul, .callout-body ol { margin: 6px 0 10px 22px; }
+.callout-body li { margin: 3px 0; }
+.callout-body code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.callout-exercise { background: #ece8f6; border-color: #c9c0e2; }
+.callout-exercise .callout-title { background: #ddd3f0; color: #4a3e82; }
+.callout-exam { background: #faf0e0; border-color: #ecd9b4; }
+.callout-exam .callout-title { background: #f6e7cb; color: #7d5417; }
+.callout-tip { background: #eaf1f8; border-color: #c8d9e8; }
+.callout-tip .callout-title { background: #dcebf7; color: #2d5a8a; }
+.callout-note { background: #f4f4f0; border-color: #ddd8cd; }
+.callout-note .callout-title { background: #ecebe4; color: #5d5648; }
+.callout-answer { background: #f6f5f1; border-color: #ddd8cd; }
+.callout-answer summary {
+  cursor: pointer; padding: 10px 16px; font-size: 14px; font-weight: 600;
+  color: #5d5648; background: #ece9e1; user-select: none; list-style: none;
+  transition: background 0.15s;
+}
+.callout-answer summary:hover { background: #e6e2d8; }
+.callout-answer[open] summary { border-bottom: 1px dashed #ddd8cd; }
+.callout-answer summary::-webkit-details-marker { display: none; }
+.callout-answer summary::before { content: '▸ '; }
+.callout-answer[open] summary::before { content: '▾ '; }
+/* Code highlighting — warm dark theme */
+.highlight { background: #f0edf6; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #e8e2f4 }
+.highlight .c { color: #8b83a0 }
+.highlight .k { color: #5b4bb0 }
+.highlight .s { color: #a8612f }
+.highlight .n { color: #332e45 }
+.highlight .p { color: #6a6480 }
+.highlight .o { color: #5b4bb0 }
+.highlight .mi { color: #5b4bb0 }
+.highlight .mf { color: #5b4bb0 }
+.highlight .m { color: #5b4bb0 }
+.highlight .nb { color: #5b4bb0 }
+.highlight .nc { color: #7a63b8 }
+.highlight .nd { color: #7a63b8 }
+.highlight .nf { color: #7a63b8 }
+.highlight .nn { color: #7a63b8 }
+.highlight .kt { color: #5b4bb0 }
+.highlight .bp { color: #332e45 }
+.highlight .kn { color: #5b4bb0 }
+.highlight .ow { color: #5b4bb0 }
+.highlight .kc { color: #5b4bb0 }
+.highlight .kd { color: #5b4bb0 }
+.highlight .s1, .highlight .s2, .highlight .sb, .highlight .se, .highlight .si { color: #a8612f }
+.highlight .err { color: #332e45; background: none }
+.highlight .w { color: #332e45 }
+.highlight .nt { color: #7a63b8 }
+.highlight .na { color: #a8612f }
+.highlight .nl { color: #332e45 }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../../apcsp.html" class="site-title">AP CSP Review Notes</a>
+    <span class="site-subtitle"><a href="../../apcsp.html" style="color:inherit;text-decoration:none;opacity:.7">← AP CSP 版块</a> &nbsp;·&nbsp; 5 big ideas · 169 exercises</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>Big Idea 4 · Computer Systems and Networks</h1>
+    <p>AP Exam Weight 11–15% · 4.1–4.3 class periods · 3 topics</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div>
+<ul>
+<li><a href="#section_1">Overview</a></li>
+<li><a href="#section_2">Topic 4.1 — The Internet</a></li>
+<li><a href="#section_5">Topic 4.2 — Fault Tolerance</a></li>
+<li><a href="#section_9">Topic 4.3 — Parallel and Distributed Computing</a></li>
+</ul>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+<h1 id="section">Big Idea 4 — Computer Systems and Networks (CSN): Review Notes</h1>
+<blockquote>
+<p><strong>Syllabus:</strong> AP Computer Science Principles — Course and Exam Description, Effective Fall 2020<br>
+<strong>Exam Weight:</strong> 11–15% of AP Exam<br>
+<strong>Topics:</strong> 4.1–4.3<br>
+<strong>AP Classroom:</strong> Topic Questions ~10 multiple-choice</p>
+</blockquote>
+<hr>
+<h2 id="section_1">Overview</h2>
+<p>Big Idea 4 explains how computer systems and networks — primarily the Internet — work. You will learn how computing devices are grouped into systems and networks, how information is transmitted across the Internet in packets, and how the network finds a path and moves data from sender to receiver. Next, you will study the safeguards that keep the Internet from breaking down: fault tolerance achieved through redundancy, so that when a device or connection fails, the network keeps working. Finally, you will learn the effect that dividing tasks across multiple computing devices can have on the speed at which processes occur, comparing sequential, parallel, and distributed computing and computing the <em>speedup</em> of a parallel solution. This big idea is often taught in conjunction with Big Idea 5: Impact of Computing.</p>
+<p><strong>In this big idea you will learn to:</strong></p>
+<ul>
+<li>Explain how computing devices work together in a network, and explain how the Internet works (routing, bandwidth, protocols, scalability)</li>
+<li>Explain how data are sent through the Internet via packets</li>
+<li>Describe the differences between the Internet and the World Wide Web</li>
+<li>Describe the benefits of fault tolerance, explain how a given system — like the Internet — is fault-tolerant, and identify vulnerabilities to failure in a system</li>
+<li>Compare sequential, parallel, and distributed computing solutions and determine the efficiency of solutions, including computing speedup</li>
+<li>Describe benefits and challenges of parallel and distributed computing</li>
+</ul>
+<div class="callout callout-exam"><div class="callout-title">💡 Exam Tip</div><div class="callout-body"><ul>
+<li>
+<p><strong>Know the packet story cold:</strong> information travels as a data stream split into chunks encapsulated in <em>packets</em>; each packet holds data plus <em>metadata</em> used for routing and reassembly; packets may arrive <strong>in order, out of order, or not at all</strong> (they take different paths and can be lost). TCP reassembles and reorders packets (reliable), while UDP sends fast with no guarantee — this distinction is a favorite multiple-choice question.</p>
+</li>
+<li>
+<p><strong>Fault tolerance = redundancy = extra components.</strong> On the Internet the redundancy is <em>more than one path between any two connected devices</em>; if one device or connection fails, subsequent data is sent via a different route if possible. Redundancy costs additional resources but buys fault tolerance, which is what lets you still reach the Internet during an outage elsewhere.</p>
+</li>
+<li>
+<p><strong>Be ready to compute parallel speedup.</strong> A sequential solution takes the <em>sum</em> of all steps; a parallel solution takes its <em>sequential tasks plus the longest of its parallel tasks</em>. Speedup = sequential time ÷ parallel time. Always check for a leftover sequential portion — it limits the maximum possible speedup.</p>
+</li>
+</ul>
+</div></div><hr>
+<h2 id="section_2">Topic 4.1 — The Internet</h2>
+<h3 id="section_3">Key Concepts</h3>
+<p><strong>Learning Objective [CSN-1.A] — Explain how computing devices work together in a network.</strong></p>
+<blockquote>
+<p>解释计算设备如何在网络中协同工作。核心概念：计算设备（computing device）是可运行程序的物理设备（如计算机、平板、服务器、路由器、智能传感器）；计算系统（computing system）是为共同目的协同工作的设备与程序集合；计算机网络（computer network）是互联互通的设备组；路径（path）是发送端到接收端的直连设备序列；路由（routing）是寻找路径的过程；带宽（bandwidth）是单位时间内可发送的最大数据量，通常以比特每秒（bits per second）计量。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-1.A.1]:</strong> A <em>computing device</em> is a physical artifact that can run a program. Some examples include computers, tablets, servers, routers, and smart sensors.</li>
+<li><strong>[CSN-1.A.2]:</strong> A <em>computing system</em> is a group of computing devices and programs working together for a common purpose.</li>
+<li><strong>[CSN-1.A.3]:</strong> A <em>computer network</em> is a group of interconnected computing devices capable of sending or receiving data.</li>
+<li><strong>[CSN-1.A.4]:</strong> A computer network is a type of computing system.</li>
+<li><strong>[CSN-1.A.5]:</strong> A <em>path</em> between two computing devices on a computer network (a sender and a receiver) is a sequence of directly connected computing devices that begins at the sender and ends at the receiver.</li>
+<li><strong>[CSN-1.A.6]:</strong> <em>Routing</em> is the process of finding a path from sender to receiver.</li>
+<li><strong>[CSN-1.A.7]:</strong> The <em>bandwidth</em> of a computer network is the maximum amount of data that can be sent in a fixed amount of time.</li>
+<li><strong>[CSN-1.A.8]:</strong> Bandwidth is usually measured in bits per second.</li>
+</ul>
+<p><strong>Learning Objective [CSN-1.B] — Explain how the Internet works.</strong></p>
+<blockquote>
+<p>解释互联网如何工作。核心概念：互联网（Internet）是由互联网络组成的计算机网络，采用标准化、开放（非专有）的通信协议（protocol）；协议（protocol）是约定好的规则集，规定系统的行为，开放协议使新设备易于接入；路由（routing）通常是动态的、不预先指定；可扩展性（scalability）指系统改变规模以应对新需求的能力，互联网在设计上即可扩展。补充：域名系统（DNS）将人类可读的域名解析为用于路由的IP地址，域名具有层次结构（子域 subdomain）；联网设备都有IP地址，IPv6（128位）比IPv4（32位）提供更大的地址空间，可接入更多设备；互联网工程任务组（IETF）是制定开放标准的国际组织；互联网是去中心化（decentralized）的，任何设备可随时加入。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-1.B.1]:</strong> The Internet is a computer network consisting of interconnected networks that use standardized, open (nonproprietary) communication protocols.</li>
+<li><strong>[CSN-1.B.2]:</strong> Access to the Internet depends on the ability to connect a computing device to an Internet-connected device.</li>
+<li><strong>[CSN-1.B.3]:</strong> A <em>protocol</em> is an agreed-upon set of rules that specify the behavior of a system.</li>
+<li><strong>[CSN-1.B.4]:</strong> The protocols used in the Internet are open, which allows users to easily connect additional computing devices to the Internet.</li>
+<li><strong>[CSN-1.B.5]:</strong> Routing on the Internet is usually dynamic; it is not specified in advance.</li>
+<li><strong>[CSN-1.B.6]:</strong> The <em>scalability</em> of a system is the capacity for the system to change in size and scale to meet new demands.</li>
+<li><strong>[CSN-1.B.7]:</strong> The Internet was designed to be scalable.</li>
+<li><strong>[CSN-1.B-Ext1]:</strong> A <em>domain name</em> (e.g., <code>example.com</code>) is a human-readable name for an Internet resource; the <em>DNS</em> (Domain Name System) resolves domain names into the IP addresses used for routing. Domain names are hierarchical — <code>about.example.com</code> is a subdomain of <code>example.com</code>.</li>
+<li><strong>[CSN-1.B-Ext2]:</strong> Every device connected to the Internet is identified by an <em>IP address</em>. IPv4 uses a limited address space (32-bit addresses), while IPv6 (128-bit addresses) provides a far larger address space, so IPv6 allows many more devices to connect to the Internet.</li>
+<li><strong>[CSN-1.B-Ext3]:</strong> The <em>IETF</em> (Internet Engineering Task Force) is an open, international organization that develops Internet standards and protocols — the standards body behind many of the open protocols the Internet uses.</li>
+<li><strong>[CSN-1.B-Ext4]:</strong> Each device connected to the Internet is assigned an IP address, and that address is used for routing packets to and from the device.</li>
+<li><strong>[CSN-1.B-Ext5]:</strong> The Internet is <em>decentralized</em>: there is no central computer that monitors or controls the whole network, and any device can join the Internet at any time.</li>
+<li><strong>[CSN-1.B-Ext6]:</strong> <em>Simulations</em> can model the Internet — for example, simulating how data packets are transmitted, or the effect of a device/connection outage or an increase in bandwidth, to study the network without altering the real one.</li>
+</ul>
+<p><strong>Learning Objective [CSN-1.C] — Explain how data are sent through the Internet via packets.</strong></p>
+<blockquote>
+<p>解释数据如何以数据包的形式在互联网上传输。核心概念：信息以数据流（data stream）形式在互联网上传递，数据流中的分块数据被封装进数据包（packet）；每个数据包包含一块数据及用于路由和数据重组（reassembly）的元数据（metadata）；数据包可能按顺序到达、乱序到达或根本不到达；IP（网际协议）、TCP（传输控制协议）和 UDP（用户数据报协议）是互联网上常见的协议（protocol）。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-1.C.1]:</strong> Information is passed through the Internet as a data stream. Data streams contain chunks of data, which are encapsulated in <em>packets</em>.</li>
+<li><strong>[CSN-1.C.2]:</strong> Packets contain a chunk of data and <em>metadata</em> used for routing the packet between the origin and the destination on the Internet, as well as for data reassembly.</li>
+<li><strong>[CSN-1.C.3]:</strong> Packets may arrive at the destination in order, out of order, or not at all.</li>
+<li><strong>[CSN-1.C.4]:</strong> IP, TCP, and UDP are common protocols used on the Internet.</li>
+</ul>
+<p><strong>Learning Objective [CSN-1.D] — Describe the differences between the Internet and the World Wide Web.</strong></p>
+<blockquote>
+<p>描述互联网与万维网的区别。核心概念：万维网（World Wide Web）是相互链接的页面、程序和文件的系统；超文本传输协议（HTTP）是万维网使用的协议；万维网使用互联网（Internet）——互联网是基础设施（好比&quot;道路&quot;），万维网是依托其运行的链接内容（好比&quot;商店&quot;）。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-1.D.1]:</strong> The <em>World Wide Web</em> is a system of linked pages, programs, and files.</li>
+<li><strong>[CSN-1.D.2]:</strong> <em>HTTP</em> is a protocol used by the World Wide Web.</li>
+<li><strong>[CSN-1.D.3]:</strong> The World Wide Web uses the Internet.</li>
+</ul>
+<h3 id="section_4">Example — Sending a Message Across the Internet</h3>
+<p>When you send a message, the data is split into chunks and each chunk is encapsulated in a packet with metadata. Different packets may travel along different paths, so they can arrive out of order:</p>
+<pre><code><div class="highlight"><pre><span></span><span class="w">  </span><span class="nx">Sender</span><span class="w"> </span><span class="p">(</span><span class="nx">laptop</span><span class="p">)</span><span class="w">                              </span><span class="nx">Receiver</span><span class="w"> </span><span class="p">(</span><span class="nx">phone</span><span class="p">)</span>
+<span class="w">        </span><span class="err">│</span><span class="w">                                          </span><span class="err">│</span>
+<span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="nx">packet</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[</span><span class="nx">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">metadata</span><span class="p">]</span><span class="w"> </span><span class="err">────────────►│</span><span class="w">  </span><span class="nx">arrives</span><span class="w"> </span><span class="mi">1</span><span class="nx">st</span>
+<span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="nx">packet</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[</span><span class="nx">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">metadata</span><span class="p">]</span><span class="w"> </span><span class="err">──►─────────►│</span><span class="w">  </span><span class="nx">arrives</span><span class="w"> </span><span class="mi">3</span><span class="nx">rd</span>
+<span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="nx">packet</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">[</span><span class="nx">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">metadata</span><span class="p">]</span><span class="w"> </span><span class="err">──►─────────►│</span><span class="w">  </span><span class="nx">arrives</span><span class="w"> </span><span class="mi">2</span><span class="nx">nd</span>
+<span class="w">        </span><span class="err">│</span><span class="w">                                          </span><span class="err">│</span>
+<span class="w">  </span><span class="nx">Each</span><span class="w"> </span><span class="nx">packet</span><span class="err">&#39;</span><span class="nx">s</span><span class="w"> </span><span class="nx">metadata</span><span class="w"> </span><span class="nx">contains</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">origin</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">destination</span>
+<span class="w">  </span><span class="nx">addresses</span><span class="w"> </span><span class="nx">plus</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">needed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">reassembly</span><span class="p">,</span><span class="w"> </span><span class="nx">so</span><span class="w"> </span><span class="nx">the</span>
+<span class="w">  </span><span class="nx">receiver</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">put</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">chunks</span><span class="w"> </span><span class="nx">back</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">correct</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span>
+</pre></div>
+</code></pre>
+<p>The three common protocols (CSN-1.C.4):</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Full Name</th>
+<th>Main Role</th>
+<th>Delivery</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IP</strong></td>
+<td>Internet Protocol</td>
+<td>Provides addressing so routers can forward each packet from origin to destination</td>
+<td>Best effort — a packet may not arrive</td>
+</tr>
+<tr>
+<td><strong>TCP</strong></td>
+<td>Transmission Control Protocol</td>
+<td>Breaks data into packets and reassembles them; numbers packets so out-of-order arrivals can be reordered and lost packets can be handled</td>
+<td>Reliable</td>
+</tr>
+<tr>
+<td><strong>UDP</strong></td>
+<td>User Datagram Protocol</td>
+<td>Sends packets quickly with low overhead, used when speed matters more than guaranteed delivery</td>
+<td>Not guaranteed</td>
+</tr>
+</tbody>
+</table>
+<p>The Internet vs. the World Wide Web (CSN-1.D):</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Internet</th>
+<th>World Wide Web</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it is</td>
+<td>The network: interconnected networks using standardized, open protocols</td>
+<td>A system of linked pages, programs, and files</td>
+</tr>
+<tr>
+<td>Analogy</td>
+<td>The “roads” (the infrastructure)</td>
+<td>The “shops” (the content accessed over the roads)</td>
+</tr>
+<tr>
+<td>Relationship</td>
+<td>—</td>
+<td>The World Wide Web uses the Internet (CSN-1.D.3); HTTP is its protocol</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.1 — Packets and Reassembly (6 marks)</div><div class="callout-body"><p>A student sends a long essay to a friend over the Internet.</p>
+<p>(a) Explain why the essay is sent as a data stream containing chunks of data encapsulated in packets, rather than as one single continuous piece of data. [2]</p>
+<p>(b) Describe what the metadata in each packet is used for. [2]</p>
+<p>© Packets may arrive at the destination in order, out of order, or not at all. Explain why this can happen, and how the recipient can still reconstruct the original message. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Information is passed through the Internet as a data stream, and data streams contain chunks of data, which are encapsulated in packets. Splitting the message into packets lets each packet be routed independently along whatever path is available, so the message does not have to travel as one continuous block from sender to receiver. [2]</p>
+<p>(b) The metadata is used for routing the packet between the origin and the destination on the Internet, as well as for data reassembly — it carries the addressing information needed to move the packet to its destination and the information needed to put the chunks back together. [2]</p>
+<p>© Different packets can travel along different paths, be delayed by congestion, or be lost, so they may arrive in order, out of order, or not at all. Because each packet carries metadata used for data reassembly (e.g., its position in the stream), the recipient can reorder the chunks and reconstruct the original message even when they arrive out of order. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.2 — Protocols of the Internet (5 marks)</div><div class="callout-body"><p>(a) Match each description to the protocol it describes by writing <strong>IP</strong>, <strong>TCP</strong>, or <strong>UDP</strong>. [3]</p>
+<p>(i) Breaks data into packets and reassembles them at the destination, so data that arrives out of order can be reordered.</p>
+<p>(ii) Provides the addressing that allows routers to forward each packet from origin to destination.</p>
+<p>(iii) Sends packets quickly with low overhead; delivery and ordering are not guaranteed.</p>
+<p>(b) What is a protocol, and why must the protocols used in the Internet be open (nonproprietary)? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) (i) <strong>TCP</strong> [1] (ii) <strong>IP</strong> [1] (iii) <strong>UDP</strong> [1]</p>
+<p>(b) A protocol is an agreed-upon set of rules that specify the behavior of a system. The protocols used in the Internet are open, which allows users to easily connect additional computing devices to the Internet — anyone can implement and use them, so new devices can join the network easily. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.3 — Bandwidth (5 marks)</div><div class="callout-body"><p>(a) Define the bandwidth of a computer network, and state the unit in which it is usually measured. [2]</p>
+<p>(b) A connection has a bandwidth of 8 megabits per second (8 Mbps). How many seconds does it take to transfer a file of 64 megabits? [2]</p>
+<p>© If the bandwidth of the connection doubles to 16 Mbps, how does the transfer time for the same file change? [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The bandwidth of a computer network is the maximum amount of data that can be sent in a fixed amount of time. Bandwidth is usually measured in bits per second. [2]</p>
+<p>(b) Transfer time = amount of data ÷ bandwidth = 64 Mb ÷ 8 Mbps = 8 seconds. [2]</p>
+<p>© It halves: 64 Mb ÷ 16 Mbps = 4 seconds. Transfer time is inversely proportional to bandwidth — more bandwidth means data can be sent in a shorter fixed amount of time. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.4 — The Internet vs. the World Wide Web (6 marks)</div><div class="callout-body"><p>(a) State one way the World Wide Web is different from the Internet, and state the relationship between the two. [2]</p>
+<p>(b) What is HTTP, and what does the World Wide Web use it for? [2]</p>
+<p>© Give two design properties of the Internet that make it scalable. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The World Wide Web is a system of linked pages, programs, and files, while the Internet is a computer network consisting of interconnected networks that use standardized, open communication protocols. The World Wide Web uses the Internet (CSN-1.D.3) — the Web is content that runs on top of the Internet’s infrastructure. [2]</p>
+<p>(b) HTTP is a protocol used by the World Wide Web — it is the agreed-upon set of rules used to transfer the linked pages, programs, and files of the Web. [2]</p>
+<p>© The Internet was designed to be scalable (its capacity to change in size and scale to meet new demands), and the protocols used in the Internet are open, which allows users to easily connect additional computing devices to the Internet. (Routing on the Internet is also usually dynamic, so new devices can be added without pre-planning every route.) [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.5 — DNS and Domain Names (5 marks)</div><div class="callout-body"><p>(a) What is DNS, and what does it do? [2]</p>
+<p>(b) <code>about.example.com</code> is related to <code>example.com</code>. What is this relationship called? [1]</p>
+<p>© Why is a human-readable domain name system needed, when the network actually routes data using IP addresses? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) DNS (the Domain Name System) is the system that resolves human-readable domain names into the IP addresses that the network actually uses for routing. [2]</p>
+<p>(b) <code>about.example.com</code> is a subdomain of <code>example.com</code> — domain names are hierarchical. [1]</p>
+<p>© IP addresses are numeric and hard for people to remember, so users type domain names and DNS converts them into the destination’s IP address; without DNS, a user would need to remember the numeric address of every site they wanted to reach. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.6 — IPv4 vs. IPv6 (4 marks)</div><div class="callout-body"><p>(a) What is the role of an IP address on the Internet? [1]</p>
+<p>(b) Why does IPv6 allow many more devices to connect to the Internet than IPv4? [2]</p>
+<p>© State one reason the Internet needed a newer addressing scheme. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) An IP address identifies a device connected to the Internet, and it is used for routing packets to and from that device. [1]</p>
+<p>(b) IPv6 provides a far larger address space than IPv4 — it uses 128-bit addresses while IPv4 uses 32-bit addresses — so IPv6 can assign unique addresses to vastly more devices. [2]</p>
+<p>© The number of devices and people connecting to the Internet keeps growing, and IPv4’s limited address space is not enough to give every device its own unique address. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.7 — The IETF and Open Standards (4 marks)</div><div class="callout-body"><p>(a) What is the IETF, and what does it do? [2]</p>
+<p>(b) Why is it important that the standards it develops are open (nonproprietary)? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The IETF (Internet Engineering Task Force) is an open, international organization that develops Internet standards and protocols. [2]</p>
+<p>(b) Open standards can be read, implemented, and used by anyone, so any manufacturer can build devices that connect to the Internet. This openness is what allows users to easily connect additional computing devices — it helps the Internet scale to more devices and more people. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.8 — IP Address Assignment (4 marks)</div><div class="callout-body"><p>(a) When a device connects to the Internet, what address-related assignment is made? [1]</p>
+<p>(b) What is the assigned address used for? [2]</p>
+<p>© True or False: only some devices connected to the Internet are assigned an IP address. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Every device connected to the Internet is assigned an IP address. [1]</p>
+<p>(b) The IP address identifies the device so that packets can be routed to and from it — each packet’s metadata carries the origin and destination addresses, and routers use the destination address to forward the packet across the network. [2]</p>
+<p>© False — each device connected to the Internet is assigned an IP address. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.9 — A Decentralized Internet (5 marks)</div><div class="callout-body"><p>(a) Describe the role of a central computer that monitors or controls the Internet. [2]</p>
+<p>(b) What does “any device can join the Internet at any time” imply about how the Internet is organized? [2]</p>
+<p>© State one way the Internet’s decentralization supports its scalability. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) There is no central computer that monitors or controls the Internet — the network is decentralized, with no single point of control. [2]</p>
+<p>(b) It implies there is no central authority that must approve or register a new device before it can join: a device only needs to connect to an Internet-connected device, and because the protocols are open, it can join at any time. [2]</p>
+<p>© Because there is no central computer that would have to be upgraded or expanded to accept new devices, the Internet can scale to meet new demands — any device can join at any time. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.1.10 — Simulating Network Behavior (4 marks)</div><div class="callout-body"><p>(a) Give one example of a question about a network that could be studied using a simulation. [2]</p>
+<p>(b) Why is a simulation useful for studying what happens when a device fails or when bandwidth changes? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example: what happens to data packets when a router in the network fails, or how transfer time changes if the bandwidth of a connection is increased. (Any reasonable example is accepted.) [2]</p>
+<p>(b) A simulation models the network so the failure or the change in bandwidth can be reproduced and observed safely and cheaply — the effect on packet transmission can be measured without disrupting a real network. [2]</p>
+</div></details><hr>
+<h2 id="section_5">Topic 4.2 — Fault Tolerance</h2>
+<h3 id="section_6">Key Concepts</h3>
+<p><strong>Learning Objective [CSN-1.E] — For fault-tolerant systems, like the Internet: a. Describe the benefits of fault tolerance. b. Explain how a given system is fault-tolerant. c. Identify vulnerabilities to failure in a system.</strong></p>
+<blockquote>
+<p>描述容错（fault-tolerant）系统的益处、解释给定系统如何实现容错、并识别系统中的故障漏洞（vulnerabilities）。核心概念：冗余（redundancy）指加入额外组件，以便在其它组件失效时减轻系统故障；实现网络冗余的方式之一是任意两设备之间存在多于一条路径（path）；若某设备或连接失效，后续数据将尽可能改走不同路由；系统能承受故障并继续运行即为容错，这对复杂系统尤为重要；冗余通常需要额外资源，但换来容错性，并提高互联网的可靠性、帮助其扩展。补充：网络可建模为图（graph），设备为节点、连接为边，两设备之间只要存在一条可用路径即可通信。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-1.E.1]:</strong> The Internet has been engineered to be fault-tolerant, with abstractions for routing and transmitting data.</li>
+<li><strong>[CSN-1.E.2]:</strong> <em>Redundancy</em> is the inclusion of extra components that can be used to mitigate failure of a system if other components fail.</li>
+<li><strong>[CSN-1.E.3]:</strong> One way to accomplish network redundancy is by having more than one path between any two connected devices.</li>
+<li><strong>[CSN-1.E.4]:</strong> If a particular device or connection on the Internet fails, subsequent data will be sent via a different route, if possible.</li>
+<li><strong>[CSN-1.E.5]:</strong> When a system can support failures and still continue to function, it is called <em>fault-tolerant</em>. This is important because elements of complex systems fail at unexpected times, often in groups, and fault tolerance allows users to continue to use the network.</li>
+<li><strong>[CSN-1.E.6]:</strong> Redundancy within a system often requires additional resources but can provide the benefit of fault tolerance.</li>
+<li><strong>[CSN-1.E.7]:</strong> The redundancy of routing options between two points increases the reliability of the Internet and helps it scale to more devices and more people.</li>
+<li><strong>[CSN-1.E-Ext1]:</strong> A network can be modeled as a <em>graph</em>: devices are nodes and connections are edges. Two devices can communicate only while at least one path of working devices and connections exists between them.</li>
+<li><strong>[CSN-1.E-Ext2]:</strong> Given a network diagram, you can analyze it quantitatively: find the minimum number of devices or connections that must fail to disconnect two specific devices, and decide whether a redundant route exists between them.</li>
+</ul>
+<h3 id="section_7">Example — Reading Network Diagrams (Quantitative Analysis)</h3>
+<p>In a chain there is <strong>no redundancy</strong> between the two ends — a single failure is enough to disconnect them:</p>
+<pre><code><div class="highlight"><pre><span></span>  A — B — C
+</pre></div>
+</code></pre>
+<p>If B fails, A and C can no longer communicate, because A–B–C is the only path between them.</p>
+<p>In a triangle every pair of devices has <strong>two paths</strong>, so a single device failure leaves the others connected:</p>
+<pre><code><div class="highlight"><pre><span></span>     A
+    / \
+   /   \
+  B ——— C
+</pre></div>
+</code></pre>
+<p>If B fails, A and C still communicate through the direct path A–C; if C fails, A and B still communicate through A–B. Failing any one device keeps the other two connected, so the triangle is fault-tolerant against any single device failure.</p>
+<h3 id="section_8">Example — Redundant Routing on the Internet</h3>
+<p>In the network below there are two possible paths from the sender to the receiver:</p>
+<pre><code><div class="highlight"><pre><span></span>                 Router B
+               /         \
+  Sender ────              ────  Receiver
+               \         /
+                 Router C
+</pre></div>
+</code></pre>
+<p>If Router B fails, packets are routed through Router C instead — the connection continues because there is <strong>more than one path</strong> between the two connected devices (CSN-1.E.3). This is why, when an Internet service outage occurs in one part of your town, you are often still able to access the Internet: the failure is only on one route, and routing is dynamic (CSN-1.B.5), so subsequent data is sent via a different route if possible (CSN-1.E.4).</p>
+<p>The two key ideas:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Cost / Benefit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redundancy</td>
+<td>Inclusion of extra components that can be used to mitigate failure if other components fail (CSN-1.E.2)</td>
+<td>Requires additional resources (CSN-1.E.6)</td>
+</tr>
+<tr>
+<td>Fault tolerance</td>
+<td>A system that can support failures and still continue to function (CSN-1.E.5)</td>
+<td>Allows users to continue to use the network even when elements fail</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.2.1 — Fault Tolerance and Redundancy (5 marks)</div><div class="callout-body"><p>(a) When is a system called fault-tolerant, and why is this property important for a complex system like the Internet? [3]</p>
+<p>(b) Define redundancy. [1]</p>
+<p>© State one way to accomplish network redundancy. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) When a system can support failures and still continue to function, it is called fault-tolerant. This is important because elements of complex systems fail at unexpected times, often in groups, and fault tolerance allows users to continue to use the network. [3]</p>
+<p>(b) Redundancy is the inclusion of extra components that can be used to mitigate failure of a system if other components fail. [1]</p>
+<p>© One way to accomplish network redundancy is by having more than one path between any two connected devices. [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.2.2 — Routing Around a Failure (6 marks)</div><div class="callout-body"><p>A school network connects to the Internet through two different paths: one path goes through ISP router A and the other goes through ISP router B. One afternoon, router A fails.</p>
+<p>(a) What happens to data sent after the failure, and why? [2]</p>
+<p>(b) How does this scenario illustrate the concept of redundancy? [2]</p>
+<p>© The Internet has been engineered to be fault-tolerant “with abstractions for routing and transmitting data.” Explain what role these abstractions play. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) If a particular device or connection on the Internet fails, subsequent data will be sent via a different route, if possible. Because a second path through router B still exists, data is routed around the failed router A and still reaches the Internet. [2]</p>
+<p>(b) Redundancy is the inclusion of extra components that can be used to mitigate failure of a system if other components fail. Having more than one path between the school and the Internet is exactly this kind of redundancy: the extra path (router B) is used to mitigate the failure of router A. [2]</p>
+<p>© The abstractions for routing and transmitting data hide the internal details of the network from the devices using it — the sender and receiver do not need to know which route their packets take. Because routing is dynamic, when router A fails the network re-routes packets along the surviving path automatically, without the user having to do anything. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.2.3 — Costs, Benefits, and Scalability (4 marks)</div><div class="callout-body"><p>(a) Redundancy within a system often requires additional resources. What benefit can it provide in return? [1]</p>
+<p>(b) Explain how the redundancy of routing options between two points increases the reliability of the Internet and helps it scale to more devices and more people. [2]</p>
+<p>© Give one example of a vulnerability to failure that redundancy alone cannot eliminate. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Redundancy within a system often requires additional resources but can provide the benefit of fault tolerance. [1]</p>
+<p>(b) If one route fails, data can be sent via another route, so the connection remains reliable even when parts of the network fail. Because the Internet can tolerate more devices and connections without any single failure bringing the whole network down, the redundancy of routing options helps it scale to more devices and more people. [2]</p>
+<p>© Example: if every path between two points fails at the same time, no route remains — redundancy only helps when at least one alternative path survives. (Any reasonable example of a total or simultaneous failure is accepted.) [1]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.2.4 — Reading Network Diagrams (8 marks)</div><div class="callout-body"><p>Consider the network below, which connects four devices:</p>
+<pre><code><div class="highlight"><pre><span></span>  A — B — C
+       │
+       D
+</pre></div>
+</code></pre>
+<p>(a) If device B fails, which pairs of devices can no longer communicate? [2]</p>
+<p>(b) What is the minimum number of devices that must fail for A and C to lose communication? Explain your answer. [2]</p>
+<p>Now consider this second network:</p>
+<pre><code><div class="highlight"><pre><span></span>  A ———— B
+  │       │
+  D ———— C
+</pre></div>
+</code></pre>
+<p>© Is there a redundant route between A and C? If device B fails, can A and C still communicate? [2]</p>
+<p>(d) State the general condition under which two devices in a network can still communicate after a device fails. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) B is the only connection for A, C, and D, so with B failed the three are isolated from one another: A–C, A–D, and C–D can no longer communicate. [2]</p>
+<p>(b) One device — B. A and C are connected only through the path A–B–C, so there is no redundant route between them; failing just B disconnects them. [2]</p>
+<p>© Yes — there are two paths between A and C: A–B–C and A–D–C. If B fails, A and C still communicate along A–D–C, so B’s failure does not disconnect them. [2]</p>
+<p>(d) Two devices can still communicate as long as at least one path of working devices and connections exists between them. The network is fault-tolerant between them only if more than one path (redundancy) exists, so that no single device failure disconnects them. [2]</p>
+</div></details><hr>
+<h2 id="section_9">Topic 4.3 — Parallel and Distributed Computing</h2>
+<h3 id="section_10">Key Concepts</h3>
+<p><strong>Learning Objective [CSN-2.A] — For sequential, parallel, and distributed computing: a. Compare problem solutions. b. Determine the efficiency of solutions.</strong></p>
+<blockquote>
+<p>比较顺序（sequential）、并行（parallel）和分布式（distributed）计算的问题解决方案，并确定方案的效率。核心概念：顺序计算是操作一次一个、按顺序执行的计算模型；并行计算将程序拆分成多个较小的顺序操作、其中部分同时执行；分布式计算使用多台设备运行程序。效率可通过完成同一任务所需的时间比较：顺序方案耗时等于所有步骤之和；并行方案耗时等于其顺序任务加上最长的并行任务；加速比（speedup）= 顺序完成时间 ÷ 并行完成时间。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-2.A.1]:</strong> <em>Sequential computing</em> is a computational model in which operations are performed in order one at a time.</li>
+<li><strong>[CSN-2.A.2]:</strong> <em>Parallel computing</em> is a computational model where the program is broken into multiple smaller sequential computing operations, some of which are performed simultaneously.</li>
+<li><strong>[CSN-2.A.3]:</strong> <em>Distributed computing</em> is a computational model in which multiple devices are used to run a program.</li>
+<li><strong>[CSN-2.A.4]:</strong> Comparing efficiency of solutions can be done by comparing the time it takes them to perform the same task.</li>
+<li><strong>[CSN-2.A.5]:</strong> A sequential solution takes as long as the sum of all of its steps.</li>
+<li><strong>[CSN-2.A.6]:</strong> A parallel computing solution takes as long as its sequential tasks plus the longest of its parallel tasks.</li>
+<li><strong>[CSN-2.A.7]:</strong> The “speedup” of a parallel solution is measured in the time it took to complete the task sequentially divided by the time it took to complete the task when done in parallel.</li>
+</ul>
+<p><strong>Learning Objective [CSN-2.B] — Describe benefits and challenges of parallel and distributed computing.</strong></p>
+<blockquote>
+<p>描述并行和分布式计算的益处与挑战。核心概念：并行计算由并行部分和顺序部分组成，方案的效率仍受顺序部分限制，因此增加到某一点后，继续增加并行部分不再明显提升效率；使用并行计算的方案比顺序方案能更有效地扩展（scale）；分布式计算可解决单台计算机因处理时间或存储需求而无法解决的问题，也能让更大规模的问题更快完成。</p>
+</blockquote>
+<ul>
+<li><strong>[CSN-2.B.1]:</strong> Parallel computing consists of a parallel portion and a sequential portion.</li>
+<li><strong>[CSN-2.B.2]:</strong> Solutions that use parallel computing can scale more effectively than solutions that use sequential computing.</li>
+<li><strong>[CSN-2.B.3]:</strong> Distributed computing allows problems to be solved that could not be solved on a single computer because of either the processing time or storage needs involved.</li>
+<li><strong>[CSN-2.B.4]:</strong> Distributed computing allows much larger problems to be solved quicker than they could be solved using a single computer.</li>
+<li><strong>[CSN-2.B.5]:</strong> When increasing the use of parallel computing in a solution, the efficiency of the solution is still limited by the sequential portion. This means that at some point, adding parallel portions will no longer meaningfully increase efficiency.</li>
+</ul>
+<h3 id="section_11">Example — Comparing Sequential and Parallel Solutions</h3>
+<p>A program performs three tasks: Task 1 (5 seconds), Task 2 (4 seconds), and Task 3 (4 seconds). Task 1 must finish before Tasks 2 and 3 begin; Tasks 2 and 3 can run simultaneously on two processors.</p>
+<table>
+<thead>
+<tr>
+<th>Solution</th>
+<th>How it runs</th>
+<th>Completion time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sequential (one processor)</td>
+<td>Task 1 → Task 2 → Task 3, one at a time</td>
+<td>5 + 4 + 4 = <strong>13 s</strong></td>
+</tr>
+<tr>
+<td>Parallel (two processors)</td>
+<td>Task 1 first; Tasks 2 and 3 run simultaneously</td>
+<td>5 + max(4, 4) = <strong>9 s</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key formulas</strong> (CSN-2.A.5, CSN-2.A.6, CSN-2.A.7):</p>
+<ul>
+<li>Sequential time = <strong>sum of all steps</strong></li>
+<li>Parallel time = <strong>sequential tasks + longest of its parallel tasks</strong></li>
+<li><strong>Speedup</strong> = (time to complete the task sequentially) ÷ (time to complete the task when done in parallel)</li>
+</ul>
+<p>Here the speedup = 13 ÷ 9 ≈ <strong>1.44×</strong>. Notice the parallel time cannot go below the 5-second sequential task — this is why the sequential portion limits efficiency (CSN-2.B.5).</p>
+<div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.1 — Sequential vs. Parallel Completion Time (6 marks)</div><div class="callout-body"><p>A computation is broken into three tasks: Task X takes 4 seconds, Task Y takes 6 seconds, and Task Z takes 6 seconds. Task X must finish before Tasks Y and Z can begin; Tasks Y and Z can then run simultaneously on two processors.</p>
+<p>(a) If the program runs sequentially, how long does it take to complete? [2]</p>
+<p>(b) How long does the parallel solution take to complete? [2]</p>
+<p>© Compute the speedup of the parallel solution. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) A sequential solution takes as long as the sum of all of its steps: 4 + 6 + 6 = <strong>16 seconds</strong>. [2]</p>
+<p>(b) A parallel solution takes as long as its sequential tasks plus the longest of its parallel tasks: Task X (4 s) + max(6, 6) = 4 + 6 = <strong>10 seconds</strong>. [2]</p>
+<p>© Speedup = sequential time ÷ parallel time = 16 ÷ 10 = <strong>1.6×</strong>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.2 — Computing Speedup (4 marks)</div><div class="callout-body"><p>A program takes 24 seconds to run sequentially on one processor. It is rewritten so that four equally sized parts of the computation run simultaneously on four processors, and the remaining sequential portion is negligible.</p>
+<p>(a) How long does the parallel version take to complete? [2]</p>
+<p>(b) What is the speedup of the parallel version? [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The work is split into four parts that run simultaneously, so the parallel time is 24 ÷ 4 = <strong>6 seconds</strong>. [2]</p>
+<p>(b) Speedup = time taken sequentially ÷ time taken in parallel = 24 ÷ 6 = <strong>4×</strong>. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.3 — The Sequential Portion Limits Efficiency (5 marks)</div><div class="callout-body"><p>A program takes 100 seconds to run sequentially. Of that time, 90 seconds of work can be split evenly across many processors, but 10 seconds must be performed one step at a time.</p>
+<p>(a) Even if the parallel portion could be split across infinitely many processors, what is the smallest possible completion time? [2]</p>
+<p>(b) What is the corresponding maximum speedup? [1]</p>
+<p>© Explain why, at some point, adding more parallel computing to a solution no longer meaningfully increases its efficiency. [2]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The completion time can never be less than the sequential portion: parallel time = sequential tasks + longest parallel task = 10 s + (nearly 0 s) ≈ <strong>10 seconds</strong>. [2]</p>
+<p>(b) Speedup = 100 ÷ 10 = <strong>10×</strong>. [1]</p>
+<p>© Parallel computing consists of a parallel portion and a sequential portion, and the efficiency of the solution is still limited by the sequential portion: no matter how many processors are added, the sequential steps still take the same amount of time, so the total time cannot fall below the sequential portion. This means that at some point, adding parallel portions will no longer meaningfully increase efficiency. [2]</p>
+</div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.3.4 — Benefits and Challenges of Distributed Computing (5 marks)</div><div class="callout-body"><p>(a) Give two reasons distributed computing can solve problems that could not be solved on a single computer. [2]</p>
+<p>(b) Give one example of a large problem that would benefit from distributed computing, and explain why. [2]</p>
+<p>© True or False: splitting a problem across more and more devices always makes the solution faster. Explain. [1]</p>
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Distributed computing allows problems to be solved that could not be solved on a single computer because of either the processing time or storage needs involved; it also allows much larger problems to be solved quicker than they could be solved using a single computer. [2]</p>
+<p>(b) Example: processing many terabytes of weather-satellite data. A single computer would not have enough storage or would take too long, so the data is split across many devices, allowing the processing to be completed quicker. (Any reasonable large problem is accepted.) [2]</p>
+<p>© False — every parallel or distributed solution still contains a sequential portion, and the efficiency of the solution is limited by that sequential portion. At some point, adding parallel portions will no longer meaningfully increase efficiency, so more devices do not always make the solution faster. [1]</p>
+</div></details><hr>
+<p>Next: <a href="big-idea-5-impact-of-computing.html">Big Idea 5 — Impact of Computing</a></p>
+
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="big-idea-3-algorithms-and-programming.html" title="Big Idea 3 Algorithms and Programming" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Big Idea 3 Algorithms and Programming</span></a>
+<a href="big-idea-4-computer-systems-and-networks.html" title="Big Idea 4 Computer Systems and Networks" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Big Idea 4 Computer Systems and Networks</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>AP Computer Science Principles (Course &amp; Exam Description, Effective Fall 2020) — Review Notes · 与 CED 考纲一致</p>
+</footer>
+</body>
+</html>
