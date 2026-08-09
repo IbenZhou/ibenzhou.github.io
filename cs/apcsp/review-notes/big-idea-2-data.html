@@ -287,6 +287,7 @@ body::before {
 </blockquote>
 </li>
 </ul>
+<p><img src="apcsp-images/overflow.png" alt="Overflow: the sum of two binary numbers exceeds the given number of bits, truncating the extra bits"></p>
 <p><strong>Learning Objective [DAT-1.C] — For binary numbers: a. Calculate the binary (base 2) equivalent of a positive integer (base 10) and vice versa. b. Compare and order binary numbers.</strong></p>
 <blockquote>
 <p>计算二进制（binary，base 2）与十进制（decimal，base 10）正整数的相互转换，并比较、排序二进制数。核心概念：位置记数法——每一位的数值等于该位数字乘以位权（place value），位权为进制（base）的位数次幂，位置从最右侧的第 0 位起依次递增。</p>
@@ -298,6 +299,8 @@ body::before {
 <li><strong>[DAT-1.C.4]:</strong> As with decimal, a digit’s position in the binary sequence determines its numeric value. The numeric value is equal to the bit’s value (0 or 1) multiplied by the place value of its position.</li>
 <li><strong>[DAT-1.C.5]:</strong> The place value of each position is determined by the base raised to the power of the position. Positions are numbered starting at the rightmost position with 0 and increasing by 1 for each subsequent position to the left.</li>
 </ul>
+<p><img src="apcsp-images/1-1-number-systems-number-systems-1-ib-computer-science-revision.webp" alt="Denary number 3268 with column headings — each position's value is 10 raised to a power"></p>
+<p><img src="apcsp-images/uCiRLNB9_1-1-number-systems-number-systems-2-ib-psychology-revision.webp" alt="Binary number 1101 with binary column headings — each position's value is 2 raised to a power"></p>
 <h3 id="section_4">Example — Binary ↔ Decimal Conversion and Sampling</h3>
 <p>Each position in a binary number has a place value equal to 2 raised to the power of the position (positions numbered from 0 at the rightmost bit):</p>
 <table>
@@ -330,6 +333,7 @@ body::before {
 </table>
 <p><strong>Decimal → Binary</strong> (write 42 as a sum of place values): 42 = 32 + 8 + 2 → the bits for 32, 8, and 2 are 1; the rest are 0 → <strong>101010₂</strong>.</p>
 <p><strong>Binary → Decimal</strong> (101101₂): 1×32 + 0×16 + 1×8 + 1×4 + 0×2 + 1×1 = 32 + 8 + 4 + 1 = <strong>45</strong>.</p>
+<p><img src="apcsp-images/binary-to-decimal.png" alt="Binary to decimal conversion: binary 01101001 equals decimal 105, with bit values shown from 128 down to 1"></p>
 <table>
 <thead>
 <tr>
@@ -467,6 +471,7 @@ body::before {
 <h3 id="section_6">Example — Minimum Bits, ASCII, Hexadecimal, and Binary Arithmetic</h3>
 <p><strong>Minimum bits:</strong> 3 bits represent 2³ = 8 values (000–111); 4 bits represent 2⁴ = 16 values. To represent 100 values you need 7 bits, since 2⁶ = 64 &lt; 100 and 2⁷ = 128 ≥ 100.</p>
 <p><strong>ASCII character encoding:</strong> ‘A’ = 65 = 01000001₂, ‘B’ = 66, …, ‘Z’ = 90. The bit pattern 01000001 01000010 read as ASCII text is “AB”.</p>
+<p><img src="apcsp-images/-ascii-table.png" alt="ASCII table showing uppercase and lowercase letters with their decimal codes and binary values"></p>
 <p><strong>Hexadecimal:</strong></p>
 <table>
 <thead>
@@ -529,7 +534,9 @@ body::before {
 </tbody>
 </table>
 <p>Binary → hex: split into groups of 4 bits from the right: 0100 0001₂ = 41₁₆. Hex → binary: expand each digit to its 4 bits: A3₁₆ = 1010 0011₂ = 10100011₂.</p>
+<p><img src="apcsp-images/hexcolours.png" alt="Colour palette with colours and their hexadecimal codes — a typical hex colour code has 6 hex digits, equivalent to 24 bits"></p>
 <p><strong>Binary arithmetic:</strong> counting up in binary is just adding 1 (0, 1, 10, 11, 100, 101, …). Appending zeros multiplies by powers of 2: 10₂ (2) → 10000₂ (16) after four zeros, a factor of 2⁴ = 16.</p>
+<p><img src="apcsp-images/binary-addition.png" alt="Binary addition: start from the rightmost bit, carrying over when a column sum exceeds 1"></p>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.1.5 — Minimum Number of Bits (5 marks)</div><div class="callout-body"><p>(a) What is the minimum number of bits needed to represent 100 distinct values? Show how you know. [2]</p>
 <p>(b) A computer uses 32-bit integers; a newer one uses 64-bit integers. How many times more values can the 64-bit integer represent? [1]</p>
 <p>© Explain why adding 1 bit to a binary representation doubles the number of distinct values. [2]</p>
