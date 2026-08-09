@@ -34,7 +34,7 @@ body::before {
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
 }
 .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-.post-layout { display: grid; grid-template-columns: 250px 1fr; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-layout { display: grid; grid-template-columns: 250px 1fr; max-width: min(1120px, calc(100vw - 64px)); margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
 .post-sidebar { min-width: 0; }
 .post-main { min-width: 0; }
 .site-header {
