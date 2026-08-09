@@ -264,6 +264,10 @@ body::before {
 <li><strong>[CSN-1.A.2]:</strong> A <em>computing system</em> is a group of computing devices and programs working together for a common purpose.</li>
 <li><strong>[CSN-1.A.3]:</strong> A <em>computer network</em> is a group of interconnected computing devices capable of sending or receiving data.</li>
 <li><strong>[CSN-1.A.4]:</strong> A computer network is a type of computing system.</li>
+</ul>
+<p><img src="apcsp-images/lan.png" alt="LAN — a Local Area Network connecting devices within a small area such as a school or office"></p>
+<p><img src="apcsp-images/wan.png" alt="WAN — a Wide Area Network spanning a large geographic area, such as the Internet itself"></p>
+<ul>
 <li><strong>[CSN-1.A.5]:</strong> A <em>path</em> between two computing devices on a computer network (a sender and a receiver) is a sequence of directly connected computing devices that begins at the sender and ends at the receiver.</li>
 <li><strong>[CSN-1.A.6]:</strong> <em>Routing</em> is the process of finding a path from sender to receiver.</li>
 <li><strong>[CSN-1.A.7]:</strong> The <em>bandwidth</em> of a computer network is the maximum amount of data that can be sent in a fixed amount of time.</li>
@@ -298,6 +302,7 @@ body::before {
 <li><strong>[CSN-1.C.3]:</strong> Packets may arrive at the destination in order, out of order, or not at all.</li>
 <li><strong>[CSN-1.C.4]:</strong> IP, TCP, and UDP are common protocols used on the Internet.</li>
 </ul>
+<p><img src="apcsp-images/tcp-ip-stack-computer-science-revision-notes.webp" alt="TCP/IP stack — application data is encapsulated at each layer (HTTP → TCP/UDP → IP → link) as it travels across the network"></p>
 <p><strong>Learning Objective [CSN-1.D] — Describe the differences between the Internet and the World Wide Web.</strong></p>
 <blockquote>
 <p>描述互联网与万维网的区别。核心概念：万维网（World Wide Web）是相互链接的页面、程序和文件的系统；超文本传输协议（HTTP）是万维网使用的协议；万维网使用互联网（Internet）——互联网是基础设施（好比&quot;道路&quot;），万维网是依托其运行的链接内容（好比&quot;商店&quot;）。</p>
@@ -447,6 +452,9 @@ body::before {
 <li><strong>[CSN-1.E.1]:</strong> The Internet has been engineered to be fault-tolerant, with abstractions for routing and transmitting data.</li>
 <li><strong>[CSN-1.E.2]:</strong> <em>Redundancy</em> is the inclusion of extra components that can be used to mitigate failure of a system if other components fail.</li>
 <li><strong>[CSN-1.E.3]:</strong> One way to accomplish network redundancy is by having more than one path between any two connected devices.</li>
+</ul>
+<p><img src="apcsp-images/full-mesh.png" alt="Full-mesh topology — every device connects directly to every other device, providing multiple redundant paths so the network stays connected if any single link fails"></p>
+<ul>
 <li><strong>[CSN-1.E.4]:</strong> If a particular device or connection on the Internet fails, subsequent data will be sent via a different route, if possible.</li>
 <li><strong>[CSN-1.E.5]:</strong> When a system can support failures and still continue to function, it is called <em>fault-tolerant</em>. This is important because elements of complex systems fail at unexpected times, often in groups, and fault tolerance allows users to continue to use the network.</li>
 <li><strong>[CSN-1.E.6]:</strong> Redundancy within a system often requires additional resources but can provide the benefit of fault tolerance.</li>
@@ -548,7 +556,13 @@ body::before {
 </blockquote>
 <ul>
 <li><strong>[CSN-2.A.1]:</strong> <em>Sequential computing</em> is a computational model in which operations are performed in order one at a time.</li>
+</ul>
+<p><img src="apcsp-images/48364_1.png" alt="Sequential computing: a single processor executes data and instructions one after another in a single timeline"></p>
+<ul>
 <li><strong>[CSN-2.A.2]:</strong> <em>Parallel computing</em> is a computational model where the program is broken into multiple smaller sequential computing operations, some of which are performed simultaneously.</li>
+</ul>
+<p><img src="apcsp-images/18769_2.png" alt="Parallel computing: multiple processors run data and instructions simultaneously, with the total time dominated by the longest parallel stage plus any sequential portions"></p>
+<ul>
 <li><strong>[CSN-2.A.3]:</strong> <em>Distributed computing</em> is a computational model in which multiple devices are used to run a program.</li>
 <li><strong>[CSN-2.A.4]:</strong> Comparing efficiency of solutions can be done by comparing the time it takes them to perform the same task.</li>
 <li><strong>[CSN-2.A.5]:</strong> A sequential solution takes as long as the sum of all of its steps.</li>
