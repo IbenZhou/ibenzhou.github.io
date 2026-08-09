@@ -34,9 +34,9 @@ body::before {
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
 }
 .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
-.post-sidebar { width: 250px; flex-shrink: 0; }
-.post-main { flex: 1; min-width: 0; }
+.post-layout { display: grid; grid-template-columns: 250px 1fr; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { min-width: 0; }
+.post-main { min-width: 0; }
 .site-header {
   background: rgba(251,252,247,0.92);
   border-bottom: 1px solid var(--border);
@@ -74,7 +74,7 @@ body::before {
 .card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
 .card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
 .card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
-.card p { margin: 12px 0; }
+.card p { margin: 12px 0; overflow-wrap: break-word; word-break: break-word; }
 .card ul, .card ol { margin: 8px 0 16px 24px; }
 .card li { margin: 4px 0; }
 .card a { color: var(--accent); text-decoration: none; }
@@ -112,6 +112,9 @@ body::before {
   font-size: 14px;
   line-height: 1.5;
   border: 1px solid #dcd5e8;
+  white-space: pre-wrap;            /* 允许长行自动 wrap (避免撑爆 flex 容器) */
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 .card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
@@ -835,33 +838,33 @@ body::before {
 </ul>
 <h3 id="section_19">Example — Pseudocode for Transforming, Filtering, and Combining Data</h3>
 <p><strong>Transforming</strong> every element of a data set — doubling every element in a list:</p>
-<pre><code><div class="highlight"><pre><span></span><span class="n">temps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="n">10, 20, 30</span><span class="o">]</span>
+<pre class="highlight"><span></span><span class="n">temps</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="n">10, 20, 30</span><span class="o">]</span>
 <span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">LENGTH</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
 <span class="w">    </span><span class="n">temps</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">temps</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span>
 <span class="o">//</span><span class="w"> </span><span class="n">temps</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">[</span><span class="n">20, 40, 60</span><span class="o">]</span>
 </pre></div>
-</code></pre>
+
 <p><strong>Filtering</strong> a data set — keeping only the positive numbers from a list:</p>
-<pre><code><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="err">←</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<pre class="highlight"><span></span><span class="n">nums</span> <span class="err">←</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="n">positives</span> <span class="err">←</span> <span class="p">[]</span>
 <span class="kr">FOR</span> <span class="mh">EACH</span> <span class="n">n</span> <span class="kr">IN</span> <span class="n">nums</span>
     <span class="kr">IF</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="n">APPEND</span> <span class="n">n</span> <span class="kr">TO</span> <span class="n">positives</span>
 <span class="o">//</span> <span class="n">positives</span> <span class="n">is</span> <span class="n">now</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 </pre></div>
-</code></pre>
+
 <p><strong>Combining</strong> — adding up a list of numbers, or finding the student with the highest GPA. <strong>Visualizing</strong> — showing the data through a chart, graph, or other visual representation.</p>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 2.4.1 — Transforming and Filtering Data with a Program (5 marks)</div><div class="callout-body"><p>(a) Write pseudocode (or describe the steps) that filters a list of student records, keeping only the students who signed up for band. [2]</p>
 <p>(b) Doubling every element in a list is an example of transforming a data set. Give another example of transforming every element of a data set. [1]</p>
 <p>© Give one example of (i) combining or comparing data, and (ii) visualizing a data set. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) Example:</p>
-<pre><code><div class="highlight"><pre><span></span><span class="n">records</span> <span class="err">←</span> <span class="n">list</span> <span class="n">of</span> <span class="n">all</span> <span class="n">students</span> <span class="p">(</span><span class="n">each</span> <span class="n">record</span> <span class="n">has</span> <span class="n">a</span> <span class="s">&quot;band&quot;</span> <span class="n">field</span><span class="p">)</span>
+<pre class="highlight"><span></span><span class="n">records</span> <span class="err">←</span> <span class="n">list</span> <span class="n">of</span> <span class="n">all</span> <span class="n">students</span> <span class="p">(</span><span class="n">each</span> <span class="n">record</span> <span class="n">has</span> <span class="n">a</span> <span class="s">&quot;band&quot;</span> <span class="n">field</span><span class="p">)</span>
 <span class="n">result</span> <span class="err">←</span> <span class="p">[]</span>
 <span class="kr">FOR</span> <span class="mh">EACH</span> <span class="n">student</span> <span class="kr">IN</span> <span class="n">records</span>
     <span class="kr">IF</span> <span class="n">student</span><span class="p">.</span><span class="n">band</span> <span class="o">=</span> <span class="n">true</span>
         <span class="n">APPEND</span> <span class="n">student</span> <span class="kr">TO</span> <span class="n">result</span>
 </pre></div>
-</code></pre>
+
 <p>Any reasonable step-by-step description that keeps only the students who signed up for band is accepted. [2]</p>
 <p>(b) Example: adding a parent’s email to every student record. (Any equivalent transform of every element is accepted.) [1]</p>
 <p>© (i) Combining/comparing: adding up a list of numbers, or finding the student who has the highest GPA. (ii) Visualizing: showing a data set through a chart, graph, or other visual representation. [2]</p>
@@ -917,9 +920,9 @@ body::before {
 </table>
 <p>The first row plots as a straight line — a constant rate of increase. The second row plots as a curve that gets steeper — the value doubles each interval. A linear trend can be extrapolated: if the first row’s pattern continues, 2024 ≈ 180.</p>
 <p><strong>Boolean filter conditions:</strong> keeping mystery books that are long and cheap:</p>
-<pre><code><div class="highlight"><pre><span></span>genre = &quot;mystery&quot; AND pages ≥ 100 AND cost &lt; 10
+<pre class="highlight"><span></span>genre = &quot;mystery&quot; AND pages ≥ 100 AND cost &lt; 10
 </pre></div>
-</code></pre>
+
 <ul>
 <li>Record 1: mystery, 150 pages, $12 → rejected (fails cost &lt; 10).</li>
 <li>Record 2: mystery, 250 pages, $8 → kept (passes all three conditions).</li>

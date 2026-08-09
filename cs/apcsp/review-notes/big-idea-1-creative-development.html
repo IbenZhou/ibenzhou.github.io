@@ -34,9 +34,9 @@ body::before {
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
 }
 .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
-.post-sidebar { width: 250px; flex-shrink: 0; }
-.post-main { flex: 1; min-width: 0; }
+.post-layout { display: grid; grid-template-columns: 250px 1fr; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { min-width: 0; }
+.post-main { min-width: 0; }
 .site-header {
   background: rgba(251,252,247,0.92);
   border-bottom: 1px solid var(--border);
@@ -74,7 +74,7 @@ body::before {
 .card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
 .card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
 .card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
-.card p { margin: 12px 0; }
+.card p { margin: 12px 0; overflow-wrap: break-word; word-break: break-word; }
 .card ul, .card ol { margin: 8px 0 16px 24px; }
 .card li { margin: 4px 0; }
 .card a { color: var(--accent); text-decoration: none; }
@@ -112,6 +112,9 @@ body::before {
   font-size: 14px;
   line-height: 1.5;
   border: 1px solid #dcd5e8;
+  white-space: pre-wrap;            /* 允许长行自动 wrap (避免撑爆 flex 容器) */
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 .card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
@@ -382,7 +385,7 @@ body::before {
 <li><strong>[CRD-2.D.2]:</strong> Program output is usually based on a program’s input or prior state (e.g., internal values).</li>
 </ul>
 <h3 id="section_7">Example — Pseudocode (Event-Driven Program)</h3>
-<pre><code><div class="highlight"><pre><span></span><span class="c1">// Program: Hydration Tracker (event-driven pseudocode)</span>
+<pre class="highlight"><span></span><span class="c1">// Program: Hydration Tracker (event-driven pseudocode)</span>
 <span class="c1">// Purpose: record each glass of water a user drinks and display the daily total.</span>
 
 <span class="n">glassCount</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
@@ -398,7 +401,7 @@ body::before {
 <span class="w">    </span><span class="n">display</span><span class="p">(</span><span class="s">&quot;Today&#39;s glasses: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">glassCount</span><span class="p">)</span><span class="w">            </span><span class="c1">// output to the screen</span>
 <span class="p">})</span>
 </pre></div>
-</code></pre>
+
 <p>Notice that the statements are <strong>not</strong> executed in a simple top-to-bottom sequence: they run only when an <strong>event triggers</strong> them (CRD-2.C.5). The click is a tactile input (CRD-2.C.1) that supplies input data to the program, and the updated count displayed on screen is the <strong>output</strong> (CRD-2.D.1), which depends on the program’s prior state <code>glassCount</code> (CRD-2.D.2).</p>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.1 — Purpose of Computing Innovations (4 marks)</div><div class="callout-body"><p>(a) The purpose of computing innovations is to solve problems or to pursue interests through creative expression. Classify the purpose of each innovation. [2]</p>
 <p>(i) An app that reminds users to drink water throughout the day.</p>
@@ -422,13 +425,13 @@ body::before {
 <p>(b) An event is associated with an action and supplies input data to a program. [1]</p>
 <p>© Any two of the following: a key is pressed, a mouse is clicked, a program is started, or any other defined action that occurs and affects the flow of execution. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.2.4 — Analyzing an Event-Driven Code Segment (4 marks)</div><div class="callout-body"><p>Consider the following pseudocode segment from a quiz app.</p>
-<pre><code><div class="highlight"><pre><span></span><span class="c1">// when the &quot;Submit&quot; button is clicked</span>
+<pre class="highlight"><span></span><span class="c1">// when the &quot;Submit&quot; button is clicked</span>
 <span class="n">onEvent</span><span class="p">(</span><span class="s">&quot;submitButton&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">score</span><span class="w"> </span>←<span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span>
 <span class="w">    </span><span class="n">display</span><span class="p">(</span><span class="s">&quot;Score: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">score</span><span class="p">)</span>
 <span class="p">})</span>
 </pre></div>
-</code></pre>
+
 <p>(a) Identify the event that triggers the code segment. [1]</p>
 <p>(b) Identify the input data supplied to the program by this event. [1]</p>
 <p>© Identify the output produced by the code segment. [1]</p>
@@ -490,7 +493,7 @@ body::before {
 <li><strong>[CRD-2.H.2]:</strong> Acknowledgement of a code segment(s) written by someone else and used in a program can be in the program documentation. The acknowledgement should include the origin or original author’s name.</li>
 </ul>
 <h3 id="section_10">Example — Pseudocode with Documentation</h3>
-<pre><code><div class="highlight"><pre><span></span><span class="o">//</span><span class="w"> </span><span class="n">findLargest</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+<pre class="highlight"><span></span><span class="o">//</span><span class="w"> </span><span class="n">findLargest</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
 <span class="o">//</span><span class="w"> </span><span class="n">PURPOSE</span><span class="p">:</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">largest</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">nums</span><span class="o">.</span>
 <span class="o">//</span><span class="w"> </span><span class="n">DEVELOPED</span><span class="p">:</span><span class="w"> </span><span class="n">written</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">brainstorming</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">storyboarding</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">team</span><span class="p">;</span>
 <span class="o">//</span><span class="w">            </span><span class="n">revised</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">testing</span><span class="w"> </span><span class="n">phase</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">bug</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">found</span><span class="o">.</span>
@@ -507,7 +510,7 @@ body::before {
 <span class="o">//</span><span class="w"> </span><span class="n">Code</span><span class="w"> </span><span class="n">below</span><span class="w"> </span><span class="n">written</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">J</span><span class="o">.</span><span class="w"> </span><span class="n">Alvarez</span><span class="w"> </span><span class="p">(</span><span class="n">source</span><span class="p">:</span><span class="w"> </span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">library</span><span class="p">),</span>
 <span class="o">//</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="n">acknowledged</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">program</span><span class="w"> </span><span class="n">documentation</span><span class="o">.</span>
 </pre></div>
-</code></pre>
+
 <p>The comment at the top is a form of <strong>program documentation</strong> (CRD-2.G.1, CRD-2.G.2): it is written to be read by people and does not affect how the program runs. Programmers document throughout development (CRD-2.G.3), and the acknowledgement at the bottom includes the origin and original author’s name for a code segment taken from another source (CRD-2.H.2).</p>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.3.1 — Phases of a Development Process (4 marks)</div><div class="callout-body"><p>(a) List the four phases commonly used when developing a program. [2]</p>
 <p>(b) A team surveys classmates to learn which features they want before writing any code. Which phase are they in, and what investigation method are they using? [2]</p>
@@ -607,14 +610,14 @@ body::before {
 </tbody>
 </table>
 <h3 id="section_14">Example — Pseudocode (Buggy Program)</h3>
-<pre><code><div class="highlight"><pre><span></span><span class="c1">// Buggy version: computes the average of three quiz scores.</span>
+<pre class="highlight"><span></span><span class="c1">// Buggy version: computes the average of three quiz scores.</span>
 <span class="n">INPUT</span><span class="w"> </span><span class="n">score1</span>
 <span class="n">INPUT</span><span class="w"> </span><span class="n">score2</span>
 <span class="n">INPUT</span><span class="w"> </span><span class="n">score3</span>
 <span class="n">average</span><span class="w"> </span>←<span class="w"> </span><span class="p">(</span><span class="n">score1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">score2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="w">        </span><span class="c1">// LOGIC ERROR: score3 is left out</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="n">average</span>
 </pre></div>
-</code></pre>
+
 <p>The program runs without crashing, but the result is wrong whenever <code>score3</code> differs from <code>score1</code> or <code>score2</code> — a <strong>logic error</strong> (CRD-2.I.1). To find and correct it, a programmer could <strong>hand trace</strong> the code, add an <strong>extra output statement</strong> to display intermediate values, or run <strong>test cases</strong> with known inputs, e.g., <code>score1 = 90</code>, <code>score2 = 80</code>, <code>score3 = 100</code> (expected average 90) — the buggy version would output 56.67, revealing the mistake. The correction is <code>average ← (score1 + score2 + score3) / 3</code>.</p>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.1 — Classifying Errors (6 marks)</div><div class="callout-body"><p>(a) Classify each error below as a <em>logic error</em>, a <em>syntax error</em>, a <em>run-time error</em>, or an <em>overflow error</em>. [4]</p>
 <p>(i) A programmer writes <code>IF temperature =&gt; 30 THEN</code>, but the language requires the operator <code>&gt;=</code>.</p>
@@ -637,7 +640,7 @@ body::before {
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) In the development process, testing uses defined inputs to ensure that an algorithm or program is producing the expected outcomes, and programmers use the results from testing to revise their algorithms or programs. [2]</p>
 <p>(b) Any two of: <code>0</code> (the minimum, expected grade 0), <code>100</code> (the maximum, expected grade 100), and values just beyond the extremes such as <code>-1</code> or <code>101</code> (expected: an error message or a clearly defined “invalid input” outcome). Program requirements are needed to identify the appropriate defined inputs. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.4 — Hand-Tracing Pseudocode (5 marks)</div><div class="callout-body"><p>Trace the following pseudocode segment with the input value 6.</p>
-<pre><code><div class="highlight"><pre><span></span><span class="n">INPUT</span> <span class="n">number</span>
+<pre class="highlight"><span></span><span class="n">INPUT</span> <span class="n">number</span>
 <span class="n">sum</span> <span class="err">←</span> <span class="mi">0</span>
 <span class="n">i</span> <span class="err">←</span> <span class="mi">1</span>
 <span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">number</span>
@@ -646,7 +649,7 @@ body::before {
 <span class="kr">END</span> <span class="kr">REPEAT</span>
 <span class="n">OUTPUT</span> <span class="n">sum</span>
 </pre></div>
-</code></pre>
+
 <p>(a) Show the values of <code>sum</code> and <code>i</code> after each repetition of the loop. [3]</p>
 <p>(b) State the final output. [1]</p>
 <p>© Give one test case that checks behavior at an extreme of the input data, and state the expected output. [1]</p>
@@ -687,26 +690,26 @@ body::before {
 <li><strong>[CRD-2.L.4]:</strong> To correct the error, update the loop variable inside the loop body so that the terminating condition eventually becomes true.</li>
 </ul>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 1.4.5 — Non-Terminating Loop (5 marks)</div><div class="callout-body"><p>Consider the following pseudocode, which is intended to output the sum of the integers from 1 to 5.</p>
-<pre><code><div class="highlight"><pre><span></span><span class="n">sum</span> <span class="err">←</span> <span class="mi">0</span>
+<pre class="highlight"><span></span><span class="n">sum</span> <span class="err">←</span> <span class="mi">0</span>
 <span class="n">i</span> <span class="err">←</span> <span class="mi">1</span>
 <span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">5</span>
     <span class="n">sum</span> <span class="err">←</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span>
 <span class="kr">END</span> <span class="kr">REPEAT</span>
 <span class="n">OUTPUT</span> <span class="n">sum</span>
 </pre></div>
-</code></pre>
+
 <p>(a) Identify the error in the code segment, and state whether the program ever produces its output. [2]</p>
 <p>(b) Explain why this error causes the loop never to terminate. [1]</p>
 <p>© Show the corrected loop body. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The loop variable <code>i</code> is never updated inside the loop body, so the condition <code>i &gt; 5</code> never becomes true; the loop repeats forever and the program never reaches the <code>OUTPUT</code> statement. [2]</p>
 <p>(b) The terminating condition depends on <code>i</code>, and <code>i</code> never changes (it stays 1), so <code>1 &gt; 5</code> is always false and the <code>REPEAT UNTIL</code> loop never stops. [1]</p>
 <p>© The corrected loop body adds an update so that <code>i</code> increases toward 5:</p>
-<pre><code><div class="highlight"><pre><span></span><span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">5</span>
+<pre class="highlight"><span></span><span class="kr">REPEAT</span> <span class="kr">UNTIL</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">5</span>
     <span class="n">sum</span> <span class="err">←</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">i</span>
     <span class="n">i</span> <span class="err">←</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="kr">END</span> <span class="kr">REPEAT</span>
 </pre></div>
-</code></pre>
+
 <p>Now <code>i</code> grows each repetition until the condition becomes true and the loop ends. [2]</p>
 </div></details><p><strong>Learning Objective [CRD-2.M] — Explain why a single passing test case does not prove a program is correct.</strong></p>
 <blockquote>

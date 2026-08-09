@@ -34,9 +34,9 @@ body::before {
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
 }
 .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
-.post-sidebar { width: 250px; flex-shrink: 0; }
-.post-main { flex: 1; min-width: 0; }
+.post-layout { display: grid; grid-template-columns: 250px 1fr; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { min-width: 0; }
+.post-main { min-width: 0; }
 .site-header {
   background: rgba(251,252,247,0.92);
   border-bottom: 1px solid var(--border);
@@ -74,7 +74,7 @@ body::before {
 .card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
 .card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
 .card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
-.card p { margin: 12px 0; }
+.card p { margin: 12px 0; overflow-wrap: break-word; word-break: break-word; }
 .card ul, .card ol { margin: 8px 0 16px 24px; }
 .card li { margin: 4px 0; }
 .card a { color: var(--accent); text-decoration: none; }
@@ -112,6 +112,9 @@ body::before {
   font-size: 14px;
   line-height: 1.5;
   border: 1px solid #dcd5e8;
+  white-space: pre-wrap;            /* 允许长行自动 wrap (避免撑爆 flex 容器) */
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 .card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
@@ -314,7 +317,7 @@ body::before {
 </ul>
 <h3 id="section_4">Example — Sending a Message Across the Internet</h3>
 <p>When you send a message, the data is split into chunks and each chunk is encapsulated in a packet with metadata. Different packets may travel along different paths, so they can arrive out of order:</p>
-<pre><code><div class="highlight"><pre><span></span><span class="w">  </span><span class="nx">Sender</span><span class="w"> </span><span class="p">(</span><span class="nx">laptop</span><span class="p">)</span><span class="w">                              </span><span class="nx">Receiver</span><span class="w"> </span><span class="p">(</span><span class="nx">phone</span><span class="p">)</span>
+<pre class="highlight"><span></span><span class="w">  </span><span class="nx">Sender</span><span class="w"> </span><span class="p">(</span><span class="nx">laptop</span><span class="p">)</span><span class="w">                              </span><span class="nx">Receiver</span><span class="w"> </span><span class="p">(</span><span class="nx">phone</span><span class="p">)</span>
 <span class="w">        </span><span class="err">│</span><span class="w">                                          </span><span class="err">│</span>
 <span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="nx">packet</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">[</span><span class="nx">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">metadata</span><span class="p">]</span><span class="w"> </span><span class="err">────────────►│</span><span class="w">  </span><span class="nx">arrives</span><span class="w"> </span><span class="mi">1</span><span class="nx">st</span>
 <span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="nx">packet</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">[</span><span class="nx">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">metadata</span><span class="p">]</span><span class="w"> </span><span class="err">──►─────────►│</span><span class="w">  </span><span class="nx">arrives</span><span class="w"> </span><span class="mi">3</span><span class="nx">rd</span>
@@ -324,7 +327,7 @@ body::before {
 <span class="w">  </span><span class="nx">addresses</span><span class="w"> </span><span class="nx">plus</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">needed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">reassembly</span><span class="p">,</span><span class="w"> </span><span class="nx">so</span><span class="w"> </span><span class="nx">the</span>
 <span class="w">  </span><span class="nx">receiver</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">put</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">chunks</span><span class="w"> </span><span class="nx">back</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">correct</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span>
 </pre></div>
-</code></pre>
+
 <p>The three common protocols (CSN-1.C.4):</p>
 <table>
 <thead>
@@ -464,27 +467,27 @@ body::before {
 </ul>
 <h3 id="section_7">Example — Reading Network Diagrams (Quantitative Analysis)</h3>
 <p>In a chain there is <strong>no redundancy</strong> between the two ends — a single failure is enough to disconnect them:</p>
-<pre><code><div class="highlight"><pre><span></span>  A — B — C
+<pre class="highlight"><span></span>  A — B — C
 </pre></div>
-</code></pre>
+
 <p>If B fails, A and C can no longer communicate, because A–B–C is the only path between them.</p>
 <p>In a triangle every pair of devices has <strong>two paths</strong>, so a single device failure leaves the others connected:</p>
-<pre><code><div class="highlight"><pre><span></span>     A
+<pre class="highlight"><span></span>     A
     / \
    /   \
   B ——— C
 </pre></div>
-</code></pre>
+
 <p>If B fails, A and C still communicate through the direct path A–C; if C fails, A and B still communicate through A–B. Failing any one device keeps the other two connected, so the triangle is fault-tolerant against any single device failure.</p>
 <h3 id="section_8">Example — Redundant Routing on the Internet</h3>
 <p>In the network below there are two possible paths from the sender to the receiver:</p>
-<pre><code><div class="highlight"><pre><span></span>                 Router B
+<pre class="highlight"><span></span>                 Router B
                /         \
   Sender ────              ────  Receiver
                \         /
                  Router C
 </pre></div>
-</code></pre>
+
 <p>If Router B fails, packets are routed through Router C instead — the connection continues because there is <strong>more than one path</strong> between the two connected devices (CSN-1.E.3). This is why, when an Internet service outage occurs in one part of your town, you are often still able to access the Internet: the failure is only on one route, and routing is dynamic (CSN-1.B.5), so subsequent data is sent via a different route if possible (CSN-1.E.4).</p>
 <p>The two key ideas:</p>
 <table>
@@ -528,19 +531,19 @@ body::before {
 <p>(b) If one route fails, data can be sent via another route, so the connection remains reliable even when parts of the network fail. Because the Internet can tolerate more devices and connections without any single failure bringing the whole network down, the redundancy of routing options helps it scale to more devices and more people. [2]</p>
 <p>© Example: if every path between two points fails at the same time, no route remains — redundancy only helps when at least one alternative path survives. (Any reasonable example of a total or simultaneous failure is accepted.) [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 4.2.4 — Reading Network Diagrams (8 marks)</div><div class="callout-body"><p>Consider the network below, which connects four devices:</p>
-<pre><code><div class="highlight"><pre><span></span>  A — B — C
+<pre class="highlight"><span></span>  A — B — C
        │
        D
 </pre></div>
-</code></pre>
+
 <p>(a) If device B fails, which pairs of devices can no longer communicate? [2]</p>
 <p>(b) What is the minimum number of devices that must fail for A and C to lose communication? Explain your answer. [2]</p>
 <p>Now consider this second network:</p>
-<pre><code><div class="highlight"><pre><span></span>  A ———— B
+<pre class="highlight"><span></span>  A ———— B
   │       │
   D ———— C
 </pre></div>
-</code></pre>
+
 <p>© Is there a redundant route between A and C? If device B fails, can A and C still communicate? [2]</p>
 <p>(d) State the general condition under which two devices in a network can still communicate after a device fails. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) B is the only connection for A, C, and D, so with B failed the three are isolated from one another: A–C, A–D, and C–D can no longer communicate. [2]</p>
