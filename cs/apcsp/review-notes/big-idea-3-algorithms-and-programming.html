@@ -34,9 +34,9 @@ body::before {
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(150,130,220,0.02) 2px, rgba(150,130,220,0.02) 4px);
 }
 .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-.post-layout { display: grid; grid-template-columns: 250px 1fr; max-width: min(1120px, calc(100vw - 64px)); margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
-.post-sidebar { min-width: 0; }
-.post-main { min-width: 0; }
+.post-layout { display: flex; max-width: 1120px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 250px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
 .site-header {
   background: rgba(251,252,247,0.92);
   border-bottom: 1px solid var(--border);
@@ -74,7 +74,7 @@ body::before {
 .card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
 .card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
 .card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
-.card p { margin: 12px 0; overflow-wrap: break-word; word-break: break-word; }
+.card p { margin: 12px 0; }
 .card ul, .card ol { margin: 8px 0 16px 24px; }
 .card li { margin: 4px 0; }
 .card a { color: var(--accent); text-decoration: none; }
@@ -112,9 +112,6 @@ body::before {
   font-size: 14px;
   line-height: 1.5;
   border: 1px solid #dcd5e8;
-  white-space: pre-wrap;            /* 允许长行自动 wrap (避免撑爆 flex 容器) */
-  word-break: break-word;
-  overflow-wrap: anywhere;
 }
 .card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 .card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
@@ -301,21 +298,20 @@ body::before {
 <ul>
 <li><strong>[AAP-1.B.1]:</strong> The assignment operator allows a program to change the value represented by a variable.</li>
 <li><strong>[AAP-1.B.2]:</strong> The exam reference sheet provides the “←” operator to use for assignment. For example, <code>a ← expression</code> evaluates expression and then assigns a copy of the result to the variable a.</li>
-<li><strong>[AAP-1.B.3]:</strong> The value stored in a variable will be the most recent value assigned. For example:</li>
+<li><strong>[AAP-1.B.3]:</strong> The value stored in a variable will be the most recent value assigned. For example:<pre><code><div class="highlight"><pre><code>a ← 1
+b ← a
+a ← 2
+display(b)
+</code></pre></div></code></pre>
+still displays 1.</li>
 </ul>
-<pre class="highlight"><code>  a ← 1
-  b ← a
-  a ← 2
-  display(b)
-</code></pre>
-<p>still displays 1.</p>
 <p><strong>Quiz Supplement — Swap and Rotation Patterns (Progress Check Quiz 3.1).</strong></p>
 <ul>
 <li><strong>[3.1-Ext1]:</strong> Swapping the values of two variables requires a third temporary variable: <code>temp ← a</code>, then <code>a ← b</code>, then <code>b ← temp</code>. Without the temporary variable, one value would be overwritten and lost.</li>
 <li><strong>[3.1-Ext2]:</strong> A three-value rotation (cyclic shift) moves each value to the next variable, e.g., <code>word1 → word2 → word3 → word1</code>. Save the last value in a temporary variable first, then chain the assignments in reverse order: <code>temp ← word3; word3 ← word2; word2 ← word1; word1 ← temp</code>.</li>
 </ul>
 <h3 id="section_4">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.1 — Variables and Assignments
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.1 — Variables and Assignments
 // A variable is an abstraction that holds one value at a time.
 
 score ← 0                // assign the number 0 to score
@@ -333,8 +329,8 @@ b ← a                    // b gets a copy of a&#39;s value (b = 1)
 a ← 2                    // a is reassigned; b is unchanged
 DISPLAY(b)               // still displays 1
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.1 (Quiz Supplement) — Swap and rotation patterns.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.1 (Quiz Supplement) — Swap and rotation patterns.
 // Swap two values using a temporary variable:
 a ← 3
 b ← 5
@@ -354,14 +350,14 @@ w2 ← w1       // &quot;A&quot; moves into w2
 w1 ← temp     // &quot;C&quot; moves into w1
 // Result: w1 = &quot;C&quot;, w2 = &quot;A&quot;, w3 = &quot;B&quot;
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.1 — Tracing Assignments (6 marks)</div><div class="callout-body"><p>Trace the following code segment and answer the questions below.</p>
-<pre class="highlight"><span></span>x ← 5
+<pre><code><div class="highlight"><pre><span></span>x ← 5
 y ← x + 2
 x ← y
 y ← 10
 </pre></div>
-
+</code></pre>
 <p>(a) What is the value of <code>y</code> immediately after the statement <code>y ← x + 2</code>? [1]</p>
 <p>(b) What is the value of <code>x</code> after the statement <code>x ← y</code>? [1]</p>
 <p>© What are the final values of <code>x</code> and <code>y</code> after all statements execute? [2]</p>
@@ -373,11 +369,11 @@ y ← 10
 <p>(d) <strong>10</strong> — the most recent value assigned to <code>y</code>. [1]</p>
 <p>(e) The assignment operator evaluates the expression on the right and assigns a <em>copy</em> of the result to the variable on the left. When <code>b ← a</code> runs, a copy of <code>a</code>’s current value (1) is stored in <code>b</code>; the later reassignment <code>a ← 2</code> does not affect that stored copy. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.1.2 — Assignment and the &quot;Most Recent Value&quot; Rule (4 marks)</div><div class="callout-body"><p>Consider the following code segment.</p>
-<pre class="highlight"><span></span>count ← 3
+<pre><code><div class="highlight"><pre><span></span>count ← 3
 count ← count + 1
 count ← count * 2
 </pre></div>
-
+</code></pre>
 <p>(a) State the value of <code>count</code> after each of the three statements. [3]</p>
 <p>(b) Which essential knowledge statement tells us the stored value in a variable is the most recent value assigned? State it in your own words. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) After <code>count ← 3</code>: <strong>3</strong>; after <code>count ← count + 1</code>: <strong>4</strong>; after <code>count ← count * 2</code>: <strong>8</strong>. Each statement evaluates the expression using the current value and then stores the new value. [3]</p>
@@ -395,11 +391,11 @@ count ← count * 2
 <p>(b) Why can the swap not be done with just <code>a ← b</code> followed by <code>b ← a</code>? [2]</p>
 <p>© State the values of <code>a</code> and <code>b</code> after a correct swap. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span>temp ← a
+<pre><code><div class="highlight"><pre><span></span>temp ← a
 a ← b
 b ← temp
 </pre></div>
-
+</code></pre>
 <p>First save <code>a</code>’s value (7) in <code>temp</code>; then <code>a</code> can safely be overwritten with 12; finally <code>b</code> receives the saved 7. [3]</p>
 <p>(b) After <code>a ← b</code>, <code>a</code> is 12 and <code>b</code> is 12 — the original value of <code>a</code> (7) has been overwritten and is lost, so the next step <code>b ← a</code> would just copy 12 again. The temporary variable preserves the value that would otherwise be destroyed. [2]</p>
 <p>© <code>a = 12</code> and <code>b = 7</code> — the values have been exchanged. [1]</p>
@@ -407,12 +403,12 @@ b ← temp
 <p>(a) Write the assignments (using a <code>temp</code> variable) that perform the rotation. [3]</p>
 <p>(b) State the final values of <code>word1</code>, <code>word2</code>, and <code>word3</code>. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span>temp ← word3
+<pre><code><div class="highlight"><pre><span></span>temp ← word3
 word3 ← word2
 word2 ← word1
 word1 ← temp
 </pre></div>
-
+</code></pre>
 <p>Save the last variable’s value first, then chain the assignments in reverse order so that no value is overwritten before it has been copied onward. [3]</p>
 <p>(b) <code>word1 = &quot;owl&quot;</code>, <code>word2 = &quot;cat&quot;</code>, <code>word3 = &quot;dog&quot;</code>. [1]</p>
 </div></details><hr>
@@ -447,7 +443,7 @@ word1 ← temp
 <li><strong>[AAP-1.D.8]:</strong> The exam reference sheet describes a list structure whose index values are 1 through the number of elements in the list, inclusive. For all list operations, if a list index is less than 1 or greater than the length of the list, an error message is produced and the program will terminate.</li>
 </ul>
 <h3 id="section_7">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.2 — Data Abstraction
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.2 — Data Abstraction
 // A list stores multiple related items as a single value (one variable).
 
 scores ← [85, 92, 78]          // list literal; 85 is element 1, 92 is element 2
@@ -466,7 +462,7 @@ DISPLAY(LENGTH(copy))          // displays 3
 // and the program terminates.
 // DISPLAY(scores[0])   -- ERROR: valid indices are 1 through 3
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.1 — List Fundamentals (5 marks)</div><div class="callout-body"><p>A program contains the list <code>nums ← [10, 20, 30, 40]</code>.</p>
 <p>(a) What is the element at index 2? [1]</p>
 <p>(b) What is the index of the element 40? [1]</p>
@@ -484,11 +480,11 @@ DISPLAY(LENGTH(copy))          // displays 3
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) The list gives a collection of data a name (one variable) without referencing the specific details of the representation — multiple related items are treated as a single value (AAP-1.D.2, AAP-1.D.6). The program can refer to the whole collection as one thing instead of naming each student separately. [2]</p>
 <p>(b) Example benefits: the program is easier to develop and maintain (AAP-1.D.4); the collection can be processed with a single traversal algorithm; the list can be passed to a procedure as one value; the same algorithm works no matter how many students there are. Any two of these are accepted. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.2.3 — List Errors and Copies (3 marks)</div><div class="callout-body"><p>Consider the code segment below.</p>
-<pre class="highlight"><span></span>listA ← [1, 2, 3]
+<pre><code><div class="highlight"><pre><span></span>listA ← [1, 2, 3]
 listB ← listA
 listB[1] ← 99
 </pre></div>
-
+</code></pre>
 <p>(a) What is <code>LENGTH(listA)</code>? [1]</p>
 <p>(b) What happens when the program runs <code>DISPLAY(listA[3])</code>? [1]</p>
 <p>© The statement <code>listB ← listA</code> assigns a copy of the list to <code>listB</code>. What does <code>DISPLAY(listB[1])</code> display? [1]</p>
@@ -543,7 +539,7 @@ listB[1] ← 99
 <li><strong>[3.3-Ext2]:</strong> When a problem uses integer division (the quotient with the remainder discarded), <code>num / 10</code> gives the integer quotient and <code>num MOD 10</code> gives the remainder (the ones digit). Repeatedly taking <code>num MOD 10</code> to output a digit and then setting <code>num ← num / 10</code> (integer division) extracts the digits one at a time.</li>
 </ul>
 <h3 id="section_10">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.3 — Mathematical Expressions
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.3 — Mathematical Expressions
 // Arithmetic operators: +  -  *  /  MOD
 
 total ← 10 + 5        // 15
@@ -560,8 +556,8 @@ value ← (2 + 3) * 4        // 20   (parentheses override precedence)
 value ← 17 MOD 5 * 2       // (17 MOD 5) * 2 = 2 * 2 = 4
 value ← 3 + 4 / 2          // 5    (division first: 3 + 2)
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.3 (Quiz Supplement) — Absolute value and integer quotient.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.3 (Quiz Supplement) — Absolute value and integer quotient.
 
 // Distance on the number line = absolute value of the difference.
 // |num1 - num2| = |num2 - num1|, and the result is always &gt;= 0.
@@ -585,7 +581,7 @@ DISPLAY(n MOD 10)          // 5  (tens digit)
 n ← n / 10                 // 3
 DISPLAY(n MOD 10)          // 3  (hundreds digit)
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.3.1 — Evaluating Arithmetic Expressions (6 marks)</div><div class="callout-body"><p>State the value of each expression. [1 mark each]</p>
 <p>(a) <code>17 MOD 5</code></p>
 <p>(b) <code>10 MOD 2</code></p>
@@ -626,12 +622,12 @@ DISPLAY(n MOD 10)          // 3  (hundreds digit)
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <code>47 MOD 10</code> is <strong>7</strong> (the remainder, which is the ones digit), and the integer quotient of <code>47 / 10</code> is <strong>4</strong> (the 4.7 is truncated to 4). [2]</p>
 <p>(b) <strong>2, 5, 3</strong> — computed by repeatedly taking <code>n MOD 10</code> and then <code>n ← n / 10</code>. [1]</p>
 <p>©</p>
-<pre class="highlight"><span></span>tens ← n / 10          // integer division drops the ones digit
+<pre><code><div class="highlight"><pre><span></span>tens ← n / 10          // integer division drops the ones digit
 ones ← n MOD 10        // remainder is the ones digit
 DISPLAY(tens)
 DISPLAY(ones)
 </pre></div>
-
+</code></pre>
 <p>Alternatively, output <code>n MOD 10</code> first for the ones digit and then the integer quotient for the tens digit. [2]</p>
 </div></details><hr>
 <h2 id="section_11">Topic 3.4 — Strings</h2>
@@ -650,7 +646,7 @@ DISPLAY(ones)
 <li><strong>[3.4-Ext2]:</strong> A nested call such as <code>SUBSTRING(SUBSTRING(str, a, b), c, d)</code> is evaluated in two steps: first compute the inner substring to get an intermediate string, then apply the outer substring to that intermediate string. Positions for the outer call are read from the intermediate string, not from the original.</li>
 </ul>
 <h3 id="section_13">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.4 — Strings
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.4 — Strings
 // A string is an ordered sequence of characters (Topic 3.2, AAP-1.C.4).
 // NOTE: The AP Exam Reference Sheet does NOT provide built-in string
 // procedures (unlike list operations). On the exam, string operations
@@ -675,8 +671,8 @@ word ← &quot;computer&quot;
 part ← SUBSTRING(word, 1, 3)               // &quot;com&quot;
 DISPLAY(part)                              // displays com
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.4 (Quiz Supplement) — String procedures and nested calls.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.4 (Quiz Supplement) — String procedures and nested calls.
 // The question defines procedures like:
 //   len(str)      -&gt; number of characters in str
 //   prefix(str, n)-&gt; first n characters of str
@@ -691,12 +687,12 @@ DISPLAY(part)                              // displays com
 // Positions in the outer call refer to the INTERMEDIATE string.
 // reverse(prefix(&quot;computer&quot;, 4))  -&gt;  prefix = &quot;comp&quot;, reverse = &quot;pmoc&quot;
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.4.1 — Concatenation (4 marks)</div><div class="callout-body"><p>A program contains the following variables.</p>
-<pre class="highlight"><span></span>a ← &quot;sun&quot;
+<pre><code><div class="highlight"><pre><span></span>a ← &quot;sun&quot;
 b ← &quot;flower&quot;
 </pre></div>
-
+</code></pre>
 <p>(a) What is the result of concatenating <code>a</code> and <code>b</code> end-to-end? [1]</p>
 <p>(b) Write the concatenation that produces the string <code>&quot;sun flower&quot;</code> (with a space). [1]</p>
 <p>© Does concatenation automatically add a space between the joined strings? Explain. [1]</p>
@@ -769,7 +765,7 @@ b ← &quot;flower&quot;
 <li><strong>[3.5-Ext2]:</strong> De Morgan’s Laws give interchangeable equivalent expressions: <code>NOT(A AND B)</code> = <code>(NOT A) OR (NOT B)</code>, and <code>NOT(A OR B)</code> = <code>(NOT A) AND (NOT B)</code>. Either form may appear in a correct answer — an exam “select-two” item can present the original expression together with its De Morgan equivalent.</li>
 </ul>
 <h3 id="section_16">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.5 — Boolean Expressions
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.5 — Boolean Expressions
 // A Boolean value is either true or false.
 // Relational operators:  =  ≠  &gt;  &lt;  ≥  ≤
 
@@ -790,8 +786,8 @@ DISPLAY(isRaining AND hasUmbrella)   // false   (one is false)
 DISPLAY(isRaining OR hasUmbrella)    // true    (one is true)
 DISPLAY(NOT isRaining OR hasUmbrella) // false  (false OR false)
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.5 (Quiz Supplement) — Logic gates and De Morgan&#39;s laws.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.5 (Quiz Supplement) — Logic gates and De Morgan&#39;s laws.
 
 // Gates correspond to Boolean expressions.
 // AND gate:  true only if BOTH inputs are true   -&gt; A AND B
@@ -809,7 +805,7 @@ DISPLAY(NOT isRaining OR hasUmbrella) // false  (false OR false)
 // NOT(A OR B)   ==  (NOT A) AND (NOT B)
 // Example: NOT(x &gt; 5 AND y &lt; 10)  ==  (x &lt;= 5) OR (y &gt;= 10)
 </pre></div>
-
+</code></pre>
 <p><strong>Truth tables for the logical operators:</strong></p>
 <table>
 <thead>
@@ -940,19 +936,15 @@ DISPLAY(NOT isRaining OR hasUmbrella) // false  (false OR false)
 </blockquote>
 <ul>
 <li><strong>[AAP-2.H.1]:</strong> Conditional statements, or “if-statements,” affect the sequential flow of control by executing different statements based on the value of a Boolean expression.</li>
-<li><strong>[AAP-2.H.2]:</strong> The exam reference sheet provides:</li>
+<li><strong>[AAP-2.H.2]:</strong> The exam reference sheet provides:<pre><code><div class="highlight"><pre><code>IF(condition) { &lt;block of statements> }
+</code></pre></div></code></pre>
+— in which the code in block of statements is executed if the Boolean expression condition evaluates to true; no action is taken if condition evaluates to false.</li>
+<li><strong>[AAP-2.H.3]:</strong> The exam reference sheet provides:<pre><code><div class="highlight"><pre><code>IF(condition) { &lt;first block of statements> } ELSE { &lt;second block of statements> }
+</code></pre></div></code></pre>
+— in which the code in first block of statements is executed if the Boolean expression condition evaluates to true; otherwise, the code in second block of statements is executed.</li>
 </ul>
-<pre class="highlight"><code>  IF(condition) { &lt;block of statements> }
-</code></pre>
-<p>— in which the code in block of statements is executed if the Boolean expression condition evaluates to true; no action is taken if condition evaluates to false.</p>
-<ul>
-<li><strong>[AAP-2.H.3]:</strong> The exam reference sheet provides:</li>
-</ul>
-<pre class="highlight"><code>  IF(condition) { &lt;first block of statements> } ELSE { &lt;second block of statements> }
-</code></pre>
-<p>— in which the code in first block of statements is executed if the Boolean expression condition evaluates to true; otherwise, the code in second block of statements is executed.</p>
 <h3 id="section_19">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.6 — Conditionals
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.6 — Conditionals
 // Selection: execute different statements based on a Boolean condition.
 
 score ← 85
@@ -975,15 +967,15 @@ IF(score &lt; 0) {
     DISPLAY(&quot;Invalid score&quot;)   // never runs; no action is taken
 }
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.1 — Tracing Conditional Statements (6 marks)</div><div class="callout-body"><p>Consider the following code segment, where <code>num ← 7</code>.</p>
-<pre class="highlight"><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">num</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="ss">)</span><span class="w"> </span>{
+<pre><code><div class="highlight"><pre><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">num</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;even&quot;</span><span class="ss">)</span>
 }<span class="w"> </span><span class="k">ELSE</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;odd&quot;</span><span class="ss">)</span>
 }
 </pre></div>
-
+</code></pre>
 <p>(a) What is displayed? [1]</p>
 <p>(b) Rewrite the code so that it displays “even” when <code>num</code> is even and “odd” otherwise, but using the condition <code>num MOD 2 = 1</code> with the two display statements swapped. [2]</p>
 <p>© What happens in an <code>IF</code> statement (with no <code>ELSE</code>) when the condition evaluates to false? [1]</p>
@@ -991,32 +983,32 @@ IF(score &lt; 0) {
 <p>(e) In an <code>IF...ELSE</code> statement, how many of the two blocks are executed? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>odd</strong> — <code>7 MOD 2 = 1</code>, so the condition <code>7 MOD 2 = 0</code> is false and the ELSE block runs. [1]</p>
 <p>(b)</p>
-<pre class="highlight"><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">num</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="ss">)</span><span class="w"> </span>{
+<pre><code><div class="highlight"><pre><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">num</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;odd&quot;</span><span class="ss">)</span>
 }<span class="w"> </span><span class="k">ELSE</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;even&quot;</span><span class="ss">)</span>
 }
 </pre></div>
-
+</code></pre>
 <p>This uses the equivalent condition and swaps the two blocks. [2]</p>
 <p>© No action is taken — the block of statements is not executed, and execution continues after the IF statement. [1]</p>
 <p>(d) Selection determines which parts of an algorithm are executed based on a condition being true or false (AAP-2.G.1). [1]</p>
 <p>(e) Exactly one of the two blocks is executed (the first block if the condition is true; otherwise, the second block). [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.2 — Writing Conditional Statements (4 marks)</div><div class="callout-body"><p>A program reads a user’s age into the variable <code>age</code>. Write an <code>IF...ELSE</code> statement that displays <code>&quot;Adult&quot;</code> when <code>age ≥ 18</code> and <code>&quot;Minor&quot;</code> otherwise. [2]</p>
 <p>Then, write a second version using an <code>IF</code> statement only (no <code>ELSE</code>) that displays <code>&quot;Can vote&quot;</code> only when <code>age ≥ 18</code>. [2]</p>
-</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre class="highlight"><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">age</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">18</span><span class="ss">)</span><span class="w"> </span>{
+</div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><pre><code><div class="highlight"><pre><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">age</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">18</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;Adult&quot;</span><span class="ss">)</span>
 }<span class="w"> </span><span class="k">ELSE</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;Minor&quot;</span><span class="ss">)</span>
 }
 </pre></div>
-
+</code></pre>
 <p>The IF/ELSE version executes exactly one block based on the Boolean expression <code>age ≥ 18</code>. [2]</p>
-<pre class="highlight"><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">age</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">18</span><span class="ss">)</span><span class="w"> </span>{
+<pre><code><div class="highlight"><pre><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">age</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">18</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;Can vote&quot;</span><span class="ss">)</span>
 }
 </pre></div>
-
+</code></pre>
 <p>The IF-only version takes no action when the condition is false. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.6.3 — Expressing Selection in Natural Language (3 marks)</div><div class="callout-body"><p>Write the following rule as an algorithm using an <code>IF...ELSE</code> structure described in words (not code): “If the traffic light is red, stop; otherwise, go.” Then identify which part is the <em>condition</em>. [3]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>Natural language algorithm: 1. Check whether the traffic light is red. 2. If it is red, stop. 3. Otherwise (the light is not red), go. The condition is “the traffic light is red” — a Boolean expression that is either true or false, and it determines which part of the algorithm is executed (selection). [3]</p>
@@ -1031,7 +1023,7 @@ IF(score &lt; 0) {
 <li><strong>[AAP-2.I.1]:</strong> Nested conditional statements consist of conditional statements within conditional statements.</li>
 </ul>
 <h3 id="section_22">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.7 — Nested Conditionals
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.7 — Nested Conditionals
 // Conditional statements inside conditional statements.
 
 age ← 17
@@ -1051,9 +1043,9 @@ IF(age ≥ 16) {
 // age &gt;= 16 is true -&gt; enter the outer block.
 // hasLicense is true -&gt; display &quot;Can drive&quot;.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.1 — Tracing Nested Conditionals (6 marks)</div><div class="callout-body"><p>Consider the following code segment.</p>
-<pre class="highlight"><span></span><span class="nv">temp</span><span class="w"> </span>←<span class="w"> </span><span class="mi">75</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">temp</span><span class="w"> </span>←<span class="w"> </span><span class="mi">75</span>
 <span class="k">IF</span><span class="ss">(</span><span class="nv">temp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">80</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;hot&quot;</span><span class="ss">)</span>
 }<span class="w"> </span><span class="k">ELSE</span><span class="w"> </span>{
@@ -1064,7 +1056,7 @@ IF(age ≥ 16) {
 <span class="w">    </span>}
 }
 </pre></div>
-
+</code></pre>
 <p>(a) What is displayed? [1]</p>
 <p>(b) How many conditions are checked before the value 75 is classified? [1]</p>
 <p>© What would be displayed if <code>temp</code> were 85? [1]</p>
@@ -1094,7 +1086,7 @@ IF(age ≥ 16) {
 <p>(b) How many conditions are checked for a score of 65? [1]</p>
 <p>© For a score of 95, how many conditions are checked? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">score</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">90</span><span class="ss">)</span><span class="w"> </span>{
+<pre><code><div class="highlight"><pre><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">score</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">90</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;A&quot;</span><span class="ss">)</span>
 }<span class="w"> </span><span class="k">ELSE</span><span class="w"> </span>{
 <span class="w">    </span><span class="k">IF</span><span class="ss">(</span><span class="nv">score</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">80</span><span class="ss">)</span><span class="w"> </span>{
@@ -1108,12 +1100,12 @@ IF(age ≥ 16) {
 <span class="w">    </span>}
 }
 </pre></div>
-
+</code></pre>
 <p>Each ELSE block contains the next IF, so the conditions are checked in order from highest to lowest. [3]</p>
 <p>(b) Three conditions are checked: <code>score ≥ 90</code> (false), <code>score ≥ 80</code> (false), <code>score ≥ 70</code> (false) — then the innermost ELSE displays “D”. [1]</p>
 <p>© One condition: <code>95 ≥ 90</code> is true immediately, so the remaining conditionals are never reached. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.7.3 — Nested Conditionals Inside a Loop (5 marks)</div><div class="callout-body"><p>Consider the following code segment.</p>
-<pre class="highlight"><span></span><span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">num</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span>[<span class="mi">2</span>,<span class="w"> </span><span class="mi">5</span>,<span class="w"> </span><span class="mi">8</span>]<span class="w"> </span>{
+<pre><code><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">num</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span>[<span class="mi">2</span>,<span class="w"> </span><span class="mi">5</span>,<span class="w"> </span><span class="mi">8</span>]<span class="w"> </span>{
 <span class="w">    </span><span class="k">IF</span><span class="ss">(</span><span class="nv">num</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">        </span><span class="k">IF</span><span class="ss">(</span><span class="nv">num</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">4</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">            </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;big even&quot;</span><span class="ss">)</span>
@@ -1125,7 +1117,7 @@ IF(age ≥ 16) {
 <span class="w">    </span>}
 }
 </pre></div>
-
+</code></pre>
 <p>(a) What is displayed for <code>num = 2</code>? [1]</p>
 <p>(b) What is displayed for <code>num = 5</code>? [1]</p>
 <p>© What is displayed for <code>num = 8</code>? [1]</p>
@@ -1152,23 +1144,17 @@ IF(age ≥ 16) {
 </blockquote>
 <ul>
 <li><strong>[AAP-2.K.1]:</strong> Iteration statements change the sequential flow of control by repeating a set of statements zero or more times, until a stopping condition is met.</li>
-<li><strong>[AAP-2.K.2]:</strong> The exam reference sheet provides:</li>
-</ul>
-<pre class="highlight"><code>  REPEAT n TIMES { &lt;block of statements> }
-</code></pre>
-<p>— in which the block of statements is executed n times.</p>
-<ul>
-<li><strong>[AAP-2.K.3]:</strong> The exam reference sheet provides:</li>
-</ul>
-<pre class="highlight"><code>  REPEAT UNTIL(condition) { &lt;block of statements> }
-</code></pre>
-<p>— in which the code in block of statements is repeated until the Boolean expression condition evaluates to true.</p>
-<ul>
+<li><strong>[AAP-2.K.2]:</strong> The exam reference sheet provides:<pre><code><div class="highlight"><pre><code>REPEAT n TIMES { &lt;block of statements> }
+</code></pre></div></code></pre>
+— in which the block of statements is executed n times.</li>
+<li><strong>[AAP-2.K.3]:</strong> The exam reference sheet provides:<pre><code><div class="highlight"><pre><code>REPEAT UNTIL(condition) { &lt;block of statements> }
+</code></pre></div></code></pre>
+— in which the code in block of statements is repeated until the Boolean expression condition evaluates to true.</li>
 <li><strong>[AAP-2.K.4]:</strong> In REPEAT UNTIL(condition) iteration, an infinite loop occurs when the ending condition will never evaluate to true.</li>
 <li><strong>[AAP-2.K.5]:</strong> In REPEAT UNTIL(condition) iteration, if the conditional evaluates to true initially, the loop body is not executed at all, due to the condition being checked before the loop.</li>
 </ul>
 <h3 id="section_25">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.8 — Iteration
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.8 — Iteration
 // REPEAT n TIMES: the block runs exactly n times.
 
 sum ← 0
@@ -1199,15 +1185,15 @@ DISPLAY(x)                 // displays 5
 //     count ← count + 2      // count skips 10: 0,2,4,6,8,10...
 // }                           // runs forever -&gt; infinite loop
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.8.1 — REPEAT n TIMES (4 marks)</div><div class="callout-body"><p>Consider the following code segment.</p>
-<pre class="highlight"><span></span>total ← 1
+<pre><code><div class="highlight"><pre><span></span>total ← 1
 REPEAT 5 TIMES {
     total ← total * 2
 }
 DISPLAY(total)
 </pre></div>
-
+</code></pre>
 <p>(a) How many times is the loop body executed? [1]</p>
 <p>(b) What is displayed? [1]</p>
 <p>© If the loop were <code>REPEAT 0 TIMES</code>, how many times would the body execute? [1]</p>
@@ -1217,13 +1203,13 @@ DISPLAY(total)
 <p>© <strong>0</strong> times — the block would never execute. [1]</p>
 <p>(d) Iteration is a repeating portion of an algorithm; it repeats a specified number of times or until a given condition is met (AAP-2.J.1). [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.8.2 — REPEAT UNTIL (6 marks)</div><div class="callout-body"><p>Consider the following code segment.</p>
-<pre class="highlight"><span></span><span class="nv">n</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">n</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="nv">REPEAT</span><span class="w"> </span><span class="k">UNTIL</span><span class="ss">(</span><span class="nv">n</span><span class="w"> </span>≥<span class="w"> </span><span class="mi">5</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">n</span><span class="w"> </span>←<span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span>
 }
 <span class="nv">DISPLAY</span><span class="ss">(</span><span class="nv">n</span><span class="ss">)</span>
 </pre></div>
-
+</code></pre>
 <p>(a) What value is displayed? [1]</p>
 <p>(b) How many times does the loop body execute? [1]</p>
 <p>© When is the condition <code>n ≥ 5</code> checked — before or after the body runs? [1]</p>
@@ -1236,12 +1222,12 @@ DISPLAY(total)
 <p>(d) <strong>10</strong> — the condition <code>10 ≥ 5</code> is true initially, so the loop body is not executed at all; the value stays 10. [1]</p>
 <p>(e) An infinite loop occurs when the ending condition will never evaluate to true (AAP-2.K.4). [1]</p>
 <p>(f)</p>
-<pre class="highlight"><span></span><span class="nv">n</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">n</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="nv">REPEAT</span><span class="w"> </span><span class="k">UNTIL</span><span class="ss">(</span><span class="nv">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">n</span><span class="w"> </span>←<span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span>
 }
 </pre></div>
-
+</code></pre>
 <p><code>n</code> takes the values 0, 2, 4, 6, 8, … — it always skips 7, so the condition <code>n = 7</code> never becomes true and the loop never ends. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.8.3 — Expressing Iteration in Natural Language (3 marks)</div><div class="callout-body"><p>(a) Write the following as a natural-language algorithm using repetition: “Turn the key until the engine starts.” [1]</p>
 <p>(b) Which kind of loop (REPEAT n TIMES or REPEAT UNTIL) better matches your algorithm, and why? [2]</p>
@@ -1270,9 +1256,9 @@ DISPLAY(total)
 <li><strong>[AAP-2.M.2]:</strong> Knowledge of existing algorithms can help in constructing new ones. Some existing algorithms include: determining the maximum or minimum value of two or more numbers; computing the sum or average of two or more numbers; identifying if an integer is or is not evenly divisible by another integer; determining a robot’s path through a maze.</li>
 <li><strong>[AAP-2.M.3]:</strong> Using existing correct algorithms as building blocks for constructing another algorithm has benefits such as reducing development time, reducing testing, and simplifying the identification of errors.</li>
 </ul>
-<p>!56567_calculate-average-other.png</p>
+<p><img src="apcsp-images/56567_calculate-average.png" alt="Flowchart example: an algorithm can be expressed as a flowchart of decision and process blocks connected by arrows (AAP-2.A.2)"></p>
 <h3 id="section_28">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.9 — Developing Algorithms
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.9 — Developing Algorithms
 // Existing algorithms: maximum of two numbers, sum, average, divisibility.
 
 // Algorithm 1: maximum of two numbers
@@ -1309,9 +1295,9 @@ score ← 70
 IF(score &lt; 60) { DISPLAY(&quot;fail&quot;) } ELSE { DISPLAY(&quot;pass&quot;) }  // pass
 IF(NOT score ≥ 60) { DISPLAY(&quot;fail&quot;) } ELSE { DISPLAY(&quot;pass&quot;) } // pass
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.1 — Equivalent Algorithms (5 marks)</div><div class="callout-body"><p>Two algorithms are shown below.</p>
-<pre class="highlight"><span></span><span class="c1">// Algorithm A</span>
+<pre><code><div class="highlight"><pre><span></span><span class="c1">// Algorithm A</span>
 <span class="n">IF</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">DISPLAY</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="p">}</span><span class="w"> </span><span class="n">ELSE</span><span class="w"> </span><span class="p">{</span>
@@ -1325,7 +1311,7 @@ IF(NOT score ≥ 60) { DISPLAY(&quot;fail&quot;) } ELSE { DISPLAY(&quot;pass&quo
 <span class="w">    </span><span class="n">DISPLAY</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
-
+</code></pre>
 <p>(a) What does Algorithm A display? [1]</p>
 <p>(b) Do the two algorithms always produce the same result? Explain. [2]</p>
 <p>© The statement <code>IF(NOT condition)</code> is an example of what relationship between conditional statements and Boolean expressions? [1]</p>
@@ -1337,11 +1323,11 @@ IF(NOT score ≥ 60) { DISPLAY(&quot;fail&quot;) } ELSE { DISPLAY(&quot;pass&quo
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.2 — Combining Existing Algorithms (4 marks)</div><div class="callout-body"><p>(a) Write an algorithm that computes the average of four numbers <code>p, q, r, s</code> by combining the existing “sum” and “average” algorithms. [2]</p>
 <p>(b) List two benefits of using existing correct algorithms as building blocks. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span>sum ← p + q + r + s
+<pre><code><div class="highlight"><pre><span></span>sum ← p + q + r + s
 average ← sum / 4
 DISPLAY(average)
 </pre></div>
-
+</code></pre>
 <p>The sum algorithm produces the total, then the average algorithm divides by the number of values. [2]</p>
 <p>(b) Example benefits: reducing development time; reducing testing; simplifying the identification of errors (AAP-2.M.3). Any two of these are accepted. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9.3 — Divisibility and Known Algorithms (4 marks)</div><div class="callout-body"><p>A program has the variable <code>n</code>.</p>
@@ -1349,13 +1335,13 @@ DISPLAY(average)
 <p>(b) State one example of a known algorithm that uses iteration to find a value in a list. [1]</p>
 <p>© Algorithms that appear similar can yield different side effects or results. Give a short example of two statements that look similar but do different things. [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">n</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="ss">)</span><span class="w"> </span>{
+<pre><code><div class="highlight"><pre><span></span><span class="k">IF</span><span class="ss">(</span><span class="nv">n</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;even&quot;</span><span class="ss">)</span>
 }<span class="w"> </span><span class="k">ELSE</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">DISPLAY</span><span class="ss">(</span><span class="s2">&quot;odd&quot;</span><span class="ss">)</span>
 }
 </pre></div>
-
+</code></pre>
 <p><code>n MOD 2 = 0</code> is true exactly when <code>n</code> is evenly divisible by 2. [2]</p>
 <p>(b) Example: linear search (or sequential search) — checking each element of a list, in order, until the desired value is found or all elements have been checked. (Other accepted answers: determining the minimum or maximum value in a list; computing a sum or average of a list.) [1]</p>
 <p>© Example: <code>IF(score &gt; 10)</code> and <code>IF(score ≥ 10)</code> look similar but behave differently when <code>score = 10</code> — the first is false, the second is true. Any example where a small difference in the condition changes the outcome is accepted. [1]</p>
@@ -1376,7 +1362,7 @@ DISPLAY(average)
 <li><strong>[3.9A-4]:</strong> Typical question types: (1) given a grid, starting cell, and facing, select the code segment that makes the robot reach the goal; (2) given a code segment, determine the robot’s final position and facing; (3) given a loop that never terminates, identify and fix the bug.</li>
 </ul>
 <h3 id="section_31">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.9A — Robot Programming
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.9A — Robot Programming
 // Example 1: the goal is straight ahead in the same row; every cell
 // between start and goal is open, so the robot simply moves forward.
 
@@ -1410,20 +1396,20 @@ IF(NOT CAN_MOVE(forward)) {
     }
 }
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9A.1 — Selecting Code to Reach the Goal (6 marks)</div><div class="callout-body"><p>A robot starts in cell (1,1) of a 3×3 grid, facing right. The goal is cell (1,3), and cells (1,1), (1,2), and (1,3) are open (the other cells may be ignored).</p>
 <p>Code X:</p>
-<pre class="highlight"><span></span>REPEAT UNTIL(goalReached()) {
+<pre><code><div class="highlight"><pre><span></span>REPEAT UNTIL(goalReached()) {
     MOVE_FORWARD()
 }
 </pre></div>
-
+</code></pre>
 <p>Code Y:</p>
-<pre class="highlight"><span></span>MOVE_FORWARD()
+<pre><code><div class="highlight"><pre><span></span>MOVE_FORWARD()
 ROTATE_RIGHT()
 MOVE_FORWARD()
 </pre></div>
-
+</code></pre>
 <p>(a) Does Code X move the robot to the goal? How many cells does the robot move? [2]</p>
 <p>(b) Trace Code Y: what is the robot’s position and facing after each statement? [2]</p>
 <p>© Which code segment correctly makes the robot reach the goal? [1]</p>
@@ -1433,32 +1419,32 @@ MOVE_FORWARD()
 <p>© <strong>Code X</strong> — it moves the robot straight into the goal cell. [1]</p>
 <p>(d) The robot would execute <code>MOVE_FORWARD()</code> while cell (1,2) is blocked; it does not move, and the program terminates (per the blocked/off-grid rule, 3.9A-2). [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9A.2 — Tracing a Path (4 marks)</div><div class="callout-body"><p>A robot starts in cell (2,2) of a 3×3 grid, facing up. All cells are open. It executes:</p>
-<pre class="highlight"><span></span>MOVE_FORWARD()
+<pre><code><div class="highlight"><pre><span></span>MOVE_FORWARD()
 ROTATE_RIGHT()
 MOVE_FORWARD()
 ROTATE_RIGHT()
 MOVE_FORWARD()
 </pre></div>
-
+</code></pre>
 <p>(a) State the robot’s cell and facing after each of the three <code>MOVE_FORWARD()</code> calls. [3]</p>
 <p>(b) What are the robot’s final position and facing? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) 1st <code>MOVE_FORWARD()</code>: (1,2), facing up. 2nd: after <code>ROTATE_RIGHT()</code> the robot faces right, so it moves to (1,3), facing right. 3rd: after another <code>ROTATE_RIGHT()</code> it faces down, so it moves to (2,3), facing down. [3]</p>
 <p>(b) Final position <strong>(2,3)</strong>, facing <strong>down</strong>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9A.3 — Fixing a Non-Terminating Loop (5 marks)</div><div class="callout-body"><p>A robot starts in cell (1,1) facing right. The goal is (1,3); cells (1,1), (1,2), and (1,3) are open. Consider:</p>
-<pre class="highlight"><span></span>REPEAT UNTIL(goalReached()) {
+<pre><code><div class="highlight"><pre><span></span>REPEAT UNTIL(goalReached()) {
     IF(NOT CAN_MOVE(forward)) {
         ROTATE_LEFT()
     }
 }
 </pre></div>
-
+</code></pre>
 <p>(a) Does this loop terminate? [1]</p>
 <p>(b) Explain why not. [2]</p>
 <p>© Rewrite the loop body so the robot reaches the goal and the loop terminates. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>No</strong> — the loop never terminates. [1]</p>
 <p>(b) The robot starts facing right with (1,2) open, so <code>CAN_MOVE(forward)</code> is true and the body does nothing. The robot never moves and its facing never changes, so <code>goalReached()</code> never becomes true — the loop’s stopping condition never changes (infinite loop, AAP-2.K.4). [2]</p>
 <p>©</p>
-<pre class="highlight"><span></span>REPEAT UNTIL(goalReached()) {
+<pre><code><div class="highlight"><pre><span></span>REPEAT UNTIL(goalReached()) {
     IF(CAN_MOVE(forward)) {
         MOVE_FORWARD()          // move when possible
     } ELSE {
@@ -1466,7 +1452,7 @@ MOVE_FORWARD()
     }
 }
 </pre></div>
-
+</code></pre>
 <p>Each iteration either moves the robot (changing its cell) or turns it (changing its facing), so the robot advances to the goal and the loop ends. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.9A.4 — CAN_MOVE and Blocked Cells (5 marks)</div><div class="callout-body"><p>A robot is in cell (2,2) of a 3×3 grid, facing up. Cell (1,2) is blocked; cells (2,1), (2,3), and (3,2) are open.</p>
 <p>(a) Evaluate <code>CAN_MOVE(forward)</code>. [1]</p>
@@ -1501,23 +1487,20 @@ MOVE_FORWARD()
 </blockquote>
 </li>
 <li><strong>[AAP-2.O.2]:</strong> Iteration statements can be used to traverse a list.</li>
-<li><strong>[AAP-2.O.3]:</strong> The exam reference sheet provides:</li>
-</ul>
-<pre class="highlight"><code>  FOR EACH item IN aList { &lt;block of statements> }
-</code></pre>
-<p>— The variable item is assigned the value of each element of aList sequentially, in order, from the first element to the last element. The code in block of statements is executed once for each assignment of item.</p>
-<ul>
+<li><strong>[AAP-2.O.3]:</strong> The exam reference sheet provides:<pre><code><div class="highlight"><pre><code>FOR EACH item IN aList { &lt;block of statements> }
+</code></pre></div></code></pre>
+— The variable item is assigned the value of each element of aList sequentially, in order, from the first element to the last element. The code in block of statements is executed once for each assignment of item.</li>
 <li><strong>[AAP-2.O.4]:</strong> Knowledge of existing algorithms that use iteration can help in constructing new algorithms. Some examples of existing algorithms that are often used with lists include: determining a minimum or maximum value in a list; computing a sum or average of a list of numbers.</li>
 <li><strong>[AAP-2.O.5]:</strong> Linear search or sequential search algorithms check each element of a list, in order, until the desired value is found or all elements in the list have been checked.</li>
 </ul>
-<p>!figure-1–performing-the-linear-search-revision-notes-computer-science-other.png</p>
+<p><img src="apcsp-images/figure-1--performing-the-linear-search-revision-notes-computer-science.png" alt="Linear search: the algorithm scans each element of the list one by one until the target is found or the list ends"></p>
 <p><strong>Quiz Supplement — Nested Traversals and Debugging Pitfalls (Progress Check Quiz 3.10).</strong></p>
 <ul>
 <li><strong>[3.10-Ext1]:</strong> A nested traversal uses one traversal inside another. To find the intersection of two lists, loop over <code>list1</code> and, for each element, test (with a helper procedure such as <code>IsFound(list2, a)</code>) whether it also appears in <code>list2</code>, appending it to a result list only when it does. Because each element of <code>list1</code> is visited once, each common element is added at most once (this also produces a deduplicated result).</li>
 <li><strong>[3.10-Ext2]:</strong> Common debugging pitfalls: (1) initializing a counter INSIDE the loop resets it on every iteration, so the counter never accumulates; (2) removing elements while traversing forward can skip elements or make the loop fail to terminate — iterate from the last index down to 1, or decrement the index after each removal; (3) repeatedly executing <code>INSERT(aList, 1, v)</code> prepends each value, so the final list is in REVERSE order — use <code>APPEND</code> to preserve the original order.</li>
 </ul>
 <h3 id="section_34">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.10 — Lists
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.10 — Lists
 // Lists are 1-indexed: aList[1] is the first element.
 
 scores ← [85, 92, 78, 90]
@@ -1565,8 +1548,8 @@ FOR EACH n IN nums {
 }
 DISPLAY(found)              // displays true
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.10 (Quiz Supplement) — Nested traversal and debugging pitfalls.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.10 (Quiz Supplement) — Nested traversal and debugging pitfalls.
 
 // Intersection of two lists: elements of list1 that also appear in list2.
 PROCEDURE IsFound(lst, val) {
@@ -1613,7 +1596,7 @@ FOR EACH w IN words {
 }
 // Fix: use APPEND(out, w) to keep the original order.
 </pre></div>
-
+</code></pre>
 <p><strong>List operations at a glance (Exam Reference Sheet):</strong></p>
 <table>
 <thead>
@@ -1677,7 +1660,7 @@ FOR EACH w IN words {
 <p>(d) The <strong>last element</strong> of <code>nums</code> — <code>LENGTH(nums)</code> is the number of elements, and the last element is at that index. [1]</p>
 <p>(e) An error message is produced and the program will terminate — index 0 is less than 1, which is outside the valid range. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.10.2 — Complete vs. Partial Traversal (4 marks)</div><div class="callout-body"><p>Consider the following code segment.</p>
-<pre class="highlight"><span></span><span class="nv">vals</span><span class="w"> </span>←<span class="w"> </span>[<span class="mi">5</span>,<span class="w"> </span><span class="mi">12</span>,<span class="w"> </span><span class="mi">8</span>,<span class="w"> </span><span class="mi">20</span>,<span class="w"> </span><span class="mi">3</span>]
+<pre><code><div class="highlight"><pre><span></span><span class="nv">vals</span><span class="w"> </span>←<span class="w"> </span>[<span class="mi">5</span>,<span class="w"> </span><span class="mi">12</span>,<span class="w"> </span><span class="mi">8</span>,<span class="w"> </span><span class="mi">20</span>,<span class="w"> </span><span class="mi">3</span>]
 <span class="nv">count</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">v</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span><span class="nv">vals</span><span class="w"> </span>{
 <span class="w">    </span><span class="k">IF</span><span class="ss">(</span><span class="nv">v</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="ss">)</span><span class="w"> </span>{
@@ -1686,7 +1669,7 @@ FOR EACH w IN words {
 }
 <span class="nv">DISPLAY</span><span class="ss">(</span><span class="nv">count</span><span class="ss">)</span>
 </pre></div>
-
+</code></pre>
 <p>(a) What is displayed? [1]</p>
 <p>(b) Is this a complete traversal or a partial traversal of <code>vals</code>? Explain. [1]</p>
 <p>© Write an algorithm that computes the sum of the elements of <code>vals</code>. [1]</p>
@@ -1694,16 +1677,16 @@ FOR EACH w IN words {
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>2</strong> — the values greater than 10 are 12 and 20. [1]</p>
 <p>(b) Complete traversal — the <code>FOR EACH</code> loop assigns <code>v</code> the value of <em>each</em> element of <code>vals</code>, in order, from the first element to the last element, so all elements are accessed. [1]</p>
 <p>©</p>
-<pre class="highlight"><span></span><span class="nv">sum</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">sum</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">v</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span><span class="nv">vals</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">sum</span><span class="w"> </span>←<span class="w"> </span><span class="nv">sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">v</span>
 }
 </pre></div>
-
+</code></pre>
 <p>[1]</p>
 <p>(d) The minimum is <strong>3</strong>. Algorithm: <code>minVal ← vals[1]</code> then <code>FOR EACH v IN vals { IF(v &lt; minVal) { minVal ← v } }</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.10.3 — Linear Search (5 marks)</div><div class="callout-body"><p>Consider the following code segment, which searches <code>list</code> for <code>target</code>.</p>
-<pre class="highlight"><span></span><span class="n">list</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="n">&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;, &quot;date&quot;</span><span class="o">]</span>
+<pre><code><div class="highlight"><pre><span></span><span class="n">list</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">[</span><span class="n">&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;, &quot;date&quot;</span><span class="o">]</span>
 <span class="n">target</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="ss">&quot;cherry&quot;</span>
 <span class="k">index</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">1</span>
 <span class="k">found</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="k">false</span>
@@ -1716,7 +1699,7 @@ FOR EACH w IN words {
 <span class="err">}</span>
 <span class="n">DISPLAY</span><span class="p">(</span><span class="k">index</span><span class="p">)</span>
 </pre></div>
-
+</code></pre>
 <p>(a) What is displayed? [1]</p>
 <p>(b) How many elements are checked before the search stops? [1]</p>
 <p>© Describe what the linear (sequential) search algorithm does. [2]</p>
@@ -1730,31 +1713,31 @@ FOR EACH w IN words {
 <p>(b) Write an algorithm that computes the <strong>average</strong> of the elements of <code>grades</code> (assume the list is not empty). [2]</p>
 <p>© Write an algorithm that finds the <strong>maximum</strong> value in <code>grades</code>. [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span><span class="nv">grades</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="nv">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">g</span>
 }
 </pre></div>
-
+</code></pre>
 <p>[1]</p>
 <p>(b)</p>
-<pre class="highlight"><span></span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span><span class="nv">grades</span><span class="w"> </span>{
 <span class="w">    </span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="nv">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">g</span>
 }
 <span class="nv">average</span><span class="w"> </span>←<span class="w"> </span><span class="nv">total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nv">LENGTH</span><span class="ss">(</span><span class="nv">grades</span><span class="ss">)</span>
 </pre></div>
-
+</code></pre>
 <p>Compute the sum (known sum algorithm), then divide by <code>LENGTH(grades)</code> = 4, giving 89.25. [2]</p>
 <p>©</p>
-<pre class="highlight"><span></span><span class="nv">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="nv">grades</span>[<span class="mi">1</span>]
+<pre><code><div class="highlight"><pre><span></span><span class="nv">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="nv">grades</span>[<span class="mi">1</span>]
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span><span class="nv">grades</span><span class="w"> </span>{
 <span class="w">    </span><span class="k">IF</span><span class="ss">(</span><span class="nv">g</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">maxVal</span><span class="ss">)</span><span class="w"> </span>{
 <span class="w">        </span><span class="nv">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="nv">g</span>
 <span class="w">    </span>}
 }
 </pre></div>
-
+</code></pre>
 <p>Initialize <code>maxVal</code> with the first element, then update it whenever a larger element is found (final value 95). [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.10.5 — Intersection of Two Lists (6 marks)</div><div class="callout-body"><p>A program has <code>list1 ← [2, 5, 8, 3]</code> and <code>list2 ← [5, 3, 9, 3]</code>.</p>
 <p>(a) Which elements of <code>list1</code> also appear in <code>list2</code>? [1]</p>
@@ -1763,7 +1746,7 @@ FOR EACH w IN words {
 <p>(d) In what order do the elements appear in <code>common</code>? [1]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) <strong>5 and 3</strong> — these are the elements of <code>list1</code> that are found in <code>list2</code>. [1]</p>
 <p>(b)</p>
-<pre class="highlight"><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">IsFound</span><span class="p">(</span><span class="nv">lst</span><span class="p">,</span><span class="w"> </span><span class="nv">val</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<pre><code><div class="highlight"><pre><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">IsFound</span><span class="p">(</span><span class="nv">lst</span><span class="p">,</span><span class="w"> </span><span class="nv">val</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
 <span class="w">    </span><span class="nf">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span><span class="nv">lst</span><span class="w"> </span><span class="err">{</span>
 <span class="w">        </span><span class="nf">IF</span><span class="p">(</span><span class="nv">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">val</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="nv">RETURN</span><span class="p">(</span><span class="nv">true</span><span class="p">)</span><span class="w"> </span><span class="err">}</span>
 <span class="w">    </span><span class="err">}</span>
@@ -1776,30 +1759,30 @@ FOR EACH w IN words {
 <span class="w">    </span><span class="err">}</span>
 <span class="err">}</span>
 </pre></div>
-
+</code></pre>
 <p>[3]</p>
 <p>© The <code>FOR EACH</code> loop visits each element of <code>list1</code> exactly once, and <code>APPEND</code> runs at most once per element, so a value shared by both lists is added only when its (first) occurrence in <code>list1</code> is processed. [1]</p>
 <p>(d) The elements of <code>common</code> appear in the order of their first occurrence in <code>list1</code> — here <code>[5, 3]</code>. [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.10.6 — Debugging Traversal Bugs (5 marks)</div><div class="callout-body"><p>For each of the three code fragments, state what is wrong and describe the fix.</p>
 <p>(a)</p>
-<pre class="highlight"><span></span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
+<pre><code><div class="highlight"><pre><span></span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">v</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span>[<span class="mi">10</span>,<span class="w"> </span><span class="mi">20</span>,<span class="w"> </span><span class="mi">30</span>]<span class="w"> </span>{
 <span class="w">    </span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="mi">0</span>
 <span class="w">    </span><span class="nv">total</span><span class="w"> </span>←<span class="w"> </span><span class="nv">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">v</span>
 }
 <span class="nv">DISPLAY</span><span class="ss">(</span><span class="nv">total</span><span class="ss">)</span>
 </pre></div>
-
+</code></pre>
 <p>What is displayed, and why is that incorrect? [2]</p>
 <p>(b) A program removes every element equal to <code>target</code> by scanning forward and calling <code>REMOVE(list, i)</code> when <code>list[i] = target</code>. Why can this skip an element that should be removed? [1]</p>
 <p>©</p>
-<pre class="highlight"><span></span><span class="nv">out</span><span class="w"> </span>←<span class="w"> </span>[]
+<pre><code><div class="highlight"><pre><span></span><span class="nv">out</span><span class="w"> </span>←<span class="w"> </span>[]
 <span class="k">FOR</span><span class="w"> </span><span class="nv">EACH</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="nv">IN</span><span class="w"> </span>[<span class="s2">&quot;a&quot;</span>,<span class="w"> </span><span class="s2">&quot;b&quot;</span>,<span class="w"> </span><span class="s2">&quot;c&quot;</span>]<span class="w"> </span>{
 <span class="w">    </span><span class="nv">INSERT</span><span class="ss">(</span><span class="nv">out</span>,<span class="w"> </span><span class="mi">1</span>,<span class="w"> </span><span class="nv">w</span><span class="ss">)</span>
 }
 <span class="nv">DISPLAY</span><span class="ss">(</span><span class="nv">out</span><span class="ss">)</span>
 </pre></div>
-
+</code></pre>
 <p>What is displayed, and what single change preserves the original order? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It displays <strong>30</strong> (incorrectly) — the counter <code>total</code> is initialized to 0 INSIDE the loop, so it is reset on every iteration and only ever accumulates the last value (30). The fix is to move <code>total ← 0</code> BEFORE the loop so the values accumulate to 60. [2]</p>
 <p>(b) After <code>REMOVE(list, i)</code>, the next element shifts left into index <code>i</code>; if the loop then advances to <code>i + 1</code>, the shifted element is never examined and is skipped. Fix by not advancing the index after a removal, or by traversing backward from the last index to 1. [1]</p>
@@ -1824,9 +1807,9 @@ FOR EACH w IN words {
 </li>
 <li><strong>[AAP-2.P.3]:</strong> Binary search is often more efficient than sequential/linear search when applied to sorted data.</li>
 </ul>
-<p>!figure-2-performing-the-binary-search-revision-notes-computer-science-other.png</p>
+<p><img src="apcsp-images/figure-2-performing-the-binary-search-revision-notes-computer-science.png" alt="Binary search: the algorithm examines the middle element of a sorted list, then eliminates half the remaining elements at each step until the target is found"></p>
 <h3 id="section_37">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.11 — Binary Search
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.11 — Binary Search
 // Requirement: the data set MUST be sorted. (AAP-2.P.2)
 // At each step, look at the middle of the remaining data and
 // eliminate half of it. (AAP-2.P.1)
@@ -1849,7 +1832,7 @@ target ← 23
 // -&gt; 6 comparisons to find 23, and up to 10 if the target were last.
 // Binary search is often more efficient on sorted data.
 </pre></div>
-
+</code></pre>
 <p><strong>How many comparisons does binary search need?</strong></p>
 <table>
 <thead>
@@ -1931,7 +1914,7 @@ target ← 23
 <li><strong>[AAP-3.A.9]:</strong> The exam reference sheet provides procedure <code>INPUT()</code> which accepts a value from the user and returns the input value.</li>
 </ul>
 <h3 id="section_40">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.12 — Calling Procedures
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.12 — Calling Procedures
 
 PROCEDURE triple(n) {
     RETURN(n * 3)
@@ -1959,9 +1942,9 @@ age ← INPUT()               // age is set to whatever the user types
 // The call triple(4) interrupts execution, runs the procedure body
 // (RETURN 12), and control returns to the line after the call.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.12.1 — Tracing Procedure Calls (6 marks)</div><div class="callout-body"><p>A program defines the procedures below.</p>
-<pre class="highlight"><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">square</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<pre><code><div class="highlight"><pre><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">square</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
 <span class="w">    </span><span class="nf">RETURN</span><span class="p">(</span><span class="nv">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span>
 <span class="err">}</span>
 
@@ -1969,7 +1952,7 @@ age ← INPUT()               // age is set to whatever the user types
 <span class="w">    </span><span class="nf">RETURN</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span>
 <span class="err">}</span>
 </pre></div>
-
+</code></pre>
 <p>(a) What value does <code>square(5)</code> return? [1]</p>
 <p>(b) What value does <code>add(3, 4)</code> return? [1]</p>
 <p>© What is the value of <code>y</code> after <code>y ← add(square(2), 5)</code>? [1]</p>
@@ -1992,11 +1975,11 @@ age ← INPUT()               // age is set to whatever the user types
 <p>© Write a statement that assigns the returned value of <code>double(6)</code> to the variable <code>result</code>, where <code>PROCEDURE double(n) { RETURN(2 * n) }</code>. [1]</p>
 <p>(d) What does <code>INPUT()</code> do, and how is its value used? [1]</p>
 <p>(e) What is the exact output of the following code segment? [1]</p>
-<pre class="highlight"><span></span>DISPLAY(1)
+<pre><code><div class="highlight"><pre><span></span>DISPLAY(1)
 DISPLAY(2)
 DISPLAY(3)
 </pre></div>
-
+</code></pre>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a) It displays the value of expression, followed by a space (AAP-3.A.6). [1]</p>
 <p>(b) It returns the flow of control to the point where the procedure was called and returns the value of expression (AAP-3.A.7). [1]</p>
 <p>© <code>result ← double(6)</code> — this assigns to <code>result</code> the value of the procedure being returned (12) by the call (AAP-3.A.8). [1]</p>
@@ -2027,7 +2010,7 @@ DISPLAY(3)
 <li><strong>[AAP-3.C.2]:</strong> The exam reference sheet provides <code>PROCEDURE procName(parameter1, parameter2, ...) { &lt;block of statements&gt; RETURN(expression) }</code> which is used to define a procedure that takes zero or more arguments. The procedure contains block of statements and returns the value of expression. The RETURN statement may appear at any point inside the procedure and causes an immediate return from the procedure back to the calling statement.</li>
 </ul>
 <h3 id="section_43">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.13 — Developing Procedures
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.13 — Developing Procedures
 // PROCEDURE procName(parameter1, parameter2, ...) { &lt;block of statements&gt; }
 // A procedure without RETURN executes statements for their effect.
 
@@ -2061,7 +2044,7 @@ DISPLAY(absValue(-8))         // displays 8
 // The internals can be changed later without notifying users, as long
 // as what the procedure does is preserved.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.13.1 — Procedural Abstraction and Modularity (5 marks)</div><div class="callout-body"><p>(a) What is <em>procedural abstraction</em>? [1]</p>
 <p>(b) What is <em>modularity</em>? [1]</p>
 <p>© How does procedural abstraction allow a large problem to be solved? [1]</p>
@@ -2074,17 +2057,17 @@ DISPLAY(absValue(-8))         // displays 8
 <p>(b) Write a procedure <code>PROCEDURE isEven(n)</code> that returns <code>true</code> when <code>n</code> is even and <code>false</code> otherwise. [2]</p>
 <p>© In procedure <code>isEven</code>, could the <code>RETURN</code> statement appear at more than one point? What does that do? [2]</p>
 </div></div><details class="callout callout-answer"><summary>📖 参考答案 | Reference Answer</summary><div class="callout-body"><p>(a)</p>
-<pre class="highlight"><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">maxOf</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<pre><code><div class="highlight"><pre><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">maxOf</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
 <span class="w">    </span><span class="nf">IF</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
 <span class="w">        </span><span class="nf">RETURN</span><span class="p">(</span><span class="nv">a</span><span class="p">)</span>
 <span class="w">    </span><span class="err">}</span>
 <span class="w">    </span><span class="nf">RETURN</span><span class="p">(</span><span class="nv">b</span><span class="p">)</span>
 <span class="err">}</span>
 </pre></div>
-
+</code></pre>
 <p>The RETURN statement may appear at any point inside the procedure; here <code>RETURN(a)</code> runs only when <code>a &gt; b</code>, otherwise <code>RETURN(b)</code> runs. [2]</p>
 <p>(b)</p>
-<pre class="highlight"><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">isEven</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<pre><code><div class="highlight"><pre><span></span><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">isEven</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
 <span class="w">    </span><span class="nf">IF</span><span class="p">(</span><span class="nv">n</span><span class="w"> </span><span class="nv">MOD</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
 <span class="w">        </span><span class="nf">RETURN</span><span class="p">(</span><span class="nv">true</span><span class="p">)</span>
 <span class="w">    </span><span class="err">}</span><span class="w"> </span><span class="nf">ELSE</span><span class="w"> </span><span class="err">{</span>
@@ -2092,7 +2075,7 @@ DISPLAY(absValue(-8))         // displays 8
 <span class="w">    </span><span class="err">}</span>
 <span class="err">}</span>
 </pre></div>
-
+</code></pre>
 <p><code>n MOD 2 = 0</code> is true exactly when <code>n</code> is even. [2]</p>
 <p>© Yes — the RETURN statement may appear at any point inside the procedure and causes an immediate return from the procedure back to the calling statement (AAP-3.C.2). In <code>isEven</code>, one branch returns true and the other returns false. [2]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.13.3 — Generalizing with Parameters (5 marks)</div><div class="callout-body"><p>(a) A procedure <code>PROCEDURE greet()</code> displays <code>&quot;Hello&quot;</code> — it has no parameters. Explain why <code>PROCEDURE greet(name) { DISPLAY(&quot;Hello, &quot; + name) }</code> is more general. [2]</p>
@@ -2116,7 +2099,7 @@ DISPLAY(absValue(-8))         // displays 8
 <li><strong>[AAP-3.D.5]:</strong> Documentation for an API/library is necessary in understanding the behaviors provided by the API/library and how to use them.</li>
 </ul>
 <h3 id="section_46">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.14 — Libraries
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.14 — Libraries
 // A software library contains procedures that may be used in creating
 // new programs (AAP-3.D.1).
 
@@ -2138,7 +2121,7 @@ DISPLAY(avg)
 // behaviors provided and how to use them (AAP-3.D.4, AAP-3.D.5).
 // The programmer does NOT need to know how mean() is implemented.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.14.1 — What Is a Library? (4 marks)</div><div class="callout-body"><p>(a) What is a software library? [1]</p>
 <p>(b) From what sources can existing code segments come? [1]</p>
 <p>© How does the use of libraries simplify the task of creating complex programs? [1]</p>
@@ -2174,7 +2157,7 @@ DISPLAY(avg)
 <li><strong>[3.15-Ext1]:</strong> To select several items at random with equal probability and NO repeats (e.g., pick 2 different students), do not make independent <code>RANDOM(1, LENGTH(list))</code> calls — they can pick the same item twice. Instead, choose one item, remove it from the list, then choose again from the shorter list; this keeps every remaining item equally likely and guarantees distinct selections.</li>
 </ul>
 <h3 id="section_49">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.15 — Random Values
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.15 — Random Values
 // RANDOM(a, b) returns a random integer from a to b, INCLUSIVE.
 // Each result is equally likely to occur.
 
@@ -2195,8 +2178,8 @@ die1 ← RANDOM(1, 6)
 die2 ← RANDOM(1, 6)
 DISPLAY(die1 + die2)         // displays a value from 2 through 12
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.15 (Quiz Supplement) — Random selection without replacement.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.15 (Quiz Supplement) — Random selection without replacement.
 // Goal: pick 2 DIFFERENT students with equal probability.
 
 // Wrong: two independent RANDOM calls can select the same student.
@@ -2212,7 +2195,7 @@ second ← students[secondIndex]
 // first and second are guaranteed different, and each of the remaining
 // students was equally likely to be chosen second.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.15.1 — Possible Results (6 marks)</div><div class="callout-body"><p>State all possible values of each expression. [1 mark each]</p>
 <p>(a) <code>RANDOM(1, 4)</code></p>
 <p>(b) <code>RANDOM(5, 5)</code></p>
@@ -2269,7 +2252,7 @@ second ← students[secondIndex]
 <li><strong>[3.16-Ext1]:</strong> A simulation’s code encodes assumptions about the real world. To identify an implicit assumption, read the code and ask what it treats as constant, ignores, or simplifies. For example, if a predator–prey simulation never updates the predator count inside the loop, the implicit assumption is that the predator population stays the same day to day (Quiz 3.16-style question).</li>
 </ul>
 <h3 id="section_52">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.16 — Simulations
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.16 — Simulations
 // A simulation is an abstraction of a more complex object or
 // phenomenon. It uses varying sets of values to reflect the changing
 // state of the phenomenon, and random number generators simulate the
@@ -2301,8 +2284,8 @@ DISPLAY(flips)
 // the coin), which is how abstract simulations are developed --
 // specific details are removed and functionality is simplified.
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.16 (Quiz Supplement) — Finding the implicit assumption.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.16 (Quiz Supplement) — Finding the implicit assumption.
 // Predator-prey simulation over 30 days:
 prey ← 500
 REPEAT 30 TIMES {
@@ -2316,7 +2299,7 @@ DISPLAY(prey)
 // model assumes predators neither reproduce nor die out. A question may
 // ask you to read the code and state this hidden simplification.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.16.1 — What Is a Simulation? (5 marks)</div><div class="callout-body"><p>(a) What is a <em>simulation</em>? [1]</p>
 <p>(b) Why do simulations often mimic real-world events? [1]</p>
 <p>© Give one example of a real-world event that is impractical to experiment on and is better studied through a simulation, and state which reason (too big, too small, too fast, too slow, too expensive, too dangerous) applies. [2]</p>
@@ -2380,7 +2363,7 @@ DISPLAY(prey)
 <li><strong>[3.17-Ext1]:</strong> Efficiency can be estimated by counting how many times a procedure is called. If each call takes a fixed amount of time, the version with fewer calls is faster. For example, if <code>GetPrediction</code> takes 1 minute per call, algorithm V1 (4 calls) takes about 4 minutes while V2 (9 calls) takes about 9 minutes — V1 is the more efficient version for that input.</li>
 </ul>
 <h3 id="section_55">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.17 — Algorithmic Efficiency
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.17 — Algorithmic Efficiency
 // Efficiency is an estimation of the amount of computational
 // resources used; it is typically expressed as a function of the
 // size of the input. (AAP-4.A.3)
@@ -2412,8 +2395,8 @@ FOR EACH a IN nums {          // N elements
 // example, finding the shortest delivery route among thousands of
 // stops is often solved approximately rather than optimally.
 </pre></div>
-
-<pre class="highlight"><span></span>// Topic 3.17 (Quiz Supplement) — Estimating time from procedure calls.
+</code></pre>
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.17 (Quiz Supplement) — Estimating time from procedure calls.
 // Suppose GetPrediction() takes 1 minute per call.
 
 // Algorithm V1: makes 4 calls  -&gt; about 4 minutes total
@@ -2429,7 +2412,7 @@ score4 ← GetPrediction(player4)      // 1 min
 // statement or group of statements executes (AAP-4.A.5) -- here the
 // &quot;statement&quot; is a procedure call with a known cost per call.
 </pre></div>
-
+</code></pre>
 <p><strong>Efficiency classification (informal, no Big-O required):</strong></p>
 <table>
 <thead>
@@ -2471,7 +2454,7 @@ score4 ← GetPrediction(player4)      // 1 min
 <p>(e) <strong>Unreasonable</strong> — factorial efficiency. [1]</p>
 <p>(f) Algorithms with a polynomial efficiency or lower (constant, linear, square, cube, etc.) are said to run in a reasonable amount of time; algorithms with exponential or factorial efficiencies run in an unreasonable amount of time (AAP-4.A.7). [1]</p>
 </div></details><div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.17.2 — Efficiency Measured Informally (4 marks)</div><div class="callout-body"><p>A student writes the two algorithms below for the same task (finding the maximum of a list).</p>
-<pre class="highlight"><span></span><span class="c1">// Algorithm X</span>
+<pre><code><div class="highlight"><pre><span></span><span class="c1">// Algorithm X</span>
 <span class="n">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">nums</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">IF</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">maxVal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">}</span>
@@ -2482,7 +2465,7 @@ score4 ← GetPrediction(player4)      // 1 min
 <span class="n">IF</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">nums</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="n">nums</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">ELSE</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">maxVal</span><span class="w"> </span>←<span class="w"> </span><span class="n">nums</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
 <span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="n">written</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">hand</span><span class="p">)</span>
 </pre></div>
-
+</code></pre>
 <p>(a) How can an algorithm’s efficiency be informally measured? [1]</p>
 <p>(b) For a list of N elements, about how many comparisons does Algorithm X make? [1]</p>
 <p>© How does Algorithm Y compare in terms of code size and efficiency as N grows? [1]</p>
@@ -2533,7 +2516,7 @@ score4 ← GetPrediction(player4)      // 1 min
 <li><strong>[AAP-4.B.3]:</strong> An undecidable problem may have some instances that have an algorithmic solution, but there is no algorithmic solution that could solve all instances of the problem.</li>
 </ul>
 <h3 id="section_58">Example Code</h3>
-<pre class="highlight"><span></span>// Topic 3.18 — Undecidable Problems
+<pre><code class="language-text"><div class="highlight"><pre><span></span>// Topic 3.18 — Undecidable Problems
 // A DECIDABLE problem has an algorithm that produces a correct
 // output for ALL inputs.
 
@@ -2554,7 +2537,7 @@ DISPLAY(isEven(7))        // false
 // instances may have algorithmic solutions, but no single algorithm
 // solves ALL instances.
 </pre></div>
-
+</code></pre>
 <div class="callout callout-exercise"><div class="callout-title">✏️ Exercise 3.18.1 — Decidable vs. Undecidable (5 marks)</div><div class="callout-body"><p>(a) What is a <em>decidable problem</em>? [1]</p>
 <p>(b) What is an <em>undecidable problem</em>? [1]</p>
 <p>© Is the problem “Is the number even?” decidable or undecidable? Justify your answer. [2]</p>
