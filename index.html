@@ -311,7 +311,7 @@
 <div class="dialog-overlay" id="dialog">
   <div class="dialog-box">
     <p>请输入验证码以开启隐藏内容</p>
-    <input type="password" id="codeInput" maxlength="6" placeholder="······" autocomplete="off">
+    <input type="password" id="codeInput" maxlength="16" placeholder="······" autocomplete="off">
     <div class="btn-row">
       <button onclick="closeDialog()">取消</button>
       <button class="confirm" onclick="verify()">确认</button>
@@ -327,7 +327,7 @@
 </footer>
 
 <script>
-const PASSCODE = '9618';
+const PASSCODE = 'protocols';
 const dialog = document.getElementById('dialog');
 const codeInput = document.getElementById('codeInput');
 const cards = document.querySelector('.cards');
