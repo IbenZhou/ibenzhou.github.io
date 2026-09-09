@@ -194,6 +194,19 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+
+/* Callout / foldable answers */
+details.callout { margin: 14px 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card-bg); }
+details.callout > summary { cursor: pointer; padding: 9px 14px; font-weight: 600; font-size: 15px; color: var(--accent); list-style: none; user-select: none; border-radius: var(--radius); }
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary:hover { background: var(--accent-light); }
+details.callout > summary::before { content: '▸ '; }
+details.callout[open] > summary::before { content: '▾ '; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 8px; }
+.callout-body > :last-child { margin-bottom: 8px; }
+.callout-example { border-left: 3px solid var(--accent); }
+
 </style>
 </head>
 <body>
@@ -232,10 +245,11 @@ body::before {
     <div class="post-main">
       <article class="card">
         <h2 id="network-types">Network Types</h2>
-<h3 id="purpose-benefits-of-networking">Purpose &amp; benefits of networking</h3>
+<h2 id="purpose-benefits-of-networking">Purpose &amp; benefits of networking</h2>
 <h3 id="what-is-a-network">What is a network?</h3>
 <ul>
-<li>A network is two or more <strong>interconnected devices</strong> (such as computers, printers, and servers) designed to:<ul>
+<li>A network is two or more <strong>interconnected devices</strong> (such as computers, printers, and servers) designed to:
+<ul>
 <li><strong>share resources</strong></li>
 <li><strong>exchange data</strong></li>
 <li><strong>communicate with each other</strong></li>
@@ -282,7 +296,7 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h3 id="lans-wans">LANs &amp; WANs</h3>
+<h2 id="lans-wans">LANs &amp; WANs</h2>
 <h3 id="what-is-a-local-area-network-lan">What is a local area network (LAN)?</h3>
 <ul>
 <li>A local area network (LAN) is a network which has a <strong>small geographical area</strong> (under 1 mile)</li>
@@ -360,7 +374,7 @@ body::before {
 <img alt="wan" src="images/wan.png" /></li>
 </ul>
 <h2 id="network-models">Network Models</h2>
-<h3 id="client-server-peer-to-peer">Client-server &amp; peer-to-peer</h3>
+<h2 id="client-server-peer-to-peer">Client-server &amp; peer-to-peer</h2>
 <h3 id="what-is-a-client-server-network">What is a client-server network?</h3>
 <ul>
 <li>A client-server network is when <strong>powerful and reliable ‘server’ computers</strong> control the network and <strong>‘serve’ the clients</strong> with services such as files, email, web access, etc</li>
@@ -430,27 +444,25 @@ Client computers connected to different servers</li>
 </tbody>
 </table>
 <ul>
-<li>
-<p>A peer-to-peer network is typically used in <strong>home networks</strong>, by <strong>small businesses</strong>, or for <strong>specific applications</strong> like file sharing
+<li>A peer-to-peer network is typically used in <strong>home networks</strong>, by <strong>small businesses</strong>, or for <strong>specific applications</strong> like file sharing
 <img alt="Peer to peer network example setup" src="images/peer-to-peer-network-computer-science-revision-notes.webp" />
-Peer to peer network example setup
-The Internet uses a client-server model.
-Describe the role of clients and servers on the Internet <strong>[2]</strong>
-Answer</p>
-</li>
-<li>
-<p>Web pages/files are saved on servers [1 mark]</p>
-</li>
+Peer to peer network example setup</li>
+</ul>
+<h4 id="quiz">Quiz</h4>
+<p>The Internet uses a client-server model.
+Describe the role of clients and servers on the Internet <strong>[2]</strong></p>
+<p><details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><ul>
+<li>Web pages/files are saved on servers [1 mark]</li>
 <li>Clients send requests to the web servers [1 mark]</li>
-<li>Web servers process the requests [1 mark]<ul>
-<li>…and return the results to the client [1 mark]<ul>
+<li>Web servers process the requests [1 mark]
+<ul>
+<li>…and return the results to the client [1 mark]</li>
 <li>the client displays the results to the user [1 mark]</li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<h3 id="thin-client-thick-client">Thin-client &amp; thick-client</h3>
+</div></details></p>
+<h2 id="thin-client-thick-client">Thin-client &amp; thick-client</h2>
 <h3 id="what-is-a-thin-client">What is a thin-client?</h3>
 <ul>
 <li>A <strong>thin client</strong> relies on a <strong>permanent connection</strong> to a server to function</li>
@@ -458,7 +470,8 @@ Answer</p>
 <li>Depends on the <strong>processing power</strong> of another computer or server</li>
 <li><strong>Cannot function</strong> without being connected to a networked computer or server</li>
 <li>The server can be part of a <strong>LAN</strong> (local area network) or a <strong>WAN</strong> (wide area network)</li>
-<li>Examples of thin-clients include:<ul>
+<li>Examples of thin-clients include:
+<ul>
 <li><strong>Cloud-based apps</strong> like Google Docs or Microsoft 365</li>
 <li><strong>Remote desktop software</strong> (e.g. Chrome Remote Desktop, Citrix)</li>
 <li><strong>Supermarket</strong> <strong>POS</strong> <strong>systems</strong> connected to a central server for prices, stock, and payments</li>
@@ -472,7 +485,8 @@ Answer</p>
 <li>Uses the <strong>processing power of its own device</strong> to run applications</li>
 <li>May connect to a network for updates or data sharing, but <strong>can function offline</strong></li>
 <li>Often used where <strong>performance, speed or offline access</strong> is important</li>
-<li>Examples of thick-clients include:<ul>
+<li>Examples of thick-clients include:
+<ul>
 <li><strong>Installed software</strong> like Adobe Photoshop or Microsoft Word</li>
 <li><strong>Standalone games</strong> installed and played on a PC or console</li>
 <li><strong>School or office PCs</strong> running full applications locally</li>
@@ -526,20 +540,23 @@ Answer</p>
 <ul>
 <li>A network topology is the <strong>physical structure of the network</strong></li>
 <li>It defines <strong>how the network hardware will be arranged</strong> to create the network</li>
-<li>Topologies to understand for the exam are:<ul>
+<li>Topologies to understand for the exam are:
+<ul>
 <li><strong>Star topology</strong></li>
 <li><strong>Bus topology</strong></li>
 <li><strong>Mesh topology</strong></li>
+<li><strong>Ring topology</strong></li>
 <li><strong>Hybrid topology</strong></li>
 </ul>
 </li>
 </ul>
-<h3 id="bus">Bus</h3>
+<h2 id="bus">Bus</h2>
 <h3 id="what-is-a-bus-topology">What is a bus topology?</h3>
 <ul>
 <li>A bus topology is all <strong>devices connected by one single ‘bus’ cable</strong>, terminated at each end</li>
 <li>The terminators <strong>stop the signal bouncing back</strong> and <strong>causing errors</strong></li>
-<li>A bus topology works by each device:<ul>
+<li>A bus topology works by each device:
+<ul>
 <li><strong>‘Listening’</strong> to electrical signals</li>
 <li><strong>Checking</strong> data packets for their specific address</li>
 <li><strong>Ignoring</strong> data packets it does not recognise</li>
@@ -548,7 +565,7 @@ Answer</p>
 <li>A bus topology has been replaced by much more <strong>efficient network topologies</strong> such as the <strong>star topology</strong>
 <img alt="Diagram of a bus network with five computer nodes connected in a line between two terminators, each node has a monitor and keyboard." src="images/bus-topology.png" /></li>
 </ul>
-<h4 id="bus-topology-advantages-vs-disadvantages">Bus topology - advantages vs disadvantages</h4>
+<h4 id="bus-topology---advantages-vs-disadvantages">Bus topology - advantages vs disadvantages</h4>
 <table>
 <thead>
 <tr>
@@ -571,24 +588,21 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<h3 id="star">Star</h3>
+<h2 id="star">Star</h2>
 <h3 id="what-is-a-star-topology">What is a star topology?</h3>
 <ul>
 <li>A star topology <strong>has a central switch</strong> which all other devices connect to</li>
 <li>A switch is an i <strong>ntelligent devic</strong> e which <strong>ensures that traffic only goes to the intended device</strong></li>
-<li>
-<p>A star topology is commonly seen in most <strong>homes</strong>, <strong>businesses</strong>, <strong>organisations</strong> and <strong>schools</strong>
-<img alt="Diagram of four computers with keyboards connected to a central server, illustrating a network configuration with dashed lines." src="images/star-topology.png" /></p>
-</li>
-<li>
-<p>Traffic (packets) on a star topology is <strong>handled differently depending on the device</strong> used as the central node</p>
+<li>A star topology is commonly seen in most <strong>homes</strong>, <strong>businesses</strong>, <strong>organisations</strong> and <strong>schools</strong>
+<img alt="Diagram of four computers with keyboards connected to a central server, illustrating a network configuration with dashed lines." src="images/star-topology.png" /></li>
+<li>Traffic (packets) on a star topology is <strong>handled differently depending on the device</strong> used as the central node
 <ul>
 <li>A <strong>hub</strong> will send traffic to all devices on the network, if the address in the packet matches a device it will be accepted, otherwise it is ignored</li>
 <li>A <strong>switch</strong> will only send traffic to devices on the network where the address in the packet is a match</li>
 </ul>
 </li>
 </ul>
-<h4 id="star-topology-advantages-vs-disadvantages">Star topology - advantages vs disadvantages</h4>
+<h4 id="star-topology---advantages-vs-disadvantages">Star topology - advantages vs disadvantages</h4>
 <table>
 <thead>
 <tr>
@@ -611,24 +625,21 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<h3 id="mesh">Mesh</h3>
+<h2 id="mesh">Mesh</h2>
 <h3 id="what-is-a-mesh-topology">What is a mesh topology?</h3>
 <ul>
 <li>A mesh topology allows <strong>all computers to be connected to all other computers</strong></li>
 <li>This is known as a <strong>full mesh</strong> network topology</li>
-<li>
-<p>LANs can make use of mesh networks however, they are <strong>more commonly seen in</strong> IoT devices such as <strong>wearable technology</strong> and <strong>smart home</strong> devices
-<img alt="Four computers arranged in a square, connected by lines forming a mesh network, indicating full interconnectivity among the devices." src="images/full-mesh.png" /></p>
-</li>
-<li>
-<p>Traffic (packets) on a mesh topology can follow two different methods:</p>
+<li>LANs can make use of mesh networks however, they are <strong>more commonly seen in</strong> IoT devices such as <strong>wearable technology</strong> and <strong>smart home</strong> devices
+<img alt="Four computers arranged in a square, connected by lines forming a mesh network, indicating full interconnectivity among the devices." src="images/full-mesh.png" /></li>
+<li>Traffic (packets) on a mesh topology can follow two different methods:
 <ul>
 <li><strong>Routing</strong> - devices are given routing logic (act like a router) to ensure packets are sent to the correct device in the shortest route</li>
 <li><strong>Flooding</strong> - all packets are sent to all devices using no routing logic, this can lead to network flooding causing performance issues</li>
 </ul>
 </li>
 </ul>
-<h4 id="mesh-topology-advantages-vs-disadvantages">Mesh topology - advantages vs disadvantages</h4>
+<h4 id="mesh-topology---advantages-vs-disadvantages">Mesh topology - advantages vs disadvantages</h4>
 <table>
 <thead>
 <tr>
@@ -655,20 +666,22 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<h3 id="hybrid">Hybrid</h3>
+<h2 id="hybrid">Hybrid</h2>
 <h3 id="what-is-a-hybrid-topology">What is a hybrid topology?</h3>
 <ul>
 <li>A hybrid topology is a <strong>mix of two of more different</strong> network topologies</li>
 <li>For example, bus &amp; star, star &amp; mesh etc</li>
 <li>A typical use of a hybrid topology would be when there is a <strong>need to join different networks</strong> together</li>
-<li>Imagine a large education trust takes over three schools: <strong>School A</strong>, <strong>School B</strong>, and <strong>School C</strong>.<ul>
+<li>Imagine a large education trust takes over three schools: <strong>School A</strong>, <strong>School B</strong>, and <strong>School C</strong>.
+<ul>
 <li><strong>School A</strong> uses a <strong>bus topology</strong> to connect classroom computers with a simple shared cable</li>
 <li><strong>School B</strong> uses a <strong>star topology</strong> to link all devices to a central switch in the IT room</li>
 <li><strong>School C</strong> uses a <strong>mesh topology</strong> to make sure every building (e.g. science block, library) stays connected, even if one cable fails</li>
 </ul>
 </li>
 <li>When the trust wants to connect all three schools into a single network, it uses a <strong>hybrid topology</strong></li>
-<li>This allows:<ul>
+<li>This allows:
+<ul>
 <li>Each school to <strong>keep its own existing setup</strong> (bus, star, or mesh)</li>
 <li>The schools to be <strong>linked together efficiently</strong></li>
 <li><strong>Easy expansion</strong>, such as adding a new school or admin office without changing everything</li>
@@ -676,7 +689,7 @@ Answer</p>
 </ul>
 </li>
 </ul>
-<h4 id="hybrid-topology-advantages-vs-disadvantages">Hybrid topology - advantages vs disadvantages</h4>
+<h4 id="hybrid-topology---advantages-vs-disadvantages">Hybrid topology - advantages vs disadvantages</h4>
 <table>
 <thead>
 <tr>
@@ -708,7 +721,8 @@ Answer</p>
 <ul>
 <li>Cloud computing is when <strong>software, services or files are hosted entirely on remote servers</strong></li>
 <li>Accessed <strong>through the internet</strong></li>
-<li>The two most common cloud computing examples are:<ul>
+<li>The two most common cloud computing examples are:
+<ul>
 <li><strong>Cloud storage</strong></li>
 <li><strong>Cloud software</strong>
 <img alt="3-3-data-storage-cloud-storage" src="images/3-3-data-storage-cloud-storage.png" /></li>
@@ -727,25 +741,25 @@ Answer</p>
 <ul>
 <li>Cloud software is <strong>hosted and managed remotely</strong></li>
 <li>The user <strong>accesses the software online</strong> (on demand)</li>
-<li>The provider handles:<ul>
+<li>The provider handles:
+<ul>
 <li><strong>Maintenance</strong></li>
 <li><strong>Upgrades</strong></li>
 <li><strong>Security</strong></li>
 </ul>
 </li>
 <li>Typically paid for via a <strong>monthly fee</strong> or <strong>yearly subscription</strong></li>
-<li>
-<p>Examples include: Google Docs, Microsoft 365, Adobe Creative Cloud
-A company uses cloud computing.
-Define cloud computing. <strong>[1]</strong>
-Answer</p>
-</li>
-<li>
-<p>Accessing a service/files/software on a remote server [1 mark]</p>
-</li>
+<li>Examples include: Google Docs, Microsoft 365, Adobe Creative Cloud</li>
 </ul>
-<h3 id="benefits-and-drawbacks-of-cloud-computing">Benefits and drawbacks of cloud computing</h3>
-<h3 id="cloud-storage_1">Cloud storage</h3>
+<h4 id="quiz_2">Quiz</h4>
+<p>A company uses cloud computing.
+Define cloud computing. <strong>[1]</strong></p>
+<p><details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><ul>
+<li>Accessing a service/files/software on a remote server [1 mark]</li>
+</ul>
+</div></details></p>
+<h2 id="benefits-and-drawbacks-of-cloud-computing">Benefits and drawbacks of cloud computing</h2>
+<h3 id="cloud-storage_2">Cloud storage</h3>
 <table>
 <thead>
 <tr>
@@ -792,7 +806,7 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<h3 id="cloud-software_1">Cloud software</h3>
+<h3 id="cloud-software_2">Cloud software</h3>
 <table>
 <thead>
 <tr>
@@ -831,7 +845,7 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<h3 id="public-private-clouds">Public &amp; private clouds</h3>
+<h2 id="public-private-clouds">Public &amp; private clouds</h2>
 <h3 id="what-is-the-difference-between-a-public-and-a-private-cloud">What is the difference between a public and a private cloud?</h3>
 <table>
 <thead>
@@ -874,29 +888,27 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<p>Give <strong>two</strong> benefits and <strong>one</strong> drawback of using cloud computing. <strong>[3]</strong>
-Answer
-1 mark each from:
+<h4 id="quiz_3">Quiz</h4>
+<p>Give <strong>two</strong> benefits and <strong>one</strong> drawback of using cloud computing. <strong>[3]</strong></p>
+<p><details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p>1 mark each from:
 <strong>Public</strong></p>
 <ul>
 <li>Computing services offered by 3rd party provider over the public Internet [1 mark]</li>
-<li>
-<p>Public is open/available to anyone with the appropriate equipment/software/credentials [1 mark]
-<strong>Private</strong></p>
-</li>
-<li>
-<p>Computing services offered either over the Internet or a private internal network [1 mark]</p>
-</li>
+<li>Public is open/available to anyone with the appropriate equipment/software/credentials [1 mark]
+<strong>Private</strong></li>
+<li>Computing services offered either over the Internet or a private internal network [1 mark]</li>
 <li>Only available to select users not the general public [1 mark]</li>
 <li>Private is a dedicated/bespoke system only accessible for/from the organisation [1 mark]</li>
 </ul>
+</div></details></p>
 <h2 id="transmission-media">Transmission Media</h2>
-<h3 id="wired-vs-wireless">Wired vs wireless</h3>
+<h2 id="wired-vs-wireless">Wired vs wireless</h2>
 <h3 id="what-is-a-wired-network">What is a wired network?</h3>
 <ul>
 <li>A wired network is a network where <strong>physical cables</strong> are used to join devices together and <strong>transmit data</strong></li>
 <li>Computers can be connected to networks using many different types of wires to transmit data</li>
-<li>The most common types of cables in a wired network are:<ul>
+<li>The most common types of cables in a wired network are:
+<ul>
 <li><strong>Ethernet</strong></li>
 <li><strong>Fibre optic</strong></li>
 <li><strong>Copper</strong></li>
@@ -914,7 +926,7 @@ Answer
 <tbody>
 <tr>
 <td><strong>Speed</strong> - Fast data transfer</td>
-<td><strong>Portability</strong> - Can&rsquo;t move easily, location is limited by physical cable</td>
+<td><strong>Portability</strong> - Can’t move easily, location is limited by physical cable</td>
 </tr>
 <tr>
 <td><strong>Security</strong> - Better physical security</td>
@@ -929,27 +941,24 @@ Answer
 <h3 id="what-is-a-wireless-network">What is a wireless network?</h3>
 <ul>
 <li>A wireless network is a network where connections are made <strong>using radio waves</strong> to transmit data <strong>through the air</strong></li>
-<li>The most common types of wireless connections are:<ul>
+<li>The most common types of wireless connections are:
+<ul>
 <li><strong>Wi-Fi</strong></li>
 <li><strong>Bluetooth</strong></li>
 </ul>
 </li>
 </ul>
 <h4 id="what-is-wi-fi">What is Wi-Fi?</h4>
-<p><img alt="wifi" src="images/wifi.png" /></p>
-<ul>
-<li>Wireless fidelity (<strong>Wi-Fi</strong>) is a common <strong>standard</strong> for wireless networks</li>
-<li>Wi-Fi is common in most homes and offices to connect devices such as <strong>laptops</strong>, <strong>tablets</strong> &amp; <strong>smart phones</strong></li>
-<li>Using Wi-Fi, devices communicate with a wireless access point (<strong>WAP</strong>), which can be a standalone device or built into a <strong>router</strong> or <strong>switch</strong></li>
-</ul>
-<h4 id="what-is-bluetooth">What is Bluetooth?</h4>
-<p><img alt="bluetooth" src="images/bluetooth.png" /></p>
-<ul>
-<li>Bluetooth is another common <strong>standard</strong> for wireless networks</li>
-<li>Bluetooth is common in most homes and offices to connect devices such as <strong>headphones</strong>, <strong>controllers</strong>, <strong>keyboards</strong> &amp; <strong>mice</strong></li>
-<li>Bluetooth is used typically for a <strong>direct connection</strong> between <strong>two devices</strong></li>
-</ul>
-<h3 id="advantages-and-disadvantages-of-wireless-networks">Advantages and disadvantages of wireless networks</h3>
+<img alt="wifi" src="images/wifi.png" />
+- Wireless fidelity (**Wi-Fi**) is a common **standard** for wireless networks
+- Wi-Fi is common in most homes and offices to connect devices such as **laptops**, **tablets** & **smart phones**
+- Using Wi-Fi, devices communicate with a wireless access point (**WAP**), which can be a standalone device or built into a **router** or **switch**
+#### What is Bluetooth?
+<img alt="bluetooth" src="images/bluetooth.png" />
+- Bluetooth is another common **standard** for wireless networks
+- Bluetooth is common in most homes and offices to connect devices such as **headphones**, **controllers**, **keyboards** & **mice**
+- Bluetooth is used typically for a **direct connection** between **two devices**
+### Advantages and disadvantages of wireless networks
 <table>
 <thead>
 <tr>
@@ -972,12 +981,13 @@ Answer
 </tr>
 </tbody>
 </table>
-<h3 id="types-of-media">Types of media</h3>
+<h2 id="types-of-media">Types of media</h2>
 <h3 id="what-is-transmission-media">What is transmission media?</h3>
 <ul>
 <li>Transmission media is the <strong>type of cable</strong> used in wired connections</li>
 <li>Wired connections offer a <strong>higher bandwidth</strong> than wireless connections</li>
-<li>The main options for transmission media are:<ul>
+<li>The main options for transmission media are:
+<ul>
 <li><strong>Twisted pair</strong></li>
 <li><strong>Coaxial</strong></li>
 <li><strong>Fibre-optic</strong></li>
@@ -1073,21 +1083,18 @@ Answer
 </tbody>
 </table>
 <h2 id="network-hardware">Network Hardware</h2>
-<h3 id="lan-hardware">LAN hardware</h3>
+<h2 id="lan-hardware">LAN hardware</h2>
 <h3 id="hub">Hub</h3>
 <ul>
 <li>A hub is a networking device which is used to <strong>connect multiple devices in a network</strong></li>
-<li>Hubs are &rdquo; <strong>dumb</strong> &rdquo; devices that pass on anything received on one connection to <strong>all other connections</strong></li>
+<li>Hubs are &quot; <strong>dumb</strong> &quot; devices that pass on anything received on one connection to <strong>all other connections</strong></li>
 <li>Because all data is sent to all devices, it can lead to <strong>network inefficiencies</strong> and <strong>security issues</strong></li>
-<li>
-<p>Hubs allow <strong>multiple</strong> other devices to be connected to them
-<img alt="hub" src="images/hub.png" /></p>
-</li>
-<li>
-<p>Hubs are generally <strong>much cheaper</strong> than switches, but:</p>
-</li>
+<li>Hubs allow <strong>multiple</strong> other devices to be connected to them
+<img alt="hub" src="images/hub.png" /></li>
+<li>Hubs are generally <strong>much cheaper</strong> than switches, but:</li>
 <li>When a hub receives a data packet, it will <strong>broadcast it to every device</strong> on the network</li>
-<li>This creates two potential issues:<ul>
+<li>This creates two potential issues:
+<ul>
 <li>As the information is being broadcast to every device, it will make <strong>unnecessary traffic</strong>, especially if there are a large number of devices</li>
 <li>As every device will receive the data packet, <strong>security may be a concern</strong></li>
 </ul>
@@ -1096,13 +1103,9 @@ Answer
 <h3 id="switch">Switch</h3>
 <ul>
 <li>A network switch is a networking device that <strong>connects devices on a computer network</strong> and uses <strong>packet switching</strong> to receive, process and forward data to the destination device</li>
-<li>
-<p>Unlike a hub, a switch <strong>only sends data to the device it was intended for</strong>, which improves network efficiency
-<img alt="switch" src="images/switch.png" /></p>
-</li>
-<li>
-<p>This is done by each switch having a <strong>lookup table</strong></p>
-</li>
+<li>Unlike a hub, a switch <strong>only sends data to the device it was intended for</strong>, which improves network efficiency
+<img alt="switch" src="images/switch.png" /></li>
+<li>This is done by each switch having a <strong>lookup table</strong></li>
 </ul>
 <table>
 <thead>
@@ -1145,10 +1148,10 @@ Answer
 <ul>
 <li>Historically a card <strong>inserted into a slot on the motherboard</strong> but now more likely to be <strong>built into the motherboard</strong>, that <strong>enables a device to connect to a network</strong></li>
 <li>NICs have a <strong>built-in ethernet port</strong> and can be connected to a network via an <strong>ethernet cable</strong></li>
-<li>It provides a <strong>dedicated, full-time connection to a network</strong>, converting the computer&rsquo;s data into a network-friendly format</li>
+<li>It provides a <strong>dedicated, full-time connection to a network</strong>, converting the computer’s data into a network-friendly format</li>
 <li>Every NIC has a <strong>unique identifier called</strong> a <strong>MAC address</strong>, used to identify the device on the network</li>
 <li>The primary function of a NIC is to <strong>send and receive data packets</strong> between the computer or device and the network
-    <img alt="nic-" src="images/nic-.png" /></li>
+<img alt="nic-" src="images/nic-.png" /></li>
 </ul>
 <h3 id="wireless-network-interface-card-wnic">Wireless Network Interface Card (WNIC)</h3>
 <ul>
@@ -1189,11 +1192,12 @@ Answer
 <li>Often used in <strong>Wi-Fi range extenders</strong> to improve coverage in large buildings</li>
 <li>Operates at the <strong>physical layer (Layer 1)</strong> of the OSI model</li>
 </ul>
-<h3 id="router">Router</h3>
+<h2 id="router">Router</h2>
 <h3 id="what-is-the-role-of-a-router">What is the role of a router?</h3>
 <ul>
 <li>A router is a network hardware device that routes data from a local area network (<strong>LAN</strong>) to another network connection - <strong>it joins two networks together</strong></li>
-<li>Routers <strong>analyse data packets</strong> and <strong>determine the best path</strong> for the packet to reach its destination<ul>
+<li>Routers <strong>analyse data packets</strong> and <strong>determine the best path</strong> for the packet to reach its destination
+<ul>
 <li>The <strong>header</strong> contains information about the packet</li>
 <li>The <strong>payload</strong> is the actual data being sent</li>
 <li>The <strong>IP address</strong> of both the sender and intended recipient is stored in the header of the data packet</li>
@@ -1201,15 +1205,12 @@ Answer
 </li>
 <li>The router can <strong>often feature additional functionalities</strong> such as wireless networking, built-in firewalls for enhanced security, and network switch capabilities</li>
 <li>A router being used to <strong>connect a LAN to a WAN</strong> will have a public <strong>IP address</strong>, which has been assigned to it by an Internet Service Provider</li>
-<li>
-<p>It is this public IP address that other routers use to <strong>identify and direct packets</strong> to the network
+<li>It is this public IP address that other routers use to <strong>identify and direct packets</strong> to the network
 <img alt="Diagram showing data packets travelling between four networks labelled A to D, connected by routers, with icons for devices and arrows indicating flow." src="images/3-4-network-hardware--router-1.png" />
-Multiple networks connected by routers, represented by the blue circular objects</p>
-</li>
-<li>
-<p>If the <strong>data packet</strong> is coming into the LAN, the router will send the data packet to the specific device within its LAN that the packet is meant for</p>
-</li>
-<li>If the packet is being sent from a device within the LAN, it will <strong>read the header</strong> of the packet to <strong>determine the intended destination</strong> IP address<ul>
+Multiple networks connected by routers, represented by the blue circular objects</li>
+<li>If the <strong>data packet</strong> is coming into the LAN, the router will send the data packet to the specific device within its LAN that the packet is meant for</li>
+<li>If the packet is being sent from a device within the LAN, it will <strong>read the header</strong> of the packet to <strong>determine the intended destination</strong> IP address
+<ul>
 <li>It might have to <strong>travel through several routers</strong> before it gets to its destination</li>
 <li>Each pass from router to router is called a <strong>hop</strong></li>
 <li>It will then <strong>forward</strong> the packet to its destination</li>
@@ -1241,16 +1242,18 @@ Multiple networks connected by routers, represented by the blue circular objects
 </table>
 <ul>
 <li>Every router <strong>repeats this process</strong> the data packet passes through until it reaches its destination</li>
-<li>In addition to routing data between networks, routers can also perform other functions such as:<ul>
+<li>In addition to routing data between networks, routers can also perform other functions such as:
+<ul>
 <li><strong>Assigning IP addresses to devices within the LAN</strong></li>
 <li><strong>Filtering incoming traffic based on certain criteria, such as IP address, port number, or protocol type</strong></li>
 </ul>
 </li>
 </ul>
-<h3 id="ethernet">Ethernet</h3>
+<h2 id="ethernet">Ethernet</h2>
 <h4 id="what-is-ethernet">What is Ethernet?</h4>
 <ul>
-<li>Ethernet is a <strong>protocol</strong> that controls<ul>
+<li>Ethernet is a <strong>protocol</strong> that controls
+<ul>
 <li><strong>Wiring</strong></li>
 <li><strong>Data transmission</strong></li>
 <li><strong>Data encapsulation</strong></li>
@@ -1264,7 +1267,8 @@ Multiple networks connected by routers, represented by the blue circular objects
 <h4 id="ethernet-frames">Ethernet frames</h4>
 <ul>
 <li>Data is <strong>transmitted across the network</strong> in structured units called frames</li>
-<li>Each frame typically includes:<ul>
+<li>Each frame typically includes:
+<ul>
 <li><strong>Preamble</strong> – A sequence of bits used to <strong>synchronise communication</strong> between devices</li>
 <li><strong>Destination MAC Address</strong> – The <strong>unique ID</strong> of the device the data is being sent to</li>
 <li><strong>Source MAC Address</strong> – The <strong>unique ID</strong> of the device sending the data</li>
@@ -1274,7 +1278,7 @@ Multiple networks connected by routers, represented by the blue circular objects
 </ul>
 </li>
 </ul>
-<h3 id="csmacd">CSMA/CD</h3>
+<h2 id="csmacd">CSMA/CD</h2>
 <h3 id="what-is-csmacd">What is CSMA/CD?</h3>
 <ul>
 <li>CSMA/CD is a protocol used to <strong>detect and prevent collisions</strong> in a <strong>bus topology</strong></li>
@@ -1283,34 +1287,37 @@ Multiple networks connected by routers, represented by the blue circular objects
 <li>If the <strong>channel is busy</strong>, the device <strong>waits</strong></li>
 <li>If the <strong>channel is free</strong>, the device <strong>transmits the data</strong></li>
 <li>Since all devices share the same cable, <strong>two can send data at the same time</strong>, causing a <strong>collision</strong></li>
-<li>
-<p>When a collision happens:</p>
+<li>When a collision happens:
 <ul>
 <li>Devices <strong>detect it</strong></li>
 <li>A <strong>jamming signal</strong> is sent to alert other devices</li>
 <li>Both devices <strong>stop transmitting</strong></li>
-<li>Each device waits for a <strong>random amount of time</strong>, then <strong>tries again</strong>
-Ethernet uses Carrier Sense Multiple Access/Collision Detection (CSMA/CD).
-Describe CSMA/CD. <strong>[4]</strong>
-<strong>Answer</strong>
-1 mark per point to max 4</li>
+<li>Each device waits for a <strong>random amount of time</strong>, then <strong>tries again</strong></li>
 </ul>
 </li>
-<li>
-<p>A workstation / node (wishing to transmit) listens to the communication channel [1 mark]</p>
+</ul>
+<h4 id="quiz_4">Quiz</h4>
+<p>Ethernet uses Carrier Sense Multiple Access/Collision Detection (CSMA/CD).
+Describe CSMA/CD. <strong>[4]</strong></p>
+<p><details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p>1 mark per point to max 4</p>
+<ul>
+<li>A workstation / node (wishing to transmit) listens to the communication channel [1 mark]
 <ul>
 <li>the data is only sent when the channel is free [1 mark]</li>
 </ul>
 </li>
-<li>As there is more than one computer connected to the same transmission medium [1 mark]<ul>
+<li>As there is more than one computer connected to the same transmission medium [1 mark]
+<ul>
 <li>two workstations can start to transmit at the same time, causing a collision [1 mark]</li>
 </ul>
 </li>
-<li>If a collision happens, the workstations send a jamming signal to abort transmission [1 mark]<ul>
+<li>If a collision happens, the workstations send a jamming signal to abort transmission [1 mark]
+<ul>
 <li>and each waits a random amount of time before attempting to resend [1 mark]</li>
 </ul>
 </li>
 </ul>
+</div></details></p>
 <h2 id="bit-streaming">Bit streaming</h2>
 <h3 id="what-is-bit-streaming">What is bit streaming?</h3>
 <ul>
@@ -1318,13 +1325,14 @@ Describe CSMA/CD. <strong>[4]</strong>
 <li>Commonly used for <strong>real-time services</strong> like <strong>video, audio, or live broadcasts</strong></li>
 <li>Data is sent in <strong>small chunks</strong> so it can be <strong>played back immediately</strong></li>
 <li>Reduces the need to <strong>download the entire file before use</strong></li>
-<li>Bit streaming can be categorised into two types<strong>:</strong><ul>
+<li>Bit streaming can be categorised into two types**:**
+<ul>
 <li><strong>Real-time</strong></li>
 <li><strong>On-demand</strong></li>
 </ul>
 </li>
 </ul>
-<h3 id="real-time-vs-on-demand">Real-time vs on-demand</h3>
+<h2 id="real-time-vs-on-demand">Real-time vs on-demand</h2>
 <table>
 <thead>
 <tr>
@@ -1366,10 +1374,11 @@ Describe CSMA/CD. <strong>[4]</strong>
 </tr>
 </tbody>
 </table>
-<h3 id="factors-affecting-bit-streaming">Factors affecting bit streaming</h3>
+<h2 id="factors-affecting-bit-streaming">Factors affecting bit streaming</h2>
 <h3 id="what-factors-can-affect-bit-streaming">What factors can affect bit streaming?</h3>
 <ul>
-<li>There are <strong>two</strong> main factors to consider when using bit streaming, they are:<ul>
+<li>There are <strong>two</strong> main factors to consider when using bit streaming, they are:
+<ul>
 <li><strong>Bit rate</strong></li>
 <li><strong>Broadband speeds</strong></li>
 </ul>
@@ -1458,7 +1467,7 @@ Describe CSMA/CD. <strong>[4]</strong>
 </tbody>
 </table>
 <h2 id="the-internet">The Internet</h2>
-<h3 id="internet-vs-www">Internet vs WWW</h3>
+<h2 id="internet-vs-www">Internet vs WWW</h2>
 <h3 id="what-is-the-internet">What is the Internet?</h3>
 <ul>
 <li>The Internet is a <strong>global network of networks</strong> (Interconnected Network)</li>
@@ -1474,13 +1483,14 @@ Describe CSMA/CD. <strong>[4]</strong>
 <li><strong>Web pages</strong> are accessed using a web <strong>browser</strong>, which communicates with web <strong>servers</strong> to retrieve and display the content</li>
 <li><strong>Uses protocols</strong> like <strong>HTTP and HTTPS</strong> to request and deliver web content</li>
 </ul>
-<h3 id="internet-hardware">Internet hardware</h3>
+<h2 id="internet-hardware">Internet hardware</h2>
 <h3 id="modem">Modem</h3>
 <ul>
 <li><strong>Modem</strong> stands for <strong>modulator-demodulator</strong></li>
 <li>Converts <strong>digital signals</strong> from a computer into <strong>analogue signals</strong> to send over telephone or cable lines</li>
 <li>Also <strong>converts analogue signals back into digital</strong> so the computer can understand them</li>
-<li>Allows devices to <strong>connect to the internet</strong> through technologies like:<ul>
+<li>Allows devices to <strong>connect to the internet</strong> through technologies like:
+<ul>
 <li><strong>DSL</strong></li>
 <li><strong>Cable</strong></li>
 <li><strong>Dial-up</strong></li>
@@ -1494,7 +1504,8 @@ Describe CSMA/CD. <strong>[4]</strong>
 <li>Originally built to handle <strong>voice communication</strong> over copper wires</li>
 <li>As the demand for other forms of communication grew, the PSTN was <strong>adapted to enable internet access</strong></li>
 <li>Used to <strong>connect computers/devices and LANs</strong> between <strong>towns</strong> and <strong>cities</strong></li>
-<li>Traditional <strong>copper telephone lines</strong> are being slowly replaced with <strong>fibre optic cables</strong><ul>
+<li>Traditional <strong>copper telephone lines</strong> are being slowly replaced with <strong>fibre optic cables</strong>
+<ul>
 <li>Fibre gives access to <strong>higher bandwidth</strong> and <strong>faster data transfer speeds</strong></li>
 </ul>
 </li>
@@ -1502,7 +1513,8 @@ Describe CSMA/CD. <strong>[4]</strong>
 <h3 id="dedicated-lines">Dedicated lines</h3>
 <ul>
 <li>Dedicated lines (e.g. <strong>T1</strong>, <strong>T3</strong>, and <strong>fibre-optic</strong>) provide <strong>exclusive, high-speed connections</strong> between two points</li>
-<li>Unlike the <strong>PSTN</strong>, these connections are <strong>always active</strong> and <strong>not shared</strong> with other users<ul>
+<li>Unlike the <strong>PSTN</strong>, these connections are <strong>always active</strong> and <strong>not shared</strong> with other users
+<ul>
 <li><strong>Faster</strong> and <strong>more reliable</strong></li>
 <li>Ideal for <strong>businesses</strong> and <strong>organisations</strong> needing consistent, high-bandwidth internet</li>
 <li>Better for activities like <strong>video conferencing</strong>, <strong>cloud computing</strong>, and <strong>large file transfers</strong></li>
@@ -1538,7 +1550,8 @@ Describe CSMA/CD. <strong>[4]</strong>
 <li>Devices connect to the <strong>nearest tower</strong> to send and receive signals</li>
 <li>As a user moves, their device <strong>automatically switches</strong> to the next closest tower (handover)</li>
 <li>Used for <strong>voice calls</strong>, <strong>text messaging</strong>, and <strong>mobile data (internet access)</strong></li>
-<li>Support different generations of mobile technology:<ul>
+<li>Support different generations of mobile technology:
+<ul>
 <li><strong>2G</strong> – Basic calls and texts</li>
 <li><strong>3G</strong> – Mobile internet and video calling</li>
 <li><strong>4G</strong> – Fast internet browsing and streaming</li>
@@ -1546,7 +1559,7 @@ Describe CSMA/CD. <strong>[4]</strong>
 </ul>
 </li>
 </ul>
-<h2 id="ip-addressing">IP addressing</h2>
+<h1 id="ip-addressing">IP addressing</h1>
 <h3 id="what-is-an-ip-address">What is an IP address?</h3>
 <ul>
 <li>An IP (Internet Protocol) address is a <strong>unique identifier</strong> given to devices which communicate over the Internet (<strong>WAN</strong>)</li>
@@ -1557,30 +1570,23 @@ Describe CSMA/CD. <strong>[4]</strong>
 <h4 id="ipv4">IPv4</h4>
 <ul>
 <li>Internet Protocol version 4 is represented as <strong>4 blocks of denary numbers</strong> between <strong>0</strong> and <strong>255</strong>, separated by <strong>full stops</strong></li>
-<li>
-<p>Each block is <strong>one byte</strong> (8 bits), each address is <strong>4 bytes</strong> (32 bits)
-<img alt="ipv4" src="images/ipv4.png" /></p>
-</li>
-<li>
-<p>IPv4 provides over <strong>4 billion unique addresses</strong> (2 <sup>32</sup>), however, with over <strong>7 billion</strong> people and <strong>countless devices per person</strong>, a solution was needed</p>
-</li>
+<li>Each block is <strong>one byte</strong> (8 bits), each address is <strong>4 bytes</strong> (32 bits)
+<img alt="ipv4" src="images/ipv4.png" /></li>
+<li>IPv4 provides over <strong>4 billion unique addresses</strong> (2 <sup>32</sup>), however, with over <strong>7 billion</strong> people and <strong>countless devices per person</strong>, a solution was needed</li>
 </ul>
 <h4 id="ipv6">IPv6</h4>
 <ul>
 <li>Internet Protocol version 6 is represented as <strong>8 blocks of 4 hexadecimal digits</strong>, separated by <strong>colons</strong></li>
-<li>
-<p>Each block is <strong>2 bytes</strong> (16 bits), each address is <strong>16 bytes</strong> (128 bits)
-<img alt="-ipv6" src="images/-ipv6.png" /></p>
-</li>
-<li>
-<p>IPv6 could provide over <strong>one</strong> <strong>billion unique addresses</strong> for <strong>every person</strong> on the planet (2 <sup>128</sup>)</p>
-</li>
+<li>Each block is <strong>2 bytes</strong> (16 bits), each address is <strong>16 bytes</strong> (128 bits)
+<img alt="-ipv6" src="images/-ipv6.png" /></li>
+<li>IPv6 could provide over <strong>one</strong> <strong>billion unique addresses</strong> for <strong>every person</strong> on the planet (2 <sup>128</sup>)</li>
 </ul>
 <h3 id="subnetting">Subnetting</h3>
 <ul>
 <li>Subnetting is the process of <strong>dividing a larger network into smaller, more manageable parts</strong>, called <strong>subnets</strong> (short for sub-networks)</li>
 <li>Each subnet works like a <strong>mini-network</strong> within the main network, allowing devices to communicate more efficiently</li>
-<li>Benefits of subnetting include:<ul>
+<li>Benefits of subnetting include:
+<ul>
 <li><strong>Reduces network traffic</strong> – less data is broadcast across the whole network</li>
 <li><strong>Improves speed and performance</strong> – data stays within its <strong>local subnet</strong></li>
 <li><strong>Increases security</strong> – limits access so <strong>not all devices can reach all parts</strong> of the network</li>
@@ -1588,12 +1594,13 @@ Describe CSMA/CD. <strong>[4]</strong>
 <li><strong>Improves organisation</strong> – helps group devices by <strong>department or function</strong></li>
 </ul>
 </li>
-<li>It&rsquo;s commonly used in <strong>larger networks</strong>, like schools or businesses, to reduce traffic, keep data local, and make management easier</li>
+<li>It’s commonly used in <strong>larger networks</strong>, like schools or businesses, to reduce traffic, keep data local, and make management easier</li>
 </ul>
 <h3 id="public-vs-private-ip-addresses">Public vs private IP addresses</h3>
 <ul>
 <li>Public IP addresses are assigned to devices that need a <strong>constant connection to the internet</strong></li>
-<li>Examples:<ul>
+<li>Examples:
+<ul>
 <li><strong>Web servers</strong></li>
 <li><strong>Email servers</strong></li>
 </ul>
@@ -1602,7 +1609,8 @@ Describe CSMA/CD. <strong>[4]</strong>
 <li>Allows devices to be <strong>directly accessed</strong> from anywhere on the internet</li>
 <li>Private IP addresses are assigned to devices on a <strong>Local Area Network (LAN)</strong> by a <strong>router</strong></li>
 <li><strong>Not routable on the internet</strong> – improves <strong>network security</strong></li>
-<li>Used for items in a home or office, such as:<ul>
+<li>Used for items in a home or office, such as:
+<ul>
 <li><strong>Laptops</strong></li>
 <li><strong>Phones</strong></li>
 <li><strong>Printers</strong></li>
@@ -1613,41 +1621,39 @@ Describe CSMA/CD. <strong>[4]</strong>
 <h3 id="static-vs-dynamic-ip-addresses">Static vs dynamic IP addresses</h3>
 <ul>
 <li>Static IP addresses are <strong>fixed IP addresses</strong> that <strong>do not change</strong></li>
-<li>
-<p>Assigned to devices that need a <strong>consistent address</strong>
-    Commonly used for:</p>
+<li>Assigned to devices that need a <strong>consistent address</strong>
+Commonly used for:
 <ul>
 <li><strong>Websites</strong></li>
 <li><strong>Remote access services</strong></li>
 <li><strong>Email or file servers</strong></li>
+</ul>
+</li>
 <li><strong>No management required</strong> once set</li>
 <li>Allows <strong>reliable access</strong> from anywhere on the network or internet</li>
 <li>Dynamic IP addresses are <strong>temporarily assigned</strong> when a device connects to the network</li>
 <li>Comes from a <strong>pool of available IP addresses</strong></li>
 <li>Managed automatically by a <strong>DHCP server (Dynamic Host Configuration Protocol)</strong></li>
-<li>Ideal for devices where a <strong>fixed address isn&rsquo;t needed</strong></li>
-<li>e.g. laptops, smartphones, or guest devices
-Computers on the Internet have IP addresses.
-Describe the format of an IP address. <strong>[3]</strong>
-<strong>Answer</strong>
-<strong>IPv4</strong></li>
+<li>Ideal for devices where a <strong>fixed address isn’t needed</strong>
+<ul>
+<li>e.g. laptops, smartphones, or guest devices</li>
 </ul>
 </li>
-<li>
-<p>Four groups of denary or hexadecimal digits [1 mark]</p>
-</li>
+</ul>
+<h4 id="quiz_5">Quiz</h4>
+<p>Computers on the Internet have IP addresses.
+Describe the format of an IP address. <strong>[3]</strong></p>
+<p><details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>IPv4</strong></p>
+<ul>
+<li>Four groups of denary or hexadecimal digits [1 mark]</li>
 <li>Numbers between 0 and 255 / 0 and FF [1 mark]</li>
 <li>Each is stored in 1 byte / 8 bits [1 mark]</li>
 <li>The whole number is stored in 32 bits / 4 bytes [1 mark]</li>
 <li>Separated by full stops [1 mark]</li>
-<li>
-<p>Correct example [1 mark]
-OR
-<strong>IPv6</strong></p>
-</li>
-<li>
-<p>Eight groups of (Hexadecimal) digits [1 mark]</p>
-</li>
+<li>Correct example [1 mark]
+<strong>OR</strong>
+<strong>IPv6</strong></li>
+<li>Eight groups of (Hexadecimal) digits [1 mark]</li>
 <li>Numbers between 0 and FFFF [1 mark]</li>
 <li>Each is stored in 2 bytes/16 bits [1 mark]</li>
 <li>The whole number is stored in 128 bits / 16 bytes [1 mark]</li>
@@ -1655,15 +1661,17 @@ OR
 <li>The first instance of multiple groups of zero can be replaced by a double colon [1 mark]</li>
 <li>Correct example [1 mark]</li>
 </ul>
+</div></details></p>
 <h2 id="locating-resources-on-the-world-wide-web">Locating Resources on the World Wide Web</h2>
-<h3 id="url">URL</h3>
+<h2 id="url">URL</h2>
 <h3 id="what-is-a-url">What is a URL?</h3>
 <ul>
 <li>A <strong>Uniform Resource Locator</strong> (URL) is a <strong>unique identifier</strong> for a web page, known as the <strong>website address</strong></li>
 <li>It is <strong>text-based</strong> to make it easier to remember</li>
 <li>A user <strong>enters a URL</strong> into a web browser to view a web page</li>
 <li>An example of a URL is:</li>
-<li>A URL can typically be split into three parts:<ul>
+<li>A URL can typically be split into three parts:
+<ul>
 <li><strong>Protocol</strong></li>
 <li><strong>Domain name</strong></li>
 <li><strong>Web page/file name</strong></li>
@@ -1674,17 +1682,12 @@ OR
 <table>
 <thead>
 <tr>
-<th></th>
-<th></th>
-<th></th>
+<th><strong>Protocol</strong></th>
+<th>https</th>
+<th>Communication method to transfer data between client and server</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>Protocol</strong></td>
-<td>https</td>
-<td>Communication method to transfer data between client and server</td>
-</tr>
 <tr>
 <td><strong>Domain name</strong></td>
 <td><a href="http://www.savemyexams.com/">www.savemyexams.com</a></td>
@@ -1697,21 +1700,21 @@ OR
 </tr>
 </tbody>
 </table>
-<h3 id="dns">DNS</h3>
+<h2 id="dns">DNS</h2>
 <h3 id="what-is-the-domain-name-system-dns">What is the Domain Name System (DNS)?</h3>
 <ul>
 <li>The <strong>DNS</strong> is like the <strong>Internet’s phone book</strong></li>
 <li>It <strong>translates domain names</strong> (like <code>www.google.com</code>) into <strong>IP addresses</strong> (like <code>142.250.180.68</code>)</li>
 <li>Computers use IP addresses to <strong>find and connect to servers</strong></li>
-<li>When you type a URL into your <strong>browser</strong>:<ul>
-<li>DNS <strong>finds the matching</strong> IP address<ul>
+<li>When you type a URL into your <strong>browser</strong>:
+<ul>
+<li>DNS <strong>finds the matching</strong> IP address</li>
 <li>Your device <strong>connects to that server</strong> to load the website</li>
 </ul>
 </li>
-</ul>
-</li>
 <li>Without DNS, users would have to <strong>remember the IP address</strong> of every website they visit</li>
-<li>When a <strong>domain is registered</strong> or its server <strong>IP address changes</strong>, the DNS must be updated<ul>
+<li>When a <strong>domain is registered</strong> or its server <strong>IP address changes</strong>, the DNS must be updated
+<ul>
 <li>This update is called <strong>DNS propagation</strong>, and it may take some time to spread across the internet</li>
 </ul>
 </li>
@@ -1723,11 +1726,10 @@ OR
 <li>If not found, it sends the domain name to a <strong>DNS</strong> server, which stores an <strong>index</strong> of domain names and their matching IP addresses</li>
 <li>If the DNS server finds the IP address, it sends it back to the <strong>web browser</strong></li>
 <li>If it does not find the IP address, it passes the request on to a <strong>higher-level DNS server</strong></li>
-<li>This may involve contacting:<ul>
-<li>A <strong>root server</strong>, which points to the correct <strong>Top-Level Domain (TLD) server</strong> (e.g..com,.org),<ul>
+<li>This may involve contacting:
+<ul>
+<li>A <strong>root server</strong>, which points to the correct <strong>Top-Level Domain (TLD) server</strong> (e.g…com,.org),</li>
 <li>The <strong>TLD server</strong>, which points to the <strong>authoritative DNS server</strong> for the domain</li>
-</ul>
-</li>
 </ul>
 </li>
 <li>The <strong>authoritative DNS server</strong> responds with the correct IP address</li>
@@ -1736,6 +1738,21 @@ OR
 <li>Finally, the <strong>web browser renders</strong> the content and displays the website to the user
 <img alt="Flowchart depicting DNS resolution process: computer connects to DNS resolver, root, TLD, authoritative DNS servers, accesses web server." src="images/44828_dns.png" /></li>
 </ol>
+<h4 id="quiz_6">Quiz</h4>
+<p>Complete the following paragraph that describes the sequence of events when a user requests a page from a website.</p>
+<ol>
+<li>The user enters the Uniform Resource Locator (URL) into the address bar of the…</li>
+<li>The domain name is taken from the URL and sent to a Domain Name Service (DNS). This stores… of domain names and their matching IP addresses.</li>
+<li>If it finds the domain name, it sends the IP address to the…</li>
+<li>If it does not find the domain name, it sends the request to…</li>
+</ol>
+<p><details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><ol start="5">
+<li>Web browser [1 mark]</li>
+<li>An index/a list/a table [1 mark]</li>
+<li>Web browser [1 mark]</li>
+<li>A higher-level DNS [1 mark]</li>
+</ol>
+</div></details></p>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="13-compression.html" title="Previous: 1.3 Compression" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1.3 Compression</span></a>
