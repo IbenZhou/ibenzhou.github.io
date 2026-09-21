@@ -236,11 +236,19 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="system-architecture">System Architecture</h2>
+        
+
+
+
+
+
+
+<h2 id="system-architecture">System Architecture</h2>
 <ul>
 <li>A special purpose register <strong>has a dedicated role</strong> within the operation of the CPU</li>
 <li>There are a number of special purpose registers that <strong>control or track data</strong></li>
-<li>Examples of special purpose registers includes:<ul>
+<li>Examples of special purpose registers includes:
+<ul>
 <li><strong>The Program Counter (PC)</strong></li>
 <li><strong>The Memory Address Register (MAR)</strong></li>
 <li><strong>The Memory Data Register (MDR)</strong></li>
@@ -250,7 +258,8 @@ body::before {
 <li><strong>Status register (SR)</strong></li>
 </ul>
 </li>
-<li>For each of the registers you must know<ul>
+<li>For each of the registers you must know
+<ul>
 <li><strong>The name of the register</strong></li>
 <li><strong>Its acronym</strong></li>
 <li><strong>The purpose of the register</strong></li>
@@ -294,12 +303,12 @@ body::before {
 <tr>
 <td><strong>Index Register</strong></td>
 <td><strong>IX</strong></td>
-<td>- <strong>Stores a value</strong> that can be <strong>added to an address</strong> to get the effective memory address<br>    <br>- Used for <strong>indexed addressing</strong></td>
+<td>- <strong>Stores a value</strong> that can be <strong>added to an address</strong> to get the effective memory address<br>- Used for <strong>indexed addressing</strong></td>
 </tr>
 <tr>
 <td><strong>Status Register</strong></td>
 <td><strong>SR</strong></td>
-<td>- <strong>Stores flags</strong> that reflect the <strong>outcome of the CPU operations</strong><br>    <br>- Holds <strong>individual bits (flags)</strong> which are <strong>set or cleared depending on the result of an instruction</strong> (e.g. overflow)</td>
+<td>- <strong>Stores flags</strong> that reflect the <strong>outcome of the CPU operations</strong><br>- Holds <strong>individual bits (flags)</strong> which are <strong>set or cleared depending on the result of an instruction</strong> (e.g. overflow)</td>
 </tr>
 </tbody>
 </table>
@@ -307,7 +316,8 @@ body::before {
 <h3 id="what-is-the-cpu">What is the CPU?</h3>
 <ul>
 <li>The <strong>CPU</strong> is responsible for <strong>processing all data</strong> within the computer</li>
-<li>It is made up of a number of <strong>components</strong> including:<ul>
+<li>It is made up of a number of <strong>components</strong> including:
+<ul>
 <li><strong>Arithmetic and Logic Unit (ALU)</strong></li>
 <li><strong>Control Unit (CU)</strong></li>
 <li><strong>System clock</strong></li>
@@ -352,7 +362,8 @@ body::before {
 <ul>
 <li>Components within the CPU and wider computer system are <strong>connected by buses</strong></li>
 <li>A bus is <strong>a set of parallel wires</strong> through which <strong>data/signals are transmitted</strong> from one component to another</li>
-<li>There are 3 types of bus:<ul>
+<li>There are 3 types of bus:
+<ul>
 <li><strong>Address</strong> - <strong>unidirectional</strong>, carries <strong>location data</strong> (addresses), data is written to/read from</li>
 <li><strong>Data</strong> - <strong>bidirectional</strong>, carries <strong>data or instructions</strong></li>
 <li><strong>Control</strong> - bidirectional, carries <strong>commands</strong> and <strong>control signals</strong> to tell components when they should be receiving reads or writes etc.<strong>.</strong>
@@ -365,7 +376,8 @@ body::before {
 <h3 id="what-is-a-core">What is a core?</h3>
 <ul>
 <li>A core acts like a <strong>mini CPU</strong>, it can <strong>fetch, decode, and execute</strong> instructions on its own</li>
-<li>Each core has its own:<ul>
+<li>Each core has its own:
+<ul>
 <li><strong>Control Unit (CU)</strong></li>
 <li><strong>Arithmetic Logic Unit (ALU)</strong></li>
 <li><strong>Registers</strong></li>
@@ -373,37 +385,45 @@ body::before {
 </li>
 <li>A CPU with <strong>more than one core</strong> is a <strong>multicore CPU</strong></li>
 <li>Allows for <strong>parallel processing</strong>, multiple instructions are processed <strong>at the same time</strong></li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>A <strong>dual-core</strong> processor has <strong>2 cores</strong></li>
 <li>A <strong>quad-core</strong> processor has <strong>4 cores</strong></li>
 </ul>
 </li>
-<li>
-<p>More cores = <strong>better performance</strong>, especially for powerful programs
-    Example:</p>
+<li>More cores = <strong>better performance</strong>, especially for powerful programs
+Example:
 <ul>
 <li>A <strong>quad-core CPU</strong> running at <strong>3GHz</strong></li>
 <li>4 cores × 3 billion = <strong>12 billion instructions per second</strong></li>
-<li>A <strong>dual-core</strong> processor isn&rsquo;t always <strong>twice as fast</strong> as a single-core</li>
+</ul>
+</li>
+<li>A <strong>dual-core</strong> processor isn’t always <strong>twice as fast</strong> as a single-core
+<ul>
 <li>Some time is used for <strong>organising tasks between cores</strong></li>
-<li>Not all tasks can be <strong>split across cores</strong></li>
+</ul>
+</li>
+<li>Not all tasks can be <strong>split across cores</strong>
+<ul>
 <li>Some tasks are <strong>sequential</strong> and must be done <strong>step-by-step</strong>
 <img alt="cpu-cores-" src="images/cpu-cores-.png" /></li>
 </ul>
+</li>
+</ul>
 <h2 id="clock-speed">Clock speed</h2>
 <h3 id="what-is-clock-speed">What is clock speed?</h3>
-</li>
-<li>
-<p>The <strong>clock</strong> controls the <strong>timing of operations</strong> inside the CPU</p>
-</li>
+<ul>
+<li>The <strong>clock</strong> controls the <strong>timing of operations</strong> inside the CPU</li>
 <li>It constantly <strong>switches between 0 and 1</strong>, each switch is called a <strong>state change</strong></li>
-<li>A <strong>state change</strong> can represent <strong>one step</strong> in the <strong>fetch-decode-execute cycle</strong><ul>
+<li>A <strong>state change</strong> can represent <strong>one step</strong> in the <strong>fetch-decode-execute cycle</strong>
+<ul>
 <li>Some instructions may take <strong>more than one cycle</strong></li>
 </ul>
 </li>
 <li><strong>Clock speed</strong> measures <strong>how many state changes happen per second</strong></li>
 <li><strong>1 cycle per second = 1 Hz</strong></li>
-<li>A typical clock speed is around <strong>2.3 GHz</strong><ul>
+<li>A typical clock speed is around <strong>2.3 GHz</strong>
+<ul>
 <li>That’s <strong>2.3 billion cycles per second</strong></li>
 </ul>
 </li>
@@ -420,7 +440,8 @@ body::before {
 <li>Some cache is built <strong>directly into each processor core</strong></li>
 <li><strong>Speeds up</strong> the performance of the CPU</li>
 <li>More cache = <strong>more data stored</strong> nearby = <strong>less time waiting</strong> for data from RAM</li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>A <strong>website</strong> you visit often can be stored in the cache</li>
 <li>Next time you visit, it <strong>loads faster</strong></li>
 <li>If the website updates, the <strong>cached version is updated too</strong></li>
@@ -465,13 +486,15 @@ Diagram of the levels within the cache</p>
 <ul>
 <li>Bus width is the number of <strong>bits</strong> a bus can carry at once</li>
 <li>A <strong>wider bus</strong> can transfer <strong>more bits in a single operation</strong></li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>A <strong>32-bit bus</strong> transfers 32 bits at a time</li>
 <li>A <strong>64-bit bus</strong> transfers 64 bits at a time</li>
 </ul>
 </li>
 <li><strong>Increases performance</strong>, more data can be moved in the same amount of time</li>
-<li>A <strong>wider data bus</strong> means:<ul>
+<li>A <strong>wider data bus</strong> means:
+<ul>
 <li><strong>Faster processing</strong></li>
 <li>More <strong>efficient</strong> memory access</li>
 </ul>
@@ -484,7 +507,8 @@ Diagram of the levels within the cache</p>
 <ul>
 <li>The <strong>Universal Serial Bus</strong> (<strong>USB</strong>) is a widely used <strong>standard for transmitting data</strong> between devices</li>
 <li>It is a <strong>serial</strong> <strong>communication method</strong>, and it <strong>operates</strong> <strong>asynchronously</strong></li>
-<li>Many devices use USB such as:<ul>
+<li>Many devices use USB such as:
+<ul>
 <li><strong>Keyboards</strong></li>
 <li><strong>Mice</strong></li>
 <li><strong>Video cameras</strong></li>
@@ -496,27 +520,33 @@ Diagram of the levels within the cache</p>
 </ul>
 </li>
 <li>Different USB <strong>connector types</strong> exist for different devices</li>
-<li>The letters refer to the <strong>physical shape and design</strong> of the USB connector:<ul>
+<li>The letters refer to the <strong>physical shape and design</strong> of the USB connector:
+<ul>
 <li><strong>USB-A</strong> - Commonly used for flash drives, mice, keyboards, external HDD</li>
 <li><strong>USB-B</strong> - Found in printers, scanners, and older external storage devices</li>
-<li><strong>USB-C</strong> - Latest standard, known for it&rsquo;s <strong>small size</strong>, <strong>transfer speeds</strong>, and it&rsquo;s <strong>ability to carry power</strong></li>
+<li><strong>USB-C</strong> - Latest standard, known for it’s <strong>small size</strong>, <strong>transfer speeds</strong>, and it’s <strong>ability to carry power</strong></li>
 </ul>
 </li>
 <li>The term USB can also be <strong>followed by numbers</strong> (<strong>USB 2.0, 3.0, 4 etc</strong>.)</li>
-<li>The numbers refer to the <strong>generation of USB technology</strong>, which determines the <strong>speed and performance</strong>:<ul>
+<li>The numbers refer to the <strong>generation of USB technology</strong>, which determines the <strong>speed and performance</strong>:
+<ul>
 <li><strong>USB 1.1</strong> - 12 Mbps (very slow)</li>
 <li><strong>USB 2.0</strong> - 480 Mbps (very common but slower compared to modern versions)</li>
 <li><strong>USB 3.0/3.1/3.2</strong> - 5 Gbps to 20 Gbps (much faster, used for external HDDs and gaming devices)</li>
 <li><strong>USB4/ USB4 2.0</strong> - Up to 80 Gbps (the latest and fastest, used for high speed data transfer)</li>
 </ul>
 </li>
-<li>When a device is connected to a USB port the computer:<ul>
+<li>When a device is connected to a USB port the computer:
+<ul>
 <li><strong>Automatically detects</strong> that the device has been <strong>connected</strong></li>
 <li><strong>Looks for the correct driver:</strong></li>
 <li>If the driver is already installed, the <strong>appropriate device driver is loaded</strong> so that the <strong>device can communicate with the computer</strong>
-            - If the device is <strong>new</strong>, the computer will <strong>look for a compatible device driver</strong>
-            - If one cannot be found, the <strong>user must download and install</strong> an appropriate driver <strong>manually</strong>
+<ul>
+<li>If the device is <strong>new</strong>, the computer will <strong>look for a compatible device driver</strong></li>
+<li>If one cannot be found, the <strong>user must download and install</strong> an appropriate driver <strong>manually</strong>
 <img alt="USB-A Connector" src="images/2-1-types-and-methods-of-data-transmission-usb-1.png" /> <img alt="USB-C Connector" src="images/2-1-types-and-methods-of-data-transmission-usb-2.png" /></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -534,7 +564,7 @@ Diagram of the levels within the cache</p>
 <td>The <strong>maximum</strong> cable length is <strong>roughly 5 metres</strong> meaning it cannot be used over long distances, <strong>limiting its use</strong></td>
 </tr>
 <tr>
-<td>Cable connectors fit in only one way.<br><br>This prevents incorrect connections and <strong>ensures compatible data transmission</strong></td>
+<td>Cable connectors fit in only one way.<br>This prevents incorrect connections and <strong>ensures compatible data transmission</strong></td>
 <td>Older versions of USB have <strong>limited transmission rates</strong> for example <strong>USB 2.0</strong> has <strong>480Mbps</strong></td>
 </tr>
 <tr>
@@ -556,7 +586,8 @@ Diagram of the levels within the cache</p>
 <ul>
 <li>HDMI is a <strong>digital port</strong> that sends both <strong>video and audio output</strong> from a computer to HDMI-enabled devices (e.g. TVs, monitors)</li>
 <li>Replaces older <strong>VGA</strong> analogue systems</li>
-<li>Modern HD TVs and displays require more data because they support:<ul>
+<li>Modern HD TVs and displays require more data because they support:
+<ul>
 <li><strong>Widescreen format</strong> (16:9 aspect ratio)</li>
 <li><strong>Higher resolution</strong> (e.g. 1920 × 1080 pixels)</li>
 <li><strong>Faster refresh rates</strong> (e.g. 120 Hz)</li>
@@ -566,7 +597,7 @@ Diagram of the levels within the cache</p>
 <li>These features need <strong>faster and higher bandwidth</strong>, which <strong>HDMI provides</strong> (up to <strong>10 Gbps</strong>)</li>
 <li>HDMI uses <strong>HDCP (High-bandwidth Digital Content Protection)</strong></li>
 <li>Devices check for an <strong>authentication key</strong> before sending data (e.g. Blu-ray player to HD TV)</li>
-<li>If the device is authenticated, a <strong>&ldquo;handshake&rdquo;</strong> occurs and data is transmitted</li>
+<li>If the device is authenticated, a <strong>“handshake”</strong> occurs and data is transmitted</li>
 <li>Helps prevent <strong>unauthorised copying</strong> of protected content</li>
 </ul>
 <h2 id="vga">VGA</h2>
@@ -577,7 +608,8 @@ Diagram of the levels within the cache</p>
 <li>Maximum resolution: <strong>640 × 480 pixels</strong></li>
 <li>Refresh rate: <strong>up to 60 Hz</strong>, but only supports <strong>16 colours</strong> at that rate</li>
 <li>If resolution is reduced (e.g. <strong>320 × 200</strong>), it can support up to <strong>256 colours</strong></li>
-<li>VGA is an <strong>analogue signal</strong>, which means:<ul>
+<li>VGA is an <strong>analogue signal</strong>, which means:
+<ul>
 <li><strong>Lower image quality over long cables</strong></li>
 <li><strong>More likely to experience signal loss or interference</strong></li>
 </ul>
@@ -588,8 +620,7 @@ Diagram of the levels within the cache</p>
 <h3 id="what-is-the-fetch-execute-cycle">What is the fetch-execute cycle?</h3>
 <ul>
 <li>The fetch-execute cycle is the <strong>process</strong> that the CPU goes through <strong>repeatedly to process instructions</strong></li>
-<li>
-<p>There are <strong>3 stages</strong>:</p>
+<li>There are <strong>3 stages</strong>:
 <ul>
 <li><strong>Fetching</strong> an instruction from memory - supplying the address and receiving the instruction from memory</li>
 <li><strong>Decoding</strong> the instruction - interpreting the instruction and then reading and retrieving the required data from their addresses</li>
@@ -597,11 +628,10 @@ Diagram of the levels within the cache</p>
 <img alt="the-cpu" src="images/the-cpu.png" /></li>
 </ul>
 </li>
-<li>
-<p>In the section below, registers and CPU components appear in <strong>bold</strong> and assembly language is in <em>italics</em></p>
-</li>
+<li>In the section below, registers and CPU components appear in <strong>bold</strong> and assembly language is in <em>italics</em></li>
 <li>During the fetch-execute cycle, the following steps happen:</li>
-<li><strong>Fetch</strong><ul>
+<li><strong>Fetch</strong>
+<ul>
 <li>The <strong>PC</strong> is loaded with 0</li>
 <li>The value from the <strong>PC</strong> (0) is copied to the <strong>MAR</strong></li>
 <li>The address in the <strong>MAR</strong> is sent via the <strong>address bus</strong>, and a <strong>read</strong> instruction is sent on the <strong>control bus</strong></li>
@@ -609,14 +639,17 @@ Diagram of the levels within the cache</p>
 <li>The <strong>PC</strong> is incremented by 1, ready for the next instruction</li>
 </ul>
 </li>
-<li><strong>Decode</strong><ul>
+<li><strong>Decode</strong>
+<ul>
 <li>The data from the <strong>MDR</strong> is copied to the <strong>CIR</strong></li>
 <li>The <strong>CIR</strong> splits the instruction into <strong>opcode</strong> and <strong>operand</strong></li>
 <li>The instruction is sent to the <strong>CU</strong>, which decodes what to do next</li>
 </ul>
 </li>
-<li><strong>Execute</strong><ul>
-<li>The registers used will depend on the instruction:<ul>
+<li><strong>Execute</strong>
+<ul>
+<li>The registers used will depend on the instruction:
+<ul>
 <li><em>INP</em> – value from input device is stored in the <strong>ACC</strong></li>
 <li><em>OUT</em> – value currently in the <strong>ACC</strong> is sent to the output</li>
 <li><em>LDA</em> – loads value from RAM into the <strong>MDR</strong>, then to the <strong>ACC</strong></li>
@@ -629,7 +662,7 @@ Diagram of the levels within the cache</p>
 </li>
 <li>Register Transfer Notation (RTN) is a way of describing how <strong>data moves between registers</strong> in a CPU during the <strong>fetch–execute cycle</strong></li>
 <li>It uses <strong>symbols</strong> to represent <strong>registers</strong>, and the arrow symbol <strong>←</strong> to show <strong>data being transferred</strong> from one place to another</li>
-<li>It is a shorthand way to show what&rsquo;s happening inside the CPU</li>
+<li>It is a shorthand way to show what’s happening inside the CPU</li>
 </ul>
 <table>
 <thead>
@@ -673,39 +706,39 @@ Diagram of the levels within the cache</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Fetch</strong>
-<code>MAR ← [PC]           ; Copy address from Program Counter to MAR</code>
-<code>MDR ← [[MAR]]     ; Read instruction from memory into MDR</code>
-<code>PC ← [PC] + 1        ; Increment PC for the next instruction</code>
-<code>CIR ← [MDR]          ; Copy instruction from MDR to CIR</code>
-<strong>Decode</strong></p>
+<p><strong>Fetch</strong></p>
+<pre><code>MAR ← [PC]           ; Copy address from Program Counter to MAR
+MDR ← [[MAR]]        ; Read instruction from memory into MDR
+PC ← [PC] + 1        ; Increment PC for the next instruction
+CIR ← [MDR]          ; Copy instruction from MDR to CIR
+</code></pre>
+<p><strong>Decode</strong></p>
 <ul>
-<li>
-<p>No specific register transfer, the <strong>CU</strong> decodes the instruction in the <strong>CIR</strong>
-<strong>Execute examples</strong></p>
-</li>
-<li>
-<p><strong>LDA X</strong> (Load value from memory location <strong>X</strong> into <strong>ACC</strong>):
-<code>MAR ← [operand]       ; Load address X into MAR</code>
-<code>MDR ← [[MAR]]      ; Load data from RAM into MDR</code>
-<code>ACC ← [MDR]           ; Copy data into ACC</code></p>
-</li>
-<li>
-<p><strong>STA X</strong> (Store value from <strong>ACC</strong> into memory location <strong>X</strong>):
-<code>MAR ← [operand]       ; Load address X into MAR</code>
-<code>MDR ← [ACC]           ; Copy data from ACC to MDR</code>
-<code>[[MAR]] ← [MDR]     ; Store MDR value into memory</code></p>
-</li>
-<li>
-<p><strong>ADD X</strong> (Add value from memory location <strong>X</strong> to <strong>ACC</strong>):
-<code>MAR ← [operand]</code>
-<code>MDR ← [[MAR]]</code>
-<code>ACC ← [ACC] + [MDR]</code></p>
-</li>
-<li>
-<p><strong>BRZ X</strong> (Branch to <strong>X</strong> if <strong>ACC</strong> = 0):
-<code>If [ACC] = 0 then PC ← [operand]</code></p>
-</li>
+<li>No specific register transfer, the <strong>CU</strong> decodes the instruction in the <strong>CIR</strong>
+<strong>Execute examples</strong></li>
+<li><strong>LDA X</strong> (Load value from memory location <strong>X</strong> into <strong>ACC</strong>):</li>
+</ul>
+<pre><code>MAR ← [operand]       ; Load address X into MAR
+MDR ← [[MAR]]         ; Load data from RAM into MDR
+ACC ← [MDR]           ; Copy data into ACC
+</code></pre>
+<ul>
+<li><strong>STA X</strong> (Store value from <strong>ACC</strong> into memory location <strong>X</strong>):</li>
+</ul>
+<pre><code>MAR ← [operand]       ; Load address X into MAR
+MDR ← [ACC]           ; Copy data from ACC to MDR
+[[MAR]] ← [MDR]       ; Store MDR value into memory
+</code></pre>
+<ul>
+<li><strong>ADD X</strong> (Add value from memory location <strong>X</strong> to <strong>ACC</strong>):</li>
+</ul>
+<pre><code>MAR ← [operand]
+MDR ← [[MAR]]
+ACC ← [ACC] + [MDR]
+</code></pre>
+<ul>
+<li><strong>BRZ X</strong> (Branch to <strong>X</strong> if <strong>ACC</strong> = 0):
+<code>If [ACC] = 0 then PC ← [operand]</code></li>
 </ul>
 <h2 id="interrupts">Interrupts</h2>
 <h2 id="interrupt-handling">Interrupt handling</h2>
@@ -750,25 +783,30 @@ Diagram of the levels within the cache</p>
 </table>
 <h4 id="the-interrupt-process">The interrupt process</h4>
 <ol>
-<li><strong>Interrupt Request (IRQ)</strong><ul>
+<li><strong>Interrupt Request (IRQ)</strong>
+<ul>
 <li>An external device or software generates an interrupt, signalling the processor to stop its current task</li>
 <li>The interrupt controller passes this to the interrupt handler for assessment</li>
 </ul>
 </li>
-<li><strong>Interrupt acknowledge</strong><ul>
+<li><strong>Interrupt acknowledge</strong>
+<ul>
 <li>The interrupt handler decides if the interrupt needs to be dealt with n <strong>ow or later</strong></li>
 <li>If yes, the <strong>current contents of the processor registers are saved</strong> in memory</li>
 </ul>
 </li>
-<li><strong>Interrupt Service Routine (ISR) lookup</strong><ul>
+<li><strong>Interrupt Service Routine (ISR) lookup</strong>
+<ul>
 <li>The processor <strong>fetches the corresponding Interrupt Service Routine (ISR)</strong> associated with the interrupt type</li>
 </ul>
 </li>
-<li><strong>ISR execution</strong><ul>
+<li><strong>ISR execution</strong>
+<ul>
 <li>The processor <strong>transfers control</strong> to the ISR and <strong>executes the routine</strong> to handle the specific interrupt</li>
 </ul>
 </li>
-<li><strong>Interrupt exit</strong><ul>
+<li><strong>Interrupt exit</strong>
+<ul>
 <li>After the ISR completes, <strong>the processor restores the content of the registers</strong> from step 2</li>
 <li>The fetch-decode-execute cycle is <strong>resumed</strong>
 <img alt="Flowchart explaining CPU interrupt handling: initialisation, interrupt request, acknowledge, lookup, and execution of interrupt service routines." src="images/the-interrupt-process-alevel.png" />
@@ -779,7 +817,8 @@ The interrupt process</li>
 <h4 id="what-is-an-isr">What is an ISR?</h4>
 <ul>
 <li>An ISR is a <strong>special function</strong> that handles a particular interrupt type</li>
-<li>Each type of interrupt has a <strong>corresponding routine</strong><ul>
+<li>Each type of interrupt has a <strong>corresponding routine</strong>
+<ul>
 <li>E.g. printer jam, hard disk failure, file download error, network connection error all have routines to be followed when they happen</li>
 </ul>
 </li>
@@ -792,7 +831,7 @@ The interrupt process</li>
 <li><strong>Lower-priority ISRs may be temporarily suspended</strong> until the higher-priority ISR completes the execution</li>
 <li><strong>Nesting of interrupts</strong> refers to the ability of the processor to handle interrupts within interrupts</li>
 <li>Proper management of nested interrupts <strong>avoids potential conflicts</strong> and ensures system stability
-<strong><em>Nesting of interrupts</em></strong></li>
+<em><strong>Nesting of interrupts</strong></em></li>
 </ul>
 <h4 id="interrupt-priority-handling">Interrupt priority handling</h4>
 <p><img alt="Diagram showing an interrupt queue with different priorities processed by an interrupt controller, highlighting the handling of high priority interrupts." src="images/system-interrupt-priority-alevel.png" />

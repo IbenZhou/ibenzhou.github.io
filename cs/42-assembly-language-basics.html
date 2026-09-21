@@ -230,7 +230,14 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="assembly-language-basics">Assembly Language Basics</h2>
+        
+
+
+
+
+
+
+<h2 id="assembly-language-basics">Assembly Language Basics</h2>
 <h2 id="machine-code-vs-assembly">Machine code vs assembly</h2>
 <h3 id="what-is-machine-code">What is machine code?</h3>
 <ul>
@@ -255,7 +262,7 @@ Levels of Abstraction of Programming Languages</li>
 <li>Each command has a <strong>binary code</strong> which is the <strong>machine code</strong></li>
 <li>In assembly the binary code is written using mnemonics and split into an <strong>opcode</strong> and <strong>operand</strong></li>
 <li>The <strong>opcode</strong> is the <strong>part of an instruction</strong> that tells the CPU what <strong>operation</strong> to perform</li>
-<li>It&rsquo;s short for <strong>&ldquo;operation code&rdquo;</strong></li>
+<li>It’s short for <strong>“operation code”</strong></li>
 <li>Example operations: <em>LDA</em> (load), <em>STA</em> (store), <em>ADD</em>, <em>INP</em>, <em>OUT</em>, <em>BRZ</em>, <em>BRA</em></li>
 <li>The <strong>operand</strong> is the <strong>data</strong> or <strong>memory address</strong> the opcode will work with</li>
 <li>It gives the <strong>extra detail</strong> the CPU needs to complete the instruction</li>
@@ -277,17 +284,17 @@ Levels of Abstraction of Programming Languages</li>
 </tr>
 <tr>
 <td><code>LDD</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Direct addressing. Load the contents of the location at the given address to ACC.</td>
 </tr>
 <tr>
 <td><code>LDI</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Indirect addressing. Use the value at the given address as a new address. Load contents to ACC.</td>
 </tr>
 <tr>
 <td><code>LDX</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Indexed addressing. Use<br><code>+ index register</code> to get the final address. Load to ACC.</td>
 </tr>
 <tr>
@@ -297,42 +304,42 @@ Levels of Abstraction of Programming Languages</li>
 </tr>
 <tr>
 <td><code>MOV</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Move the contents of ACC to the given register (e.g. IX).</td>
 </tr>
 <tr>
 <td><code>STO</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Store the contents of ACC at the given memory address.</td>
 </tr>
 <tr>
 <td><code>ADD</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Add the contents of the given address to ACC.</td>
 </tr>
 <tr>
 <td><code>SUB</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Subtract the contents of the given address from ACC.</td>
 </tr>
 <tr>
 <td><code>INC</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Increment the contents of the register (ACC or IX) by 1.</td>
 </tr>
 <tr>
 <td><code>DEC</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Decrement the contents of the register (ACC or IX) by 1.</td>
 </tr>
 <tr>
 <td><code>JMP</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Unconditional jump to the given address.</td>
 </tr>
 <tr>
 <td><code>CMP</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Compare the contents of ACC with the contents of the given address.</td>
 </tr>
 <tr>
@@ -342,17 +349,17 @@ Levels of Abstraction of Programming Languages</li>
 </tr>
 <tr>
 <td><code>CMI</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Indirect addressing. Compare ACC with the contents at the address stored in</td>
 </tr>
 <tr>
 <td><code>JPE</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Jump to<br>if the previous compare result was <strong>true</strong> (equal).</td>
 </tr>
 <tr>
 <td><code>JPN</code></td>
-<td></td>
+<td><code>&lt;address&gt;</code></td>
 <td>Jump to<br>if the previous compare result was <strong>false</strong> (not equal).</td>
 </tr>
 <tr>
@@ -379,7 +386,8 @@ Levels of Abstraction of Programming Languages</li>
 <li>A two-pass assembler <strong>translates assembly language into machine code</strong> in two stages</li>
 <li>It produces an <strong>object program</strong> that can be <strong>stored</strong>, <strong>loaded</strong>, and <strong>run later</strong></li>
 <li>To execute this program, another utility called a <strong>loader</strong> is needed</li>
-<li>The assembler scans the source code <strong>twice</strong>:<ul>
+<li>The assembler scans the source code <strong>twice</strong>:
+<ul>
 <li>In the <strong>first pass</strong>, it identifies all <strong>labels</strong> and records their memory addresses</li>
 <li>In the <strong>second pass</strong>, it replaces those labels with the correct <strong>memory addresses</strong> in the machine code</li>
 </ul>
@@ -398,9 +406,9 @@ A:      DATA 5
 B:      DATA 3
 C:      DATA 0
 </code></pre></div>
-
 <ul>
-<li><strong>Pass 1:</strong><ul>
+<li><strong>Pass 1:</strong>
+<ul>
 <li>The assembler reads each line and assigns memory addresses to labels (e.g. A, B, C), but <strong>does not translate the instructions yet</strong></li>
 </ul>
 </li>
@@ -483,7 +491,8 @@ C:      DATA 0
 </tbody>
 </table>
 <ul>
-<li><strong>Pass 2:</strong><ul>
+<li><strong>Pass 2:</strong>
+<ul>
 <li>The assembler replaces labels with their corresponding memory addresses and outputs machine code</li>
 <li>In this example we assume the following opcodes for simplicity:</li>
 </ul>
@@ -577,21 +586,21 @@ C:      DATA 0
 </tbody>
 </table>
 <p><strong>Final object program:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="mf">01</span><span class="w"> </span><span class="mf">04</span>
-<span class="mf">02</span><span class="w"> </span><span class="mf">05</span>
-<span class="mf">03</span><span class="w"> </span><span class="mf">06</span>
-<span class="mf">00</span><span class="w"> </span><span class="mf">00</span>
-<span class="mf">00</span><span class="w"> </span><span class="mf">05</span>
-<span class="mf">00</span><span class="w"> </span><span class="mf">03</span>
-<span class="mf">00</span><span class="w"> </span><span class="mf">00</span>
-</code></pre></div>
-
+<pre><code>01 04
+02 05
+03 06
+00 00
+00 05
+00 03
+00 00
+</code></pre>
 <h2 id="program-tracing">Program tracing</h2>
 <h3 id="what-is-a-trace-table">What is a trace table?</h3>
 <ul>
 <li>A <strong>trace table</strong> is a table used to <strong>manually track the values of variables</strong> as a program runs</li>
 <li>It helps to follow the flow of a program <strong>line by line</strong>, checking whether the logic works as expected</li>
-<li>Trace tables are used to:<ul>
+<li>Trace tables are used to:
+<ul>
 <li><strong>Understand how a program works</strong></li>
 <li><strong>Debug errors</strong> in the logic</li>
 <li><strong>Predict outputs</strong> before running the program</li>
@@ -599,24 +608,26 @@ C:      DATA 0
 </ul>
 </li>
 </ul>
-<h4 id="example_1">Example</h4>
+<h4 id="example_2">Example</h4>
 <ul>
 <li>An assembly program that loads the value from <code>A</code> (4) into the accumulator, adds the value from <code>B</code> (2), stores the result (6) into <code>C</code>, and halts</li>
 </ul>
-<div class="highlight"><pre><span></span><code>LOAD A
+<pre><code>LOAD A
         ADD B
         STORE C
         HALT
 A:      DATA 4
 B:      DATA 2
 C:      DATA 0
-</code></pre></div>
-
+</code></pre>
 <ul>
-<li>To trace the program, assumptions must be made:<ul>
-<li><strong>Accumulator (ACC)</strong>: Used for calculations<ul>
+<li>To trace the program, assumptions must be made:
+<ul>
+<li><strong>Accumulator (ACC)</strong>: Used for calculations
+<ul>
 <li>Memory is addressed from 00 onwards</li>
-<li>Simple instructions:<ul>
+<li>Simple instructions:
+<ul>
 <li><code>LOAD X</code> → ACC = memory[X]</li>
 <li><code>ADD X</code> → ACC = ACC + memory[X]</li>
 <li><code>STORE X</code> → memory[X] = ACC</li>
@@ -693,7 +704,8 @@ C:      DATA 0
 <h2 id="categories-of-instructions">Categories of instructions</h2>
 <h3 id="what-are-the-categories-of-instructions">What are the categories of instructions?</h3>
 <ul>
-<li>Assembly language instructions can be grouped into:<ul>
+<li>Assembly language instructions can be grouped into:
+<ul>
 <li><strong>Data movement</strong></li>
 <li><strong>Input and output of data</strong></li>
 <li><strong>Arithmetic operations</strong></li>
@@ -828,7 +840,8 @@ C:      DATA 0
 <h3 id="what-is-an-addressing-method">What is an addressing method?</h3>
 <ul>
 <li>An addressing method is a way in which <strong>an instruction in assembly language or machine code</strong> can <strong>access data stored in memory</strong></li>
-<li>There are five main addressing methods:<ul>
+<li>There are five main addressing methods:
+<ul>
 <li><strong>Immediate</strong></li>
 <li><strong>Direct</strong></li>
 <li><strong>Indirect</strong></li>
