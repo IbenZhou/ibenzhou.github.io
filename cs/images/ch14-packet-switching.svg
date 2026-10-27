@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 690" width="1000" height="690" style="max-width:100%;height:auto" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2C3E6B"/>
+    </marker>
+    <marker id="a2r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#B5443C"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="690" fill="#F8F4ED"/>
+
+  <!-- message split -->
+  <text x="20" y="42" font-size="14" font-weight="700" fill="#2C3E6B">one message &#8594; four packets</text>
+  <g font-size="14" font-weight="700">
+    <rect x="20" y="56" width="56" height="30" rx="5" fill="#2C3E6B"/><text x="48" y="77" fill="#F8F4ED" text-anchor="middle">P1</text>
+    <rect x="84" y="56" width="56" height="30" rx="5" fill="#B5443C"/><text x="112" y="77" fill="#F8F4ED" text-anchor="middle">P2</text>
+    <rect x="20" y="92" width="56" height="30" rx="5" fill="#4F7A52"/><text x="48" y="113" fill="#F8F4ED" text-anchor="middle">P3</text>
+    <rect x="84" y="92" width="56" height="30" rx="5" fill="#9A7B2F"/><text x="112" y="113" fill="#F8F4ED" text-anchor="middle">P4</text>
+  </g>
+
+  <!-- Computer A -->
+  <rect x="20" y="250" width="130" height="80" rx="8" fill="#E8ECF5" stroke="#2C3E6B" stroke-width="1.8"/>
+  <text x="85" y="285" font-size="15" font-weight="700" fill="#2C3E6B" text-anchor="middle">COMPUTER A</text>
+  <text x="85" y="306" font-size="13" fill="#5A6472" text-anchor="middle">sender</text>
+
+  <!-- lanes -->
+  <g stroke="#C9CFDD" stroke-width="3" fill="none">
+    <path d="M150,280 L200,280 L240,150 L800,150"/>
+    <line x1="150" y1="290" x2="800" y2="290"/>
+    <path d="M150,300 L200,300 L240,510 L800,510"/>
+  </g>
+
+  <!-- routers -->
+  <g fill="#FFFFFF" stroke="#2C3E6B" stroke-width="2">
+    <circle cx="350" cy="150" r="22"/><circle cx="520" cy="150" r="22"/><circle cx="690" cy="150" r="22"/>
+    <circle cx="350" cy="290" r="22"/><circle cx="520" cy="290" r="22"/><circle cx="690" cy="290" r="22"/>
+    <circle cx="350" cy="510" r="22"/><circle cx="520" cy="510" r="22"/><circle cx="690" cy="510" r="22"/>
+  </g>
+  <g font-size="13" fill="#2C3E6B" text-anchor="middle" font-weight="700">
+    <text x="350" y="155">R1</text><text x="520" y="155">R2</text><text x="690" y="155">R3</text>
+    <text x="350" y="295">R4</text><text x="520" y="295">R5</text><text x="690" y="295">R6</text>
+    <text x="350" y="515">R7</text><text x="520" y="515">R8</text><text x="690" y="515">R9</text>
+  </g>
+
+  <!-- packets in flight -->
+  <g font-size="14" font-weight="700">
+    <rect x="398" y="133" width="56" height="32" rx="5" fill="#2C3E6B"/><text x="426" y="155" fill="#F8F4ED" text-anchor="middle">P1</text>
+    <rect x="600" y="133" width="56" height="32" rx="5" fill="#9A7B2F"/><text x="628" y="155" fill="#F8F4ED" text-anchor="middle">P4</text>
+    <rect x="560" y="273" width="56" height="32" rx="5" fill="#B5443C"/><text x="588" y="295" fill="#F8F4ED" text-anchor="middle">P2</text>
+    <rect x="400" y="493" width="56" height="32" rx="5" fill="#4F7A52"/><text x="428" y="515" fill="#F8F4ED" text-anchor="middle">P3</text>
+  </g>
+
+  <!-- converge to B -->
+  <g stroke="#C9CFDD" stroke-width="3" fill="none">
+    <path d="M712,150 L800,150 L860,280"/>
+    <path d="M712,510 L800,510 L860,300"/>
+    <line x1="712" y1="290" x2="860" y2="290"/>
+  </g>
+  <line x1="860" y1="290" x2="866" y2="290" stroke="#2C3E6B" stroke-width="2.5" marker-end="url(#a2)"/>
+
+  <!-- Computer B -->
+  <rect x="870" y="250" width="110" height="80" rx="8" fill="#E8ECF5" stroke="#2C3E6B" stroke-width="1.8"/>
+  <text x="925" y="285" font-size="14" font-weight="700" fill="#2C3E6B" text-anchor="middle">COMPUTER B</text>
+  <text x="925" y="306" font-size="13" fill="#5A6472" text-anchor="middle">receiver</text>
+
+  <!-- annotation -->
+  <text x="470" y="205" font-size="13" fill="#5A6472" text-anchor="middle">each router picks the shortest / least busy path</text>
+  <text x="470" y="224" font-size="13" fill="#5A6472" text-anchor="middle">for the next hop only &#8212; nothing is reserved in advance</text>
+
+  <!-- reassembly strip -->
+  <rect x="20" y="560" width="960" height="110" rx="8" fill="#FFFFFF" stroke="#2C3E6B" stroke-width="1.2"/>
+
+  <text x="42" y="590" font-size="13" font-weight="700" fill="#5A6472">ARRIVED OUT OF ORDER</text>
+  <g font-size="14" font-weight="700">
+    <rect x="42" y="600" width="48" height="32" rx="5" fill="#4F7A52"/><text x="66" y="622" fill="#F8F4ED" text-anchor="middle">3</text>
+    <rect x="98" y="600" width="48" height="32" rx="5" fill="#2C3E6B"/><text x="122" y="622" fill="#F8F4ED" text-anchor="middle">1</text>
+    <rect x="154" y="600" width="48" height="32" rx="5" fill="#9A7B2F"/><text x="178" y="622" fill="#F8F4ED" text-anchor="middle">4</text>
+    <rect x="210" y="600" width="48" height="32" rx="5" fill="#B5443C"/><text x="234" y="622" fill="#F8F4ED" text-anchor="middle">2</text>
+  </g>
+
+  <path d="M286,616 L350,616" stroke="#B5443C" stroke-width="2.5" marker-end="url(#a2r)"/>
+  <text x="318" y="594" font-size="11.5" fill="#B5443C" text-anchor="middle">sort by</text>
+  <text x="318" y="650" font-size="11.5" fill="#B5443C" text-anchor="middle">sequence no.</text>
+
+  <text x="386" y="590" font-size="13" font-weight="700" fill="#5A6472">MESSAGE REBUILT</text>
+  <g font-size="14" font-weight="700">
+    <rect x="386" y="600" width="48" height="32" rx="5" fill="#2C3E6B"/><text x="410" y="622" fill="#F8F4ED" text-anchor="middle">1</text>
+    <rect x="442" y="600" width="48" height="32" rx="5" fill="#B5443C"/><text x="466" y="622" fill="#F8F4ED" text-anchor="middle">2</text>
+    <rect x="498" y="600" width="48" height="32" rx="5" fill="#4F7A52"/><text x="522" y="622" fill="#F8F4ED" text-anchor="middle">3</text>
+    <rect x="554" y="600" width="48" height="32" rx="5" fill="#9A7B2F"/><text x="578" y="622" fill="#F8F4ED" text-anchor="middle">4</text>
+  </g>
+
+  <line x1="626" y1="576" x2="626" y2="656" stroke="#C9CFDD" stroke-width="1.5"/>
+  <text x="648" y="600" font-size="14" font-weight="700" fill="#2C3E6B">No line is ever reserved.</text>
+  <text x="648" y="624" font-size="12.5" fill="#5A6472">Bandwidth is shared, so nothing sits idle &#8212; but a lost</text>
+  <text x="648" y="644" font-size="12.5" fill="#5A6472">packet must be re-sent, and reassembly adds delay.</text>
+</svg>

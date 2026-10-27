@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>14.1 protocols — CS 9618 A-Level Notes</title>
+<title>14.1 Protocols — CS 9618 A-Level Notes</title>
 <style>
 :root {
   --bg: #f7f3e9;
@@ -206,7 +206,7 @@ body::before {
 
 <div class="hero">
   <div class="container">
-    <h1>14.1 protocols</h1>
+    <h1>14.1 Protocols</h1>
     <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
   </div>
 </div>
@@ -217,38 +217,46 @@ body::before {
 <ul>
 <li><a href="#need-for-protocols">Need for protocols</a></li>
 <li><a href="#tcpip">TCP/IP</a></li>
+<li><a href="#how-a-message-travels-from-one-host-to-another">How a message travels from one host to another</a></li>
+<li><a href="#standard-protocols">Standard protocols</a></li>
+<li><a href="#beyond-the-syllabus">Beyond the syllabus</a></li>
 </ul>
 </div>
 </div>
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="need-for-protocols">Need for protocols</h2>
+        
+<h2 id="need-for-protocols">Need for protocols</h2>
 <h3 id="what-is-a-protocol">What is a protocol?</h3>
 <ul>
 <li>A protocol is a set of rules that define how computers <strong>communicate over a network</strong></li>
 <li>They ensure that data is <strong>sent</strong>, <strong>received</strong>, and <strong>understood</strong> correctly by all devices, regardless of their manufacturer or operating system</li>
-<li>Without protocols:<ul>
+<li>Without protocols:
+<ul>
 <li>Devices would <strong>not know how</strong> to structure or interpret data</li>
 <li>Data could be <strong>lost</strong>, <strong>corrupted</strong>, or <strong>misrouted</strong></li>
 <li>Communication between <strong>different hardware and software</strong> systems would break down</li>
 </ul>
 </li>
-<li><strong>Protocols are essential</strong> to guarantee:<ul>
+<li><strong>Protocols are essential</strong> to guarantee:
+<ul>
 <li>Reliable data transfer</li>
 <li>Consistent formatting and addressing</li>
 <li>Error checking and correction</li>
 <li>Security during transmission</li>
 </ul>
 </li>
-<li><strong>Examples</strong> of protocols include:<ul>
+<li><strong>Examples</strong> of protocols include:
+<ul>
 <li>TCP, IP, HTTP, FTP, SMTP</li>
 </ul>
 </li>
 </ul>
 <h4 id="protocol-stacks">Protocol stacks</h4>
 <ul>
-<li>The protocol stack is a way of <strong>organising network protocols into layers</strong>, where each layer is responsible for a specific function<ul>
+<li>The protocol stack is a way of <strong>organising network protocols into layers</strong>, where each layer is responsible for a specific function
+<ul>
 <li>Each layer <strong>handles its own task independently</strong></li>
 <li>Layers <strong>communicate with the layers directly above and below</strong></li>
 <li>The <strong>stacked model</strong> makes the network easier to design, update, and troubleshoot</li>
@@ -262,7 +270,8 @@ body::before {
 <h3 id="what-is-tcpip">What is TCP/IP?</h3>
 <ul>
 <li>TCP/IP, or the Transmission Control Protocol/Internet Protocol, is a <strong>suite of communication protocols</strong> used to interconnect network devices on the internet</li>
-<li>This model splits the various protocols into four layers:<ul>
+<li>This model splits the various protocols into four layers:
+<ul>
 <li><strong>Application</strong></li>
 <li><strong>Transport</strong></li>
 <li><strong>Internet</strong></li>
@@ -275,33 +284,182 @@ body::before {
 <li>This is the layer where the <strong>communication process begins</strong></li>
 <li>The application layer <strong>interacts directly with software applications</strong>, such as web browsers and email clients</li>
 <li>The application layer <strong>prepares data for transmission</strong> over the network by converting it into a format that can be sent and received over the network (known as encapsulation)</li>
+<li>It also defines <strong>which protocol</strong> the application must use — HTTP for a web page, SMTP for an email, FTP for a file transfer</li>
 </ul>
 <h4 id="transport-layer">Transport layer</h4>
 <ul>
 <li>The transport layer <strong>receives data from the application layer</strong></li>
 <li>The transport layer is <strong>responsible for end-to-end communication</strong> between the source and destination</li>
-<li>The transport layer <strong>breaks the data it receives down into smaller units</strong> called packets</li>
-<li>Each packet is <strong>assigned a sequence number</strong> (so the data can be reassembled in the correct order at the destination)</li>
-<li>Each packet is also <strong>labelled with a header</strong> containing information (e.g. the packet number)</li>
+<li>The transport layer <strong>breaks the data it receives down into smaller units</strong> called <strong>segments</strong> — these are the units usually called <strong>packets</strong> in exam questions</li>
+<li>Each segment is <strong>assigned a sequence number</strong> (so the data can be reassembled in the correct order at the destination)</li>
+<li>Each segment is also <strong>labelled with a header</strong> containing information (e.g. the packet number, the port numbers, a checksum)</li>
+<li><strong>TCP</strong> is the transport protocol used when every segment must arrive intact; <strong>UDP</strong> is used when speed matters more than perfection</li>
 </ul>
 <h4 id="internet-layer">Internet layer</h4>
 <ul>
-<li>The internet layer <strong>receives packets from the transport layer</strong></li>
-<li>It <strong>adds a header to each packet</strong>, including the sender&rsquo;s <strong>IP address</strong> and the receiver&rsquo;s IP address</li>
+<li>The internet layer <strong>receives segments from the transport layer</strong></li>
+<li>It <strong>adds a header to each segment</strong>, including the sender’s <strong>IP address</strong> and the receiver’s IP address — the segment is now a <strong>datagram (packet)</strong></li>
 <li>The internet layer is responsible for <strong>routing each packet across the network</strong> using the IP addresses in the headers</li>
+<li>The <strong>IP</strong> protocol at this layer makes no promise that a packet arrives — that guarantee belongs to TCP above it</li>
 </ul>
 <h4 id="link-layer">Link layer</h4>
 <ul>
 <li>Also known as the <strong>network interface layer</strong></li>
 <li>The link layer <strong>receives packets from the Internet layer</strong> and prepares them for transmission over the physical network</li>
-<li>The link layer <strong>translates the digital packets</strong> into an electrical, optical, or wireless signal that can be sent over the network</li>
-<li>Once the signal reaches the receiving end, the network layer <strong>translates it back</strong> into digital packets
+<li>It adds a <strong>frame header</strong> containing the <strong>MAC addresses</strong> of this hop (not the final destination), plus a <strong>frame check sequence (FCS)</strong> for error checking — the packet is now a <strong>frame</strong></li>
+<li>The link layer <strong>translates the frame</strong> into an electrical, optical, or wireless signal that can be sent over the network</li>
+<li>Once the signal reaches the receiving end, the <strong>link layer at the receiver</strong> checks the FCS and translates it back into digital packets
 <img alt="TCP IP stack layers" src="images/tcp-ip-stack-computer-science-revision-notes.webp" /></li>
+</ul>
+<h2 id="how-a-message-travels-from-one-host-to-another">How a message travels from one host to another</h2>
+<ul>
+<li>The syllabus asks for this <strong>in the context of one host sending a message to another host on the internet</strong> — learn it as a sequence, not as four separate definitions</li>
+<li>Sending uses the layers <strong>4 → 1</strong>; receiving uses the layers <strong>1 → 4</strong></li>
+</ul>
+<ol>
+<li><strong>Application</strong> — the user enters a URL; the browser builds an <strong>HTTP request</strong> message. A <strong>DNS</strong> lookup first converts the domain name into the server’s IP address</li>
+<li><strong>Transport</strong> — TCP splits the message into <strong>segments</strong>, adds a header with the <strong>port numbers</strong> (port 80 for HTTP) and a <strong>sequence number</strong> to each, then agrees a connection with the server using a three-way handshake</li>
+<li><strong>Internet</strong> — IP adds its own header with the <strong>source and destination IP addresses</strong>; each segment becomes a <strong>datagram (packet)</strong></li>
+<li><strong>Link</strong> — a <strong>frame header</strong> carrying the <strong>MAC address of the next device</strong> and a <strong>frame check sequence</strong> is added; the frame is converted into a signal and sent</li>
+<li><strong>Across the network</strong> — at every <strong>router</strong> the frame header is stripped, the destination IP is read, the <strong>routing table</strong> is consulted and the packet is re-framed with a new MAC address and forwarded</li>
+<li><strong>Link layer at the receiver</strong> — the FCS is checked, the frame header is removed, and the packet is passed up</li>
+<li><strong>Internet layer at the receiver</strong> — the destination IP is confirmed, the IP header is removed</li>
+<li><strong>Transport layer at the receiver</strong> — segments are <strong>reordered by sequence number</strong>; any missing segment is requested again; the TCP header is removed</li>
+<li><strong>Application layer at the receiver</strong> — the browser reassembles the message and renders the web page
+<a href="images/ch14-encapsulation.svg" target="_blank" rel="noopener" title="Open the diagram full size"><img alt="Encapsulation and de-encapsulation across the four TCP/IP layers" src="images/ch14-encapsulation.svg" /></a></li>
+</ol>
+<ul>
+<li>The key idea: <strong>the data itself never changes, only the headers wrapped around it change</strong> — this is why the same payload is called a <em>segment</em>, then a <em>datagram</em>, then a <em>frame</em></li>
+</ul>
+<h2 id="standard-protocols">Standard protocols</h2>
+<ul>
+<li>A protocol is a <strong>set of rules</strong> that govern <strong>communication</strong> on a network</li>
+<li>There are protocols for different purposes, such as:
+<ul>
+<li><strong>HTTP &amp; HTTPS</strong></li>
+<li><strong>FTP</strong></li>
+<li><strong>POP3, IMAP &amp; SMTP</strong></li>
+<li><strong>BitTorrent</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="http-https">HTTP &amp; HTTPS</h3>
+<ul>
+<li>Hypertext Transfer Protocol (<strong>HTTP</strong>) allows communication between clients and servers for <strong>website viewing</strong></li>
+<li>HTTP allows clients to <strong>receive data</strong> from the sever (fetching a webpage) and <strong>send data</strong> to the server (submitting a form, uploading a file)</li>
+<li>HTTP is a <strong>client/server protocol</strong>: the browser sends a request, the server returns a response</li>
+<li><strong>HTTPS</strong> works in the same way as HTTP but with an <strong>added layer of security</strong></li>
+<li>All data sent and received using HTTPS is <strong>encrypted</strong></li>
+<li>HTTPS is used to <strong>protect sensitive information</strong> such as passwords, financial information and personal data
+<img alt="http" src="images/http.png" /></li>
+</ul>
+<h3 id="ftp">FTP</h3>
+<ul>
+<li>File Transfer Protocol (<strong>FTP</strong>) allows <strong>sending and receiving files between computers</strong></li>
+<li>Uploading and downloading files <strong>to/from a web server</strong> is often completed using FTP</li>
+<li>FTP offers <strong>greater efficiency</strong> and support for <strong>bulk transfers and large files</strong> such as resuming interrupted transfers</li>
+<li><strong>FTP clients</strong> are software applications that use the FTP protocol to make the process easier for users
+<img alt="ftp" src="images/ftp.png" /></li>
+</ul>
+<h3 id="pop3-imap-smtp">POP3, IMAP &amp; SMTP</h3>
+<ul>
+<li>A family of protocols that handle <strong>sending and receiving of email</strong> across the internet (WAN)</li>
+<li>The syllabus names <strong>POP3</strong> — the version number matters in answers
+<img alt="imapi-1" src="images/imapi-1.png" /></li>
+</ul>
+<h4 id="smtp">SMTP</h4>
+<ul>
+<li>Simple Mail Transfer Protocol (<strong>SMTP</strong>) is a protocol that allows <strong>communication</strong> between an <strong>email sender</strong> and the <strong>email server</strong>, and between different email servers using the internet</li>
+<li>In the diagram above, <strong>SMTP</strong> is used to transfer the senders email to their email providers server and SMTP is used to transfer the email to the recipients email server</li>
+<li>SMTP <strong>only sends</strong> — it is never used to collect mail from a mailbox</li>
+</ul>
+<h4 id="pop3">POP3</h4>
+<ul>
+<li>Post Office Protocol version 3 (<strong>POP3</strong>) is a protocol for <strong>downloading emails to a device</strong> from an email server</li>
+<li>Once the email has been retrieved <strong>it is normally removed from the server</strong></li>
+</ul>
+<h4 id="imap">IMAP</h4>
+<ul>
+<li>Internet Message Access Protocol (<strong>IMAP</strong>) is a protocol for <strong>downloading emails to a device</strong> from an email server</li>
+<li>Once the email has been retrieved, <strong>a copy is retained on the mail server</strong></li>
+</ul>
+<h4 id="advantages-disadvantages-of-pop3imap">Advantages &amp; disadvantages of POP3/IMAP</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Advantages</strong></th>
+<th><strong>Disadvantages</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>POP3</strong></td>
+<td>- Frees up storage space on email servers<br>- Faster on slow connections</td>
+<td>- Only access emails from the device they’re downloaded to<br>- Emails deleted on the server once downloaded</td>
+</tr>
+<tr>
+<td><strong>IMAP</strong></td>
+<td>- View and manage emails from any device with internet access<br>- Changes made on one device are synchronised on all connected devices</td>
+<td>- Server storage space can limit amount of retained emails<br>- Requires internet access to view emails</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bittorrent">BitTorrent</h3>
+<ul>
+<li>BitTorrent is a <strong>peer-to-peer (P2P) file-sharing protocol</strong> used to <strong>distribute large amounts of data</strong> efficiently across the internet</li>
+<li>Instead of downloading a file from a single central server, BitTorrent allows users to <strong>download pieces of the file from multiple users (peers)</strong> who already have parts of it</li>
+<li>This makes file sharing:
+<ul>
+<li><strong>Faster</strong>, as downloads come from many sources at once</li>
+<li><strong>More efficient</strong>, as it reduces the load on any single server</li>
+</ul>
+</li>
+<li>BitTorrent is often used for:
+<ul>
+<li>Sharing <strong>large files</strong>, such as software, videos, or games</li>
+<li><strong>Decentralised distribution</strong>, which avoids the need for central hosting</li>
+</ul>
+</li>
+<li>While BitTorrent is a legal technology, it is sometimes used for sharing <strong>copyrighted content illegally</strong>, so ethical and legal use is important</li>
+</ul>
+<h2 id="beyond-the-syllabus">Beyond the syllabus</h2>
+<ul>
+<li>The syllabus names only the six application protocols above and does not require the following — but they are needed to answer <strong>why</strong> the four layers exist, and they appear in textbook and past-paper wording</li>
+</ul>
+<h3 id="tcp-and-udp">TCP and UDP</h3>
+<ul>
+<li>Both sit in the <strong>transport layer</strong>; both use <strong>port numbers</strong> to reach the right application</li>
+<li><strong>TCP</strong> is <strong>connection-oriented</strong>:
+<ul>
+<li>Sets up a connection first (three-way handshake)</li>
+<li><strong>Acknowledges</strong> every segment and <strong>re-sends</strong> anything lost</li>
+<li>Numbers the segments so they can be <strong>reassembled in order</strong></li>
+<li>Used for web pages, email, file transfer — where every bit must arrive</li>
+</ul>
+</li>
+<li><strong>UDP</strong> is <strong>connectionless</strong>:
+<ul>
+<li>No handshake, no acknowledgement, no re-sending</li>
+<li><strong>Faster and lower overhead</strong>, but segments may be lost or arrive out of order</li>
+<li>Used for streaming, VoIP and online gaming — where a late packet is worse than a lost one</li>
+</ul>
+</li>
+</ul>
+<h3 id="ports-and-sockets">Ports and sockets</h3>
+<ul>
+<li>A <strong>port number</strong> identifies <strong>which application</strong> on a device should receive the data — one IP address can run many services at once
+<ul>
+<li>HTTP = 80, HTTPS = 443, FTP = 20/21, SMTP = 25, POP3 = 110, IMAP = 143</li>
+</ul>
+</li>
+<li>A <strong>socket</strong> is the combination of an <strong>IP address and a port number</strong>, for example <code>192.168.4.17:443</code></li>
+<li>A connection is fully identified by <strong>two sockets</strong> — the sender’s and the receiver’s — which is why the transport layer header must carry <strong>both port numbers</strong></li>
 </ul>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="133-floating-point-numbers-representation-manipulation.html" title="Previous: 13.3 Floating-point Numbers, Representation &amp;Manipulation" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">13.3 Floating-point Numbers, Representation &amp;Manipulation</span></a>
-<a href="142-protocol-examples.html" title="Next: 14.2 Protocol Examples" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">14.2 Protocol Examples</span></a>
+<a href="142-circuit-packet-switching.html" title="Next: 14.2 Circuit &amp; Packet Switching" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">14.2 Circuit &amp; Packet Switching</span></a>
 </nav>
     </div>
   </div>

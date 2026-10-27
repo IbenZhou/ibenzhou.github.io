@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14.2 Circuit &amp; Packet Switching — CS 9618 A-Level Notes</title>
+<style>
+:root {
+  --bg: #f7f3e9;
+  --card-bg: #fdfaf3;
+  --text: #3a3226;
+  --text-secondary: #8c8070;
+  --accent: #b85c38;
+  --accent-light: #f5ebe0;
+  --border: #e3d9c8;
+  --code-bg: #f2ece0;
+  --ink: #2c2416;
+  --radius: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,160,130,0.015) 2px, rgba(180,160,130,0.015) 4px);
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Post page two-column layout */
+.post-layout { display: flex; max-width: 1100px; margin: 0 auto; gap: 32px; padding: 0 24px; position: relative; z-index: 1; }
+.post-sidebar { width: 240px; flex-shrink: 0; }
+.post-main { flex: 1; min-width: 0; }
+
+/* Header */
+.site-header {
+  background: rgba(253,250,243,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-header .container { display: flex; justify-content: space-between; align-items: center; }
+.site-title { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 0.3px; }
+.site-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Hero */
+.hero {
+  background: linear-gradient(160deg, #5c3d2e 0%, #8b5e3c 40%, #a0724c 100%);
+  color: #fdf6ec;
+  padding: 44px 0 40px;
+  margin-bottom: 36px;
+  position: relative; z-index: 1;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,120,0.4), transparent);
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.2px; }
+.hero p { font-size: 14px; opacity: 0.75; }
+
+/* Content */
+.content { padding: 32px 0; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: relative; z-index: 1;
+}
+.card h1 { font-size: 24px; margin-bottom: 20px; color: var(--ink); font-weight: 700; }
+.card h2 { font-size: 19px; margin: 36px 0 14px; padding-bottom: 7px; border-bottom: 2px solid var(--accent-light); color: var(--ink); font-weight: 600; }
+.card h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); font-weight: 600; }
+.card h4 { font-size: 15px; margin: 16px 0 6px; color: var(--text-secondary); }
+.card p { margin: 12px 0; }
+.card ul, .card ol { margin: 8px 0 16px 24px; }
+.card li { margin: 4px 0; }
+.card a { color: var(--accent); text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card img { max-width: 100%; height: auto; border-radius: 3px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.card table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.card th, .card td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 14px; }
+.card th { background: var(--code-bg); font-weight: 600; color: var(--ink); }
+.card blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-light);
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px;
+  color: #5c4530;
+}
+.card blockquote p { margin: 0; }
+.card code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: #6b3a2e;
+}
+.card pre {
+  background: #2c2416;
+  color: #e8dcc8;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #4a3e2e;
+}
+.card pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Post list */
+.post-list { list-style: none; }
+.post-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.post-item:hover { background: var(--code-bg); }
+.post-item a {
+  color: var(--text); text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  flex: 1;
+}
+.post-item a:hover { color: var(--accent); }
+.post-item .date { font-size: 12px; color: var(--text-secondary); white-space: nowrap; margin-left: 14px; }
+.post-category { font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 8px; margin-left: 10px; white-space: nowrap; font-weight: 500; }
+
+/* TOC — left sidebar */
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  font-size: 13px;
+  position: sticky;
+  top: 72px;
+  box-shadow: var(--shadow);
+}
+.toc-title { font-weight: 600; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.toc ul { margin: 0; padding-left: 0; list-style: none; }
+.toc li { margin: 3px 0; line-height: 1.5; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.15s; display: block; padding: 3px 6px; border-radius: 3px; }
+.toc a:hover { color: var(--accent); background: var(--accent-light); }
+.toc ul > li > a { font-weight: 500; color: var(--text); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 48px;
+  position: relative; z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .post-layout { flex-direction: column; }
+  .post-sidebar { width: 100%; position: static; }
+  .toc { position: static; }
+}
+@media (max-width: 640px) {
+  .card { padding: 20px 16px; }
+  .post-item { flex-direction: column; align-items: flex-start; }
+  .post-item .date { margin-left: 0; margin-top: 4px; }
+}
+
+/* Code highlighting — warm dark theme */
+.highlight { background: #2c2416; border-radius: 4px; padding: 12px 16px; }
+.highlight .hll { background-color: #4a3e2e }
+.highlight .c { color: #8c8070 } /* Comment */
+.highlight .k { color: #d4a574 } /* Keyword */
+.highlight .s { color: #c8b896 } /* String */
+.highlight .n { color: #e8dcc8 } /* Name */
+.highlight .p { color: #b8a890 } /* Punctuation */
+.highlight .o { color: #c09870 } /* Operator */
+.highlight .mi { color: #d4a574 } /* Number */
+.highlight .nb { color: #c09870 } /* Built-in */
+.highlight .nc { color: #e0c8a0 } /* Class */
+.highlight .nf { color: #e0c8a0 } /* Function */
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="9618.html" class="site-title">CS 9618 A-Level Notes</a>
+    <span class="site-subtitle"><a href="9618.html" style="color:inherit;text-decoration:none;opacity:.7">← 9618 Notes</a> &nbsp;·&nbsp; 42 revision notes</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>14.2 Circuit &amp; Packet Switching</h1>
+    <p>Part 3: Fundamental Problem-solving and Programming Skills</p>
+  </div>
+</div>
+<main class="content">
+  <div class="post-layout">
+    <aside class="post-sidebar">
+      <div class="toc"><div class="toc-title">Contents</div><div class="toc">
+<ul>
+<li><a href="#circuit-switching">Circuit switching</a></li>
+<li><a href="#packet-switching">Packet switching</a></li>
+<li><a href="#the-function-of-a-router">The function of a router</a></li>
+<li><a href="#circuit-switching-vs-packet-switching">Circuit switching vs packet switching</a></li>
+<li><a href="#how-packet-switching-is-used-to-pass-a-message-across-a-network">Passing a message across a network</a></li>
+</ul>
+</div>
+</div>
+    </aside>
+    <div class="post-main">
+      <article class="card">
+        
+<h2 id="circuit-switching">Circuit switching</h2>
+<h3 id="what-is-circuit-switching">What is circuit switching?</h3>
+<ul>
+<li>Circuit switching sets up a <strong>dedicated channel (circuit)</strong> between sender and receiver that <strong>lasts for the whole connection</strong> — the line is effectively <strong>tied up</strong> until the call ends</li>
+<li>This is how a traditional <strong>telephone call</strong> works</li>
+<li>Every message follows <strong>the same single route</strong>, in the order it was sent</li>
+<li>There are <strong>three stages</strong> in every circuit-switched connection:
+<ol>
+<li><strong>Establish</strong> the circuit between sender and receiver</li>
+<li><strong>Transfer</strong> the data (analogue or digital, usually <strong>bi-directional</strong>)</li>
+<li><strong>Terminate</strong> the connection when the transfer is complete</li>
+</ol>
+</li>
+</ul>
+<h4 id="advantages">Advantages</h4>
+<ul>
+<li>The circuit is <strong>dedicated to that single transmission</strong> only</li>
+<li>The <strong>whole bandwidth</strong> is available to the user</li>
+<li>The data transfer rate is <strong>faster</strong> than with packet switching</li>
+<li>Data (frames) <strong>arrive in the same order</strong> they were sent</li>
+<li>A packet <strong>cannot get lost</strong> — all of them follow one route in sequence</li>
+<li>It works better than packet switching for <strong>real-time applications</strong> (voice, video)</li>
+</ul>
+<h4 id="disadvantages">Disadvantages</h4>
+<ul>
+<li><strong>Not flexible</strong> — empty frames are still sent, and only a single dedicated line is used</li>
+<li><strong>Nobody else can use</strong> the circuit, even when it is idle</li>
+<li>The circuit is <strong>always reserved</strong>, whether or not it is being used</li>
+<li>If there is a <strong>failure on the dedicated line there is no alternative route</strong> — the call is dropped and must be re-established</li>
+<li>Dedicated channels require <strong>greater bandwidth</strong></li>
+<li>The time needed to <strong>establish the link can be long</strong>, before any data moves</li>
+</ul>
+<h3 id="where-it-is-used">Where it is used</h3>
+<ul>
+<li>Public telephone networks (PSTN)</li>
+<li>Private telephone networks</li>
+<li>Private data networks</li>
+</ul>
+<h2 id="packet-switching">Packet switching</h2>
+<h3 id="what-is-packetising">What is packetising?</h3>
+<ul>
+<li>Packetising is the process of <strong>dividing a large message into smaller</strong>, manageable units called <strong>packets</strong></li>
+<li>Each packet can be <strong>transmitted individually</strong> across a network</li>
+</ul>
+<h4 id="structure-of-a-packet">Structure of a packet</h4>
+<ul>
+<li>Each packet typically contains:
+<ul>
+<li><strong>Header</strong> – contains control information such as:
+<ul>
+<li><strong>Source IP address</strong> – who sent the packet</li>
+<li><strong>Destination IP address</strong> – where it’s going</li>
+<li><strong>Sequence number</strong> – used to reassemble packets in the correct order</li>
+<li><strong>Hop count</strong> – how many more routers the packet may pass through</li>
+<li><strong>Protocol</strong> – e.g. TCP or UDP</li>
+<li><strong>Packet length</strong> – the size of the packet</li>
+<li><strong>Checksum</strong> – used for error checking</li>
+</ul>
+</li>
+<li><strong>Payload</strong> – the actual data being sent</li>
+<li><strong>Footer (trailer)</strong> – may include extra error-checking or control information</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-is-packet-switching">What is packet switching?</h3>
+<ul>
+<li>Packet switching is a communication method where <strong>data is broken into packets</strong> and sent across a <strong>shared</strong> network</li>
+<li>Each packet may <strong>take a different path</strong> to the destination and is reassembled on arrival</li>
+<li>Each packet <strong>follows its own path</strong>; the route chosen depends on the <strong>number of datagrams waiting to be processed at each node (router)</strong>, and the <strong>shortest available path</strong> is selected</li>
+<li>Packets can therefore reach the destination <strong>in a different order</strong> from the one in which they were sent</li>
+</ul>
+<h4 id="advantages_2">Advantages</h4>
+<ul>
+<li><strong>No need to tie up</strong> a communication line</li>
+<li><strong>Efficient</strong> use of network <strong>bandwidth</strong> — capacity is shared, not reserved</li>
+<li>Failed or faulty lines are <strong>overcome by re-routing</strong> packets</li>
+<li><strong>Easy to expand</strong> traffic usage</li>
+<li>Users are charged only for the <strong>duration of the connectivity</strong>, not the distance</li>
+<li><strong>High data transmission</strong> rates are possible</li>
+<li>Always uses <strong>digital</strong> networks, so digital data is transmitted directly</li>
+</ul>
+<h4 id="disadvantages_2">Disadvantages</h4>
+<ul>
+<li>The protocols are <strong>more complex</strong> than those for circuit switching</li>
+<li>If a packet is lost, the sender must <strong>re-send</strong> it, which wastes time</li>
+<li>Does <strong>not work well with real-time</strong> data streams (VoIP, video calls)</li>
+<li>The channel has to <strong>share its bandwidth</strong> with other packets</li>
+<li>There is a <strong>delay at the destination</strong> while packets are reassembled</li>
+<li>Needs <strong>large amounts of RAM</strong> to handle large volumes of data</li>
+</ul>
+<h4 id="lost-packets-and-error-checking">Lost packets and error checking</h4>
+<ul>
+<li>Left alone, a lost packet can keep ‘bouncing’ between routers and never arrive — eventually the network clogs up</li>
+<li><strong>Hop count</strong>: each packet may only be forwarded a finite number of times; the hop number <strong>decreases by 1 at every router</strong>, and the packet is <strong>deleted when it reaches 0</strong></li>
+<li><strong>Checksum</strong>: calculated and added to the header by the sender, <strong>recalculated at the destination</strong>; if the two values differ, a request is made to <strong>re-send</strong> the packet</li>
+<li><strong>Priority value</strong>: sometimes added to the header; a high priority value selects a <strong>higher-priority queue</strong> at the router
+<a href="images/ch14-packet-switching.svg" target="_blank" rel="noopener" title="Open the diagram full size"><img alt="Packets from one message taking different routes and being reassembled at the destination" src="images/ch14-packet-switching.svg" /></a></li>
+</ul>
+<h2 id="the-function-of-a-router">The function of a router</h2>
+<h3 id="what-a-router-does">What a router does</h3>
+<ul>
+<li>A router <strong>connects different networks</strong> and <strong>forwards packets towards their destination</strong></li>
+<li>When a packet arrives, the router:
+<ol>
+<li><strong>Examines the packet header</strong> — specifically the destination IP address</li>
+<li><strong>Compares it with the entries in its routing table</strong></li>
+<li><strong>Selects the best route</strong> (lowest metric / fewest hops) to the destination network</li>
+<li><strong>Decreases the hop count by 1</strong></li>
+<li><strong>Replaces the MAC address</strong> in the frame header with the MAC address of the next router</li>
+<li><strong>Forwards (hops) the packet</strong> out of the correct interface</li>
+</ol>
+</li>
+<li>The <strong>IP addresses stay the same from end to end</strong> — only the <strong>MAC address changes at every hop</strong></li>
+<li>A router <strong>discards</strong> a packet when:
+<ul>
+<li><strong>no route</strong> in the table matches the destination address, or</li>
+<li>the <strong>hop count has already reached 0</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="routing-tables">Routing tables</h3>
+<ul>
+<li>A routing table contains the information needed to forward a packet along the <strong>shortest or best route</strong> to its destination</li>
+<li>A routing table includes:
+<ul>
+<li><strong>Number of hops</strong> to the destination</li>
+<li><strong>MAC address of the next router</strong> the packet will be forwarded to</li>
+<li><strong>Metrics</strong> — a cost assigned to each route, so the most efficient path can be found</li>
+<li><strong>Network destination (network ID)</strong> or pathway</li>
+<li><strong>Gateway</strong> — the next hop through which the target network can be reached</li>
+<li><strong>Netmask</strong> — used to generate the network ID</li>
+<li><strong>Interface</strong> — which locally available interface reaches that gateway
+<a href="images/ch14-router.svg" target="_blank" rel="noopener" title="Open the diagram full size"><img alt="A router comparing a packet header with its routing table" src="images/ch14-router.svg" /></a></li>
+</ul>
+</li>
+</ul>
+<h2 id="circuit-switching-vs-packet-switching">Circuit switching vs packet switching</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><strong>Circuit switching</strong></th>
+<th><strong>Packet switching</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Route</strong></td>
+<td>Must be <strong>set up before</strong> transmission begins</td>
+<td>No route is set up in advance</td>
+</tr>
+<tr>
+<td><strong>Path</strong></td>
+<td>A <strong>dedicated</strong> transmission path is required</td>
+<td>Path is <strong>shared</strong> with other users’ packets</td>
+</tr>
+<tr>
+<td><strong>Routing of data</strong></td>
+<td><strong>Every</strong> frame follows the same route</td>
+<td><strong>Each</strong> packet may take a different route</td>
+</tr>
+<tr>
+<td><strong>Order of arrival</strong></td>
+<td>Always <strong>in the correct order</strong></td>
+<td>May arrive <strong>out of order</strong> — reassembled at the destination</td>
+</tr>
+<tr>
+<td><strong>Bandwidth</strong></td>
+<td>The <strong>whole</strong> bandwidth of the channel is used</td>
+<td>Bandwidth is <strong>shared</strong> between packets</td>
+</tr>
+<tr>
+<td><strong>Idle time</strong></td>
+<td>Bandwidth <strong>is wasted</strong> when nothing is being sent</td>
+<td>Idle capacity is <strong>used</strong> by other packets</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>Low — resources are tied up for each communication</td>
+<td>High — uses bandwidth as needed</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>If the path fails the call is <strong>dropped</strong></td>
+<td>Packets are <strong>re-routed</strong> around a failure</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Less scalable — more users need more physical paths</td>
+<td>Highly scalable — handles large volumes and many users</td>
+</tr>
+<tr>
+<td><strong>Suitable for</strong></td>
+<td>Real-time communication (voice calls, video conferencing)</td>
+<td>Emails, web pages, file downloads</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Do not write about “the speed of data transmission” in a packet/circuit switching answer — it earns no marks and in some questions is explicitly excluded. Talk about <strong>bit rate</strong> or <strong>bandwidth</strong> (bits per second) and the <strong>efficiency</strong> of the transmission instead.</p>
+</blockquote>
+<h2 id="how-packet-switching-is-used-to-pass-a-message-across-a-network">How packet switching is used to pass a message across a network</h2>
+<ul>
+<li>This is the syllabus requirement <em>“Explain how packet switching is used to pass messages across a network, including the internet”</em> — practise writing it as a numbered sequence</li>
+</ul>
+<h3 id="worked-answer-downloading-a-web-page">Worked answer: downloading a web page</h3>
+<ol>
+<li>The web page is <strong>divided up into data packets</strong></li>
+<li>Each packet has a <strong>header</strong>, which includes the <strong>IP address of the destination</strong></li>
+<li>At each <strong>router</strong> the header is <strong>checked against the values stored in the routing table</strong></li>
+<li>… to <strong>determine which router the packet needs to be sent to next</strong> (hopped)</li>
+<li>… the <strong>MAC address of the next router</strong> is added to the packet header</li>
+<li>The <strong>hop value is checked</strong> to see whether it equals zero; if it does, the packet is deleted</li>
+<li>Each packet may go by a <strong>different route</strong></li>
+<li>The <strong>destination computer reassembles the packets</strong>, building up the final web page</li>
+</ol>
+<h3 id="worked-answer-why-a-video-call-performs-badly">Worked answer: why a video call performs badly</h3>
+<ul>
+<li><strong>Poor performance you might expect:</strong>
+<ul>
+<li>Picture and sound may not be in <strong>synchronisation</strong> (packets arrive at different times)</li>
+<li>Video is <strong>not continuous</strong> — pauses caused by the time delay in reassembling packets</li>
+<li><strong>Degraded quality</strong> of sound and video, caused by competing traffic on the communication lines</li>
+<li>Possible <strong>drop-out</strong> — packets take different routes, so packets can be lost</li>
+</ul>
+</li>
+<li><strong>How circuit switching would improve it:</strong>
+<ul>
+<li>Only <strong>one route</strong> is used, so all packets <strong>arrive in the correct order</strong></li>
+<li>A <strong>dedicated channel</strong> means the <strong>full bandwidth</strong> is available</li>
+<li>There is <strong>no loss of synchronisation</strong></li>
+</ul>
+</li>
+</ul>
+      </article>
+      <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
+<a href="141-protocols.html" title="Previous: 14.1 Protocols" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">14.1 Protocols</span></a>
+<a href="151-processorparallel-processing-virtual-machine.html" title="Next: 15.1 Processor，Parallel Processing &amp; Virtual Machine" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;text-align:right;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">Next →</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">15.1 Processor，Parallel Processing &amp; Virtual Machine</span></a>
+</nav>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <p>Cambridge A-Level Computer Science 9618 — Revision Notes</p>
+</footer>
+</body>
+</html>
