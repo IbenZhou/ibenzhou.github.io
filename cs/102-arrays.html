@@ -227,37 +227,32 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="array-basics">Array Basics</h2>
+        
+<h2 id="array-basics">Array Basics</h2>
 <h2 id="arrays">Arrays</h2>
 <h3 id="what-is-an-array">What is an array?</h3>
 <ul>
 <li>An array is an <strong>ordered, static set of elements</strong></li>
 <li>Can only store <strong>1 data type</strong></li>
-<li>The <strong>position of each element</strong> in an array is identified using the array&rsquo;s <strong>index</strong></li>
-<li>The array&rsquo;s <strong>first element</strong> is the <strong>lower bound (LB)</strong></li>
-<li>The array&rsquo;s <strong>last element</strong> is the <strong>upper bound (UB)</strong></li>
+<li>The <strong>position of each element</strong> in an array is identified using the array’s <strong>index</strong></li>
+<li>The array’s <strong>first element</strong> is the <strong>lower bound (LB)</strong></li>
+<li>The array’s <strong>last element</strong> is the <strong>upper bound (UB)</strong></li>
 <li>The <strong>lower bound of an array</strong> is typically <strong>0 or 1</strong> depending on the language being used</li>
 <li>An array can be <strong>one-dimensional</strong> or <strong>multi-dimensional</strong></li>
 </ul>
 <h4 id="one-dimensional-1d-arrays">One-dimensional (1D) arrays</h4>
 <ul>
-<li>
-<p>A 1D array is a <strong>linear array</strong>
-<img alt="Structure of a 1D array" src="images/1d-array-example.png" /></p>
-</li>
-<li>
-<p>To declare a 1D array in pseudocode you <strong>must include</strong> the lower bound, upper bound and data types:</p>
-</li>
+<li>A 1D array is a <strong>linear array</strong>
+<img alt="Structure of a 1D array" src="images/1d-array-example.png" /></li>
+<li>To declare a 1D array in pseudocode you <strong>must include</strong> the lower bound, upper bound and data types:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nx">DECLARE</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">identifier</span><span class="p">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nx">ARRAY</span><span class="p">[</span><span class="nx">LB</span><span class="p">:</span><span class="nx">UB</span><span class="p">]</span><span class="w"> </span><span class="nx">OF</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">data</span><span class="w"> </span><span class="k">type</span><span class="p">&gt;</span>
-</code></pre></div>
-
+<pre><code>DECLARE &lt;identifier&gt; : ARRAY[LB:UB] OF &lt;data type&gt;
+</code></pre>
 <ul>
 <li>In this example a 1D array of <strong>five elements</strong> each containing <strong>single character</strong> can be declared as:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>DECLARE Letters : ARRAY[0:4] OF CHAR
-</code></pre></div>
-
+<pre><code>DECLARE Letters : ARRAY[0:4] OF CHAR
+</code></pre>
 <ul>
 <li>An example <strong>complete program</strong> could be:</li>
 </ul>
@@ -274,7 +269,6 @@ body::before {
 <span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Letters</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span>
 <span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
 </code></pre></div>
-
 <ul>
 <li>The array is declared with <strong>indices</strong> from <code>0</code> to <code>4</code></li>
 <li>Each element stores a single character using the <code>CHAR</code> <strong>data type</strong></li>
@@ -283,12 +277,9 @@ body::before {
 <h4 id="two-dimensional-2d-arrays">Two-dimensional (2D) arrays</h4>
 <ul>
 <li>A 2D array can be <strong>visualised as a table</strong></li>
-<li>
-<p>When navigating through a 2D array you first have to go <strong>down the rows</strong> and then <strong>across the columns</strong> to find a position within the array
-<img alt="Structure of a 2D array" src="images/2d-array-example.png" /></p>
-</li>
-<li>
-<p>In 2D arrays the following must be declared:</p>
+<li>When navigating through a 2D array you first have to go <strong>down the rows</strong> and then <strong>across the columns</strong> to find a position within the array
+<img alt="Structure of a 2D array" src="images/2d-array-example.png" /></li>
+<li>In 2D arrays the following must be declared:
 <ul>
 <li>Lower bound for rows (<strong>LBR</strong>) &amp; upper bound for rows (<strong>UBR</strong>)</li>
 <li>Lower bound for columns (<strong>LBC</strong>) &amp; upper bound for columns (<strong>UBC</strong>)</li>
@@ -297,13 +288,11 @@ body::before {
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="n">LBR</span><span class="p">:</span><span class="n">UBR</span><span class="p">,</span><span class="w"> </span><span class="n">LBC</span><span class="p">:</span><span class="n">UBC</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
 </code></pre></div>
-
 <ul>
 <li>In this example a <strong>2D array</strong> can be declared as:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Letters</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">CHAR</span>
 </code></pre></div>
-
 <ul>
 <li>An example <strong>complete program</strong> could be:</li>
 </ul>
@@ -327,26 +316,21 @@ body::before {
 <span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;T&#39;</span>
 <span class="n">Grid</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="sc">&#39;E&#39;</span>
 </code></pre></div>
-
 <ul>
 <li><code>ARRAY[0:2, 0:4]</code> creates <strong>3 rows</strong> and <strong>5 columns</strong></li>
 <li>First index is the <strong>row</strong>, second is the <strong>column</strong>: <code>Letters[row, column]</code></li>
-<li>
-<p>All elements are of type <code>CHAR</code>
+<li>All elements are of type <code>CHAR</code>
 A program reads data from a file and searches for specific data.
 The main program needs to read 25 integer data items from the text file <code>Data.txt</code> into a local 1D array, <code>DataArray</code>
-Write program code to declare the local array <code>DataArray</code> <strong>[1]</strong>
-Answer</p>
-</li>
-<li>
-<p>1D array with name <code>DataArray</code> (with 25 elements of type Integer) [1 mark]
+Write program code to declare the local array <code>DataArray </code> <strong>[1]</strong>
+Answer</li>
+<li>1D array with name <code>DataArray</code> (with 25 elements of type Integer) [1 mark]
 <strong>Java</strong>
 <code>public static Integer[] DataArray = new Integer[25];</code>
-<strong>VB.NET</strong>
+<strong><a href="http://VB.NET">VB.NET</a></strong>
 <code>Dim DataArray(24) As Integer</code>
 <strong>Python</strong>
-<code>DataArray = [] #25 elements Integer</code></p>
-</li>
+<code>DataArray = [] #25 elements Integer</code></li>
 </ul>
 <h2 id="array-pseudocode">Array Pseudocode</h2>
 <h2 id="searching-arrays">Searching arrays</h2>
@@ -413,7 +397,6 @@ Answer</p>
 <span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Item not found&quot;</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <ul>
 <li>Works on a fixed-size array <code>List[0:4]</code></li>
 <li>Uses a <code>WHILE</code> loop for flexibility (early exit if found)</li>
@@ -454,8 +437,8 @@ Answer</p>
 <h2 id="sorting-arrays">Sorting arrays</h2>
 <h3 id="what-is-a-bubble-sort">What is a bubble sort?</h3>
 <ul>
-<li>A bubble sort is a simple sorting algorithm that starts at the beginning of a dataset and <strong>checks values</strong> in <strong>&lsquo;pairs&rsquo;</strong> and <strong>swaps them</strong> if they are <strong>not in the correct order</strong></li>
-<li>One full run of comparisons from beginning to end is called a &rsquo; <strong>pass</strong> &lsquo;, a bubble sort may require <strong>multiple</strong> &rsquo; <strong>passes</strong> &rsquo; to sort the dataset</li>
+<li>A bubble sort is a simple sorting algorithm that starts at the beginning of a dataset and <strong>checks values</strong> in <strong>‘pairs’</strong> and <strong>swaps them</strong> if they are <strong>not in the correct order</strong></li>
+<li>One full run of comparisons from beginning to end is called a ’ <strong>pass</strong> ', a bubble sort may require <strong>multiple</strong> ’ <strong>passes</strong> ’ to sort the dataset</li>
 <li>The algorithm is finished when there are <strong>no more swaps to make</strong></li>
 </ul>
 <h3 id="how-do-you-perform-a-bubble-sort">How do you perform a bubble sort?</h3>
@@ -473,7 +456,7 @@ Answer</p>
 </tr>
 <tr>
 <td><strong>2</strong></td>
-<td><strong>IF</strong> they are in the wrong order&hellip;<br><br>- Swap them</td>
+<td><strong>IF</strong> they are in the wrong order…<br><br>- Swap them</td>
 </tr>
 <tr>
 <td><strong>3</strong></td>
@@ -485,11 +468,11 @@ Answer</p>
 </tr>
 <tr>
 <td><strong>5</strong></td>
-<td><strong>IF</strong> you have made any swaps&hellip;<br>• <strong>REPEAT</strong> from the start (pass 2,3,4&hellip;)</td>
+<td><strong>IF</strong> you have made any swaps…<br>• <strong>REPEAT</strong> from the start (pass 2,3,4…)</td>
 </tr>
 <tr>
 <td><strong>6</strong></td>
-<td><strong>ELSE</strong> you have not made any swaps&hellip;<br>• STOP! the list is in the correct order</td>
+<td><strong>ELSE</strong> you have not made any swaps…<br>• STOP! the list is in the correct order</td>
 </tr>
 </tbody>
 </table>
@@ -508,18 +491,8 @@ Answer</p>
 <th><code>3</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
-<h5 id="step-1-compare-the-first-two-values-in-the-dataset">Step 1 - Compare the first two values in the dataset</h5>
+<h5 id="step-1---compare-the-first-two-values-in-the-dataset">Step 1 - Compare the first two values in the dataset</h5>
 <table>
 <thead>
 <tr>
@@ -531,18 +504,8 @@ Answer</p>
 <th><code>3</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
-<h5 id="step-2-if-they-are-in-the-wrong-order-swap-them">Step 2 - <strong>IF</strong> they are in the wrong order, Swap them.</h5>
+<h5 id="step-2---if-they-are-in-the-wrong-order-swap-them">Step 2 - <strong>IF</strong> they are in the wrong order, Swap them.</h5>
 <table>
 <thead>
 <tr>
@@ -554,19 +517,9 @@ Answer</p>
 <th><code>3</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
-<h5 id="step-3-compare-the-next-two-values">Step 3 - Compare the next two values</h5>
-<h5 id="step-4-repeat-step-2-3-until-you-reach-the-end-of-the-dataset">Step 4 - <strong>Repeat</strong> step 2 &amp; 3 until you reach the end of the dataset</h5>
+<h5 id="step-3---compare-the-next-two-values">Step 3 - Compare the next two values</h5>
+<h5 id="step-4---repeat-step-2-3-until-you-reach-the-end-of-the-dataset">Step 4 - <strong>Repeat</strong> step 2 &amp; 3 until you reach the end of the dataset</h5>
 <h6 id="5-4-swap">5 &amp; 4 Swap!</h6>
 <table>
 <thead>
@@ -579,16 +532,6 @@ Answer</p>
 <th><code>3</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
 <h6 id="5-1-swap">5 &amp; 1 Swap!</h6>
 <table>
@@ -602,16 +545,6 @@ Answer</p>
 <th><code>3</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
 <h6 id="5-6-not-swap">5 &amp; 6 NOT Swap!</h6>
 <table>
@@ -625,16 +558,6 @@ Answer</p>
 <th><code>3</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
 <h6 id="6-3-swap">6 &amp; 3 Swap!</h6>
 <table>
@@ -648,19 +571,9 @@ Answer</p>
 <th><code>6</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
 <h6 id="end-of-pass-1">End of pass 1</h6>
-<h5 id="step-5-if-you-have-made-any-swaps">Step 5 - <strong>IF</strong> you have made any swaps&hellip;</h5>
+<h5 id="step-5---if-you-have-made-any-swaps">Step 5 - <strong>IF</strong> you have made any swaps…</h5>
 <ul>
 <li><strong>REPEAT</strong> from the start</li>
 </ul>
@@ -676,16 +589,6 @@ Answer</p>
 <th><code>6</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
 <h6 id="end-of-pass-3-swaps-made">End of pass 3 (swaps made)</h6>
 <table>
@@ -699,16 +602,6 @@ Answer</p>
 <th><code>6</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
 <h6 id="end-of-pass-4-no-swaps">End of pass 4 (no swaps)</h6>
 <table>
@@ -722,18 +615,8 @@ Answer</p>
 <th><code>6</code></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
 </table>
-<h5 id="step-6-else-you-have-not-made-any-swaps">Step 6 - <strong>ELSE</strong> you have not made any swaps&hellip;</h5>
+<h5 id="step-6---else-you-have-not-made-any-swaps">Step 6 - <strong>ELSE</strong> you have not made any swaps…</h5>
 <ul>
 <li>STOP! the list is in the correct order</li>
 </ul>
@@ -770,12 +653,11 @@ Answer</p>
 <span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="n">Numbers</span><span class="o">[</span><span class="n">Index</span><span class="o">]</span>
 <span class="n">NEXT</span><span class="w"> </span><span class="n">Index</span>
 </code></pre></div>
-
 <ul>
 <li>Uses a fixed array of size 6</li>
 <li>Includes an <strong>optimisation</strong> to exit early if no swaps were made on a pass</li>
 </ul>
-<h4 id="identifier-table_1">Identifier table</h4>
+<h4 id="identifier-table_2">Identifier table</h4>
 <table>
 <thead>
 <tr>
@@ -816,7 +698,8 @@ Answer</p>
 <h3 id="what-is-file-handling">What is file handling?</h3>
 <ul>
 <li>File handling is <strong>the use of programming techniques</strong> to work with information stored in <strong>text files</strong></li>
-<li>Examples of file handing techniques are:<ul>
+<li>Examples of file handing techniques are:
+<ul>
 <li><strong>opening</strong> text files</li>
 <li><strong>reading</strong> text files</li>
 <li><strong>writing</strong> text files</li>
@@ -850,7 +733,7 @@ Answer</p>
 </tr>
 <tr>
 <td><strong>Write line</strong></td>
-<td><code>WRITE fruit.txt, "Oranges"</code></td>
+<td><code>WRITE fruit.txt, &quot;Oranges&quot;</code></td>
 </tr>
 <tr>
 <td><strong>Check end of file</strong></td>
@@ -867,7 +750,8 @@ Answer</p>
 </tbody>
 </table>
 <ul>
-<li>An example program written in pseudocode to:<ul>
+<li>An example program written in pseudocode to:
+<ul>
 <li><strong>Opens</strong> a text file for reading</li>
 <li><strong>Reads</strong> each line (a fruit name)</li>
 <li><strong>Counts</strong> how many fruits are in the file</li>
@@ -887,8 +771,7 @@ Answer</p>
 <span class="n">CLOSEFILE</span><span class="w"> </span><span class="n">FruitFile</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Total number of fruits: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FruitCount</span>
 </code></pre></div>
-
-<h4 id="identifier-table_2">Identifier table</h4>
+<h4 id="identifier-table_3">Identifier table</h4>
 <table>
 <thead>
 <tr>
@@ -911,7 +794,7 @@ Answer</p>
 <tr>
 <td><code>FruitFile</code></td>
 <td>FILE</td>
-<td>The file containing the fruit names (e.g. &ldquo;fruit.txt&rdquo;)</td>
+<td>The file containing the fruit names (e.g. “fruit.txt”)</td>
 </tr>
 </tbody>
 </table>
@@ -920,16 +803,12 @@ Write pseudocode to:</p>
 <ul>
 <li>open the file for reading</li>
 <li>read each value into the array</li>
-<li>
-<p>close the file
-Answer</p>
-</li>
-<li>
-<p>Correct use of <code>OPENFILE "Data.txt" FOR READ</code> … [1 mark]</p>
-</li>
-<li>Loop using <code>WHILE NOT EOF("Data.txt") DO … ENDWHILE</code> or <code>FOR 1 TO 25</code> … [1 mark]</li>
-<li>Correct use of <code>READFILE "Data.txt", LineData</code> storing into array with index <code>DataArray[Counter] ← LineData</code> … [1 mark]</li>
-<li>Correct use of <code>CLOSEFILE "Data.txt"</code> in an appropriate place … [1 mark]
+<li>close the file
+Answer</li>
+<li>Correct use of <code>OPENFILE &quot;Data.txt&quot; FOR READ</code> … [1 mark]</li>
+<li>Loop using <code>WHILE NOT EOF(&quot;Data.txt&quot;) DO … ENDWHILE</code> or <code>FOR 1 TO 25</code> … [1 mark]</li>
+<li>Correct use of <code>READFILE &quot;Data.txt&quot;, LineData</code> storing into array with index <code>DataArray[Counter] ← LineData</code> … [1 mark]</li>
+<li>Correct use of <code>CLOSEFILE &quot;Data.txt&quot;</code> in an appropriate place … [1 mark]
 Model answer:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">DataArray</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ARRAY</span><span class="o">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">25</span><span class="o">]</span><span class="w"> </span><span class="n">OF</span><span class="w"> </span><span class="n">STRING</span>

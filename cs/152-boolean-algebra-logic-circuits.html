@@ -220,18 +220,17 @@ body::before {
 <li><a href="#full-adders">Full adders</a></li>
 <li><a href="#flip-flops">Flip-Flops</a></li>
 <li><a href="#sr-jk-flip-flops">SR &amp; JK flip flops</a></li>
-<li><a href="#boolean-algebra">Boolean Algebra</a></li>
-<li><a href="#boolean-algebra_1">Boolean algebra</a></li>
 <li><a href="#de-morgans-law">De Morgan&rsquo;s Law</a></li>
 <li><a href="#karnaugh-maps">Karnaugh Maps</a></li>
-<li><a href="#karnaugh-maps_1">Karnaugh maps</a></li>
+<li><a href="#karnaugh-maps_2">Karnaugh maps</a></li>
 </ul>
 </div>
 </div>
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="adders-circuits">Adders &amp; Circuits</h2>
+        
+<h2 id="adders-circuits">Adders &amp; Circuits</h2>
 <h2 id="half-adders">Half adders</h2>
 <h3 id="what-is-a-half-adder-circuit">What is a half adder circuit?</h3>
 <ul>
@@ -283,13 +282,15 @@ body::before {
 </table>
 <ul>
 <li>Remember that you are <strong>adding together</strong> the <strong>binary numbers</strong> represented by <strong>A and B</strong></li>
-<li>Create the <strong>C</strong> <sub><b>out</b></sub> <strong>column first</strong> then for each row you can just <strong>add A and B together</strong> and write the <strong>answer in 2 bits</strong> in the <strong>C</strong> <sub><b>out</b></sub> and <strong>S</strong> columns<ul>
-<li>For example in row 2:<ul>
+<li>Create the <strong>C</strong> <sub><b>out</b></sub> <strong>column first</strong> then for each row you can just <strong>add A and B together</strong> and write the <strong>answer in 2 bits</strong> in the <strong>C</strong> <sub><b>out</b></sub> and <strong>S</strong> columns
+<ul>
+<li>For example in row 2:
+<ul>
 <li>A is 0 and B is 1 and 0+1=1
-        - 1 = 01 in 2 bits (C <sub>out</sub> 0 and Sum 1)</li>
+- 1 = 01 in 2 bits (C <sub>out</sub> 0 and Sum 1)</li>
 <li>In the last row:</li>
 <li>A is 1 and B is 1 and 1+1 = 2
-        - 2 = 10 in 2 bit binary (C <sub>out</sub> 1 and Sum 0)</li>
+- 2 = 10 in 2 bit binary (C <sub>out</sub> 1 and Sum 0)</li>
 </ul>
 </li>
 </ul>
@@ -299,26 +300,31 @@ body::before {
 <ul>
 <li>A half adder circuit has <strong>two inputs</strong>, typically labelled as <strong>A</strong> and <strong>B</strong>, and <strong>two outputs</strong>: the <strong>Sum</strong> (S) and <strong>Carry</strong> (C <sub>out</sub>)</li>
 <li>This circuit can be created using an <strong>XOR gate</strong> for the <strong>Sum output</strong> and an <strong>AND gate</strong> for the <strong>Carry output</strong></li>
-<li><strong>Label Inputs</strong>:<ul>
+<li><strong>Label Inputs</strong>:
+<ul>
 <li>Begin by drawing two lines on the left side of your paper or drawing space</li>
-<li>Label the top line as &rsquo; <strong>A</strong> &rsquo; and the bottom line as &rsquo; <strong>B</strong> &lsquo;</li>
+<li>Label the top line as ’ <strong>A</strong> ’ and the bottom line as ’ <strong>B</strong> ’</li>
 <li>These represent your <strong>inputs</strong></li>
 </ul>
 </li>
-<li><strong>XOR Gate (Sum)</strong>:<ul>
-<li><strong>Draw an</strong> <strong>XOR gate</strong> (often a shape like a curved &lsquo;D&rsquo; or a shape similar to an OR gate but with an additional curved line on the input side) in the middle of the paper or drawing space<ul>
+<li><strong>XOR Gate (Sum)</strong>:
+<ul>
+<li><strong>Draw an</strong> <strong>XOR gate</strong> (often a shape like a curved ‘D’ or a shape similar to an OR gate but with an additional curved line on the input side) in the middle of the paper or drawing space
+<ul>
 <li>Connect the A and B lines to the two inputs of the <strong>XOR gate</strong></li>
-<li>The output from the XOR gate is the &rsquo; <strong>Sum</strong> &lsquo;</li>
-<li>Draw a line from the output of the <strong>XOR</strong> gate to the right side of your paper and label it as &rsquo; <strong>S</strong> &lsquo;</li>
+<li>The output from the XOR gate is the ’ <strong>Sum</strong> ’</li>
+<li>Draw a line from the output of the <strong>XOR</strong> gate to the right side of your paper and label it as ’ <strong>S</strong> ’</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>AND Gate (Carry)</strong>:<ul>
-<li><strong>Draw an</strong> <strong>AND gate</strong> (typically a D-shaped symbol) above the <strong>XOR gate</strong><ul>
+<li><strong>AND Gate (Carry)</strong>:
+<ul>
+<li><strong>Draw an</strong> <strong>AND gate</strong> (typically a D-shaped symbol) above the <strong>XOR gate</strong>
+<ul>
 <li>Again, connect the A and B lines to the two inputs of the <strong>AND gate</strong></li>
-<li>The output from the <strong>AND gate</strong> is the &rsquo; <strong>Carry</strong> &lsquo;</li>
-<li>Draw a line from the output of the <strong>AND</strong> gate to the right side of your paper and label it as &rsquo; <strong>C</strong> <sub><b>out</b></sub> &rsquo;
+<li>The output from the <strong>AND gate</strong> is the ’ <strong>Carry</strong> ’</li>
+<li>Draw a line from the output of the <strong>AND</strong> gate to the right side of your paper and label it as ’ <strong>C</strong> <sub><b>out</b></sub> ’
 <img alt="half-adder-v2" src="images/half-adder-v2.png" />
 <strong>Half Adder Logic Gates</strong></li>
 </ul>
@@ -403,8 +409,10 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>To easily reproduce this <strong>Truth Table</strong>, remember:<ul>
-<li>The full adder <strong>adds up three binary inputs</strong> A,B and C<ul>
+<li>To easily reproduce this <strong>Truth Table</strong>, remember:
+<ul>
+<li>The full adder <strong>adds up three binary inputs</strong> A,B and C
+<ul>
 <li>So the answer can be <strong>0,1,2 or 3</strong></li>
 <li>For each row, add up A, B and C and the <strong>write the answer as a 2 bit binary number</strong> in the last 2 columns (C <sub>out</sub> and Sum)</li>
 <li>For example in row 4, A=0, B=1 and C=1 - <strong>0+1+1=2</strong> which is <strong>10 in binary</strong>, so <strong>C</strong> <sub><b>out</b></sub> <strong>is 1 and Sum is 0</strong></li>
@@ -416,36 +424,40 @@ body::before {
 </ul>
 <h3 id="operation">Operation</h3>
 <ul>
-<li>The &ldquo;Sum&rdquo; output <strong>provides the XOR</strong> of the inputs A, B, and C <sub>in</sub></li>
-<li>The &ldquo;Carry&rdquo; output is <strong>TRUE</strong> if at <strong>least two of the inputs</strong> A, B, and C <sub>in</sub> are <strong>TRUE</strong></li>
+<li>The “Sum” output <strong>provides the XOR</strong> of the inputs A, B, and C <sub>in</sub></li>
+<li>The “Carry” output is <strong>TRUE</strong> if at <strong>least two of the inputs</strong> A, B, and C <sub>in</sub> are <strong>TRUE</strong></li>
 </ul>
 <h3 id="drawing-a-full-adder-circuit">Drawing a full adder circuit</h3>
 <ul>
 <li>A full adder circuit consists of <strong>three inputs</strong>: <strong>A</strong>, <strong>B</strong>, and Carry (<strong>C</strong> <sub><b>in</b></sub>), and <strong>two outputs</strong>: Sum (<strong>S</strong>) and Carry (<strong>C</strong> <sub><b>out</b></sub>)</li>
 <li>It can be designed using <strong>two half adders</strong> and an <strong>OR gate</strong></li>
-<li><strong>Label Inputs</strong>:<ul>
+<li><strong>Label Inputs</strong>:
+<ul>
 <li>Start by <strong>drawing three lines</strong> on the left side of your paper or drawing space</li>
-<li>Label the top line as &rsquo; <strong>A</strong> &lsquo;, the middle line as &rsquo; <strong>B&rsquo;</strong>, and the bottom line as &rsquo; <strong>C</strong> <sub><b>in</b></sub> &lsquo;</li>
+<li>Label the top line as ’ <strong>A</strong> ', the middle line as ’ <strong>B’</strong>, and the bottom line as ’ <strong>C</strong> <sub><b>in</b></sub> ’</li>
 <li>These represent your inputs</li>
 </ul>
 </li>
-<li><strong>First Half Adder</strong>:<ul>
+<li><strong>First Half Adder</strong>:
+<ul>
 <li><strong>Draw a half adder</strong> with A and B as inputs</li>
 <li>This consists of an <strong>XOR gate</strong> (for the Sum) and an <strong>AND gate</strong> (for the Carry)</li>
-<li>Label the output of the XOR gate as &rsquo; <strong>Sum1</strong> &rsquo; and the output of the AND gate as &rsquo; <strong>Carry1</strong> &lsquo;</li>
+<li>Label the output of the XOR gate as ’ <strong>Sum1</strong> ’ and the output of the AND gate as ’ <strong>Carry1</strong> ’</li>
 </ul>
 </li>
-<li><strong>Second Half Adder</strong>:<ul>
+<li><strong>Second Half Adder</strong>:
+<ul>
 <li><strong>Draw a second half adder</strong> underneath the first, using <strong>Sum1</strong> and <strong>C</strong> <sub><b>in</b></sub> as inputs</li>
 <li>Again, it consists of an <strong>XOR gate</strong> (for the Sum) and an <strong>AND gate</strong> (for the Carry)</li>
-<li>Label the output of the XOR gate as &rsquo; <strong>S</strong> &rsquo; (final Sum) and the output of the <strong>AND gate</strong> as &rsquo; <strong>Carry2</strong> &lsquo;</li>
+<li>Label the output of the XOR gate as ’ <strong>S</strong> ’ (final Sum) and the output of the <strong>AND gate</strong> as ’ <strong>Carry2</strong> ’</li>
 </ul>
 </li>
-<li><strong>OR Gate</strong>:<ul>
+<li><strong>OR Gate</strong>:
+<ul>
 <li><strong>Draw an OR gate</strong> to the right of the half adders</li>
 <li>Connect Carry1 and Carry2 to the inputs of the OR gate</li>
 <li>The output of the OR gate is the final Carry (<strong>C</strong> <sub><b>out</b></sub>)
-    <img alt="full-adder-v2" src="images/full-adder-v2.png" />
+<img alt="full-adder-v2" src="images/full-adder-v2.png" />
 <strong>Full Adder Logic Gates</strong></li>
 </ul>
 </li>
@@ -456,7 +468,8 @@ body::before {
 <ul>
 <li>In A Level Computer Science, <strong>SR (Set-Reset)</strong> and <strong>JK flip flops</strong> are digital memory components used in <strong>sequential circuits</strong></li>
 <li>They store <strong>1 bit of data</strong> and are commonly used in <strong>counters</strong>, <strong>control systems</strong>, and <strong>synchronous logic</strong></li>
-<li>They are both types of <strong>bistable circuits</strong>, meaning:<ul>
+<li>They are both types of <strong>bistable circuits</strong>, meaning:
+<ul>
 <li>They have <strong>two stable states</strong></li>
 <li>They <strong>respond to clock signals</strong></li>
 <li>They are often <strong>edge-triggered</strong> (typically on the <strong>rising edge</strong>)</li>
@@ -598,13 +611,13 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="inputs_1">Inputs:</h4>
+<h4 id="inputs_2">Inputs:</h4>
 <ul>
 <li><strong>J</strong> = Set</li>
 <li><strong>K</strong> = Reset</li>
 <li><strong>CLK</strong> = Clock (required)</li>
 </ul>
-<h4 id="outputs_1">Outputs:</h4>
+<h4 id="outputs_2">Outputs:</h4>
 <ul>
 <li><strong>Q</strong> = Current state</li>
 <li><strong>NOT(Q)</strong> = Inverse</li>
@@ -648,44 +661,34 @@ body::before {
 </table>
 <h3 id="use-cases">Use cases</h3>
 <table><tbody><tr><th colspan="1" rowspan="1"><p><b>Flip Flop</b></p></th><th colspan="1" rowspan="1"><p><b>Typical uses</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>SR</b></p></td><td colspan="1" rowspan="1"><p>Simple memory, control circuits</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>JK</b></p></td><td colspan="1" rowspan="1"><p><b>Toggles</b>, <b>counters</b>, frequency dividers</p></td></tr></tbody></table>
-<p>Draw a logic circuit for an SR flip-flop and label the inputs.<strong>[3]</strong>
+Draw a logic circuit for an SR flip-flop and label the inputs.**\[3\]**
 <img alt="Simple box diagram with horizontal lines on the left, vertical lines on the right labelled Q and QI. Lines on the left have no labels." src="images/46639_2025-06-04-0it-kleki.png" />
 Answer
-<strong>Or</strong>
-<img alt="SR latch circuit diagram with two NOR gates. Inputs are labelled &quot;R/Reset&quot; and &quot;S/Set,&quot; with outputs marked as Q and not-Q." src="images/60662_2025-06-04-0iw-kleki.png" /></p>
-<h2 id="boolean-algebra">Boolean Algebra</h2>
-<h2 id="boolean-algebra_1">Boolean algebra</h2>
-<h3 id="what-is-boolean-algebra">What is Boolean algebra?</h3>
-<ul>
-<li>Boolean algebra is a <strong>mathematical system</strong> used to <strong>manipulate Boolean values</strong></li>
-<li><strong>Complex expressions</strong> can be made <strong>simpler</strong> using the rules of <strong>Boolean algebra</strong></li>
-<li>This is a <strong>more powerful simplification</strong> method than Karnaugh maps and can simplify expressions that Karnaugh maps cannot</li>
-<li>There are various different <strong>rules</strong> that you need to learn and that can then be applied to certain expressions to simplify them</li>
-<li><strong>Combining these rules</strong> can mean that <strong>complex expressions</strong> can be <strong>reduced to much simpler ones</strong></li>
-</ul>
-<h4 id="general-rules">General rules</h4>
-<ul>
-<li><strong>General AND rules</strong><ul>
-<li>X AND 0 = 0</li>
-<li>X AND 1 = X</li>
-<li>X AND A = X</li>
-<li>NOT X AND X = 0</li>
-</ul>
-</li>
-<li>Note, the value ox X is unknown and it is used as a placeholder</li>
-<li>Therefore <strong>X AND 1 = X</strong> means that the output will be whatever the value of X is</li>
-<li><strong>General OR rules</strong><ul>
-<li>X OR 0 = X  </li>
-<li>X OR 1 = 1  </li>
-<li>X OR A = X  </li>
-<li>NOT X OR X = 1</li>
-</ul>
-</li>
-</ul>
-<h3 id="boolean-algebra-notation">Boolean algebra notation</h3>
-<ul>
-<li>In Boolean algebra, expressions are written using shorthand notation:</li>
-</ul>
+**Or**
+<img alt="SR latch circuit diagram with two NOR gates. Inputs are labelled &quot;R/Reset&quot; and &quot;S/Set,&quot; with outputs marked as Q and not-Q." src="images/60662_2025-06-04-0iw-kleki.png" />
+## Boolean Algebra
+## Boolean algebra
+### What is Boolean algebra?
+- Boolean algebra is a **mathematical system** used to **manipulate Boolean values**
+- **Complex expressions** can be made **simpler** using the rules of **Boolean algebra**
+- This is a **more powerful simplification** method than Karnaugh maps and can simplify expressions that Karnaugh maps cannot
+- There are various different **rules** that you need to learn and that can then be applied to certain expressions to simplify them
+- **Combining these rules** can mean that **complex expressions** can be **reduced to much simpler ones**
+#### General rules
+- **General AND rules**
+	- X AND 0 = 0
+	- X AND 1 = X
+	- X AND A = X
+	- NOT X AND X = 0
+- Note, the value ox X is unknown and it is used as a placeholder
+- Therefore **X AND 1 = X** means that the output will be whatever the value of X is
+- **General OR rules**
+	- X OR 0 = X  
+	- X OR 1 = 1  
+	- X OR A = X  
+	- NOT X OR X = 1
+### Boolean algebra notation
+- In Boolean algebra, expressions are written using shorthand notation:
 <table>
 <thead>
 <tr>
@@ -725,7 +728,7 @@ Answer
 <p>A dot (<code>·</code>) for <strong>AND</strong> is often omitted, so <code>AB</code> means <code>A AND B</code></p>
 <ul>
 <li>A <strong>line drawn above</strong> a variable or expression means that the value is <strong>inverted</strong> or <strong>negated</strong></li>
-<li>It&rsquo;s the <strong>NOT</strong> of that value</li>
+<li>It’s the <strong>NOT</strong> of that value</li>
 </ul>
 <table>
 <thead>
@@ -759,21 +762,18 @@ Answer
 </tbody>
 </table>
 <ul>
-<li>
-<p>When you see <strong>multiple horizontal lines</strong>, for example:
-<img alt="Three Boolean expressions: (A.B), (A.C), (B.D) each with an overline indicating negation, displayed as digital logic notation." src="images/39687_2025-06-04-0ia-kleki.png" /></p>
-</li>
-<li>
-<p>It means the <strong>whole expression is negated</strong>, not just one part</p>
-</li>
+<li>When you see <strong>multiple horizontal lines</strong>, for example:
+<img alt="Three Boolean expressions: (A.B), (A.C), (B.D) each with an overline indicating negation, displayed as digital logic notation." src="images/39687_2025-06-04-0ia-kleki.png" /></li>
+<li>It means the <strong>whole expression is negated</strong>, not just one part</li>
 <li>Always apply <strong>De Morgan’s Law</strong> starting with the <strong>outermost line</strong> first</li>
 </ul>
-<h2 id="de-morgans-law">De Morgan&rsquo;s Law</h2>
+<h2 id="de-morgans-law">De Morgan’s Law</h2>
 <h3 id="what-is-de-morgans-law">What is De Morgan’s Law?</h3>
 <ul>
 <li>De Morgan’s Laws are used to <strong>simplify Boolean expressions</strong> involving <strong>negation</strong> of <strong>conjunctions (AND)</strong> or <strong>disjunctions (OR)</strong></li>
 <li>They are particularly useful for rewriting logic circuits using only <strong>NAND</strong> or <strong>NOR</strong> gates</li>
-<li>There are two key rules:<ol>
+<li>There are two key rules:
+<ol>
 <li><strong>NOT (A AND B)</strong> is equivalent to <strong>(NOT A) OR (NOT B)</strong></li>
 <li><strong>NOT (A OR B)</strong> is equivalent to <strong>(NOT A) AND (NOT B)</strong></li>
 </ol>
@@ -835,8 +835,7 @@ Answer
 </table>
 <h3 id="why-use-de-morgans-laws">Why use De Morgan’s Laws?</h3>
 <ul>
-<li>
-<p>Simplifying Boolean expressions using De Morgan’s Laws:</p>
+<li>Simplifying Boolean expressions using De Morgan’s Laws:
 <ul>
 <li>Allows for implementation using only <strong>NAND</strong> or <strong>NOR</strong> gates</li>
 <li>Makes <strong>circuit design more efficient</strong> and cost-effective</li>
@@ -847,15 +846,13 @@ Simplify the following expression using Boolean algebra, including De Morgan’s
 Answer</li>
 </ul>
 </li>
-<li>
-<p>Correct application of De Morgan’s Law [1 mark]</p>
-</li>
+<li>Correct application of De Morgan’s Law [1 mark]</li>
 <li>Correct application of Double Negation Law or Distributive Law [1 mark]</li>
 <li>Correct answer [1 mark]
 <img alt="" src="images/32895_2025-06-04-0ic-kleki.png" /></li>
 </ul>
 <h2 id="karnaugh-maps">Karnaugh Maps</h2>
-<h2 id="karnaugh-maps_1">Karnaugh maps</h2>
+<h2 id="karnaugh-maps_2">Karnaugh maps</h2>
 <h3 id="what-is-a-karnaugh-map">What is a Karnaugh map?</h3>
 <ul>
 <li>A Karnaugh map (<strong>KMap</strong>) is a tool that is used for <strong>simplifying Boolean algebra expressions</strong></li>
@@ -884,7 +881,7 @@ Answer</li>
 <h4 id="step-2">Step 2</h4>
 <ul>
 <li>Take each expression in turn <strong>separated</strong> by the <strong>V</strong> (<strong>OR</strong>)</li>
-<li>First look at <strong>A</strong> on it&rsquo;s own</li>
+<li>First look at <strong>A</strong> on it’s own</li>
 <li>Find <strong>all cells where A is 1</strong></li>
 <li><strong>Add 1 to the cell</strong>
 <img alt="step 2" src="images/screenshot-2024-04-02-at-2-35-06-pm.png" /></li>
@@ -897,7 +894,7 @@ Answer</li>
 <h4 id="step-4">Step 4</h4>
 <ul>
 <li>This is now a <strong>completed KMap</strong> for the expression <strong>A V B</strong> (<strong>A OR B</strong>)
-<img alt="step " src="images/screenshot-2024-04-02-at-2-35-31-pm.png" /></li>
+<img alt="step" src="images/screenshot-2024-04-02-at-2-35-31-pm.png" /></li>
 </ul>
 <h3 id="simplifying-expressions-using-karnaugh-maps">Simplifying expressions using Karnaugh Maps</h3>
 <ul>
@@ -905,9 +902,10 @@ Answer</li>
 <li>In this example there will be <strong>3 variables</strong> A,B and C so the empty KMap will look like this:
 <img alt="empty-k-map" src="images/empty-k-map.png" /></li>
 </ul>
-<h4 id="step-1_1">Step 1:</h4>
+<h4 id="step-1_2">Step 1:</h4>
 <ul>
-<li>Split this long term at each <strong>OR</strong> giving 4 smaller expressions (subterms) to add to the table:<ul>
+<li>Split this long term at each <strong>OR</strong> giving 4 smaller expressions (subterms) to add to the table:
+<ul>
 <li><strong>¬A^¬B^C</strong></li>
 <li><strong>¬A^B^¬C</strong></li>
 <li><strong>A^¬B^C</strong></li>
@@ -915,7 +913,7 @@ Answer</li>
 </ul>
 </li>
 </ul>
-<h4 id="step-2_1">Step 2:</h4>
+<h4 id="step-2_2">Step 2:</h4>
 <ul>
 <li>Take the first subterm <strong>¬A^¬B^C</strong></li>
 <li>Put a <strong>1</strong> in the map for <strong>every cell where this term would be TRUE (1)</strong></li>
@@ -923,13 +921,13 @@ Answer</li>
 <li>So put a <strong>1</strong> in every cell in the KMap where <strong>A is 0</strong>, <strong>B is 0</strong> and <strong>C is 1</strong>
 <img alt="k-map-2" src="images/k-map-2.png" /></li>
 </ul>
-<h4 id="step-3_1">Step 3:</h4>
+<h4 id="step-3_2">Step 3:</h4>
 <ul>
 <li>The next subterm is <strong>¬A^B^¬C</strong></li>
 <li>Put a <strong>1</strong> in the KMap where <strong>A is 0</strong>, <strong>B is 1</strong> and <strong>C is 0</strong>
 <img alt="k-map-3" src="images/k-map-3.png" /></li>
 </ul>
-<h4 id="step-4_1">Step 4:</h4>
+<h4 id="step-4_2">Step 4:</h4>
 <ul>
 <li>The next subterm is <strong>A^¬B^C</strong></li>
 <li>Put a <strong>1</strong> in the KMap where <strong>A is 1</strong>, <strong>B is 0</strong> and <strong>C is 1</strong>
@@ -946,7 +944,8 @@ Answer</li>
 <li>Once you have written the 1s and 0s into your KMap, you can then use this to <strong>simply the expression</strong></li>
 <li>In order to do this, you need to <strong>identify the groups</strong></li>
 <li>This is the <strong>key</strong> to using the Karnaugh map to derive the simplified expression</li>
-<li>The aim of making the groups is to<ul>
+<li>The aim of making the groups is to
+<ul>
 <li><strong>Make rectangular groups</strong></li>
 <li><strong>Make groups that are as large as possible</strong></li>
 <li><strong>Make groups that contain either 8,4,2 or 1 ones</strong></li>
@@ -958,25 +957,15 @@ Answer</li>
 <h4 id="example-grouping">Example grouping</h4>
 <p><strong>Group 1:</strong></p>
 <ul>
-<li>
-<p>So this would be one group
-<img alt="k-map-6" src="images/k-map-6.png" /></p>
-</li>
-<li>
-<p>This group would represent <strong>A</strong> since within this group bothC and B change (have zeros and ones) whereas for A all the cells are one.
-<strong>Group 2:</strong></p>
-</li>
-<li>
-<p>This would be another group (<strong>note the wrapping around</strong>).
-<img alt="k-map-7" src="images/k-map-7.png" /></p>
-</li>
-<li>
-<p>This group would represent <strong>¬B</strong> since within this group both A and C change (have zeros and ones) whereas for B all the cells are zero
-<strong>Final simplified expression</strong></p>
-</li>
-<li>
-<p>To get the final simplified expression we <strong>OR</strong> the terms representing the two groups together.</p>
-</li>
+<li>So this would be one group
+<img alt="k-map-6" src="images/k-map-6.png" /></li>
+<li>This group would represent <strong>A</strong> since within this group bothC and B change (have zeros and ones) whereas for A all the cells are one.
+<strong>Group 2:</strong></li>
+<li>This would be another group (<strong>note the wrapping around</strong>).
+<img alt="k-map-7" src="images/k-map-7.png" /></li>
+<li>This group would represent <strong>¬B</strong> since within this group both A and C change (have zeros and ones) whereas for B all the cells are zero
+<strong>Final simplified expression</strong></li>
+<li>To get the final simplified expression we <strong>OR</strong> the terms representing the two groups together.</li>
 <li>So the simplified expression is <strong>A v ¬B</strong>
 In questions where you have to use a Karnaugh Map always show the groups by drawing a box/circle round them.</li>
 </ul>

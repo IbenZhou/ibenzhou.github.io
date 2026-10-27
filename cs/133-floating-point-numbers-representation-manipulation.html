@@ -227,7 +227,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="floating-point-basics">Floating-Point Basics</h2>
+        
+<h2 id="floating-point-basics">Floating-Point Basics</h2>
 <h2 id="floating-point-binary">Floating-point binary</h2>
 <h3 id="what-is-floating-point-binary">What is floating-point binary?</h3>
 <ul>
@@ -252,11 +253,11 @@ body::before {
 <tbody>
 <tr>
 <td><strong>Mantissa</strong></td>
-<td>- Holds the significant digits of the number<br>    <br>- The <strong>first bit</strong> is the sign (0 = +, 1 = −)<br>    <br>- The remaining bits are the fraction</td>
+<td>- Holds the significant digits of the number<br>- The <strong>first bit</strong> is the sign (0 = +, 1 = −)<br>- The remaining bits are the fraction</td>
 </tr>
 <tr>
 <td><strong>Exponent</strong></td>
-<td>- Shows how far to move the binary point (positive = right, negative = left)<br>    <br>- Stored in <strong>two’s complement</strong> (unbiased)</td>
+<td>- Shows how far to move the binary point (positive = right, negative = left)<br>- Stored in <strong>two’s complement</strong> (unbiased)</td>
 </tr>
 </tbody>
 </table>
@@ -283,7 +284,8 @@ body::before {
 <li>Sign bit = 1</li>
 <li>Fraction part stored in the remaining mantissa bits</li>
 <li>Exponent is in two’s complement</li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li><code>−6.25 = -(110.01₂) = -(0.11001 × 2³) = 1.00111 × 2³</code></li>
 <li>Mantissa = <code>100111000000</code></li>
 <li>Exponent = <code>0011</code></li>
@@ -292,7 +294,8 @@ body::before {
 </ul>
 <h2 id="normalising-floating-point-numbers">Normalising floating-point numbers</h2>
 <ul>
-<li>A floating-point number is <strong>normalised</strong> when the mantissa begins with:<ul>
+<li>A floating-point number is <strong>normalised</strong> when the mantissa begins with:
+<ul>
 <li><code>01</code> for positive numbers</li>
 <li><code>10</code> for negative numbers</li>
 </ul>
@@ -324,7 +327,8 @@ body::before {
 <h4 id="steps-to-normalise-a-floating-point-number">Steps to normalise a floating-point number</h4>
 <ol>
 <li>Shift the binary point until the mantissa begins with <code>01</code> (positive) or <code>10</code> (negative)</li>
-<li>Adjust the exponent by the number of shifts:<ul>
+<li>Adjust the exponent by the number of shifts:
+<ul>
 <li>Moving left → increase exponent</li>
 <li>Moving right → decrease exponent</li>
 </ul>
@@ -332,17 +336,20 @@ body::before {
 </ol>
 <h4 id="example">Example</h4>
 <ul>
-<li>Before normalisation:<ul>
+<li>Before normalisation:
+<ul>
 <li>Mantissa = <code>00011</code></li>
 <li>Exponent = <code>0010</code> (+2)</li>
 </ul>
 </li>
-<li>Process:<ul>
+<li>Process:
+<ul>
 <li>Shift binary point 2 places right → mantissa = <code>01100</code></li>
 <li>Decrease exponent by 2 → exponent = <code>0000</code></li>
 </ul>
 </li>
-<li>After normalisation:<ul>
+<li>After normalisation:
+<ul>
 <li>Mantissa = <code>01100</code></li>
 <li>Exponent = <code>0000</code></li>
 </ul>
@@ -354,70 +361,92 @@ body::before {
 <h2 id="denary-to-floating-point-binary">Denary to floating-point binary</h2>
 <h3 id="how-do-you-convert-denary-to-floating-point-binary">How do you convert denary to floating-point binary?</h3>
 <ul>
-<li>For the following conversions we are assuming:<ul>
+<li>For the following conversions we are assuming:
+<ul>
 <li>12-bit <strong>mantissa</strong> (bit 0 is the sign: 0 = +, 1 = -)</li>
-<li>4-bit <strong>exponent</strong> (in two’s complement, <strong>unbiased</strong>)
-1. <strong>Convert the number into binary</strong> (split into integer part + fractional part)</li>
-<li>Example: 5 = <code>101₂</code>, 0.25 = <code>0.01₂</code>, so 5.25 = <code>101.01₂</code>
-2. <strong>Normalise the binary</strong> into the form <code>0.xxxxx × 2ⁿ</code></li>
-<li>Move the binary point until there is one non-zero digit to the right of it</li>
-<li>Count how many places the binary point moved = the exponent
-3. <strong>Build the mantissa (12 bits):</strong></li>
-<li>First bit = sign (0 for +, 1 for −)</li>
-<li>Next 11 bits = binary digits after the binary point</li>
-<li>Pad with zeros on the right if needed
-4. <strong>Convert the exponent to 4-bit two’s complement</strong> (unbiased)</li>
-<li>Positive exponents are normal binary</li>
-<li>Negative exponents use two’s complement
-5. <strong>Write the final floating-point number</strong> as (Mantissa | Exponent)</li>
+<li>4-bit <strong>exponent</strong> (in two’s complement, <strong>unbiased</strong>)</li>
 </ul>
 </li>
 </ul>
+<ol>
+<li><strong>Convert the number into binary</strong> (split into integer part + fractional part)
+<ul>
+<li>Example: 5 = <code>101₂</code>, 0.25 = <code>0.01₂</code>, so 5.25 = <code>101.01₂</code></li>
+</ul>
+</li>
+<li><strong>Normalise the binary</strong> into the form <code>0.xxxxx × 2ⁿ</code>
+<ul>
+<li>Move the binary point until there is one non-zero digit to the right of it</li>
+<li>Count how many places the binary point moved = the exponent</li>
+</ul>
+</li>
+<li><strong>Build the mantissa (12 bits):</strong>
+<ul>
+<li>First bit = sign (0 for +, 1 for −)</li>
+<li>Next 11 bits = binary digits after the binary point</li>
+<li>Pad with zeros on the right if needed</li>
+</ul>
+</li>
+<li><strong>Convert the exponent to 4-bit two’s complement</strong> (unbiased)
+<ul>
+<li>Positive exponents are normal binary</li>
+<li>Negative exponents use two’s complement</li>
+</ul>
+</li>
+<li><strong>Write the final floating-point number</strong> as (Mantissa | Exponent)</li>
+</ol>
 <h4 id="example-525">Example: +5.25</h4>
 <ul>
-<li><strong>Step 1: Convert to binary</strong><ul>
+<li><strong>Step 1: Convert to binary</strong>
+<ul>
 <li>5.25 = <code>101.01₂</code></li>
 </ul>
 </li>
-<li><strong>Step 2: Normalise</strong><ul>
+<li><strong>Step 2: Normalise</strong>
+<ul>
 <li><code>101.01₂ = 0.10101 × 2³</code></li>
 </ul>
 </li>
-<li><strong>Step 3: Build mantissa (12 bits)</strong><ul>
+<li><strong>Step 3: Build mantissa (12 bits)</strong>
+<ul>
 <li>Sign = 0 (positive)</li>
 <li>Fraction = <code>10101</code> → pad → <code>10101000000</code></li>
 <li>Mantissa = <code>010101000000</code></li>
 </ul>
 </li>
-<li><strong>Step 4: Exponent</strong><ul>
+<li><strong>Step 4: Exponent</strong>
+<ul>
 <li>+3 = <code>0011</code></li>
 </ul>
 </li>
-<li><strong>Final representation:</strong><br />
-    Mantissa = <code>010101000000</code><br />
-    Exponent = <code>0011</code></li>
+<li><strong>Final representation:</strong><br>
+Mantissa = <code>010101000000</code><br>
+Exponent = <code>0011</code></li>
 </ul>
-<h4 id="example-525_1">Example: −5.25</h4>
+<h4 id="example-525_2">Example: −5.25</h4>
 <ul>
-<li><strong>Step 1: Convert the magnitude</strong><ul>
+<li><strong>Step 1: Convert the magnitude</strong>
+<ul>
 <li>First, convert <strong>+5.25</strong> to binary → <code>101.01₂</code> → <code>0101.01₂</code></li>
 <li>Then, invert each bit <code>0101.01₂</code>  → <code>1010.10₂</code></li>
 <li>Add 1 to the last bit  <code>1010.10₂</code> → <code>1010.11₂</code></li>
 <li>Normalise: <code>1010.11₂ = 1.01011 × 2³</code></li>
 </ul>
 </li>
-<li><strong>Step 2: Build the mantissa (12 bits)</strong><ul>
+<li><strong>Step 2: Build the mantissa (12 bits)</strong>
+<ul>
 <li>Fraction: <code>1.01011</code> → pad → <code>101011000000</code></li>
 <li>Mantissa = <code>101011000000</code></li>
 </ul>
 </li>
-<li><strong>Step 3: Exponent</strong><ul>
+<li><strong>Step 3: Exponent</strong>
+<ul>
 <li>Exponent is the same as for +5.25 → +3 = <code>0011</code></li>
 </ul>
 </li>
-<li><strong>Final representation:</strong><br />
-    Mantissa = <code>101011000000</code><br />
-    Exponent = <code>0011</code></li>
+<li><strong>Final representation:</strong><br>
+Mantissa = <code>101011000000</code><br>
+Exponent = <code>0011</code></li>
 </ul>
 <h4 id="summary-table">Summary table</h4>
 <table>
@@ -450,92 +479,112 @@ body::before {
 <h2 id="floating-point-binary-to-denary">Floating-point binary to denary</h2>
 <h3 id="how-do-you-convert-floating-point-binary-to-denary">How do you convert floating-point binary to denary?</h3>
 <ul>
-<li>For the following conversions we are assuming:<ul>
+<li>For the following conversions we are assuming:
+<ul>
 <li>12-bit <strong>mantissa</strong> (sign + 11 fraction bits)</li>
-<li>4-bit <strong>exponent</strong> (two’s complement, <strong>unbiased</strong>)
-1. <strong>Read the exponent (4 bits)</strong></li>
+<li>4-bit <strong>exponent</strong> (two’s complement, <strong>unbiased</strong>)</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><strong>Read the exponent (4 bits)</strong>
+<ul>
 <li>Convert from two’s complement into denary</li>
 <li>Positive values = normal binary</li>
-<li>Negative values = two’s complement
-2. <strong>Check the mantissa sign</strong></li>
+<li>Negative values = two’s complement</li>
+</ul>
+</li>
+<li><strong>Check the mantissa sign</strong>
+<ul>
 <li>First bit = sign (0 = +, 1 = −)</li>
-<li>Remember: the rest of the mantissa is <strong>just the fraction</strong>, not in two’s complement
-3. <strong>Restore the fraction</strong></li>
+<li>Remember: the rest of the mantissa is <strong>just the fraction</strong>, not in two’s complement</li>
+</ul>
+</li>
+<li><strong>Restore the fraction</strong>
+<ul>
 <li>Write it as <code>0.&lt;fraction bits&gt;</code> in binary</li>
-<li>Example: mantissa <code>010101000000</code> → fraction bits <code>10101000000</code> → <code>0.10101₂</code>
-4. <strong>Apply the exponent</strong></li>
+<li>Example: mantissa <code>010101000000</code> → fraction bits <code>10101000000</code> → <code>0.10101₂</code></li>
+</ul>
+</li>
+<li><strong>Apply the exponent</strong>
+<ul>
 <li>Shift the binary point <strong>right</strong> if exponent is positive, <strong>left</strong> if exponent is negative</li>
-<li>Multiply the fraction by <code>2^(exponent)</code>
-5. <strong>Apply the sign</strong></li>
+<li>Multiply the fraction by <code>2^(exponent)</code></li>
+</ul>
+</li>
+<li><strong>Apply the sign</strong>
+<ul>
 <li>If the sign bit was 1, make the final result negative</li>
 </ul>
 </li>
-</ul>
+</ol>
 <h4 id="convert-the-following-to-denary">Convert the following to denary (+)</h4>
-<div class="highlight"><pre><span></span><code>Mantissa: 010101000000
+<pre><code>Mantissa: 010101000000
 Exponent: 0011
-</code></pre></div>
-
+</code></pre>
 <ul>
-<li><strong>Step 1: Exponent</strong><ul>
+<li><strong>Step 1: Exponent</strong>
+<ul>
 <li><code>0011₂ = +3</code></li>
 </ul>
 </li>
-<li><strong>Step 2: Mantissa sign</strong><ul>
+<li><strong>Step 2: Mantissa sign</strong>
+<ul>
 <li>First bit = 0 → positive</li>
 </ul>
 </li>
-<li><strong>Step 3: Restore fraction</strong><ul>
+<li><strong>Step 3: Restore fraction</strong>
+<ul>
 <li>Fraction bits = <code>10101000000</code></li>
 <li>Fraction = <code>0.10101₂</code></li>
 </ul>
 </li>
-<li><strong>Step 4: Apply exponent</strong><ul>
+<li><strong>Step 4: Apply exponent</strong>
+<ul>
 <li><code>0.10101 × 2³ = 101.01₂ = 5.25₁₀</code></li>
 </ul>
 </li>
-<li><strong>Step 5: Apply sign</strong><ul>
+<li><strong>Step 5: Apply sign</strong>
+<ul>
 <li>Positive → stays <code>+5.25</code></li>
 </ul>
 </li>
 <li><strong>Final result:</strong> <code>+5.25</code></li>
 </ul>
-<h4 id="convert-the-following-to-denary-">Convert the following to denary (-)</h4>
-<div class="highlight"><pre><span></span><code><span class="nl">Mantissa</span><span class="p">:</span><span class="w"> </span><span class="mi">110101000000</span>
+<h4 id="convert-the-following-to-denary_2">Convert the following to denary (-)</h4>
+<div class="highlight"><pre><span></span><code><span class="nl">Mantissa</span><span class="p">:</span><span class="w"> </span><span class="mi">101011000000</span>
 <span class="nl">Exponent</span><span class="p">:</span><span class="w"> </span><span class="mo">0011</span>
 </code></pre></div>
-
 <ul>
-<li><strong>Step 1: Exponent</strong><ul>
+<li><strong>Step 1: Exponent</strong>
+<ul>
 <li><code>0011₂ = +3</code></li>
 </ul>
 </li>
-<li><strong>Step 2: Mantissa sign</strong><ul>
+<li><strong>Step 2: Mantissa sign</strong>
+<ul>
 <li>First bit = 1 → negative</li>
 </ul>
 </li>
-<li><strong>Step 3: Restore fraction</strong><ul>
-<li>Fraction bits = <code>10101000000</code><ul>
-<li>Fraction = <code>0.10101₂</code></li>
+<li><strong>Step 3: Restore fraction</strong>
+<ul>
+<li>Fraction bits = <code>101011000000</code>
+<ul>
+<li>Fraction = <code>1.01011₂</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>Step 4: Apply exponent</strong><ul>
-<li><code>0.10101 × 2³ = 101.01₂ = 5.25₁₀</code></li>
-</ul>
-</li>
-<li><strong>Step 5: Apply sign</strong><ul>
-<li>Negative → <code>−5.25</code></li>
+<li><strong>Step 4: Apply exponent</strong>
+<ul>
+<li><code>1.0101 × 2³ = 1010.11₂ = -5.25₁₀</code></li>
 </ul>
 </li>
 <li><strong>Final result:</strong> <code>−5.25</code></li>
 <li>Always handle <strong>sign first</strong> (0 = +, 1 = −)</li>
-<li>The mantissa fraction is <strong>never in two’s complement</strong> for CIE</li>
-<li>Only the exponent uses two’s complement</li>
 <li>Show the normalisation step (<code>0.xxxxx × 2ⁿ</code>) if the question asks to “show your working”</li>
 </ul>
-<h4 id="summary-table_1">Summary table</h4>
+<h4 id="summary-table_2">Summary table</h4>
 <table>
 <thead>
 <tr>
@@ -562,13 +611,9 @@ Exponent: 0011
 <ul>
 <li>10 bits for the mantissa</li>
 <li>6 bits for the exponent</li>
-<li>
-<p>two’s complement form for both the mantissa and the exponent.
-<strong>System 2 uses:</strong></p>
-</li>
-<li>
-<p>8 bits for the mantissa</p>
-</li>
+<li>two’s complement form for both the mantissa and the exponent.
+<strong>System 2 uses:</strong></li>
+<li>8 bits for the mantissa</li>
 <li>8 bits for the exponent</li>
 <li>two’s complement form for both the mantissa and the exponent.</li>
 </ul>
@@ -577,7 +622,7 @@ Exponent: 0011
 Show your working. <strong>[4]</strong>
 <strong>Answer</strong></p>
 <ul>
-<li>conversion of 113.75 to binary seen <code>1110001.11</code> [1 mark]</li>
+<li>conversion of 113.75 to binary seen <code>1110001.11 </code> [1 mark]</li>
 <li>exponent for normalisation 7 converted to binary <code>111</code> <strong>OR</strong> evidence of binary [1 mark]</li>
 <li>point moved 7 places <strong>OR</strong> evidence of finding exponent = 7 [1 mark]</li>
 <li>system 1 answer [1 mark]</li>
@@ -623,10 +668,10 @@ Show your working. <strong>[4]</strong>
 <div class="highlight"><pre><span></span><code><span class="nl">Decimal</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="w">  </span>
 <span class="nl">Binary</span><span class="p">:</span><span class="w"> </span><span class="mf">0.000110011001100</span><span class="p">...</span><span class="w"> </span><span class="p">(</span><span class="n">recurring</span><span class="p">)</span>
 </code></pre></div>
-
 <ul>
 <li>Because memory is limited (e.g. 32 or 64 bits), the binary value must be <strong>truncated or rounded</strong>, which introduces <strong>small errors</strong></li>
-<li><strong>Consequence</strong>:<ul>
+<li><strong>Consequence</strong>:
+<ul>
 <li>Calculations using approximated values may <strong>accumulate errors</strong></li>
 <li>Final results may be <strong>slightly inaccurate</strong></li>
 </ul>
@@ -635,13 +680,15 @@ Show your working. <strong>[4]</strong>
 <h4 id="underflow">Underflow</h4>
 <ul>
 <li>Underflow occurs when a number is <strong>too close to zero</strong> to be stored in the available number of bits</li>
-<li><strong>Example</strong>:<ul>
+<li><strong>Example</strong>:
+<ul>
 <li>A very small number like <code>1.2 × 10⁻⁴⁰</code></li>
 <li>The exponent is too negative to be stored</li>
 <li>Result: <strong>Stored as 0</strong></li>
 </ul>
 </li>
-<li><strong>Consequence:</strong><ul>
+<li><strong>Consequence:</strong>
+<ul>
 <li>Loss of precision</li>
 <li>Can affect accuracy in scientific or financial calculations</li>
 </ul>
@@ -650,17 +697,19 @@ Show your working. <strong>[4]</strong>
 <h4 id="overflow">Overflow</h4>
 <ul>
 <li><strong>Overflow</strong> occurs when a number is <strong>too large</strong> to fit in the allocated bits for the exponent or mantissa</li>
-<li><strong>Example:</strong><ul>
+<li><strong>Example:</strong>
+<ul>
 <li>A calculation produces <code>1.2 × 10⁵⁰</code>, but the maximum representable number is <code>1.2 × 10³⁸</code></li>
 </ul>
 </li>
-<li><strong>Consequence:</strong><ul>
+<li><strong>Consequence:</strong>
+<ul>
 <li>Program may crash or return an <strong>infinity</strong>, <strong>error</strong>, or <strong>wraparound value</strong></li>
 <li>Can be especially dangerous in loops or financial applications</li>
 </ul>
 </li>
 </ul>
-<h3 id="summary-table_2">Summary table</h3>
+<h3 id="summary-table_3">Summary table</h3>
 <table>
 <thead>
 <tr>

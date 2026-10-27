@@ -232,7 +232,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="database-models">Database Models</h2>
+        
+<h2 id="database-models">Database Models</h2>
 <h2 id="limitations-of-file-based-systems">Limitations of file-based systems</h2>
 <h3 id="what-is-a-file-based-system">What is a file-based system?</h3>
 <ul>
@@ -260,7 +261,7 @@ body::before {
 </tr>
 <tr>
 <td><strong>Lack of data integrity</strong></td>
-<td>It&rsquo;s harder to ensure data is accurate and consistent across all files</td>
+<td>It’s harder to ensure data is accurate and consistent across all files</td>
 </tr>
 <tr>
 <td><strong>Poor security</strong></td>
@@ -284,13 +285,23 @@ body::before {
 </tr>
 </tbody>
 </table>
+<p><strong>The three anomalies caused by data redundancy ★</strong></p>
+<ul>
+<li><strong>Update anomaly</strong> — the same fact is stored in several files, so changing it in one place but not the others leaves the data inconsistent</li>
+<li><strong>Insertion anomaly</strong> — some data cannot be recorded on its own, e.g. a new course cannot be stored until a student enrols on it</li>
+<li><strong>Deletion anomaly</strong> — deleting one record can also remove other, still-needed data, e.g. deleting the last student on a course loses the course details</li>
+</ul>
 <h2 id="flat-file-vs-relational">Flat file vs Relational</h2>
 <ul>
-<li>A <strong>flat file database</strong> is one that stores all data in a <strong>single table</strong><ul>
+<li>
+<p>A <strong>flat file database</strong> is one that stores all data in a <strong>single table</strong></p>
+<ul>
 <li>It is simple and easy to understand but causes data redundancy, inefficient storage and is harder to maintain</li>
 </ul>
 </li>
-<li>A <strong>relational database</strong> is one that organises data into <strong>multiple tables</strong><ul>
+<li>
+<p>A <strong>relational database</strong> is one that organises data into <strong>multiple tables</strong></p>
+<ul>
 <li>It uses keys to connect related data which reduces data <strong>redundancy</strong>, makes efficient use of storage and is easier to maintain</li>
 </ul>
 </li>
@@ -301,9 +312,15 @@ body::before {
 <li>
 <p>This table has <strong>redundant data</strong> - the tutor and form room information repeats</p>
 </li>
-<li>This is <strong>inefficient</strong></li>
-<li>If a tutor changed their name we would need to find all instances of that name and change them all</li>
-<li>Missing any would mean the table had <strong>inconsistent data</strong></li>
+<li>
+<p>This is <strong>inefficient</strong></p>
+</li>
+<li>
+<p>If a tutor changed their name we would need to find all instances of that name and change them all</p>
+</li>
+<li>
+<p>Missing any would mean the table had <strong>inconsistent data</strong></p>
+</li>
 <li>
 <p>A <strong>relational</strong> database would solve this issue:</p>
 <ul>
@@ -315,7 +332,22 @@ body::before {
 <li>
 <p>Now the name of each tutor and their form room is stored <strong>only once</strong></p>
 </li>
-<li>This means if they change only one piece of data, the data is <strong>updated in the entire database</strong> and <strong>inconsistency</strong> is avoided</li>
+<li>
+<p>This means if they change only one piece of data, the data is <strong>updated in the entire database</strong> and <strong>inconsistency</strong> is avoided
+<strong>How a relational database solves these problems ★</strong></p>
+</li>
+<li>
+<p><strong>Reduced redundancy</strong> — each fact is stored once and referenced from other tables</p>
+</li>
+<li>
+<p><strong>Referential integrity</strong> — a foreign key must match a primary key, so broken links cannot exist</p>
+</li>
+<li>
+<p><strong>Data independence</strong> — the logical view of the data is separated from how it is physically stored</p>
+</li>
+<li>
+<p><strong>Concurrency and transaction control</strong> — many users can read and update the same data safely</p>
+</li>
 </ul>
 <h2 id="database-terminology">Database terminology</h2>
 <table>
@@ -384,33 +416,40 @@ body::before {
 </tr>
 </tbody>
 </table>
+<ul>
+<li><strong>Composite key</strong> — a primary key made from <strong>two or more fields combined</strong> (e.g. <code>StudentID</code> + <code>CourseID</code> in a link table); each field on its own is <strong>not</strong> unique</li>
+</ul>
 <h2 id="database-design">Database Design</h2>
 <h2 id="entity-relationship-e-r-diagrams">Entity-relationship (E-R) diagrams</h2>
 <h3 id="what-is-an-entity">What is an entity?</h3>
 <ul>
-<li>An entity in something worthy of <strong>capturing and storing data about</strong> e.g. <em>students, orders, products, courses, customers</em></li>
+<li>An entity is something worthy of <strong>capturing and storing data about</strong> e.g. <em>students, orders, products, courses, customers</em></li>
 <li>Entities become <strong>tables</strong> in a <strong>relational database</strong></li>
 <li>Relational databases store different entities in <strong>separate tables</strong></li>
 <li>Linking tables depends on the <strong>relationships between entities</strong></li>
-<li>There are 3 types of (sometimes called degrees of) <strong>relationships:</strong><ul>
+<li>There are 3 types of (sometimes called degrees of) <strong>relationships:</strong>
+<ul>
 <li><strong>One-to-one</strong></li>
 <li><strong>One-to-many</strong></li>
 <li><strong>Many-to-many</strong></li>
 </ul>
 </li>
-<li>Imagine a company has<ul>
+<li>Imagine a company has
+<ul>
 <li>A table of <code>products</code></li>
 <li>A table of <code>customers</code></li>
 <li>A table of the <code>orders</code> the customers have made</li>
 </ul>
 </li>
-<li>What is the relationship between a <strong>customer</strong> and an <strong>order</strong>?<ul>
+<li>What is the relationship between a <strong>customer</strong> and an <strong>order</strong>?
+<ul>
 <li><strong>One</strong> customer can make multiple (<strong>many</strong>) orders</li>
 <li>But each order relates to a specific (<strong>one</strong>) customer</li>
 <li>So the relationship between customer and order is <strong>one-to-many</strong></li>
 </ul>
 </li>
-<li>Now consider the relationship between a <strong>product</strong> and an <strong>order</strong><ul>
+<li>Now consider the relationship between a <strong>product</strong> and an <strong>order</strong>
+<ul>
 <li>An order could have more than one (<strong>many</strong>) products on it</li>
 <li>A product could be on more than one (<strong>many</strong>) order</li>
 <li>So the relationship between order and product is <strong>many-to-many</strong></li>
@@ -420,40 +459,50 @@ body::before {
 </ul>
 <h3 id="what-is-an-entity-relationship-e-r-diagram">What is an entity-relationship (E-R) diagram?</h3>
 <ul>
-<li>An entity relationship diagram(<strong>E-R</strong>) is a <strong>diagram that represents the entities</strong> (tables) that will be in a database and the <strong>relationships between these entities</strong></li>
+<li>An entity-relationship diagram (<strong>E-R</strong>) is a <strong>diagram that represents the entities</strong> (tables) that will be in a database and the <strong>relationships between these entities</strong></li>
 <li>The entities are drawn as <strong>boxes</strong> with the <strong>entity</strong> name in</li>
 <li>The relationships are drawn in as what is known as ‘ <strong>crow’s feet notation</strong> ’</li>
-<li>
-<p>This is how to draw the relationships in the exam:
-<img alt="entity-relationship-diagrams" src="images/entity-relationship-diagrams.png" /></p>
-</li>
-<li>
-<p>The <strong>names</strong> of the entities would go inside the boxes
-These diagrams are simple but tell us some important things about the database:</p>
-</li>
+<li>This is how to draw the relationships in the exam:
+<img alt="entity-relationship-diagrams" src="images/entity-relationship-diagrams.png" /></li>
+<li>The <strong>names</strong> of the entities would go inside the boxes</li>
+</ul>
+<p>These diagrams are simple but tell us some important things about the database:</p>
+<ul>
 <li>
 <p>The names of all the tables</p>
 </li>
-<li>Which tables will have a foreign key - when an entity has a ‘many’ relationship against it that means it will have a foreign key in it that links to the primary key of the connected entity</li>
+<li>
+<p>Which tables will have a foreign key - when an entity has a ‘many’ relationship against it that means it will have a foreign key in it that links to the primary key of the connected entity
+<strong>Cardinality and where the foreign key goes ★</strong></p>
+</li>
+<li>
+<p><strong>Cardinality</strong> is how many instances of one entity relate to one instance of another; it is drawn using <strong>crow’s foot notation</strong> (a crow’s foot marks the “many” end, a single line the “one” end)</p>
+</li>
+<li>
+<p>In a <strong>one-to-many</strong> relationship the <strong>foreign key</strong> is placed in the table on the <strong>many</strong> side and references the primary key on the <strong>one</strong> side</p>
+</li>
 </ul>
 <h2 id="database-normalisation">Database Normalisation</h2>
 <h2 id="normalised-design">Normalised design</h2>
 <h3 id="what-is-a-normalised-design">What is a normalised design?</h3>
 <ul>
-<li>A <strong>normalised design</strong> is a database structure that:<ul>
+<li>A <strong>normalised design</strong> is a database structure that:
+<ul>
 <li><strong>Organises data efficiently</strong></li>
 <li><strong>Eliminates unnecessary duplication</strong></li>
 <li><strong>Ensures data integrity</strong></li>
 <li><strong>Supports easy updates and accurate relationships</strong></li>
 </ul>
 </li>
-<li>You may be asked to produce a normalised design based on:<ul>
+<li>You may be asked to produce a normalised design based on:
+<ul>
 <li>A <strong>written description</strong> of a system</li>
 <li>A <strong>table of unnormalised data</strong></li>
 <li>A set of <strong>existing flat tables</strong></li>
 </ul>
 </li>
-<li>You need to be able to:<ul>
+<li>You need to be able to:
+<ul>
 <li>Identify <strong>repeating groups</strong> or <strong>duplicated data</strong></li>
 <li>Break down data into <strong>separate related tables</strong></li>
 <li>Assign appropriate <strong>primary keys</strong> and <strong>foreign keys</strong></li>
@@ -514,9 +563,11 @@ These diagrams are simple but tell us some important things about the database:<
 <li>A student is enrolled on <strong>multiple</strong> <strong>courses</strong></li>
 <li>Each course is taught by <strong>a teacher</strong></li>
 <li>The table includes: <code>StudentName, StudentID, CourseID, CourseName, TeacherName</code></li>
-<li>You would:<ul>
+<li>You would:
+<ul>
 <li>Identify <strong>Entities</strong>: Student, Course, Teacher</li>
-<li>Create tables:<ul>
+<li>Create tables:
+<ul>
 <li><strong>Student</strong> (<code>StudentID</code>, <code>StudentName</code>)</li>
 <li><strong>Course</strong> (<code>CourseID</code>, <code>CourseName</code>, <code>TeacherID</code>)</li>
 <li><strong>Teacher</strong> (<code>TeacherID</code>, <code>TeacherName</code>)</li>
@@ -536,26 +587,31 @@ These diagrams are simple but tell us some important things about the database:<
 <h2 id="first-normal-form-1nf">First Normal Form (1NF)</h2>
 <h3 id="what-is-first-normal-form">What is first normal form?</h3>
 <ul>
-<li>For a <strong>table</strong> to be in first normal form it must:<ul>
-<li><strong>Contain atomic values</strong><ul>
+<li>For a <strong>table</strong> to be in first normal form it must:
+<ul>
+<li><strong>Contain atomic values</strong>
+<ul>
 <li>Each column in a table must contain single, indivisible values</li>
 </ul>
 </li>
-<li><strong>Have no repeating groups</strong><ul>
+<li><strong>Have no repeating groups</strong>
+<ul>
 <li>Columns must not contain arrays or lists of values</li>
 </ul>
 </li>
-<li><strong>Have unique column names</strong><ul>
+<li><strong>Have unique column names</strong>
+<ul>
 <li>Each column must have a unique name within the table</li>
 </ul>
 </li>
-<li><strong>Have a unique identifier (</strong><strong>primary key</strong><strong>)</strong><ul>
+<li><strong>Have a unique identifier (primary key)</strong>
+<ul>
 <li>Each row must have a unique identifier to distinguish it from other rows</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>This customers table below has <strong>no primary key</strong> and the name is stored in <strong>one field</strong> so is not atomic</li>
+<li>This customers table below has <strong>no primary key</strong> and the name is stored in <strong>one field</strong> so it is not atomic</li>
 <li>This table is <strong>not</strong> in first normal form
 <strong>Table: Customers</strong></li>
 </ul>
@@ -651,14 +707,14 @@ These diagrams are simple but tell us some important things about the database:<
 <h2 id="second-normal-form-2nf">Second Normal Form (2NF)</h2>
 <h3 id="what-is-second-normal-form">What is second normal form?</h3>
 <ul>
-<li>For a table to be in second normal form it must:<ul>
-<li><strong>Fulfil all 1NF requirements</strong></li>
+<li>For a table to be in second normal form it must:
+<ul>
+<li><strong>Fulfill all 1NF requirements</strong></li>
 <li><strong>Only apply to tables with a</strong> <strong>compound primary key</strong></li>
-<li><strong>Have full functional dependency</strong><ul>
+<li><strong>Have full functional dependency</strong></li>
 <li><strong>All non-prime attributes (attributes not part of the primary key) must be fully dependent on the primary key</strong></li>
-</ul>
-</li>
-<li><strong>Have no partial dependencies</strong><ul>
+<li><strong>Have no partial dependencies</strong>
+<ul>
 <li>Non-prime attributes must not depend on only part of the primary key (in case of a composite primary key)</li>
 <li>Separate tables should be created for partially dependent attributes</li>
 </ul>
@@ -723,7 +779,8 @@ These diagrams are simple but tell us some important things about the database:<
 </tbody>
 </table>
 <ul>
-<li>To turn this table into second normal form we will ensure:<ul>
+<li>To turn this table into second normal form we will ensure:
+<ul>
 <li><code>Course Title</code> is moved into its own <strong>Course</strong> table</li>
 <li>A <code>Session</code> table is created to use the full key (<code>Course</code>, <code>Date</code>) for all time-specific info</li>
 <li>No <strong>partial dependencies</strong> remain
@@ -805,9 +862,11 @@ These diagrams are simple but tell us some important things about the database:<
 <h2 id="third-normal-form-3nf">Third Normal Form (3NF)</h2>
 <h3 id="what-is-third-normal-form">What is third normal form?</h3>
 <ul>
-<li>For a table to be in third normal form it must:<ul>
+<li>For a table to be in third normal form it must:
+<ul>
 <li><strong>Fulfill all 2NF requirements</strong></li>
-<li><strong>Have no transitive dependencies</strong><ul>
+<li><strong>Have no transitive dependencies</strong>
+<ul>
 <li>Non-prime attributes must not depend on other non-prime attributes</li>
 </ul>
 </li>
@@ -815,7 +874,7 @@ These diagrams are simple but tell us some important things about the database:<
 <li><strong>Have separate tables for attributes with transitive dependencies, and the tables should be linked using a</strong> <strong>foreign key</strong></li>
 </ul>
 </li>
-<li>In this table below, the certificate depends on the title - this a transitive dependency and so this table <strong>is not</strong> in third normal form</li>
+<li>In this table below, the <strong>description</strong> depends on the <strong>certificate</strong> — this is a transitive dependency and so this table <strong>is not</strong> in third normal form</li>
 </ul>
 <table>
 <thead>
@@ -848,7 +907,8 @@ These diagrams are simple but tell us some important things about the database:<
 </tbody>
 </table>
 <ul>
-<li>To turn this table into third normal form we will ensure:<ul>
+<li>To turn this table into third normal form we will ensure:
+<ul>
 <li>Transitive dependency removed by <strong>separating</strong> <code>Description</code> into its own table</li>
 <li>The <code>Film</code> table only stores fields that <strong>directly depend</strong> on the key (<code>FilmID</code>)</li>
 <li>A <strong>foreign key</strong> (<code>Certificate</code>) is used to maintain the relationship
@@ -944,6 +1004,25 @@ These diagrams are simple but tell us some important things about the database:<
 </tr>
 </tbody>
 </table>
+<p><strong>Justifying the normal form of a set of tables ★</strong></p>
+<ul>
+<li>Test the normal forms <strong>in order</strong>: are all values <strong>atomic</strong> with no repeating groups (<strong>1NF</strong>)? does every non-key field depend on the <strong>whole</strong> key (<strong>2NF</strong>)? does any non-key field depend on another non-key field (<strong>3NF</strong>)?</li>
+<li>State the conclusion using the wording of the normal forms, e.g. “the tables are in <strong>3NF</strong> because there are no repeating groups, no partial dependencies and no transitive dependencies — the only links between tables are <strong>one-to-many</strong> through foreign keys.”</li>
+</ul>
+<p><strong>Producing a normalised design ★</strong></p>
+<ul>
+<li>Work through the stages in order: identify <strong>repeating groups</strong> → remove them (<strong>1NF</strong>) → remove <strong>partial dependencies</strong> (<strong>2NF</strong>) → remove <strong>transitive dependencies</strong> (<strong>3NF</strong>)</li>
+<li>Create one table per <strong>entity</strong>; for any <strong>many-to-many</strong> relationship add a <strong>link table</strong> with a <strong>composite primary key</strong></li>
+<li>Mark the <strong>primary key</strong> of each table and draw the <strong>foreign keys</strong> that point to the tables on the “one” side</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">StudentID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CourseID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">CourseID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Students</span><span class="p">(</span><span class="n">StudentID</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">CourseID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Courses</span><span class="p">(</span><span class="n">CourseID</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="7-ethics-ownership.html" title="Previous: 7. Ethics &amp; Ownership" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">7. Ethics &amp; Ownership</span></a>

@@ -230,10 +230,12 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="paradigms">Paradigms</h2>
+        
+<h2 id="paradigms">Paradigms</h2>
 <h3 id="what-is-a-programming-paradigm">What is a programming paradigm?</h3>
 <ul>
-<li>A programming paradigm is a <strong>style or approach to programming</strong> that influences:<ul>
+<li>A programming paradigm is a <strong>style or approach to programming</strong> that influences:
+<ul>
 <li>How programs are <strong>written</strong></li>
 <li>How problems are <strong>broken down</strong></li>
 <li>How solutions are <strong>structured</strong></li>
@@ -313,8 +315,8 @@ body::before {
 <h2 id="low-level-programming">Low-level programming</h2>
 <h3 id="how-do-i-write-low-level-code-using-addressing-modes">How do I write low-level code using addressing modes?</h3>
 <ul>
-<li>Machine code and assembly language are examples of low-level languages and were introduced in [[4.2 Assembly Language Basics|Assembly Language Basics]]  </li>
-<li>Before continuing, make sure you understand the different [[4.2 Assembly Language Basics#Addressing Modes|Addressing modes]]</li>
+<li>Machine code and assembly language are examples of low-level languages and were introduced in Assembly Language Basics</li>
+<li>Before continuing, make sure you understand the different Addressing modes</li>
 </ul>
 <h2 id="immediate-addressing">Immediate addressing</h2>
 <ul>
@@ -325,7 +327,6 @@ body::before {
 <span class="n">ADD</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w">        </span><span class="p">;</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="kd">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">accumulator</span>
 <span class="n">STORE</span><span class="w"> </span><span class="mi">200</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Store</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">200</span>
 </code></pre></div>
-
 <ul>
 <li>Use when you want to work with <strong>literal values</strong>, not data in memory</li>
 </ul>
@@ -338,7 +339,6 @@ body::before {
 <span class="n">ADD</span><span class="w"> </span><span class="mi">101</span><span class="w">       </span><span class="p">;</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">101</span>
 <span class="n">STORE</span><span class="w"> </span><span class="mi">102</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Store</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">102</span>
 </code></pre></div>
-
 <ul>
 <li>Use when the data is stored at <strong>known memory addresses</strong></li>
 </ul>
@@ -350,9 +350,9 @@ body::before {
 <div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="err">@</span><span class="mi">150</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Load</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">stored</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="mi">150</span>
 <span class="n">STORE</span><span class="w"> </span><span class="mi">200</span><span class="w">     </span><span class="p">;</span><span class="w"> </span><span class="n">Store</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mi">200</span>
 </code></pre></div>
-
 <ul>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>Memory[150] = 300</li>
 <li>Memory[300] = 42</li>
 <li><code>LOAD @150</code> loads 42 into the accumulator.</li>
@@ -365,12 +365,12 @@ body::before {
 <li><strong>Syntax</strong>: <code>LOAD base[X]</code></li>
 <li><strong>Meaning</strong>: Load from <strong>base address + index register</strong> (e.g. <code>X</code>)</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">LOAD</span><span class="w"> </span><span class="mi">500</span><span class="o">[</span><span class="n">X</span><span class="o">]</span><span class="w">   </span><span class="p">;</span><span class="w"> </span><span class="k">Load</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="p">(</span><span class="mi">500</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">contents</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="n">register</span><span class="w"> </span><span class="n">X</span><span class="p">)</span>
-<span class="k">ADD</span><span class="w"> </span><span class="mi">501</span><span class="o">[</span><span class="n">X</span><span class="o">]</span><span class="w">    </span><span class="p">;</span><span class="w"> </span><span class="k">Add</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">another</span><span class="w"> </span><span class="n">offset</span>
-</code></pre></div>
-
+<pre><code>LOAD 500[X]   ; Load value from address (500 + contents of index register X)
+ADD 501[X]    ; Add value from another offset
+</code></pre>
 <ul>
-<li>Assume:<ul>
+<li>Assume:
+<ul>
 <li><code>X = 2</code></li>
 <li>This will access address 502 and 503</li>
 </ul>
@@ -385,7 +385,6 @@ body::before {
 <div class="highlight"><pre><span></span><code><span class="n">BRZ</span><span class="w"> </span><span class="o">+</span><span class="mi">3</span><span class="w">        </span><span class="p">;</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">accumulator</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="n">skip</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">ahead</span>
 <span class="n">BRP</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w">        </span><span class="p">;</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">positive</span><span class="p">,</span><span class="w"> </span><span class="n">jump</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">back</span>
 </code></pre></div>
-
 <ul>
 <li>Used in control flow:</li>
 </ul>
@@ -395,7 +394,6 @@ body::before {
 <span class="w">       </span><span class="n">BR</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span><span class="w">      </span><span class="p">;</span><span class="w"> </span><span class="n">Loop</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="kd">to</span><span class="w"> </span><span class="n">LOOP</span>
 <span class="nl">END</span><span class="p">:</span><span class="w">   </span><span class="n">HALT</span>
 </code></pre></div>
-
 <ul>
 <li>Use for <strong>loops and conditional branches</strong> without needing absolute addresses</li>
 </ul>
@@ -403,20 +401,23 @@ body::before {
 <h3 id="how-do-i-write-imperative-procedural-code">How do I write imperative (procedural) code?</h3>
 <ul>
 <li>High-level languages such as <strong>Python, Java, and Visual Basic</strong> support the imperative style</li>
-<li>Imperative code can be made <strong>more organised and readable</strong> by using <strong>structured programming principles</strong>, such as dividing code into <strong>functions and procedures</strong><ul>
+<li>Imperative code can be made <strong>more organised and readable</strong> by using <strong>structured programming principles</strong>, such as dividing code into <strong>functions and procedures</strong>
+<ul>
 <li>Before continuing, ensure you’re confident with the <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/11-programming-/programming-basics/pseudocode-basics/">basics of programming</a> logic and have a good understanding of <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/11-programming-/structured-programming/procedures-and-functions/">structured programming</a></li>
 </ul>
 </li>
 </ul>
 <h3 id="imperative-programming-pseudocode-no-procedures-or-functions">Imperative programming – pseudocode (no procedures or functions)</h3>
 <ul>
-<li><strong>Task</strong>: Convert a temperature to:<ul>
+<li><strong>Task</strong>: Convert a temperature to:
+<ul>
 <li>Fahrenheit from Celsius</li>
 <li>Celsius from Fahrenheit</li>
 <li>Kelvin from Celsius</li>
 </ul>
 </li>
-<li><strong>Rules</strong>:<ul>
+<li><strong>Rules</strong>:
+<ul>
 <li>No procedures or functions</li>
 <li>Use only <strong>global variables</strong></li>
 <li>Use a top-down, sequential flow (basic imperative structure)</li>
@@ -448,12 +449,11 @@ body::before {
 <span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Invalid option selected.&quot;</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <h4 id="walkthrough-whats-happening">Walkthrough – What’s happening?</h4>
 <ul>
 <li>All variables are <strong>declared globally</strong></li>
 <li>The entire program is written as <strong>one long block</strong></li>
-<li>There is <strong>no reusability</strong> (e.g. if you want to convert again, you&rsquo;d have to rerun the whole thing)</li>
+<li>There is <strong>no reusability</strong> (e.g. if you want to convert again, you’d have to rerun the whole thing)</li>
 <li>Changes to the program will likely lead to <strong>code duplication</strong> and harder maintenance</li>
 </ul>
 <h3 id="structured-procedural-programming-pseudocode">Structured (procedural) programming – pseudocode</h3>
@@ -505,7 +505,6 @@ body::before {
 <span class="c1">// Start program</span>
 <span class="n">CALL</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
 </code></pre></div>
-
 <h4 id="walkthrough-whats-improved">Walkthrough – what’s improved?</h4>
 <ul>
 <li>Logic is <strong>divided into reusable blocks</strong> (procedures)</li>
@@ -563,7 +562,8 @@ body::before {
 <li><strong>SQL</strong> is a common example of declarative programming</li>
 <li>It allows you to <strong>extract and manipulate data using queries</strong>, without needing to specify the control flow</li>
 <li>SQL was covered in more detail in <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/8-databases-/data-definition-language-ddl-and-data-manipulation-language-dml/sql/">Section 8 – SQL</a></li>
-<li>Declarative code is made up of:<ul>
+<li>Declarative code is made up of:
+<ul>
 <li><strong>Facts</strong> – things that are known or assumed to be true</li>
 <li><strong>Rules</strong> – logical relationships between facts</li>
 </ul>
@@ -588,14 +588,12 @@ body::before {
 <span class="n">shedding</span><span class="p">(</span><span class="n">golden_retriever</span><span class="p">,</span> <span class="n">heavy</span><span class="p">)</span><span class="o">.</span>
 <span class="n">shedding</span><span class="p">(</span><span class="n">bulldog</span><span class="p">,</span> <span class="n">low</span><span class="p">)</span><span class="o">.</span>
 </code></pre></div>
-
 <h4 id="interpreting-clauses">Interpreting clauses</h4>
 <ul>
 <li>Each fact uses the format:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">predicate</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span><span class="o">.</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -622,16 +620,15 @@ body::before {
 <ul>
 <li>Use queries to retrieve information from the facts</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="p">?</span><span class="o">-</span><span class="w"> </span><span class="nx">size</span><span class="p">(</span><span class="nx">poodle</span><span class="p">,</span><span class="w"> </span><span class="nx">medium</span><span class="p">).</span>
-<span class="kc">true</span><span class="p">.</span>
-<span class="p">?</span><span class="o">-</span><span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">retriever</span><span class="p">).</span>
-<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">labrador</span><span class="w"> </span><span class="p">;</span>
-<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">golden_retriever</span><span class="p">.</span>
-<span class="p">?</span><span class="o">-</span><span class="w"> </span><span class="nx">shedding</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">low</span><span class="p">),</span><span class="w"> </span><span class="nx">size</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">medium</span><span class="p">).</span>
-<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">poodle</span><span class="w"> </span><span class="p">;</span>
-<span class="nx">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">bulldog</span><span class="p">.</span>
-</code></pre></div>
-
+<pre><code>?- size(poodle, medium).
+true.
+?- type(X, retriever).
+X = labrador ;
+X = golden_retriever.
+?- shedding(X, low), size(X, medium).
+X = poodle ;
+X = bulldog.
+</code></pre>
 <h4 id="key-points">Key points</h4>
 <table>
 <thead>

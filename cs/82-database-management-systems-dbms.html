@@ -224,15 +224,18 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="dbms-features">DBMS Features</h2>
+        
+<h2 id="dbms-features">DBMS Features</h2>
 <h2 id="dbms-vs-file-based-systems">DBMS vs file-based systems</h2>
 <h3 id="what-is-a-dbms">What is a DBMS?</h3>
 <ul>
 <li>A DBMS (Database Management System) is <strong>software</strong> that is used to <strong>create, manage, and interact with databases</strong></li>
-<li>A DBMS provides several <strong>key features</strong>, including:<ul>
+<li>A DBMS provides several <strong>key features</strong>, including:
+<ul>
 <li>Defines a <strong>logical schema</strong> – the overall logical design of the database (tables, fields, relationships, and constraints), showing how data is organised independently of how it is physically stored</li>
 <li>Provides <strong>data security</strong> and <strong>access control</strong> to keep data safe</li>
-<li>Maintains <strong>data integrity</strong> by enforcing rules and constraints, e.g.<ul>
+<li>Maintains <strong>data integrity</strong> by enforcing rules and constraints, e.g.
+<ul>
 <li>If the data is changed in one place it is updated in every other place</li>
 <li>Ensures each foreign key has a corresponding primary key</li>
 </ul>
@@ -240,9 +243,11 @@ body::before {
 <li>Supports <strong>concurrency control</strong> so multiple users can access the database at the same time without errors</li>
 <li>Ensures <strong>data independence</strong> so changes to storage methods do not affect how data is used</li>
 <li>Offers <strong>backup and recovery</strong> tools to protect against data loss</li>
+<li>Applies <strong>validation checks</strong> (e.g. a <strong>range check</strong> or a <strong>presence check</strong>) to reject invalid data as it is entered</li>
+<li>Supports <strong>cascade update / delete</strong>, so that when a primary key value changes or a record is deleted the matching foreign key records are updated or removed automatically</li>
 </ul>
 </li>
-<li>It addresses the [[8.1 Database Concepts#Limitations of file-based systems|Limitations of file-based systems]] limitations of file-based systems] by:</li>
+<li>It addresses the limitations of file-based systems by:</li>
 </ul>
 <table>
 <thead>
@@ -275,7 +280,7 @@ body::before {
 </tr>
 <tr>
 <td><strong>Logical schema</strong></td>
-<td>The overall logical design of the database (tables, fields, relationships, and constraints)</td>
+<td>No single view of the whole database, so the relationships between tables are never recorded</td>
 <td>Shows how data is <strong>organised and used</strong>, independently of how it is physically stored</td>
 </tr>
 <tr>
@@ -296,6 +301,17 @@ body::before {
 </tbody>
 </table>
 <h2 id="dbms-tools">DBMS tools</h2>
+<h3 id="data-dictionary">Data dictionary</h3>
+<ul>
+<li>The <strong>data dictionary</strong> stores <strong>metadata</strong> (data about the data): table names, field names, data types, field lengths and constraints</li>
+<li>The <strong>DDL interpreter</strong> updates it whenever the structure of the database changes</li>
+<li>It is what allows the DBMS to <strong>validate data</strong> and keeps every part of the system using the same definitions</li>
+</ul>
+<h3 id="logical-schema">Logical schema</h3>
+<ul>
+<li>The <strong>logical schema</strong> is the overall logical design of the database — its tables, fields, relationships and constraints</li>
+<li>It describes how the data is <strong>organised and used</strong>, independently of how it is physically stored</li>
+</ul>
 <h3 id="developer-interface">Developer interface</h3>
 <ul>
 <li>The developer interface allows developers to <strong>write database queries</strong> using <strong>Structured Query Language (SQL)</strong></li>
@@ -330,14 +346,13 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>
-<p>Together, these components make sure that any query written by the developer is <strong>interpreted, optimised</strong>, and <strong>executed efficiently</strong>
-State what is meant by a data dictionary and give one example of an item typically found in a data dictionary. <strong>[2]</strong>
-<strong>Answer</strong></p>
-</li>
-<li>
-<p>A data dictionary is data about the data structure in the database [1 mark]</p>
-</li>
+<li>Together, these components make sure that any query written by the developer is <strong>interpreted, optimised</strong>, and <strong>executed efficiently</strong>
+State what is meant by a data dictionary and give one example of an item typically found in a data dictionary. <strong>[2]</strong></li>
+</ul>
+<h4 id="exam-style-question">Exam-style question</h4>
+<p><strong>Answer</strong></p>
+<ul>
+<li>A data dictionary is data about the data structure in the database [1 mark]</li>
 <li>Example: field name, data type, or table name [1 mark]</li>
 </ul>
       </article>

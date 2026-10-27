@@ -230,7 +230,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="bitmap-images">Bitmap Images</h2>
+        
+<h2 id="bitmap-images">Bitmap Images</h2>
 <h2 id="bitmap-encoding">Bitmap encoding</h2>
 <h3 id="what-is-a-bitmap">What is a bitmap?</h3>
 <ul>
@@ -238,21 +239,18 @@ body::before {
 <li>A pixel is the <strong>smallest element</strong> of a bitmap image</li>
 <li>Each pixel is <strong>stored as a binary code</strong></li>
 <li>Binary codes are <strong>unique</strong> to the <strong>colour</strong> in each pixel</li>
-<li>
-<p>A typical example of a bitmap image is a photograph
+<li>A typical example of a bitmap image is a photograph
 <img alt="Blue rectangular electronic sensor with grid openings and four metal pins on the bottom for connectivity, casting a shadow on a white surface." src="images/humidity-sensor-photo.png" />
-Humidity sensor bitmap image</p>
-</li>
-<li>
-<p>The more colours and more detail in the image, the <strong>higher the quality of the image</strong> and the <strong>more binary that needs to be stored</strong></p>
-</li>
+Humidity sensor bitmap image</li>
+<li>The more colours and more detail in the image, the <strong>higher the quality of the image</strong> and the <strong>more binary that needs to be stored</strong></li>
 </ul>
 <h3 id="image-vs-screen-resolution">Image vs screen resolution</h3>
 <ul>
 <li><strong>Image resolution</strong> is the <strong>total amount of pixels</strong> that make up a bitmap image</li>
 <li>The image resolution is calculated by <strong>multiplying the height and width</strong> of the image (in pixels)</li>
 <li>In general, the <strong>higher the resolution the more detail in the image</strong> (higher quality)</li>
-<li><strong>Screen resolution</strong> refers to the <strong>total amount of pixels horizontally in a display</strong>, such as:<ul>
+<li><strong>Screen resolution</strong> refers to the <strong>total amount of pixels horizontally in a display</strong>, such as:
+<ul>
 <li><strong>Computer monitors</strong> - 1440p means 1440 pixels horizontally compared to 4K which is 3840 pixels (roughly 4 thousand)</li>
 <li><strong>TVs</strong> - HD (high definition) televisions have a screen resolution of 1080p, 1080 pixels horizontally compared to newer 4K televisions with 3840 pixels</li>
 <li><strong>YouTube</strong> - The quality button allows a user to change the video playback resolution from 144p (144 pixels horizontally) up to 4K</li>
@@ -261,9 +259,10 @@ Humidity sensor bitmap image</p>
 <li>Another consideration of screen resolution is the <strong>physical size</strong> of the of the display</li>
 <li>The <strong>number of pixels per square inch</strong> (<strong>PPI</strong>) is known as <strong>pixel density</strong></li>
 <li>Pixel density can mean images to <strong>need to be scaled up or down to fit</strong>, sometimes causing loss in quality</li>
-<li>A consumer purchases a new <strong>65&rdquo; 4k television</strong></li>
+<li>A consumer purchases a new <strong>65&quot; 4k television</strong></li>
 <li>The screen resolution is <strong>3840 x 2160</strong></li>
-<li>To calculate the pixel density of the screen we <strong>add together the squares of the resolution</strong><ul>
+<li>To calculate the pixel density of the screen we <strong>add together the squares of the resolution</strong>
+<ul>
 <li>(3840 <sup>2</sup> + 2160 <sup>2</sup>) = (14 745 600 + 4 665 600) = <strong>19 411 200</strong></li>
 <li>Find the <strong>square root</strong> ( = <strong>4405.814</strong>)</li>
 <li><strong>Divide by the screen size</strong> (4405.814 / 65 = <strong>68</strong>)</li>
@@ -271,7 +270,8 @@ Humidity sensor bitmap image</p>
 </li>
 <li>The television has a <strong>pixel density of 68</strong> pixels per inch (<strong>PPI</strong>)</li>
 <li>Watching <strong>4K content</strong> from a normal viewing distance means the image will appear <strong>crisp and sharp</strong></li>
-<li>However, if you sit <strong>too close</strong>, you may start to see:<ul>
+<li>However, if you sit <strong>too close</strong>, you may start to see:
+<ul>
 <li>The <strong>pixel grid</strong></li>
 <li>A <strong>loss of fine detail</strong></li>
 </ul>
@@ -285,19 +285,14 @@ Humidity sensor bitmap image</p>
 <li>Colour depth is the <strong>number of bits stored per pixel</strong> in a bitmap image</li>
 <li>The colour depth is dependent on the <strong>number of colours needed</strong> in the image</li>
 <li>In general, the <strong>higher the colour depth the more detail in the image</strong> (higher quality)</li>
-<li>
-<p>In a black &amp; white image the <strong>colour depth would be 1</strong>, meaning 1 bit is enough to create a unique binary code for each colour in the image (1=white, 0=black)
-<img alt="Example 1 bit black and white image" src="images/1-bit-bitmap-image.png" /></p>
-</li>
-<li>
-<p>In an image with a <strong>colour depth of 2</strong>, you would have 00, 01, 10 &amp; 11 available binary codes, so <strong>4 colours</strong>
-<img alt="Example 2 bit Mario image" src="images/-2-bit-bitmap-image.png" /></p>
-</li>
-<li>
-<p>As <strong>colour depth increases</strong>, so does the <strong>amount of colours available</strong> in an image</p>
-</li>
+<li>In a black &amp; white image the <strong>colour depth would be 1</strong>, meaning 1 bit is enough to create a unique binary code for each colour in the image (1=white, 0=black)
+<img alt="Example 1 bit black and white image" src="images/1-bit-bitmap-image.png" /></li>
+<li>In an image with a <strong>colour depth of 2</strong>, you would have 00, 01, 10 &amp; 11 available binary codes, so <strong>4 colours</strong>
+<img alt="Example 2 bit Mario image" src="images/-2-bit-bitmap-image.png" /></li>
+<li>As <strong>colour depth increases</strong>, so does the <strong>amount of colours available</strong> in an image</li>
 <li><strong>Colour depth</strong> can also refer to the <strong>number of colours</strong> that can be represented in an image</li>
-<li>It is calculated using the formula:<ul>
+<li>It is calculated using the formula:
+<ul>
 <li><strong>Colour depth = 2</strong> <sup><b>n</b> </sup> <strong>(where n = number of bits)</strong></li>
 </ul>
 </li>
@@ -341,7 +336,8 @@ Humidity sensor bitmap image</p>
 <h2 id="calculating-the-size-of-a-bitmap-file">Calculating the size of a bitmap file</h2>
 <h3 id="how-do-you-calculate-the-size-of-a-bitmap-image">How do you calculate the size of a bitmap image?</h3>
 <ul>
-<li>Estimating the size of a bitmap image can be carried out with the following formula:<ul>
+<li>Estimating the size of a bitmap image can be carried out with the following formula:
+<ul>
 <li><strong>Resolution x colour/bit depth</strong></li>
 </ul>
 </li>
@@ -382,14 +378,24 @@ Humidity sensor bitmap image</p>
 </table>
 <ul>
 <li>When bitmap images are saved, <strong>a file header is created</strong></li>
-<li>This contains:<ul>
+<li>This contains:
+<ul>
 <li><strong>File type (.bmp or.jpg)</strong></li>
 <li><strong>File size</strong></li>
 <li><strong>Image resolution</strong></li>
 <li><strong>Colour depth</strong></li>
-<li><strong>Any type of compression if used</strong></li>
+<li><strong>Any type of compression if used</strong>
+The following section of a bitmap image is 10 pixels wide and 5 pixels high. In this example, each colour is represented by a letter, e.g. O is orange.
+The complete image can have up to 256 colours
+<img alt="A grid of letters with ten columns and six rows containing letters B, Y, R, M, P, K, T, G, and O in various sequences and positions." src="images/6997_screenshot-2025-04-02-113659.png" />
+a) Identify the smallest number of bits that can be used to represent each colour in the complete bitmap image. <strong>[1]</strong>
+b) Calculate an estimate for the file size of the section of the bitmap image shown, giving your answer in bytes. Use your answer from <strong>part a</strong> and show your working. <strong>[2]</strong>
+Answer</li>
 </ul>
 </li>
+<li>8 [1 mark]</li>
+<li>10 x 5 = 50(pixels), 50 x 8(bits) = 400 // 400 ÷ 8(bits) = 50 [1 mark]</li>
+<li>50 (bytes) [1 mark]</li>
 </ul>
 <h2 id="image-quality-file-size">Image quality &amp; file size</h2>
 <h3 id="what-is-the-relationship-between-image-quality-and-file-size">What is the relationship between image quality and file size?</h3>
@@ -406,24 +412,23 @@ Humidity sensor bitmap image</p>
 <ul>
 <li>A vector graphic is created from <strong>mathematical equations</strong> and <strong>points</strong></li>
 <li>Only the <strong>mathematics used</strong> to create the image are stored</li>
-<li>For example, to create a circle the data stored would be:<ul>
+<li>For example, to create a circle the data stored would be:
+<ul>
 <li><strong>Centre point (x, y coordinates)</strong></li>
 <li><strong>Radius</strong></li>
 </ul>
 </li>
-<li>
-<p>Typical examples of vector images are <strong>logos and clipart</strong>
-<img alt="image-2---vector-image" src="images/image-2---vector-image.png" /></p>
-</li>
-<li>
-<p>Vector images are infinitely <strong>scalable</strong></p>
-</li>
-<li>Ideal for situations where the same image <strong>will be made bigger and smaller</strong> and a <strong>loss of quality is unacceptable</strong><ul>
+<li>Typical examples of vector images are <strong>logos and clipart</strong>
+<img alt="image-2---vector-image" src="images/image-2---vector-image.png" /></li>
+<li>Vector images are infinitely <strong>scalable</strong></li>
+<li>Ideal for situations where the same image <strong>will be made bigger and smaller</strong> and a <strong>loss of quality is unacceptable</strong>
+<ul>
 <li>For example, the same logo used on both a pencil and a billboard</li>
 </ul>
 </li>
 <li>A vector graphic contains a <strong>drawing list</strong> (included in the file header)</li>
-<li>A typical drawing list will contain:<ul>
+<li>A typical drawing list will contain:
+<ul>
 <li><strong>Commands used to create each object in the image</strong></li>
 <li><strong>Attributes that define the properties of each object</strong></li>
 <li><strong>Relative position of each object</strong></li>
@@ -474,7 +479,8 @@ Humidity sensor bitmap image</p>
 </tbody>
 </table>
 <ul>
-<li>When <strong>choosing</strong> to use a bitmap or vector based image, the following should be considered:<ul>
+<li>When <strong>choosing</strong> to use a bitmap or vector based image, the following should be considered:
+<ul>
 <li><strong>Does the image need to be resized?</strong></li>
 <li><strong>Does the image need to be drawn to scale?</strong></li>
 <li><strong>Does the image need to look real?</strong></li>
@@ -497,13 +503,9 @@ Humidity sensor bitmap image</p>
 <li>The higher the amplitude, the <strong>louder</strong> the sound</li>
 <li>Each measurement (<strong>sample</strong>) generates a value which can be represented in <strong>binary</strong> and <strong>stored</strong></li>
 <li>Using the <strong>samples</strong>, a computer is able to create a <strong>digital version</strong> of the original analogue wave</li>
-<li>
-<p>The digital wave is <strong>stored</strong> on <strong>secondary storage</strong> and can be played back at any time by reversing the process
-<img alt="analogue-to-digital-image" src="images/analogue-to-digital-image.png" /></p>
-</li>
-<li>
-<p>In this example, the grey line <strong>represents the digital wave</strong> that has been created by taking samples of the original analogue wave</p>
-</li>
+<li>The digital wave is <strong>stored</strong> on <strong>secondary storage</strong> and can be played back at any time by reversing the process
+<img alt="analogue-to-digital-image" src="images/analogue-to-digital-image.png" /></li>
+<li>In this example, the grey line <strong>represents the digital wave</strong> that has been created by taking samples of the original analogue wave</li>
 <li>In order for the digital wave to <strong>look more like the analogue wave</strong> (black line) the <strong>sampling rate</strong>, <strong>sampling resolution</strong> and <strong>sample interval</strong> can be changed</li>
 </ul>
 <h3 id="sampling-rate-vs-sampling-resolution">Sampling rate vs sampling resolution</h3>
@@ -512,25 +514,17 @@ Humidity sensor bitmap image</p>
 <li>The sampling rate is the amount of <strong>samples taken per second</strong> of the analogue wave</li>
 <li>Samples are taken for the <strong>duration</strong> of the sound</li>
 <li>The sampling rate is measured in <strong>Hertz</strong> (<strong>Hz</strong>)</li>
-<li>
-<p><strong>1 Hertz is equal to 1 sample</strong> of the sound wave
-<img alt="image-of-sample-rate-comparisons" src="images/image-of-sample-rate-comparisons.png" /></p>
-</li>
-<li>
-<p>The sample rate of a typical audio CD is <strong>44.1kHz</strong> (44,100 Hertz or 44,100 samples per second), a <strong>sampling resolution</strong> of 16 bits and is recorded in <strong>stereo sound</strong></p>
-</li>
+<li><strong>1 Hertz is equal to 1 sample</strong> of the sound wave
+<img alt="image-of-sample-rate-comparisons" src="images/image-of-sample-rate-comparisons.png" /></li>
+<li>The sample rate of a typical audio CD is <strong>44.1kHz</strong> (44,100 Hertz or 44,100 samples per second), a <strong>sampling resolution</strong> of 16 bits and is recorded in <strong>stereo sound</strong></li>
 <li>Using the graphic above to compare common sampling rates, the question, “ <em>Why does telephone hold music sound so bad?</em>” can now be answered</li>
 </ul>
 <h4 id="sampling-resolution">Sampling resolution</h4>
 <ul>
 <li>Sampling resolution is the <strong>number of bits</strong> used to represent <strong>each sound sample</strong></li>
-<li>
-<p>Sampling resolution is closely related to the <strong>bit depth of a bitmap image</strong>, they measure the same thing in different contexts
-<img alt="image2---sample-rate-comparisons" src="images/image2---sample-rate-comparisons.png" /></p>
-</li>
-<li>
-<p>In the example above, the higher the sample resolution, the <strong>closer to the original</strong> sound wave the digital version looks</p>
-</li>
+<li>Sampling resolution is closely related to the <strong>bit depth of a bitmap image</strong>, they measure the same thing in different contexts
+<img alt="image2---sample-rate-comparisons" src="images/image2---sample-rate-comparisons.png" /></li>
+<li>In the example above, the higher the sample resolution, the <strong>closer to the original</strong> sound wave the digital version looks</li>
 </ul>
 <h2 id="impact-of-sampling-settings">Impact of sampling settings</h2>
 <h3 id="what-are-the-impacts-of-sampling-settings">What are the impacts of sampling settings?</h3>

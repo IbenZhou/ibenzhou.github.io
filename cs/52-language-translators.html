@@ -230,7 +230,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="translator-types">Translator Types</h2>
+        
+<h2 id="translator-types">Translator Types</h2>
 <h2 id="what-is-a-translator">What is a translator?</h2>
 <ul>
 <li>A translator is a program that <strong>translates</strong> program <strong>source code</strong> into <strong>machine code</strong> so that it can executed directly by a processor</li>
@@ -241,7 +242,7 @@ body::before {
 <h3 id="what-is-an-assembler">What is an assembler?</h3>
 <ul>
 <li>An assembler translates <strong>mnemonics written in assembly language</strong> (low-level) in <strong>to machine code</strong></li>
-<li><strong>Each lime</strong> of assembly language is <strong>assembled</strong> into a <strong>single machine code</strong> instruction</li>
+<li><strong>Each line</strong> of assembly language is <strong>assembled</strong> into a <strong>single machine code</strong> instruction</li>
 <li>Assemblers have been used less and less since high-level languages were introduced</li>
 </ul>
 <table>
@@ -298,6 +299,10 @@ body::before {
 <td></td>
 <td>It is designed solely for one specific processor</td>
 </tr>
+<tr>
+<td></td>
+<td>Compiling a large program <strong>takes a long time</strong></td>
+</tr>
 </tbody>
 </table>
 <h3 id="what-is-an-interpreter">What is an interpreter?</h3>
@@ -327,6 +332,41 @@ body::before {
 <tr>
 <td>Require less RAM to process the code</td>
 <td>Executed as is, no optimisation</td>
+</tr>
+</tbody>
+</table>
+<p>Summary of the three translators:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Translator</strong></th>
+<th><strong>Input</strong></th>
+<th><strong>Output</strong></th>
+<th><strong>Granularity</strong></th>
+<th><strong>Used when</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Assembler</strong></td>
+<td>assembly language (<strong>mnemonics</strong>)</td>
+<td>machine code</td>
+<td><strong>one line → one</strong> machine code instruction</td>
+<td>the source is low-level / embedded</td>
+</tr>
+<tr>
+<td><strong>Compiler</strong></td>
+<td>high-level language</td>
+<td>machine code (<strong>executable</strong> file)</td>
+<td>the <strong>whole program</strong> at once</td>
+<td>the program is <strong>finished</strong></td>
+</tr>
+<tr>
+<td><strong>Interpreter</strong></td>
+<td>high-level language</td>
+<td><strong>no machine code produced directly</strong> (machine code subroutines are called)</td>
+<td><strong>one line at a time</strong>, executed immediately</td>
+<td>the program is <strong>being written</strong></td>
 </tr>
 </tbody>
 </table>
@@ -384,7 +424,7 @@ body::before {
 <tr>
 <td><strong>User independence</strong></td>
 <td>Users are <strong>reliant on the developer</strong> for updates or modifications – they can’t edit the code themselves</td>
-<td>Users have <strong>full access to code and libraries</strong>, giving them <strong>freedom to customise or fix</strong> the</td>
+<td>Users have <strong>full access to code and libraries</strong>, giving them <strong>freedom to customise or fix the program</strong></td>
 </tr>
 </tbody>
 </table>
@@ -393,13 +433,15 @@ body::before {
 <ul>
 <li>Mixed mode translation <strong>combines features</strong> of both a <strong>compiler</strong> and an <strong>interpreter</strong></li>
 <li>Instead of fully compiling or interpreting the code, the program is <strong>partially compiled into an intermediate form</strong>, which is then <strong>interpreted at runtime</strong></li>
-<li>It works by:<ul>
+<li>It works by:
+<ul>
 <li>The source code is <strong>compiled into intermediate code</strong>, not full machine code</li>
 <li>This <strong>intermediate code</strong> (e.g. bytecode) is <strong>interpreted by a virtual machine</strong> (e.g. the Java Virtual Machine – JVM)</li>
 <li>Optionally, some parts may later be <strong>just-in-time (JIT) compiled</strong> into machine code for better performance</li>
 </ul>
 </li>
-<li><strong>Java</strong> uses mixed mode translation:<ul>
+<li><strong>Java</strong> uses mixed mode translation:
+<ul>
 <li>Java source code is <strong>compiled</strong> to <strong>bytecode</strong> (.class file)</li>
 <li>Bytecode is <strong>interpreted</strong> (or JIT compiled) by the <strong>JVM</strong> on any platform</li>
 </ul>
@@ -449,7 +491,7 @@ body::before {
 <td>Example languages</td>
 <td>C, C++</td>
 <td>Python, JavaScript</td>
-<td>Java, C# (with.NET CLR)</td>
+<td>Java, C# (<a href="http://with.NET">with.NET</a> CLR)</td>
 </tr>
 </tbody>
 </table>
@@ -461,13 +503,9 @@ Describe the ways in which Jennifer can use both a compiler and an interpreter w
 <ul>
 <li>Use an interpreter while writing the program [1 mark]</li>
 <li>… to test/debug the partially completed program [1 mark]</li>
-<li>
-<p>… because errors can be corrected and processing continue from where the execution stopped // errors can be corrected in real time // errors are identified one at a time [1 mark]
-<strong>Compiler:</strong></p>
-</li>
-<li>
-<p>Use the compiler after the program is complete [1 mark]</p>
-</li>
+<li>… because errors can be corrected and processing continue from where the execution stopped // errors can be corrected in real time // errors are identified one at a time [1 mark]
+<strong>Compiler:</strong></li>
+<li>Use the compiler after the program is complete [1 mark]</li>
 <li>… to create an executable file [1 mark]</li>
 <li>Use the compiler to repeatedly test the same (completed) section [1 mark]</li>
 <li>… without having to re-interpret every time // compiler not needed at runtime [1 mark]</li>
@@ -480,18 +518,11 @@ Describe the ways in which Jennifer can use both a compiler and an interpreter w
 <li>IDEs can be an <strong>app to download</strong> or can be <strong>web-based</strong></li>
 </ul>
 <h2 id="ide-features">IDE features</h2>
-<h4 id="syntax-highlighting-pretty-printing">Syntax highlighting (pretty printing)</h4>
+<p>The syllabus groups IDE features into <strong>four categories</strong>. Features marked <strong>★</strong> have appeared in past Paper 1 questions; unmarked features are included for completeness.</p>
+<h3 id="for-coding">For coding ★</h3>
+<h4 id="context-sensitive-prompts-autocomplete">Context-sensitive prompts (autocomplete) ★</h4>
 <ul>
-<li>IDEs use syntax highlighting to <strong>visually distinguish</strong> different elements of code based on their syntax</li>
-<li>The IDE assigns <strong>distinct colours or styles</strong> to keywords, strings, comments, variables, functions, and other language constructs</li>
-<li>Syntax highlighting helps programmers <strong>quickly identify and differentiate code</strong> components, reducing the chance of syntax errors and improving code comprehension</li>
-<li>In this example Python code, you can see that the code comments are displayed in red, the strings are displayed in green and the print commands are displayed in purple
-<img alt="syntax highlighting in an IDE" src="images/syntax-highlighting-ide-computer-science-revision-notes.png" />
-Syntax highlighting in an IDE</li>
-</ul>
-<h4 id="autocomplete">Autocomplete</h4>
-<ul>
-<li>Autocomplete will <strong>suggest code completions</strong> as programmers type</li>
+<li>Context-sensitive prompts will <strong>suggest code completions</strong> as programmers type</li>
 <li>For example, as developers start typing a variable, function, or method name, the IDE displays a list of available options</li>
 <li>Another example is when programmers use opening brackets and the autocomplete facility will automatically add closing brackets</li>
 <li>Code completion <strong>improves productivity</strong> by reducing typing effort and preventing typing errors and naming inconsistencies</li>
@@ -503,59 +534,86 @@ Code completion in an IDE</li>
 <ul>
 <li>Auto indent will <strong>automatically indent the programming code</strong> when you start a new line of code within a code block</li>
 <li>They are commonly used in <strong>selection</strong> and <strong>iteration</strong> programming constructs</li>
-<li>
-<p>In the example below, the indentation is automatic after starting to define the code block on line 04 and is clearly marked to show which lines of code are included within the block.
+<li>In the example below, the indentation is automatic after starting to define the code block on line 04 and is clearly marked to show which lines of code are included within the block.
 <img alt="code formatting with automatic indentation" src="images/code-formatting-indentation-ide-computer-science-revision-notes.png" />
-Code formatting with automatic indentation</p>
-</li>
-<li>
-<p>Comments are <strong>lines of text within the code that are not executed</strong> but serve as documentation and explanations for programmers</p>
-</li>
-<li>IDEs enable developers to add single-line or multi-line <strong>comments to describe the code&rsquo;s purpose</strong>, algorithmic steps, and any relevant information that will be useful to the maintenance of the program</li>
+Code formatting with automatic indentation</li>
+</ul>
+<h4 id="comments">Comments</h4>
+<ul>
+<li>Comments are <strong>lines of text within the code that are not executed</strong> but serve as documentation and explanations for programmers</li>
+<li>IDEs enable developers to add single-line or multi-line <strong>comments to describe the code’s purpose</strong>, algorithmic steps, and any relevant information that will be useful to the maintenance of the program</li>
 <li>Comments enhance code understanding, making it easier for developers to revisit and modify code at a later stage</li>
-<li>Comments are in green on the image above</li>
+<li>Comments are shown in green on the syntax highlighting image above</li>
+</ul>
+<h3 id="for-initial-error-detection">For initial error detection</h3>
+<h4 id="dynamic-syntax-checks">Dynamic syntax checks</h4>
+<ul>
 <li>IDEs can automatically highlight <strong>syntax errors in the code editor</strong> as developers type</li>
 <li>This feature <strong>helps catch mistakes instantly</strong>, allowing programmers to address syntax-related issues promptly</li>
 <li>Syntax errors are highlighted with distinct colours, making them easily noticeable, even before executing the code</li>
 </ul>
-<h4 id="variable-watch-window">Variable watch window</h4>
+<h3 id="for-presentation">For presentation ★</h3>
+<h4 id="pretty-printing-syntax-highlighting">Pretty printing (syntax highlighting) ★</h4>
+<ul>
+<li>IDEs use syntax highlighting to <strong>visually distinguish</strong> different elements of code based on their syntax</li>
+<li>The IDE assigns <strong>distinct colours or styles</strong> to keywords, strings, comments, variables, functions, and other language constructs</li>
+<li>Syntax highlighting helps programmers <strong>quickly identify and differentiate code</strong> components, reducing the chance of syntax errors and improving code comprehension</li>
+<li>In this example Python code, you can see that the code comments are displayed in red, the strings are displayed in green and the print commands are displayed in purple
+<img alt="syntax highlighting in an IDE" src="images/syntax-highlighting-ide-computer-science-revision-notes.png" />
+Syntax highlighting in an IDE</li>
+</ul>
+<h4 id="expand-and-collapse-code-blocks">Expand and collapse code blocks ★</h4>
+<ul>
+<li>Presentation features also include the ability to <strong>expand and collapse blocks of code</strong></li>
+<li>Collapsing a block (for example a procedure or a loop) <strong>hides its body</strong>, so that the overall structure of the program can be seen at a glance</li>
+<li>Expanding restores the hidden lines, so a developer can <strong>work on one section at a time</strong> without losing sight of the rest of the program</li>
+<li>This is particularly useful in <strong>long programs</strong>, where the developer needs to move between sections quickly</li>
+</ul>
+<h3 id="for-debugging">For debugging ★</h3>
+<h4 id="single-stepping">Single stepping ★</h4>
+<ul>
+<li>Single stepping is a debugging mode that allows developers to <strong>execute the program one line at a time</strong></li>
+<li>Developers can choose between different step options, such as step into, step over, and step out, to examine function calls and control flow</li>
+<li>Step mode offers a granular view of the program’s execution, making it easier to identify the exact location of potential bugs</li>
+</ul>
+<h4 id="breakpoints">Breakpoints ★</h4>
+<ul>
+<li>Breakpoints are <strong>markers</strong> that developers can set at specific lines of code to <strong>halt program execution</strong> during <strong>runtime</strong></li>
+<li>When the program reaches a breakpoint, it pauses, allowing developers to inspect the program’s state and variable values and identify the cause of potential bugs</li>
+<li>Breakpoints provide a controlled way to analyse code step-by-step</li>
+</ul>
+<h4 id="variable-watch-window">Variable watch window ★</h4>
 <ul>
 <li>The watch window is a debugging tool that allows developers to <strong>monitor the values of specific variables</strong> during <strong>runtime</strong></li>
 <li>Developers can add variables to the watch window and observe their values change as the program executes</li>
-<li>This tool is particularly valuable for understanding how variables evolve throughout the program&rsquo;s execution and diagnosing issues related to variable values</li>
+<li>This tool is particularly valuable for understanding how variables evolve throughout the program’s execution and diagnosing issues related to variable values</li>
 </ul>
-<h4 id="breakpoints">Breakpoints</h4>
+<h4 id="expressions-evaluate">Expressions (evaluate) ★</h4>
 <ul>
-<li>Breakpoints are <strong>markers</strong> that developers canset at specific lines of code to <strong>halt program execution</strong> during <strong>runtime</strong></li>
-<li>When the program reaches a breakpoint, it pauses, allowing developers to inspect the program&rsquo;s state and variable values and identify the cause of potential bugs</li>
-<li>Breakpoints provide a controlled way to analyse code step-by-step</li>
+<li>A debugger can <strong>evaluate an expression</strong> at the point where execution has paused, without changing the program</li>
+<li>The developer types in an expression (for example <code>count + 1</code> or <code>total / items</code>) and the IDE returns its <strong>current value</strong></li>
+<li>This is used to <strong>check a condition or a calculation</strong> while stepping through the code, instead of adding extra output statements and running the program again</li>
+</ul>
+<h4 id="report-window">Report window ★</h4>
+<ul>
 <li>The error message list <strong>displays a collection of errors</strong>, <strong>warnings</strong>, and <strong>messages</strong> generated during the compilation and execution of the program</li>
 <li>IDEs present detailed error descriptions and relevant code locations, enabling programmers to address and correct issues systematically</li>
+<li>The same window is used to present the <strong>output of the program</strong> as it runs</li>
 </ul>
-<h4 id="stepping-mode">Stepping mode</h4>
+<h4 id="call-stack-stack-contents">Call stack (stack contents)</h4>
 <ul>
-<li>Stepping mode is a debugging mode that allows developers to <strong>execute the program one line at a time</strong></li>
-<li>Developers can choose between different step options, such as step into, step over, and step out, to examine function calls and control flow</li>
-<li>Step mode offers a granular view of the program&rsquo;s execution, making it easier to identify the exact location of potential bugs</li>
+<li>The stack contents tool allows developers to <strong>inspect the contents of the program’s call stack</strong> during debugging</li>
+<li>It shows the order in which functions were called and the parameters and local variables of each function</li>
+<li>Understanding the call stack aids in understanding the program’s flow and diagnosing issues related to function calls</li>
 </ul>
-<h4 id="crash-dumppost-mortem-report">Crash dump/post-mortem report</h4>
+<h4 id="crash-dump-post-mortem-report">Crash dump / post-mortem report</h4>
 <ul>
 <li>When a program crashes, IDEs can <strong>generate</strong> a crash dump or post-mortem report</li>
-<li>This report <strong>captures the program&rsquo;s state</strong> and <strong>memory</strong> contents <strong>at the time of the crash</strong>, helping developers diagnose the root cause of the crash after the program has terminated unexpectedly</li>
-</ul>
-<h4 id="stack-contents">Stack contents</h4>
-<ul>
-<li>The stack contents tool allows developers to <strong>inspect the contents of the program&rsquo;s call stack</strong> during debugging</li>
-<li>It shows the order in which functions were called and the parameters and local variables of each function</li>
-<li>
-<p>Understanding the call stack, aids in understanding the program&rsquo;s flow and diagnosing issues related to function calls
+<li>This report <strong>captures the program’s state</strong> and <strong>memory</strong> contents <strong>at the time of the crash</strong>, helping developers diagnose the root cause of the crash after the program has terminated unexpectedly
 Identify two debugging tools that a typical IDE can provide.<strong>[2]</strong>
 <strong>Answer</strong>
-e.g.</p>
-</li>
-<li>
-<p>Breakpoints [1 mark]</p>
-</li>
+e.g.</li>
+<li>Breakpoints [1 mark]</li>
 <li>Single stepping [1 mark]</li>
 <li>Report windows [1 mark]</li>
 </ul>

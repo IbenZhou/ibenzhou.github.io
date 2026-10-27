@@ -225,12 +225,14 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="integrity-methods">Integrity Methods</h2>
+        
+<h2 id="integrity-methods">Integrity Methods</h2>
 <h2 id="validation-verification">Validation &amp; verification</h2>
 <h3 id="what-is-validation">What is validation?</h3>
 <ul>
-<li>Validation is an <strong>automated process</strong> where <strong>a computer checks</strong> if a user input is <strong>sensible</strong> and meets the program&rsquo;s requirements</li>
-<li>There are <strong>seven categories</strong> of validation which can be carried out on <strong>fields</strong> and <strong>data types,</strong> these are<ul>
+<li>Validation is an <strong>automated process</strong> where <strong>a computer checks</strong> if a user input is <strong>sensible</strong> and meets the program’s requirements</li>
+<li>There are <strong>seven categories</strong> of validation which can be carried out on <strong>fields</strong> and <strong>data types,</strong> these are
+<ul>
 <li><strong>Range check</strong></li>
 <li><strong>Format check</strong></li>
 <li><strong>Length check</strong></li>
@@ -247,7 +249,8 @@ body::before {
 <h3 id="what-is-verification">What is verification?</h3>
 <ul>
 <li>Verification is the <strong>act of checking data is accurate</strong> when being <strong>transferred</strong> or <strong>entered</strong> into a system</li>
-<li>Verification methods include:<ul>
+<li>Verification methods include:
+<ul>
 <li><strong>Parity check (transfer)</strong></li>
 <li><strong>Checksum (transfer)</strong></li>
 <li><strong>Double entry checking (entry)</strong></li>
@@ -298,14 +301,18 @@ body::before {
 <tr>
 <td><strong>Format check</strong></td>
 <td>Ensures data is in the correct format (e.g. patterns)</td>
-<td>Making sure an email address contains &lsquo;@&rsquo; and a domain like &lsquo;.com&rsquo;</td>
+<td>Making sure an email address contains ‘@’ and a domain like ‘.com’</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li><strong>Character check</strong> – Checks that only allowed characters (letters, digits, symbols) have been entered</li>
+</ul>
 <h3 id="what-is-a-check-digit">What is a check digit?</h3>
 <ul>
 <li>A check digit is the <strong>last digit</strong> included in a code or sequence, used to <strong>detect errors</strong> in <strong>numeric data entry</strong></li>
-<li>Examples of errors that a check digit can help to identify are:<ul>
+<li>Examples of errors that a check digit can help to identify are:
+<ul>
 <li><strong>Incorrect digits entered</strong></li>
 <li><strong>Omitted or extra digits</strong></li>
 <li><strong>Phonetic errors</strong></li>
@@ -313,7 +320,8 @@ body::before {
 </li>
 <li>Added to the <strong>end of a numerical sequence</strong> they ensure <strong>validity</strong> of the data</li>
 <li>Calculated using <strong>standardised algorithms</strong> to ensure widespread <strong>compatibility</strong></li>
-<li>Examples of where check digits can be used include:<ul>
+<li>Examples of where check digits can be used include:
+<ul>
 <li><strong>ISBN book numbers</strong></li>
 <li><strong>Barcodes</strong></li>
 </ul>
@@ -333,7 +341,7 @@ body::before {
 <li>Barcode scanners <strong>shine a laser</strong> on the black and white lines which <strong>reflect light</strong> into the scanner</li>
 <li>The scanner reads the <strong>distance between these lines as numbers</strong> and can identify the item</li>
 <li>Barcodes also use a <strong>set of digits</strong> to <strong>uniquely identify each item</strong></li>
-<li>The <strong>final digit</strong> on a barcode is usually the <strong>check digit</strong>, this can be used to <strong>validate</strong> and <strong>authenticate</strong> an item</li>
+<li>The <strong>final digit</strong> on a barcode is usually the <strong>check digit</strong>; this can be used to <strong>validate</strong> and <strong>authenticate</strong> an item</li>
 </ul>
 <h2 id="verification-methods">Verification methods</h2>
 <h3 id="what-is-a-parity-check">What is a parity check?</h3>
@@ -378,7 +386,8 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>If an <strong>even parity bit</strong> is used then <strong>all bits</strong> in the byte, including the parity bit, must <strong>add up to an even number</strong><ul>
+<li>If an <strong>even parity bit</strong> is used then <strong>all bits</strong> in the byte, including the parity bit, must <strong>add up to an even number</strong>
+<ul>
 <li>There are four 1’s in the byte</li>
 <li>This means the parity bit must be 0 otherwise the whole byte, including the parity bit, would add up to five which is an odd number</li>
 </ul>
@@ -415,7 +424,8 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>If an <strong>odd parity bit</strong> is used then <strong>all bits</strong> in the byte, including the parity bit, must <strong>add up to an odd number</strong><ul>
+<li>If an <strong>odd parity bit</strong> is used then <strong>all bits</strong> in the byte, including the parity bit, must <strong>add up to an odd number</strong>
+<ul>
 <li>There are four 1’s in the byte. This means the parity bit must be a 1 otherwise the whole byte, including the parity bit, would add up to four which is an even number</li>
 </ul>
 </li>

@@ -227,11 +227,13 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="processor-types">Processor Types</h2>
+        
+<h2 id="processor-types">Processor Types</h2>
 <ul>
 <li>A computer processor will have an <strong>instruction set</strong> that it can use to execute programs</li>
 <li>This will <strong>vary from one processor to the next</strong></li>
-<li>There are <strong>2 types of processors</strong>:<ul>
+<li>There are <strong>2 types of processors</strong>:
+<ul>
 <li>Reduced Instruction Set Computer (<strong>RISC</strong>)</li>
 <li>Complex Instruction Set Computer (<strong>CISC</strong>)</li>
 </ul>
@@ -326,7 +328,7 @@ body::before {
 </ul>
 <h2 id="interrupt-handling-on-risc-cisc">Interrupt handling on RISC &amp; CISC</h2>
 <ul>
-<li>The concept of interrupt handling is covered in [[4.1 Types of Software &amp; Interrupts#Interrupts|Chapter04-Interrupt]]</li>
+<li>The concept of interrupt handling is covered in Chapter04-Interrupt</li>
 </ul>
 <table>
 <thead>
@@ -496,7 +498,8 @@ Tick (3) one box in each row to show if the statement applies to RISC or CISC pr
 <h4 id="pipelining-in-risc-processors">Pipelining in RISC processors</h4>
 <ul>
 <li>RISC (Reduced Instruction Set Computer) processors are <strong>designed for pipelining efficiency</strong></li>
-<li>Key features that support pipelining:<ul>
+<li>Key features that support pipelining:
+<ul>
 <li><strong>Each instruction takes one clock cycle</strong> (or close to it)</li>
 <li><strong>Fixed-length instructions</strong>, making decoding easier</li>
 <li><strong>Limited instruction set</strong>, reducing complexity and stage duration</li>
@@ -507,7 +510,8 @@ Tick (3) one box in each row to show if the statement applies to RISC or CISC pr
 <li>RISC processors rely heavily on <strong>registers for operand storage</strong> rather than accessing RAM</li>
 <li>Intermediate values are stored in registers between stages</li>
 <li>Register usage reduces <strong>memory bottlenecks</strong>, allowing pipelining to run smoothly</li>
-<li><strong>Example:</strong><ul>
+<li><strong>Example:</strong>
+<ul>
 <li>Instruction A loads value into <strong>Register R1</strong></li>
 <li>Instruction B adds <strong>R1 + R2</strong> and stores result in <strong>R3</strong></li>
 <li>All of these can be done efficiently <strong>within the CPU</strong> using registers</li>
@@ -541,7 +545,7 @@ Tick (3) one box in each row to show if the statement applies to RISC or CISC pr
 </tr>
 </tbody>
 </table>
-<h4 id="quiz_1">Quiz</h4>
+<h4 id="quiz_2">Quiz</h4>
 <p>Describe the process of pipelining during the fetch-execute cycle in RISC processors.<strong>[4]</strong>
 <strong>Answer</strong></p>
 <ul>
@@ -558,7 +562,8 @@ Tick (3) one box in each row to show if the statement applies to RISC or CISC pr
 <li>A computer architecture is the design and structure of a computer system</li>
 <li>It describes how it <strong>fetches, processes, and stores data and instructions</strong></li>
 <li>It defines how components like the CPU, memory, and input/output devices <strong>work together to execute programs</strong></li>
-<li>Each architecture is categorised as:<ul>
+<li>Each architecture is categorised as:
+<ul>
 <li><strong>S</strong> ingle or <strong>M</strong> ultiple <strong>Instruction</strong> stream</li>
 <li><strong>S</strong> ingle or <strong>M</strong> ultiple <strong>Data</strong> stream</li>
 </ul>
@@ -694,7 +699,8 @@ Multiple Instruction, Multiple Data Diagram</p>
 <ul>
 <li>Massively parallel computers are systems made up of <strong>thousands of processors</strong> working <strong>simultaneously</strong> to solve a single large problem</li>
 <li>Each processor <strong>executes part of a program</strong>, and <strong>results are combined</strong> to produce the final output</li>
-<li>They are designed to tackle <strong>complex, large-scale tasks</strong> in fields like<ul>
+<li>They are designed to tackle <strong>complex, large-scale tasks</strong> in fields like
+<ul>
 <li><strong>Scientific research</strong></li>
 <li><strong>Weather simulation</strong></li>
 <li><strong>Cryptography</strong></li>
@@ -770,7 +776,8 @@ Multiple Instruction, Multiple Data Diagram</p>
 </table>
 <h3 id="link-to-computer-architectures">Link to computer architectures</h3>
 <ul>
-<li>Massively parallel systems often use:<ul>
+<li>Massively parallel systems often use:
+<ul>
 <li><strong>SIMD</strong>: Apply one instruction to many data points simultaneously</li>
 <li><strong>MIMD</strong>: Run different instructions on different data, fully independently</li>
 </ul>
@@ -793,12 +800,13 @@ Multiple Instruction, Multiple Data Diagram</p>
 <li>Apple commonly makes software that <strong>only runs on MacOS</strong> for performance reasons</li>
 <li>A Windows user could run a virtual machine of MacOS and install the software they need</li>
 <li>Most software <strong>needs to be updated</strong> to work on the latest versions of operating systems</li>
-<li>A user running the latest release of Windows may need to run a virtual machine of a <em>previous</em> release of Windows to use an application that hasn&rsquo;t received a <strong>forwards-compatibility update</strong></li>
+<li>A user running the latest release of Windows may need to run a virtual machine of a <em>previous</em> release of Windows to use an application that hasn’t received a <strong>forwards-compatibility update</strong></li>
 </ul>
 <h4 id="in-software-testing">In software testing</h4>
 <ul>
 <li>VMs are a way to create <strong>isolated test environments</strong>, that leave the host operating system unaffected</li>
-<li>Isolated environments allow a developer to:<ul>
+<li>Isolated environments allow a developer to:
+<ul>
 <li>Monitor the way their software <strong>affects system performance</strong></li>
 <li>Test on a <strong>clean-slate system</strong>, while no other applications are running</li>
 </ul>
@@ -811,7 +819,8 @@ Multiple Instruction, Multiple Data Diagram</p>
 <h4 id="consequences">Consequences</h4>
 <ul>
 <li>VMs <strong>share</strong> the same system <strong>hardware</strong> as the <strong>host</strong> OS</li>
-<li>Over-use of VMs can <strong>exhaust</strong> the host OS of the system of CPU, hard disk and memory<ul>
+<li>Over-use of VMs can <strong>exhaust</strong> the host OS of the system of CPU, hard disk and memory
+<ul>
 <li>VM software such as <strong>VirtualBox</strong> can set maximum limits on system resources</li>
 <li>A <strong>low-specification</strong> machine could be configured to allocate only 1GB of memory and 20% of CPU</li>
 <li>A <strong>high-specification</strong> machine could afford up to 8GB of memory and 50% of the CPU</li>

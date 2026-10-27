@@ -218,11 +218,11 @@ body::before {
 <li><a href="#ai-graphs">AI &amp; Graphs</a></li>
 <li><a href="#graphs-to-aid-ai">Graphs to aid AI</a></li>
 <li><a href="#dijkstras-shortest-path-algorithm">Dijkstra&rsquo;s Shortest Path Algorithm</a></li>
-<li><a href="#dijkstras-shortest-path-algorithm_1">Dijkstra’s shortest path algorithm</a></li>
+<li><a href="#dijkstras-shortest-path-algorithm_2">Dijkstra’s shortest path algorithm</a></li>
 <li><a href="#what-is-dijkstras-shortest-path-algorithm">What is Dijkstra’s shortest path algorithm?</a></li>
 <li><a href="#programming-dijkstras-shortest-path-algorithm">Programming Dijkstra&rsquo;s shortest path algorithm</a></li>
 <li><a href="#a-algorithm">A* Algorithm</a></li>
-<li><a href="#a-algorithm_1">A* algorithm</a></li>
+<li><a href="#a-algorithm_2">A* algorithm</a></li>
 <li><a href="#programming-a-algorithm">Programming A* algorithm</a></li>
 <li><a href="#machine-learning">Machine Learning</a></li>
 <li><a href="#neural-networks-deep-learning">Neural networks &amp; deep learning</a></li>
@@ -234,13 +234,15 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="ai-graphs">AI &amp; Graphs</h2>
+        
+<h2 id="ai-graphs">AI &amp; Graphs</h2>
 <h2 id="graphs-to-aid-ai">Graphs to aid AI</h2>
 <h3 id="what-is-a-graph">What is a graph?</h3>
 <ul>
 <li>A graph is a set of <strong>vertices/nodes</strong> connected by <strong>edges/arcs</strong></li>
 <li>In AI, graphs are used to <strong>model relationships, networks, and decision-making problems</strong></li>
-<li>They can represent things like:<ul>
+<li>They can represent things like:
+<ul>
 <li>Routes between cities (pathfinding)</li>
 <li>Connections in a neural network</li>
 <li>State transitions in decision trees or planning</li>
@@ -266,18 +268,20 @@ body::before {
 </tr>
 <tr>
 <td><strong>Weighted Graph</strong></td>
-<td>Represents <strong>costs or heuristics</strong>, commonly used in <strong>shortest path algorithms</strong> like Dijkstra&rsquo;s or A*</td>
+<td>Represents <strong>costs or heuristics</strong>, commonly used in <strong>shortest path algorithms</strong> like Dijkstra’s or A*</td>
 </tr>
 </tbody>
 </table>
 <h4 id="representation-of-graphs">Representation of graphs</h4>
 <ul>
-<li>Graphs can be represented using:<ul>
+<li>Graphs can be represented using:
+<ul>
 <li><strong>Adjacency Matrix</strong> – ideal for dense graphs and fast lookup</li>
 <li><strong>Adjacency List</strong> – more space, efficient for sparse graphs (often used in AI search)</li>
 </ul>
 </li>
-<li>Both can be <strong>used in AI to represent problem spaces</strong> such as:<ul>
+<li>Both can be <strong>used in AI to represent problem spaces</strong> such as:
+<ul>
 <li>Game boards</li>
 <li>Map-based navigation</li>
 <li>Resource allocation networks</li>
@@ -286,8 +290,7 @@ body::before {
 </ul>
 <h3 id="undirected-unweighted-graph">Undirected, unweighted graph</h3>
 <ul>
-<li>
-<p>An <strong>undirected, unweighted graph</strong> is a type of graph where:</p>
+<li>An <strong>undirected, unweighted graph</strong> is a type of graph where:
 <ul>
 <li><strong>Edges have no direction</strong>, connections go both ways</li>
 <li><strong>All edges are equal</strong>, there are no weights or costs</li>
@@ -295,17 +298,18 @@ body::before {
 <img alt="zTX0ndVB_graph" src="images/zTX0ndVB_graph.png" /></li>
 </ul>
 </li>
-<li>
-<p>In this example:</p>
+<li>In this example:
 <ul>
-<li>Each <strong>node</strong> is a town (e.g. Bolton, Dunkirk, Teesside)<ul>
+<li>Each <strong>node</strong> is a town (e.g. Bolton, Dunkirk, Teesside)
+<ul>
 <li>A <code>1</code> in the matrix shows a <strong>connection exists</strong> between two towns</li>
 <li>A <code>0</code> means no direct connection</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>Bolton and Frogmore have a <code>1</code> at their intersection → they are connected</li>
 <li>Dunkirk and Moulton have a <code>0</code> → no direct connection</li>
 </ul>
@@ -314,13 +318,15 @@ body::before {
 </ul>
 <h4 id="ai-relevance">AI relevance</h4>
 <ul>
-<li>Undirected, unweighted graphs are useful in AI for:<ul>
+<li>Undirected, unweighted graphs are useful in AI for:
+<ul>
 <li><strong>Exploring environments</strong>, e.g. mapping rooms in a building with equal-cost connections</li>
 <li><strong>Clustering</strong> in <strong>machine learning</strong>, where the presence of a connection implies similarity</li>
 <li><strong>Social network analysis</strong>, where mutual connections (friendships, links) are undirected</li>
 </ul>
 </li>
-<li>These graphs are often used in:<ul>
+<li>These graphs are often used in:
+<ul>
 <li><strong>Depth-first</strong> or <strong>breadth-first search</strong></li>
 <li><strong>Graph traversal algorithms</strong> to explore all reachable nodes</li>
 </ul>
@@ -330,12 +336,9 @@ body::before {
 <ul>
 <li>A directed graph (or digraph) is one where <strong>edges have a direction</strong></li>
 <li>This means connections go from one node <strong>to another</strong></li>
-<li>
-<p>Connections <strong>cannot be traversed in reverse</strong> unless another directed edge exists
-<img alt="Nw59wh-j_graph-directed-and-unweighted" src="images/Nw59wh-j_graph-directed-and-unweighted.png" /></p>
-</li>
-<li>
-<p>In this example:</p>
+<li>Connections <strong>cannot be traversed in reverse</strong> unless another directed edge exists
+<img alt="Nw59wh-j_graph-directed-and-unweighted" src="images/Nw59wh-j_graph-directed-and-unweighted.png" /></li>
+<li>In this example:
 <ul>
 <li>Each node represents a <strong>town</strong></li>
 <li>Arrows show the <strong>direction</strong> of travel</li>
@@ -343,14 +346,15 @@ body::before {
 <li>A <code>0</code> means there is <strong>no direct connection</strong></li>
 </ul>
 </li>
-<li>For instance:<ul>
+<li>For instance:
+<ul>
 <li><code>B → D</code> is allowed (matrix value = 1)</li>
 <li><code>D → C</code> is not allowed (matrix value = 0)</li>
 </ul>
 </li>
 <li>Because this matrix is <strong>not symmetric</strong>, it reflects the <strong>one-way nature</strong> of connections</li>
 </ul>
-<h4 id="ai-relevance_1">AI relevance</h4>
+<h4 id="ai-relevance_2">AI relevance</h4>
 <ul>
 <li>Directed, unweighted graphs are essential in AI for:</li>
 </ul>
@@ -364,7 +368,7 @@ body::before {
 <tbody>
 <tr>
 <td><strong>Search algorithms</strong></td>
-<td>Used in <strong>A</strong><em>, </em><em>BFS</em><em>, </em><em>DFS</em>* where state transitions are directional</td>
+<td>Used in <strong>A</strong>*, <strong>BFS</strong>, <strong>DFS</strong> where state transitions are directional</td>
 </tr>
 <tr>
 <td><strong>Expert systems / rule engines</strong></td>
@@ -382,9 +386,11 @@ body::before {
 </table>
 <h3 id="undirected-weighted-graph">Undirected, weighted graph</h3>
 <ul>
-<li>An <strong>undirected, weighted graph</strong> is a graph where:<ul>
+<li>An <strong>undirected, weighted graph</strong> is a graph where:
+<ul>
 <li><strong>Edges go both ways</strong> (no direction)</li>
-<li><strong>Each edge has a weight</strong>, which can represent:<ul>
+<li><strong>Each edge has a weight</strong>, which can represent:
+<ul>
 <li>Cost</li>
 <li>Distance</li>
 <li>Time</li>
@@ -393,22 +399,19 @@ body::before {
 </li>
 </ul>
 </li>
-<li>
-<p>If no connection exists between two nodes, the matrix contains <strong>∞ (infinity)</strong>
-<img alt="P4iS91uk_graph-weighted" src="images/P4iS91uk_graph-weighted.png" /></p>
-</li>
-<li>
-<p>Nodes represent <strong>towns</strong></p>
-</li>
+<li>If no connection exists between two nodes, the matrix contains <strong>∞ (infinity)</strong>
+<img alt="P4iS91uk_graph-weighted" src="images/P4iS91uk_graph-weighted.png" /></li>
+<li>Nodes represent <strong>towns</strong></li>
 <li>Edges represent <strong>roads</strong>, and <strong>weights</strong> represent distances or costs</li>
-<li>In the matrix:<ul>
+<li>In the matrix:
+<ul>
 <li><code>matrix[B][D] = 15</code> → Bolton to Dunkirk is 15 units</li>
 <li><code>matrix[B][C] = ∞</code> → Bolton and Cardiff are not directly connected</li>
 </ul>
 </li>
 <li>The matrix is <strong>symmetric</strong>, confirming this is an <strong>undirected</strong> graph</li>
 </ul>
-<h4 id="ai-relevance_2">AI relevance</h4>
+<h4 id="ai-relevance_3">AI relevance</h4>
 <ul>
 <li>Undirected, weighted graphs are widely used in AI when:</li>
 </ul>
@@ -421,7 +424,7 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td><strong>Pathfinding (e.g. A*, Dijkstra)</strong></td>
+<td><em><em>Pathfinding (e.g. A</em>, Dijkstra)</em>*</td>
 <td>Finding the <strong>lowest cost path</strong> between nodes</td>
 </tr>
 <tr>
@@ -443,9 +446,11 @@ body::before {
 </ul>
 <h3 id="directed-weighted-graph">Directed, weighted graph</h3>
 <ul>
-<li>A <strong>directed, weighted graph</strong> is a graph where:<ul>
+<li>A <strong>directed, weighted graph</strong> is a graph where:
+<ul>
 <li><strong>Edges have a direction</strong> (e.g. <code>A → B</code> but not <code>B → A</code>)</li>
-<li>Each edge has a <strong>weight</strong>, such as:<ul>
+<li>Each edge has a <strong>weight</strong>, such as:
+<ul>
 <li>Distance</li>
 <li>Cost</li>
 <li>Time</li>
@@ -454,16 +459,13 @@ body::before {
 </li>
 </ul>
 </li>
-<li>
-<p>If there is <strong>no edge</strong>, the value is <strong>∞ (infinity)</strong>
-<img alt="yc9a~wrS_graph-directed-weighted" src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=3840/https://cdn.savemyexams.com/uploads/2024/01/yc9a~wrS_graph-directed-weighted.png" /></p>
-</li>
-<li>
-<p>Nodes = Towns</p>
-</li>
+<li>If there is <strong>no edge</strong>, the value is <strong>∞ (infinity)</strong>
+<img alt="yc9a~wrS_graph-directed-weighted" src="images/yc9a~wrS_graph-directed-weighted.png" /></li>
+<li>Nodes = Towns</li>
 <li>Edges = One-way roads</li>
 <li>Weights = Travel cost or distance</li>
-<li>The adjacency matrix:<ul>
+<li>The adjacency matrix:
+<ul>
 <li><code>B → D = 15</code> → there is a road from Bolton to Dunkirk costing 15 units</li>
 <li><code>C → H = 17</code> → Cardiff to Hartlepool has a weight of 17</li>
 <li><code>H → T = 31</code> but <code>T → H = ∞</code> → you can get from Hartlepool to Teesside, but not the other way</li>
@@ -471,7 +473,7 @@ body::before {
 </li>
 <li>This matrix is <strong>not symmetric</strong>, confirming the graph is <strong>directed</strong></li>
 </ul>
-<h4 id="ai-relevance_3">AI relevance</h4>
+<h4 id="ai-relevance_4">AI relevance</h4>
 <ul>
 <li>Directed, weighted graphs are critical in AI for:</li>
 </ul>
@@ -505,12 +507,13 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h2 id="dijkstras-shortest-path-algorithm">Dijkstra&rsquo;s Shortest Path Algorithm</h2>
-<h2 id="dijkstras-shortest-path-algorithm_1">Dijkstra’s shortest path algorithm</h2>
+<h2 id="dijkstras-shortest-path-algorithm">Dijkstra’s Shortest Path Algorithm</h2>
+<h2 id="dijkstras-shortest-path-algorithm_2">Dijkstra’s shortest path algorithm</h2>
 <ul>
 <li>In Computer Science, an <strong>optimisation problem</strong> involves finding the <strong>most efficient solution</strong> to a given problem</li>
 <li>This could mean <strong>minimising</strong> cost, time, or resource usage, or <strong>maximising</strong> output, efficiency, or value</li>
-<li>Examples of optimisation problems include:<ul>
+<li>Examples of optimisation problems include:
+<ul>
 <li><strong>Finding the shortest route</strong> between two locations (e.g. Google Maps)</li>
 <li><strong>Minimising resource usage</strong> in manufacturing or video games</li>
 <li><strong>Creating efficient timetables</strong> (e.g. for schools or offices)</li>
@@ -528,7 +531,8 @@ body::before {
 <h4 id="how-it-works">How It works:</h4>
 <ul>
 <li>The graph is made up of <strong>nodes (vertices)</strong> and <strong>edges (arcs)</strong></li>
-<li>Each edge has a <strong>weight</strong>, which can represent:<ul>
+<li>Each edge has a <strong>weight</strong>, which can represent:
+<ul>
 <li>Time</li>
 <li>Distance</li>
 <li>Cost</li>
@@ -536,74 +540,48 @@ body::before {
 </li>
 <li>The algorithm <strong>explores all possible routes</strong>, keeping track of the shortest known distance to each node</li>
 <li>It guarantees the <strong>optimal path</strong> from the start node to every other node in the graph</li>
-<li>For revision on graphs, see [[#AI &amp; Graphs]] </li>
+<li>For revision on graphs, see #AI &amp; Graphs</li>
 <li>An illustrated example of Dijkstra’s algorithm is shown below:</li>
 </ul>
-<h4 id="performing-dijkstras-shortest-path-algorithm">Performing Dijkstra&rsquo;s shortest path algorithm</h4>
+<h4 id="performing-dijkstras-shortest-path-algorithm">Performing Dijkstra’s shortest path algorithm</h4>
 <p><img alt="dijkstra-s-algorithm-1-revision-notes-computer-science" src="images/dijkstra-s-algorithm-1-revision-notes-computer-science.png" /></p>
 <ul>
-<li>
-<p>Set A path to 0 and all other path weights to infinity
-<img alt="dijkstra-s-algorithm-2-revision-notes-computer-science" src="images/dijkstra-s-algorithm-2-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Visit A. Update all neighbouring nodes path weights to the distance from A + A&rsquo;s path weight (0)
-<img alt="dijkstra-s-algorithm-3-revision-notes-computer-science" src="images/dijkstra-s-algorithm-3-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Choose the next node to visit that has the lowest path weight (D)</p>
-</li>
+<li>Set A path to 0 and all other path weights to infinity
+<img alt="dijkstra-s-algorithm-2-revision-notes-computer-science" src="images/dijkstra-s-algorithm-2-revision-notes-computer-science.png" /></li>
+<li>Visit A. Update all neighbouring nodes path weights to the distance from A + A’s path weight (0)
+<img alt="dijkstra-s-algorithm-3-revision-notes-computer-science" src="images/dijkstra-s-algorithm-3-revision-notes-computer-science.png" /></li>
+<li>Choose the next node to visit that has the lowest path weight (D)</li>
 <li>Visit D</li>
 <li>Update all neighbouring, non-visited nodes with a new path weight if the old path weight is bigger than the new path weight</li>
-<li>
-<p>C is updated from 5 to 3 as the new path is shorted (A &gt; D &gt; C)
-<img alt="dijkstra-s-algorithm-4-revision-notes-computer-science" src="images/dijkstra-s-algorithm-4-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Choose the next node to visit that has the lowest path weight (E)</p>
-</li>
+<li>C is updated from 5 to 3 as the new path is shorted (A &gt; D &gt; C)
+<img alt="dijkstra-s-algorithm-4-revision-notes-computer-science" src="images/dijkstra-s-algorithm-4-revision-notes-computer-science.png" /></li>
+<li>Choose the next node to visit that has the lowest path weight (E)</li>
 <li>Visit E</li>
 <li>Update all neighbouring, non-visited nodes from E with a new path weight</li>
-<li>
-<p>F is updated from 7 to 5 as the new path is shorter (A &gt; D &gt; E &gt; F)
-<img alt="dijkstra-s-algorithm-5-revision-notes-computer-science" src="images/dijkstra-s-algorithm-5-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Choose the next node to visit, alphabetically (B)</p>
-</li>
+<li>F is updated from 7 to 5 as the new path is shorter (A &gt; D &gt; E &gt; F)
+<img alt="dijkstra-s-algorithm-5-revision-notes-computer-science" src="images/dijkstra-s-algorithm-5-revision-notes-computer-science.png" /></li>
+<li>Choose the next node to visit, alphabetically (B)</li>
 <li>Visit B</li>
 <li>Update all neighbouring non-visited nodes from B with a new weight if the path is less than the current path</li>
-<li>
-<p>C is not updated as A &gt; B &gt; C is 4
-<img alt="dijkstra-s-algorithm-6-revision-notes-computer-science" src="images/dijkstra-s-algorithm-6-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Choose the next lowest node and visit (C)</p>
-</li>
-<li>Update C&rsquo;s neighbours if the new path is shorter than the old path</li>
-<li>
-<p>A &gt; D &gt; C &gt; G is 8, so G is not updated
-<img alt="dijkstra-s-algorithm-7-revision-notes-computer-science" src="images/dijkstra-s-algorithm-7-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Choose the next lowest node and visit (F)</p>
-</li>
-<li>Update F&rsquo;s neighbours if the new path is shorter than the old path</li>
-<li>
-<p>F has no non-visited neighbours so no updates are made
-<img alt="dijkstra-s-algorithm-8-revision-notes-computer-science" src="images/dijkstra-s-algorithm-8-revision-notes-computer-science.png" /></p>
-</li>
-<li>
-<p>Choose the next lowest node and visit (G)</p>
-</li>
+<li>C is not updated as A &gt; B &gt; C is 4
+<img alt="dijkstra-s-algorithm-6-revision-notes-computer-science" src="images/dijkstra-s-algorithm-6-revision-notes-computer-science.png" /></li>
+<li>Choose the next lowest node and visit ©</li>
+<li>Update C’s neighbours if the new path is shorter than the old path</li>
+<li>A &gt; D &gt; C &gt; G is 8, so G is not updated
+<img alt="dijkstra-s-algorithm-7-revision-notes-computer-science" src="images/dijkstra-s-algorithm-7-revision-notes-computer-science.png" /></li>
+<li>Choose the next lowest node and visit (F)</li>
+<li>Update F’s neighbours if the new path is shorter than the old path</li>
+<li>F has no non-visited neighbours so no updates are made
+<img alt="dijkstra-s-algorithm-8-revision-notes-computer-science" src="images/dijkstra-s-algorithm-8-revision-notes-computer-science.png" /></li>
+<li>Choose the next lowest node and visit (G)</li>
 <li>G has no non-visited neighbours so no updates are made</li>
 <li>All nodes have been visited</li>
 <li>Back tracking from G gives the following order and total distance A-D-E-G (5)
 <img alt="dijkstras-algorithm-9" src="images/dijkstras-algorithm-9.png" />
-<strong><em>Figure 1: Performing Dijkstra’s Shortest path Algorithm</em></strong></li>
+<em><strong>Figure 1: Performing Dijkstra’s Shortest path Algorithm</strong></em></li>
 </ul>
-<h2 id="programming-dijkstras-shortest-path-algorithm">Programming Dijkstra&rsquo;s shortest path algorithm</h2>
-<h3 id="how-do-you-write-dijkstras-shortest-path-algorithm">How do you write Dijkstra&rsquo;s shortest path algorithm?</h3>
+<h2 id="programming-dijkstras-shortest-path-algorithm">Programming Dijkstra’s shortest path algorithm</h2>
+<h3 id="how-do-you-write-dijkstras-shortest-path-algorithm">How do you write Dijkstra’s shortest path algorithm?</h3>
 <h4 id="pseudocode">Pseudocode</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">Dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span>
 <span class="w">    </span><span class="c1">// Initialise distances</span>
@@ -655,7 +633,6 @@ body::before {
 <span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">path</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <p><strong>Assumptions:</strong></p>
 <ul>
 <li><code>graph[node]</code> returns a list of neighbour nodes</li>
@@ -697,7 +674,6 @@ body::before {
     <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">path</span>
 </code></pre></div>
-
 <p><strong>Example usage:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="n">Graph</span><span class="w"> </span><span class="n">format</span><span class="p">:</span><span class="w"> </span><span class="n">adjacency</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="kd">with</span><span class="w"> </span><span class="n">weighted</span><span class="w"> </span><span class="n">edges</span>
 <span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
@@ -709,19 +685,19 @@ body::before {
 <span class="p">}</span>
 <span class="n">print</span><span class="p">(</span><span class="n">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;E&#39;</span><span class="p">))</span>
 </code></pre></div>
-
 <p><strong>Output:</strong></p>
 <ul>
 <li>A list of nodes representing the <strong>shortest path</strong> from <code>'A'</code> to <code>'E'</code></li>
 </ul>
 <h2 id="a-algorithm">A* Algorithm</h2>
-<h2 id="a-algorithm_1">A* algorithm</h2>
+<h2 id="a-algorithm_2">A* algorithm</h2>
 <h3 id="what-is-the-a-algorithm">What is the A* algorithm?</h3>
 <ul>
 <li>The <strong>A*</strong> (A-star) algorithm is a <strong>pathfinding algorithm</strong> that builds upon <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/18-artificial-intelligence-ai-/artificial-intelligence-ai/dijkstras-shortest-path-algorithm/">Dijkstra’s algorithm</a></li>
 <li>It introduces a <strong>heuristic function</strong> to improve efficiency</li>
 <li>It is used to find the shortest path from a starting node to a goal node in a graph</li>
-<li>While Dijkstra’s algorithm considers only the <strong>actual cost</strong> from the start node:<ul>
+<li>While Dijkstra’s algorithm considers only the <strong>actual cost</strong> from the start node:
+<ul>
 <li>A* enhances this by estimating the <strong>remaining distance</strong> to the goal</li>
 <li>This makes it <strong>more goal-oriented</strong> and often more efficient</li>
 </ul>
@@ -731,7 +707,8 @@ body::before {
 <ul>
 <li>To avoid inefficient detours, A* introduces a <strong>heuristic function</strong>, called <strong>h(x)</strong></li>
 <li>It estimates the <strong>straight-line distance</strong> (Euclidean distance) from the current node to the goal</li>
-<li>A* combines both cost and estimate using the formula:<ul>
+<li>A* combines both cost and estimate using the formula:
+<ul>
 <li><strong>f(x) = g(x) + h(x)</strong></li>
 <li><strong>g(x)</strong> = the actual cost from the start node to the current node</li>
 <li><strong>h(x)</strong> = the heuristic estimate to the goal node</li>
@@ -781,7 +758,7 @@ body::before {
 <td>Yes, estimates distance to goal</td>
 </tr>
 <tr>
-<td>Best for&hellip;</td>
+<td>Best for…</td>
 <td>Full shortest path map</td>
 <td>Fastest route to a specific destination</td>
 </tr>
@@ -789,7 +766,7 @@ body::before {
 </table>
 <h2 id="programming-a-algorithm">Programming A* algorithm</h2>
 <h3 id="how-do-you-write-an-a-algorithm">How do you write an A* algorithm?</h3>
-<h4 id="pseudocode_1">Pseudocode</h4>
+<h4 id="pseudocode_2">Pseudocode</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">AStarSearch</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span>
 <span class="w">    </span><span class="c1">// Initialise distances and f-scores</span>
 <span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span>
@@ -824,14 +801,13 @@ body::before {
 <span class="w">                </span><span class="n">IF</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">openSet</span><span class="w"> </span><span class="n">THEN</span>
 <span class="w">                    </span><span class="n">ADD</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">TO</span>
 </code></pre></div>
-
 <ul>
-<li><code>graph[min]</code> assumes you&rsquo;re storing adjacency lists</li>
+<li><code>graph[min]</code> assumes you’re storing adjacency lists</li>
 <li><code>h[node]</code> is your heuristic table</li>
 <li><code>g[]</code> and <code>f[]</code> are maps (dictionaries) for real cost and estimated total cost</li>
 <li><code>cost(min, neighbour)</code> should be defined or assumed available</li>
 </ul>
-<h4 id="python_1">Python</h4>
+<h4 id="python_2">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">a_star_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="n">open_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
     <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">}</span>
@@ -863,7 +839,6 @@ body::before {
     <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">path</span>
 </code></pre></div>
-
 <p><strong>Example usage:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="sc">&#39;A&#39;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="p">(</span><span class="sc">&#39;B&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="sc">&#39;C&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="o">]</span><span class="p">,</span>
@@ -881,7 +856,6 @@ body::before {
 <span class="p">}</span>
 <span class="n">print</span><span class="p">(</span><span class="n">a_star_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;E&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">))</span>
 </code></pre></div>
-
 <p><strong>Output:</strong></p>
 <ul>
 <li>A possible shortest path from <code>'A'</code> to <code>'E'</code>, guided by the heuristic values</li>
@@ -890,12 +864,14 @@ body::before {
 <h2 id="neural-networks-deep-learning">Neural networks &amp; deep learning</h2>
 <h3 id="what-is-machine-learning-ml">What is machine learning (ML)?</h3>
 <ul>
-<li>Machine learning is <strong>a type of artificial intelligence (AI)</strong> that allows computers to:<ul>
+<li>Machine learning is <strong>a type of artificial intelligence (AI)</strong> that allows computers to:
+<ul>
 <li><strong>Learn patterns from data</strong></li>
 <li>Improve performance <strong>without being explicitly programmed</strong></li>
 </ul>
 </li>
-<li>Instead of following fixed rules, machine learning systems:<ul>
+<li>Instead of following fixed rules, machine learning systems:
+<ul>
 <li><strong>Analyse</strong> large amounts of data</li>
 <li><strong>Identify</strong> patterns or trends</li>
 <li><strong>Make</strong> predictions or decisions based on that data</li>
@@ -905,7 +881,8 @@ body::before {
 </ul>
 <h3 id="what-are-artificial-neural-networks-anns">What are artificial neural networks (ANNs)?</h3>
 <ul>
-<li>Artificial neural networks (ANNs) are <strong>algorithms</strong> inspired by the structure of the <strong>human brain</strong><ul>
+<li>Artificial neural networks (ANNs) are <strong>algorithms</strong> inspired by the structure of the <strong>human brain</strong>
+<ul>
 <li>A neural network is made up of <strong>layers of nodes (neurons)</strong> connected by <strong>weighted links</strong></li>
 <li>Each neuron receives input, processes it, and passes the result to the next layer</li>
 <li>The network <strong>adjusts the weights</strong> based on errors in output (using algorithms like backpropagation)</li>
@@ -914,7 +891,8 @@ body::before {
 </ul>
 <h4 id="how-anns-help-machine-learning">How ANNs help machine learning</h4>
 <ul>
-<li>ANNs are powerful because they:<ul>
+<li>ANNs are powerful because they:
+<ul>
 <li>Automatically <strong>learn from experience</strong>, even with complex or unstructured data</li>
 <li>Improve their accuracy with <strong>more data and training</strong></li>
 <li>Can solve problems that are <strong>too complex for rule-based programming</strong></li>
@@ -924,7 +902,8 @@ body::before {
 </ul>
 <h3 id="deep-learning-dl">Deep learning (DL)</h3>
 <ul>
-<li>Deep learning is a <strong>subfield of machine learning</strong> that uses <strong>deep (multi-layered) neural networks</strong><ul>
+<li>Deep learning is a <strong>subfield of machine learning</strong> that uses <strong>deep (multi-layered) neural networks</strong>
+<ul>
 <li>The more layers a network has, the more complex patterns it can learn</li>
 <li>Especially effective at learning <strong>abstract features</strong> in images, text, audio, and video</li>
 </ul>
@@ -933,7 +912,8 @@ body::before {
 </ul>
 <h3 id="reinforcement-learning-rl">Reinforcement learning (RL)</h3>
 <ul>
-<li>Reinforcement learning is another type of machine learning where an <strong>agent learns by interacting with an environment</strong><ul>
+<li>Reinforcement learning is another type of machine learning where an <strong>agent learns by interacting with an environment</strong>
+<ul>
 <li>It <strong>receives rewards</strong> for good actions and <strong>penalties</strong> for poor actions</li>
 <li>Over time, the agent learns an <strong>optimal strategy</strong> (called a <em>policy</em>) to maximise rewards</li>
 </ul>
@@ -968,7 +948,7 @@ body::before {
 <tr>
 <td><strong>Reinforcement Learning</strong></td>
 <td>Learns by trial and error with feedback</td>
-<td>Useful where there&rsquo;s no labelled data, only success/failure</td>
+<td>Useful where there’s no labelled data, only success/failure</td>
 </tr>
 </tbody>
 </table>
@@ -980,12 +960,14 @@ body::before {
 <h3 id="supervised-learning">Supervised learning</h3>
 <ul>
 <li>Supervised learning is when the algorithm is trained on a <strong>labelled dataset</strong></li>
-<li>Meaning the <strong>input data</strong> has <strong>known outputs</strong> (answers)<ul>
+<li>Meaning the <strong>input data</strong> has <strong>known outputs</strong> (answers)
+<ul>
 <li>The goal is to learn a function that maps inputs to the correct output</li>
 <li>Once trained, the model can make predictions on <strong>unseen data</strong></li>
 </ul>
 </li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>Input: Email text</li>
 <li>Output: Spam or Not Spam</li>
 <li>The model learns from thousands of pre-labelled emails</li>
@@ -999,18 +981,20 @@ body::before {
 </ul>
 <h3 id="unsupervised-learning">Unsupervised learning</h3>
 <ul>
-<li>Unsupervised learning is when the algorithm is given <strong>unlabelled data</strong>, and it must <strong>find patterns</strong> or <strong>groupings</strong> on its own<ul>
+<li>Unsupervised learning is when the algorithm is given <strong>unlabelled data</strong>, and it must <strong>find patterns</strong> or <strong>groupings</strong> on its own
+<ul>
 <li>There are no correct answers, the system explores the data structure</li>
 <li>It identifies <strong>clusters, trends, or anomalies</strong> without any guidance</li>
 </ul>
 </li>
-<li>Example:<ul>
+<li>Example:
+<ul>
 <li>Input: Customer purchase data</li>
 <li>Output: Groups of customers with similar buying habits</li>
 </ul>
 </li>
 </ul>
-<h4 id="used-for_1">Used for:</h4>
+<h4 id="used-for_2">Used for:</h4>
 <ul>
 <li><strong>Clustering</strong> (e.g. customer segmentation, social network analysis)</li>
 <li><strong>Dimensionality reduction</strong> (e.g. simplifying complex data)</li>
@@ -1019,21 +1003,33 @@ body::before {
 <h3 id="what-is-back-propagation">What is back propagation?</h3>
 <ul>
 <li>Back propagation is a training method used in <strong>artificial neural networks</strong> to <strong>improve accuracy</strong> by adjusting the weights of connections</li>
-<li>It is a key part of the <strong>supervised learning</strong> process and works as follows:
-1. <strong>Forward pass</strong>:<ol>
+<li>It is a key part of the <strong>supervised learning</strong> process and works as follows:</li>
+</ul>
+<ol>
+<li><strong>Forward pass</strong>:
+<ol>
 <li>Input data passes through the network layer by layer</li>
 <li>The network produces an <strong>output</strong> (a prediction)</li>
-<li><strong>Error calculation</strong></li>
+</ol>
+</li>
+<li><strong>Error calculation</strong>
+<ol>
 <li>The output is compared to the <strong>actual target</strong> value</li>
 <li>The <strong>difference</strong> is called the <strong>error</strong></li>
-<li><strong>Backward pass</strong></li>
+</ol>
+</li>
+<li><strong>Backward pass</strong>
+<ol>
 <li>The error is <strong>propagated backwards</strong> through the network</li>
 <li>Each layer calculates its <strong>contribution to the error</strong></li>
-<li><strong>Weight adjustment</strong></li>
+</ol>
+</li>
+<li><strong>Weight adjustment</strong>
+<ol>
 <li>The weights of the connections are updated using an algorithm (e.g. <strong>gradient descent</strong>) to reduce future errors</li>
 </ol>
 </li>
-</ul>
+</ol>
 <h4 id="why-use-back-propagation">Why use back propagation?</h4>
 <ul>
 <li>Helps the neural network <strong>learn from mistakes</strong></li>
@@ -1071,7 +1067,8 @@ body::before {
 </table>
 <h4 id="example-linear-regression">Example: linear regression</h4>
 <ul>
-<li>Predicting house prices based on square footage:<ul>
+<li>Predicting house prices based on square footage:
+<ul>
 <li>Input: size of house</li>
 <li>Output: estimated price</li>
 <li>The model learns a line that best fits the data points</li>
@@ -1081,7 +1078,8 @@ body::before {
 <h4 id="why-use-regression-methods">Why use regression methods?</h4>
 <ul>
 <li>Useful for <strong>forecasting</strong>, <strong>trend analysis</strong>, and <strong>risk prediction</strong></li>
-<li>Interpretable, often used in real-world problems like:<ul>
+<li>Interpretable, often used in real-world problems like:
+<ul>
 <li>Business analytics</li>
 <li>Finance</li>
 <li>Healthcare</li>
@@ -1096,13 +1094,9 @@ Describe supervised learning and unsupervised learning.<strong>[4]</strong>
 <ul>
 <li>Supervised learning allows data to be collected, or a data output produced, from the previous experience [1 mark]</li>
 <li>In supervised learning, known input and associated outputs are given <strong>OR</strong> uses sample data with known outputs (in training) <strong>OR</strong> uses labelled input data [1 mark]</li>
-<li>
-<p>Able to predict future outcomes based on past data [1 mark]
-<strong>Unsupervised learning (Max 3 of 4)</strong></p>
-</li>
-<li>
-<p>Unsupervised machine learning helps all kinds of unknown patterns in data to be found [1 mark]</p>
-</li>
+<li>Able to predict future outcomes based on past data [1 mark]
+<strong>Unsupervised learning (Max 3 of 4)</strong></li>
+<li>Unsupervised machine learning helps all kinds of unknown patterns in data to be found [1 mark]</li>
 <li>Unsupervised learning only requires input data to be given [1 mark]</li>
 <li>Uses any data <strong>OR</strong> not trained on the right output <strong>OR</strong> uses unlabelled input data [1 mark]</li>
 </ul>

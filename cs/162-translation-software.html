@@ -228,7 +228,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="translation-process">Translation Process</h2>
+        
+<h2 id="translation-process">Translation Process</h2>
 <h2 id="interpreter-execution">Interpreter execution</h2>
 <h3 id="what-is-an-interpreter">What is an interpreter?</h3>
 <ul>
@@ -239,7 +240,7 @@ body::before {
 <ul>
 <li>The source code is <strong>read, analysed, and executed</strong> <strong>one line at a time</strong></li>
 <li>No complete machine code file is produced, only <strong>immediate execution</strong> happens</li>
-<li>If there is an error in a line<strong>, execution stops</strong>, and the <strong>error is reported immediately</strong></li>
+<li>If there is an error in a line**, execution stops**, and the <strong>error is reported immediately</strong></li>
 </ul>
 <table>
 <thead>
@@ -281,7 +282,8 @@ body::before {
 <ul>
 <li>Compilation is a <strong>process</strong> that <strong>translates a program</strong> written in a high-level programming language into machine code</li>
 <li><strong>Only machine code</strong> can be executed by a computer</li>
-<li>There are four stages involved in this process:<ul>
+<li>There are four stages involved in this process:
+<ul>
 <li><strong>Lexical Analysis</strong></li>
 <li><strong>Syntax Analysis</strong></li>
 <li><strong>Code Generation</strong></li>
@@ -292,22 +294,27 @@ body::before {
 <h3 id="lexical-analysis">Lexical analysis</h3>
 <ul>
 <li>In A Level Computer Science, lexical analysis means studying the <strong>words or vocabulary</strong> of a language</li>
-<li>This stage involves <strong>identifying lexical &lsquo;tokens&rsquo;</strong> in the code</li>
-<li>Tokens represent small meaningful units in the programming language, such as:<ul>
-<li><strong>Keywords</strong><ul>
+<li>This stage involves <strong>identifying lexical ‘tokens’</strong> in the code</li>
+<li>Tokens represent small meaningful units in the programming language, such as:
+<ul>
+<li><strong>Keywords</strong>
+<ul>
 <li>var, const, function, for, while, if</li>
 </ul>
 </li>
-<li><strong>Identifiers</strong><ul>
+<li><strong>Identifiers</strong>
+<ul>
 <li>Variable names, function names</li>
 </ul>
 </li>
-<li><strong>Operators</strong><ul>
-<li>&rsquo;+&rsquo;, &lsquo;++&rsquo;, &lsquo;-&lsquo;, &lsquo;*&lsquo;</li>
+<li><strong>Operators</strong>
+<ul>
+<li>‘+’, ‘++’, ‘-’, ‘*’</li>
 </ul>
 </li>
-<li><strong>Separators</strong><ul>
-<li>&rsquo;,&rsquo; &lsquo;;&rsquo;, &lsquo;{&lsquo;, &lsquo;}&rsquo;, &lsquo;(&lsquo;, &lsquo;)&rsquo;</li>
+<li><strong>Separators</strong>
+<ul>
+<li>‘,’ ‘;’, ‘{’, ‘}’, ‘(’, ‘)’</li>
 </ul>
 </li>
 </ul>
@@ -316,13 +323,12 @@ body::before {
 <li>For example, if the following code is being compiled:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="nx">x</span><span class="o">&gt;</span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">x</span><span class="o">*</span><span class="nx">y</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">x</span><span class="o">+</span><span class="nx">y</span><span class="p">;</span>
+<span class="w">	</span><span class="k">if</span><span class="p">(</span><span class="nx">x</span><span class="o">&gt;</span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="nx">x</span><span class="o">*</span><span class="nx">y</span><span class="p">;</span>
+<span class="w">	</span><span class="p">}</span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="nx">x</span><span class="o">+</span><span class="nx">y</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The result of lexical analysis is a <strong>token table</strong></li>
 </ul>
@@ -420,7 +426,7 @@ body::before {
 <h3 id="syntax-analysis">Syntax analysis</h3>
 <ul>
 <li>Now that tokens have been identified, syntax analysis makes sure they all <strong>adhere to the syntax rules</strong> of the programming language</li>
-<li>A symbol, e.g. &lsquo;$&rsquo; could be a valid token but not a valid character according to particular programming languages</li>
+<li>A symbol, e.g. ‘$’ could be a valid token but not a valid character according to particular programming languages</li>
 <li>The dollar symbol would be flagged as breaking the syntax rules</li>
 <li>Other syntax errors programmers commonly make include <strong>mismatched parentheses</strong> or <strong>missing semicolons</strong></li>
 <li>If the code passes the syntax analysis, the compiler can create an <strong>Abstract Syntax Tree</strong> (AST)</li>
@@ -430,8 +436,8 @@ body::before {
 <h3 id="example-abstract-syntax-tree">Example abstract syntax tree</h3>
 <ul>
 <li>For the same code as above, the following abstract syntax tree can be created
-<img alt="Abstract syntax tree|800" src="images/abstract-syntax-tree-2.png" />
-<strong><em>Abstract syntax tree</em></strong></li>
+<img alt="Abstract syntax tree800" src="images/abstract-syntax-tree-2.png" />
+<em><strong>Abstract syntax tree</strong></em></li>
 </ul>
 <h3 id="code-generation">Code generation</h3>
 <ul>
@@ -442,13 +448,15 @@ body::before {
 <li>This step <strong>modifies the code</strong> to make it <strong>more efficient</strong> without changing its functionality</li>
 <li>This is important to attempt because it <strong>reduces the memory required</strong> to run the code, which leads to faster execution</li>
 <li>A common optimisation action is <strong>removing duplicate code</strong></li>
-<li>If an &lsquo;add&rsquo; function is written twice in the source code, a sophisticated compiler will notice this and include it only once in the object code</li>
+<li>If an ‘add’ function is written twice in the source code, a sophisticated compiler will notice this and include it only once in the object code</li>
 </ul>
 <h2 id="syntax-rules">Syntax Rules</h2>
 <h2 id="bnf-syntax-diagrams">BNF &amp; syntax diagrams</h2>
 <ul>
-<li>When writing programs, you must follow a set of strict rules known as <strong>syntax</strong> — the structure that defines how code must be written.<ul>
-<li>Just like spoken languages have grammar rules, <strong>programming languages have syntax rules</strong><ul>
+<li>When writing programs, you must follow a set of strict rules known as <strong>syntax</strong> — the structure that defines how code must be written.
+<ul>
+<li>Just like spoken languages have grammar rules, <strong>programming languages have syntax rules</strong>
+<ul>
 <li><strong>Each language has its own syntax</strong>, e.g. Python uses indentation, Java uses semicolons</li>
 </ul>
 </li>
@@ -463,14 +471,16 @@ body::before {
 <ul>
 <li>Regular expressions are used to <strong>describe simple patterns</strong> in text or syntax</li>
 <li>Many programming constructs (like variable names or simple statements) <strong>can be defined</strong> using regular expressions</li>
-<li>However<ul>
+<li>However
+<ul>
 <li>Some aspects of a programming language are <strong>too complex</strong> for regular expressions alone</li>
 </ul>
 </li>
-<li>When regular expressions aren&rsquo;t enough, we use a <strong>meta-language</strong></li>
+<li>When regular expressions aren’t enough, we use a <strong>meta-language</strong></li>
 <li>A language used to <strong>describe the structure of another language</strong></li>
 <li>The most common example is <strong>Backus-Naur Form (BNF)</strong> or <strong>syntax diagrams</strong></li>
-<li>These allow us to define:<ul>
+<li>These allow us to define:
+<ul>
 <li>Full grammar rules</li>
 <li>Nested structures</li>
 <li>Hierarchical syntax</li>
@@ -480,7 +490,8 @@ body::before {
 <h3 id="what-is-backus-naur-form-bnf">What is Backus-Naur form (BNF)?</h3>
 <ul>
 <li>BNF is a <strong>meta-language</strong>, a way of writing rules that define the <strong>syntax of programming languages</strong> or <strong>data structures</strong></li>
-<li>BNF is used to:<ul>
+<li>BNF is used to:
+<ul>
 <li>Describe <strong>formal grammar</strong></li>
 <li>Define how statements and expressions are <strong>structured</strong></li>
 <li>Ensure that syntax rules are <strong>unambiguous</strong> and <strong>machine-readable</strong></li>
@@ -506,11 +517,11 @@ body::before {
 </tr>
 <tr>
 <td><strong>::=</strong></td>
-<td>&ldquo;Is defined as&rdquo;, separates the name from its definition</td>
+<td>“Is defined as”, separates the name from its definition</td>
 </tr>
 <tr>
 <td><strong>|</strong></td>
-<td>&ldquo;or&rdquo;, it gives alternative definitions</td>
+<td>“or”, it gives alternative definitions</td>
 </tr>
 </tbody>
 </table>
@@ -518,10 +529,10 @@ body::before {
 <div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">9</span>
 <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span>
 </code></pre></div>
-
 <ul>
 <li><code>&lt;digit&gt;</code> is defined as any single digit 0–9</li>
-<li><code>&lt;number&gt;</code> is defined as:<ul>
+<li><code>&lt;number&gt;</code> is defined as:
+<ul>
 <li>a single digit, or</li>
 <li>a digit followed by another number (i.e. multiple digits)</li>
 </ul>
@@ -535,11 +546,16 @@ body::before {
 <div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;&lt;</span><span class="n">digit</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="n">IDcode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;&lt;</span><span class="n">letter</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;&lt;</span><span class="n">number</span><span class="o">&gt;</span>
 </code></pre></div>
-
 <ul>
-<li>Recursive definition of one or more items</li>
-<li>Use of <code>|</code> for choice</li>
-<li>Application to a second rule with multiple components</li>
+<li>
+<p>Recursive definition of one or more items</p>
+</li>
+<li>
+<p>Use of <code>|</code> for choice</p>
+</li>
+<li>
+<p>Application to a second rule with multiple components</p>
+</li>
 </ul>
 <h3 id="what-is-a-syntax-diagram">What is a syntax diagram?</h3>
 <ul>
@@ -553,7 +569,8 @@ body::before {
 <h3 id="what-is-rpn">What is RPN?</h3>
 <ul>
 <li>Reverse Polish Notation (RPN) is a method of writing <strong>mathematical expressions</strong> where the <strong>operator comes after the operands</strong></li>
-<li>This is also known as <strong>postfix notation</strong><ul>
+<li>This is also known as <strong>postfix notation</strong>
+<ul>
 <li>Infix: <code>3 + 4</code></li>
 <li>RPN: <code>3 4 +</code></li>
 </ul>
@@ -567,17 +584,20 @@ body::before {
 </ul>
 <h4 id="how-rpn-works">How RPN works</h4>
 <ul>
-<li>RPN uses a [[10.1 Data Types &amp; Records#Data Types|Stack]] to evaluate expressions
-1. <strong>Read from left to right</strong>
-2. <strong>Push numbers onto the stack</strong>
-3. When an <strong>operator</strong> is read:<ul>
+<li>RPN uses a Stack to evaluate expressions</li>
+</ul>
+<ol>
+<li><strong>Read from left to right</strong></li>
+<li><strong>Push numbers onto the stack</strong></li>
+<li>When an <strong>operator</strong> is read:
+<ul>
 <li><strong>Pop the top two values</strong> from the stack</li>
 <li><strong>Apply the operator</strong></li>
-<li><strong>Push the result</strong> back onto the stack
-4. When the expression ends, the final result is at the <strong>top of the stack</strong></li>
+<li><strong>Push the result</strong> back onto the stack</li>
 </ul>
 </li>
-</ul>
+<li>When the expression ends, the final result is at the <strong>top of the stack</strong></li>
+</ol>
 <h4 id="example-evaluate-3-4-2">Example: evaluate 3 4 + 2 ×</h4>
 <table>
 <thead>
@@ -621,40 +641,23 @@ body::before {
 <h4 id="example-convert-this-infix-expression-to-rpn">Example: convert this infix expression to RPN</h4>
 <div class="highlight"><pre><span></span><code><span class="p">(</span><span class="mi">7</span> <span class="err">−</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">9</span> <span class="err">−</span> <span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
-
 <ul>
 <li><strong>Split the expression into parts:</strong></li>
-<li>
-<p>Left-hand side:
-<code>(7 − 2 + 8)</code></p>
-</li>
-<li>
-<p>This becomes:
-<code>( (7 − 2) + 8 )</code></p>
-</li>
-<li>
-<p>Which in RPN is:
-<code>7 2 − 8 +</code></p>
-</li>
-<li>
-<p>Right-hand side:
-<code>(9 − 5)</code></p>
-</li>
-<li>
-<p>In RPN:
-<code>9 5 −</code></p>
-</li>
-<li>
-<p><strong>Combine with the division</strong></p>
-</li>
-<li>
-<p>In RPN, that becomes:
+<li>Left-hand side:
+<code>(7 − 2 + 8)</code></li>
+<li>This becomes:
+<code>( (7 − 2) + 8 )</code></li>
+<li>Which in RPN is:
+<code>7 2 − 8 +</code></li>
+<li>Right-hand side:
+<code>(9 − 5)</code></li>
+<li>In RPN:
+<code>9 5 −</code></li>
+<li><strong>Combine with the division</strong></li>
+<li>In RPN, that becomes:
 <code>7 2 − 8 + 9 5 − ÷</code>
-RPN <strong>follows the evaluation order naturally</strong>, so there’s <strong>no need for brackets</strong> or precedence rules. Just:</p>
-</li>
-<li>
-<p>Work from inside brackets out</p>
-</li>
+RPN <strong>follows the evaluation order naturally</strong>, so there’s <strong>no need for brackets</strong> or precedence rules. Just:</li>
+<li>Work from inside brackets out</li>
 <li>Convert each sub-expression</li>
 <li>Add the operator after its operands</li>
 </ul>

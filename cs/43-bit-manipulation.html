@@ -224,13 +224,15 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="bitwise-operations">Bitwise Operations</h2>
+        
+<h2 id="bitwise-operations">Bitwise Operations</h2>
 <h2 id="binary-shifts">Binary shifts</h2>
 <h3 id="what-are-binary-shifts">What are binary shifts?</h3>
 <ul>
 <li>A binary shift is an operation that <strong>moves all the bits in a binary number left or right</strong> by a certain number of positions</li>
 <li>Often used in programming and computer systems for <strong>fast multiplication or division by powers of 2</strong>, or for manipulating individual bits</li>
-<li>There are three main types of binary shift:<ul>
+<li>There are three main types of binary shift:
+<ul>
 <li><strong>Logical</strong></li>
 <li><strong>Arithmetic</strong></li>
 <li><strong>Cyclic</strong></li>
@@ -306,7 +308,8 @@ body::before {
 <ul>
 <li><strong>Original number:</strong> 0000 1110 = <strong>14</strong></li>
 <li><strong>Left shift (2) result:</strong> 0011 1000 = <strong>56</strong></li>
-<li>Each left shift has <strong>doubled</strong> the number:<ul>
+<li>Each left shift has <strong>doubled</strong> the number:
+<ul>
 <li><strong>Original value</strong> = <strong>14</strong></li>
 <li><strong>Left shift 1</strong> - Doubled the number to 28</li>
 <li><strong>Left shift 2</strong> - Doubled the number to 56</li>
@@ -359,7 +362,8 @@ body::before {
 <ul>
 <li><strong>Original number:</strong> 1100 1000 = <strong>200</strong></li>
 <li><strong>Right shift (3) result:</strong> 0001 1001 = <strong>25</strong></li>
-<li>Each right shift has <strong>halved</strong> the number:<ul>
+<li>Each right shift has <strong>halved</strong> the number:
+<ul>
 <li><strong>Original value</strong> = <strong>200</strong></li>
 <li><strong>Right shift 1</strong> - Halved the number to 100</li>
 <li><strong>Right shift 2</strong> - Halved the number to 50</li>
@@ -369,7 +373,7 @@ body::before {
 </ul>
 <h3 id="arithmetic">Arithmetic</h3>
 <ul>
-<li><strong>Moves bits</strong>, but <strong>preserves the sign bit</strong> (used for signed binary numbers in two&rsquo;s complement)</li>
+<li><strong>Moves bits</strong>, but <strong>preserves the sign bit</strong> (used for signed binary numbers in two’s complement)</li>
 </ul>
 <table>
 <thead>
@@ -389,7 +393,7 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="right_1">Right</h4>
+<h4 id="right_2">Right</h4>
 <ul>
 <li>The following number is shifted by <strong>three</strong> places to the right</li>
 </ul>
@@ -435,7 +439,8 @@ body::before {
 <ul>
 <li><strong>Original number</strong>: 1110 1000= <strong>−24</strong></li>
 <li><strong>Right shift (3)</strong> <strong>result</strong>: 1111 1101 = <strong>−3</strong></li>
-<li>Each arithmetic right shift <strong>divides the number by 2</strong>, rounding <strong>towards negative infinity</strong> (preserving the sign bit)<ul>
+<li>Each arithmetic right shift <strong>divides the number by 2</strong>, rounding <strong>towards negative infinity</strong> (preserving the sign bit)
+<ul>
 <li><strong>Original value</strong> = <strong>−24</strong></li>
 <li><strong>Right shift 1</strong> → 1111 0100 = <strong>−12</strong></li>
 <li><strong>Right shift 2</strong> → 1111 1010 = <strong>−6</strong></li>
@@ -547,7 +552,7 @@ body::before {
 <td>Arithmetic Shift</td>
 <td>Same as logical left</td>
 <td>Shift bits right, <strong>preserve sign bit</strong></td>
-<td>Signed numbers (two&rsquo;s complement)</td>
+<td>Signed numbers (two’s complement)</td>
 </tr>
 <tr>
 <td>Cyclic Shift</td>
@@ -768,7 +773,7 @@ body::before {
 </tr>
 <tr>
 <td>Bitwise OR</td>
-<td><code>\|</code></td>
+<td><code>|</code></td>
 <td>Set a bit</td>
 <td>Turn ON a device</td>
 </tr>

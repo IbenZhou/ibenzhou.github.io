@@ -224,10 +224,12 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="what-are-user-defined-data-types">What are user-defined data types?</h2>
+        
+<h2 id="what-are-user-defined-data-types">What are user-defined data types?</h2>
 <ul>
-<li>A user-defined data type is a <strong>custom data structure</strong> created by the programmer to match the specific needs of a program<ul>
-<li>It is built using [[10.1 Data Types &amp; Records#Primitive data types|Primitive data Types]] such as <code>INTEGER</code>, <code>STRING</code>, <code>BOOLEAN</code>, etc</li>
+<li>A user-defined data type is a <strong>custom data structure</strong> created by the programmer to match the specific needs of a program
+<ul>
+<li>It is built using Primitive data Types such as <code>INTEGER</code>, <code>STRING</code>, <code>BOOLEAN</code>, etc</li>
 <li>It helps represent <strong>real-world entities</strong> more accurately than built-in types alone</li>
 </ul>
 </li>
@@ -256,28 +258,27 @@ body::before {
 <li>An enumerated data type is a type of <strong>non-composite, user-defined data type</strong> that consists of a <strong>list of named, fixed values</strong></li>
 <li>It allows the programmer to define a variable that can only take one of a <strong>limited set of values</strong></li>
 <li>Making code <strong>clearer</strong>, <strong>more readable</strong>, and <strong>easier to validate</strong></li>
-<li>An enumerated data type should be used:<ul>
+<li>An enumerated data type should be used:
+<ul>
 <li>When a variable should only hold <strong>predefined values</strong></li>
 <li>To improve <strong>code readability</strong> and <strong>reduce errors</strong></li>
 <li>To <strong>restrict input</strong> to a known, fixed list
-<strong>Pseudocode</strong>
-```Java、
-TYPE <identifier> = (value1, value2, value3, … )</li>
+<strong>Pseudocode</strong></li>
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="o">**</span><span class="n">Example</span> <span class="n">code</span><span class="o">**</span>
-<span class="err">```</span><span class="n">java</span>
-<span class="kr">TYPE</span> <span class="n">DayType</span> <span class="o">=</span> <span class="p">(</span><span class="n">Monday</span><span class="p">,</span> <span class="n">Tuesday</span><span class="p">,</span> <span class="n">Wednesday</span><span class="p">,</span> <span class="n">Thursday</span><span class="p">,</span> <span class="n">Friday</span><span class="p">,</span> <span class="n">Saturday</span><span class="p">,</span> <span class="n">Sunday</span><span class="p">)</span>
-<span class="n">DECLARE</span> <span class="n">Today</span> <span class="p">:</span> <span class="n">DayType</span>
-<span class="n">Today</span> <span class="err">←</span> <span class="n">Monday</span>
-<span class="kr">IF</span> <span class="n">Today</span> <span class="o">=</span> <span class="n">Saturday</span> <span class="kr">OR</span> <span class="n">Today</span> <span class="o">=</span> <span class="n">Sunday</span> <span class="kr">THEN</span>
-    <span class="n">OUTPUT</span> <span class="s">&quot;It&#39;s the weekend!&quot;</span>
-<span class="kr">ELSE</span>
-    <span class="n">OUTPUT</span> <span class="s">&quot;It&#39;s a weekday.&quot;</span>
+<div class="highlight"><pre><span></span><code>TYPE &lt;identifier&gt; = (value1, value2, value3, … )
+</code></pre></div>
+<p><strong>Example code</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">DayType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Monday</span><span class="p">,</span><span class="w"> </span><span class="n">Tuesday</span><span class="p">,</span><span class="w"> </span><span class="n">Wednesday</span><span class="p">,</span><span class="w"> </span><span class="n">Thursday</span><span class="p">,</span><span class="w"> </span><span class="n">Friday</span><span class="p">,</span><span class="w"> </span><span class="n">Saturday</span><span class="p">,</span><span class="w"> </span><span class="n">Sunday</span><span class="p">)</span>
+<span class="n">DECLARE</span><span class="w"> </span><span class="n">Today</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">DayType</span>
+<span class="n">Today</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Monday</span>
+<span class="n">IF</span><span class="w"> </span><span class="n">Today</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Saturday</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">Today</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sunday</span><span class="w"> </span><span class="n">THEN</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;It&#39;s the weekend!&quot;</span>
+<span class="n">ELSE</span>
+<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;It&#39;s a weekday.&quot;</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <ul>
 <li><code>DayType</code> is the enumerated type</li>
 <li><code>Today</code> can only be one of the seven values listed in <code>DayType</code></li>
@@ -290,7 +291,6 @@ TYPE <identifier> = (value1, value2, value3, … )</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">^&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
 </code></pre></div>
-
 <ul>
 <li>The <code>^</code> indicates the data type is a pointer</li>
 <li><code>&lt;data type&gt;</code> indicates the type of data stored in the memory location
@@ -309,7 +309,6 @@ TYPE <identifier> = (value1, value2, value3, … )</li>
 <span class="c1">// Initialise the list</span>
 <span class="n">StartPtr</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">NewNode</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -384,7 +383,6 @@ TYPE <identifier> = (value1, value2, value3, … )</li>
 <span class="p">...</span>
 <span class="n">ENDTYPE</span>
 </code></pre></div>
-
 <p><strong>Example code</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Student</span>
 <span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
@@ -397,7 +395,6 @@ TYPE <identifier> = (value1, value2, value3, … )</li>
 <span class="n">S1</span><span class="p">.</span><span class="na">Enrolled</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="n">S1</span><span class="p">.</span><span class="na">Name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">S1</span><span class="p">.</span><span class="na">Age</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; years old.&quot;</span>
 </code></pre></div>
-
 <ul>
 <li>Groups <strong>related data</strong> together for easy access</li>
 <li>Makes programs <strong>easier to manage and read</strong></li>
@@ -407,26 +404,25 @@ TYPE <identifier> = (value1, value2, value3, … )</li>
 <ul>
 <li>A set is an <strong>unordered collection</strong> of <strong>unique elements</strong></li>
 <li>Sets are useful for situations where <strong>duplication is not allowed</strong>, and where <strong>membership testing</strong> is common</li>
-<li>Features of a set include:<ul>
+<li>Features of a set include:
+<ul>
 <li><strong>No duplicate values</strong></li>
 <li><strong>Order is not important</strong></li>
 <li><strong>Can perform operations like union, intersection, and difference</strong></li>
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nx">TYPE</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">identifier</span><span class="p">&gt;</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">SET</span><span class="w"> </span><span class="nx">OF</span><span class="w"> </span><span class="p">&lt;</span><span class="nx">data</span><span class="w"> </span><span class="k">type</span><span class="p">&gt;</span>
-</code></pre></div>
-
+<pre><code>TYPE &lt;identifier&gt; = SET OF &lt;data type&gt;
+</code></pre>
 <p><strong>Example code</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kr">TYPE</span> <span class="n">ColourSet</span> <span class="o">=</span> <span class="kt">SET</span> <span class="kr">OF</span> <span class="n">STRING</span>
-<span class="n">DEFINE</span> <span class="n">Colours</span> <span class="p">(</span><span class="s">&quot;Red&quot;</span><span class="p">,</span> <span class="s">&quot;Green&quot;</span><span class="p">,</span> <span class="s">&quot;Blue&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="n">ColourSet</span>
-<span class="kr">IF</span> <span class="s">&quot;Green&quot;</span> <span class="n">ISIN</span> <span class="n">Colours</span> <span class="kr">THEN</span>
-    <span class="n">OUTPUT</span> <span class="s">&quot;Green is in the set&quot;</span>
-<span class="n">ENDIF</span>
-</code></pre></div>
-
+<pre><code>TYPE ColourSet = SET OF STRING
+DEFINE Colours (&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;) : ColourSet
+IF &quot;Green&quot; ISIN Colours THEN
+    OUTPUT &quot;Green is in the set&quot;
+ENDIF
+</code></pre>
 <ul>
-<li>This creates a set named <code>Colours</code> containing <code>"Red"</code>, <code>"Green"</code>, and <code>"Blue"</code> using the user-defined set type <code>ColourSet</code></li>
+<li>This creates a set named <code>Colours</code> containing <code>&quot;Red&quot;</code>, <code>&quot;Green&quot;</code>, and <code>&quot;Blue&quot;</code> using the user-defined set type <code>ColourSet</code></li>
 </ul>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">

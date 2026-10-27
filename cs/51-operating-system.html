@@ -226,25 +226,29 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="operating-system-fundamentals">Operating System Fundamentals</h2>
+        
+<h2 id="operating-system-fundamentals">Operating System Fundamentals</h2>
 <h2 id="purpose-of-an-os">Purpose of an OS</h2>
 <h3 id="what-is-an-operating-system-os">What is an operating system (OS)?</h3>
 <ul>
 <li>An operating system (<strong>OS</strong>) is software that <strong>provides an interface between the user and the hardware</strong> in a computer system</li>
-<li>An operating system <strong>hides the complexities of the hardware</strong> from the user, for example:<ul>
-<li>A user <strong>does not need to know</strong> &lsquo;where&rsquo; on secondary storage data is kept, just that it is saved for when they want it again</li>
+<li>An operating system <strong>hides the complexities of the hardware</strong> from the user, for example:
+<ul>
+<li>A user <strong>does not need to know</strong> ‘where’ on secondary storage data is kept, just that it is saved for when they want it again</li>
 </ul>
 </li>
+<li>An operating system <strong>provides a platform for software to run on</strong> and <strong>manages the resources</strong> that software needs — <strong>CPU time</strong>, <strong>main memory</strong> and <strong>peripherals</strong></li>
 </ul>
 <h4 id="user-interface">User interface</h4>
 <ul>
 <li>A user interface is <strong>how the user interacts with the operating system</strong></li>
-<li>Examples of user interfaces include:<ul>
+<li>Examples of user interfaces include:
+<ul>
 <li><strong>Command Line Interface (CLI)</strong></li>
 <li><strong>Graphical User Interface (GUI)</strong></li>
 <li><strong>Menu</strong></li>
 <li><strong>Natural language (NLI)</strong>
-![[Pasted image 20260506070940.png]]</li>
+<img alt="" src="images/Pasted image 20260506070940.png" /></li>
 </ul>
 </li>
 </ul>
@@ -259,9 +263,13 @@ body::before {
 <li>A Graphical User Interface (<strong>GUI</strong>) requires users to interact with the operating system using <strong>visual elements</strong> such as windows, icons, menus &amp; pointers (<strong>WIMP</strong>)</li>
 <li>GUIs are <strong>optimised for mouse and touch gesture input</strong></li>
 <li>Examples of GUIs are Windows, Android and macOS</li>
+</ul>
+<h4 id="what-is-a-menu-interface">What is a menu interface?</h4>
+<ul>
 <li>A menu interface is <strong>successive menus</strong> presented to a user with a <strong>single option at each stage</strong></li>
 <li>Often performed with <strong>buttons</strong> or a <strong>keypad</strong></li>
-<li>Examples include:<ul>
+<li>Examples include:
+<ul>
 <li><strong>Chip and pin machines</strong></li>
 <li><strong>Vending machines</strong></li>
 <li><strong>Entertainment streaming services</strong></li>
@@ -271,7 +279,8 @@ body::before {
 <h4 id="what-is-a-natural-language-interface-nli">What is a natural language interface (NLI)?</h4>
 <ul>
 <li>A natural language interface (<strong>NLI</strong>) uses the spoken word to respond to spoken or textual inputs from a user</li>
-<li>Examples include:<ul>
+<li>Examples include:
+<ul>
 <li><strong>Virtual assistants</strong> - Amazon Alexa, Google Assistant, Siri</li>
 <li><strong>Search engines</strong></li>
 <li><strong>Smart home devices</strong></li>
@@ -294,7 +303,8 @@ body::before {
 <li><strong>Programs and data require different amounts of RAM</strong> to operate efficiently and the OS manages this process</li>
 <li><strong>RAM is allocated</strong> based on <strong>priority and fairness</strong>, for example, system applications (essential) may have a higher priority than user applications</li>
 <li>The OS <strong>dynamically manages the memory</strong>, adjusting allocation as needed to maintain optimal system performance</li>
-<li>Memory management makes <strong>multitasking</strong> possible<ul>
+<li>Memory management makes <strong>multitasking</strong> possible
+<ul>
 <li>Prevents data from different programs overwriting each other in RAM</li>
 <li>Decides which processes and data should be kept in main memory at any given time</li>
 </ul>
@@ -303,8 +313,10 @@ body::before {
 <h3 id="file-management">File management</h3>
 <ul>
 <li>File management is a process carried out by the operating system <strong>creating, organising, manipulating and accessing files and folders on a computer system</strong></li>
+<li>The OS <strong>divides the storage into allocation units</strong> and <strong>maintains the directory structure</strong> that records the name and location of every file</li>
 <li>The OS <strong>manages where data is stored</strong> in both <strong>main memory</strong> and <strong>secondary</strong> <strong>storage</strong></li>
-<li>File management gives the user the ability to:<ul>
+<li>File management gives the user the ability to:
+<ul>
 <li><strong>Create files/folders</strong></li>
 <li><strong>Name files/folders</strong></li>
 <li><strong>Rename files/folders</strong></li>
@@ -323,6 +335,7 @@ body::before {
 <li>A system administrator is able to <strong>allocate</strong> different <strong>access rights</strong> for different users on a network</li>
 <li>The OS is able to <strong>maintain settings</strong> for individual users, such as desktop backgrounds, icons and colour schemes</li>
 <li>The OS <strong>audits</strong> (keeps a log of) files created by users, accesses, edits and deletes</li>
+<li>These features work at different levels: <strong>user accounts and access rights</strong> control <strong>who</strong> may use the system, a <strong>firewall</strong> controls which <strong>network traffic</strong> is allowed, and <strong>file encryption</strong> keeps data unreadable if the storage device is stolen</li>
 </ul>
 <h3 id="hardware-management">Hardware management</h3>
 <ul>
@@ -331,7 +344,8 @@ body::before {
 <li>Peripheral management makes <strong>plug-and-play</strong> (<strong>PnP</strong>) functionality possible, <strong>automatically detecting and configuring new peripherals</strong> without the need for manually installing device drivers or power cycling the system</li>
 <li>A device driver is <strong>a piece of software used to control a piece of hardware</strong></li>
 <li>Input/output devices <strong>require device drivers</strong> in order to be used by the operating system</li>
-<li>The OS has <strong>generic device drivers built in</strong> which makes <strong>basic compatibilit</strong> y possible</li>
+<li>The OS also <strong>handles interrupts</strong> raised by peripherals, for example when a print job finishes or a key is pressed</li>
+<li>The OS has <strong>generic device drivers built in</strong> which makes <strong>basic compatibility</strong> possible</li>
 <li>In order for hardware to be used to its <strong>maximum capacity</strong>, often <strong>a separate device driver must be downloaded</strong> from the manufacturer</li>
 <li>Device drivers are <strong>OS specific</strong> and are <strong>regularly updated</strong></li>
 </ul>
@@ -343,14 +357,11 @@ body::before {
 <li>Processes are <strong>placed in queue</strong> whilst waiting to be carried out, they return to the back of the queue when their time is up</li>
 <li>The goal of process management is to <strong>share resources</strong> (<strong>CPU &amp; main memory</strong>)</li>
 <li>Allows processes to be <strong>paused and resumed</strong> using context switching</li>
-<li>
-<p>Decides <strong>which process is executed next</strong> using a scheduling algorithm
+<li>Decides <strong>which process is executed next</strong> using a scheduling algorithm</li>
+<li><strong>Prevents processes from interfering with each other</strong>, for example stopping one process from overwriting the memory used by another
 Identify four key management tasks that the Operating System will perform. <strong>[4]</strong>
-<strong>Answer</strong></p>
-</li>
-<li>
-<p>Memory management [1 mark]</p>
-</li>
+<strong>Answer</strong></li>
+<li>Memory management [1 mark]</li>
 <li>File management [1 mark]</li>
 <li>Security management [1 mark]</li>
 <li>Hardware / device / peripheral / resources management [1 mark]</li>
@@ -367,7 +378,8 @@ Identify four key management tasks that the Operating System will perform. <stro
 <li>Utility software is designed to <strong>perform a limited number of tasks</strong></li>
 <li>Utility software <strong>interacts with the computers hardware</strong>, for example, secondary storage devices</li>
 <li>Some utility software comes <strong>installed with the operating system</strong></li>
-<li>Examples of utility software include:<ul>
+<li>Examples of utility software include:
+<ul>
 <li><strong>Disk formatter</strong></li>
 <li><strong>Virus checker</strong></li>
 <li><strong>Defragmentation software</strong></li>
@@ -379,14 +391,16 @@ Identify four key management tasks that the Operating System will perform. <stro
 </ul>
 <h3 id="disk-formatter">Disk formatter</h3>
 <ul>
-<li>A disk formatter <strong>prepares a storage device</strong> (like a hard drive or USB stick) for use by <strong>creating a file system</strong> and <strong>organising the space into sectors and tracks</strong></li>
-<li>It is needed:<ul>
+<li>A disk formatter <strong>prepares a storage device</strong> (like a hard drive or USB stick) for user by <strong>creating a file system</strong> and <strong>organising the space into sectors and tracks</strong></li>
+<li>It is needed:
+<ul>
 <li>To <strong>wipe</strong> and <strong>re-initialise</strong> a disk before use</li>
 <li>To change the <strong>file system format</strong> (e.g. FAT32, NTFS)</li>
 <li>To <strong>remove all data</strong> and errors before installing a new OS or reusing the drive</li>
 </ul>
 </li>
-<li>For example:<ul>
+<li>For example:
+<ul>
 <li><strong>Formatting</strong> a new external drive before saving files</li>
 <li><strong>Reformatting</strong> a corrupted USB stick to make it usable again</li>
 </ul>
@@ -395,16 +409,19 @@ Identify four key management tasks that the Operating System will perform. <stro
 <h3 id="virus-checker">Virus checker</h3>
 <ul>
 <li>Virus checking software is a <strong>combination of different software to prevent</strong> computers from being susceptible to <strong>viruses</strong> and other <strong>malicious software</strong></li>
-<li>It typically includes:<ul>
+<li>It typically includes:
+<ul>
 <li><strong>Anti-virus</strong></li>
 <li><strong>Anti-spam</strong></li>
 <li><strong>Anti-spyware</strong></li>
 </ul>
 </li>
 <li>A virus checker <strong>scans</strong> through <strong>email</strong> attachments, <strong>websites</strong> and downloaded <strong>files</strong> to search for issues</li>
-<li>Two ways virus checkers can approach the task are:<ul>
+<li>Two ways virus checkers can approach the task are:
+<ul>
 <li>Use a list of known <strong>unique malware fingerprints</strong> (<strong>signatures</strong>) to block immediately if they try to access your device in any way</li>
-<li><strong>Monitor</strong> the <strong>behaviour</strong> of programs to identify suspicious activities that might indicate malware such as;<ul>
+<li><strong>Monitor</strong> the <strong>behaviour</strong> of programs to identify suspicious activities that might indicate malware such as;
+<ul>
 <li><strong>Rapid deletion/modification of files</strong></li>
 <li><strong>Attempts to access sensitive data/resources</strong></li>
 <li><strong>Communicating with known malicious servers</strong></li>
@@ -419,19 +436,22 @@ Identify four key management tasks that the Operating System will perform. <stro
 <li>Defragmentation software <strong>groups fragmented files back together</strong> in order to <strong>improve the access speed</strong> of a hard disk drive <strong>(HDD)</strong></li>
 <li>As programs and data are added to a new hard disk drive, it is added in order, <strong>over time as files are deleted this leaves gaps</strong></li>
 <li>As programs and data are added over time, <strong>these gaps get filled and data becomes fragmented</strong></li>
+<li>Defragmentation moves the fragments so that each file is stored <strong>contiguously</strong>; this <strong>reduces the distance the read/write head has to travel</strong>, so files are <strong>accessed more quickly</strong></li>
 <li>Defragmentation can only be used on <strong>magnetic storage</strong>
-![[Pasted image 20260506070846.png]]</li>
+<img alt="" src="images/Pasted image 20260506070846.png" /></li>
 </ul>
 <h3 id="disk-contents-analysisdisk-repair-software">Disk contents analysis/disk repair software</h3>
 <ul>
 <li>This utility checks the <strong>structure and health</strong> of a disk, including <strong>files, folders, sectors</strong>, and the <strong>file allocation table</strong></li>
-<li>It is needed:<ul>
+<li>It is needed:
+<ul>
 <li>To <strong>diagnose and fix errors</strong> on the disk (e.g. bad sectors, file system corruption)</li>
 <li>To <strong>recover lost or damaged files</strong></li>
 <li>To improve system performance by identifying and repairing issues</li>
 </ul>
 </li>
-<li>For example:<ul>
+<li>For example:
+<ul>
 <li>Running <strong>Check Disk (chkdsk)</strong> on Windows to repair file system errors</li>
 <li>Using a <strong>disk utility</strong> on macOS to verify and repair drive problems</li>
 </ul>
@@ -445,14 +465,16 @@ Identify four key management tasks that the Operating System will perform. <stro
 </ul>
 <h3 id="back-up-software">Back-up software</h3>
 <ul>
-<li>Back-up software is used to <strong>create copies of personal data</strong> in order to keep it safe in the event of:<ul>
+<li>Back-up software is used to <strong>create copies of personal data</strong> in order to keep it safe in the event of:
+<ul>
 <li><strong>Accidental loss</strong></li>
 <li><strong>Data theft</strong></li>
 </ul>
 </li>
 <li>Backups can be <strong>automated</strong> and <strong>scheduled</strong> to happen at less busy periods of the day, to not take up valuable system resources (e.g. overnight etc.)</li>
-<li>Backups can be made in two ways:<ul>
-<li><strong>Full</strong> - all files are backed up (saftest, slow)</li>
+<li>Backups can be made in two ways:
+<ul>
+<li><strong>Full</strong> - all files are backed up (safest, slow)</li>
 <li><strong>Incremental</strong> - only files that have been added/modified since the last backup are backed up (faster, less secure)</li>
 </ul>
 </li>
@@ -460,16 +482,17 @@ Identify four key management tasks that the Operating System will perform. <stro
 <li>Backup software can be <strong>purchased</strong> or come as a standalone application <strong>bundled</strong> with an <strong>operating system</strong>
 Draw one line from each utility software to its correct description.
 <strong>Utility software Description</strong>
-![[Pasted image 20260506071002.png]]
+<img alt="" src="images/Pasted image 20260506071002.png" />
 <strong>[4]</strong>
 <strong>Answer</strong>
-![[Pasted image 20260506071022.png]]</li>
+<img alt="" src="images/Pasted image 20260506071022.png" /></li>
 </ul>
 <h2 id="program-libraries">Program libraries</h2>
 <h3 id="what-is-a-program-library">What is a program library?</h3>
 <ul>
-<li>A program library is a <strong>collection of pre-written code</strong> (called <strong>library routines</strong>) that programmers can <strong>reuse</strong> in their own software</li>
-<li>These routines can <strong>perform common tasks</strong> such as:<ul>
+<li>A program library is a <strong>collection of pre-written, pre-compiled and pre-tested code</strong> (called <strong>library routines</strong>) that programmers can <strong>reuse</strong> in their own software</li>
+<li>These routines can <strong>perform common tasks</strong> such as:
+<ul>
 <li><strong>Sorting</strong></li>
 <li><strong>Displaying graphics</strong></li>
 <li><strong>Playing sounds</strong></li>
@@ -512,9 +535,17 @@ Draw one line from each utility software to its correct description.
 </tr>
 </tbody>
 </table>
+<p>Drawbacks of using program libraries:</p>
+<ul>
+<li>A library routine may <strong>not do exactly what is needed</strong>, so it still has to be adapted — or written from scratch</li>
+<li>Using an unfamiliar library carries a <strong>learning cost</strong>, so the time saved is less on a first project</li>
+<li>Any <strong>bug inside the library is inherited</strong> by every program that uses it</li>
+</ul>
 <h3 id="what-is-a-dll">What is a DLL?</h3>
 <ul>
 <li>A <strong>Dynamic Link Library (DLL)</strong> is a file that contains <strong>pre-written code</strong>, such as <strong>functions or routines</strong>, that can be <strong>used by multiple programs</strong> at <strong>runtime</strong></li>
+<li>This is different from a <strong>static library</strong>, which is <strong>linked into the program when it is compiled</strong> so that the code becomes part of the executable;</li>
+<li>A <strong>DLL</strong> is instead <strong>loaded at runtime</strong> and <strong>shared</strong> between programs, which keeps each executable smaller and means that <strong>updating the DLL updates every program that uses it</strong> (without recompiling)</li>
 </ul>
 <table>
 <thead>
