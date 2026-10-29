@@ -194,6 +194,46 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -229,6 +269,8 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
+
 <h2 id="translation-process">Translation Process</h2>
 <h2 id="interpreter-execution">Interpreter execution</h2>
 <h3 id="what-is-an-interpreter">What is an interpreter?</h3>
@@ -240,7 +282,7 @@ body::before {
 <ul>
 <li>The source code is <strong>read, analysed, and executed</strong> <strong>one line at a time</strong></li>
 <li>No complete machine code file is produced, only <strong>immediate execution</strong> happens</li>
-<li>If there is an error in a line**, execution stops**, and the <strong>error is reported immediately</strong></li>
+<li>If there is an error in a line, <strong>execution stops</strong>, and the <strong>error is reported immediately</strong></li>
 </ul>
 <table>
 <thead>
@@ -277,6 +319,25 @@ body::before {
 <li>Used in <strong>educational tools</strong>, like Python shells or BASIC interpreters</li>
 <li>Helpful for <strong>rapid prototyping</strong> or when frequent changes are made</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 夏季 P31 Q6 · 4 marks</div><div class="callout-body"><p>Describe the process of executing a program using an interpreter. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td><strong>One</strong> mark for each mark point (<strong>Max 4</strong>)<br><br>MP1: The interpreter translates the source code one line at a time<br>MP2: If the line is syntax error free it is executed<br>MP3: It is not stored in executable format<br>MP4: If an error is found, the program halts with an error message<br>MP5: Each line must be translated every time it is run, including lines running multiple times for example in loops</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
 <h2 id="compilation-stages">Compilation stages</h2>
 <h3 id="what-is-compilation">What is compilation?</h3>
 <ul>
@@ -450,6 +511,98 @@ body::before {
 <li>A common optimisation action is <strong>removing duplicate code</strong></li>
 <li>If an ‘add’ function is written twice in the source code, a sophisticated compiler will notice this and include it only once in the object code</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 夏季 P32 Q8 · 4 marks</div><div class="callout-body"><p>Explain what is meant by <strong>lexical analysis</strong> during program compilation. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td><strong>One mark per mark point (Max 4)</strong><br>• MP1: It is the first stage of compilation<br>• MP2: White space and comments are removed<br>• MP3: It takes modified source code and breaks it into a series of tokens<br>• MP4: Each token is categorised and assigned types<br>• MP5: Identifiers are stored in a symbol table<br>• MP6: If the lexical analyser finds invalid tokens, it generates an error<br>• MP7: Acceptable data from the lexical analyser passes to the syntax analyser</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 冬季 P31 Q4 · 4 marks</div><div class="callout-body"><p>Draw <strong>one</strong> line to connect each stage of compilation to its most appropriate description. <strong>[4]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Stage of compilation</th>
+<th></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lexical analysis</td>
+<td></td>
+<td>minimising a program’s execution time and memory requirement</td>
+</tr>
+<tr>
+<td>Syntax analysis</td>
+<td></td>
+<td>converting an intermediate representation of source code into an executable form</td>
+</tr>
+<tr>
+<td>Code generation</td>
+<td></td>
+<td>converting a sequence of characters into a sequence of tokens</td>
+</tr>
+<tr>
+<td>Optimisation</td>
+<td></td>
+<td>directly executing instructions written in a scripting language</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>using parsing algorithms to interpret the meaning of a sequence of tokens</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p>One mark for each correct line connecting one stage of compilation to a description
+<img alt="" src="images/Screenshot 2026-09-08 at 20-00-41.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Stage of compilation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lexical analysis</td>
+<td>converting a sequence of characters into a sequence of tokens</td>
+</tr>
+<tr>
+<td>Syntax analysis</td>
+<td>using parsing algorithms to interpret the meaning of a sequence of tokens</td>
+</tr>
+<tr>
+<td>Code generation</td>
+<td>converting an intermediate representation of source code into an executable form</td>
+</tr>
+<tr>
+<td>Optimisation</td>
+<td>minimising a program’s execution time and memory requirement</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<strong>Semantic analysis, the symbol table and intermediate code ★</strong></p>
+<ul>
+<li><strong>Semantic analysis</strong> — checks that the code is <strong>meaningful</strong>: every identifier is declared, the types of operands match, and a variable is not used before it is given a value</li>
+<li><strong>Symbol table</strong> — records each identifier with its <strong>type, scope and address</strong>; it is built during lexical and syntax analysis and consulted by the later stages</li>
+<li><strong>Intermediate code</strong> — a machine-independent representation produced before code generation, which the optimiser can rewrite without targeting a specific processor</li>
+</ul>
 <h2 id="syntax-rules">Syntax Rules</h2>
 <h2 id="bnf-syntax-diagrams">BNF &amp; syntax diagrams</h2>
 <ul>
@@ -467,7 +620,7 @@ body::before {
 <li>For translation to work, syntax must be <strong>precisely defined</strong> to avoid <strong>ambiguity</strong></li>
 <li>Translators (compilers or interpreters) rely on these rules to correctly convert the program into a form the CPU can understand</li>
 </ul>
-<h4 id="regular-expressions-and-meta-languages">Regular expressions and meta-languages</h4>
+<h3 id="regular-expressions-and-meta-languages">Regular expressions and meta-languages</h3>
 <ul>
 <li>Regular expressions are used to <strong>describe simple patterns</strong> in text or syntax</li>
 <li>Many programming constructs (like variable names or simple statements) <strong>can be defined</strong> using regular expressions</li>
@@ -554,7 +707,26 @@ body::before {
 <p>Use of <code>|</code> for choice</p>
 </li>
 <li>
-<p>Application to a second rule with multiple components</p>
+<p>Application to a second rule with multiple components
+<strong>Syntax diagram conventions ★</strong></p>
+</li>
+<li>
+<p><strong>Terminal</strong> — drawn as a <strong>circle or oval</strong>, and written literally in BNF, e.g. <code>+</code>, <code>if</code>, <code>0</code></p>
+</li>
+<li>
+<p><strong>Non-terminal</strong> — drawn as a <strong>rectangle</strong> and defined by another rule; in BNF it is written inside angle brackets, e.g. <code>&lt;digit&gt;</code></p>
+</li>
+<li>
+<p><strong>Sequence</strong> — symbols lying on a single path are read left to right in the order they must appear</p>
+</li>
+<li>
+<p><strong>Choice</strong> — parallel paths that leave and rejoin the same points are alternatives, equivalent to <code>|</code> in BNF</p>
+</li>
+<li>
+<p><strong>Iteration</strong> — a path that loops back allows the preceding symbol or symbols to repeat</p>
+</li>
+<li>
+<p><strong>Recursion in BNF</strong> — repetition is expressed by referring to the rule itself, e.g. <code>&lt;number&gt; ::= &lt;digit&gt; | &lt;number&gt;&lt;digit&gt;</code></p>
 </li>
 </ul>
 <h3 id="what-is-a-syntax-diagram">What is a syntax diagram?</h3>
@@ -564,6 +736,126 @@ body::before {
 <li>The symbols used are:
 <img alt="Diagram showing a terminal element in a circle and two non-terminal elements in rectangles with different annotations for further breakdown and reuse." src="images/17873_data.png" /> <img alt="Flowchart showing letters A, B, and C as valid options, and a formula calculating area as length multiplied by width in a sequence of shapes." src="images/43697_data-1.png" /></li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2022 夏季 P32 Q4 · 13 marks</div><div class="callout-body"><p>The following syntax diagrams show the syntax of:</p>
+<ul>
+<li>a variable</li>
+<li>an unsigned integer</li>
+<li>a letter</li>
+<li>a digit</li>
+<li>an operator</li>
+<li>an assignment statement</li>
+</ul>
+<p><img alt="" src="images/Pasted image 20260908172402.png" /></p>
+<p><strong>(a)</strong> The following assignment statements are invalid. State the reason in each case. <strong>[2]</strong></p>
+<p><code>X1 = Y2 – 12</code></p>
+<p>Reason:</p>
+<p><code>Z = Y12 + Z1</code></p>
+<p>Reason:</p>
+<p><strong>(b)</strong> Complete the Backus-Naur Form (BNF) for the syntax diagrams shown.</p>
+<p><code>&lt;letter&gt;</code> has been completed for you. <strong>[5]</strong></p>
+<pre><code>&lt;variable&gt; ::=
+&lt;unsigned_integer&gt; ::=
+&lt;letter&gt; ::= X | Y | Z
+&lt;digit&gt; ::=
+&lt;operator&gt; ::=
+&lt;assignment_statement&gt; ::=
+</code></pre>
+<p><strong>©</strong> The syntax of an assignment statement is changed to allow each of the variables on the right-hand side of the ‘=’ symbol to be either a variable or an unsigned integer.</p>
+<p><strong>©(i)</strong> Draw a syntax diagram for the new syntax of the assignment statement. <strong>[3]</strong>
+<strong>©(ii)</strong> Write the Backus-Naur Form (BNF) for your syntax diagram. <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4a</td>
+<td>• An unsigned integer, <code>12</code>, is used instead of the last variable // 12 is not a valid variable<br>• The variable <code>Z</code> is not a valid variable / missing an unsigned integer after the Z</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>4b answer:</p>
+<pre><code>&lt;variable&gt; ::= &lt;letter&gt;&lt;unsigned_integer&gt;
+&lt;unsigned_integer&gt; ::= &lt;digit&gt;|&lt;digit&gt;&lt;digit&gt;
+&lt;digit&gt; ::= 1 | 2 | 3
+&lt;operator&gt; ::= + | - | *
+&lt;assignment_statement&gt; ::= &lt;variable&gt; =
+&lt;variable&gt;&lt;operator&gt;&lt;variable&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4b</td>
+<td>One mark per bullet point</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>4c(i) answer:</p>
+<p><img alt="" src="images/Screenshot 2026-09-08 at 17-28-29.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4c(i)</td>
+<td>• One mark adding both boxes…(unsigned integer &amp; unsigned integer)<br>• One mark for correct position(s) and connector(s) …<br>• One mark … rest correct</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>4c(ii) answer:</p>
+<pre><code>&lt;assignment_statement&gt;::=&lt;variable&gt;=
+&lt;variable&gt;&lt;operator&gt;&lt;variable&gt;
+|&lt;variable&gt;&lt;operator&gt;&lt;unsigned_integer&gt;
+|&lt;unsigned_integer&gt;&lt;operator&gt;&lt;variable&gt;
+|&lt;unsigned_integer&gt;&lt;operator&gt;&lt;unsigned_integer&gt;
+</code></pre>
+<p>or:</p>
+<pre><code>&lt;assignment_statement&gt;::=&lt;variable&gt;= &lt;variable&gt;&lt;operator&gt;&lt;variable&gt;|&lt;variable&gt;&lt;operator&gt;
+&lt;unsigned_integer&gt;|&lt;unsigned_integer&gt;&lt;operator&gt;&lt;variable&gt;
+|&lt;unsigned_integer&gt;&lt;operator&gt;&lt;unsigned_integer&gt;
+</code></pre>
+<p>or:</p>
+<pre><code>&lt;operand&gt;::=&lt;variable&gt;|&lt;unsigned_integer&gt;
+&lt;assignment_statement&gt;::=&lt;variable&gt;=
+&lt;operand&gt;&lt;operator&gt;&lt;operand&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4c(ii)</td>
+<td>Max three<br>• One mark for <code>&lt;assignment_statement&gt;::=&lt;variable&gt;=</code><br>• One mark two or three correct options or two marks if all four options correct<br>• or: One mark for each section</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
 <h2 id="expression-evaluation">Expression Evaluation</h2>
 <h2 id="reverse-polish-notation-rpn">Reverse Polish Notation (RPN)</h2>
 <h3 id="what-is-rpn">What is RPN?</h3>
@@ -642,24 +934,59 @@ body::before {
 <div class="highlight"><pre><span></span><code><span class="p">(</span><span class="mi">7</span> <span class="err">−</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">9</span> <span class="err">−</span> <span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <ul>
-<li><strong>Split the expression into parts:</strong></li>
-<li>Left-hand side:
-<code>(7 − 2 + 8)</code></li>
-<li>This becomes:
-<code>( (7 − 2) + 8 )</code></li>
-<li>Which in RPN is:
-<code>7 2 − 8 +</code></li>
-<li>Right-hand side:
-<code>(9 − 5)</code></li>
-<li>In RPN:
-<code>9 5 −</code></li>
-<li><strong>Combine with the division</strong></li>
-<li>In RPN, that becomes:
+<li>
+<p><strong>Split the expression into parts:</strong></p>
+</li>
+<li>
+<p>Left-hand side:
+<code>(7 − 2 + 8)</code></p>
+</li>
+<li>
+<p>This becomes:
+<code>( (7 − 2) + 8 )</code></p>
+</li>
+<li>
+<p>Which in RPN is:
+<code>7 2 − 8 +</code></p>
+</li>
+<li>
+<p>Right-hand side:
+<code>(9 − 5)</code></p>
+</li>
+<li>
+<p>In RPN:
+<code>9 5 −</code></p>
+</li>
+<li>
+<p><strong>Combine with the division</strong></p>
+</li>
+<li>
+<p>In RPN, that becomes:
 <code>7 2 − 8 + 9 5 − ÷</code>
-RPN <strong>follows the evaluation order naturally</strong>, so there’s <strong>no need for brackets</strong> or precedence rules. Just:</li>
-<li>Work from inside brackets out</li>
-<li>Convert each sub-expression</li>
-<li>Add the operator after its operands</li>
+RPN <strong>follows the evaluation order naturally</strong>, so there’s <strong>no need for brackets</strong> or precedence rules. Just:</p>
+</li>
+<li>
+<p>Work from inside brackets out</p>
+</li>
+<li>
+<p>Convert each sub-expression</p>
+</li>
+<li>
+<p>Add the operator after its operands
+<strong>Converting infix to RPN ★</strong></p>
+</li>
+<li>
+<p><strong>Precedence and associativity</strong> — brackets first, then <code>^</code>, then <code>*</code> and <code>/</code>, then <code>+</code> and <code>-</code>; operators of equal precedence are taken left to right</p>
+</li>
+<li>
+<p><strong>Operator stack method</strong> — output operands as they are read, push operators, pop an operator whenever one of lower or equal precedence arrives, and pop all remaining operators at the end</p>
+</li>
+<li>
+<p><strong>Brackets</strong> — push <code>(</code>, and on <code>)</code> pop operators until <code>(</code> is reached; neither bracket is written in the output</p>
+</li>
+<li>
+<p><strong>Evaluation order</strong> — for <code>-</code> and <code>/</code> the value popped <strong>second</strong> is the left operand, so <code>a b -</code> means <code>a - b</code></p>
+</li>
 </ul>
 <h3 id="summary">Summary</h3>
 <table>
@@ -688,6 +1015,130 @@ RPN <strong>follows the evaluation order naturally</strong>, so there’s <stron
 </tr>
 </tbody>
 </table>
+<p><div class="callout callout-question"><div class="callout-title">2022 夏季 P31 Q5 · 12 marks</div><div class="callout-body"><p>Part of a program’s calculations uses the integer variables j, k, m, n and p.</p>
+<pre><code>j = 3
+k = 2
+m = 10
+n = (j + k) / (j - k)
+p = m * (m - j * k)
+</code></pre>
+<p><strong>(a)</strong> Write the Reverse Polish Notation (RPN) for the expression: <strong>[2]</strong></p>
+<pre><code>(j + k) / (j - k)
+</code></pre>
+<p><strong>(b)(i)</strong> Show the changing contents of the stack as the value for p is calculated from its RPN expression: <strong>[4]</strong></p>
+<pre><code>m m j k * - *
+</code></pre>
+<p><img alt="" src="images/Screenshot 2026-09-08 at 15-33-44.png" /></p>
+<p><strong>(b)(ii)</strong> Describe the main steps in the evaluation of this RPN expression using a stack. <strong>[4]</strong></p>
+<p><strong>©</strong> State two other uses of a stack. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5a</td>
+<td>One mark for each in order:<code>j k + j k - /</code><br>• <code>j k +</code><br>• <code>j k - /</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>5b(i)</td>
+<td>Stack contents (1 mark per column, max 4):</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="images/Screenshot 2026-09-08 at 15-35-30.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>m</th>
+<th>m</th>
+<th>j</th>
+<th>k</th>
+<th>*</th>
+<th>-</th>
+<th>*</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stack (top to bottom)</td>
+<td>10</td>
+<td>10, 10</td>
+<td>3, 10, 10</td>
+<td>2, 3, 10, 10</td>
+<td>6, 10, 10</td>
+<td>4, 10</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5b(ii)</td>
+<td>Any four from (<strong>max 4</strong>, <strong>max 3</strong> for generic answer only):<br>• Working from left to right in the expression<br>• PUSH 10/m onto the stack<br>• PUSH the following numbers (10/m, 3/j, 2/k) onto the stack<br>• When the first operator ‘*’ is reached<br>• POP the top two numbers, 2/k and 3/j<br>• Apply the operation<br>• PUSH result back onto stack<br>• Continue to the end of the expression</td>
+<td>4</td>
+</tr>
+<tr>
+<td>5c</td>
+<td>Any <strong>two</strong> from:<br>• Recursion<br>• Implementation of ADTs e.g. linked lists<br>• Procedure calls<br>• Interrupt handling (storing contents of registers etc)</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 夏季 P32 Q6 · 9 marks</div><div class="callout-body"><p><strong>(a)</strong> Write this infix expression in Reverse Polish Notation (RPN). <strong>[2]</strong></p>
+<p><code>16 + ((9 – 7) / (18 + 6))</code></p>
+<p><strong>(b)</strong> Write this RPN expression in infix form. <strong>[3]</strong></p>
+<p><code>6 15 + 20 3 - - 27 9 * /</code></p>
+<p><strong>©</strong> The RPN expression</p>
+<p><code>c a b - * b c + / d *</code></p>
+<p>is to be evaluated, where:</p>
+<p><code>a = 8, b = 2, c = 10</code> and <code>d = 18</code>. <strong>[4]</strong></p>
+<p><img alt="" src="images/Screenshot 2026-09-16 at 10-31-30.png" /></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>6(a)</strong></td>
+<td>One mark per mark point (Max 2): <br>MP1 <code>16 9 7 –</code>; <br>MP2 <code>18 6 + / +</code>. <br><br>Final correct expression: <code>16 9 7 – 18 6 + / +</code>.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>6(b)</strong></td>
+<td>One mark per mark point (Max 3): <br>MP1 <code>(6 + 15)</code> // <code>6 + 15</code>; <br>MP2 <code>- (20 – 3)</code>; <br>MP3 <code>/ (27 * 9)</code> <strong>and</strong> the pair of brackets around the whole numerator. <br><br>Final correct expression: <code>((6 + 15) - (20 – 3)) / (27 * 9)</code> // <code>(6 + 15 - (20 – 3)) / (27 * 9)</code>.</td>
+<td>3</td>
+</tr>
+<tr>
+<td><strong>6©</strong></td>
+<td>One mark per ring (Max 3). <br>One mark for the interim totals (60) and (5). <br>Stack evolves: 10; 10, 8; 10, 8, 2; 10, 6; 60; 60, 2; 60, 2, 10; 60, 12; 5; 5, 18; 90. <br><br><img alt="" src="images/Screenshot 2026-09-16 at 10-33-46.png" /><br><br>Guidance: Do not allow operators in stacks. Do not allow letters in stacks. Values in shaded areas are necessary to award the marks in the rings.</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="161-purposes-of-an-operating-systemos.html" title="Previous: 16.1 Purposes of an Operating System(OS)" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">16.1 Purposes of an Operating System(OS)</span></a>

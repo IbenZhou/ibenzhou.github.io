@@ -194,6 +194,46 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -222,7 +262,7 @@ body::before {
 <li><a href="#sr-jk-flip-flops">SR &amp; JK flip flops</a></li>
 <li><a href="#de-morgans-law">De Morgan&rsquo;s Law</a></li>
 <li><a href="#karnaugh-maps">Karnaugh Maps</a></li>
-<li><a href="#karnaugh-maps_2">Karnaugh maps</a></li>
+<li><a href="#karnaugh-maps_1">Karnaugh maps</a></li>
 </ul>
 </div>
 </div>
@@ -230,6 +270,8 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
+
 <h2 id="adders-circuits">Adders &amp; Circuits</h2>
 <h2 id="half-adders">Half adders</h2>
 <h3 id="what-is-a-half-adder-circuit">What is a half adder circuit?</h3>
@@ -281,8 +323,11 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>Remember that you are <strong>adding together</strong> the <strong>binary numbers</strong> represented by <strong>A and B</strong></li>
-<li>Create the <strong>C</strong> <sub><b>out</b></sub> <strong>column first</strong> then for each row you can just <strong>add A and B together</strong> and write the <strong>answer in 2 bits</strong> in the <strong>C</strong> <sub><b>out</b></sub> and <strong>S</strong> columns
+<li>
+<p>Remember that you are <strong>adding together</strong> the <strong>binary numbers</strong> represented by <strong>A and B</strong></p>
+</li>
+<li>
+<p>Create the <strong>C</strong> <sub><b>out</b></sub> <strong>column first</strong> then for each row you can just <strong>add A and B together</strong> and write the <strong>answer in 2 bits</strong> in the <strong>C</strong> <sub><b>out</b></sub> and <strong>S</strong> columns</p>
 <ul>
 <li>For example in row 2:
 <ul>
@@ -290,10 +335,20 @@ body::before {
 - 1 = 01 in 2 bits (C <sub>out</sub> 0 and Sum 1)</li>
 <li>In the last row:</li>
 <li>A is 1 and B is 1 and 1+1 = 2
-- 2 = 10 in 2 bit binary (C <sub>out</sub> 1 and Sum 0)</li>
+- 2 = 10 in 2 bit binary (C <sub>out</sub> 1 and Sum 0)
+<strong>Half adder Boolean expressions ★</strong></li>
 </ul>
 </li>
 </ul>
+</li>
+<li>
+<p><strong>Sum</strong> <code>S = A XOR B = Ā·B + A·B̄</code></p>
+</li>
+<li>
+<p><strong>Carry</strong> <code>C_out = A·B</code></p>
+</li>
+<li>
+<p>The Sum output is the <strong>XOR</strong> gate and the Carry output is the <strong>AND</strong> gate</p>
 </li>
 </ul>
 <h3 id="drawing-a-half-adder-circuit">Drawing a half adder circuit</h3>
@@ -411,10 +466,10 @@ body::before {
 <ul>
 <li>To easily reproduce this <strong>Truth Table</strong>, remember:
 <ul>
-<li>The full adder <strong>adds up three binary inputs</strong> A,B and C
+<li>The full adder <strong>adds up three binary inputs</strong> A, B and C<sub>in</sub>
 <ul>
 <li>So the answer can be <strong>0,1,2 or 3</strong></li>
-<li>For each row, add up A, B and C and the <strong>write the answer as a 2 bit binary number</strong> in the last 2 columns (C <sub>out</sub> and Sum)</li>
+<li>For each row, add up A, B and C and then <strong>write the answer as a 2-bit binary number</strong> in the last 2 columns (C <sub>out</sub> and Sum)</li>
 <li>For example in row 4, A=0, B=1 and C=1 - <strong>0+1+1=2</strong> which is <strong>10 in binary</strong>, so <strong>C</strong> <sub><b>out</b></sub> <strong>is 1 and Sum is 0</strong></li>
 <li>In the last row, A=1, B=1 and C=1, <strong>1+1+1=3</strong> which is <strong>11 in binary</strong> so <strong>C</strong> <sub><b>out</b></sub> <strong>is 1 and Sum is 1</strong></li>
 </ul>
@@ -424,8 +479,22 @@ body::before {
 </ul>
 <h3 id="operation">Operation</h3>
 <ul>
-<li>The “Sum” output <strong>provides the XOR</strong> of the inputs A, B, and C <sub>in</sub></li>
-<li>The “Carry” output is <strong>TRUE</strong> if at <strong>least two of the inputs</strong> A, B, and C <sub>in</sub> are <strong>TRUE</strong></li>
+<li>
+<p>The “Sum” output <strong>provides the XOR</strong> of the inputs A, B, and C <sub>in</sub></p>
+</li>
+<li>
+<p>The “Carry” output is <strong>TRUE</strong> if at <strong>least two of the inputs</strong> A, B, and C <sub>in</sub> are <strong>TRUE</strong>
+<strong>Full adder Boolean expressions ★</strong></p>
+</li>
+<li>
+<p><strong>Sum</strong> <code>S = A XOR B XOR C_in</code></p>
+</li>
+<li>
+<p><strong>Carry</strong> <code>C_out = A·B + C_in·(A XOR B)</code>, which expands to <code>C_out = A·B + A·C_in + B·C_in</code></p>
+</li>
+<li>
+<p>The carry is 1 whenever <strong>at least two</strong> of the three inputs are 1</p>
+</li>
 </ul>
 <h3 id="drawing-a-full-adder-circuit">Drawing a full adder circuit</h3>
 <ul>
@@ -462,6 +531,351 @@ body::before {
 </ul>
 </li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2021 夏季 P31 Q7 · 8 marks</div><div class="callout-body"><p>The diagram shows a logic circuit.</p>
+<p><img alt="" src="images/Screenshot 2026-09-07 at 16-08-09.png" /></p>
+<p><strong>(a)</strong> Complete the truth table for the given logic circuit. Show your working. <strong>[3]</strong></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>P</th>
+<th>Q</th>
+<th>R</th>
+<th>Y</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Inputs: A, B, C · Working space: P, Q, R · Outputs: Y, Z</p>
+<p><strong>(b)</strong> State the name of the logic circuit. <strong>[1]</strong></p>
+<p><strong>©</strong> Write the Boolean expressions for the two outputs Y and Z in the truth table as sum-of-products and state the purpose of each output. <strong>[4]</strong></p>
+<p>Y =</p>
+<p>Purpose</p>
+<p>Z =</p>
+<p>Purpose</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>7(a)</strong>
+<strong>One</strong> mark for working, (all three columns P, Q and R)
+<strong>One</strong> mark for each correct column Y, Z</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>P</th>
+<th>Q</th>
+<th>R</th>
+<th>Y</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Where: P = A XOR B, Q = A AND B, R = P AND C, Y = P XOR C, Z = Q OR R</p>
+<p><strong>7(b)</strong>
+Full adder
+<strong>7©</strong>
+One mark for each point</p>
+<p>Y = A̅B̅C + A̅BC̅ + AB̅C̅ + ABC
+Purpose: Sum bit</p>
+<p>Z = A̅BC + AB̅C + ABC̅ + ABC
+Purpose: Carry output</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 夏季 P32 Q6 · 5 marks</div><div class="callout-body"><p>A logic circuit has two inputs A and B, and two outputs E and F.</p>
+<p><img alt="" src="images/Screenshot 2026-09-08 at 17-52-34.png" /></p>
+<p><strong>(a)</strong> Complete the truth table for this logic circuit. <strong>[2]</strong></p>
+<table>
+<thead>
+<tr>
+<th>INPUT</th>
+<th></th>
+<th>OUTPUT</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>B</td>
+<td>E</td>
+<td>F</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>(b)(i)</strong> State the name of this logic circuit. <strong>[1]</strong>
+<strong>(b)(ii)</strong> State the purpose of each output E and F. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6a</td>
+<td>1 mark per correct output column</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Truth table answers:</p>
+<table>
+<thead>
+<tr>
+<th>INPUT</th>
+<th></th>
+<th>OUTPUT</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>B</td>
+<td>E</td>
+<td>F</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6b(i)</td>
+<td>Half adder</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6b(ii)</td>
+<td>• Purpose of E: Sum<br>• Purpose of F: Carry</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
 <h2 id="flip-flops">Flip-Flops</h2>
 <h2 id="sr-jk-flip-flops">SR &amp; JK flip flops</h2>
 <h3 id="what-are-sr-and-jk-flip-flops">What are SR and JK flip flops?</h3>
@@ -611,13 +1025,13 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="inputs_2">Inputs:</h4>
+<h4 id="inputs_1">Inputs:</h4>
 <ul>
 <li><strong>J</strong> = Set</li>
 <li><strong>K</strong> = Reset</li>
 <li><strong>CLK</strong> = Clock (required)</li>
 </ul>
-<h4 id="outputs_2">Outputs:</h4>
+<h4 id="outputs_1">Outputs:</h4>
 <ul>
 <li><strong>Q</strong> = Current state</li>
 <li><strong>NOT(Q)</strong> = Inverse</li>
@@ -659,6 +1073,12 @@ body::before {
 </tr>
 </tbody>
 </table>
+<p><strong>Building a JK flip flop from an SR flip flop ★</strong></p>
+<ul>
+<li><code>J</code> is ANDed with <code>NOT(Q)</code> into the <strong>Set</strong> input and <code>K</code> is ANDed with <code>Q</code> into the <strong>Reset</strong> input</li>
+<li><code>J = K = 1</code> therefore feeds the two gates with opposite values and <strong>toggles</strong> the output instead of producing a forbidden state</li>
+<li><strong>SR built from NAND gates</strong> — two cross-coupled NAND gates use active-low inputs: <code>S = R = 1</code> holds the stored bit, <code>S = 0, R = 1</code> sets it and <code>S = R = 0</code> is the forbidden combination</li>
+</ul>
 <h3 id="use-cases">Use cases</h3>
 <table><tbody><tr><th colspan="1" rowspan="1"><p><b>Flip Flop</b></p></th><th colspan="1" rowspan="1"><p><b>Typical uses</b></p></th></tr><tr><td colspan="1" rowspan="1"><p><b>SR</b></p></td><td colspan="1" rowspan="1"><p>Simple memory, control circuits</p></td></tr><tr><td colspan="1" rowspan="1"><p><b>JK</b></p></td><td colspan="1" rowspan="1"><p><b>Toggles</b>, <b>counters</b>, frequency dividers</p></td></tr></tbody></table>
 Draw a logic circuit for an SR flip-flop and label the inputs.**\[3\]**
@@ -666,29 +1086,89 @@ Draw a logic circuit for an SR flip-flop and label the inputs.**\[3\]**
 Answer
 **Or**
 <img alt="SR latch circuit diagram with two NOR gates. Inputs are labelled &quot;R/Reset&quot; and &quot;S/Set,&quot; with outputs marked as Q and not-Q." src="images/60662_2025-06-04-0iw-kleki.png" />
-## Boolean Algebra
-## Boolean algebra
-### What is Boolean algebra?
-- Boolean algebra is a **mathematical system** used to **manipulate Boolean values**
-- **Complex expressions** can be made **simpler** using the rules of **Boolean algebra**
-- This is a **more powerful simplification** method than Karnaugh maps and can simplify expressions that Karnaugh maps cannot
-- There are various different **rules** that you need to learn and that can then be applied to certain expressions to simplify them
-- **Combining these rules** can mean that **complex expressions** can be **reduced to much simpler ones**
-#### General rules
-- **General AND rules**
-	- X AND 0 = 0
-	- X AND 1 = X
-	- X AND A = X
-	- NOT X AND X = 0
-- Note, the value ox X is unknown and it is used as a placeholder
-- Therefore **X AND 1 = X** means that the output will be whatever the value of X is
-- **General OR rules**
-	- X OR 0 = X  
-	- X OR 1 = 1  
-	- X OR A = X  
-	- NOT X OR X = 1
-### Boolean algebra notation
-- In Boolean algebra, expressions are written using shorthand notation:
+<p><div class="callout callout-question"><div class="callout-title">2022 冬季 P32 Q8 · 8 marks</div><div class="callout-body"><p><strong>(a)</strong> Draw a logic circuit for an SR flip-flop and label the inputs. <strong>[4]</strong></p>
+<p><img alt="" src="images/Screenshot 2026-09-08 at 21-01-28.png" /></p>
+<p><strong>(b)</strong> State the purpose of a flip-flop. <strong>[1]</strong></p>
+<p><strong>©</strong> Simplify the following expression using Boolean algebra, including De Morgan’s laws. Show your working. <strong>[3]</strong></p>
+<p>$$\overline{\overline{(\overline{A}.\overline{B})}.\overline{(\overline{A}.C)}.\overline{(B.D)}}$$</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>8(a)</strong>
+<strong>One</strong> mark for each point (<strong>Max 4</strong>)</p>
+<ul>
+<li>One correct NAND or NOR gate with two separate inputs and one output</li>
+<li>Second correct logic gate of same type as first with two separate inputs and one output</li>
+<li>Correct connections between logic gates</li>
+<li>Correctly labelled inputs</li>
+</ul>
+<p>Example answers:
+<img alt="" src="images/Screenshot 2026-09-08 at 21-06-19.png" /></p>
+<p><strong>Or</strong></p>
+<p><img alt="" src="images/Screenshot 2026-09-08 at 21-07-23.png" /></p>
+<p><strong>8(b)</strong>
+To store a binary digit / (single) bit.
+<strong>8©</strong>
+<strong>One</strong> mark for each point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Correct application of De Morgan’s Law</li>
+<li>Correct application of Double Negation Law or Distributive Law</li>
+<li>Correct answer
+<img alt="" src="images/Screenshot 2026-09-08 at 21-08-35.png" /></li>
+</ul>
+</div></details></p>
+<h2 id="boolean-algebra">Boolean Algebra</h2>
+<h2 id="boolean-algebra_1">Boolean algebra</h2>
+<h3 id="what-is-boolean-algebra">What is Boolean algebra?</h3>
+<ul>
+<li>Boolean algebra is a <strong>mathematical system</strong> used to <strong>manipulate Boolean values</strong></li>
+<li><strong>Complex expressions</strong> can be made <strong>simpler</strong> using the rules of <strong>Boolean algebra</strong></li>
+<li>This is a <strong>more powerful simplification</strong> method than Karnaugh maps and can simplify expressions that Karnaugh maps cannot</li>
+<li>There are various different <strong>rules</strong> that you need to learn and that can then be applied to certain expressions to simplify them</li>
+<li><strong>Combining these rules</strong> can mean that <strong>complex expressions</strong> can be <strong>reduced to much simpler ones</strong></li>
+</ul>
+<h4 id="general-rules">General rules</h4>
+<ul>
+<li>
+<p><strong>General AND rules</strong></p>
+<ul>
+<li>X AND 0 = 0</li>
+<li>X AND 1 = X</li>
+<li>X AND X = X</li>
+<li>NOT X AND X = 0</li>
+</ul>
+</li>
+<li>
+<p>Note, the value of X is unknown and it is used as a placeholder</p>
+</li>
+<li>
+<p>Therefore <strong>X AND 1 = X</strong> means that the output will be whatever the value of X is</p>
+</li>
+<li>
+<p><strong>General OR rules</strong></p>
+<ul>
+<li>X OR 0 = X</li>
+<li>X OR 1 = 1</li>
+<li>X OR X = X</li>
+<li>NOT X OR X = 1
+<strong>Further Boolean laws ★</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Idempotent law</strong> <code>X + X = X</code> and <code>X · X = X</code></p>
+</li>
+<li>
+<p><strong>Double negation</strong> <code>NOT(NOT X) = X</code></p>
+</li>
+<li>
+<p><strong>Distributive law</strong> <code>A·(B + C) = A·B + A·C</code> and <code>A + B·C = (A + B)·(A + C)</code></p>
+</li>
+<li>
+<p><strong>Absorption law</strong> <code>A + A·B = A</code> and <code>A·(A + B) = A</code></p>
+</li>
+</ul>
+<h3 id="boolean-algebra-notation">Boolean algebra notation</h3>
+<ul>
+<li>In Boolean algebra, expressions are written using shorthand notation:</li>
+</ul>
 <table>
 <thead>
 <tr>
@@ -767,7 +1247,7 @@ Answer
 <li>It means the <strong>whole expression is negated</strong>, not just one part</li>
 <li>Always apply <strong>De Morgan’s Law</strong> starting with the <strong>outermost line</strong> first</li>
 </ul>
-<h2 id="de-morgans-law">De Morgan’s Law</h2>
+<h2 id="de-morgans-law">De Morgan's Law</h2>
 <h3 id="what-is-de-morgans-law">What is De Morgan’s Law?</h3>
 <ul>
 <li>De Morgan’s Laws are used to <strong>simplify Boolean expressions</strong> involving <strong>negation</strong> of <strong>conjunctions (AND)</strong> or <strong>disjunctions (OR)</strong></li>
@@ -833,6 +1313,11 @@ Answer
 </tr>
 </tbody>
 </table>
+<p><strong>De Morgan with three or more variables ★</strong></p>
+<ul>
+<li><code>NOT(A·B·C) = Ā + B̄ + C̄</code> and <code>NOT(A + B + C) = Ā·B̄·C̄</code> — the rule is unchanged: <strong>swap AND with OR, then invert every term</strong></li>
+<li><strong>Remove the outermost bar first</strong>: for <code>NOT(NOT(Ā·B̄) · NOT(Ā·C) · NOT(B·D))</code> the outer bar turns the product into a sum, <code>(Ā·B̄) + (Ā·C) + (B·D)</code>, and the inner bars are then cleared term by term</li>
+</ul>
 <h3 id="why-use-de-morgans-laws">Why use De Morgan’s Laws?</h3>
 <ul>
 <li>Simplifying Boolean expressions using De Morgan’s Laws:
@@ -851,8 +1336,475 @@ Answer</li>
 <li>Correct answer [1 mark]
 <img alt="" src="images/32895_2025-06-04-0ic-kleki.png" /></li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 冬季 P31 Q7 · 10 marks</div><div class="callout-body"><p>The truth table for a logic circuit is shown.</p>
+<table>
+<thead>
+<tr>
+<th>INPUT A</th>
+<th>INPUT B</th>
+<th>INPUT C</th>
+<th>INPUT D</th>
+<th>OUTPUT T</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(a)</strong> Write the Boolean logic expression that corresponds to the given truth table as the sum-of-products. <strong>[3]</strong></p>
+<p>T =</p>
+<p><strong>(b)</strong> Complete the Karnaugh map (K-map) for the given truth table. <strong>[2]</strong></p>
+<table>
+<thead>
+<tr>
+<th>CD \ AB</th>
+<th>00</th>
+<th>01</th>
+<th>11</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>00</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>01</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>11</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>©</strong> Draw loop(s) around appropriate group(s) in the K-map to produce an optimal sum-of-products. <strong>[2]</strong></p>
+<p><strong>(d)(i)</strong> Write the Boolean logic expression from your answer to part © as the simplified sum-of-products. <strong>[2]</strong></p>
+<p>T =</p>
+<p><strong>(d)(ii)</strong> Use Boolean algebra to write your answer to part (d)(i) in its simplest form. <strong>[1]</strong></p>
+<p>T =</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7(a)</td>
+<td><strong>One</strong> mark for every two correct products (<strong>Max 3</strong>)<br>• $(T =)\ \bar{A}.\bar{B}.\bar{C}.D + \bar{A}.\bar{B}.C.D + A.\bar{B}.\bar{C}.D + A.\bar{B}.C.D + A.B.\bar{C}.D + A.B.C.D$</td>
+<td>3</td>
+</tr>
+<tr>
+<td>7(b)</td>
+<td><strong>Two</strong> marks if no errors present; <strong>one</strong> mark if one error present. Completed K-map shown below.</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7©</td>
+<td><strong>One</strong> mark for each correct loop (<strong>Max 2</strong>) — see the mark scheme figure below.</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7(d)(i)</td>
+<td><strong>One</strong> mark for each mark point (<strong>Max 2</strong>)<br>• Any correct Boolean term<br>• Boolean terms and operator correct and no other terms present<br><br>$(T =)\ A.D + \bar{B}.D$ // $\bar{B}.D + A.D$</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7(d)(ii)</td>
+<td><strong>One</strong> mark for simplest form (<strong>Max 1</strong>)<br>• $(T =)\ D.(A . \bar{B})$</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>7(b) Completed K-map</strong> (CD down the rows, AB across the columns):</p>
+<table>
+<thead>
+<tr>
+<th>CD \ AB</th>
+<th>00</th>
+<th>01</th>
+<th>11</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>00</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>01</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>11</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>7© Loops:</strong></p>
+<p><img alt="" src="images/9618_w24_qp_31_ms_q7c_kmap_loops.png" /></p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 夏季 P32 Q9 · 10 marks</div><div class="callout-body"><p>This truth table represents a logic circuit.</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>(a)</strong> Write the Boolean logic expression that corresponds to the given truth table as the sum-of-products. <strong>[3]</strong></p>
+<p><strong>(b)</strong> Complete the Karnaugh map (K-map) for the given truth table. <strong>[2]</strong></p>
+<table>
+<thead>
+<tr>
+<th>AB\CD</th>
+<th>00</th>
+<th>01</th>
+<th>11</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>01</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>©</strong> Draw loop(s) around appropriate group(s) in the K-map to produce an optimal sum-of-products. <strong>[2]</strong></p>
+<p><strong>(d)</strong> Write the Boolean logic expression from your answer to part © as a simplified sum-of-products. <strong>[2]</strong></p>
+<p><strong>(e)</strong> Use Boolean algebra to give your answer to part (d) in its simplest form. <strong>[1]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9(a)</td>
+<td><strong>One</strong> mark for every two correct products (<strong>Max 3</strong>)<br>Z = A̅B̅C̅D̅ + A̅B̅C̅D + A̅B̅CD̅ + A̅B̅CD + A̅BCD̅ + A̅BCD</td>
+<td>3</td>
+</tr>
+<tr>
+<td>9(b)</td>
+<td><strong>Two</strong> marks if no errors present<br>One mark if one error present<br><img alt="" src="images/Screenshot 2026-09-10 at 13-58-56.png" /></td>
+<td>2</td>
+</tr>
+<tr>
+<td>9©</td>
+<td><strong>One</strong> mark for each correct loop (<strong>Max 2</strong>)<br><img alt="" src="images/Screenshot 2026-09-10 at 14-00-06.png" /></td>
+<td>2</td>
+</tr>
+<tr>
+<td>9(d)</td>
+<td>One mark for each mark point (Max 2)<br>• Any correct Boolean term<br>• Boolean terms and operator correct and no other terms present<br><br>Z = A̅B̅ + A̅C</td>
+<td></td>
+</tr>
+<tr>
+<td>9(e)</td>
+<td><strong>One</strong> mark for simplest form (<strong>Max 1</strong>)<br><br>Z = A̅( B̅ + C )</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
 <h2 id="karnaugh-maps">Karnaugh Maps</h2>
-<h2 id="karnaugh-maps_2">Karnaugh maps</h2>
+<h2 id="karnaugh-maps_1">Karnaugh maps</h2>
 <h3 id="what-is-a-karnaugh-map">What is a Karnaugh map?</h3>
 <ul>
 <li>A Karnaugh map (<strong>KMap</strong>) is a tool that is used for <strong>simplifying Boolean algebra expressions</strong></li>
@@ -902,7 +1854,7 @@ Answer</li>
 <li>In this example there will be <strong>3 variables</strong> A,B and C so the empty KMap will look like this:
 <img alt="empty-k-map" src="images/empty-k-map.png" /></li>
 </ul>
-<h4 id="step-1_2">Step 1:</h4>
+<h4 id="step-1_1">Step 1:</h4>
 <ul>
 <li>Split this long term at each <strong>OR</strong> giving 4 smaller expressions (subterms) to add to the table:
 <ul>
@@ -913,7 +1865,7 @@ Answer</li>
 </ul>
 </li>
 </ul>
-<h4 id="step-2_2">Step 2:</h4>
+<h4 id="step-2_1">Step 2:</h4>
 <ul>
 <li>Take the first subterm <strong>¬A^¬B^C</strong></li>
 <li>Put a <strong>1</strong> in the map for <strong>every cell where this term would be TRUE (1)</strong></li>
@@ -921,13 +1873,13 @@ Answer</li>
 <li>So put a <strong>1</strong> in every cell in the KMap where <strong>A is 0</strong>, <strong>B is 0</strong> and <strong>C is 1</strong>
 <img alt="k-map-2" src="images/k-map-2.png" /></li>
 </ul>
-<h4 id="step-3_2">Step 3:</h4>
+<h4 id="step-3_1">Step 3:</h4>
 <ul>
 <li>The next subterm is <strong>¬A^B^¬C</strong></li>
 <li>Put a <strong>1</strong> in the KMap where <strong>A is 0</strong>, <strong>B is 1</strong> and <strong>C is 0</strong>
 <img alt="k-map-3" src="images/k-map-3.png" /></li>
 </ul>
-<h4 id="step-4_2">Step 4:</h4>
+<h4 id="step-4_1">Step 4:</h4>
 <ul>
 <li>The next subterm is <strong>A^¬B^C</strong></li>
 <li>Put a <strong>1</strong> in the KMap where <strong>A is 1</strong>, <strong>B is 0</strong> and <strong>C is 1</strong>
@@ -941,17 +1893,34 @@ Answer</li>
 </ul>
 <h3 id="making-the-groups">Making the groups</h3>
 <ul>
-<li>Once you have written the 1s and 0s into your KMap, you can then use this to <strong>simply the expression</strong></li>
-<li>In order to do this, you need to <strong>identify the groups</strong></li>
-<li>This is the <strong>key</strong> to using the Karnaugh map to derive the simplified expression</li>
-<li>The aim of making the groups is to
+<li>
+<p>Once you have written the 1s and 0s into your KMap, you can then use this to <strong>simplify the expression</strong></p>
+</li>
+<li>
+<p>In order to do this, you need to <strong>identify the groups</strong></p>
+</li>
+<li>
+<p>This is the <strong>key</strong> to using the Karnaugh map to derive the simplified expression</p>
+</li>
+<li>
+<p>The aim of making the groups is to</p>
 <ul>
 <li><strong>Make rectangular groups</strong></li>
 <li><strong>Make groups that are as large as possible</strong></li>
 <li><strong>Make groups that contain either 8,4,2 or 1 ones</strong></li>
 <li><strong>Groups can overlap</strong> (i.e. some ones can be in multiple groups)</li>
-<li><strong>The Karnaugh map ‘grid’ wraps round in all directions so the groups can wrap round</strong></li>
+<li><strong>The Karnaugh map ‘grid’ wraps round in all directions so the groups can wrap round</strong>
+<strong>Rules that decide the final expression ★</strong></li>
 </ul>
+</li>
+<li>
+<p><strong>Every 1 must be covered</strong> — each 1 has to lie inside at least one group; groups may overlap, and a group of 2ⁿ cells removes the n variables that change across it</p>
+</li>
+<li>
+<p><strong>Don’t care terms</strong> — cells marked X are input combinations that cannot occur; they may be treated as 1 to enlarge a group, or left alone if that gives fewer terms</p>
+</li>
+<li>
+<p><strong>Grouping the 0s</strong> — looping the 0s instead of the 1s produces a <strong>product-of-sums</strong> expression, with each variable inverted relative to its constant value inside the group</p>
 </li>
 </ul>
 <h4 id="example-grouping">Example grouping</h4>
@@ -959,7 +1928,7 @@ Answer</li>
 <ul>
 <li>So this would be one group
 <img alt="k-map-6" src="images/k-map-6.png" /></li>
-<li>This group would represent <strong>A</strong> since within this group bothC and B change (have zeros and ones) whereas for A all the cells are one.
+<li>This group would represent <strong>A</strong> since within this group both C and B change (have zeros and ones) whereas for A all the cells are one.
 <strong>Group 2:</strong></li>
 <li>This would be another group (<strong>note the wrapping around</strong>).
 <img alt="k-map-7" src="images/k-map-7.png" /></li>
@@ -969,6 +1938,304 @@ Answer</li>
 <li>So the simplified expression is <strong>A v ¬B</strong>
 In questions where you have to use a Karnaugh Map always show the groups by drawing a box/circle round them.</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 夏季 P31 Q6 · 10 marks</div><div class="callout-body"><p>The diagram shows a logic circuit.</p>
+<p><img alt="" src="images/9618_s24_qp_31_q6_logic_circuit.png" /></p>
+<p><strong>(a)</strong> Complete the truth table for the given logic circuit. Show your working. <strong>[3]</strong></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>P</th>
+<th>Q</th>
+<th>R</th>
+<th>S</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>(b)</strong> Write the Boolean expression that corresponds to the logic circuit as a sum-of-products. <strong>[2]</strong></p>
+<p>Z =</p>
+<p><strong>©(i)</strong> Complete the Karnaugh map (K-map) for the Boolean expression: <strong>[2]</strong></p>
+<p>$Z = \bar{A}.\bar{B}.\bar{C} + \bar{A}.\bar{B}.C + A.\bar{B}.\bar{C} + A.\bar{B}.C + A.B.\bar{C} + A.B.C$</p>
+<table>
+<thead>
+<tr>
+<th>A \ BC</th>
+<th>00</th>
+<th>01</th>
+<th>11</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>©(ii)</strong> Draw loop(s) around appropriate group(s) in the K-map to produce an optimal sum-of-products. <strong>[2]</strong></p>
+<p><strong>©(iii)</strong> Write the Boolean expression from your answer to part ©(ii) as a simplified sum-of-products. <strong>[1]</strong></p>
+<p>Z =</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6(a)</td>
+<td><strong>One</strong> mark for working (all four columns P, Q, R and S); <br><strong>one</strong> mark for first four rows of column Z; <br><strong>one</strong> mark for second four rows of column Z. <br><br>Completed truth table shown below.</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6(b)</td>
+<td><strong>Two</strong> marks for all five correct terms and no extras; <br><strong>one</strong> mark for any three correct terms.<br><br>• $(Z =)\ \bar{A}.\bar{B}.\bar{C} + \bar{A}.\bar{B}.C + A.\bar{B}.C + A.B.\bar{C} + A.B.C$</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6©(i)</td>
+<td><strong>Two</strong> marks if all correct; <strong>one</strong> mark if one error present.<br><br>Completed K-map shown below.</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6©(ii)</td>
+<td><strong>One</strong> mark for each correct loop (<strong>Max 2</strong>) — see the mark scheme figure below.</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6©(iii)</td>
+<td>$A + \bar{B}$</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>6(a) Completed truth table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>P</th>
+<th>Q</th>
+<th>R</th>
+<th>S</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>6©(i) Completed K-map:</strong></p>
+<table>
+<thead>
+<tr>
+<th>A \ BC</th>
+<th>00</th>
+<th>01</th>
+<th>11</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>6©(ii) Loops:</strong></p>
+<p><img alt="" src="images/9618_s24_ms_31_q6cii_kmap_loops.png" /></p>
+</div></details></p>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="151-processorparallel-processing-virtual-machine.html" title="Previous: 15.1 Processor，Parallel Processing &amp; Virtual Machine" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">15.1 Processor，Parallel Processing &amp; Virtual Machine</span></a>
