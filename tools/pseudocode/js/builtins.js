@@ -47,7 +47,7 @@ export function boundsLabel(v) {
   return `ARRAY[${v.v.dims.map(([lo, hi]) => `${lo}:${hi}`).join(",")}] OF ${v.v.of}`;
 }
 
-function want(v, types, name, got, argsIndex, diag, pos) {
+function want(v, types, name, diag, pos) {
   if (!v) {
     diag.push(new Diagnostic("E_TYPE_ARG", pos, { name, want: types.join(" or "), got: "nothing" }));
     return false;
@@ -59,32 +59,32 @@ function want(v, types, name, got, argsIndex, diag, pos) {
   return true;
 }
 
+const charOrString = (d) => (d && d.id === "0478" ? ["CHAR", "STRING"] : ["CHAR"]);
+
 export const BUILTINS = {
   LENGTH: {
-    args: [["STRING"]],
+    args: () => [["STRING"]],
     returns: "INTEGER",
     signature: "LENGTH(ThisString : STRING) RETURNS INTEGER",
     doc: "the number of characters in a string",
-    call: (a, ctx) => V("INTEGER", String(a[0].v).length),
+    call: (a) => V("INTEGER", String(a[0].v).length),
   },
   MID: {
-    args: [["STRING"], ["INTEGER"], ["INTEGER"]],
+    args: () => [["STRING"], ["INTEGER"], ["INTEGER"]],
     returns: "STRING",
     signature: "MID(ThisString : STRING, x : INTEGER, y : INTEGER) RETURNS STRING",
     doc: "y characters starting at position x",
-    call: (a, ctx) => {
-      const s = String(a[0].v);
-      const x = a[1].v;
-      const y = a[2].v;
-      if (x < 1 || y < 0) {
-        ctx.diag.push(new Diagnostic("E_TYPE_ARG", ctx.pos, { name: "MID", want: "a start position of 1 or more", got: String(x) }));
-        return V("STRING", "");
-      }
-      return V("STRING", s.slice(x - 1, x - 1 + y));
-    },
+    call: (a, ctx) => substring(a, ctx, "MID"),
+  },
+  SUBSTRING: {
+    args: () => [["STRING"], ["INTEGER"], ["INTEGER"]],
+    returns: "STRING",
+    signature: "SUBSTRING(ThisString : STRING, start : INTEGER, length : INTEGER) RETURNS STRING",
+    doc: "length characters starting at position start",
+    call: (a, ctx) => substring(a, ctx, "SUBSTRING"),
   },
   RIGHT: {
-    args: [["STRING"], ["INTEGER"]],
+    args: () => [["STRING"], ["INTEGER"]],
     returns: "STRING",
     signature: "RIGHT(ThisString : STRING, x : INTEGER) RETURNS STRING",
     doc: "rightmost x characters",
@@ -95,44 +95,109 @@ export const BUILTINS = {
     },
   },
   LCASE: {
-    args: [["CHAR"]],
+    args: (d) => [charOrString(d)],
     returns: "CHAR",
     signature: "LCASE(ThisChar : CHAR) RETURNS CHAR",
-    doc: "the lower-case equivalent of a character",
+    doc: "the lower-case equivalent",
     call: (a) => V("CHAR", String(a[0].v).toLowerCase()),
   },
   UCASE: {
-    args: [["CHAR"]],
+    args: (d) => [charOrString(d)],
     returns: "CHAR",
     signature: "UCASE(ThisChar : CHAR) RETURNS CHAR",
-    doc: "the upper-case equivalent of a character",
+    doc: "the upper-case equivalent",
     call: (a) => V("CHAR", String(a[0].v).toUpperCase()),
   },
   INT: {
-    args: [["REAL", "INTEGER"]],
+    args: () => [["REAL", "INTEGER"]],
     returns: "INTEGER",
     signature: "INT(x : REAL) RETURNS INTEGER",
     doc: "the integer part of x",
     call: (a) => V("INTEGER", Math.trunc(Number(a[0].v))),
   },
   RAND: {
-    args: [["INTEGER", "REAL"]],
+    args: () => [],
+    optionalArgs: () => [["INTEGER", "REAL"]],
     returns: "REAL",
     signature: "RAND(x : INTEGER) RETURNS REAL",
-    doc: "a random real in the range 0 up to but not including x",
-    call: (a, ctx) => V("REAL", ctx.random() * Number(a[0].v)),
+    doc: "a random real from 0 up to but not including x",
+    call: (a, ctx) => V("REAL", ctx.random() * (a.length ? Number(a[0].v) : 1)),
+  },
+  RANDOM: {
+    args: () => [],
+    returns: "REAL",
+    signature: "RANDOM() RETURNS REAL",
+    doc: "a random number between 0 and 1 inclusive",
+    call: (a, ctx) => V("REAL", ctx.random()),
+  },
+  ROUND: {
+    args: () => [["REAL", "INTEGER"], ["INTEGER"]],
+    returns: "REAL",
+    signature: "ROUND(x : REAL, places : INTEGER) RETURNS REAL",
+    doc: "x rounded to places decimal places",
+    call: (a) => {
+      const factor = Math.pow(10, Number(a[1].v));
+      return V("REAL", Math.round(Number(a[0].v) * factor) / factor);
+    },
+  },
+  MOD: {
+    args: () => [["INTEGER"], ["INTEGER"]],
+    returns: "INTEGER",
+    signature: "MOD(a : INTEGER, b : INTEGER) RETURNS INTEGER",
+    doc: "the remainder of a divided by b",
+    call: (a, ctx) => {
+      if (Number(a[1].v) === 0) {
+        ctx.diag.push(new Diagnostic("E_MOD_ZERO", ctx.pos, { line: ctx.pos.line }));
+        return V("INTEGER", 0);
+      }
+      return V("INTEGER", Number(a[0].v) % Number(a[1].v));
+    },
+  },
+  DIV: {
+    args: () => [["INTEGER"], ["INTEGER"]],
+    returns: "INTEGER",
+    signature: "DIV(a : INTEGER, b : INTEGER) RETURNS INTEGER",
+    doc: "the quotient of a divided by b, fraction discarded",
+    call: (a, ctx) => {
+      if (Number(a[1].v) === 0) {
+        ctx.diag.push(new Diagnostic("E_DIV_ZERO", ctx.pos, { line: ctx.pos.line }));
+        return V("INTEGER", 0);
+      }
+      return V("INTEGER", Math.trunc(Number(a[0].v) / Number(a[1].v)));
+    },
   },
 };
 
+function substring(a, ctx, name) {
+  const s = String(a[0].v);
+  const start = Number(a[1].v);
+  const count = Number(a[2].v);
+  if (start < 1 || count < 0) {
+    ctx.diag.push(new Diagnostic("E_TYPE_ARG", ctx.pos, { name, want: "a start position of 1 or more", got: String(start) }));
+    return V("STRING", "");
+  }
+  return V("STRING", s.slice(start - 1, start - 1 + count));
+}
+
 export const BUILTIN_NAMES = Object.keys(BUILTINS);
 
-export function checkBuiltinCall(name, args, pos, diag) {
+export function builtinNamesFor(dialect, homeList) {
+  return homeList.filter((name) => BUILTINS[name]);
+}
+
+export function checkBuiltinCall(name, args, pos, diag, dialect) {
   const fn = BUILTINS[name.toUpperCase()];
   if (!fn) return null;
-  if (args.length !== fn.args.length) {
-    diag.push(new Diagnostic("E_ARITY", pos, { name, want: fn.args.length, got: args.length }));
+  const required = fn.args(dialect);
+  const optional = fn.optionalArgs ? fn.optionalArgs(dialect) : [];
+  const total = required.length + optional.length;
+  if (args.length < required.length || args.length > total) {
+    diag.push(new Diagnostic("E_ARITY", pos, { name, want: required.length, got: args.length }));
     return fn;
   }
-  args.forEach((a, i) => want(a, fn.args[i], name, null, i, diag, pos));
+  args.forEach((a, i) => {
+    const types = i < required.length ? required[i] : optional[i - required.length];
+    want(a, types, name, diag, pos);
+  });
   return fn;
 }

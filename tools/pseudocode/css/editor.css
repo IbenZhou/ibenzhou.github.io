@@ -73,6 +73,16 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 [data-theme="dark"] button.primary { color: #17120f; }
 
+
+.syllabus { display: flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.syllabus button {
+  border: none; border-radius: 0; background: var(--bg-raised);
+  padding: 4px 11px; font-size: 13px; line-height: 1.6;
+}
+.syllabus button + button { border-left: 1px solid var(--line); }
+.syllabus button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+[data-theme="dark"] .syllabus button.active { color: #17120f; }
+
 .run-group, .file-group { display: flex; gap: 6px; }
 select#examples { max-width: 240px; }
 

@@ -1,4 +1,4 @@
-import { NOT_IN_V1, DATA_TYPES, Diagnostic } from "./tokeniser.js";
+import { NOT_IN_V1, ALEVEL_ONLY, DATA_TYPES, Diagnostic } from "./tokeniser.js";
 
 const BLOCK_OPEN = {
   IF: "ENDIF",
@@ -18,7 +18,8 @@ function isKey(tok, value) {
   return tok && tok.type === "KEY" && tok.value === value;
 }
 
-export function parse(tok) {
+export function parse(tok, dialect) {
+  const d = dialect || { id: "9618", hasDate: true, hasByRef: true, hasCaseRanges: true, whileDo: "note", callParens: "required", constantForm: "equals", thenOwnLine: "note", caseRanges: true };
   const lines = tok.lines;
   const diagnostics = [...tok.errors];
   let li = 0;
@@ -84,6 +85,10 @@ export function parse(tok) {
 
   function deferred(t) {
     return !!t && t.type === "IDENT" && NOT_IN_V1.has(t.value.toUpperCase());
+  }
+
+  function deferredCode(word) {
+    return d.id === "0478" && ALEVEL_ONLY.has(word) ? "E_IGCSE_NOT_IN_SYLLABUS" : "E_UNSUPPORTED";
   }
 
   const DEFERRED_BLOCKS = { TYPE: "ENDTYPE", CLASS: "ENDCLASS" };
@@ -169,9 +174,13 @@ export function parse(tok) {
       if (!t) break;
       let op = null;
       if (t.type === "OP" && (t.value === "*" || t.value === "/")) op = t.value;
+      else if (t.type === "OP" && (t.value === "^" || t.value === "POW")) op = "^";
       else if (t.type === "KEY" && (t.value === "MOD" || t.value === "DIV")) op = t.value;
       if (!op) break;
       next();
+      if (d.id === "0478" && (op === "MOD" || op === "DIV")) {
+        err("W_IGCSE_INFIX_MOD", posOf(t), { alt: `${op}(a, b)` });
+      }
       left = { k: "bin", op, l: left, r: parseUnary(), pos: posOf(t) };
     }
     return left;
@@ -213,6 +222,14 @@ export function parse(tok) {
       next();
       return { k: "bool", v: t.value === "TRUE", pos: posOf(t) };
     }
+    if (t.type === "KEY" && (t.value === "MOD" || t.value === "DIV")) {
+      const after = lines[li].tokens[ci + 1];
+      if (after && after.type === "PUNCT" && after.value === "(") {
+        next();
+        next();
+        return { k: "call", name: t.value, args: parseArgs(), pos: posOf(t) };
+      }
+    }
     if (t.type === "PUNCT" && t.value === "(") {
       next();
       const inner = parseExpression();
@@ -220,7 +237,8 @@ export function parse(tok) {
       return inner;
     }
     if (deferred(t)) {
-      err("E_UNSUPPORTED", posOf(t), { kw: t.value.toUpperCase() });
+      const word = t.value.toUpperCase();
+      err(deferredCode(word), posOf(t), { kw: word });
       next();
       return { k: "num", v: 0, t: "INTEGER", pos: posOf(t) };
     }
@@ -318,6 +336,7 @@ export function parse(tok) {
       const ofTok = peek();
       if (ofTok && ofTok.type === "KEY" && DATA_TYPES.has(ofTok.value)) {
         next();
+        if (ofTok.value === "DATE" && !d.hasDate) err("E_IGCSE_NO_DATE", posOf(ofTok), {});
         return { name: nameTok.value, type: "ARRAY", of: ofTok.value, bounds, pos: posOf(nameTok) };
       }
       if (ofTok && ofTok.type === "IDENT") {
@@ -330,6 +349,7 @@ export function parse(tok) {
     }
     if (t && t.type === "KEY" && DATA_TYPES.has(t.value)) {
       next();
+      if (t.value === "DATE" && !d.hasDate) err("E_IGCSE_NO_DATE", posOf(t), {});
       return { name: nameTok.value, type: t.value, pos: posOf(nameTok) };
     }
     if (t && t.type === "IDENT") {
@@ -344,13 +364,16 @@ export function parse(tok) {
   function parseConstant() {
     const start = posOf(next());
     const nameTok = expectIdent("a constant name");
-    let value = null;
-    if (peek() && peek().type === "OP" && peek().value === "=") next();
-    else if (peek() && peek().type === "OP" && peek().canon) {
-      err("E_BAD_CONSTANT", posOf(here()), {});
+    const opTok = peek();
+    if (opTok && opTok.type === "OP" && (opTok.value === "=" || opTok.canon)) {
       next();
-    } else err("E_BAD_CONSTANT", posOf(here()), {});
-    value = parseLiteralOnly();
+      const usedArrow = Boolean(opTok.canon);
+      if (d.constantForm === "equals" && usedArrow) err("W_ALEVEL_CONSTANT_ARROW", posOf(opTok), {});
+      if (d.constantForm === "arrow" && !usedArrow) err("W_IGCSE_CONSTANT_EQUALS", posOf(opTok), {});
+    } else {
+      err("E_BAD_CONSTANT", posOf(here()), {});
+    }
+    const value = parseLiteralOnly();
     finishLine(start);
     return { k: "constant", name: nameTok && nameTok.value, value, pos: start };
   }
@@ -423,8 +446,16 @@ export function parse(tok) {
   function parseIf() {
     const start = posOf(next());
     const cond = parseExpression();
-    if (!eatKey("THEN")) err("E_MISSING_THEN", start, {});
-    else restOfLineIsClean(start);
+    if (eatKey("THEN")) {
+      restOfLineIsClean(start);
+    } else if (atEol() && lines[li + 1] && firstToken(lines[li + 1]) && isKey(firstToken(lines[li + 1]), "THEN")) {
+      advanceLine();
+      next();
+      if (d.thenOwnLine === "note") err("W_ALEVEL_THEN_LINE", start, {});
+      restOfLineIsClean(start);
+    } else {
+      err("E_MISSING_THEN", start, {});
+    }
     advanceLine();
     const thenBody = parseBody(["ELSE", "ENDIF"]);
     let elseBody = null;
@@ -476,15 +507,10 @@ export function parse(tok) {
       if (lineStartsWith("OTHERWISE")) {
         const labelPos = posOf(firstToken(lines[li]));
         next();
+        eatPunct(":");
         const body = [];
-        if (eatPunct(":")) {
-          if (!atEol()) body.push(parseStatement());
-          else { advanceLine(); body.push(...parseCaseBody()); }
-        } else {
-          err("E_MISSING_COLON", labelPos, { text: "OTHERWISE" });
-          advanceLine();
-          body.push(...parseCaseBody());
-        }
+        if (!atEol()) body.push(parseStatement());
+        else { advanceLine(); body.push(...parseCaseBody()); }
         otherwise = body;
         sawOtherwise = true;
         continue;
@@ -523,7 +549,11 @@ export function parse(tok) {
     for (;;) {
       const lo = parseCaseLiteral(labelPos);
       let hi = null;
-      if (isKey(peek(), "TO")) { next(); hi = parseCaseLiteral(labelPos); }
+      if (isKey(peek(), "TO")) {
+        next();
+        hi = parseCaseLiteral(labelPos);
+        if (!d.caseRanges) err("W_IGCSE_CASE_RANGE", labelPos, {});
+      }
       values.push({ lo, hi });
       if (eatPunct(",")) continue;
       break;
@@ -595,8 +625,10 @@ export function parse(tok) {
     const start = posOf(next());
     const cond = parseExpression();
     if (isKey(peek(), "DO")) {
-      err("E_UNSUPPORTED", posOf(peek()), { kw: "DO (WHILE <condition> then the statements on the next line)" });
-      next();
+      const doTok = next();
+      if (d.whileDo === "note") err("W_ALEVEL_WHILE_DO", posOf(doTok), {});
+    } else if (d.whileDo === "required") {
+      err("W_IGCSE_WHILE_DO", start, {});
     }
     restOfLineIsClean(start);
     advanceLine();
@@ -627,8 +659,15 @@ export function parse(tok) {
     let byref = false;
     if (eatPunct(")")) return params;
     for (;;) {
-      if (eatKey("BYREF")) byref = true;
-      else if (eatKey("BYVAL")) byref = false;
+      const refTok = isKey(peek(), "BYREF") || isKey(peek(), "BYVAL") ? peek() : null;
+      if (refTok) {
+        next();
+        byref = refTok.value === "BYREF";
+        if (!d.hasByRef) {
+          err("E_IGCSE_NO_BYREF", posOf(refTok), { kw: refTok.value });
+          byref = false;
+        }
+      }
       const nameTok = expectIdent("a parameter name");
       if (!nameTok) break;
       let type = null;
@@ -656,7 +695,7 @@ export function parse(tok) {
     const nameTok = expectIdent("a routine name");
     let params = [];
     if (eatPunct("(")) params = parseParams();
-    else err("E_UNEXPECTED", posOf(here()), { what: "'(' after the routine name" });
+    else if (d.callParens !== "optional") err("E_UNEXPECTED", posOf(here()), { what: "'(' after the routine name" });
 
     let retType = null;
     if (isFunction) {
@@ -692,11 +731,16 @@ export function parse(tok) {
   function parseCall() {
     const start = posOf(next());
     const nameTok = expectIdent("a procedure name");
+    const name = nameTok ? nameTok.value : "";
     let args = [];
-    if (eatPunct("(")) args = parseArgs();
-    else err("W_CALL_PARENS", start, { name: nameTok ? nameTok.value : "" });
+    if (eatPunct("(")) {
+      args = parseArgs();
+      if (d.callParens === "optional" && args.length === 0) err("W_IGCSE_CALL_PARENS", start, { name });
+    } else if (d.callParens === "required") {
+      err("W_CALL_PARENS", start, { name });
+    }
     finishLine(start);
-    return { k: "call", name: nameTok && nameTok.value, args, pos: start };
+    return { k: "call", name, args, pos: start };
   }
 
   function parseStatement() {
@@ -706,9 +750,10 @@ export function parse(tok) {
     if (!t || t.type === "EOL") { advanceLine(); return null; }
     if (deferred(t)) {
       const p = posOf(t);
-      err("E_UNSUPPORTED", p, { kw: t.value.toUpperCase() });
-      skipDeferredBlock(t.value.toUpperCase());
-      return { k: "unsupported", name: t.value.toUpperCase(), pos: p };
+      const word = t.value.toUpperCase();
+      err(deferredCode(word), p, { kw: word });
+      skipDeferredBlock(word);
+      return { k: "unsupported", name: word, pos: p };
     }
     if (t.type === "KEY") {
       switch (t.value) {

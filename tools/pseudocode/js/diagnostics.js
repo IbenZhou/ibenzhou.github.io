@@ -25,6 +25,10 @@ export const CODES = {
     (c) => `'${c.op}' is not in the 9618 guide. Multiply it out, or write a function`,
     (c) => `考纲伪代码没有 ${c.op} 幂运算，请展开或用函数`,
   ),
+  E_IGCSE_POWER_CARET: d(
+    () => `IGCSE writes a power with ^, for example Radius ^ 2`,
+    () => `IGCSE 用 ^ 表示幂，例如 Radius ^ 2`,
+  ),
   E_UNTERMINATED_STRING: d(
     () => `String is missing its closing double quote`,
     () => `字符串缺少右引号`,
@@ -272,6 +276,100 @@ export const CODES = {
   W_LOWER_KEYWORD: d(
     (c) => `'${c.kw}' is printed as ${c.fixed} in an exam paper`,
     () => `试卷里关键字是大写的`,
+  ),
+
+  // ---- constructs that belong to the other syllabus -------------------------
+  E_IGCSE_NO_DATE: d(
+    () => `IGCSE 0478 has no DATE data type; it has INTEGER, REAL, CHAR, STRING and BOOLEAN`,
+    () => `IGCSE 考纲没有 DATE 类型`,
+  ),
+  E_IGCSE_NO_BYREF: d(
+    (c) => `IGCSE 0478 has no ${c.kw}; parameters are always passed by value`,
+    (c) => `IGCSE 考纲没有 ${c.kw}，参数一律按值传递`,
+  ),
+  E_IGCSE_NOT_IN_SYLLABUS: d(
+    (c) => `${c.kw} is part of the A Level syllabus, not IGCSE 0478`,
+    (c) => `${c.kw} 属于 A Level 考纲，不在 IGCSE 0478 范围内`,
+  ),
+  E_IGCSE_UNDERSCORE: d(
+    (c) => `IGCSE identifiers may not contain an underscore: rename '${c.name}' to '${c.fixed}'`,
+    (c) => `IGCSE 的标识符不能含下划线`,
+  ),
+  W_IGCSE_PASCAL: d(
+    (c) => `IGCSE identifiers start with a capital letter: ${c.fixed}`,
+    (c) => `IGCSE 标识符习惯以大写字母开头：${c.fixed}`,
+  ),
+  W_IGCSE_SUBSTRING: d(
+    (c) => `IGCSE uses ${c.alt}(s, start, length) rather than this spelling`,
+    (c) => `IGCSE 用 ${c.alt} 取子串`,
+  ),
+  W_IGCSE_NO_RIGHT: d(
+    () => `IGCSE has no RIGHT(); use SUBSTRING(s, LENGTH(s) - n + 1, n)`,
+    () => `IGCSE 没有 RIGHT，请用 SUBSTRING(s, LENGTH(s) - n + 1, n)`,
+  ),
+  W_IGCSE_ROUND: d(
+    (c) => `IGCSE rounds with ${c.alt}; there is no INT()`,
+    (c) => `IGCSE 用 ${c.alt} 取整`,
+  ),
+  W_IGCSE_RANDOM: d(
+    () => `IGCSE uses RANDOM() with no argument, giving 0 to 1 inclusive`,
+    () => `IGCSE 用 RANDOM()，返回 0 到 1`,
+  ),
+  W_IGCSE_INFIX_MOD: d(
+    (c) => `IGCSE writes this as a function: ${c.alt}`,
+    (c) => `IGCSE 要写成函数形式：${c.alt}`,
+  ),
+  W_IGCSE_CASE_RANGE: d(
+    () => `Guide 0478: keep CASE branches to single values, and use IF for ranges`,
+    () => `IGCSE 的 CASE 只用单值，范围请改用 IF`,
+  ),
+  W_IGCSE_CONSTANT_EQUALS: d(
+    () => `IGCSE declares a constant with the arrow: CONSTANT Name ← 6.50`,
+    () => `IGCSE 用 <- 声明常量`,
+  ),
+  W_IGCSE_CALL_PARENS: d(
+    (c) => `IGCSE calls a procedure with no parameters as CALL ${c.name} without brackets`,
+    (c) => `IGCSE 无参调用不写括号：CALL ${c.name}`,
+  ),
+  W_IGCSE_WHILE_DO: d(
+    () => `IGCSE writes the loop as WHILE <condition> DO`,
+    () => `IGCSE 的 WHILE 要写 DO`,
+  ),
+  W_IGCSE_STRING_CASE: d(
+    (c) => `IGCSE allows ${c.name}(STRING); A Level restricts it to CHAR`,
+    (c) => `IGCSE 的 ${c.name} 可接受字符串`,
+  ),
+  W_ALEVEL_MID: d(
+    (c) => `A Level uses ${c.alt}(s, start, length) rather than this spelling`,
+    (c) => `A Level 用 ${c.alt} 取子串`,
+  ),
+  W_ALEVEL_INT: d(
+    (c) => `A Level truncates with ${c.alt}(x); ROUND is not in the 9618 guide`,
+    (c) => `A Level 用 ${c.alt} 取整`,
+  ),
+  W_ALEVEL_RAND: d(
+    () => `A Level uses RAND(x), a real from 0 up to but not including x`,
+    () => `A Level 用 RAND(x)，范围 0 到 x`,
+  ),
+  W_ALEVEL_FUNCTION_MOD: d(
+    (c) => `A Level writes this as an operator: ${c.alt}`,
+    (c) => `A Level 写成运算符形式：${c.alt}`,
+  ),
+  W_ALEVEL_WHILE_DO: d(
+    () => `The 9618 guide has no DO: WHILE <condition> then the statements on the next line`,
+    () => `A Level 的 WHILE 后面不写 DO`,
+  ),
+  W_ALEVEL_THEN_LINE: d(
+    () => `A Level prints THEN at the end of the IF line: IF <condition> THEN`,
+    () => `A Level 的 THEN 与 IF 同行`,
+  ),
+  W_ALEVEL_CONSTANT_ARROW: d(
+    () => `A Level declares a constant with equals: CONSTANT Name = 6.50`,
+    () => `A Level 用 = 声明常量`,
+  ),
+  W_ALEVEL_CALL_PARENS: d(
+    (c) => `A Level writes the call as CALL ${c.name}()`,
+    (c) => `A Level 的无参调用要写括号`,
   ),
 };
 

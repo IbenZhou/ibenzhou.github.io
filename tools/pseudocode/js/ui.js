@@ -1,7 +1,8 @@
 import { analyse, runInteractive, formatDiagnostics } from "./engine.js";
-import { EXAMPLES } from "./examples.js";
-import { REFERENCE, KEYWORD_LIST, BUILTIN_LIST } from "./reference.js";
+import { examplesFor } from "./examples.js";
+import { referenceFor, keywordsFor, builtinListFor } from "./reference.js";
 import { BUILTINS } from "./builtins.js";
+import { DIALECTS, dialectOf } from "./dialect.js";
 
 const el = (id) => document.getElementById(id);
 const dom = {
@@ -13,9 +14,10 @@ const dom = {
   promptOk: el("prompt-ok"), promptCancel: el("prompt-cancel"),
 };
 
-const STORE = { doc: "pseudocode9618.doc", inputs: "pseudocode9618.inputs", theme: "pseudocode9618.theme" };
+const STORE = { doc: "pseudocode9618.doc", inputs: "pseudocode9618.inputs", theme: "pseudocode9618.theme", syllabus: "pseudocode9618.syllabus" };
 
 const state = {
+  dialect: "9618",
   running: false, paused: false, stepMode: false, stopRequested: false,
   resume: null, lastLine: 0, renderedOutputs: 0, renderedTraceRows: -1, breakpoints: new Set(), decorations: [], currentDecorations: [],
 };
@@ -101,9 +103,13 @@ function registerLanguage() {
     ],
   });
 
-  monaco.languages.setMonarchTokensProvider("pseudocode", {
-    keywords: KEYWORD_LIST,
-    builtins: BUILTIN_LIST,
+  monaco.languages.setMonarchTokensProvider("pseudocode", monarchFor(state.dialect));
+}
+
+function monarchFor(d) {
+  return {
+    keywords: keywordsFor(d.id),
+    builtins: builtinListFor(d.id),
     tokenizer: {
       root: [
         [/\/\/.*/, "comment"],
@@ -124,8 +130,10 @@ function registerLanguage() {
         [/[^\s]+/, "invalid"],
       ],
     },
-  });
+  };
+}
 
+function registerCompletion() {
   monaco.languages.registerCompletionItemProvider("pseudocode", {
     provideCompletionItems(editorModel, position) {
       const word = editorModel.getWordUntilPosition(position);
@@ -133,10 +141,10 @@ function registerLanguage() {
       const text = editorModel.getValue();
       const suggestions = [];
 
-      for (const keyword of KEYWORD_LIST) {
+      for (const keyword of keywordsFor(state.dialect)) {
         suggestions.push({ label: keyword, kind: monaco.languages.CompletionItemKind.Keyword, insertText: keyword, range, detail: "keyword" });
       }
-      for (const name of BUILTIN_LIST) {
+      for (const name of builtinListFor(state.dialect)) {
         const fn = BUILTINS[name];
         suggestions.push({
           label: name, kind: monaco.languages.CompletionItemKind.Function,
@@ -168,9 +176,9 @@ function registerLanguage() {
       if (!fn) return null;
       return {
         value: {
-          signatures: [{ label: fn.signature, parameters: fn.args.map((types) => ({ label: types.join("|") })) }],
+          signatures: [{ label: fn.signature, parameters: fn.args(state.dialect).map((types) => ({ label: types.join("|") })) }],
           activeSignature: 0,
-          activeParameter: Math.min(match[2].split(",").length - 1, fn.args.length - 1),
+          activeParameter: Math.min(match[2].split(",").length - 1, Math.max(0, fn.args(state.dialect).length - 1)),
         },
         dispose() {},
       };
@@ -276,7 +284,7 @@ function revealLine(line) {
 
 function refresh() {
   const text = model.getValue();
-  const analysed = analyse(text);
+  const analysed = analyse(text, { dialect: state.dialect });
   const formatted = formatDiagnostics(analysed.diagnostics);
   monaco.editor.setModelMarkers(model, "pseudocode", formatted.map((d) => ({
     severity: d.level === "error" ? monaco.MarkerSeverity.Error : monaco.MarkerSeverity.Warning,
@@ -370,7 +378,7 @@ function renderVariables(rows) {
 
 function renderReference() {
   dom.reference.textContent = "";
-  for (const section of REFERENCE) {
+  for (const section of referenceFor(state.dialect)) {
     const heading = document.createElement("h3");
     heading.textContent = section.group;
     dom.reference.appendChild(heading);
@@ -512,6 +520,7 @@ async function run() {
 
   const started = Date.now();
   const result = await runInteractive(model.getValue(), {
+    dialect: state.dialect,
     inputs: parseInputs(),
     onInput: askForInput,
     onTick: pace,
@@ -592,7 +601,7 @@ function decodeState(text) {
 }
 
 function shareLink() {
-  const payload = { c: model.getValue(), i: dom.inputs.value };
+  const payload = { c: model.getValue(), i: dom.inputs.value, s: state.dialect };
   const url = `${location.origin}${location.pathname}#p=${encodeState(payload)}`;
   navigator.clipboard.writeText(url)
     .then(() => toast("Link copied — it opens with this program"))
@@ -636,8 +645,9 @@ function track(event, data) {
 /* ------------------------------------------------------------------ wiring */
 
 function fillExamples() {
+  dom.examples.textContent = "";
   const byGroup = new Map();
-  for (const example of EXAMPLES) {
+  for (const example of examplesFor(state.dialect)) {
     if (!byGroup.has(example.group)) byGroup.set(example.group, []);
     byGroup.get(example.group).push(example);
   }
@@ -658,7 +668,7 @@ function fillExamples() {
     dom.examples.appendChild(section);
   }
   dom.examples.addEventListener("change", () => {
-    const example = EXAMPLES.find((e) => e.name === dom.examples.value);
+    const example = examplesFor(state.dialect).find((e) => e.name === dom.examples.value);
     if (!example) return;
     model.setValue(example.code);
     dom.inputs.value = (example.inputs || []).join("\n");
@@ -721,18 +731,37 @@ function restore() {
       const payload = decodeState(hash[1]);
       model.setValue(payload.c || "");
       dom.inputs.value = payload.i || "";
+      state.dialect = payload.s === "0478" ? "0478" : "9618";
       return;
     } catch { /* a broken link should not block the editor */ }
   }
+  state.dialect = localStorage.getItem(STORE.syllabus) === "0478" ? "0478" : "9618";
   const saved = localStorage.getItem(STORE.doc);
   if (saved) model.setValue(saved);
-  else model.setValue(EXAMPLES[0].code);
+  else model.setValue(examplesFor(state.dialect)[0].code);
   dom.inputs.value = localStorage.getItem(STORE.inputs) || "";
+}
+
+function applyDialect(id, options = {}) {
+  const d = dialectOf(id);
+  state.dialect = d.id;
+  document.querySelectorAll(".syllabus button").forEach((button) => {
+    const on = button.dataset.syllabus === d.id;
+    button.classList.toggle("active", on);
+    button.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  if (model) model.updateOptions({ tabSize: d.indent, insertSpaces: true });
+  if (window.monaco) monaco.languages.setMonarchTokensProvider("pseudocode", monarchFor(d));
+  fillExamples();
+  renderReference();
+  try { localStorage.setItem(STORE.syllabus, d.id); } catch { /* private browsing */ }
+  if (!options.silent) refresh();
 }
 
 function boot() {
   defineThemes();
   registerLanguage();
+  registerCompletion();
   applyTheme(detectTheme());
 
   model = monaco.editor.createModel("", "pseudocode");
@@ -756,6 +785,7 @@ function boot() {
   wireDivider();
   wireBreakpoints();
   restore();
+  applyDialect(state.dialect, { silent: true });
   refresh();
 
   let analyseTimer = null;
@@ -774,6 +804,12 @@ function boot() {
   dom.download.addEventListener("click", saveFile);
   dom.open.addEventListener("click", () => dom.file.click());
   dom.file.addEventListener("change", () => { if (dom.file.files[0]) openFile(dom.file.files[0]); });
+  document.querySelectorAll(".syllabus button").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (button.dataset.syllabus === state.dialect) return;
+      applyDialect(button.dataset.syllabus);
+    });
+  });
   dom.theme.addEventListener("click", () => {
     const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
     localStorage.setItem(STORE.theme, next);

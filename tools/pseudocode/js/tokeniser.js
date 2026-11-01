@@ -6,7 +6,7 @@ export const KEYWORDS = new Set([
   "IF", "THEN", "ELSE", "ENDIF",
   "CASE", "OTHERWISE", "ENDCASE",
   "FOR", "TO", "STEP", "NEXT",
-  "WHILE", "ENDWHILE", "REPEAT", "UNTIL",
+  "WHILE", "DO", "ENDWHILE", "REPEAT", "UNTIL",
   "PROCEDURE", "ENDPROCEDURE", "FUNCTION", "ENDFUNCTION", "RETURNS", "RETURN", "CALL",
   "OUTPUT", "INPUT",
   "BYREF", "BYVAL",
@@ -17,7 +17,11 @@ export const KEYWORDS = new Set([
 export const NOT_IN_V1 = new Set([
   "TYPE", "ENDTYPE", "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW",
   "OPENFILE", "CLOSEFILE", "READFILE", "WRITEFILE", "SEEK", "GETRECORD", "PUTRECORD",
-  "APPEND", "RANDOM", "EOF", "SET", "DEFINE",
+  "APPEND", "EOF", "SET", "DEFINE",
+]);
+
+export const ALEVEL_ONLY = new Set([
+  "TYPE", "ENDTYPE", "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW", "SET", "DEFINE",
 ]);
 
 export const DATA_TYPES = new Set(["INTEGER", "REAL", "CHAR", "STRING", "BOOLEAN", "DATE"]);
@@ -70,10 +74,12 @@ function cut(src) {
   return [src, null];
 }
 
-export function tokenise(text) {
+export function tokenise(text, dialect) {
+  const d = dialect || { id: "9618", underscoreInNames: true, pascalStartNames: "silent", caretIsPointer: true };
   const lines = [];
   const errors = [];
   const pragmas = {};
+  const notedPascal = new Set();
 
   text.split(/\r\n|\r|\n/).forEach((raw, index) => {
     const lineNo = index + 1;
@@ -106,6 +112,18 @@ export function tokenise(text) {
           }
           push("KEY", upper, raw2.length, { raw: raw2 });
         } else {
+          if (!d.underscoreInNames && raw2.includes("_")) {
+            errors.push(new Diagnostic("E_IGCSE_UNDERSCORE", { line: lineNo, col }, {
+              name: raw2,
+              fixed: raw2.replace(/_+([a-z])/g, (m, ch) => ch.toUpperCase()).replace(/_+/g, ""),
+            }));
+          } else if (d.pascalStartNames === "note" && raw2.length > 1 && /^[a-z]/.test(raw2) && !notedPascal.has(upper)) {
+            notedPascal.add(upper);
+            errors.push(new Diagnostic("W_IGCSE_PASCAL", { line: lineNo, col }, {
+              name: raw2,
+              fixed: raw2.charAt(0).toUpperCase() + raw2.slice(1),
+            }));
+          }
           push("IDENT", raw2, raw2.length);
         }
         continue;
@@ -185,8 +203,12 @@ export function tokenise(text) {
           col += 1; src = src.slice(1);
           continue;
         }
+        if (o === "^" && !d.caretIsPointer) {
+          push("OP", "^", 1);
+          continue;
+        }
         if (o === "**" || o === "^") {
-          errors.push(new Diagnostic("E_POWER", { line: lineNo, col }, { op: o }));
+          errors.push(new Diagnostic(d.caretIsPointer ? "E_POWER" : "E_IGCSE_POWER_CARET", { line: lineNo, col }, { op: o }));
           push("OP", "POW", o.length);
           continue;
         }

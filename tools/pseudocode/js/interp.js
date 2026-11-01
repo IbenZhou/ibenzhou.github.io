@@ -1,5 +1,6 @@
 import { Diagnostic } from "./tokeniser.js";
 import { V, typeName, isNumeric, fmt, boundsLabel, BUILTINS, checkBuiltinCall } from "./builtins.js";
+import { dialectOf, builtinNote } from "./dialect.js";
 
 const RETURN = Symbol("return");
 
@@ -74,6 +75,7 @@ class Trace {
 
 export class Machine {
   constructor(parsed, opts = {}) {
+    this.dialect = dialectOf(opts.dialect);
     this.program = parsed.program;
     this.diag = [];
     this.notes = [];
@@ -634,8 +636,16 @@ export class Machine {
       const v = op === "+" ? l.v + r.v : op === "-" ? l.v - r.v : l.v * r.v;
       return V(t, v);
     }
-    if (op === "/") {
+    if (op === "^") {
       if (!isNumeric(l) || !isNumeric(r)) {
+        this.report("E_TYPE_OPERAND", pos, { op, want: "numbers", side: "", got: `${typeName(l)} and ${typeName(r)}` });
+        return V("INTEGER", 0);
+      }
+      const value = Math.pow(Number(l.v), Number(r.v));
+      const integral = l.t === "INTEGER" && r.t === "INTEGER" && Number(r.v) >= 0;
+      return integral ? V("INTEGER", Math.round(value)) : V("REAL", value);
+    }
+    if (op === "/") {      if (!isNumeric(l) || !isNumeric(r)) {
         this.report("E_TYPE_OPERAND", pos, { op, want: "numbers", side: "", got: `${typeName(l)} and ${typeName(r)}` });
         return V("REAL", 0);
       }
@@ -662,8 +672,10 @@ export class Machine {
     const args = [];
     for (const a of node.args) args.push(yield* this.eval(a, scope));
     if (BUILTINS[upper]) {
+      const away = builtinNote(upper, this.dialect);
+      if (away) this.notes.push(new Diagnostic(away.code, node.pos, away.ctx || {}));
       const before = this.diag.length;
-      const fn = checkBuiltinCall(upper, args, node.pos, this.diag);
+      const fn = checkBuiltinCall(upper, args, node.pos, this.diag, this.dialect);
       if (!fn) { this.report("E_UNKNOWN_FUNC", node.pos, { name: node.name }); return V("INTEGER", 0); }
       if (this.diag.length > before) throw new RuntimeStop();
       const ctx = { diag: this.diag, pos: node.pos, random: () => this.random() };

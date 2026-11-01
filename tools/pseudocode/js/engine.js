@@ -2,6 +2,7 @@ import { tokenise } from "./tokeniser.js";
 import { parse } from "./parser.js";
 import { Machine, Limit, RuntimeStop } from "./interp.js";
 import { describe } from "./diagnostics.js";
+import { dialectOf } from "./dialect.js";
 
 export const DEFAULTS = {
   maxSteps: 1000000,
@@ -11,8 +12,9 @@ export const DEFAULTS = {
 };
 
 export function analyse(text, opts = {}) {
-  const tok = tokenise(text);
-  const parsed = parse(tok);
+  const dialect = dialectOf(opts.dialect);
+  const tok = tokenise(text, dialect);
+  const parsed = parse(tok, dialect);
   const maxSteps = opts.maxSteps ?? tok.pragmas.maxSteps ?? DEFAULTS.maxSteps;
   return {
     program: parsed.program,
@@ -20,6 +22,7 @@ export function analyse(text, opts = {}) {
     pragmas: tok.pragmas,
     maxSteps,
     lines: tok.lines,
+    dialect: dialect.id,
   };
 }
 
@@ -86,6 +89,7 @@ function prepare(text, opts) {
     recursionLimit: opts.recursionLimit ?? DEFAULTS.recursionLimit,
     seed: opts.seed ?? 12345,
     interactive: opts.interactive ?? false,
+    dialect: analysed.dialect,
   });
   return { analysed, machine, iterator: machine.run() };
 }
