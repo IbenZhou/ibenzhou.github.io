@@ -6,6 +6,7 @@ import { loadTasks, browserRead } from './tasks.js';
 import { GROUPS, ENTRIES } from './reference.js';
 import { formatValue } from './format.js';
 import * as store from './storage.js';
+import { clampFont, accumulateZoom } from './font-zoom.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -14,6 +15,7 @@ let editor = null;
 let tasks = [];
 let current = null;
 let busy = false;
+let fontSize = store.loadFontSize();
 
 function setBusy(value) {
   busy = value;
@@ -338,6 +340,37 @@ async function selectTask(id, { keepBuffer = true } = {}) {
   }
 }
 
+function renderFontSize() {
+  $('font-px').textContent = `${fontSize}px`;
+  $('font-in').disabled = fontSize >= store.MAX_FONT;
+  $('font-out').disabled = fontSize <= store.MIN_FONT;
+}
+
+function setFontSize(px) {
+  const next = clampFont(px, store.MIN_FONT, store.MAX_FONT);
+  fontSize = next;
+  store.saveFontSize(next);
+  editor?.updateOptions({ fontSize: next });
+  renderFontSize();
+}
+
+function wireFontSize() {
+  renderFontSize();
+  $('font-in').addEventListener('click', () => setFontSize(fontSize + 1));
+  $('font-out').addEventListener('click', () => setFontSize(fontSize - 1));
+
+  let carry = 0;
+  $('editor').addEventListener('wheel', (e) => {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const step = accumulateZoom(carry, e);
+    carry = step.carry;
+    if (step.whole) setFontSize(fontSize + step.whole);
+  }, { capture: true, passive: false });
+}
+
 function wireUi() {
   $('run').addEventListener('click', run);
   $('check').addEventListener('click', check);
@@ -398,7 +431,7 @@ async function start() {
         theme: document.documentElement.dataset.theme === 'dark' ? 'vs-dark' : 'vs',
         automaticLayout: true,
         minimap: { enabled: false },
-        fontSize: 14,
+        fontSize,
         lineNumbersMinChars: 3,
         scrollBeyondLastLine: false,
         wordWrap: 'on',
@@ -422,6 +455,7 @@ async function start() {
 
     buildReference();
     wireUi();
+    wireFontSize();
 
     const saved = store.loadSelected();
     await selectTask(tasks.some(t => t.id === saved) ? saved : tasks[0].id);

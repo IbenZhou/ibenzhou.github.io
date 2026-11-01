@@ -48,3 +48,17 @@ export function loadTheme() { return get('theme') ?? 'light'; }
 export function saveTheme(t) { set('theme', t); }
 export function loadSelected() { return get('selected') ?? ''; }
 export function saveSelected(id) { set('selected', id); }
+
+export const MIN_FONT = 10;
+export const MAX_FONT = 26;
+export const DEFAULT_FONT = 14;
+
+export function loadFontSize() {
+  const raw = Number(get('fontSize'));
+  if (!Number.isFinite(raw) || raw < MIN_FONT || raw > MAX_FONT) return DEFAULT_FONT;
+  return Math.round(raw);
+}
+
+export function saveFontSize(px) {
+  set('fontSize', String(Math.round(px)));
+}
