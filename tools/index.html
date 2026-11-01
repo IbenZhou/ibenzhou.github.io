@@ -122,15 +122,18 @@
       <span class="go">查看清单 →</span>
     </a>
 
-    <div class="tool soon">
-      <span class="tag">开发中</span>
+    <a class="tool" href="sql/">
+      <span class="tag">CIE 9618</span>
       <h2>SQL 编辑环境 <span class="en">SQL Sandbox</span></h2>
-      <p>在线编写并执行 SQL 语句的测试环境，用于 9618 数据库部分的教学。</p>
+      <p>在浏览器里跑一个真正的 PostgreSQL，按考纲写法输入 DDL 与 DML 并立刻看到结果。</p>
       <ul>
-        <li>计划放在本目录下的 sql/ 路径</li>
+        <li>14 道题覆盖 8.3 全部考点：建库建表、主键外键、查询与增删改</li>
+        <li>逐语句返回结果表格，错误提示中英双语</li>
+        <li>超出考纲的写法只提醒不拦截，三表连接等会明确拒绝</li>
+        <li>首次加载约 5 MB（WebAssembly 数据库），之后走浏览器缓存</li>
       </ul>
-      <span class="go">尚未上线</span>
-    </div>
+      <span class="go">打开编辑器 →</span>
+    </a>
 
   </div>
 </main>

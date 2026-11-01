@@ -1,0 +1,16 @@
+# Order here is the order students see. One line per task file, without the .md.
+ddl-create-database
+ddl-create-table
+ddl-alter-add-column
+ddl-add-primary-key
+ddl-inline-foreign-key
+ddl-alter-foreign-key
+dml-select-where
+dml-order-by
+dml-group-by-count
+dml-sum-avg
+dml-inner-join
+dml-insert
+dml-update
+dml-delete
+sandbox-free

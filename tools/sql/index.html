@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9618 SQL Editor &middot; Cambridge International AS &amp; A Level Computer Science</title>
+<meta name="description" content="Write and run the 9618 DDL and DML subset against a real Postgres database, entirely in the browser.">
+<link rel="stylesheet" href="css/sql-editor.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="../">iben.fun<span class="crumb"> / 器 / SQL 编辑环境</span></a>
+
+  <select id="tasks" title="Choose a task" aria-label="Task"></select>
+
+  <div class="run-group">
+    <button id="run" class="primary" title="Run (Ctrl/Cmd + Enter)">&#9654; Run</button>
+    <button id="check" title="Mark my answer against the model answer">&#10003; Check</button>
+    <button id="reset" title="Reset this task's database to its starting data">Reset</button>
+  </div>
+
+  <span class="spacer"></span>
+
+  <span id="mode" class="badge" title="What the Run button does in this mode">task</span>
+  <button id="reference-btn" title="Show the 9618 syntax reference">Reference</button>
+  <button id="theme" title="Toggle light or dark">&#9681;</button>
+</header>
+
+<main class="split">
+  <section class="pane editor-pane">
+    <div id="taskcard" class="taskcard">
+      <div class="taskcard-head">
+        <h2 id="task-title">Loading tasks&#8230;</h2>
+        <span id="task-meta" class="task-meta"></span>
+      </div>
+      <p id="task-prompt" class="task-prompt"></p>
+      <pre id="task-schema" class="task-schema" hidden></pre>
+    </div>
+
+    <div id="editor" aria-label="SQL editor"></div>
+    <div id="diagnostics" class="diagnostics" aria-live="polite"></div>
+  </section>
+
+  <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0"></div>
+
+  <aside class="pane side-pane">
+    <div id="results" class="results" aria-live="polite"></div>
+    <div id="verdict" class="verdict" hidden></div>
+    <div id="tree" class="tree" hidden></div>
+
+    <div id="reference" class="reference" hidden>
+      <div class="reference-head">
+        <h2>9618 SQL subset <span class="zh">考纲 SQL 范围</span></h2>
+        <button id="reference-close" title="Close" aria-label="Close reference">&#10005;</button>
+      </div>
+      <p class="reference-note">Every example below is written for this syllabus subset. Click one to insert it into the editor at your cursor.</p>
+      <div id="reference-body"></div>
+    </div>
+  </aside>
+</main>
+
+<div id="boot" class="boot">
+  <div class="boot-card">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Starting a real Postgres database in your browser</p>
+    <p class="boot-sub">首次加载约 5&nbsp;MB，之后会被浏览器缓存<br>Booting Postgres (WebAssembly) &mdash; the first load takes a few seconds, later visits are cached.</p>
+  </div>
+</div>
+
+<script src="vendor/monaco/vs/loader.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
