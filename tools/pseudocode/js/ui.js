@@ -3,6 +3,7 @@ import { examplesFor } from "./examples.js";
 import { referenceFor, keywordsFor, builtinListFor } from "./reference.js";
 import { BUILTINS } from "./builtins.js";
 import { DIALECTS, dialectOf } from "./dialect.js";
+import { clampFont, accumulateZoom, readFontSize } from "./font-zoom.js";
 
 const el = (id) => document.getElementById(id);
 const dom = {
@@ -12,9 +13,13 @@ const dom = {
   trace: el("trace"), traceNote: el("trace-note"), vars: el("vars"), reference: el("reference"),
   divider: el("divider"), prompt: el("prompt"), promptVar: el("prompt-var"), promptValue: el("prompt-value"),
   promptOk: el("prompt-ok"), promptCancel: el("prompt-cancel"),
+  fontIn: el("font-in"), fontOut: el("font-out"), fontPx: el("font-px"),
 };
 
-const STORE = { doc: "pseudocode9618.doc", inputs: "pseudocode9618.inputs", theme: "pseudocode9618.theme", syllabus: "pseudocode9618.syllabus" };
+const STORE = {
+  doc: "pseudocode9618.doc", inputs: "pseudocode9618.inputs", theme: "pseudocode9618.theme",
+  syllabus: "pseudocode9618.syllabus", fontSize: "pseudocode9618.fontSize",
+};
 
 const state = {
   dialect: "9618",
@@ -46,6 +51,52 @@ function detectTheme() {
 function applyTheme(name) {
   document.documentElement.setAttribute("data-theme", name);
   if (window.monaco) monaco.editor.setTheme(`pc-${name}`);
+}
+
+/* ---------------------------------------------------------- font size */
+
+const FONT = { min: 10, max: 26, fallback: 14 };
+
+function loadFontSize() {
+  try {
+    return readFontSize(localStorage.getItem(STORE.fontSize), FONT);
+  } catch {
+    return FONT.fallback;
+  }
+}
+
+let fontSize = loadFontSize();
+
+function renderFontPx() {
+  if (!dom.fontPx) return;
+  dom.fontPx.textContent = `${fontSize}px`;
+  dom.fontIn.disabled = fontSize >= FONT.max;
+  dom.fontOut.disabled = fontSize <= FONT.min;
+}
+
+function setFontSize(px) {
+  fontSize = clampFont(px, FONT.min, FONT.max);
+  try { localStorage.setItem(STORE.fontSize, String(fontSize)); } catch { /* private browsing */ }
+  if (editor) editor.updateOptions({ fontSize });
+  renderFontPx();
+}
+
+function wireFontSize() {
+  renderFontPx();
+  if (!dom.fontIn) return;
+  dom.fontIn.addEventListener("click", () => setFontSize(fontSize + 1));
+  dom.fontOut.addEventListener("click", () => setFontSize(fontSize - 1));
+
+  let carry = 0;
+  dom.editor.addEventListener("wheel", (event) => {
+    if (!(event.ctrlKey || event.metaKey)) return;
+    event.preventDefault();
+    event.stopPropagation();
+
+    const step = accumulateZoom(carry, event);
+    carry = step.carry;
+    if (step.whole) setFontSize(fontSize + step.whole);
+  }, { capture: true, passive: false });
 }
 
 /* ------------------------------------------------------------- monaco setup */
@@ -768,7 +819,7 @@ function boot() {
   editor = monaco.editor.create(dom.editor, {
     model,
     fontFamily: '"JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace',
-    fontSize: 14,
+    fontSize,
     minimap: { enabled: false },
     glyphMargin: true,
     automaticLayout: true,
@@ -782,6 +833,7 @@ function boot() {
   fillExamples();
   renderReference();
   wireTabs();
+  wireFontSize();
   wireDivider();
   wireBreakpoints();
   restore();
