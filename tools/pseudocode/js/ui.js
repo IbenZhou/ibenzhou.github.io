@@ -884,5 +884,9 @@ function boot() {
   });
 }
 
-window.require.config({ paths: { vs: "vendor/monaco/vs" } });
+// Monaco resolves its worker against the page, which breaks once the editor is served
+// from a subdirectory, so hand it an absolute URL derived from this module.
+const monacoVsRoot = new URL("../vendor/monaco/vs", import.meta.url).href.replace(/\/$/, "");
+window.MonacoEnvironment = { getWorkerUrl: () => `${monacoVsRoot}/base/worker/workerMain.js` };
+window.require.config({ paths: { vs: monacoVsRoot } });
 window.require(["vs/editor/editor.main"], boot);
