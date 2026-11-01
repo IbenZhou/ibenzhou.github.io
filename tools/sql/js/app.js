@@ -383,9 +383,10 @@ function failBoot(message) {
 async function start() {
   document.documentElement.dataset.theme = store.loadTheme();
 
-  // Resolved from this module, not from the page URL, so the tool works when served
-  // under a subdirectory (Monaco derives its worker URL from this path).
+  // Monaco's AMD loader resolves its worker against the page, which breaks once the tool
+  // is served from a subdirectory, so hand it an absolute URL derived from this module.
   const vs = new URL('../vendor/monaco/vs', import.meta.url).href.replace(/\/$/, '');
+  window.MonacoEnvironment = { getWorkerUrl: () => `${vs}/base/worker/workerMain.js` };
   window.require.config({ paths: { vs } });
   const editorReady = new Promise((resolve) => {
     window.require(['vs/editor/editor.main'], () => {
