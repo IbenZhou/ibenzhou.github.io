@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9618 Pseudocode Editor &middot; Cambridge International AS &amp; A Level Computer Science</title>
+<meta name="description" content="Write and run Cambridge 9618 pseudocode in the browser. Exam-strict syntax with bilingual diagnostics, trace tables and stepping.">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="../">iben.fun<span class="crumb"> / 器 / 伪代码编辑器</span></a>
+  <select id="examples" title="Load an example program" aria-label="Examples"></select>
+  <div class="run-group">
+    <button id="run" class="primary" title="Run (Ctrl/Cmd + Enter)">&#9654; Run</button>
+    <button id="step" title="Run one statement at a time" disabled>Step</button>
+    <button id="stop" title="Stop the running program" disabled>&#9632; Stop</button>
+    <button id="reset" title="Clear output and variables">Reset</button>
+  </div>
+  <span class="spacer"></span>
+  <div class="file-group">
+    <button id="share" title="Copy a link that opens with this program">Copy link</button>
+    <button id="download" title="Save as a .pseudo file">Save</button>
+    <button id="open" title="Open a .pseudo file">Open</button>
+    <input type="file" id="file" accept=".pseudo,.txt,.cpc" hidden>
+    <button id="theme" title="Toggle light or dark">&#9681;</button>
+  </div>
+</header>
+
+<main class="split">
+  <section class="pane editor-pane">
+    <div id="editor" aria-label="Pseudocode editor"></div>
+    <div id="diagnostics" class="diagnostics" aria-live="polite"></div>
+  </section>
+
+  <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0"></div>
+
+  <aside class="pane side-pane">
+    <div class="input-strip">
+      <label for="inputs">Input values <span class="hint">one per line, consumed by each INPUT</span></label>
+      <textarea id="inputs" rows="3" spellcheck="false" placeholder="12&#10;15&#10;9"></textarea>
+    </div>
+
+    <div class="output-wrap">
+      <h2>Output</h2>
+      <pre id="output" class="output" aria-live="polite"><span class="placeholder">Run the program to see its output. Ctrl/Cmd + Enter.</span></pre>
+    </div>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="trace" role="tab">Trace</button>
+      <button class="tab" data-tab="vars" role="tab">Variables</button>
+      <button class="tab" data-tab="ref" role="tab">Reference</button>
+    </nav>
+
+    <div class="tab-body">
+      <div id="tab-trace" class="tab-panel active" role="tabpanel">
+        <div class="table-scroll"><table id="trace"></table></div>
+        <p id="trace-note" class="note"></p>
+      </div>
+      <div id="tab-vars" class="tab-panel" role="tabpanel">
+        <div class="table-scroll"><table id="vars"></table></div>
+      </div>
+      <div id="tab-ref" class="tab-panel" role="tabpanel">
+        <div id="reference"></div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div id="prompt" class="modal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="prompt-label">
+    <p id="prompt-label">The program is asking for a value</p>
+    <p id="prompt-var" class="prompt-var"></p>
+    <input id="prompt-value" autocomplete="off">
+    <div class="modal-actions">
+      <button id="prompt-cancel">Cancel</button>
+      <button id="prompt-ok" class="primary">Send</button>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/monaco/vs/loader.js"></script>
+<script type="module" src="js/ui.js"></script>
+</body>
+</html>

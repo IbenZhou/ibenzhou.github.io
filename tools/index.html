@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>器 · 在线工具 · iben.fun</title>
+<meta name="description" content="为 A Level 信息课准备的在线工具：9618 伪代码编辑器、免费软件推荐。">
+<style>
+  :root {
+    --bg: #f7f3e9;
+    --card-bg: #fdfaf3;
+    --text: #3a3226;
+    --text-secondary: #8c8070;
+    --accent: #b85c38;
+    --accent-light: #f5ebe0;
+    --border: #e3d9c8;
+    --shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8; font-size: 15px;
+    min-height: 100vh;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  header.site {
+    background: rgba(253, 250, 243, .92);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0; position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(12px);
+  }
+  header.site .container { display: flex; align-items: center; justify-content: space-between; }
+  header.site a.back { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+  header.site a.back:hover { color: var(--accent); }
+  header.site .name { font-weight: 600; letter-spacing: .04em; }
+
+  .hero { padding: 64px 0 28px; text-align: center; }
+  .hero .mark {
+    display: inline-grid; place-items: center;
+    width: 62px; height: 62px; border-radius: 14px;
+    background: linear-gradient(160deg, #5c3d2e, #a0724c);
+    color: #fdf6ec; font-size: 30px; margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .hero h1 { font-size: 30px; letter-spacing: .12em; }
+  .hero p { color: var(--text-secondary); margin-top: 10px; }
+
+  .grid { display: grid; gap: 18px; padding: 28px 0 56px; }
+  @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+  .tool {
+    display: flex; flex-direction: column;
+    background: var(--card-bg);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 24px; text-decoration: none; color: inherit;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .tool:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .tool .tag {
+    align-self: flex-start; font-size: 12px; letter-spacing: .06em;
+    background: var(--accent-light); color: var(--accent);
+    border-radius: 999px; padding: 2px 10px; margin-bottom: 12px;
+  }
+  .tool h2 { font-size: 19px; margin-bottom: 6px; }
+  .tool .en { font-size: 12.5px; color: var(--text-secondary); font-weight: 400; letter-spacing: .04em; }
+  .tool p { color: var(--text-secondary); font-size: 14px; flex: 1 1 auto; margin-top: 8px; }
+  .tool ul { list-style: none; margin-top: 12px; font-size: 13px; color: var(--text-secondary); }
+  .tool li::before { content: '· '; color: var(--accent); }
+  .tool .go { margin-top: 16px; color: var(--accent); font-size: 14px; }
+
+  .tool.soon { cursor: default; opacity: .72; border-style: dashed; }
+  .tool.soon:hover { transform: none; border-color: var(--border); }
+  .tool.soon .go { color: var(--text-secondary); }
+
+  footer { border-top: 1px solid var(--border); padding: 20px 0 32px; color: var(--text-secondary); font-size: 13px; text-align: center; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container">
+    <a class="back" href="../">← 返回首页</a>
+    <span class="name">器</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="mark">器</div>
+    <h1>在线工具</h1>
+    <p>上课和复习时直接打开就能用，不需要安装任何东西。</p>
+  </div>
+</section>
+
+<main class="container">
+  <div class="grid">
+
+    <a class="tool" href="pseudocode/">
+      <span class="tag">CIE 9618</span>
+      <h2>伪代码编辑器 <span class="en">Pseudocode Editor</span></h2>
+      <p>按考纲写法输入伪代码并真正运行，边写边看输出、变量与追踪表。</p>
+      <ul>
+        <li>严格校验考试格式，错误提示中英双语</li>
+        <li>追踪表按循环逐行生成，可单步调试</li>
+        <li>24 个示例：冒泡排序、二分查找、递归等</li>
+      </ul>
+      <span class="go">打开编辑器 →</span>
+    </a>
+
+    <a class="tool" href="apps/">
+      <span class="tag">Windows · macOS</span>
+      <h2>软件推荐 <span class="en">Free Tools</span></h2>
+      <p>只收录真正好用且免费的工具，按平台和用途分组。</p>
+      <ul>
+        <li>开发工具、浏览器、效率工具</li>
+        <li>媒体创意、办公日常、隐私安全</li>
+        <li>附快速挑选指南</li>
+      </ul>
+      <span class="go">查看清单 →</span>
+    </a>
+
+    <div class="tool soon">
+      <span class="tag">开发中</span>
+      <h2>SQL 编辑环境 <span class="en">SQL Sandbox</span></h2>
+      <p>在线编写并执行 SQL 语句的测试环境，用于 9618 数据库部分的教学。</p>
+      <ul>
+        <li>计划放在本目录下的 sql/ 路径</li>
+      </ul>
+      <span class="go">尚未上线</span>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    工具全部在浏览器本地运行，代码与输入不会上传到任何服务器 · <a href="../">iben.fun</a>
+  </div>
+</footer>
+
+</body>
+</html>
