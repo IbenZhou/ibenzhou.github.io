@@ -383,7 +383,10 @@ function failBoot(message) {
 async function start() {
   document.documentElement.dataset.theme = store.loadTheme();
 
-  window.require.config({ paths: { vs: 'vendor/monaco/vs' } });
+  // Resolved from this module, not from the page URL, so the tool works when served
+  // under a subdirectory (Monaco derives its worker URL from this path).
+  const vs = new URL('../vendor/monaco/vs', import.meta.url).href.replace(/\/$/, '');
+  window.require.config({ paths: { vs } });
   const editorReady = new Promise((resolve) => {
     window.require(['vs/editor/editor.main'], () => {
       monaco = window.monaco;
