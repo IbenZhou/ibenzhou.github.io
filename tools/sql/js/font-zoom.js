@@ -2,6 +2,15 @@ export function clampFont(px, min, max) {
   return Math.min(max, Math.max(min, Math.round(px)));
 }
 
+// A stored value can be missing, corrupt or out of band (an older build, a hand-edited
+// localStorage, a private-mode failure), so read it defensively instead of trusting it.
+export function readFontSize(raw, { min, max, fallback }) {
+  const value = Number(raw);
+  if (raw === null || raw === undefined || raw === '' || !Number.isFinite(value)) return fallback;
+  if (value < min || value > max) return fallback;
+  return Math.round(value);
+}
+
 // A mouse notch, a two-finger swipe and a trackpad pinch report wildly different deltaY
 // values, so normalise everything to "one pixel of text per notch" and let the caller
 // carry the remainder across events.

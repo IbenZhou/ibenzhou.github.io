@@ -1,5 +1,6 @@
-const PREFIX = 'sql9618.';
+import { readFontSize } from './font-zoom.js';
 
+const PREFIX = 'sql9618.';
 function store() {
   try {
     const probe = `${PREFIX}probe`;
@@ -54,9 +55,7 @@ export const MAX_FONT = 26;
 export const DEFAULT_FONT = 14;
 
 export function loadFontSize() {
-  const raw = Number(get('fontSize'));
-  if (!Number.isFinite(raw) || raw < MIN_FONT || raw > MAX_FONT) return DEFAULT_FONT;
-  return Math.round(raw);
+  return readFontSize(get('fontSize'), { min: MIN_FONT, max: MAX_FONT, fallback: DEFAULT_FONT });
 }
 
 export function saveFontSize(px) {
