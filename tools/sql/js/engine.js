@@ -1,12 +1,70 @@
 import { PGlite } from '../vendor/pglite/index.js';
 import { splitStatements } from './lexicon.js';
 
+// Must match vendor/pglite/VERSION; the CDN url is pinned to it so a future upgrade
+// cannot mix a new wasm with an old JS chunk (tests/tasks.test.js checks this).
+export const PGLITE_VERSION = '0.5.14';
+export const ASSET_BASE = `https://registry.npmmirror.com/@electric-sql/pglite/${PGLITE_VERSION}/files/dist`;
+const ASSET_TIMEOUT_MS = 12000;
+
 let db = null;
 
-export async function boot() {
+async function fetchBytes(url, fetchImpl, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetchImpl(url, { signal: controller.signal, mode: 'cors', credentials: 'omit' });
+    if (!res.ok) throw new Error(`${url} responded ${res.status}`);
+    return await res.arrayBuffer();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Only the two heavy files travel over the network; PGlite's own JS and Monaco stay on
+// this origin, so no cross-origin worker or module resolution is involved.
+export async function remoteAssetOptions(fetchImpl = globalThis.fetch, options = {}) {
+  const { base = ASSET_BASE, timeoutMs = ASSET_TIMEOUT_MS } = options;
+  const [wasmBytes, dataBytes] = await Promise.all([
+    fetchBytes(`${base}/pglite.wasm`, fetchImpl, timeoutMs),
+    fetchBytes(`${base}/pglite.data`, fetchImpl, timeoutMs),
+  ]);
+  return {
+    pgliteWasmModule: await WebAssembly.compile(wasmBytes),
+    fsBundle: new Blob([dataBytes], { type: 'application/octet-stream' }),
+  };
+}
+
+export async function chooseAssets(fetchImpl = globalThis.fetch, options = {}) {
+  try {
+    return await remoteAssetOptions(fetchImpl, options);
+  } catch {
+    return {};
+  }
+}
+
+async function open(options) {
+  const candidate = new PGlite(options);
+  await candidate.query('SELECT 1');
+  return candidate;
+}
+
+export async function boot({ fetchImpl = globalThis.fetch, preferRemote = typeof window !== 'undefined' } = {}) {
   if (db) return db;
-  db = new PGlite();
-  await db.query('SELECT 1');
+
+  if (preferRemote) {
+    const remote = await chooseAssets(fetchImpl);
+    if (remote.pgliteWasmModule) {
+      try {
+        db = await open(remote);
+        return db;
+      } catch {
+        db = null;
+      }
+    }
+  }
+
+  db = await open({});
   return db;
 }
 
