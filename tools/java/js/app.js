@@ -443,8 +443,8 @@ function onEditorChange() {
 
 /* ------------------------------------------------------------------ worker */
 
-const workerUrl = new URL("./runner-worker.js", import.meta.url);
-const toolsJarUrl = new URL("/tools.jar", location.origin).href;
+const workerUrl = new URL("./runner-worker.js?v=2", import.meta.url);
+const toolsJarUrl = new URL("/tools-8u504.jar", location.origin).href;
 
 function warmRuntime(label = "Loading Java runtime…") {
   if (state.worker) state.worker.terminate();

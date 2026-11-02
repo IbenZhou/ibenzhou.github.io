@@ -89,7 +89,7 @@ async function preloadWithProgress(url) {
 }
 
 let warmupPromise = null;
-const toolsClasspath = "/app/tools.jar";
+const toolsClasspath = "/app/tools-8u504.jar";
 
 async function warmup(message) {
   if (ready) {

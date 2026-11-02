@@ -14,7 +14,7 @@ The in-browser Java compiler is the OpenJDK 8 `tools.jar` from the Adoptium Temu
 It is licensed under the GNU General Public License, version 2, with the Classpath Exception.
 The license text is in `vendor/LICENSE-tools.jar.txt` and `vendor/ASSEMBLY_EXCEPTION.txt`.
 Corresponding source: <https://github.com/adoptium/openjdk-jdk8u>.
-The jar is served from the site root as `/tools.jar` because CheerpJ mounts `/app/` at the site root.
+The jar is served from the site root as `/tools-8u504.jar` because CheerpJ mounts `/app/` at the site root.
 
 ## Monaco Editor 0.52.2
 
