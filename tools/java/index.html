@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Java Sandbox · AP CSA · iben.fun</title>
+<meta name="description" content="Write, compile and run Java in the browser. AP CSA examples, bilingual javac errors, built-in data files and browser-saved programs.">
+<link rel="stylesheet" href="css/java.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="../">iben.fun<span class="crumb"> / 器 / Java Sandbox</span></a>
+  <button id="files-toggle" title="Show or hide programs" aria-label="Show or hide programs">Files</button>
+  <div class="run-group">
+    <button id="run" class="primary" title="Run (Ctrl/Cmd + Enter)" disabled>&#9654; Run</button>
+    <button id="stop" title="Stop the running program" disabled>&#9632; Stop</button>
+  </div>
+  <select id="examples" title="Load an example program" aria-label="Examples">
+    <option value="">Examples…</option>
+  </select>
+  <span class="spacer"></span>
+  <div class="file-group">
+    <button id="share" title="Copy a link that opens with this program">Copy link</button>
+    <button id="export" title="Download the current program as a .java file">Export</button>
+    <button id="import" title="Import a .java file as a new program">Import</button>
+    <input type="file" id="file" accept=".java,text/plain" hidden>
+    <div class="font-group" role="group" aria-label="Editor font size">
+      <button id="font-out" title="Smaller (Ctrl/Cmd + scroll down)" aria-label="Decrease font size">A&#8722;</button>
+      <span id="font-px" class="font-px" aria-live="off">14px</span>
+      <button id="font-in" title="Bigger (Ctrl/Cmd + scroll up)" aria-label="Increase font size">A+</button>
+    </div>
+    <button id="theme" title="Toggle light or dark">&#9681;</button>
+  </div>
+</header>
+
+<main class="layout" id="layout">
+  <aside class="files-pane" id="files-pane" aria-label="Programs and data files">
+    <div class="files-head">
+      <h2>Programs</h2>
+      <div class="files-head-actions">
+        <button id="new-program" class="small" title="Create a program">+ New</button>
+        <button id="files-close" class="files-close" title="Close files" aria-label="Close files">&times;</button>
+      </div>
+    </div>
+    <div id="program-list" class="program-list"></div>
+    <p class="files-note">Saved in this browser. Export to keep a copy.</p>
+    <div class="files-head data-head">
+      <h2>Data files</h2>
+    </div>
+    <div id="dataset-list" class="dataset-list"></div>
+    <p class="files-note">Read with <code>new File("name")</code>.</p>
+    <p class="files-note">Java runtime by <a href="https://cheerpj.com/" target="_blank" rel="noopener">CheerpJ</a>. Code stays in this browser.</p>
+  </aside>
+
+  <section class="work" id="work">
+    <section class="pane editor-pane">
+      <div id="editor" aria-label="Java editor"></div>
+      <div id="problems" class="problems" aria-live="polite"></div>
+    </section>
+
+    <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0"></div>
+
+    <aside class="pane side-pane">
+      <div class="input-strip">
+        <label for="input">Input values <span class="hint">one per line &middot; consumed by Scanner</span></label>
+        <textarea id="input" rows="3" spellcheck="false" placeholder="Ada&#10;17"></textarea>
+      </div>
+
+      <div class="side-head">
+        <nav class="tabs" role="tablist">
+          <button class="tab active" data-tab="console" role="tab">Console</button>
+          <button class="tab" data-tab="ref" role="tab">Reference</button>
+        </nav>
+        <span id="status" class="status">Loading Java runtime…</span>
+        <button id="retry-runtime" class="small" title="Try loading the Java runtime again" hidden>Retry</button>
+        <button id="clear-output" class="small" title="Clear the console">Clear</button>
+      </div>
+      <div id="progress" class="progress" hidden><div id="progress-bar"></div></div>
+
+      <div class="tab-body">
+        <div id="tab-console" class="tab-panel active" role="tabpanel">
+          <pre id="output" class="output"><span class="placeholder">Run your program to see its output. Ctrl/Cmd + Enter.</span></pre>
+        </div>
+        <div id="tab-ref" class="tab-panel" role="tabpanel">
+          <div id="reference"></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h2 id="modal-title"></h2>
+    <p id="modal-text"></p>
+    <pre id="modal-pre" hidden></pre>
+    <input id="modal-input" autocomplete="off">
+    <div class="modal-actions">
+      <button id="modal-cancel">Cancel</button>
+      <button id="modal-ok" class="primary">OK</button>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/monaco/vs/loader.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
