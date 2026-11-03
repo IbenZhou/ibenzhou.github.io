@@ -201,7 +201,12 @@ function makeProgram({ name, code, input }) {
 }
 
 function sortPrograms(programs) {
-  return [...programs].sort((left, right) => (right.updatedAt || 0) - (left.updatedAt || 0));
+  // updatedAt changes on every save, so ordering by it makes the list jump when switching files.
+  return [...programs].sort((left, right) => {
+    const byCreation = (right.createdAt || 0) - (left.createdAt || 0);
+    if (byCreation !== 0) return byCreation;
+    return left.name.localeCompare(right.name, undefined, { sensitivity: "base" });
+  });
 }
 
 async function saveRecord(record) {
