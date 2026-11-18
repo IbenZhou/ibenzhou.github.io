@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -231,6 +270,7 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
 <h2 id="paradigms">Paradigms</h2>
 <h3 id="what-is-a-programming-paradigm">What is a programming paradigm?</h3>
 <ul>
@@ -312,6 +352,121 @@ body::before {
 </tr>
 </tbody>
 </table>
+<p><div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q2 · 4 marks</div><div class="callout-body"><p>Draw one line from each programming paradigm to its most appropriate description.</p>
+<table>
+<thead>
+<tr>
+<th>Programming paradigm</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Declarative</td>
+<td>Programs using the instruction set of a processor</td>
+</tr>
+<tr>
+<td>Imperative</td>
+<td>Programs based on events such as user actions or sensor outputs</td>
+</tr>
+<tr>
+<td>Low-level</td>
+<td>Programs using the concepts of class, inheritance, encapsulation and polymorphism</td>
+</tr>
+<tr>
+<td>Object-oriented</td>
+<td>Programs with an explicit sequence of commands that update the program state, with or without procedure calls</td>
+</tr>
+<tr>
+<td></td>
+<td>Programs that specify the desired result rather than how to get to it</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><ul>
+<li>Declarative → Programs that specify the desired result rather than how to get to it</li>
+<li>Imperative → Programs with an explicit sequence of commands that update the program state, with or without procedure calls</li>
+<li>Low-level → Programs using the instruction set of a processor</li>
+<li>Object-oriented → Programs using the concepts of class, inheritance, encapsulation and polymorphism</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Summer P31 Q9 · 8 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe what is meant by an imperative (procedural) programming language. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Describe what is meant by a declarative programming language. <strong>[2]</strong></p>
+<p><strong>©</strong> Identify the programming paradigm for each of these program code examples. <strong>[4]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Program code example</th>
+<th>Programming paradigm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>male(john).</code> <code>female(ethel).</code> <code>parent(john, ethel).</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>FOR Counter = 1 TO 20</code> <code>X = X * Counter</code> <code>NEXT Counter</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Start: LDD Counter</code> <code>INC ACC</code> <code>STO Counter</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>public class Vehicle { private speed; public Vehicle() { speed = 0; } }</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>9(a)</strong> One mark for each correct marking point (<strong>Max 2</strong>)</p>
+<ul>
+<li>Imperative languages use variables</li>
+<li>… which are changed using (assignment) statements</li>
+<li>… they rely on a method of repetition / iteration.</li>
+<li>The statements provide a sequence of commands for the computer to perform</li>
+<li>… in the order written / given</li>
+<li>… each line of code changes something in the program run.</li>
+</ul>
+<p><strong>9(b)</strong> One mark for each correct marking point (<strong>Max 2</strong>)</p>
+<ul>
+<li>Instructs a program on what needs to be done instead of how to do it</li>
+<li>… using facts and rules</li>
+<li>… using queries to satisfy goals.</li>
+<li>Can be logical or functional</li>
+<li>Logical - states a program as a set of logical relations</li>
+<li>Functional – constructed by applying functions to arguments / uses a mathematical style</li>
+</ul>
+<p><strong>9©</strong> <strong>One</strong> mark for each correct programming paradigm (<strong>Max 4</strong>)</p>
+<table>
+<thead>
+<tr>
+<th>Program code example</th>
+<th>Programming paradigm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>facts like <code>male(john).</code></td>
+<td>Declarative</td>
+</tr>
+<tr>
+<td><code>FOR ... NEXT</code> loop</td>
+<td>Procedural / imperative</td>
+</tr>
+<tr>
+<td><code>LDD</code> / <code>INC ACC</code> / <code>STO</code></td>
+<td>Low-level / assembly</td>
+</tr>
+<tr>
+<td><code>public class Vehicle { ... }</code></td>
+<td>Object oriented / (OOP)</td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
 <h2 id="low-level-programming">Low-level programming</h2>
 <h3 id="how-do-i-write-low-level-code-using-addressing-modes">How do I write low-level code using addressing modes?</h3>
 <ul>
@@ -660,6 +815,83 @@ X = bulldog.
 </tr>
 </tbody>
 </table>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q11 · 8 marks</div><div class="callout-body"><p>A declarative language stores facts about home cinema devices. Given facts include <code>device(projector).</code>, <code>customer(petrov).</code>, <code>owns(projector, petrov).</code> and <code>wants(surround_speakers, susan).</code></p>
+<p><strong>(a)</strong> Betty is a customer who owns a large TV and wants a Blu-ray player. Write three additional facts to represent this. <strong>[3]</strong></p>
+<p><strong>(b)</strong> The goal <code>owns(media_player, Owner)</code> returns <code>Owner = petrov, allan</code>. Write the result of <code>owns(projector, Owner)</code>. <strong>[1]</strong></p>
+<p><strong>©</strong> Write a rule <code>may_buy_device(D, A)</code>: D is a device, A is a customer, and A does not own D. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>11(a)</strong> One mark for each correctly completed clause (<strong>Max 3</strong>)</p>
+<ul>
+<li><code>customer(betty).</code></li>
+<li><code>owns(large_tv, betty).</code></li>
+<li><code>wants(bluray_player, betty).</code></li>
+</ul>
+<p>Guidance: Accept facts in any order. The device names have been given; responses must match these.</p>
+<p><strong>11(b)</strong> <code>(Owner =) petrov, susan, sammy</code> (can be in any order)</p>
+<p><strong>11©</strong> One mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 <code>device(D)</code></li>
+<li>MP2 <code>customer(A)</code></li>
+<li>MP3 <code>NOT owns(D, A).</code></li>
+<li>MP4 All logic conditions / punctuation correct (accept <code>,</code> for AND)</li>
+</ul>
+<p>Example: <code>may_buy_device(D, A) IF device(D) AND customer(A) AND NOT owns(D, A).</code></p>
+<p>Guidance: Allow MP1–MP3 in any order; accept <code>\+</code> for NOT as Swish Prolog.</p>
+</div></details></p>
+<blockquote>
+<p><strong>Further reading:</strong> Object-oriented programming (the fourth paradigm in §20.1) is covered in detail in 20.1 Object-Oriented Programming.</p>
+</blockquote>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<p>This note covers the four paradigms except object-oriented programming (a separate note). OOP past questions are indexed in 20.1 Object-Oriented Programming.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q2</td>
+<td>Meaning &amp; characteristics of each paradigm (matching)</td>
+<td>2021 Winter P31 Q2</td>
+</tr>
+<tr>
+<td>P31 Q9(a)</td>
+<td>Imperative (procedural) language defined</td>
+<td>2021 Summer P31 Q9(a)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>Declarative language defined</td>
+<td>2021 Summer P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q9©</td>
+<td>Identify paradigm from code sample</td>
+<td>2021 Summer P31 Q9©</td>
+</tr>
+<tr>
+<td>P31 Q11(a)</td>
+<td>Declarative: write facts</td>
+<td>2026 Summer P31 Q11(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)</td>
+<td>Declarative: evaluate a goal</td>
+<td>2026 Summer P31 Q11(b)</td>
+</tr>
+<tr>
+<td>P31 Q11©</td>
+<td>Declarative: write a rule</td>
+<td>2026 Summer P31 Q11©</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Excluded: 2024 Winter P31 Q9 is tagged §20.1 in the index but its body is class design (<code>PRIVATE</code> attributes, constructor, getters/setters) — it belongs to §20.1 OOP and is indexed there.</p>
+</blockquote>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="192-recursion.html" title="Previous: 19.2 Recursion" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">19.2 Recursion</span></a>

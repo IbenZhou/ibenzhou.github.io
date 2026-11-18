@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" width="900" height="340" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="900" height="340" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Normalising a floating-point number</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Shift the mantissa so it begins 01 (positive) or 10 (negative)</text>
+
+  <!-- before -->
+  <rect x="36" y="86" width="330" height="180" rx="12" fill="#fbf0d8" stroke="#d9a441" stroke-width="1.5"/>
+  <text x="56" y="116" font-size="15" font-weight="700" fill="#854f0b">Before — not normalised</text>
+  <text x="56" y="152" font-size="13" fill="#233b3a">Mantissa: </text>
+  <text x="56" y="176" font-family="Consolas, monospace" font-size="16" fill="#993c1d">1 1 1 0 1 0 0 0</text>
+  <text x="56" y="212" font-size="13" fill="#233b3a">Exponent: 0 1 0 1</text>
+  <text x="56" y="244" font-size="12.5" fill="#854f0b">Leading bits are 11 — wasted precision</text>
+
+  <line x1="372" y1="176" x2="520" y2="176" stroke="#5a6b6b" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <rect x="392" y="126" width="110" height="40" rx="6" fill="#ffffff"/>
+  <text x="447" y="143" text-anchor="middle" font-size="12" fill="#0f6e56">shift left</text>
+  <text x="447" y="158" text-anchor="middle" font-size="12" fill="#0f6e56">by 2 places</text>
+
+  <!-- after -->
+  <rect x="534" y="86" width="330" height="180" rx="12" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="554" y="116" font-size="15" font-weight="700" fill="#0f6e56">After — normalised</text>
+  <text x="554" y="152" font-size="13" fill="#233b3a">Mantissa: </text>
+  <text x="554" y="176" font-family="Consolas, monospace" font-size="16" fill="#0f6e56">1 0 1 0 0 0 0 0</text>
+  <text x="554" y="212" font-size="13" fill="#233b3a">Exponent: 0 0 1 1</text>
+  <text x="554" y="244" font-size="12.5" fill="#0f6e56">Leading bits are 10 ✓</text>
+
+  <text x="450" y="300" text-anchor="middle" font-size="13" fill="#233b3a">Each left shift of the mantissa reduces the exponent by 1 (value unchanged)</text>
+  <text x="450" y="322" text-anchor="middle" font-size="12.5" fill="#993c1d">Zero cannot be normalised — it is stored as all 0s</text>
+</svg>

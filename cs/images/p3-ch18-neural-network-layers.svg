@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" width="860" height="420" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="860" height="420" fill="#ffffff"/>
+  <text x="430" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Multi-layer perceptron</text>
+  <text x="430" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Fully connected layers with weighted links</text>
+
+  <!-- layer labels -->
+  <g font-size="12.5" font-weight="700" text-anchor="middle">
+    <text x="110" y="92" fill="#0f6e56">Input layer</text>
+    <text x="340" y="92" fill="#185fa5">Hidden layer 1</text>
+    <text x="560" y="92" fill="#534ab7">Hidden layer 2</text>
+    <text x="760" y="92" fill="#854f0b">Output layer</text>
+  </g>
+
+  <!-- connections (computed visually) -->
+  <g stroke="#c8d6d4" stroke-width="0.7">
+    <line x1="122" y1="140" x2="328" y2="130"/><line x1="122" y1="140" x2="328" y2="170"/><line x1="122" y1="140" x2="328" y2="210"/><line x1="122" y1="140" x2="328" y2="250"/><line x1="122" y1="140" x2="328" y2="290"/>
+    <line x1="122" y1="200" x2="328" y2="130"/><line x1="122" y1="200" x2="328" y2="170"/><line x1="122" y1="200" x2="328" y2="210"/><line x1="122" y1="200" x2="328" y2="250"/><line x1="122" y1="200" x2="328" y2="290"/>
+    <line x1="122" y1="260" x2="328" y2="130"/><line x1="122" y1="260" x2="328" y2="170"/><line x1="122" y1="260" x2="328" y2="210"/><line x1="122" y1="260" x2="328" y2="250"/><line x1="122" y1="260" x2="328" y2="290"/>
+    <line x1="122" y1="320" x2="328" y2="130"/><line x1="122" y1="320" x2="328" y2="170"/><line x1="122" y1="320" x2="328" y2="210"/><line x1="122" y1="320" x2="328" y2="250"/><line x1="122" y1="320" x2="328" y2="290"/>
+
+    <line x1="352" y1="130" x2="548" y2="140"/><line x1="352" y1="130" x2="548" y2="200"/><line x1="352" y1="130" x2="548" y2="260"/><line x1="352" y1="130" x2="548" y2="320"/>
+    <line x1="352" y1="170" x2="548" y2="140"/><line x1="352" y1="170" x2="548" y2="200"/><line x1="352" y1="170" x2="548" y2="260"/><line x1="352" y1="170" x2="548" y2="320"/>
+    <line x1="352" y1="210" x2="548" y2="140"/><line x1="352" y1="210" x2="548" y2="200"/><line x1="352" y1="210" x2="548" y2="260"/><line x1="352" y1="210" x2="548" y2="320"/>
+    <line x1="352" y1="250" x2="548" y2="140"/><line x1="352" y1="250" x2="548" y2="200"/><line x1="352" y1="250" x2="548" y2="260"/><line x1="352" y1="250" x2="548" y2="320"/>
+    <line x1="352" y1="290" x2="548" y2="140"/><line x1="352" y1="290" x2="548" y2="200"/><line x1="352" y1="290" x2="548" y2="260"/><line x1="352" y1="290" x2="548" y2="320"/>
+
+    <line x1="572" y1="140" x2="748" y2="180"/><line x1="572" y1="140" x2="748" y2="260"/>
+    <line x1="572" y1="200" x2="748" y2="180"/><line x1="572" y1="200" x2="748" y2="260"/>
+    <line x1="572" y1="260" x2="748" y2="180"/><line x1="572" y1="260" x2="748" y2="260"/>
+    <line x1="572" y1="320" x2="748" y2="180"/><line x1="572" y1="320" x2="748" y2="260"/>
+  </g>
+
+  <!-- nodes: input 4 -->
+  <g fill="#d5efe6" stroke="#1d9e75" stroke-width="1.5">
+    <circle cx="110" cy="140" r="12"/><circle cx="110" cy="200" r="12"/><circle cx="110" cy="260" r="12"/><circle cx="110" cy="320" r="12"/>
+  </g>
+  <!-- hidden1 5 -->
+  <g fill="#d7e8fa" stroke="#378add" stroke-width="1.5">
+    <circle cx="340" cy="130" r="12"/><circle cx="340" cy="170" r="12"/><circle cx="340" cy="210" r="12"/><circle cx="340" cy="250" r="12"/><circle cx="340" cy="290" r="12"/>
+  </g>
+  <!-- hidden2 4 -->
+  <g fill="#e6e2fa" stroke="#7f77dd" stroke-width="1.5">
+    <circle cx="560" cy="140" r="12"/><circle cx="560" cy="200" r="12"/><circle cx="560" cy="260" r="12"/><circle cx="560" cy="320" r="12"/>
+  </g>
+  <!-- output 2 -->
+  <g fill="#fbf0d8" stroke="#d9a441" stroke-width="1.5">
+    <circle cx="760" cy="180" r="12"/><circle cx="760" cy="260" r="12"/>
+  </g>
+
+  <text x="430" y="390" text-anchor="middle" font-size="13" fill="#233b3a">Each link carries a weight · a node multiplies inputs by weights, sums them, then applies an activation function</text>
+  <text x="430" y="412" text-anchor="middle" font-size="12" fill="#993c1d">Backpropagation adjusts these weights using the error gradient</text>
+</svg>

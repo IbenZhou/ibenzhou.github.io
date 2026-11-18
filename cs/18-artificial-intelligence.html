@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -215,19 +254,17 @@ body::before {
     <aside class="post-sidebar">
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
-<li><a href="#ai-graphs">AI &amp; Graphs</a></li>
+<li><a href="#artificial-intelligence-ai-and-graphs">AI &amp; Graphs</a></li>
 <li><a href="#graphs-to-aid-ai">Graphs to aid AI</a></li>
 <li><a href="#dijkstras-shortest-path-algorithm">Dijkstra&rsquo;s Shortest Path Algorithm</a></li>
-<li><a href="#dijkstras-shortest-path-algorithm_2">Dijkstra’s shortest path algorithm</a></li>
-<li><a href="#what-is-dijkstras-shortest-path-algorithm">What is Dijkstra’s shortest path algorithm?</a></li>
-<li><a href="#programming-dijkstras-shortest-path-algorithm">Programming Dijkstra&rsquo;s shortest path algorithm</a></li>
+<li><a href="#what-is-dijkstras-shortest-path-algorithm">What is Dijkstra&rsquo;s shortest path algorithm?</a></li>
+<li><a href="#programming-dijkstras-shortest-path-algorithm-enrichment-only-not-examinable">Programming Dijkstra&rsquo;s algorithm</a></li>
 <li><a href="#a-algorithm">A* Algorithm</a></li>
-<li><a href="#a-algorithm_2">A* algorithm</a></li>
-<li><a href="#programming-a-algorithm">Programming A* algorithm</a></li>
-<li><a href="#machine-learning">Machine Learning</a></li>
-<li><a href="#neural-networks-deep-learning">Neural networks &amp; deep learning</a></li>
+<li><a href="#what-is-the-a-algorithm">What is the A* algorithm?</a></li>
+<li><a href="#programming-a-algorithm-enrichment-only-not-examinable">Programming A* algorithm</a></li>
+<li><a href="#machine-learning-neural-networks-and-deep-learning">Machine Learning</a></li>
 <li><a href="#categories-of-machine-learning">Categories of machine learning</a></li>
-<li><a href="#back-propagation-regression">Back propagation &amp; regression</a></li>
+<li><a href="#back-propagation-and-regression">Back Propagation &amp; Regression</a></li>
 </ul>
 </div>
 </div>
@@ -235,7 +272,8 @@ body::before {
     <div class="post-main">
       <article class="card">
         
-<h2 id="ai-graphs">AI &amp; Graphs</h2>
+
+<h2 id="artificial-intelligence-ai-and-graphs">Artificial Intelligence (AI) and Graphs</h2>
 <h2 id="graphs-to-aid-ai">Graphs to aid AI</h2>
 <h3 id="what-is-a-graph">What is a graph?</h3>
 <ul>
@@ -277,7 +315,7 @@ body::before {
 <li>Graphs can be represented using:
 <ul>
 <li><strong>Adjacency Matrix</strong> – ideal for dense graphs and fast lookup</li>
-<li><strong>Adjacency List</strong> – more space, efficient for sparse graphs (often used in AI search)</li>
+<li><strong>Adjacency List</strong> – uses less space and is efficient for sparse graphs (often used in AI search)</li>
 </ul>
 </li>
 <li>Both can be <strong>used in AI to represent problem spaces</strong> such as:
@@ -354,7 +392,7 @@ body::before {
 </li>
 <li>Because this matrix is <strong>not symmetric</strong>, it reflects the <strong>one-way nature</strong> of connections</li>
 </ul>
-<h4 id="ai-relevance_2">AI relevance</h4>
+<h4 id="ai-relevance_1">AI relevance</h4>
 <ul>
 <li>Directed, unweighted graphs are essential in AI for:</li>
 </ul>
@@ -411,7 +449,7 @@ body::before {
 </li>
 <li>The matrix is <strong>symmetric</strong>, confirming this is an <strong>undirected</strong> graph</li>
 </ul>
-<h4 id="ai-relevance_3">AI relevance</h4>
+<h4 id="ai-relevance_2">AI relevance</h4>
 <ul>
 <li>Undirected, weighted graphs are widely used in AI when:</li>
 </ul>
@@ -419,7 +457,7 @@ body::before {
 <thead>
 <tr>
 <th><strong>Use case</strong></th>
-<th><strong>How It helps AI</strong></th>
+<th><strong>How it helps AI</strong></th>
 </tr>
 </thead>
 <tbody>
@@ -473,7 +511,7 @@ body::before {
 </li>
 <li>This matrix is <strong>not symmetric</strong>, confirming the graph is <strong>directed</strong></li>
 </ul>
-<h4 id="ai-relevance_4">AI relevance</h4>
+<h4 id="ai-relevance_3">AI relevance</h4>
 <ul>
 <li>Directed, weighted graphs are critical in AI for:</li>
 </ul>
@@ -486,7 +524,7 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td><em>A and Dijkstra algorithms</em> *</td>
+<td><strong>A* and Dijkstra algorithms</strong></td>
 <td>Choosing the <strong>shortest path</strong> where direction and cost matter</td>
 </tr>
 <tr>
@@ -507,8 +545,47 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h2 id="dijkstras-shortest-path-algorithm">Dijkstra’s Shortest Path Algorithm</h2>
-<h2 id="dijkstras-shortest-path-algorithm_2">Dijkstra’s shortest path algorithm</h2>
+<p><strong>Purpose and structure of a graph ★</strong></p>
+<ul>
+<li>A graph is used in AI to <strong>record relationships between entities</strong> by using <strong>vertices/nodes and edges</strong>; for example, places on a map and the distances between them, in order to find the shortest route</li>
+<li><strong>Vertices/nodes</strong> identify or represent entities such as destinations or people; <strong>edges</strong> connect nodes and represent possible paths between them</li>
+<li>A <strong>path</strong> is the list of nodes connected by edges between two given nodes; a <strong>cycle</strong> is a list of nodes that returns to the same node</li>
+<li>Nodes/edges may be <strong>labelled or weighted</strong>, and the weighting is applied and used in the context of the application</li>
+<li>The structure is chosen to fit the problem: directed edges for one-way transitions, undirected edges for mutual relationships, weights for cost/distance/time</li>
+</ul>
+<p><strong>Graphs as state spaces ★</strong></p>
+<ul>
+<li>In AI a graph acts as a <strong>state space</strong>: each <strong>node</strong> is one possible state of the problem, each <strong>edge</strong> is an action that moves from one state to another, and a <strong>path</strong> is a sequence of actions</li>
+<li>A search problem is defined by its <strong>initial state</strong>, its <strong>goal state</strong>, the <strong>actions</strong> available and the <strong>cost of a path</strong></li>
+<li>Searching the graph means expanding states from the initial state until a goal state is reached, which is how AI plans routes, solves puzzles and plays games</li>
+<li>In exam questions this idea is usually phrased as “the purpose of a graph in an AI system” — relate it to recording relationships between entities and finding the shortest/cheapest route
+<img alt="State-space search: nodes are problem states and edges are actions" src="images/p3-ch18-state-space-search.svg" /></li>
+</ul>
+<p><div class="callout callout-warning"><div class="callout-title">Not examinable — writing graph code</div><div class="callout-body"><p>The 2027–2029 syllabus states: “Candidates will not be required to write algorithms to set up, access, or perform searches on graphs.” You only need to <strong>carry out these algorithms by hand</strong> and explain the result. The pseudocode and Python below are included for enrichment only and will not be examined.</p>
+</div></div>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q10(a) · 2 marks</div><div class="callout-body"><p>Describe the purpose of a graph when used in an Artificial Intelligence (AI) system.</p>
+<p>… <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(a)</strong>
+One mark for each mark point (Max 2)</p>
+<ul>
+<li>MP1: A graph is used in AI to record relationships between entities</li>
+<li>MP2: … using vertices / nodes and edges</li>
+<li>MP3: for example, to represent places on a map and the distances between them, in order to find the shortest route</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q6(a) · 2 marks</div><div class="callout-body"><p>Describe the structure of a graph as used in an Artificial Intelligence (AI) system.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(a)</strong>
+One mark per point (Max 2)</p>
+<ul>
+<li>MP1: A graph uses vertices/nodes to identify/represent entities such as destinations, people, etc</li>
+<li>MP2: Edges are used to connect nodes and can represent possible paths between them // a path is the list of nodes connected by edges between two given nodes</li>
+<li>MP3: Nodes/edges can be labelled/weighted, and this is a weighting that can be applied and used in the context of the application</li>
+<li>MP4: A cycle is a list of nodes that return to the same node</li>
+</ul>
+</div></details></p>
+<h2 id="dijkstras-shortest-path-algorithm">Dijkstra's shortest path algorithm</h2>
 <ul>
 <li>In Computer Science, an <strong>optimisation problem</strong> involves finding the <strong>most efficient solution</strong> to a given problem</li>
 <li>This could mean <strong>minimising</strong> cost, time, or resource usage, or <strong>maximising</strong> output, efficiency, or value</li>
@@ -522,13 +599,13 @@ body::before {
 </li>
 <li>One of the most common real-world examples is <strong>finding the shortest path from A to B</strong>, which is exactly what Dijkstra’s algorithm solves</li>
 </ul>
-<h2 id="what-is-dijkstras-shortest-path-algorithm">What is Dijkstra’s shortest path algorithm?</h2>
+<h3 id="what-is-dijkstras-shortest-path-algorithm">What is Dijkstra's shortest path algorithm?</h3>
 <ul>
 <li>In A Level Computer Science, <strong>Dijkstra’s shortest path algorithm</strong> is a classic <strong>optimisation algorithm</strong></li>
 <li>It calculates the shortest path from a <strong>starting node</strong> to <strong>all other nodes</strong> in a <strong>weighted graph</strong></li>
 <li>It is often compared to <strong>breadth-first search</strong>, but Dijkstra’s includes edge weights and ensures the <strong>lowest total cost</strong> to reach each destination node</li>
 </ul>
-<h4 id="how-it-works">How It works:</h4>
+<h4 id="how-it-works">How it works:</h4>
 <ul>
 <li>The graph is made up of <strong>nodes (vertices)</strong> and <strong>edges (arcs)</strong></li>
 <li>Each edge has a <strong>weight</strong>, which can represent:
@@ -538,12 +615,12 @@ body::before {
 <li>Cost</li>
 </ul>
 </li>
-<li>The algorithm <strong>explores all possible routes</strong>, keeping track of the shortest known distance to each node</li>
+<li>The algorithm repeatedly visits the <strong>unvisited node with the smallest known distance</strong> and updates the distances of its neighbours</li>
 <li>It guarantees the <strong>optimal path</strong> from the start node to every other node in the graph</li>
-<li>For revision on graphs, see #AI &amp; Graphs</li>
+<li>For revision on graphs, see #Graphs to aid AI</li>
 <li>An illustrated example of Dijkstra’s algorithm is shown below:</li>
 </ul>
-<h4 id="performing-dijkstras-shortest-path-algorithm">Performing Dijkstra’s shortest path algorithm</h4>
+<h4 id="performing-dijkstras-shortest-path-algorithm">Performing Dijkstra's shortest path algorithm</h4>
 <p><img alt="dijkstra-s-algorithm-1-revision-notes-computer-science" src="images/dijkstra-s-algorithm-1-revision-notes-computer-science.png" /></p>
 <ul>
 <li>Set A path to 0 and all other path weights to infinity
@@ -553,14 +630,14 @@ body::before {
 <li>Choose the next node to visit that has the lowest path weight (D)</li>
 <li>Visit D</li>
 <li>Update all neighbouring, non-visited nodes with a new path weight if the old path weight is bigger than the new path weight</li>
-<li>C is updated from 5 to 3 as the new path is shorted (A &gt; D &gt; C)
+<li>C is updated from 5 to 3 as the new path is shorter (A &gt; D &gt; C)
 <img alt="dijkstra-s-algorithm-4-revision-notes-computer-science" src="images/dijkstra-s-algorithm-4-revision-notes-computer-science.png" /></li>
 <li>Choose the next node to visit that has the lowest path weight (E)</li>
 <li>Visit E</li>
 <li>Update all neighbouring, non-visited nodes from E with a new path weight</li>
 <li>F is updated from 7 to 5 as the new path is shorter (A &gt; D &gt; E &gt; F)
 <img alt="dijkstra-s-algorithm-5-revision-notes-computer-science" src="images/dijkstra-s-algorithm-5-revision-notes-computer-science.png" /></li>
-<li>Choose the next node to visit, alphabetically (B)</li>
+<li>Choose the next node to visit that has the lowest path weight (B)</li>
 <li>Visit B</li>
 <li>Update all neighbouring non-visited nodes from B with a new weight if the path is less than the current path</li>
 <li>C is not updated as A &gt; B &gt; C is 4
@@ -580,8 +657,9 @@ body::before {
 <img alt="dijkstras-algorithm-9" src="images/dijkstras-algorithm-9.png" />
 <em><strong>Figure 1: Performing Dijkstra’s Shortest path Algorithm</strong></em></li>
 </ul>
-<h2 id="programming-dijkstras-shortest-path-algorithm">Programming Dijkstra’s shortest path algorithm</h2>
-<h3 id="how-do-you-write-dijkstras-shortest-path-algorithm">How do you write Dijkstra’s shortest path algorithm?</h3>
+<h3 id="programming-dijkstras-shortest-path-algorithm-enrichment-only-not-examinable">Programming Dijkstra's shortest path algorithm (enrichment only — not examinable)</h3>
+<div class="callout callout-warning"><div class="callout-title">Not examinable</div><div class="callout-body"><p>The 2027–2029 syllabus explicitly excludes writing algorithms to set up, access, or search graphs. Study the <strong>manual execution</strong> of Dijkstra’s algorithm (above and in the questions below), not this implementation.</p>
+</div></div>
 <h4 id="pseudocode">Pseudocode</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">Dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span>
 <span class="w">    </span><span class="c1">// Initialise distances</span>
@@ -689,11 +767,94 @@ body::before {
 <ul>
 <li>A list of nodes representing the <strong>shortest path</strong> from <code>'A'</code> to <code>'E'</code></li>
 </ul>
-<h2 id="a-algorithm">A* Algorithm</h2>
-<h2 id="a-algorithm_2">A* algorithm</h2>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q9(b) · 5 marks</div><div class="callout-body"><p>Calculate the best path between the Begin node and each of the nodes in the diagram using Dijkstra’s algorithm.</p>
+<p>Show your working and write your answers in the table provided.</p>
+<p><img alt="" src="images/9618_s26_qp_31_q9b_dijkstra_graph.png" /></p>
+<table>
+<thead>
+<tr>
+<th>P</th>
+<th>Q</th>
+<th>R</th>
+<th>S</th>
+<th>T</th>
+<th>U</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)</strong>
+One mark per mark point – working (Max 3). May be seen on diagram or in working section.</p>
+<ul>
+<li>MP1 Initialisation – setting Begin to 0;</li>
+<li>MP2 … and the rest of the nodes to the maximum distance;</li>
+<li>MP3 Evidence to show values at nodes being updated;</li>
+<li>MP4 Evidence to show ‘visited node(s)’;</li>
+<li>MP5 Evidence to show a correct calculation of at least one route;</li>
+<li>MP6 Evidence to show more than one route has been calculated for at least one node.</li>
+</ul>
+<p>Correct Answers (Max 2): Two marks for all six correct values; one mark for four or five correct values.</p>
+<ul>
+<li>P = 8; Q = 13; R = 6; S = 14; T = 17; U = 20.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q9(b)(ii) · 5 marks</div><div class="callout-body"><p>Calculate the best path between the Home node and each of the nodes in the diagram using Dijkstra’s algorithm.</p>
+<p>Show your working and write your answers in the table provided.</p>
+<p><img alt="" src="images/9618_s26_qp_32_q9bii_dijkstra_graph.png" /></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+<th>F</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)(ii)</strong>
+One mark per mark point – working (Max 3). May be seen on diagram or in working section.</p>
+<ul>
+<li>MP1 Initialisation – setting Home to 0;</li>
+<li>MP2 … and the rest of the nodes to ∞;</li>
+<li>MP3 Evidence to show values at nodes <strong>being updated</strong>;</li>
+<li>MP4 Evidence to show ‘visited node(s)’;</li>
+<li>MP5 Evidence to show <strong>a correct calculation</strong> of at least one route;</li>
+<li>MP6 Evidence to show more than one route has been calculated for at least one node.</li>
+</ul>
+<p>Correct Answers (Max 2) – allow these marks if totals clearly identified in working. Two marks for all six correct values; one mark for four or five correct values:</p>
+<ul>
+<li>A = 6, B = 13, C = 9, D = 20, E = 17, F = 14.</li>
+</ul>
+</div></details></p>
+<h2 id="a-algorithm">A* algorithm</h2>
 <h3 id="what-is-the-a-algorithm">What is the A* algorithm?</h3>
 <ul>
-<li>The <strong>A*</strong> (A-star) algorithm is a <strong>pathfinding algorithm</strong> that builds upon <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/18-artificial-intelligence-ai-/artificial-intelligence-ai/dijkstras-shortest-path-algorithm/">Dijkstra’s algorithm</a></li>
+<li>The <strong>A*</strong> (A-star) algorithm is a <strong>pathfinding algorithm</strong> that builds upon Dijkstra’s algorithm</li>
 <li>It introduces a <strong>heuristic function</strong> to improve efficiency</li>
 <li>It is used to find the shortest path from a starting node to a goal node in a graph</li>
 <li>While Dijkstra’s algorithm considers only the <strong>actual cost</strong> from the start node:
@@ -703,7 +864,7 @@ body::before {
 </ul>
 </li>
 </ul>
-<h4 id="how-a-improves-on-dijkstras">How A* improves on Dijkstra’s</h4>
+<h4 id="how-a-improves-on-dijkstras">How A* improves on Dijkstra's</h4>
 <ul>
 <li>To avoid inefficient detours, A* introduces a <strong>heuristic function</strong>, called <strong>h(x)</strong></li>
 <li>It estimates the <strong>straight-line distance</strong> (Euclidean distance) from the current node to the goal</li>
@@ -720,14 +881,14 @@ body::before {
 <h4 id="heuristics-in-a">Heuristics in A*</h4>
 <ul>
 <li>The heuristic function <strong>h(x)</strong> should <strong>never overestimate</strong> the true cost to the goal</li>
-<li>This ensures A* remains <strong>optimally efficient</strong></li>
+<li>This ensures A* remains <strong>optimal</strong></li>
 <li>The closer h(x) is to the true cost, the <strong>fewer nodes</strong> A* needs to explore</li>
-<li>If h(x) increases, it may indicate the algorithm is moving <strong>away from the goal</strong>, helping it backtrack or choose a better path</li>
+<li>If the heuristic values of successive nodes increase, the search may be moving <strong>away from the goal</strong>, helping it backtrack or choose a better path</li>
 <li>Below is an illustration of the A* search:
 <img alt="dijkstras-algorithm-a-search-1" src="images/dijkstras-algorithm-a-search-1.png" /> <img alt="dijkstras-algorithm-a-search-2" src="images/dijkstras-algorithm-a-search-2.png" /> <img alt="dijkstras-algorithm-a-search-3" src="images/dijkstras-algorithm-a-search-3.png" /> <img alt="dijkstras-algorithm-a-search-4" src="images/dijkstras-algorithm-a-search-4.png" /> <img alt="dijkstras-algorithm-a-search-5" src="images/dijkstras-algorithm-a-search-5.png" /> <img alt="dijkstras-algorithm-a-search-6" src="images/dijkstras-algorithm-a-search-6.png" />
 <strong>Figure 2: Performing the A* Search</strong></li>
 </ul>
-<h3 id="a-vs-dijkstras">A* vs Dijkstra’s</h3>
+<h3 id="a-vs-dijkstras">A\* vs Dijkstra's</h3>
 <table>
 <thead>
 <tr>
@@ -764,9 +925,18 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h2 id="programming-a-algorithm">Programming A* algorithm</h2>
-<h3 id="how-do-you-write-an-a-algorithm">How do you write an A* algorithm?</h3>
-<h4 id="pseudocode_2">Pseudocode</h4>
+<p><strong>A* and Dijkstra compared ★</strong></p>
+<ul>
+<li><strong>Dijkstra’s algorithm</strong> is A* with <code>h(x) = 0</code>: it expands nodes in order of the actual cost <code>g(x)</code> only, so it spreads out in every direction and finds the shortest path to <strong>all</strong> nodes</li>
+<li><strong>A*</strong> expands nodes in order of <code>f(x) = g(x) + h(x)</code>, so it prefers nodes that are cheap so far <strong>and</strong> look close to the goal</li>
+<li>A* is <strong>faster</strong>, but only stays optimal if the heuristic never <strong>overestimates</strong> the true remaining cost; Dijkstra’s needs no heuristic and always finds the shortest path</li>
+<li>Dijkstra’s suits finding the shortest path to <strong>every</strong> node; A* suits a <strong>single</strong> start–goal pair in a large graph</li>
+<li>One mark-scheme point that is often overlooked: <strong>Dijkstra’s algorithm cannot work with negative weights</strong>, whereas A* can work with negative values/weights (2025 Summer P33 Q10(b) MP4)</li>
+</ul>
+<h3 id="programming-a-algorithm-enrichment-only-not-examinable">Programming A* algorithm (enrichment only — not examinable)</h3>
+<div class="callout callout-warning"><div class="callout-title">Not examinable</div><div class="callout-body"><p>The 2027–2029 syllabus explicitly excludes writing algorithms to set up, access, or search graphs. Study the <strong>manual execution</strong> of A* (g / h / f table) instead of this implementation.</p>
+</div></div>
+<h4 id="pseudocode_1">Pseudocode</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">AStarSearch</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">)</span>
 <span class="w">    </span><span class="c1">// Initialise distances and f-scores</span>
 <span class="w">    </span><span class="n">FOR</span><span class="w"> </span><span class="n">EACH</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">FROM</span><span class="w"> </span><span class="n">graph</span>
@@ -799,7 +969,13 @@ body::before {
 <span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">f</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">g</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span>
 <span class="w">                </span><span class="n">SET</span><span class="w"> </span><span class="n">previousNode</span><span class="o">[</span><span class="n">neighbour</span><span class="o">]</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">min</span>
 <span class="w">                </span><span class="n">IF</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="n">openSet</span><span class="w"> </span><span class="n">THEN</span>
-<span class="w">                    </span><span class="n">ADD</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">TO</span>
+<span class="w">                    </span><span class="n">ADD</span><span class="w"> </span><span class="n">neighbour</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">openSet</span>
+<span class="w">                </span><span class="n">ENDIF</span>
+<span class="w">            </span><span class="n">ENDIF</span>
+<span class="w">        </span><span class="n">NEXT</span><span class="w"> </span><span class="n">neighbour</span>
+<span class="w">    </span><span class="n">ENDWHILE</span>
+<span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">previousNode</span>
+<span class="n">ENDFUNCTION</span>
 </code></pre></div>
 <ul>
 <li><code>graph[min]</code> assumes you’re storing adjacency lists</li>
@@ -807,7 +983,7 @@ body::before {
 <li><code>g[]</code> and <code>f[]</code> are maps (dictionaries) for real cost and estimated total cost</li>
 <li><code>cost(min, neighbour)</code> should be defined or assumed available</li>
 </ul>
-<h4 id="python_2">Python</h4>
+<h4 id="python_1">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">a_star_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="n">open_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
     <span class="n">g</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">}</span>
@@ -860,8 +1036,358 @@ body::before {
 <ul>
 <li>A possible shortest path from <code>'A'</code> to <code>'E'</code>, guided by the heuristic values</li>
 </ul>
-<h2 id="machine-learning">Machine Learning</h2>
-<h2 id="neural-networks-deep-learning">Neural networks &amp; deep learning</h2>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q9(b) · 5 marks</div><div class="callout-body"><p>The A* algorithm is used to perform searches on a graph.</p>
+<p>Calculate the best path between the W and E nodes on the following diagram using the A* algorithm.</p>
+<p>Show your working in the table provided. The first two rows have been done for you.</p>
+<p><img alt="" src="images/9618_s26_qp_33_q9b_astar_graph.png.png" /></p>
+<table>
+<thead>
+<tr>
+<th>current path</th>
+<th>destination node</th>
+<th>cost of current path (g)</th>
+<th>heuristic (h)</th>
+<th>total (f = g + h)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W</td>
+<td>W</td>
+<td>0</td>
+<td>18</td>
+<td>18</td>
+</tr>
+<tr>
+<td>W</td>
+<td>N1</td>
+<td>6</td>
+<td>15</td>
+<td>21</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>final path … <strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)</strong>
+One mark for each correct calculation as follows (Max 4):</p>
+<ul>
+<li>MP1 W to N2 and W to N3 (Lines 3 and 4 in table);</li>
+<li>MP2 W→N2 to N5 (Line 5 in table);</li>
+<li>MP3 W→N2→N5 to N4 (Line 6 in table);</li>
+<li>MP4 W→N2→N5 to N6 (Line 7 in table);</li>
+<li>MP5 W→N2→N5 to E (Line 8 in table);</li>
+<li>MP6 W→N2→N5→N6 to E (Line 9 in table).</li>
+</ul>
+<p>One mark for correct path (Max 1): MP7 W→N2→N5→N6→E.</p>
+<p>Examiner’s note (not part of the mark scheme): Guidance: Lines 3 and 4 can be in either order; lines 6, 7 and 8 can be in any order; everything else must be in the table order. See completed table below.</p>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Current path</th>
+<th>Destination node</th>
+<th>Cost of current path (g)</th>
+<th>Heuristic (h)</th>
+<th>Total (f = g + h)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>W</td>
+<td>W</td>
+<td>0</td>
+<td>18</td>
+<td>18</td>
+</tr>
+<tr>
+<td>2</td>
+<td>W</td>
+<td>N1</td>
+<td>6</td>
+<td>15</td>
+<td>21</td>
+</tr>
+<tr>
+<td>3</td>
+<td>W</td>
+<td>N2</td>
+<td>4</td>
+<td>14</td>
+<td>18</td>
+</tr>
+<tr>
+<td>4</td>
+<td>W</td>
+<td>N3</td>
+<td>7</td>
+<td>13</td>
+<td>20</td>
+</tr>
+<tr>
+<td>5</td>
+<td>W→N2</td>
+<td>N5</td>
+<td>4+7=11</td>
+<td>7</td>
+<td>18</td>
+</tr>
+<tr>
+<td>6</td>
+<td>W→N2→N5</td>
+<td>N4</td>
+<td>4+7+2=13</td>
+<td>9</td>
+<td>22</td>
+</tr>
+<tr>
+<td>7</td>
+<td>W→N2→N5</td>
+<td>N6</td>
+<td>4+7+4=15</td>
+<td>3</td>
+<td>18</td>
+</tr>
+<tr>
+<td>8</td>
+<td>W→N2→N5</td>
+<td>E</td>
+<td>4+7+11=22</td>
+<td>0</td>
+<td>22</td>
+</tr>
+<tr>
+<td>9</td>
+<td>W→N2→N5→N6</td>
+<td>E</td>
+<td>4+7+4+3=18</td>
+<td>0</td>
+<td>18</td>
+</tr>
+<tr>
+<td>Final path</td>
+<td>W→N2→N5→N6→E</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q10(b) · 5 marks</div><div class="callout-body"><p>Calculate the path that takes the shortest time to travel from the Begin node to the End node, using the A* algorithm.</p>
+<p>Show your working in the table provided. The first two rows have already been completed.</p>
+<p><img alt="" src="images/Screenshot 2026-09-10 at 14-05-33.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Start node</th>
+<th>Destination node</th>
+<th>Cost from start node (g)</th>
+<th>Heuristic (h)</th>
+<th>Total (f = g + h)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Begin</td>
+<td>Begin</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Begin</td>
+<td>A</td>
+<td>5</td>
+<td>8</td>
+<td>13</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Final path … <strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(b)</strong>
+One mark for each correct calculation as follows (Max 2):</p>
+<ul>
+<li>Node B (from Begin) (Line 3 in table)</li>
+<li>Node C (from Begin) (Line 4 in table)</li>
+<li>Node D (from Begin) (Line 5 in table)</li>
+</ul>
+<p>One mark for each correct calculation as follows (Max 2):</p>
+<ul>
+<li>Node G (from C) (Line 6 in table)</li>
+<li>Node F and Node End (from G) (Lines 7 and 8 in table)</li>
+<li>Node End (from F) (Line 9 in table)</li>
+</ul>
+<p>One mark for correct path (Max 1):</p>
+<ul>
+<li>Begin ⇒ C ⇒ G ⇒ F ⇒ End</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Start node</th>
+<th>Destination node</th>
+<th>Cost from start node (g)</th>
+<th>Heuristic (h)</th>
+<th>Total (f = g + h)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Begin</td>
+<td>Begin</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Begin</td>
+<td>A</td>
+<td>5</td>
+<td>8</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Begin</td>
+<td>B</td>
+<td>6</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Begin</td>
+<td>C</td>
+<td>5</td>
+<td>7</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Begin</td>
+<td>D</td>
+<td>4</td>
+<td>11</td>
+<td>15</td>
+</tr>
+<tr>
+<td>C</td>
+<td>G</td>
+<td>5 + 2 = 7</td>
+<td>5</td>
+<td>12</td>
+</tr>
+<tr>
+<td>G</td>
+<td>F</td>
+<td>5 + 2 + 4 = 11</td>
+<td>1</td>
+<td>12</td>
+</tr>
+<tr>
+<td>G</td>
+<td>End</td>
+<td>5 + 2 + 7 = 14</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>F</td>
+<td>End</td>
+<td>5 + 2 + 4 + 1 = 12</td>
+<td>0</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Final Path:</strong> Begin ⇒ C ⇒ G ⇒ F ⇒ End</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q9(b)(i) · 3 marks</div><div class="callout-body"><p>Outline how the A* algorithm is different from Dijkstra’s algorithm.</p>
+<p>… <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)(i)</strong>
+One mark per mark point (Max 3):</p>
+<ul>
+<li>MP1 The A* algorithm tries to find the shortest path using heuristics / intelligent guesses;</li>
+<li>MP2 The A* algorithm doesn’t necessarily pass through all nodes/paths;</li>
+<li>MP3 Dijkstra’s algorithm finds the shortest path to all nodes // Dijkstra’s algorithm simply checks each vertex looking for the shortest path;</li>
+<li>MP4 Dijkstra’s algorithm always finds the shortest path;</li>
+<li>MP5 The A* algorithm may not find the shortest path if the heuristics are inaccurate.</li>
+</ul>
+<p>Examiner’s note (not part of the mark scheme): Guidance: Do not award MP3 for searching through all routes/paths – it is looking at the shortest path to all nodes.</p>
+</div></details></p>
+<h2 id="machine-learning-neural-networks-and-deep-learning">Machine learning, neural networks and deep learning</h2>
 <h3 id="what-is-machine-learning-ml">What is machine learning (ML)?</h3>
 <ul>
 <li>Machine learning is <strong>a type of artificial intelligence (AI)</strong> that allows computers to:
@@ -885,9 +1411,10 @@ body::before {
 <ul>
 <li>A neural network is made up of <strong>layers of nodes (neurons)</strong> connected by <strong>weighted links</strong></li>
 <li>Each neuron receives input, processes it, and passes the result to the next layer</li>
-<li>The network <strong>adjusts the weights</strong> based on errors in output (using algorithms like backpropagation)</li>
+<li>The network <strong>adjusts the weights</strong> based on errors in output (using algorithms like back propagation)</li>
 </ul>
 </li>
+<li>ANNs have played a significant role in the development of machine learning: they are a key component of ML, can solve problems that are difficult or impossible for humans to specify with rules, and improve their results as more data becomes available</li>
 </ul>
 <h4 id="how-anns-help-machine-learning">How ANNs help machine learning</h4>
 <ul>
@@ -898,7 +1425,18 @@ body::before {
 <li>Can solve problems that are <strong>too complex for rule-based programming</strong></li>
 </ul>
 </li>
-<li>Examples: handwriting recognition, speech recognition, image classification, language translation</li>
+<li>Examples: handwriting recognition, speech recognition, image classification, language translation
+<img alt="Multi-layer perceptron showing an input layer, two hidden layers and an output layer with weighted connections" src="images/p3-ch18-neural-network-layers.svg" /></li>
+</ul>
+<p><strong>Inside an artificial neural network ★</strong></p>
+<ul>
+<li>A network is arranged in <strong>layers</strong>: an <strong>input layer</strong> with one node per feature, one or more <strong>hidden layers</strong>, and an <strong>output layer</strong></li>
+<li>Each connection carries a <strong>weight</strong>; a node multiplies every incoming value by its weight, adds the results and passes the total through an <strong>activation function</strong></li>
+<li>The <strong>weights</strong> are what is learned: they start at random values and are adjusted until the output matches the training data</li>
+<li>Hidden layers let the network combine simple features into complex ones, which is what allows it to model <strong>non-linear</strong> relationships that a single rule cannot</li>
+<li>Data are input at the input layer and analysed at each subsequent hidden layer, where characteristics are extracted; the output layer provides the result</li>
+<li>Multiple hidden layers enable <strong>deep learning</strong>: more layers allow more complex problems to be solved and improve the accuracy of the result</li>
+<li>Back propagation of errors is used to correct any errors in the output during training</li>
 </ul>
 <h3 id="deep-learning-dl">Deep learning (DL)</h3>
 <ul>
@@ -910,6 +1448,13 @@ body::before {
 </li>
 <li>Example: facial recognition apps learn features like eyes, noses, and then full faces through many layers</li>
 </ul>
+<p><strong>What makes deep learning “deep” ★</strong></p>
+<ul>
+<li>Deep learning uses a neural network with <strong>many hidden layers</strong>, so features are built up level by level: early layers detect simple patterns such as edges, later layers combine them into whole objects</li>
+<li><strong>Depth</strong> is what separates deep learning from a shallow network: the more layers, the more abstract the features that can be represented, and the higher the level of success</li>
+<li>Deep networks are trained by <strong>back propagation</strong> with gradient descent, which is why they need large datasets and heavy computation</li>
+<li>Deep learning is chosen when the raw input is <strong>unstructured</strong> (images, sound, text) and the relevant features cannot be hand-coded; it outperforms other methods when the data size is large and is effective at finding hidden patterns that humans cannot see</li>
+</ul>
 <h3 id="reinforcement-learning-rl">Reinforcement learning (RL)</h3>
 <ul>
 <li>Reinforcement learning is another type of machine learning where an <strong>agent learns by interacting with an environment</strong>
@@ -919,6 +1464,14 @@ body::before {
 </ul>
 </li>
 <li>Used in: robotics, self-driving cars, game-playing AI (like AlphaGo), industrial automation</li>
+</ul>
+<p><strong>How reinforcement learning works ★</strong></p>
+<ul>
+<li>The <strong>agent</strong> is the learner and decision maker; the <strong>environment</strong> is everything it interacts with</li>
+<li>At each step the agent observes a <strong>state</strong>, chooses an <strong>action</strong>, and receives a <strong>reward</strong> together with the next state</li>
+<li>The <strong>policy</strong> is the mapping from states to actions, and learning means improving that mapping over time</li>
+<li>Learning is <strong>trial and error</strong>: actions that lead to higher reward become more likely, actions that lead to penalties become less likely</li>
+<li>The agent learns automatically from feedback without labelled data or specific instructions; node weightings are adjusted to achieve the correct outcome</li>
 </ul>
 <h3 id="summary-why-use-these-methods">Summary: why use these methods?</h3>
 <table>
@@ -932,7 +1485,7 @@ body::before {
 <tbody>
 <tr>
 <td><strong>Machine Learning</strong></td>
-<td>Learns from labelled data</td>
+<td>Learns from data</td>
 <td>Automates decisions with high accuracy</td>
 </tr>
 <tr>
@@ -952,10 +1505,95 @@ body::before {
 </tr>
 </tbody>
 </table>
+<p><div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q12 · 4 marks</div><div class="callout-body"><p>Artificial neural networks have played a significant role in the development of machine learning.</p>
+<p>Explain what is meant by the term <strong>artificial neural network</strong>.</p>
+<p>… <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>12</strong>
+One mark per mark point (Max 4)</p>
+<ul>
+<li>MP1: An artificial neural network is the component of artificial intelligence that is meant to simulate the functioning of a biological brain.</li>
+<li>MP2: Artificial neural networks are a key component of machine learning.</li>
+<li>MP3: They can solve problems that would prove impossible or difficult for humans // Artificial neural networks have self-learning capabilities that enable them to produce better results as more data becomes available</li>
+<li>MP4: Artificial neural networks can be layered (input, hidden and output layers) // Artificial neural networks have many interconnected layers, some / many of which are hidden</li>
+<li>MP5: Weights are assigned between nodes</li>
+<li>MP6: Weights are adjusted through training to give a more accurate result</li>
+<li>MP7: More complex learning capabilities / more accurate results are available with larger numbers of hidden layers</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q10(b) · 4 marks</div><div class="callout-body"><p>Explain the use of artificial neural networks in Deep Learning.</p>
+<p>… <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>10b</strong>
+One mark for each mark point (Max 4)</p>
+<ul>
+<li>MP1: Artificial neural networks are designed to work in the same way as the human brain</li>
+<li>MP2: ANNs provide the architecture and algorithms for learning from the data</li>
+<li>MP3: They have a large number of connected processing units / nodes</li>
+<li>MP4: … that are arranged in layers / interconnected and work together to process data</li>
+<li>MP5: Deep learning models learn from data by adjusting the weights/biases of the connections between neurons</li>
+<li>MP6: They use multiple hidden layers to extract complex features and to make predictions</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q7(b) · 5 marks</div><div class="callout-body"><p>Describe Deep Learning.</p>
+<p>… <strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>(b)</strong>
+One mark for each mark point (Max 5)</p>
+<ul>
+<li>Deep learning is a branch of machine learning</li>
+<li>It makes use of artificial neural networks</li>
+<li>… to work in a similar manner to the human/biological brain // … neural networks can be trained to process data</li>
+<li>It is a structure consisting of many <strong>interconnected</strong> layers</li>
+<li>… input, hidden and output // the input layer feeds the first hidden layer, the last hidden layer feeds the output</li>
+<li>… gradually breaking down and analysing the data to find (hidden) patterns</li>
+<li>Deep leaning’s feature extraction/learning involves how to detect features/categories from data</li>
+<li>… and can involve different types of supervision</li>
+<li>It works well with large data sets</li>
+<li>Deep learning uses back propagation of errors to adjust parameters/weightings to refine its results / improve its accuracy.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q11 · 3 marks</div><div class="callout-body"><p>Explain what is meant by <strong>Reinforcement Learning</strong> in relation to Artificial Intelligence.</p>
+<p>… <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>11</strong>
+One mark per mark point (Max 3)</p>
+<ul>
+<li>Reinforcement learning is a machine learning technique based on feedback / rewards / punishment.</li>
+<li>… in which an agent learns to behave in an environment by performing the actions and seeing the results of the actions.</li>
+<li>… for each good action, the agent gets positive feedback / reward and each bad action receives negative feedback / punishment.</li>
+<li>The agent learns automatically using feedback without any labelled data / specific instructions.</li>
+<li>Adjust node weightings to achieve the correct outcome. // Using feedback to improve its performance at accomplishing similar tasks.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q9(a)–(b) · 4 marks</div><div class="callout-body"><p>Deep learning is used in Artificial Intelligence (AI).</p>
+<p><strong>(a)</strong> Describe what is meant by <strong>deep learning</strong>. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Outline the reasons for using deep learning. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>9(a)</strong>
+One mark for each correct point (Max 2)</p>
+<ul>
+<li>Uses artificial neural network(s)</li>
+<li>… that contain(s) a high number of hidden layers</li>
+<li>… modelled on the human brain.</li>
+<li>Deep learning uses many layers to progressively extract higher level features from the (raw) input.</li>
+<li>Deep learning is a specialised form of machine learning.</li>
+</ul>
+<p><strong>9(b)</strong>
+One mark for each correct point (Max 2)</p>
+<ul>
+<li>Deep learning makes good use of unstructured data.</li>
+<li>Deep learning outperforms other methods if the data size is large.</li>
+<li>Deep learning systems enable machines to process data with a nonlinear approach.</li>
+<li>Deep learning is effective at identifying (hidden) patterns / patterns that humans might not be able to see / patterns that are too complex / time consuming for humans to carry out.</li>
+<li>It can provide a more accurate outcome with higher numbers of hidden layers.</li>
+</ul>
+</div></details></p>
 <h2 id="categories-of-machine-learning">Categories of machine learning</h2>
 <ul>
 <li>Machine learning algorithms are categorised based on <strong>how they learn from data</strong></li>
-<li>The two main categories are:</li>
+<li>Categories that appear in the mark schemes are: <strong>supervised learning, unsupervised learning, reinforcement learning and deep learning</strong> (any one of these is accepted as “a category of machine learning”)</li>
+<li>Reinforcement learning and deep learning are covered in the previous section; supervised and unsupervised learning are described below</li>
 </ul>
 <h3 id="supervised-learning">Supervised learning</h3>
 <ul>
@@ -994,12 +1632,67 @@ body::before {
 </ul>
 </li>
 </ul>
-<h4 id="used-for_2">Used for:</h4>
+<h4 id="used-for_1">Used for:</h4>
 <ul>
 <li><strong>Clustering</strong> (e.g. customer segmentation, social network analysis)</li>
 <li><strong>Dimensionality reduction</strong> (e.g. simplifying complex data)</li>
 </ul>
-<h2 id="back-propagation-regression">Back propagation &amp; regression</h2>
+<p><strong>The three learning paradigms ★</strong></p>
+<ul>
+<li><strong>Supervised learning</strong> trains on a <strong>labelled</strong> dataset of input–output pairs, so the correct answer is known during training; typical uses are <strong>classification</strong> and <strong>regression</strong></li>
+<li><strong>Unsupervised learning</strong> trains on <strong>unlabelled</strong> data and must find structure by itself; typical uses are <strong>clustering</strong> and <strong>dimensionality reduction</strong></li>
+<li><strong>Reinforcement learning</strong> does not train on a dataset at all: an <strong>agent</strong> acts in an <strong>environment</strong>, receives <strong>rewards or penalties</strong>, and adjusts its <strong>policy</strong> to maximise total reward</li>
+<li>The three differ in <strong>what feedback is available</strong>: labelled answers, no answers at all, or a delayed reward signal</li>
+<li>A common exam question asks you to <strong>match each category to its description</strong>; note that “enables information related to errors produced by the neural network to be transmitted” describes back propagation and is <strong>not</strong> used in that matching exercise</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q9(a) · 4 marks</div><div class="callout-body"><p>Explain how supervised learning and unsupervised learning are trained.</p>
+<p><strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>9(a)</strong>
+One mark per mark point (Max 4):</p>
+<ul>
+<li>MP1 Supervised learning makes use of labelled training data;</li>
+<li>MP2 … to predict future events based on past outcomes;</li>
+<li>MP3 Unsupervised learning makes use of unlabelled training data / training data without instructions on what to do with it / does not use training data with the correct/expected outcomes;</li>
+<li>MP4 … to search for hidden patterns/relationships/structures/similarities/outliers within the data;</li>
+<li>MP5 … to therefore get closer to the desired outcome as the training progresses.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q7 · 4 marks</div><div class="callout-body"><p>Supervised and unsupervised learning are two categories of machine learning.</p>
+<p>Describe supervised learning and unsupervised learning.</p>
+<p><strong>Supervised learning</strong></p>
+<p>…</p>
+<p><strong>Unsupervised learning</strong></p>
+<p>… <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>7</strong>
+One mark for each point</p>
+<p>Supervised learning (Max 3 of 4)</p>
+<ul>
+<li>Supervised learning allows data to be collected, or a data output produced, from the previous experience.</li>
+<li>In supervised learning, known input and associated outputs are given // uses sample data with known outputs (in training) // uses labelled input data.</li>
+<li>Able to predict future outcomes based on past data.</li>
+</ul>
+<p>Unsupervised learning (Max 3 of 4)</p>
+<ul>
+<li>Unsupervised machine learning helps all kinds of unknown patterns in data to be found.</li>
+<li>Unsupervised learning only requires input data to be given.</li>
+<li>Uses any data // not trained on the right output // uses unlabelled input data.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q10(c) · 3 marks</div><div class="callout-body"><p>Explain how unsupervised learning takes place in machine learning.</p>
+<p><strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>10©</strong>
+One mark for each mark point (Max 3)</p>
+<ul>
+<li>MP1 Unsupervised learning uses algorithms to analyse / cluster</li>
+<li>MP2 … unlabelled data sets</li>
+<li>MP3 They discover hidden patterns / data groupings / clusters without the need for human intervention.</li>
+<li>MP4 It is able to discover similarities and differences in data / information.</li>
+</ul>
+</div></details></p>
+<h2 id="back-propagation-and-regression">Back propagation and regression</h2>
 <h3 id="what-is-back-propagation">What is back propagation?</h3>
 <ul>
 <li>Back propagation is a training method used in <strong>artificial neural networks</strong> to <strong>improve accuracy</strong> by adjusting the weights of connections</li>
@@ -1035,7 +1728,16 @@ body::before {
 <li>Helps the neural network <strong>learn from mistakes</strong></li>
 <li>Makes the model more <strong>accurate over time</strong></li>
 <li>Allows multi-layer networks to <strong>fine-tune all layers</strong>, not just the output</li>
-<li>Common in: image recognition, speech recognition, language translation</li>
+<li>Common in: image recognition, speech recognition, language translation
+<img alt="Forward pass and backpropagation of errors, showing weight updates by gradient descent" src="images/p3-ch18-backpropagation.svg" /></li>
+</ul>
+<p><strong>How back propagation adjusts the weights ★</strong></p>
+<ul>
+<li>The error is passed back <strong>one layer at a time</strong>, so the weights in the <strong>hidden layers</strong> are adjusted too, not just the weights feeding the output layer</li>
+<li>Initial outputs are compared to expected outputs, and calculus is used to find the <strong>error gradient</strong> in the obtained outputs</li>
+<li>The results are <strong>fed back into the neural network</strong> and the weightings of each neuron/node are adjusted as a result of the feedback; the process repeats until the results are more accurate</li>
+<li>The size of each weight change is controlled by a <strong>learning rate</strong>: too large and training overshoots, too small and training is very slow</li>
+<li>Because it compares the output with a known target value, back propagation is a <strong>supervised</strong> training method and needs labelled data</li>
 </ul>
 <h3 id="what-is-regression">What is regression?</h3>
 <ul>
@@ -1086,20 +1788,213 @@ body::before {
 </ul>
 </li>
 </ul>
-<h4 id="quiz">Quiz</h4>
-<p>Supervised and unsupervised learning are two categories of machine learning.
-Describe supervised learning and unsupervised learning.<strong>[4]</strong>
-<strong>Answer</strong>
-<strong>Supervised learning (Max 3 of 4)</strong></p>
+<p><strong>How regression is fitted ★</strong></p>
 <ul>
-<li>Supervised learning allows data to be collected, or a data output produced, from the previous experience [1 mark]</li>
-<li>In supervised learning, known input and associated outputs are given <strong>OR</strong> uses sample data with known outputs (in training) <strong>OR</strong> uses labelled input data [1 mark]</li>
-<li>Able to predict future outcomes based on past data [1 mark]
-<strong>Unsupervised learning (Max 3 of 4)</strong></li>
-<li>Unsupervised machine learning helps all kinds of unknown patterns in data to be found [1 mark]</li>
-<li>Unsupervised learning only requires input data to be given [1 mark]</li>
-<li>Uses any data <strong>OR</strong> not trained on the right output <strong>OR</strong> uses unlabelled input data [1 mark]</li>
+<li>The line or curve is fitted by <strong>minimising the error</strong> between predicted and actual values, for example the <strong>mean squared error</strong></li>
+<li>The fitted line is the <strong>line of best fit</strong>; after fitting it can predict a value for any new input</li>
+<li>Regression predicts a <strong>continuous</strong> value, whereas classification predicts a <strong>discrete</strong> label — both are supervised tasks</li>
+<li>In mark schemes regression is described as a supervised technique that finds a mathematical function / plots a best-fit line or curve / uses calculus to find the error gradient, mapping how <strong>independent variables/cause</strong> influence a <strong>dependent variable/effect</strong>, with the goal of minimising the difference between predicted and actual values</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q9(b) · 4 marks</div><div class="callout-body"><p>Describe the <strong>back propagation of errors</strong> method in Machine Learning.</p>
+<p>… <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>9(b)</strong>
+One mark per mark point (Max 4)</p>
+<ul>
+<li>Initial outputs are compared to expected outputs</li>
+<li>… weightings are adjusted to minimise the difference between actual and expected outputs</li>
+<li>Calculus is used to find the error gradient in the obtained outputs</li>
+<li>… the results are fed back into the neural network</li>
+<li>… weightings of each neuron / node are adjusted as a result of the feedback</li>
+<li>… the process repeats until results are more accurate</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q9(a) · 3 marks</div><div class="callout-body"><p>Explain what is meant by regression methods in relation to machine learning.</p>
+<p>… <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>9(a)</strong>
+One mark per mark point (Max 3)</p>
+<ul>
+<li>MP1 A supervised learning technique of machine learning</li>
+<li>MP2 It finds a mathematical function // It plots a best-fit line/curve // calculus is used to find the error gradient</li>
+<li>MP3 … that maps how independent variables/cause influence a dependent variable/effect between the data</li>
+<li>MP4 It is used for forecasting trends and predicting outcomes</li>
+<li>MP5 It will be trained to understand the relationship between different causes and effects allow to find relationships between two <strong>sets of data</strong></li>
+<li>MP6 The goal is to minimise the difference between the predicted values and the actual values.</li>
+</ul>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q10(a)</td>
+<td>Graphs used to aid AI</td>
+<td>2025 Summer P31 Q10(a)</td>
+</tr>
+<tr>
+<td>P32 Q6(a)</td>
+<td>Purpose and structure of a graph</td>
+<td>2025 Summer P32 Q6(a)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2026 Summer P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)(i)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2026 Summer P32 Q9(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)(ii)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2026 Summer P32 Q9(b)(ii)</td>
+</tr>
+<tr>
+<td>P33 Q9(b)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2026 Summer P33 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q7(a)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2025 Winter P31 Q7(a)</td>
+</tr>
+<tr>
+<td>P33 Q10(a)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2025 Summer P33 Q10(a)</td>
+</tr>
+<tr>
+<td>P33 Q10(b)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2025 Summer P33 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2023 Summer P31 Q2(b)</td>
+</tr>
+<tr>
+<td>P32 Q10(b)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2023 Summer P32 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>A* and Dijkstra’s graph searches</td>
+<td>2021 Winter P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)</td>
+<td>Neural networks &amp; machine learning</td>
+<td>2025 Summer P31 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q12</td>
+<td>Neural networks &amp; machine learning</td>
+<td>2023 Winter P31 Q12</td>
+</tr>
+<tr>
+<td>P31 Q9(a)(i)</td>
+<td>Neural networks &amp; machine learning</td>
+<td>2021 Winter P31 Q9(a)(i)</td>
+</tr>
+<tr>
+<td>P31 Q9(a)(ii)</td>
+<td>Neural networks &amp; machine learning</td>
+<td>2021 Winter P31 Q9(a)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q9(a)</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2026 Summer P32 Q9(a)</td>
+</tr>
+<tr>
+<td>P31 Q7(b)</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2025 Winter P31 Q7(b)</td>
+</tr>
+<tr>
+<td>P32 Q9(a)(i)</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2025 Winter P32 Q9(a)(i)</td>
+</tr>
+<tr>
+<td>P32 Q9(a)(ii)</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2025 Winter P32 Q9(a)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q9</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2024 Summer P31 Q9</td>
+</tr>
+<tr>
+<td>P32 Q11</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2024 Summer P32 Q11</td>
+</tr>
+<tr>
+<td>P31 Q9(a)</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2022 Winter P31 Q9(a)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>Deep / Machine / Reinforcement Learning</td>
+<td>2022 Winter P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q9(a)</td>
+<td>Supervised vs unsupervised learning</td>
+<td>2026 Summer P31 Q9(a)</td>
+</tr>
+<tr>
+<td>P32 Q6(b)</td>
+<td>Supervised vs unsupervised learning</td>
+<td>2025 Summer P32 Q6(b)</td>
+</tr>
+<tr>
+<td>P33 Q10©</td>
+<td>Supervised vs unsupervised learning</td>
+<td>2025 Summer P33 Q10©</td>
+</tr>
+<tr>
+<td>P31 Q2(a)</td>
+<td>Supervised vs unsupervised learning</td>
+<td>2023 Summer P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q10(a)</td>
+<td>Supervised vs unsupervised learning</td>
+<td>2023 Summer P32 Q10(a)</td>
+</tr>
+<tr>
+<td>P32 Q7</td>
+<td>Supervised vs unsupervised learning</td>
+<td>2022 Winter P32 Q7</td>
+</tr>
+<tr>
+<td>P33 Q9(a)</td>
+<td>Back propagation &amp; regression</td>
+<td>2026 Summer P33 Q9(a)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)</td>
+<td>Back propagation &amp; regression</td>
+<td>2025 Winter P32 Q9(b)</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="17-security.html" title="Previous: 17. Security" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">17. Security</span></a>

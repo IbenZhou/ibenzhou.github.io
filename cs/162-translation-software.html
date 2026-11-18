@@ -255,13 +255,11 @@ details.callout > summary:hover { background: var(--accent-light); }
     <aside class="post-sidebar">
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
-<li><a href="#translation-process">Translation Process</a></li>
 <li><a href="#interpreter-execution">Interpreter execution</a></li>
-<li><a href="#compilation-stages">Compilation stages</a></li>
-<li><a href="#syntax-rules">Syntax Rules</a></li>
-<li><a href="#bnf-syntax-diagrams">BNF &amp; syntax diagrams</a></li>
-<li><a href="#expression-evaluation">Expression Evaluation</a></li>
-<li><a href="#reverse-polish-notation-rpn">Reverse Polish Notation (RPN)</a></li>
+<li><a href="#stages-of-compilation">Stages of compilation</a></li>
+<li><a href="#syntax-rules-and-bnf">Syntax rules &amp; BNF</a></li>
+<li><a href="#expression-evaluation-and-rpn">Expression evaluation &amp; RPN</a></li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 </div>
@@ -271,9 +269,16 @@ details.callout > summary:hover { background: var(--accent-light); }
         
 
 
-<h2 id="translation-process">Translation Process</h2>
-<h2 id="interpreter-execution">Interpreter execution</h2>
-<h3 id="what-is-an-interpreter">What is an interpreter?</h3>
+
+<h2 id="translation-software">Translation software</h2>
+<p>Translation software converts a program written in a high-level language into machine code that the processor can execute. Two approaches are examined:</p>
+<ul>
+<li>An <strong>interpreter</strong> translates and executes the source code one line at a time and does not produce a separate translated file.</li>
+<li>A <strong>compiler</strong> translates the whole program through a series of stages into object/machine code before execution.</li>
+</ul>
+<p><img alt="Interpreter compared with compiler: line-by-line execution versus staged compilation to object code" src="images/p3-ch16-2-interpreter-vs-compiler.svg" /></p>
+<h3 id="interpreter-execution">Interpreter execution</h3>
+<h4 id="what-is-an-interpreter">What is an interpreter?</h4>
 <ul>
 <li>An interpreter is a type of translator that <strong>executes high-level code line by line</strong></li>
 <li>It <strong>does not</strong> convert the entire program into a separate machine code file</li>
@@ -281,8 +286,9 @@ details.callout > summary:hover { background: var(--accent-light); }
 <h4 id="how-does-it-work">How does it work?</h4>
 <ul>
 <li>The source code is <strong>read, analysed, and executed</strong> <strong>one line at a time</strong></li>
-<li>No complete machine code file is produced, only <strong>immediate execution</strong> happens</li>
-<li>If there is an error in a line, <strong>execution stops</strong>, and the <strong>error is reported immediately</strong></li>
+<li>If the line is <strong>syntax-error free it is executed immediately</strong>; no standalone executable is stored</li>
+<li>If an error is found, <strong>the program halts and an error message is reported at once</strong></li>
+<li><strong>Each line must be translated every time the program runs</strong>, including lines that execute repeatedly (for example inside a loop) — this is why interpreted execution is slower</li>
 </ul>
 <table>
 <thead>
@@ -293,7 +299,7 @@ details.callout > summary:hover { background: var(--accent-light); }
 </thead>
 <tbody>
 <tr>
-<td>No output file</td>
+<td>No translated file</td>
 <td>It does <strong>not generate</strong> a standalone <code>.exe</code> or machine code file</td>
 </tr>
 <tr>
@@ -314,12 +320,15 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
-<h3 id="example-use-cases">Example use cases</h3>
+<h4 id="example-use-cases">Example use cases</h4>
 <ul>
 <li>Used in <strong>educational tools</strong>, like Python shells or BASIC interpreters</li>
 <li>Helpful for <strong>rapid prototyping</strong> or when frequent changes are made</li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2025 夏季 P31 Q6 · 4 marks</div><div class="callout-body"><p>Describe the process of executing a program using an interpreter. <strong>[4]</strong></p>
+<blockquote>
+<p><strong>Exam-focus note ★</strong> Only one past-paper question in the bank examines this objective directly (2025 Summer P31 Q6). Index tags that also attach BNF to that question are incorrect — the question is interpreter-only.</p>
+</blockquote>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q6 · 4 marks</div><div class="callout-body"><p>Describe the process of executing a program using an interpreter. <strong>[4]</strong></p>
 </div></div>
 <details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
 <thead>
@@ -338,24 +347,20 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tbody>
 </table>
 </div></details></p>
-<h2 id="compilation-stages">Compilation stages</h2>
-<h3 id="what-is-compilation">What is compilation?</h3>
+<h3 id="stages-of-compilation">Stages of compilation</h3>
+<h4 id="what-is-compilation">What is compilation?</h4>
 <ul>
 <li>Compilation is a <strong>process</strong> that <strong>translates a program</strong> written in a high-level programming language into machine code</li>
 <li><strong>Only machine code</strong> can be executed by a computer</li>
-<li>There are four stages involved in this process:
-<ul>
-<li><strong>Lexical Analysis</strong></li>
-<li><strong>Syntax Analysis</strong></li>
-<li><strong>Code Generation</strong></li>
-<li><strong>Optimisation</strong></li>
+<li>The stages examined are <strong>lexical analysis → syntax analysis → code generation → optimisation</strong>; semantic analysis, a symbol table and intermediate code support these stages</li>
 </ul>
-</li>
-</ul>
-<h3 id="lexical-analysis">Lexical analysis</h3>
+<p><img alt="Flow diagram of compilation stages: lexical analysis, syntax analysis, semantic analysis, intermediate code, optimisation, code generation" src="images/p3-ch16-2-compilation-stages-flow.svg" /></p>
+<h4 id="lexical-analysis">Lexical analysis</h4>
 <ul>
 <li>In A Level Computer Science, lexical analysis means studying the <strong>words or vocabulary</strong> of a language</li>
-<li>This stage involves <strong>identifying lexical ‘tokens’</strong> in the code</li>
+<li>It is the <strong>first stage</strong> of compilation: whitespace and comments are removed and the remaining source code is broken into a series of <strong>tokens</strong></li>
+<li>Each token is <strong>categorised and assigned a type</strong>; identifiers are stored in a <strong>symbol table</strong></li>
+<li>If the lexical analyser finds <strong>invalid tokens it generates an error</strong>; acceptable data passes to the syntax analyser</li>
 <li>Tokens represent small meaningful units in the programming language, such as:
 <ul>
 <li><strong>Keywords</strong>
@@ -380,7 +385,6 @@ details.callout > summary:hover { background: var(--accent-light); }
 </li>
 </ul>
 </li>
-<li>During this stage, unnecessary elements like comments and whitespace are ignored</li>
 <li>For example, if the following code is being compiled:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -484,34 +488,40 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
-<h3 id="syntax-analysis">Syntax analysis</h3>
+<h4 id="syntax-analysis">Syntax analysis</h4>
 <ul>
 <li>Now that tokens have been identified, syntax analysis makes sure they all <strong>adhere to the syntax rules</strong> of the programming language</li>
+<li>It is the <strong>second stage</strong>, taking the <strong>token stream</strong> from the lexical analyser and <strong>parsing</strong> the code against the rules of the language</li>
 <li>A symbol, e.g. ‘$’ could be a valid token but not a valid character according to particular programming languages</li>
 <li>The dollar symbol would be flagged as breaking the syntax rules</li>
-<li>Other syntax errors programmers commonly make include <strong>mismatched parentheses</strong> or <strong>missing semicolons</strong></li>
-<li>If the code passes the syntax analysis, the compiler can create an <strong>Abstract Syntax Tree</strong> (AST)</li>
-<li>An AST is a graph-based representation of the code being compiled</li>
-<li>An AST is an efficient way to represent the code for the next step</li>
+<li>Other syntax errors programmers commonly make include <strong>mismatched parentheses</strong> or <strong>missing semicolons</strong>; <strong>syntax errors are reported</strong></li>
+<li>If the code passes the syntax analysis, the compiler creates a <strong>parse tree / Abstract Syntax Tree (AST)</strong></li>
+<li>An AST is a graph-based representation of the code being compiled and is an efficient way to represent the code for the next step</li>
 </ul>
-<h3 id="example-abstract-syntax-tree">Example abstract syntax tree</h3>
+<h5 id="example-abstract-syntax-tree">Example abstract syntax tree</h5>
 <ul>
 <li>For the same code as above, the following abstract syntax tree can be created
 <img alt="Abstract syntax tree800" src="images/abstract-syntax-tree-2.png" />
 <em><strong>Abstract syntax tree</strong></em></li>
 </ul>
-<h3 id="code-generation">Code generation</h3>
+<h4 id="code-generation">Code generation</h4>
 <ul>
-<li>This step takes the AST and traverses it to generate <strong>object code</strong> that can be executed by the computer</li>
+<li>This step takes the AST / intermediate representation and traverses it to generate <strong>object code</strong> that can be executed by the computer — it converts the intermediate representation into an executable form</li>
 </ul>
-<h3 id="optimisation">Optimisation</h3>
+<h4 id="optimisation">Optimisation</h4>
 <ul>
 <li>This step <strong>modifies the code</strong> to make it <strong>more efficient</strong> without changing its functionality</li>
-<li>This is important to attempt because it <strong>reduces the memory required</strong> to run the code, which leads to faster execution</li>
+<li>It identifies and removes redundant code, simplifies expressions or reorders code so that <strong>memory/storage use, CPU time, power consumption and execution time are minimised</strong></li>
 <li>A common optimisation action is <strong>removing duplicate code</strong></li>
 <li>If an ‘add’ function is written twice in the source code, a sophisticated compiler will notice this and include it only once in the object code</li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2025 夏季 P32 Q8 · 4 marks</div><div class="callout-body"><p>Explain what is meant by <strong>lexical analysis</strong> during program compilation. <strong>[4]</strong></p>
+<p><strong>Semantic analysis, the symbol table and intermediate code ★</strong></p>
+<ul>
+<li><strong>Semantic analysis</strong> — checks that the code is <strong>meaningful</strong>: every identifier is declared, the types of operands match, and a variable is not used before it is given a value</li>
+<li><strong>Symbol table</strong> — records each identifier with its <strong>type, scope and address</strong>; it is built during lexical and syntax analysis and consulted by the later stages</li>
+<li><strong>Intermediate code</strong> — a machine-independent representation produced before code generation, which the optimiser can rewrite without targeting a specific processor</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q8 · 4 marks</div><div class="callout-body"><p>Explain what is meant by <strong>lexical analysis</strong> during program compilation. <strong>[4]</strong></p>
 </div></div>
 <details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
 <thead>
@@ -530,7 +540,7 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tbody>
 </table>
 </div></details>
-<div class="callout callout-question"><div class="callout-title">2022 冬季 P31 Q4 · 4 marks</div><div class="callout-body"><p>Draw <strong>one</strong> line to connect each stage of compilation to its most appropriate description. <strong>[4]</strong></p>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q4 · 4 marks</div><div class="callout-body"><p>Draw <strong>one</strong> line to connect each stage of compilation to its most appropriate description. <strong>[4]</strong></p>
 <table>
 <thead>
 <tr>
@@ -597,22 +607,38 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tbody>
 </table>
 </div></details>
-<strong>Semantic analysis, the symbol table and intermediate code ★</strong></p>
-<ul>
-<li><strong>Semantic analysis</strong> — checks that the code is <strong>meaningful</strong>: every identifier is declared, the types of operands match, and a variable is not used before it is given a value</li>
-<li><strong>Symbol table</strong> — records each identifier with its <strong>type, scope and address</strong>; it is built during lexical and syntax analysis and consulted by the later stages</li>
-<li><strong>Intermediate code</strong> — a machine-independent representation produced before code generation, which the optimiser can rewrite without targeting a specific processor</li>
-</ul>
-<h2 id="syntax-rules">Syntax Rules</h2>
-<h2 id="bnf-syntax-diagrams">BNF &amp; syntax diagrams</h2>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q2 · 4 marks</div><div class="callout-body"><p>Lexical analysis and syntax analysis are stages in the compilation of a program.</p>
+<p><strong>(a)</strong> Identify two other stages that take place during the compilation of a program. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Outline the purpose of syntax analysis. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2(a)</td>
+<td><strong>One</strong> mark per point<br>• Code generation<br>• Optimisation</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2(b)</td>
+<td><strong>One</strong> mark per point (<strong>Max 2</strong>)<br>• It checks that the code matches the grammar of the language // It checks that the tokens conform with the rules of the programming language<br>• <strong>Syntax errors</strong> are reported<br>• A parse tree is produced</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
+<h3 id="syntax-rules-and-bnf">Syntax rules and BNF</h3>
 <ul>
 <li>When writing programs, you must follow a set of strict rules known as <strong>syntax</strong> — the structure that defines how code must be written.
 <ul>
-<li>Just like spoken languages have grammar rules, <strong>programming languages have syntax rules</strong>
-<ul>
+<li>Just like spoken languages have grammar rules, <strong>programming languages have syntax rules</strong></li>
 <li><strong>Each language has its own syntax</strong>, e.g. Python uses indentation, Java uses semicolons</li>
-</ul>
-</li>
 </ul>
 </li>
 <li>Programs are first written in <strong>source code</strong> (a high-level language like Python, Java, etc.)</li>
@@ -620,36 +646,19 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li>For translation to work, syntax must be <strong>precisely defined</strong> to avoid <strong>ambiguity</strong></li>
 <li>Translators (compilers or interpreters) rely on these rules to correctly convert the program into a form the CPU can understand</li>
 </ul>
-<h3 id="regular-expressions-and-meta-languages">Regular expressions and meta-languages</h3>
+<h4 id="regular-expressions-and-meta-languages">Regular expressions and meta-languages</h4>
 <ul>
 <li>Regular expressions are used to <strong>describe simple patterns</strong> in text or syntax</li>
 <li>Many programming constructs (like variable names or simple statements) <strong>can be defined</strong> using regular expressions</li>
-<li>However
-<ul>
-<li>Some aspects of a programming language are <strong>too complex</strong> for regular expressions alone</li>
+<li>However, some aspects of a programming language are <strong>too complex</strong> for regular expressions alone</li>
+<li>When regular expressions aren’t enough, we use a <strong>meta-language</strong> — a language used to <strong>describe the structure of another language</strong></li>
+<li>The most common examples are <strong>Backus-Naur Form (BNF)</strong> and <strong>syntax diagrams</strong></li>
+<li>These allow us to define full grammar rules, nested structures and hierarchical syntax</li>
 </ul>
-</li>
-<li>When regular expressions aren’t enough, we use a <strong>meta-language</strong></li>
-<li>A language used to <strong>describe the structure of another language</strong></li>
-<li>The most common example is <strong>Backus-Naur Form (BNF)</strong> or <strong>syntax diagrams</strong></li>
-<li>These allow us to define:
-<ul>
-<li>Full grammar rules</li>
-<li>Nested structures</li>
-<li>Hierarchical syntax</li>
-</ul>
-</li>
-</ul>
-<h3 id="what-is-backus-naur-form-bnf">What is Backus-Naur form (BNF)?</h3>
+<h4 id="what-is-backus-naur-form-bnf">What is Backus-Naur Form (BNF)?</h4>
 <ul>
 <li>BNF is a <strong>meta-language</strong>, a way of writing rules that define the <strong>syntax of programming languages</strong> or <strong>data structures</strong></li>
-<li>BNF is used to:
-<ul>
-<li>Describe <strong>formal grammar</strong></li>
-<li>Define how statements and expressions are <strong>structured</strong></li>
-<li>Ensure that syntax rules are <strong>unambiguous</strong> and <strong>machine-readable</strong></li>
-</ul>
-</li>
+<li>BNF is used to describe <strong>formal grammar</strong>, define how statements and expressions are <strong>structured</strong>, and ensure syntax rules are <strong>unambiguous</strong> and <strong>machine-readable</strong></li>
 <li>BNF uses a set of <strong>rules</strong> made up of:</li>
 </ul>
 <table>
@@ -662,7 +671,7 @@ details.callout > summary:hover { background: var(--accent-light); }
 <tbody>
 <tr>
 <td><strong>Non-terminal</strong></td>
-<td>A category or component (e.g. , )</td>
+<td>A category or component (e.g. <code>&lt;digit&gt;</code>), written inside angle brackets</td>
 </tr>
 <tr>
 <td><strong>Terminal</strong></td>
@@ -673,25 +682,20 @@ details.callout > summary:hover { background: var(--accent-light); }
 <td>“Is defined as”, separates the name from its definition</td>
 </tr>
 <tr>
-<td><strong>|</strong></td>
-<td>“or”, it gives alternative definitions</td>
+<td>**</td>
+<td>**</td>
 </tr>
 </tbody>
 </table>
-<h4 id="example-1">Example 1</h4>
+<h5 id="example-1">Example 1</h5>
 <div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">9</span>
 <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="w"> </span><span class="p">::</span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;</span><span class="n">digit</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span>
 </code></pre></div>
 <ul>
 <li><code>&lt;digit&gt;</code> is defined as any single digit 0–9</li>
-<li><code>&lt;number&gt;</code> is defined as:
-<ul>
-<li>a single digit, or</li>
-<li>a digit followed by another number (i.e. multiple digits)</li>
+<li><code>&lt;number&gt;</code> is defined as a single digit, or a digit followed by another number (i.e. multiple digits)</li>
 </ul>
-</li>
-</ul>
-<h4 id="example-2">Example 2</h4>
+<h5 id="example-2">Example 2</h5>
 <ul>
 <li><code>&lt;number&gt;</code> contains one or more digits</li>
 <li>BNF for <code>&lt;number&gt;</code> and use it to define <code>&lt;IDcode&gt;</code>, which consists of a <code>&lt;number&gt;</code> followed by either a <code>&lt;letter&gt;</code> or another <code>&lt;number&gt;</code></li>
@@ -707,9 +711,11 @@ details.callout > summary:hover { background: var(--accent-light); }
 <p>Use of <code>|</code> for choice</p>
 </li>
 <li>
-<p>Application to a second rule with multiple components
-<strong>Syntax diagram conventions ★</strong></p>
+<p>Application to a second rule with multiple components</p>
 </li>
+</ul>
+<p><strong>Syntax diagram conventions ★</strong></p>
+<ul>
 <li>
 <p><strong>Terminal</strong> — drawn as a <strong>circle or oval</strong>, and written literally in BNF, e.g. <code>+</code>, <code>if</code>, <code>0</code></p>
 </li>
@@ -729,14 +735,14 @@ details.callout > summary:hover { background: var(--accent-light); }
 <p><strong>Recursion in BNF</strong> — repetition is expressed by referring to the rule itself, e.g. <code>&lt;number&gt; ::= &lt;digit&gt; | &lt;number&gt;&lt;digit&gt;</code></p>
 </li>
 </ul>
-<h3 id="what-is-a-syntax-diagram">What is a syntax diagram?</h3>
+<h4 id="what-is-a-syntax-diagram">What is a syntax diagram?</h4>
 <ul>
 <li>A syntax diagram is a <strong>graphical representation of BNF</strong> (meta-language)</li>
 <li>It uses <strong>symbols</strong> to map directly to the structure of BNF</li>
 <li>The symbols used are:
 <img alt="Diagram showing a terminal element in a circle and two non-terminal elements in rectangles with different annotations for further breakdown and reuse." src="images/17873_data.png" /> <img alt="Flowchart showing letters A, B, and C as valid options, and a formula calculating area as length multiplied by width in a sequence of shapes." src="images/43697_data-1.png" /></li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2022 夏季 P32 Q4 · 13 marks</div><div class="callout-body"><p>The following syntax diagrams show the syntax of:</p>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q4 · 13 marks</div><div class="callout-body"><p>The following syntax diagrams show the syntax of:</p>
 <ul>
 <li>a variable</li>
 <li>an unsigned integer</li>
@@ -855,10 +861,108 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q7 · 9 marks</div><div class="callout-body"><p>Several syntax diagrams are shown.</p>
+<p><img alt="" src="images/9618_w24_qp_32_q7_syntax_diagrams.png" /></p>
+<p><img alt="" src="images/9618_w24_qp_32_q7_syntax_number.png" /></p>
+<p><strong>(a)</strong> State why each number is invalid for the given syntax diagrams. <strong>[2]</strong></p>
+<p><strong>21</strong> …</p>
+<p><strong>123</strong> …</p>
+<p><strong>(b)</strong> Complete the Backus-Naur Form (BNF) for the given syntax diagrams. <strong>[2]</strong></p>
+<pre><code>&lt;symbol&gt; ::=
+&lt;number&gt; ::=
+</code></pre>
+<p><strong>©(i)</strong> A new syntax rule, <strong>code</strong>, is required. It must begin with a letter, followed by one or two numbers, and end with a symbol. Draw a syntax diagram for <strong>code</strong>. <strong>[3]</strong>
+<strong>©(ii)</strong> Write the BNF for <strong>code</strong>. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7(a)</td>
+<td><strong>One</strong> mark per mark point (<strong>Max 2</strong>)<br>• <strong>MP1</strong> <code>21</code> — a number must begin with an odd digit, 2 is even<br>• <strong>MP2</strong> <code>123</code> — a number can only be one or two digits in length not three</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7(b)</td>
+<td><strong>One</strong> mark per mark point (<strong>Max 2</strong>). Completed BNF shown below.</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7©(i)</td>
+<td><strong>One</strong> mark per mark point (<strong>Max 3</strong>)<br>• letter, number and symbol all included in correct order: letter first, followed by number, finishing with symbol<br>• provision for one or two numbers including relevant connectors<br>• all other connections and label correct and no additional data<br><br><img alt="" src="images/9618_w24_qp_32_ms_q7ci_code_diagram.png" /></td>
+<td>3</td>
+</tr>
+<tr>
+<td>7©(ii)</td>
+<td><strong>One</strong> mark per correct line (<strong>Max 2</strong>). Answers shown below.</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>7(b) answer:</p>
+<pre><code>&lt;symbol&gt; ::= % | £ | # | @ | $
+&lt;number&gt; ::= &lt;odd&gt; | &lt;odd&gt;&lt;even&gt; | &lt;odd&gt;&lt;odd&gt;
+</code></pre>
+<p>7©(ii) answer:</p>
+<pre><code>&lt;code&gt; ::= &lt;letter&gt;&lt;number&gt;&lt;symbol&gt; | &lt;letter&gt;&lt;number&gt;&lt;number&gt;&lt;symbol&gt;
+</code></pre>
+<p>OR</p>
+<pre><code>&lt;code&gt; ::= &lt;letter&gt;&lt;number&gt;&lt;number&gt;&lt;symbol&gt; | &lt;letter&gt;&lt;number&gt;&lt;symbol&gt;
+</code></pre>
+<p>Alternative answer:</p>
+<pre><code>&lt;digits&gt; ::= &lt;number&gt; | &lt;number&gt;&lt;number&gt;
+&lt;code&gt; ::= &lt;letter&gt;&lt;digits&gt;&lt;symbol&gt;
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q7 · 6 marks</div><div class="callout-body"><p>Several syntax diagrams are shown.</p>
+<p><img alt="" src="images/9618_s25_qp_31_q7_syntax_diagrams.png.png" /></p>
+<p><strong>(a)</strong> State why each passcode is invalid for the given syntax diagrams. <strong>[2]</strong></p>
+<ul>
+<li><code>#Jd7</code> — Reason: …</li>
+<li><code>C%6A</code> — Reason: …</li>
+</ul>
+<p><strong>(b)</strong> Complete the Backus-Naur Form (BNF) for <code>&lt;uppercase&gt;</code> and <code>&lt;passcode&gt;</code>. <strong>[4]</strong></p>
+<pre><code>&lt;uppercase&gt; ::= ...............................................................................
+&lt;passcode&gt;  ::= ...............................................................................
+</code></pre>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7(a)</td>
+<td><code>#Jd7</code>: must begin with a member of the group uppercase // cannot begin with a symbol<br><code>C%6A</code>: the fourth character cannot be a member of the group uppercase // the fourth character must be either a symbol, digit or lowercase</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7(b)</td>
+<td>One mark per mark point; completed BNF shown below.</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>7(b) answer:</p>
+<pre><code>&lt;uppercase&gt; ::= A | C | E | G | J
+&lt;passcode&gt; ::= &lt;uppercase&gt;&lt;code&gt;
+&lt;code&gt; ::= &lt;lowercase&gt;|&lt;symbol&gt;|&lt;digit&gt;
+|&lt;lowercase&gt;&lt;code&gt;|&lt;symbol&gt;&lt;code&gt;|&lt;digit&gt;&lt;code&gt;
+</code></pre>
 </div></details></p>
-<h2 id="expression-evaluation">Expression Evaluation</h2>
-<h2 id="reverse-polish-notation-rpn">Reverse Polish Notation (RPN)</h2>
-<h3 id="what-is-rpn">What is RPN?</h3>
+<h3 id="expression-evaluation-and-rpn">Expression evaluation and RPN</h3>
+<h4 id="what-is-rpn">What is RPN?</h4>
 <ul>
 <li>Reverse Polish Notation (RPN) is a method of writing <strong>mathematical expressions</strong> where the <strong>operator comes after the operands</strong></li>
 <li>This is also known as <strong>postfix notation</strong>
@@ -870,27 +974,30 @@ details.callout > summary:hover { background: var(--accent-light); }
 </ul>
 <h4 id="why-use-rpn">Why use RPN?</h4>
 <ul>
-<li><strong>No need for brackets</strong>: The order of operations is determined by position, not parentheses</li>
+<li>RPN provides an <strong>unambiguous</strong> method of representing an expression, <strong>read from left to right</strong></li>
+<li><strong>No need for brackets</strong>: the order of operations is determined by position, not parentheses</li>
+<li><strong>No need for rules of precedence / BODMAS</strong></li>
 <li><strong>Easier for computers to evaluate</strong> using a <strong>stack</strong></li>
-<li>Always <strong>unambiguous</strong></li>
 </ul>
 <h4 id="how-rpn-works">How RPN works</h4>
 <ul>
 <li>RPN uses a Stack to evaluate expressions</li>
 </ul>
 <ol>
-<li><strong>Read from left to right</strong></li>
-<li><strong>Push numbers onto the stack</strong></li>
+<li><strong>Read the expression from left to right</strong>, one item at a time</li>
+<li>Check each element to see if it is an <strong>operator or a value</strong></li>
+<li>When a <strong>number/value</strong> is read, <strong>push it onto the stack</strong></li>
 <li>When an <strong>operator</strong> is read:
 <ul>
-<li><strong>Pop the top two values</strong> from the stack</li>
+<li><strong>Pop the last two values</strong> from the stack</li>
 <li><strong>Apply the operator</strong></li>
 <li><strong>Push the result</strong> back onto the stack</li>
 </ul>
 </li>
-<li>When the expression ends, the final result is at the <strong>top of the stack</strong></li>
+<li>Repeat until the expression ends; the final result is at the <strong>top of the stack</strong></li>
 </ol>
-<h4 id="example-evaluate-3-4-2">Example: evaluate 3 4 + 2 ×</h4>
+<p><img alt="RPN stack evaluation: push operands, pop two on operator, push result" src="images/p3-ch16-2-rpn-stack-evaluation.svg" /></p>
+<h5 id="example-evaluate-3-4-2">Example: evaluate 3 4 + 2 ×</h5>
 <table>
 <thead>
 <tr>
@@ -930,63 +1037,38 @@ details.callout > summary:hover { background: var(--accent-light); }
 <ul>
 <li>Final result: <code>14</code></li>
 </ul>
-<h4 id="example-convert-this-infix-expression-to-rpn">Example: convert this infix expression to RPN</h4>
+<h5 id="example-convert-this-infix-expression-to-rpn">Example: convert this infix expression to RPN</h5>
 <div class="highlight"><pre><span></span><code><span class="p">(</span><span class="mi">7</span> <span class="err">−</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">9</span> <span class="err">−</span> <span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <ul>
-<li>
-<p><strong>Split the expression into parts:</strong></p>
+<li><strong>Split the expression into parts:</strong></li>
+<li>Left-hand side: <code>(7 − 2 + 8)</code></li>
+<li>This becomes <code>( (7 − 2) + 8 )</code></li>
+<li>Which in RPN is <code>7 2 − 8 +</code></li>
+<li>Right-hand side: <code>(9 − 5)</code> → in RPN <code>9 5 −</code></li>
+<li><strong>Combine with the division</strong> → <code>7 2 − 8 + 9 5 − ÷</code></li>
+<li>RPN <strong>follows the evaluation order naturally</strong>, so there is <strong>no need for brackets</strong> or precedence rules:
+<ul>
+<li>Work from inside brackets out</li>
+<li>Convert each sub-expression</li>
+<li>Add the operator after its operands</li>
+</ul>
 </li>
-<li>
-<p>Left-hand side:
-<code>(7 − 2 + 8)</code></p>
-</li>
-<li>
-<p>This becomes:
-<code>( (7 − 2) + 8 )</code></p>
-</li>
-<li>
-<p>Which in RPN is:
-<code>7 2 − 8 +</code></p>
-</li>
-<li>
-<p>Right-hand side:
-<code>(9 − 5)</code></p>
-</li>
-<li>
-<p>In RPN:
-<code>9 5 −</code></p>
-</li>
-<li>
-<p><strong>Combine with the division</strong></p>
-</li>
-<li>
-<p>In RPN, that becomes:
-<code>7 2 − 8 + 9 5 − ÷</code>
-RPN <strong>follows the evaluation order naturally</strong>, so there’s <strong>no need for brackets</strong> or precedence rules. Just:</p>
-</li>
-<li>
-<p>Work from inside brackets out</p>
-</li>
-<li>
-<p>Convert each sub-expression</p>
-</li>
-<li>
-<p>Add the operator after its operands
-<strong>Converting infix to RPN ★</strong></p>
-</li>
-<li>
-<p><strong>Precedence and associativity</strong> — brackets first, then <code>^</code>, then <code>*</code> and <code>/</code>, then <code>+</code> and <code>-</code>; operators of equal precedence are taken left to right</p>
-</li>
-<li>
-<p><strong>Operator stack method</strong> — output operands as they are read, push operators, pop an operator whenever one of lower or equal precedence arrives, and pop all remaining operators at the end</p>
-</li>
-<li>
-<p><strong>Brackets</strong> — push <code>(</code>, and on <code>)</code> pop operators until <code>(</code> is reached; neither bracket is written in the output</p>
-</li>
-<li>
-<p><strong>Evaluation order</strong> — for <code>-</code> and <code>/</code> the value popped <strong>second</strong> is the left operand, so <code>a b -</code> means <code>a - b</code></p>
-</li>
+</ul>
+<p><strong>Converting infix to RPN ★</strong></p>
+<ul>
+<li><strong>Precedence and associativity</strong> — brackets first, then <code>^</code>, then <code>*</code> and <code>/</code>, then <code>+</code> and <code>-</code>; operators of equal precedence are taken left to right</li>
+<li><strong>Operator stack method</strong> — output operands as they are read, push operators, pop an operator whenever one of lower or equal precedence arrives, and pop all remaining operators at the end</li>
+<li><strong>Brackets</strong> — push <code>(</code>, and on <code>)</code> pop operators until <code>(</code> is reached; neither bracket is written in the output</li>
+<li><strong>Evaluation order</strong> — for <code>-</code> and <code>/</code> the value popped <strong>second</strong> is the left operand, so <code>a b -</code> means <code>a - b</code></li>
+</ul>
+<h4 id="other-uses-of-a-stack">Other uses of a stack</h4>
+<ul>
+<li>Recursion</li>
+<li>Implementation of ADTs, e.g. linked lists</li>
+<li>Procedure calls</li>
+<li>Interrupt handling (storing the contents of registers)</li>
+<li>A <strong>binary tree</strong> can also be used for RPN evaluation — tree traversal allows both infix and postfix to be evaluated</li>
 </ul>
 <h3 id="summary">Summary</h3>
 <table>
@@ -1015,7 +1097,7 @@ RPN <strong>follows the evaluation order naturally</strong>, so there’s <stron
 </tr>
 </tbody>
 </table>
-<p><div class="callout callout-question"><div class="callout-title">2022 夏季 P31 Q5 · 12 marks</div><div class="callout-body"><p>Part of a program’s calculations uses the integer variables j, k, m, n and p.</p>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P31 Q5 · 12 marks</div><div class="callout-body"><p>Part of a program’s calculations uses the integer variables j, k, m, n and p.</p>
 <pre><code>j = 3
 k = 2
 m = 10
@@ -1102,7 +1184,7 @@ p = m * (m - j * k)
 </tbody>
 </table>
 </div></details>
-<div class="callout callout-question"><div class="callout-title">2026 夏季 P32 Q6 · 9 marks</div><div class="callout-body"><p><strong>(a)</strong> Write this infix expression in Reverse Polish Notation (RPN). <strong>[2]</strong></p>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q6 · 9 marks</div><div class="callout-body"><p><strong>(a)</strong> Write this infix expression in Reverse Polish Notation (RPN). <strong>[2]</strong></p>
 <p><code>16 + ((9 – 7) / (18 + 6))</code></p>
 <p><strong>(b)</strong> Write this RPN expression in infix form. <strong>[3]</strong></p>
 <p><code>6 15 + 20 3 - - 27 9 * /</code></p>
@@ -1138,7 +1220,447 @@ p = m * (m - j * k)
 </tr>
 </tbody>
 </table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Summer P31 Q4 · 8 marks</div><div class="callout-body"><p><strong>(a)(i)</strong> Explain why Reverse Polish Notation (RPN) is used to carry out the evaluation of expressions. <strong>[2]</strong>
+<strong>(a)(ii)</strong> Identify, with reasons, a data structure that could be used to evaluate an expression in RPN. <strong>[2]</strong>
+<strong>(b)</strong> Write the infix expression <code>(a − b) * (a + c) / 7</code> in RPN. <strong>[1]</strong>
+<strong>©</strong> Write the RPN expression <code>a b / 4 * a b + -</code> as an infix expression. <strong>[1]</strong>
+<strong>(d)</strong> Evaluate the RPN expression <code>a b + c d / /</code> given that <code>a = 17, b = 3, c = 48, d = 12.</code> Show your working. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+<th>Marks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4(a)(i)</td>
+<td>One mark for each correct marking point (<strong>Max 2</strong>)<br>• Reverse Polish Notation provides an unambiguous method of representing an expression<br>• … reading from left to right<br>• … without the need to use brackets<br>• … with no need for rules of precedence / BODMAS</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4(a)(ii)</td>
+<td>One mark for identification of the data structure, one mark for a sensible reason<br>Either: Structure: stack — the operands are popped from the stack in the reverse order to how they were pushed<br>Or: Structure: Binary tree — a (binary) tree allows both infix and postfix to be evaluated (tree traversal)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4(b)</td>
+<td><code>a b - a c + * 7 /</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>4©</td>
+<td><code>a / b * 4 – (a + b)</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>4(d)</td>
+<td>1 mark for correct structure, 1 mark for correct substitution<br><code>(a + b) / (c / d)</code><br><code>(17 + 3) / (48 / 12)</code></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
 </div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q6</td>
+<td>How an interpreter executes a program</td>
+<td>2025 Summer P31 Q6</td>
+</tr>
+<tr>
+<td>P33 Q7(a)</td>
+<td>Stages of compilation – optimisation</td>
+<td>2025 Winter P33 Q7(a)</td>
+</tr>
+<tr>
+<td>P32 Q8</td>
+<td>Stages of compilation – lexical analysis</td>
+<td>2025 Summer P32 Q8</td>
+</tr>
+<tr>
+<td>P33 Q8</td>
+<td>Stages of compilation – syntax analysis</td>
+<td>2025 Summer P33 Q8</td>
+</tr>
+<tr>
+<td>P31 Q8(a)</td>
+<td>Stages of compilation – lexical analysis</td>
+<td>2025 Winter P31 Q8(a)</td>
+</tr>
+<tr>
+<td>P32 Q8(a)</td>
+<td>Stages of compilation – optimisation</td>
+<td>2025 Winter P32 Q8(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(a)</td>
+<td>Stages of compilation – identify stages</td>
+<td>2022 Winter P32 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(b)</td>
+<td>Stages of compilation – syntax analysis</td>
+<td>2022 Winter P32 Q2(b)</td>
+</tr>
+<tr>
+<td>P31 Q4</td>
+<td>Stages of compilation – matching stage to description</td>
+<td>2022 Winter P31 Q4</td>
+</tr>
+<tr>
+<td>P31 Q7(a)</td>
+<td>BNF – invalid passcode reason</td>
+<td>2025 Summer P31 Q7(a)</td>
+</tr>
+<tr>
+<td>P31 Q7(b)</td>
+<td>BNF – complete BNF</td>
+<td>2025 Summer P31 Q7(b)</td>
+</tr>
+<tr>
+<td>P32 Q9(a)</td>
+<td>BNF – invalid variable reason</td>
+<td>2025 Summer P32 Q9(a)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)</td>
+<td>BNF – operator rule</td>
+<td>2025 Summer P32 Q9(b)</td>
+</tr>
+<tr>
+<td>P32 Q9©</td>
+<td>BNF – complete syntax diagram</td>
+<td>2025 Summer P32 Q9©</td>
+</tr>
+<tr>
+<td>P32 Q9(d)</td>
+<td>BNF – valid variable example</td>
+<td>2025 Summer P32 Q9(d)</td>
+</tr>
+<tr>
+<td>P33 Q9(a)</td>
+<td>BNF – invalid passcode reason</td>
+<td>2025 Summer P33 Q9(a)</td>
+</tr>
+<tr>
+<td>P33 Q9(b)</td>
+<td>BNF – complete BNF</td>
+<td>2025 Summer P33 Q9(b)</td>
+</tr>
+<tr>
+<td>P33 Q9©</td>
+<td>BNF – complete syntax diagram</td>
+<td>2025 Summer P33 Q9©</td>
+</tr>
+<tr>
+<td>P32 Q7(a)</td>
+<td>BNF – invalid number reason</td>
+<td>2024 Winter P32 Q7(a)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)</td>
+<td>BNF – complete BNF</td>
+<td>2024 Winter P32 Q7(b)</td>
+</tr>
+<tr>
+<td>P32 Q7©(i)</td>
+<td>BNF – draw syntax diagram</td>
+<td>2024 Winter P32 Q7©(i)</td>
+</tr>
+<tr>
+<td>P32 Q7©(ii)</td>
+<td>BNF – write BNF</td>
+<td>2024 Winter P32 Q7©(ii)</td>
+</tr>
+<tr>
+<td>P31 Q10(a)</td>
+<td>BNF – complete BNF</td>
+<td>2024 Winter P31 Q10(a)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)(i)</td>
+<td>BNF – draw syntax diagram</td>
+<td>2024 Winter P31 Q10(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)(ii)</td>
+<td>BNF – write BNF</td>
+<td>2024 Winter P31 Q10(b)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>BNF – valid/invalid variables</td>
+<td>2023 Summer P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>BNF – complete BNF</td>
+<td>2023 Summer P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q3©(i)</td>
+<td>BNF – valid registration example</td>
+<td>2023 Summer P32 Q3©(i)</td>
+</tr>
+<tr>
+<td>P32 Q3©(ii)</td>
+<td>BNF – draw syntax diagram</td>
+<td>2023 Summer P32 Q3©(ii)</td>
+</tr>
+<tr>
+<td>P31 Q6(a)</td>
+<td>BNF – valid/invalid passwords</td>
+<td>2023 Summer P31 Q6(a)</td>
+</tr>
+<tr>
+<td>P31 Q6(b)</td>
+<td>BNF – complete BNF</td>
+<td>2023 Summer P31 Q6(b)</td>
+</tr>
+<tr>
+<td>P31 Q6©</td>
+<td>BNF – draw syntax diagram</td>
+<td>2023 Summer P31 Q6©</td>
+</tr>
+<tr>
+<td>P32 Q4(a)</td>
+<td>BNF – invalid assignment reason</td>
+<td>2022 Summer P32 Q4(a)</td>
+</tr>
+<tr>
+<td>P32 Q4(b)</td>
+<td>BNF – complete BNF</td>
+<td>2022 Summer P32 Q4(b)</td>
+</tr>
+<tr>
+<td>P32 Q4©(i)</td>
+<td>BNF – draw syntax diagram</td>
+<td>2022 Summer P32 Q4©(i)</td>
+</tr>
+<tr>
+<td>P32 Q4©(ii)</td>
+<td>BNF – write BNF</td>
+<td>2022 Summer P32 Q4©(ii)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)</td>
+<td>BNF – BNF for character</td>
+<td>2021 Winter P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)(i)</td>
+<td>BNF – valid password example</td>
+<td>2021 Winter P31 Q4(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)(ii)</td>
+<td>BNF – BNF for password</td>
+<td>2021 Winter P31 Q4(b)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q6(a)</td>
+<td>RPN – infix to RPN</td>
+<td>2026 Summer P32 Q6(a)</td>
+</tr>
+<tr>
+<td>P32 Q6(b)</td>
+<td>RPN – RPN to infix</td>
+<td>2026 Summer P32 Q6(b)</td>
+</tr>
+<tr>
+<td>P32 Q6©</td>
+<td>RPN – evaluate with stack</td>
+<td>2026 Summer P32 Q6©</td>
+</tr>
+<tr>
+<td>P31 Q7(a)</td>
+<td>RPN – infix to RPN</td>
+<td>2026 Summer P31 Q7(a)</td>
+</tr>
+<tr>
+<td>P31 Q7(b)</td>
+<td>RPN – RPN to infix</td>
+<td>2026 Summer P31 Q7(b)</td>
+</tr>
+<tr>
+<td>P31 Q7©</td>
+<td>RPN – evaluate with stack</td>
+<td>2026 Summer P31 Q7©</td>
+</tr>
+<tr>
+<td>P33 Q7(a)</td>
+<td>RPN – outline stack evaluation</td>
+<td>2026 Summer P33 Q7(a)</td>
+</tr>
+<tr>
+<td>P33 Q7(b)</td>
+<td>RPN – infix to RPN</td>
+<td>2026 Summer P33 Q7(b)</td>
+</tr>
+<tr>
+<td>P33 Q7©</td>
+<td>RPN – evaluate with stack</td>
+<td>2026 Summer P33 Q7©</td>
+</tr>
+<tr>
+<td>P33 Q7(b)</td>
+<td>RPN – infix to RPN</td>
+<td>2025 Winter P33 Q7(b)</td>
+</tr>
+<tr>
+<td>P33 Q7©</td>
+<td>RPN – evaluate with stack</td>
+<td>2025 Winter P33 Q7©</td>
+</tr>
+<tr>
+<td>P31 Q8(b)</td>
+<td>RPN – infix to RPN</td>
+<td>2025 Winter P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P31 Q8©</td>
+<td>RPN – evaluate with stack</td>
+<td>2025 Winter P31 Q8©</td>
+</tr>
+<tr>
+<td>P32 Q8(b)</td>
+<td>RPN – RPN to infix</td>
+<td>2025 Winter P32 Q8(b)</td>
+</tr>
+<tr>
+<td>P32 Q8©</td>
+<td>RPN – evaluate with stack</td>
+<td>2025 Winter P32 Q8©</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>RPN – RPN to infix</td>
+<td>2024 Summer P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)</td>
+<td>RPN – infix to RPN</td>
+<td>2024 Summer P31 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q5©</td>
+<td>RPN – evaluate with stack</td>
+<td>2024 Summer P31 Q5©</td>
+</tr>
+<tr>
+<td>P32 Q5(a)</td>
+<td>RPN – infix to RPN</td>
+<td>2024 Summer P32 Q5(a)</td>
+</tr>
+<tr>
+<td>P32 Q5(b)</td>
+<td>RPN – evaluate with stack</td>
+<td>2024 Summer P32 Q5(b)</td>
+</tr>
+<tr>
+<td>P32 Q5©</td>
+<td>RPN – RPN to infix</td>
+<td>2024 Summer P32 Q5©</td>
+</tr>
+<tr>
+<td>P32 Q6(a)</td>
+<td>RPN – evaluate with stack</td>
+<td>2023 Winter P32 Q6(a)</td>
+</tr>
+<tr>
+<td>P32 Q6(b)</td>
+<td>RPN – explain stack evaluation</td>
+<td>2023 Winter P32 Q6(b)</td>
+</tr>
+<tr>
+<td>P31 Q9(a)(i)</td>
+<td>RPN – RPN to infix</td>
+<td>2023 Winter P31 Q9(a)(i)</td>
+</tr>
+<tr>
+<td>P31 Q9(a)(ii)</td>
+<td>RPN – evaluate with stack</td>
+<td>2023 Winter P31 Q9(a)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>RPN – explain stack evaluation</td>
+<td>2023 Winter P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>RPN – infix to RPN</td>
+<td>2022 Summer P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)(i)</td>
+<td>RPN – evaluate with stack</td>
+<td>2022 Summer P31 Q5(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)(ii)</td>
+<td>RPN – describe evaluation steps</td>
+<td>2022 Summer P31 Q5(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q5©</td>
+<td>RPN – other uses of a stack</td>
+<td>2022 Summer P31 Q5©</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>RPN – infix to RPN</td>
+<td>2022 Winter P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)(i)</td>
+<td>RPN – RPN to infix</td>
+<td>2022 Winter P31 Q5(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)(ii)</td>
+<td>RPN – evaluate</td>
+<td>2022 Winter P31 Q5(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)(i)</td>
+<td>RPN – why RPN is used</td>
+<td>2021 Summer P31 Q4(a)(i)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)(ii)</td>
+<td>RPN – data structure for evaluation</td>
+<td>2021 Summer P31 Q4(a)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>RPN – infix to RPN</td>
+<td>2021 Summer P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q4©</td>
+<td>RPN – RPN to infix</td>
+<td>2021 Summer P31 Q4©</td>
+</tr>
+<tr>
+<td>P31 Q4(d)</td>
+<td>RPN – evaluate</td>
+<td>2021 Summer P31 Q4(d)</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="161-purposes-of-an-operating-systemos.html" title="Previous: 16.1 Purposes of an Operating System(OS)" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">16.1 Purposes of an Operating System(OS)</span></a>

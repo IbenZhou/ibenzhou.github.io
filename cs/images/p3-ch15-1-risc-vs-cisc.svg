@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="900" height="480" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="900" height="480" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">RISC vs CISC design trade-offs</text>
+
+  <rect x="24" y="58" width="416" height="400" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <rect x="24" y="58" width="416" height="46" rx="14" fill="#1d9e75"/>
+  <text x="232" y="89" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">RISC</text>
+  <text x="232" y="122" text-anchor="middle" font-size="13" fill="#0f6e56">Reduced Instruction Set Computer</text>
+
+  <g font-size="13" fill="#233b3a">
+    <text x="46" y="156">• Small, simple instruction set</text>
+    <text x="46" y="182">• One clock cycle per instruction</text>
+    <text x="46" y="208">• Few addressing modes</text>
+    <text x="46" y="234">• More general-purpose registers</text>
+    <text x="46" y="260">• Fixed-length instructions</text>
+    <text x="46" y="286">• Hard-wired control unit</text>
+    <text x="46" y="312">• Easy to pipeline</text>
+    <text x="46" y="338">• Program may need MORE instructions</text>
+    <text x="46" y="364">• Larger program, more memory used</text>
+    <text x="46" y="390">• Design emphasis on software</text>
+  </g>
+  <rect x="46" y="410" width="372" height="32" rx="7" fill="#d5efe6" stroke="#1d9e75" stroke-width="0.6"/>
+  <text x="232" y="431" text-anchor="middle" font-size="12.5" fill="#0f6e56">Typical: smartphones, tablets</text>
+
+  <rect x="460" y="58" width="416" height="400" rx="14" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <rect x="460" y="58" width="416" height="46" rx="14" fill="#378add"/>
+  <text x="668" y="89" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">CISC</text>
+  <text x="668" y="122" text-anchor="middle" font-size="13" fill="#185fa5">Complex Instruction Set Computer</text>
+
+  <g font-size="13" fill="#233b3a">
+    <text x="482" y="156">• Large, complex instruction set</text>
+    <text x="482" y="182">• Several clock cycles per instruction</text>
+    <text x="482" y="208">• Many addressing modes</text>
+    <text x="482" y="234">• Fewer general-purpose registers</text>
+    <text x="482" y="260">• Variable-length instructions</text>
+    <text x="482" y="286">• Micro-programmed control unit</text>
+    <text x="482" y="312">• Pipelining harder to implement</text>
+    <text x="482" y="338">• Program needs FEWER instructions</text>
+    <text x="482" y="364">• Smaller program, less memory used</text>
+    <text x="482" y="390">• Design emphasis on hardware</text>
+  </g>
+  <rect x="482" y="410" width="372" height="32" rx="7" fill="#d7e8fa" stroke="#378add" stroke-width="0.6"/>
+  <text x="668" y="431" text-anchor="middle" font-size="12.5" fill="#185fa5">Typical: laptops, desktops</text>
+</svg>

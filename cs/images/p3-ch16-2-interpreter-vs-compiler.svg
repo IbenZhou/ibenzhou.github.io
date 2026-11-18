@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="900" height="400" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Interpreter vs compiler</text>
+
+  <!-- Interpreter -->
+  <rect x="24" y="72" width="852" height="128" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="44" y="102" font-size="16" font-weight="700" fill="#0f6e56">Interpreter</text>
+  <text x="44" y="124" font-size="12.5" fill="#5a6b6b">Translates and executes line by line — no object code saved</text>
+  <g font-size="12.5" fill="#0f3d3e">
+    <rect x="44" y="142" width="150" height="38" rx="7" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="119" y="166" text-anchor="middle">Source code</text>
+    <line x1="196" y1="161" x2="240" y2="161" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="244" y="142" width="200" height="38" rx="7" fill="#e3f2ed" stroke="#1d9e75"/>
+    <text x="344" y="166" text-anchor="middle">Interpreter (each line)</text>
+    <line x1="446" y1="161" x2="490" y2="161" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="494" y="142" width="160" height="38" rx="7" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="574" y="166" text-anchor="middle">Execute immediately</text>
+  </g>
+  <text x="680" y="152" font-size="12" fill="#233b3a">Stops at first error; slower</text>
+  <text x="680" y="172" font-size="12" fill="#233b3a">runs; easy to debug</text>
+
+  <!-- Compiler -->
+  <rect x="24" y="218" width="852" height="160" rx="14" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="44" y="248" font-size="16" font-weight="700" fill="#185fa5">Compiler</text>
+  <text x="44" y="270" font-size="12.5" fill="#5a6b6b">Translates the whole program once — object code saved and run later</text>
+  <g font-size="12.5" fill="#042c53">
+    <rect x="44" y="290" width="140" height="38" rx="7" fill="#d7e8fa" stroke="#378add"/>
+    <text x="114" y="314" text-anchor="middle">Source code</text>
+    <line x1="186" y1="309" x2="222" y2="309" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="226" y="290" width="180" height="38" rx="7" fill="#e6f0fb" stroke="#378add"/>
+    <text x="316" y="314" text-anchor="middle">Compiler (all stages)</text>
+    <line x1="408" y1="309" x2="444" y2="309" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="448" y="290" width="150" height="38" rx="7" fill="#d7e8fa" stroke="#378add"/>
+    <text x="523" y="314" text-anchor="middle">Object code</text>
+    <line x1="600" y1="309" x2="636" y2="309" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="640" y="290" width="130" height="38" rx="7" fill="#d7e8fa" stroke="#378add"/>
+    <text x="705" y="314" text-anchor="middle">Run later</text>
+  </g>
+  <text x="44" y="356" font-size="12" fill="#233b3a">Reports all errors after translation · faster execution · object code is reusable · needs recompiling after a change</text>
+</svg>

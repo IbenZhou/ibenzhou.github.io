@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" width="860" height="330" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="860" height="330" fill="#ffffff"/>
+  <text x="430" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">A record groups named fields of different types</text>
+  <text x="430" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">One identifier, several related fields</text>
+
+  <!-- TYPE declaration -->
+  <rect x="28" y="84" width="380" height="220" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <rect x="28" y="84" width="380" height="42" rx="14" fill="#1d9e75"/>
+  <text x="218" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">TYPE Student</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="13" fill="#0f3d3e">
+    <text x="50" y="152">DECLARE Name    : STRING</text>
+    <text x="50" y="180">DECLARE Age     : INTEGER</text>
+    <text x="50" y="208">DECLARE Enrolled: BOOLEAN</text>
+    <text x="50" y="236">DECLARE Grade   : GradeType</text>
+    <text x="50" y="278" fill="#5a6b6b" font-family="Segoe UI, sans-serif" font-size="12.5">ENDTYPE — defines a template, no data yet</text>
+  </g>
+
+  <!-- instance -->
+  <rect x="452" y="84" width="380" height="220" rx="14" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <rect x="452" y="84" width="380" height="42" rx="14" fill="#378add"/>
+  <text x="642" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">DECLARE S1 : Student</text>
+  <g font-size="13" fill="#042c53">
+    <rect x="474" y="136" width="336" height="30" rx="6" fill="#d7e8fa" stroke="#378add" stroke-width="0.6"/>
+    <text x="488" y="155">S1.Name</text>
+    <text x="790" y="155" text-anchor="end" font-family="Consolas, monospace">"Ali"</text>
+
+    <rect x="474" y="172" width="336" height="30" rx="6" fill="#d7e8fa" stroke="#378add" stroke-width="0.6"/>
+    <text x="488" y="191">S1.Age</text>
+    <text x="790" y="191" text-anchor="end" font-family="Consolas, monospace">17</text>
+
+    <rect x="474" y="208" width="336" height="30" rx="6" fill="#d7e8fa" stroke="#378add" stroke-width="0.6"/>
+    <text x="488" y="227">S1.Enrolled</text>
+    <text x="790" y="227" text-anchor="end" font-family="Consolas, monospace">TRUE</text>
+
+    <rect x="474" y="244" width="336" height="30" rx="6" fill="#d7e8fa" stroke="#378add" stroke-width="0.6"/>
+    <text x="488" y="263">S1.Grade</text>
+    <text x="790" y="263" text-anchor="end" font-family="Consolas, monospace">B</text>
+  </g>
+  <text x="474" y="294" font-size="12.5" fill="#185fa5">dot notation accesses a field: S1.Name</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="900" height="420" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Aggregation vs inheritance</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">"has-a" (contains) versus "is-a" (specialises)</text>
+
+  <!-- Aggregation -->
+  <rect x="24" y="80" width="416" height="316" rx="14" fill="#f4effb" stroke="#7f77dd" stroke-width="1.5"/>
+  <rect x="24" y="80" width="416" height="46" rx="14" fill="#7f77dd"/>
+  <text x="232" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">Aggregation — has-a</text>
+
+  <rect x="70" y="150" width="200" height="50" rx="9" fill="#e6e2fa" stroke="#7f77dd" stroke-width="1.5"/>
+  <text x="170" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#26215c">Car (whole)</text>
+
+  <line x1="170" y1="200" x2="170" y2="240" stroke="#7f77dd" stroke-width="1.5"/>
+  <line x1="120" y1="240" x2="330" y2="240" stroke="#7f77dd" stroke-width="1.5"/>
+  <line x1="120" y1="240" x2="120" y2="266" stroke="#7f77dd" stroke-width="1.5"/>
+  <line x1="330" y1="240" x2="330" y2="266" stroke="#7f77dd" stroke-width="1.5"/>
+  <circle cx="120" cy="266" r="5" fill="#ffffff" stroke="#7f77dd" stroke-width="1.5"/>
+  <circle cx="330" cy="266" r="5" fill="#ffffff" stroke="#7f77dd" stroke-width="1.5"/>
+
+  <rect x="60" y="274" width="120" height="46" rx="8" fill="#e6e2fa" stroke="#7f77dd"/>
+  <text x="120" y="302" text-anchor="middle" font-size="13" fill="#26215c">Engine (part)</text>
+  <rect x="270" y="274" width="120" height="46" rx="8" fill="#e6e2fa" stroke="#7f77dd"/>
+  <text x="330" y="302" text-anchor="middle" font-size="13" fill="#26215c">Wheel (part)</text>
+
+  <text x="50" y="348" font-size="12.5" fill="#233b3a">A Car CONTAINS an Engine — the part may exist independently.</text>
+  <text x="50" y="374" font-size="12.5" fill="#534ab7">One class has objects of other classes as attributes.</text>
+
+  <!-- Inheritance -->
+  <rect x="460" y="80" width="416" height="316" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <rect x="460" y="80" width="416" height="46" rx="14" fill="#1d9e75"/>
+  <text x="668" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">Inheritance — is-a</text>
+
+  <rect x="590" y="150" width="160" height="50" rx="9" fill="#d5efe6" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="670" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#0f3d3e">Vehicle (base)</text>
+
+  <line x1="670" y1="200" x2="670" y2="234" stroke="#1d9e75" stroke-width="1.5"/>
+  <line x1="560" y1="234" x2="780" y2="234" stroke="#1d9e75" stroke-width="1.5"/>
+  <line x1="560" y1="234" x2="560" y2="260" stroke="#1d9e75" stroke-width="1.5"/>
+  <line x1="780" y1="234" x2="780" y2="260" stroke="#1d9e75" stroke-width="1.5"/>
+  <path d="M554 260 L566 260 L560 270 Z" fill="#1d9e75"/>
+  <path d="M774 260 L786 260 L780 270 Z" fill="#1d9e75"/>
+
+  <rect x="500" y="272" width="120" height="46" rx="8" fill="#d5efe6" stroke="#1d9e75"/>
+  <text x="560" y="300" text-anchor="middle" font-size="13" fill="#0f3d3e">Car (subclass)</text>
+  <rect x="720" y="272" width="120" height="46" rx="8" fill="#d5efe6" stroke="#1d9e75"/>
+  <text x="780" y="300" text-anchor="middle" font-size="13" fill="#0f3d3e">Bike (subclass)</text>
+
+  <text x="486" y="348" font-size="12.5" fill="#233b3a">A Car IS a Vehicle — it inherits attributes and methods.</text>
+  <text x="486" y="374" font-size="12.5" fill="#0f6e56">Subclass extends the base class; "is-a" specialisation.</text>
+</svg>

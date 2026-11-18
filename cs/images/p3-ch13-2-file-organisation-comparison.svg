@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="960" height="470" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Three file organisation methods</text>
+  <text x="480" y="57" text-anchor="middle" font-size="14" fill="#5a6b6b">How records are laid out, added, and located</text>
+
+  <!-- Serial -->
+  <g>
+    <rect x="24" y="78" width="296" height="366" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+    <rect x="24" y="78" width="296" height="46" rx="14" fill="#1d9e75"/>
+    <text x="172" y="108" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Serial</text>
+
+    <text x="44" y="150" font-size="13" font-weight="700" fill="#0f6e56">Order</text>
+    <text x="44" y="171" font-size="13" fill="#233b3a">Chronological / arrival order</text>
+    <text x="44" y="189" font-size="13" fill="#233b3a">No key sorting</text>
+
+    <text x="44" y="222" font-size="13" font-weight="700" fill="#0f6e56">Record layout</text>
+    <g font-size="12" fill="#0f3d3e">
+      <rect x="44" y="234" width="58" height="30" rx="5" fill="#d5efe6" stroke="#1d9e75"/>
+      <text x="73" y="253" text-anchor="middle">R1</text>
+      <rect x="108" y="234" width="58" height="30" rx="5" fill="#d5efe6" stroke="#1d9e75"/>
+      <text x="137" y="253" text-anchor="middle">R2</text>
+      <rect x="172" y="234" width="58" height="30" rx="5" fill="#d5efe6" stroke="#1d9e75"/>
+      <text x="201" y="253" text-anchor="middle">R3</text>
+      <rect x="236" y="234" width="58" height="30" rx="5" fill="#fbf0d8" stroke="#d9a441" stroke-dasharray="4 3"/>
+      <text x="265" y="253" text-anchor="middle">new</text>
+    </g>
+    <text x="44" y="288" font-size="12" fill="#5a6b6b">New records appended at the end</text>
+
+    <text x="44" y="320" font-size="13" font-weight="700" fill="#0f6e56">Finding a record</text>
+    <text x="44" y="342" font-size="13" fill="#233b3a">Sequential access: scan from the</text>
+    <text x="44" y="360" font-size="13" fill="#233b3a">physical start, record by record,</text>
+    <text x="44" y="378" font-size="13" fill="#233b3a">until found or end of file</text>
+
+    <rect x="44" y="398" width="256" height="32" rx="7" fill="#e3f2ed" stroke="#1d9e75" stroke-width="0.6"/>
+    <text x="172" y="419" text-anchor="middle" font-size="12.5" fill="#0f6e56">Best: batch processing, logs, backup</text>
+  </g>
+
+  <!-- Sequential -->
+  <g>
+    <rect x="332" y="78" width="296" height="366" rx="14" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+    <rect x="332" y="78" width="296" height="46" rx="14" fill="#378add"/>
+    <text x="480" y="108" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Sequential</text>
+
+    <text x="352" y="150" font-size="13" font-weight="700" fill="#185fa5">Order</text>
+    <text x="352" y="171" font-size="13" fill="#233b3a">Sorted by a key field</text>
+    <text x="352" y="189" font-size="13" fill="#233b3a">(not by arrival time)</text>
+
+    <text x="352" y="222" font-size="13" font-weight="700" fill="#185fa5">Record layout</text>
+    <g font-size="12" fill="#042c53">
+      <rect x="352" y="234" width="58" height="30" rx="5" fill="#d7e8fa" stroke="#378add"/>
+      <text x="381" y="253" text-anchor="middle">key 10</text>
+      <rect x="416" y="234" width="58" height="30" rx="5" fill="#d7e8fa" stroke="#378add"/>
+      <text x="445" y="253" text-anchor="middle">key 20</text>
+      <rect x="480" y="234" width="58" height="30" rx="5" fill="#d7e8fa" stroke="#378add"/>
+      <text x="509" y="253" text-anchor="middle">key 30</text>
+      <rect x="544" y="234" width="58" height="30" rx="5" fill="#fbf0d8" stroke="#d9a441" stroke-dasharray="4 3"/>
+      <text x="573" y="253" text-anchor="middle">key 25</text>
+    </g>
+    <text x="352" y="288" font-size="12" fill="#5a6b6b">New record inserted in correct position</text>
+
+    <text x="352" y="320" font-size="13" font-weight="700" fill="#185fa5">Finding a record</text>
+    <text x="352" y="342" font-size="13" fill="#233b3a">Compare key as you scan; stop when</text>
+    <text x="352" y="360" font-size="13" fill="#233b3a">found, key is exceeded, or EOF.</text>
+    <text x="352" y="378" font-size="13" fill="#233b3a">Direct access possible via key index</text>
+
+    <rect x="352" y="398" width="256" height="32" rx="7" fill="#e6f0fb" stroke="#378add" stroke-width="0.6"/>
+    <text x="480" y="419" text-anchor="middle" font-size="12.5" fill="#185fa5">Best: payroll, bills, printed reports</text>
+  </g>
+
+  <!-- Random -->
+  <g>
+    <rect x="640" y="78" width="296" height="366" rx="14" fill="#f4effb" stroke="#7f77dd" stroke-width="1.5"/>
+    <rect x="640" y="78" width="296" height="46" rx="14" fill="#7f77dd"/>
+    <text x="788" y="108" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Random (direct)</text>
+
+    <text x="660" y="150" font-size="13" font-weight="700" fill="#534ab7">Order</text>
+    <text x="660" y="171" font-size="13" fill="#233b3a">No particular order</text>
+    <text x="660" y="189" font-size="13" fill="#233b3a">key → address by hashing</text>
+
+    <text x="660" y="222" font-size="13" font-weight="700" fill="#534ab7">Record layout</text>
+    <g font-size="12" fill="#26215c">
+      <rect x="660" y="234" width="52" height="30" rx="5" fill="#e6e2fa" stroke="#7f77dd"/>
+      <text x="686" y="253" text-anchor="middle">A3</text>
+      <rect x="718" y="234" width="52" height="30" rx="5" fill="#e6e2fa" stroke="#7f77dd"/>
+      <text x="744" y="253" text-anchor="middle">A7</text>
+      <rect x="776" y="234" width="52" height="30" rx="5" fill="#fbf0d8" stroke="#d9a441" stroke-dasharray="4 3"/>
+      <text x="802" y="253" text-anchor="middle">empty</text>
+      <rect x="834" y="234" width="52" height="30" rx="5" fill="#e6e2fa" stroke="#7f77dd"/>
+      <text x="860" y="253" text-anchor="middle">A1</text>
+    </g>
+    <text x="660" y="288" font-size="12" fill="#5a6b6b">New record placed in any empty location</text>
+
+    <text x="660" y="320" font-size="13" font-weight="700" fill="#534ab7">Finding a record</text>
+    <text x="660" y="342" font-size="13" fill="#233b3a">Hash the key to get the address;</text>
+    <text x="660" y="360" font-size="13" fill="#233b3a">jump straight there. Resolve collision</text>
+    <text x="660" y="378" font-size="13" fill="#233b3a">(probing / overflow) if needed</text>
+
+    <rect x="660" y="398" width="256" height="32" rx="7" fill="#eeeafb" stroke="#7f77dd" stroke-width="0.6"/>
+    <text x="788" y="419" text-anchor="middle" font-size="12.5" fill="#534ab7">Best: booking, bank accounts, real-time</text>
+  </g>
+</svg>

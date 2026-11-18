@@ -239,12 +239,15 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="pseudocode-basics">Pseudocode Basics</h2>
+        
+
+<h2 id="pseudocode-basics">Pseudocode Basics</h2>
 <h2 id="variables-constants">Variables &amp; Constants</h2>
 <h3 id="what-is-a-variable">What is a variable?</h3>
 <ul>
 <li>A variable is an <strong>identifier</strong> that <strong>can change</strong> in the lifetime of a program</li>
-<li>Identifiers should be:<ul>
+<li>Identifiers should be:
+<ul>
 <li>In <strong>mixed case</strong> (Pascal case)</li>
 <li>Only <strong>contain letters</strong> (A-Z, a-z)</li>
 <li>Only <strong>contain digits</strong> (0-9)</li>
@@ -257,7 +260,6 @@ Pseudocode</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">datatype</span><span class="o">&gt;</span>
 </code></pre></div>
-
 <ul>
 <li>To declare a variable, use the <code>DECLARE</code> keyword followed by the <strong>name</strong> and <strong>data type</strong>:</li>
 </ul>
@@ -267,15 +269,13 @@ Pseudocode</li>
 <span class="n">DECLARE</span><span class="w"> </span><span class="n">Temperature</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REAL</span>
 <span class="n">DECLARE</span><span class="w"> </span><span class="n">DOB</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">DATE</span>
 </code></pre></div>
-
 <ul>
-<li>You can then <strong>assign a value</strong> using the assignment operator <code>←</code>:</li>
+<li>You can then <strong>assign a value</strong> using the assignment operator <code>← </code>:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">Age</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">18</span>
 <span class="n">Name</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Alice&quot;</span>
 <span class="n">IsLoggedIn</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
 </code></pre></div>
-
 <h3 id="what-is-a-constant">What is a constant?</h3>
 <ul>
 <li>A constant is an <strong>identifier set once in the lifetime of a program</strong></li>
@@ -285,7 +285,6 @@ Pseudocode</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">CONSTANT</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
 </code></pre></div>
-
 <ul>
 <li>To declare a constant, use the <code>CONSTANT</code> keyword:</li>
 </ul>
@@ -293,19 +292,14 @@ Pseudocode</li>
 <span class="n">CONSTANT</span><span class="w"> </span><span class="n">MaxScore</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">100</span>
 <span class="n">CONSTANT</span><span class="w"> </span><span class="n">SchoolName</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Meridian Academy&quot;</span>
 </code></pre></div>
-
 <ul>
 <li>Constants are <strong>not reassigned</strong> during execution – they are fixed values used throughout the algorithm</li>
 </ul>
 <h4 id="example">Example</h4>
 <ul>
-<li>
-<p>You are writing a program to calculate the area of a circle using the formula:
-<code>Area ← π × radius²</code></p>
-</li>
-<li>
-<p><code>π</code> is a <strong>constant</strong> (it never changes)</p>
-</li>
+<li>You are writing a program to calculate the area of a circle using the formula:
+<code>Area ← π × radius²</code></li>
+<li><code>π</code> is a <strong>constant</strong> (it never changes)</li>
 <li><code>radius</code> and <code>area</code> are <strong>variables</strong> (they change depending on the input)</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">CONSTANT</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mf">3.14159</span>
@@ -316,14 +310,13 @@ Pseudocode</li>
 <span class="n">Area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Radius</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Radius</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;The area of the circle is: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Area</span>
 </code></pre></div>
-
 <h3 id="variables-and-constants-in-different-languages">Variables and constants in different languages</h3>
 <table>
 <thead>
 <tr>
 <th><strong>Feature</strong></th>
 <th><strong>Python</strong></th>
-<th><strong>VB.NET</strong></th>
+<th><strong><a href="http://VB.NET">VB.NET</a></strong></th>
 <th><strong>Java</strong></th>
 </tr>
 </thead>
@@ -386,8 +379,8 @@ Pseudocode</li>
 <tr>
 <td><code>+</code></td>
 <td>Concatenation</td>
-<td><code>"John" + " " + "Doe"</code></td>
-<td><code>"John Doe"</code></td>
+<td><code>&quot;John&quot; + &quot; &quot; + &quot;Doe&quot;</code></td>
+<td><code>&quot;John Doe&quot;</code></td>
 </tr>
 <tr>
 <td><code>-</code></td>
@@ -429,7 +422,6 @@ Pseudocode</li>
 <div class="highlight"><pre><span></span><code><span class="n">result</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w">          </span><span class="c1">// gives 14</span>
 <span class="n">result</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="c1">// gives 20</span>
 </code></pre></div>
-
 <h3 id="logical-operators">Logical operators</h3>
 <ul>
 <li>Logical operators are used to <strong>compare values</strong></li>
@@ -494,17 +486,17 @@ Pseudocode</li>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="c1">// TRUE</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="c1">// FALSE</span>
 </code></pre></div>
-
 <h2 id="selection">Selection</h2>
 <h2 id="selection_1">Selection</h2>
 <h2 id="what-is-selection">What is selection?</h2>
 <ul>
 <li>Selection is when the <strong>flow of a program is changed,</strong> depending on a <strong>set of conditions</strong></li>
 <li>The outcome of this condition will then determine <strong>which lines or block of code is run next</strong></li>
-<li>Selection is used for <strong>validation</strong>, <strong>calculation</strong> and making sense of a <strong>user&rsquo;s choices</strong></li>
-<li>There are two ways to write selection statements:<ul>
-<li><strong>if</strong>&hellip; <strong>then</strong>&hellip; <strong>else</strong>&hellip;</li>
-<li><strong>case</strong>&hellip;</li>
+<li>Selection is used for <strong>validation</strong>, <strong>calculation</strong> and making sense of a <strong>user’s choices</strong></li>
+<li>There are two ways to write selection statements:
+<ul>
+<li><strong>if</strong>… <strong>then</strong>… <strong>else</strong>…</li>
+<li><strong>case</strong>…</li>
 </ul>
 </li>
 </ul>
@@ -526,11 +518,10 @@ Pseudocode</li>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <h3 id="nested-if-statements">Nested if statements</h3>
 <ul>
 <li>Nested if statements are <strong>an if statement within an if statement</strong></li>
-<li>Nested means to be &rsquo; <strong>stored inside the other</strong> &lsquo;</li>
+<li>Nested means to be ’ <strong>stored inside the other</strong> ’</li>
 </ul>
 <h4 id="example-code_1">Example code</h4>
 <div class="highlight"><pre><span></span><code><span class="n">IF</span><span class="w"> </span><span class="n">Player2Score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Player1Score</span><span class="w"> </span><span class="n">THEN</span>
@@ -546,7 +537,6 @@ Pseudocode</li>
 <span class="w">    </span><span class="n">ENDIF</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <h3 id="if-statements-in-different-languages">If statements in different languages</h3>
 <p>python</p>
 <div class="highlight"><pre><span></span><code><span class="n">weather</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
@@ -559,27 +549,25 @@ Pseudocode</li>
 <span class="k">else</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
 </code></pre></div>
-
-<p>VB.net</p>
-<div class="highlight"><pre><span></span><code><span class="k">Module</span><span class="w"> </span><span class="nn">WeatherCheck</span>
-<span class="w">    </span><span class="k">Sub</span><span class="w"> </span><span class="nf">Main</span><span class="p">()</span>
-<span class="w">        </span><span class="k">Dim</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span>
-<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span>
-<span class="w">        </span><span class="k">If</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sunny&quot;</span><span class="w"> </span><span class="k">Then</span>
-<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="k">ElseIf</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span><span class="w"> </span><span class="k">Then</span>
-<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Take an umbrella with you.&quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="k">ElseIf</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;snowy&quot;</span><span class="w"> </span><span class="k">Then</span>
-<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Wear warm clothes!&quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="k">Else</span>
-<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
-<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span><span class="w"> </span><span class="c">&#39; Keeps the console open</span>
-<span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
-<span class="k">End</span><span class="w"> </span><span class="k">Module</span>
+<p><a href="http://VB.net">VB.net</a></p>
+<div class="highlight"><pre><span></span><code>Module WeatherCheck
+    Sub Main()
+        Dim weather As String
+        Console.Write(&quot;What is the weather like today? (sunny, rainy, snowy): &quot;)
+        weather = Console.ReadLine()
+        If weather = &quot;sunny&quot; Then
+            Console.WriteLine(&quot;Don&#39;t forget your sunglasses!&quot;)
+        ElseIf weather = &quot;rainy&quot; Then
+            Console.WriteLine(&quot;Take an umbrella with you.&quot;)
+        ElseIf weather = &quot;snowy&quot; Then
+            Console.WriteLine(&quot;Wear warm clothes!&quot;)
+        Else
+            Console.WriteLine(&quot;Not sure what to suggest for that kind of weather.&quot;)
+        End If
+        Console.ReadLine() &#39; Keeps the console open
+    End Sub
+End Module
 </code></pre></div>
-
 <p>java</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WeatherCheck</span><span class="w"> </span><span class="p">{</span>
@@ -601,7 +589,6 @@ Pseudocode</li>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="case-statements">Case statements</h2>
 <h4 id="what-is-a-case-statement">What is a case statement?</h4>
 <ul>
@@ -620,7 +607,6 @@ Pseudocode</li>
 <span class="w">  </span><span class="p">...</span>
 <span class="n">ENDCASE</span>
 </code></pre></div>
-
 <p>An <code>OTHERWISE</code> clause can be the last clause</p>
 <div class="highlight"><pre><span></span><code><span class="n">CASE</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">value</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">statement1</span><span class="o">&gt;</span>
@@ -634,7 +620,6 @@ Pseudocode</li>
 <span class="w">              </span><span class="p">...</span>
 <span class="n">ENDCASE</span>
 </code></pre></div>
-
 <h4 id="example-code_2">Example code</h4>
 <div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Enter a direction (N, S, E, W):&quot;</span>
@@ -647,7 +632,6 @@ Pseudocode</li>
 <span class="w">    </span><span class="nl">OTHERWISE</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Invalid direction entered&quot;</span>
 <span class="n">ENDCASE</span>
 </code></pre></div>
-
 <h3 id="case-statements-in-different-languages">Case statements in different languages</h3>
 <p>Python</p>
 <div class="highlight"><pre><span></span><code><span class="n">weather</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
@@ -661,28 +645,26 @@ Pseudocode</li>
     <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
 </code></pre></div>
-
-<p>VB.NET</p>
-<div class="highlight"><pre><span></span><code><span class="k">Module</span><span class="w"> </span><span class="nn">WeatherCheck</span>
-<span class="w">    </span><span class="k">Sub</span><span class="w"> </span><span class="nf">Main</span><span class="p">()</span>
-<span class="w">        </span><span class="k">Dim</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span>
-<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;What is the weather like today? (sunny, rainy, snowy): &quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="n">weather</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span>
-<span class="w">        </span><span class="k">Select</span><span class="w"> </span><span class="k">Case</span><span class="w"> </span><span class="n">weather</span>
-<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="s">&quot;sunny&quot;</span>
-<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Don&#39;t forget your sunglasses!&quot;</span><span class="p">)</span>
-<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span>
-<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Take an umbrella with you.&quot;</span><span class="p">)</span>
-<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="s">&quot;snowy&quot;</span>
-<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Wear warm clothes!&quot;</span><span class="p">)</span>
-<span class="w">            </span><span class="k">Case</span><span class="w"> </span><span class="k">Else</span>
-<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Not sure what to suggest for that kind of weather.&quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Select</span>
-<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span><span class="w"> </span><span class="c">&#39; Keeps the console open</span>
-<span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
-<span class="k">End</span><span class="w"> </span><span class="k">Module</span>
+<p><a href="http://VB.NET">VB.NET</a></p>
+<div class="highlight"><pre><span></span><code>Module WeatherCheck
+    Sub Main()
+        Dim weather As String
+        Console.Write(&quot;What is the weather like today? (sunny, rainy, snowy): &quot;)
+        weather = Console.ReadLine()
+        Select Case weather
+            Case &quot;sunny&quot;
+                Console.WriteLine(&quot;Don&#39;t forget your sunglasses!&quot;)
+            Case &quot;rainy&quot;
+                Console.WriteLine(&quot;Take an umbrella with you.&quot;)
+            Case &quot;snowy&quot;
+                Console.WriteLine(&quot;Wear warm clothes!&quot;)
+            Case Else
+                Console.WriteLine(&quot;Not sure what to suggest for that kind of weather.&quot;)
+        End Select
+        Console.ReadLine() &#39; Keeps the console open
+    End Sub
+End Module
 </code></pre></div>
-
 <p>Java</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WeatherCheck</span><span class="w"> </span><span class="p">{</span>
@@ -709,12 +691,12 @@ Pseudocode</li>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="iteration">Iteration</h2>
 <h2 id="what-is-iteration">What is iteration?</h2>
 <ul>
 <li>Iteration is <strong>repeating a line or a block of code</strong> using a loop</li>
-<li>Iteration can be:<ul>
+<li>Iteration can be:
+<ul>
 <li><strong>Count-controlled</strong></li>
 <li><strong>Condition-controlled</strong></li>
 </ul>
@@ -735,9 +717,9 @@ Pseudocode</li>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statements</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
 <span class="n">NEXT</span>
 </code></pre></div>
-
 <ul>
-<li>In a <strong>FOR loop</strong>, the <strong>increment</strong> must be an <strong>expression that evaluates to an integer</strong><ul>
+<li>In a <strong>FOR loop</strong>, the <strong>increment</strong> must be an <strong>expression that evaluates to an integer</strong>
+<ul>
 <li>The loop <strong>starts</strong> at <code>value1</code></li>
 <li>The identifier is updated by the <strong>increment</strong> value on each iteration</li>
 <li>The loop continues until the identifier <strong>passes value2</strong></li>
@@ -752,7 +734,6 @@ Pseudocode</li>
 <span class="w">    </span><span class="n">NEXT</span><span class="w"> </span><span class="n">j</span>
 <span class="n">NEXT</span><span class="w"> </span><span class="n">i</span>
 </code></pre></div>
-
 <ul>
 <li>The <strong>outer loop</strong> runs <code>i</code> from 1 to 3</li>
 <li>For <strong>each value of</strong> <code>i</code>, the <strong>inner loop</strong> runs <code>j</code> from 1 to 3</li>
@@ -765,31 +746,28 @@ Pseudocode</li>
 <span class="p">...</span>
 <span class="mi">3</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span>
 </code></pre></div>
-
 <h3 id="count-controlled-loops-in-different-languages">Count-controlled loops in different languages</h3>
 <p>Print the numbers 1 to 5 in different languages
 Python</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 </code></pre></div>
-
-<p>VB.net</p>
-<div class="highlight"><pre><span></span><code><span class="k">For</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="nv">As</span><span class="w"> </span><span class="nv">Integer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">To</span><span class="w"> </span><span class="mi">5</span>
-<span class="w">    </span><span class="nv">Console</span>.<span class="nv">WriteLine</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>
-<span class="k">Next</span>
+<p><a href="http://VB.net">VB.net</a></p>
+<div class="highlight"><pre><span></span><code>For i As Integer = 1 To 5
+    Console.WriteLine(i)
+Next
 </code></pre></div>
-
 <p>Java</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="condition-controlled-loops">Condition-controlled loops</h2>
 <h3 id="what-is-a-condition-controlled-loop">What is a condition controlled loop?</h3>
 <ul>
 <li>A condition controlled loop is when the code is repeated <strong>until a condition is met</strong></li>
-<li>There are two types of condition controlled loops:<ul>
+<li>There are two types of condition controlled loops:
+<ul>
 <li><strong>Post-condition (REPEAT)</strong></li>
 <li><strong>Pre-condition (WHILE)</strong></li>
 </ul>
@@ -807,7 +785,6 @@ Pseudocode</li>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
 <span class="n">UNTIL</span><span class="w"> </span>
 </code></pre></div>
-
 <h4 id="pre-condition-loops-while">Pre-condition loops (WHILE)</h4>
 <ul>
 <li>The condition must be an <strong>expression</strong> that evaluates to a <strong>Boolean</strong> (True/False)</li>
@@ -821,7 +798,6 @@ Pseudocode</li>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
 <span class="n">ENDWHILE</span>
 </code></pre></div>
-
 <h4 id="nested-condition-controlled-loops">Nested condition-controlled loops</h4>
 <div class="highlight"><pre><span></span><code><span class="n">DECLARE</span><span class="w"> </span><span class="n">Username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
 <span class="n">DECLARE</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span>
@@ -839,7 +815,6 @@ Pseudocode</li>
 <span class="w">    </span><span class="n">Count</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">ENDWHILE</span>
 </code></pre></div>
-
 <ul>
 <li>Ask the user to <strong>enter up to 3 usernames</strong></li>
 <li>For each one, keep asking <strong>until a non-empty name</strong> is entered</li>
@@ -847,7 +822,7 @@ Pseudocode</li>
 <li><strong>Inner WHILE</strong> ensures that each username is <strong>not blank</strong></li>
 </ul>
 <h3 id="condition-controlled-loops-in-different-languages">Condition-controlled loops in different languages</h3>
-<p>task: Keep asking the user to enter a password until they type <code>"admin"</code>
+<p>task: Keep asking the user to enter a password until they type <code>&quot;admin&quot;</code>
 Python</p>
 <div class="highlight"><pre><span></span><code><span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="k">while</span> <span class="n">password</span> <span class="o">!=</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
@@ -856,24 +831,22 @@ Python</p>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Incorrect, try again.&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Access granted!&quot;</span><span class="p">)</span>
 </code></pre></div>
-
-<p>VB.net</p>
-<div class="highlight"><pre><span></span><code><span class="k">Module</span><span class="w"> </span><span class="nn">PasswordCheck</span>
-<span class="w">    </span><span class="k">Sub</span><span class="w"> </span><span class="nf">Main</span><span class="p">()</span>
-<span class="w">        </span><span class="k">Dim</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">        </span><span class="k">While</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
-<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;Enter the password: &quot;</span><span class="p">)</span>
-<span class="w">            </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span>
-<span class="w">            </span><span class="k">If</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"> </span><span class="k">Then</span>
-<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Incorrect, try again.&quot;</span><span class="p">)</span>
-<span class="w">            </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
-<span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">While</span>
-<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Access granted!&quot;</span><span class="p">)</span>
-<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">()</span><span class="w"> </span><span class="c">&#39; Keeps the console open</span>
-<span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
-<span class="k">End</span><span class="w"> </span><span class="k">Module</span>
+<p><a href="http://VB.net">VB.net</a></p>
+<div class="highlight"><pre><span></span><code>Module PasswordCheck
+    Sub Main()
+        Dim password As String = &quot;&quot;
+        While password &lt;&gt; &quot;admin&quot;
+            Console.Write(&quot;Enter the password: &quot;)
+            password = Console.ReadLine()
+            If password &lt;&gt; &quot;admin&quot; Then
+                Console.WriteLine(&quot;Incorrect, try again.&quot;)
+            End If
+        End While
+        Console.WriteLine(&quot;Access granted!&quot;)
+        Console.ReadLine() &#39; Keeps the console open
+    End Sub
+End Module
 </code></pre></div>
-
 <p>Java</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PasswordCheck</span><span class="w"> </span><span class="p">{</span>
@@ -892,7 +865,6 @@ Python</p>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="when-to-use-each-type-of-loop">When to use each type of loop</h2>
 <table>
 <thead>
@@ -926,21 +898,23 @@ Python</p>
 <li>Functions and proceduresare a type of <strong>sub program</strong>, a <strong>sequence of instructions</strong> that <strong>perform a specific task</strong> or <strong>set of tasks</strong></li>
 <li>Procedures and functions are <strong>defined at the start of the code</strong></li>
 <li>Sub programs are often used to <strong>simplify</strong> a program by <strong>breaking it into smaller, more manageable parts</strong></li>
-<li>Sub programs can be used to:<ul>
+<li>Sub programs can be used to:
+<ul>
 <li><strong>Avoid duplicating code</strong> and can be reused throughout a program</li>
 <li><strong>Improve</strong> the <strong>readability</strong> and <strong>maintainability</strong> of code</li>
 <li>Perform <strong>calculations</strong>, to <strong>retrieve data</strong>, or to <strong>make decisions</strong> based on input</li>
 </ul>
 </li>
-<li><strong>Parameters</strong> are <strong>values</strong> that are <strong>passed into a sub program</strong><ul>
+<li><strong>Parameters</strong> are <strong>values</strong> that are <strong>passed into a sub program</strong>
+<ul>
 <li>Parameters can be variables or values and they are located <strong>in brackets</strong> after the name of the sub program</li>
 <li>Example: <code>FUNCTION TaxCalculator(pay,taxcode)</code> <strong>OR</strong> <code>PROCEDURE TaxCalculator(pay,taxcode)</code></li>
 </ul>
 </li>
 <li>Sub programs <strong>can have multiple parameters</strong></li>
-<li>To use a sub program you &rsquo; <strong>call</strong> &rsquo; it from the main program</li>
+<li>To use a sub program you ’ <strong>call</strong> ’ it from the main program</li>
 </ul>
-<h3 id="whats-the-difference-between-a-function-and-procedure">What&rsquo;s the difference between a function and procedure?</h3>
+<h3 id="whats-the-difference-between-a-function-and-procedure">What's the difference between a function and procedure?</h3>
 <ul>
 <li>A <strong>Function returns a value</strong> whereas a procedure does not</li>
 </ul>
@@ -957,15 +931,13 @@ Python</p>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
 <span class="n">ENDPROCEDURE</span>
 </code></pre></div>
-
 <ul>
 <li>The identifier is used to <strong>call the procedure</strong></li>
 <li>To call a procedure, it can be written as:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>CALL &lt;identifier&gt;()
+<pre><code>CALL &lt;identifier&gt;()
 CALL &lt;identifier&gt;(Value1,Value2,...)
-</code></pre></div>
-
+</code></pre>
 <ul>
 <li>When parameters are used, <code>value1, value2...</code> must be of the correct data type and in the same sequence</li>
 </ul>
@@ -978,7 +950,6 @@ CALL &lt;identifier&gt;(Value1,Value2,...)
 <span class="n">INPUT</span><span class="w"> </span><span class="n">UserName</span>
 <span class="n">CALL</span><span class="w"> </span><span class="n">GreetUser</span><span class="p">(</span><span class="n">UserName</span><span class="p">)</span>
 </code></pre></div>
-
 <ul>
 <li><code>PROCEDURE GreetUser</code> defines the procedure, which takes one parameter: <code>Name</code></li>
 <li>The procedure prints a personalised greeting</li>
@@ -989,7 +960,7 @@ CALL &lt;identifier&gt;(Value1,Value2,...)
 <li>Functions are defined using the <strong>FUNCTION</strong> keyword in pseudocode or <strong>def</strong> keyword in Python</li>
 <li>Functions <strong>always return a value</strong> so they <strong>do not</strong> use the <code>CALL</code> function, instead they are called <strong>within an expression</strong></li>
 <li>A function can be written as:
-**Pseudocode</li>
+<strong>Pseudocode</strong></li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
@@ -998,7 +969,6 @@ CALL &lt;identifier&gt;(Value1,Value2,...)
 <span class="w">  </span><span class="o">&lt;</span><span class="n">statement</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <h4 id="example-code_4">Example code</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">calculate_area</span><span class="p">(</span><span class="n">length</span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="o">:</span><span class="w"> </span><span class="n">INTEGER</span><span class="p">)</span>
 <span class="w">  </span><span class="n">area</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">width</span>
@@ -1007,7 +977,6 @@ CALL &lt;identifier&gt;(Value1,Value2,...)
 <span class="cp"># Output the value returned from the function</span>
 <span class="n">OUTPUT</span><span class="p">(</span><span class="n">calculate_area</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 </code></pre></div>
-
 <ul>
 <li>Defines a <strong>function</strong> called <code>calculate_area</code></li>
 <li>It takes <strong>two parameters</strong>: <code>length</code> and <code>width</code>, both of type <code>INTEGER</code></li>
@@ -1018,7 +987,8 @@ CALL &lt;identifier&gt;(Value1,Value2,...)
 <h3 id="what-is-parameter-passing">What is parameter passing?</h3>
 <ul>
 <li>Parameter passing is the method by which <strong>values or references</strong> are given to procedures or functions so they can <strong>use or modify data during execution</strong></li>
-<li>When writing <strong>procedures</strong>, you can control how parameters are passed using:<ul>
+<li>When writing <strong>procedures</strong>, you can control how parameters are passed using:
+<ul>
 <li><code>BYVAL</code> – pass <strong>a copy</strong> of the value (default behaviour)</li>
 <li><code>BYREF</code> – pass <strong>the actual variable</strong>, so changes inside the procedure affect the original</li>
 </ul>
@@ -1054,19 +1024,14 @@ CALL &lt;identifier&gt;(Value1,Value2,...)
 <span class="w">    </span><span class="n">Y</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Temp</span>
 <span class="n">ENDPROCEDURE</span>
 </code></pre></div>
-
 <ul>
 <li><code>X</code> is passed <strong>by reference</strong>, so it <strong>can be changed</strong></li>
-<li>
-<p><code>Y</code> is passed <strong>by value</strong>, so any change to <code>Y</code> inside the procedure <strong>does not affect</strong> the original value
+<li><code>Y</code> is passed <strong>by value</strong>, so any change to <code>Y</code> inside the procedure <strong>does not affect</strong> the original value
 A video-conferencing program supports up to six users. Speech from each user is sampled and digitised (converted from analogue to digital). Digitised values are stored in array <code>Sample</code>.
 The array <code>Sample</code> consists of 6 rows by 128 columns and is of type integer. Each row contains 128 digitised sound samples from one user.
 The digitised sound samples from each user are to be processed to produce a single value which will be stored in a 1D array <code>Result</code> of type integer. This process will be implemented by procedure <code>Mix()</code>.
-A procedure <code>Mix()</code> will:</p>
-</li>
-<li>
-<p>calculate the average of each of the 6 sound samples in a column</p>
-</li>
+A procedure <code>Mix()</code> will:</li>
+<li>calculate the average of each of the 6 sound samples in a column</li>
 <li>ignore sound sample values of 10 or less</li>
 <li>store the average value in the corresponding position in <code>Result</code></li>
 <li>repeat for each column in array <code>Sample</code>
@@ -1092,13 +1057,12 @@ Assume <code>Sample</code> and <code>Result</code> are global. <strong>[6]</stro
 <span class="w">  </span><span class="n">NEXT</span><span class="w"> </span><span class="n">ThisSample</span>
 <span class="n">ENDPROCEDURE</span>
 </code></pre></div>
-
 <ul>
-<li>Declaration <strong>and</strong> initialisation before inner loop of <code>Count</code> <strong>and</strong> <code>Total</code> [1 mark]</li>
+<li>Declaration <strong>and</strong> initialisation before inner loop of <code>Count</code> <strong>and</strong> <code>Total </code> [1 mark]</li>
 <li>Outer Loop for 128 iterations [1 mark]</li>
 <li>Inner loop for six iterations [1 mark]</li>
 <li>Test for sample &gt; 10 <strong>in a loop</strong> [1 mark]</li>
-<li>and if true sum <code>Total</code> and increment <code>Count</code> [1 mark]</li>
+<li>and if true sum <code>Total</code> and increment <code>Count </code> [1 mark]</li>
 <li>Calculate average value and assign to <code>Result</code> array <strong>after inner loop and within outer loop</strong> [1 mark]</li>
 <li>Use of <code>INT()/ DIV</code> to convert average to integer [1 mark]</li>
 </ul>

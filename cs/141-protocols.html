@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -216,7 +255,7 @@ body::before {
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
 <li><a href="#need-for-protocols">Need for protocols</a></li>
-<li><a href="#tcpip">TCP/IP</a></li>
+<li><a href="#tcpip-protocol-suite">TCP/IP protocol suite</a></li>
 <li><a href="#how-a-message-travels-from-one-host-to-another">How a message travels from one host to another</a></li>
 <li><a href="#standard-protocols">Standard protocols</a></li>
 <li><a href="#beyond-the-syllabus">Beyond the syllabus</a></li>
@@ -227,6 +266,7 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
 <h2 id="need-for-protocols">Need for protocols</h2>
 <h3 id="what-is-a-protocol">What is a protocol?</h3>
 <ul>
@@ -253,7 +293,35 @@ body::before {
 </ul>
 </li>
 </ul>
-<h4 id="protocol-stacks">Protocol stacks</h4>
+<h3 id="why-protocols-are-essential">Why protocols are essential ★</h3>
+<ul>
+<li><strong>A standard set of rules</strong> — a protocol establishes a standard for communication, so sender and receiver agree in advance on format, timing and error handling</li>
+<li><strong>Compatibility across platforms</strong> — protocols enable communication/compatibility between devices from different manufacturers/platforms</li>
+<li><strong>No shared protocol, no communication</strong> — if two devices send messages to each other using different protocols, they would not be able to communicate properly</li>
+<li><strong>Independent of software and hardware</strong> — protocols make communications independent of the particular software and hardware in use</li>
+<li><strong>Successful data transfer</strong> — a standard set of rules enables successful data transfer between devices</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q3(a) · 2 marks</div><div class="callout-body"><p>Explain why protocols are essential for communication between computer systems. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 Protocols set a standard for communication // Protocols establish a standard set of rules for communication</li>
+<li>MP2 Protocols enable compatibility between devices from different manufacturers/platforms</li>
+<li>MP3 Two devices wouldn’t be able to communicate/send messages to each other if they were using different protocols</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q2(a) · 2 marks</div><div class="callout-body"><p>Outline why protocols are essential for communication between computers. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>Protocols provide a standard set of rules that enables successful data transfer between devices.</li>
+<li>Allows communication between devices on different platforms.</li>
+<li>Makes communications independent of software and hardware.</li>
+</ul>
+</div></details></p>
+<h3 id="protocol-stacks">Protocol stacks</h3>
 <ul>
 <li>The protocol stack is a way of <strong>organising network protocols into layers</strong>, where each layer is responsible for a specific function
 <ul>
@@ -265,8 +333,43 @@ body::before {
 <li>Makes communication <strong>modular</strong> and <strong>efficient</strong></li>
 <li>Allows different technologies to <strong>work together</strong> using standardised rules</li>
 <li>An example of a protocol stack is <strong>TCP/IP</strong></li>
+<li>The protocols in a <strong>stack</strong> determine the interconnectivity rules for a <strong>layered</strong> network model such as the <strong>TCP/IP</strong> model</li>
 </ul>
-<h2 id="tcpip">TCP/IP</h2>
+<h3 id="why-layering-is-used">Why layering is used ★</h3>
+<ul>
+<li><strong>Layer independence</strong> — each layer only relies on the service offered by the layer below, so one layer can be redesigned or replaced without rewriting the others</li>
+<li><strong>Separation of concerns</strong> — splitting the work into layers keeps each layer small enough to design, test and debug on its own</li>
+<li><strong>Standards across manufacturers</strong> — a defined boundary between layers lets hardware and software from different vendors work together</li>
+<li><strong>Adjacent-layer interaction only</strong> — each layer can only accept input from the next higher or the next lower layer; the interface between adjacent layers is the only interaction between layers</li>
+<li><strong>Headers accumulate</strong> — data is added to headers as frames/packets pass through the layers</li>
+<li><strong>User at the top, hardware at the bottom</strong> — user interaction takes place at the highest (Application) layer through protocols associated with that layer; direct access to hardware takes place at the lowest (Link) layer</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q4 · 4 marks</div><div class="callout-body"><p>The TCP/IP protocol may be viewed as a stack that contains four layers: Application, Transport, Internet, Link. Describe how the layers of the TCP/IP protocol stack interact with each other. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4</strong>
+One mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 Each layer can only accept input from the next higher layer or the next lower layer</li>
+<li>MP2 There is an interface between the adjacent layers which is the only interaction between layers</li>
+<li>MP3 Data is added to the headers as the frames/packets pass through the layers</li>
+<li>MP4 The interactions are carried out by installed software</li>
+<li>MP5 User interaction takes place at the highest/Application layer of the stack through protocols associated with that layer of the stack</li>
+<li>MP6 Direct access to hardware takes place at the lowest/Link layer of the stack.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q2 · 4 marks</div><div class="callout-body"><p>Complete the paragraph using the most appropriate words from the given list (some words are not used): adjacent · Application · BitTorrent · corresponding · Internet · layer · Link · lower · protocol · route · Transport · upper</p>
+<p>The implementation of a … suite can be viewed as a stack. Each … of the stack has its own specific functionality and can only communicate with … layers of the stack. User interaction is associated with the highest level of the stack, which is the … layer. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2</strong>
+1 mark per correct word in correct place (<strong>max 4</strong>).</p>
+<ul>
+<li>protocol;</li>
+<li>layer;</li>
+<li>adjacent;</li>
+<li>Application.</li>
+</ul>
+</div></details></p>
+<h2 id="tcpip-protocol-suite">TCP/IP protocol suite</h2>
 <h3 id="what-is-tcpip">What is TCP/IP?</h3>
 <ul>
 <li>TCP/IP, or the Transmission Control Protocol/Internet Protocol, is a <strong>suite of communication protocols</strong> used to interconnect network devices on the internet</li>
@@ -279,28 +382,38 @@ body::before {
 </ul>
 </li>
 </ul>
+<h3 id="the-four-layers-and-their-purposes">The four layers and their purposes</h3>
 <h4 id="application-layer">Application layer</h4>
 <ul>
 <li>This is the layer where the <strong>communication process begins</strong></li>
 <li>The application layer <strong>interacts directly with software applications</strong>, such as web browsers and email clients</li>
 <li>The application layer <strong>prepares data for transmission</strong> over the network by converting it into a format that can be sent and received over the network (known as encapsulation)</li>
 <li>It also defines <strong>which protocol</strong> the application must use — HTTP for a web page, SMTP for an email, FTP for a file transfer</li>
+<li>It <strong>provides services / an interface with the user</strong> — access to applications such as login, file transfer, network file access and email</li>
+<li>It provides mechanisms for <strong>securing communication</strong>, e.g. encryption/authentication</li>
+<li>It provides <strong>error detection and recovery mechanisms</strong> to handle application-specific errors</li>
+<li>It <strong>enables data transfer to/from the Transport layer</strong> and allows applications to access the services used in the other TCP/IP layers</li>
 </ul>
 <h4 id="transport-layer">Transport layer</h4>
 <ul>
 <li>The transport layer <strong>receives data from the application layer</strong></li>
-<li>The transport layer is <strong>responsible for end-to-end communication</strong> between the source and destination</li>
+<li>The transport layer is <strong>responsible for end-to-end communication</strong> between the source and destination — it provides logical communication between applications running on different hosts and ensures data is delivered to the correct application process on the destination machine</li>
 <li>The transport layer <strong>breaks the data it receives down into smaller units</strong> called <strong>segments</strong> — these are the units usually called <strong>packets</strong> in exam questions</li>
 <li>Each segment is <strong>assigned a sequence number</strong> (so the data can be reassembled in the correct order at the destination)</li>
 <li>Each segment is also <strong>labelled with a header</strong> containing information (e.g. the packet number, the port numbers, a checksum)</li>
+<li>It ensures <strong>error-free, end-to-end delivery of data in sequence</strong> and provides error recovery techniques such as error detection codes and automatic repeat request</li>
+<li>It <strong>regulates network connections</strong> / provides flow control mechanisms to prevent data loss</li>
 <li><strong>TCP</strong> is the transport protocol used when every segment must arrive intact; <strong>UDP</strong> is used when speed matters more than perfection</li>
+<li>Before data flows, TCP establishes a reliable connection using the <strong>three-way handshake</strong>:</li>
 </ul>
+<p><img alt="TCP three-way handshake: SYN, SYN-ACK, ACK before data transfer" src="images/p3-ch14-1-three-way-handshake.svg" /></p>
 <h4 id="internet-layer">Internet layer</h4>
 <ul>
 <li>The internet layer <strong>receives segments from the transport layer</strong></li>
 <li>It <strong>adds a header to each segment</strong>, including the sender’s <strong>IP address</strong> and the receiver’s IP address — the segment is now a <strong>datagram (packet)</strong></li>
-<li>The internet layer is responsible for <strong>routing each packet across the network</strong> using the IP addresses in the headers</li>
+<li>The internet layer <strong>identifies the intended network and host</strong> and is responsible for <strong>routing each packet across the network</strong> using the IP addresses in the headers, independently through the optimum route</li>
 <li>The <strong>IP</strong> protocol at this layer makes no promise that a packet arrives — that guarantee belongs to TCP above it</li>
+<li>It combines an IP address and a port number to form a <strong>socket</strong></li>
 </ul>
 <h4 id="link-layer">Link layer</h4>
 <ul>
@@ -308,10 +421,18 @@ body::before {
 <li>The link layer <strong>receives packets from the Internet layer</strong> and prepares them for transmission over the physical network</li>
 <li>It adds a <strong>frame header</strong> containing the <strong>MAC addresses</strong> of this hop (not the final destination), plus a <strong>frame check sequence (FCS)</strong> for error checking — the packet is now a <strong>frame</strong></li>
 <li>The link layer <strong>translates the frame</strong> into an electrical, optical, or wireless signal that can be sent over the network</li>
-<li>Once the signal reaches the receiving end, the <strong>link layer at the receiver</strong> checks the FCS and translates it back into digital packets
-<img alt="TCP IP stack layers" src="images/tcp-ip-stack-computer-science-revision-notes.webp" /></li>
+<li>Once the signal reaches the receiving end, the <strong>link layer at the receiver</strong> checks the FCS and translates it back into digital packets</li>
+<li>It <strong>ensures correct network protocols are followed</strong>, enables the upper layers to access the <strong>physical medium</strong>, and transports data within the network/local segment</li>
+<li>It <strong>maps IP addresses to MAC/physical addresses</strong></li>
 </ul>
-<h2 id="how-a-message-travels-from-one-host-to-another">How a message travels from one host to another</h2>
+<p><img alt="TCP IP stack layers" src="images/tcp-ip-stack-computer-science-revision-notes.webp" /></p>
+<h3 id="encapsulation-and-decapsulation">Encapsulation and decapsulation ★</h3>
+<ul>
+<li><strong>Decapsulation</strong> — at the receiver each layer strips the header added by its counterpart, so the frame becomes a datagram, the datagram becomes a segment, and the segment becomes the original application data</li>
+<li><strong>The four layers in one line</strong> — <strong>Application</strong> = what the user wants to send; <strong>Transport</strong> = end-to-end delivery, segmentation and port numbers; <strong>Internet</strong> = addressing and routing between networks; <strong>Link</strong> = transmission over the physical medium of a single hop</li>
+<li>The key idea: <strong>the data itself never changes, only the headers wrapped around it change</strong> — this is why the same payload is called a <em>segment</em>, then a <em>datagram</em>, then a <em>frame</em></li>
+</ul>
+<h3 id="how-a-message-travels-from-one-host-to-another">How a message travels from one host to another</h3>
 <ul>
 <li>The syllabus asks for this <strong>in the context of one host sending a message to another host on the internet</strong> — learn it as a sequence, not as four separate definitions</li>
 <li>Sending uses the layers <strong>4 → 1</strong>; receiving uses the layers <strong>1 → 4</strong></li>
@@ -325,13 +446,62 @@ body::before {
 <li><strong>Link layer at the receiver</strong> — the FCS is checked, the frame header is removed, and the packet is passed up</li>
 <li><strong>Internet layer at the receiver</strong> — the destination IP is confirmed, the IP header is removed</li>
 <li><strong>Transport layer at the receiver</strong> — segments are <strong>reordered by sequence number</strong>; any missing segment is requested again; the TCP header is removed</li>
-<li><strong>Application layer at the receiver</strong> — the browser reassembles the message and renders the web page
-<a href="images/ch14-encapsulation.svg" target="_blank" rel="noopener" title="Open the diagram full size"><img alt="Encapsulation and de-encapsulation across the four TCP/IP layers" src="images/ch14-encapsulation.svg" /></a></li>
+<li><strong>Application layer at the receiver</strong> — the browser reassembles the message and renders the web page</li>
 </ol>
+<p><img alt="Encapsulation and de-encapsulation across the four TCP/IP layers" src="images/ch14-encapsulation.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q3(a) · 5 marks</div><div class="callout-body"><p>The Application Layer and Transport Layer are two layers of the TCP/IP protocol suite. Describe the purpose of the Application Layer and the purpose of the Transport Layer. <strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong>
+<strong>Application Layer (max 3):</strong></p>
 <ul>
-<li>The key idea: <strong>the data itself never changes, only the headers wrapped around it change</strong> — this is why the same payload is called a <em>segment</em>, then a <em>datagram</em>, then a <em>frame</em></li>
+<li>To provide services / interface with the user // access to applications, for example login, file transfer, network file access, email, etc</li>
+<li>To provide mechanisms for securing communication e.g. encryption/authentication</li>
+<li>To define/provide protocols used to allow the exchange of data/communication // to contain programs that exchange data</li>
+<li>Error detection and recovery mechanisms to handle application specific errors</li>
 </ul>
+<p><strong>Transport Layer (max 3):</strong></p>
+<ul>
+<li>To provide logical communication between applications running on different hosts // To ensure that data is delivered to the correct application process on the destination machine</li>
+<li>To ensure error-free, end-to-end delivery of data between a source and a destination, in sequence // to provide error recovery techniques such as error detection codes and automatic repeat request</li>
+<li>To break data into segments when sent and to reconstruct when received // To reassemble segments at destination</li>
+<li>To regulate network connections // to provide flow control mechanisms to prevent data loss</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q2 · 5 marks</div><div class="callout-body"><p>Outline the functions of the Transport and Internet layers of the TCP/IP protocol suite. <strong>[5]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2</strong>
+<strong>Transport layer</strong> — One mark for each point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 The Transport Layer breaks data into manageable packets / performs segmentation</li>
+<li>MP2 It sequences the packets // adds data to the packet header // adds a packet header</li>
+<li>MP3 It sends the packets to the Internet / Network Layer // It receives data from the Application Layer</li>
+<li>MP4 It controls the flow of packets</li>
+<li>MP5 It handles packet loss/corruption // Acknowledges receipt of complete error free packets</li>
+</ul>
+<p><strong>Internet layer</strong> — One mark for each point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP6 The Internet Layer identifies the intended network and host</li>
+<li>MP7 It transmits packets to the (Data) Link / Physical Layer</li>
+<li>MP8 It routes the packets independently through the optimum route</li>
+<li>MP9 It addresses packets with their source and destination IP addresses</li>
+<li>MP10 It then uses an IP address and port number to form a socket.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q3(b) · 4 marks</div><div class="callout-body"><p>Describe how the TCP/IP protocol suite is applied when a message is sent through the internet from one host to another. Do <strong>not</strong> describe the function of individual layers of the TCP/IP protocol suite. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(b)</strong>
+One mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 The TCP/IP suite can be viewed as layers within a stack</li>
+<li>MP2 Each layer can only accept input from the next higher or the next lower layer/adjacent layer</li>
+<li>MP3 The user/sender/computer interfaces with the top layer/application layer to send/receive a message</li>
+<li>MP4 The message when sent passes from the top layer/application layer to the bottom layer/link layer</li>
+<li>MP5 The message when received passes from bottom layer/link layer to the top layer/application layer</li>
+<li>MP6 The link layer interfaces directly with the network and sends/receives the message</li>
+</ul>
+</div></details></p>
 <h2 id="standard-protocols">Standard protocols</h2>
+<h3 id="overview">Overview</h3>
 <ul>
 <li>A protocol is a <strong>set of rules</strong> that govern <strong>communication</strong> on a network</li>
 <li>There are protocols for different purposes, such as:
@@ -346,42 +516,45 @@ body::before {
 <h3 id="http-https">HTTP &amp; HTTPS</h3>
 <ul>
 <li>Hypertext Transfer Protocol (<strong>HTTP</strong>) allows communication between clients and servers for <strong>website viewing</strong></li>
-<li>HTTP allows clients to <strong>receive data</strong> from the sever (fetching a webpage) and <strong>send data</strong> to the server (submitting a form, uploading a file)</li>
+<li>HTTP allows clients to <strong>receive data</strong> from the server (fetching a webpage) and <strong>send data</strong> to the server (submitting a form, uploading a file)</li>
+<li>It is used to transfer hypermedia documents / web pages / (data) files between networked devices</li>
 <li>HTTP is a <strong>client/server protocol</strong>: the browser sends a request, the server returns a response</li>
 <li><strong>HTTPS</strong> works in the same way as HTTP but with an <strong>added layer of security</strong></li>
 <li>All data sent and received using HTTPS is <strong>encrypted</strong></li>
-<li>HTTPS is used to <strong>protect sensitive information</strong> such as passwords, financial information and personal data
-<img alt="http" src="images/http.png" /></li>
+<li>HTTPS is used to <strong>protect sensitive information</strong> such as passwords, financial information and personal data</li>
 </ul>
+<p><img alt="HTTP request-response cycle" src="images/http.png" /></p>
 <h3 id="ftp">FTP</h3>
 <ul>
 <li>File Transfer Protocol (<strong>FTP</strong>) allows <strong>sending and receiving files between computers</strong></li>
 <li>Uploading and downloading files <strong>to/from a web server</strong> is often completed using FTP</li>
 <li>FTP offers <strong>greater efficiency</strong> and support for <strong>bulk transfers and large files</strong> such as resuming interrupted transfers</li>
-<li><strong>FTP clients</strong> are software applications that use the FTP protocol to make the process easier for users
-<img alt="ftp" src="images/ftp.png" /></li>
+<li><strong>FTP clients</strong> are software applications that use the FTP protocol to make the process easier for users</li>
 </ul>
+<p><img alt="FTP file transfer" src="images/ftp.png" /></p>
 <h3 id="pop3-imap-smtp">POP3, IMAP &amp; SMTP</h3>
 <ul>
 <li>A family of protocols that handle <strong>sending and receiving of email</strong> across the internet (WAN)</li>
-<li>The syllabus names <strong>POP3</strong> — the version number matters in answers
-<img alt="imapi-1" src="images/imapi-1.png" /></li>
+<li>The syllabus names <strong>POP3</strong> — the version number matters in answers</li>
 </ul>
+<p><img alt="Email protocols: SMTP, POP3 and IMAP" src="images/imapi-1.png" /></p>
 <h4 id="smtp">SMTP</h4>
 <ul>
 <li>Simple Mail Transfer Protocol (<strong>SMTP</strong>) is a protocol that allows <strong>communication</strong> between an <strong>email sender</strong> and the <strong>email server</strong>, and between different email servers using the internet</li>
-<li>In the diagram above, <strong>SMTP</strong> is used to transfer the senders email to their email providers server and SMTP is used to transfer the email to the recipients email server</li>
-<li>SMTP <strong>only sends</strong> — it is never used to collect mail from a mailbox</li>
+<li>In the diagram above, <strong>SMTP</strong> is used to transfer the sender’s email to their email provider’s server and SMTP is used to transfer the email to the recipient’s email server</li>
+<li>SMTP is a <strong>push</strong> protocol — it <strong>only sends</strong> (from a computer to a mail server, or between mail servers) and is never used to collect mail from a mailbox</li>
 </ul>
 <h4 id="pop3">POP3</h4>
 <ul>
-<li>Post Office Protocol version 3 (<strong>POP3</strong>) is a protocol for <strong>downloading emails to a device</strong> from an email server</li>
+<li>Post Office Protocol version 3 (<strong>POP3</strong>) is a <strong>pull</strong> protocol for <strong>downloading emails to a device</strong> from an email server</li>
 <li>Once the email has been retrieved <strong>it is normally removed from the server</strong></li>
+<li>MS wording: a protocol used to retrieve/receive emails <strong>from a mail server to a computer</strong></li>
 </ul>
 <h4 id="imap">IMAP</h4>
 <ul>
-<li>Internet Message Access Protocol (<strong>IMAP</strong>) is a protocol for <strong>downloading emails to a device</strong> from an email server</li>
-<li>Once the email has been retrieved, <strong>a copy is retained on the mail server</strong></li>
+<li>Internet Message Access Protocol (<strong>IMAP</strong>) is a protocol that lets users <strong>access and read their emails from any device</strong> without removing the message from the mail server</li>
+<li><strong>A copy is retained on the mail server</strong> and emails are <strong>synchronised</strong> across all devices</li>
+<li>MS wording: allows users to access/read emails from any device without removing the message from the mail server // synchronises emails on any device</li>
 </ul>
 <h4 id="advantages-disadvantages-of-pop3imap">Advantages &amp; disadvantages of POP3/IMAP</h4>
 <table>
@@ -415,6 +588,16 @@ body::before {
 <li><strong>More efficient</strong>, as it reduces the load on any single server</li>
 </ul>
 </li>
+<li>How it works (MS detail):
+<ul>
+<li>A small <strong>torrent (descriptor) file</strong> is created by a peer; it contains <strong>metadata about the file to be shared</strong></li>
+<li>The whole file must initially be located on <strong>at least one peer</strong></li>
+<li>The file is broken into <strong>equal-sized pieces</strong></li>
+<li>Other peers obtain the torrent file and connect to a <strong>tracker</strong>, which acts like a server holding data about all the computers connected to it (the <strong>swarm</strong>)</li>
+<li>Each peer downloads parts of the file from other peers until the entire file has been downloaded; as each peer receives a piece, <strong>they become a source for that piece</strong></li>
+<li>A peer who has a complete file and shares it is a <strong>seed</strong></li>
+</ul>
+</li>
 <li>BitTorrent is often used for:
 <ul>
 <li>Sharing <strong>large files</strong>, such as software, videos, or games</li>
@@ -423,6 +606,132 @@ body::before {
 </li>
 <li>While BitTorrent is a legal technology, it is sometimes used for sharing <strong>copyrighted content illegally</strong>, so ethical and legal use is important</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q3 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> HTTP and IMAP are examples of protocols used in the Application Layer of the TCP/IP protocol suite. State the purpose of the HTTP and IMAP protocols. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Describe how files are shared using the BitTorrent protocol. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>HTTP — to send and receive / transfer web pages / hypertext / images / videos</li>
+<li>IMAP — allows users to access/read their emails from any device without removing the message from the mail server // synchronises emails on any device</li>
+</ul>
+<p><strong>Q3(b)</strong>
+One mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>Files are shared over a peer-to-peer network</li>
+<li>A small file, a torrent (descriptor file), is initially created by a peer</li>
+<li>The torrent (descriptor file) contains metadata about the file to be shared</li>
+<li>The whole file must initially be located on at least one peer</li>
+<li>The file is broken into equal sized pieces</li>
+<li>Other peers who wish to download the file first obtain the torrent (descriptor file) and connect to a tracker</li>
+<li>A tracker acts like a server that holds all the data about all the computers connected to it / the swarm</li>
+<li>Each peer downloads parts of the file from other peers until the entire file has been downloaded</li>
+<li>As each peer receives a piece of the file, they become a source for that piece of the file</li>
+<li>A peer who has a complete file and is sharing it is a seed // Once a peer has completely downloaded the file and made the file available to others in the swarm, they become a seed.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q4 · 6 marks</div><div class="callout-body"><p>Identify and describe three protocols that are used in the Application Layer of the TCP/IP protocol suite. <strong>[6]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4</strong>
+One mark for a correct protocol and one mark for a correct corresponding description (<strong>Max 6</strong>). Three from:</p>
+<ul>
+<li>HTTP/S — A protocol/secure protocol used to transfer hypermedia documents / web pages / (data) files between networked devices</li>
+<li>FTP — A protocol to download, upload and transfer files from one location to another <strong>on a network</strong></li>
+<li>POP3 — A protocol used to retrieve/receive emails <strong>from a mail server to a computer</strong></li>
+<li>IMAP — Allows users to access/read their emails <strong>from any device without removing</strong> the message from the mail server // <strong>synchronises</strong> emails on any device</li>
+<li>SMTP — A protocol used to send emails <strong>between mail servers</strong> // a protocol used to send emails <strong>from a computer to a mail server</strong></li>
+<li>BitTorrent — A communication protocol used for peer-to-peer file sharing</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q2(a) · 4 marks</div><div class="callout-body"><p>Draw one line to connect each protocol to its most appropriate use.</p>
+<p>Protocols: HTTP · BitTorrent · SMTP · IMAP
+Uses: to provide peer-to-peer file sharing; when retrieving email messages from a mail server over a TCP/IP connection; when transmitting hypertext documents; to map MAC addresses onto IP addresses; when sending email messages towards the intended destination. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+One mark for each correct line connecting a protocol to its most appropriate description (<strong>Max 4</strong>).</p>
+<ul>
+<li>HTTP → when transmitting hypertext documents</li>
+<li>BitTorrent → to provide peer-to-peer file sharing</li>
+<li>SMTP → when sending email messages towards the intended destination</li>
+<li>IMAP → when retrieving email messages from a mail server over a TCP/IP connection</li>
+</ul>
+</div></details></p>
+<h2 id="ssltls-secure-sockets-layer-transport-layer-security">SSL/TLS (secure sockets layer / transport layer security) ★</h2>
+<ul>
+<li>The syllabus names only the six application protocols above, but SSL/TLS has been examined repeatedly as a protocol used to secure client-server communication; these questions are cross-listed with §17 Encryption, Encryption Protocols and Digital Certificates</li>
+<li>SSL and TLS provide <strong>communications security over the internet/network</strong>:
+<ul>
+<li>they provide <strong>encryption</strong></li>
+<li>they enable two parties to <strong>identify and authenticate each other</strong></li>
+<li>they allow communication with <strong>confidentiality and integrity</strong></li>
+</ul>
+</li>
+<li>A connection is <strong>initiated by an application</strong>, which becomes the <strong>client</strong>; the application that receives the connection becomes the <strong>server</strong></li>
+<li>Every new session begins with a <strong>handshake</strong> defined by the SSL/TLS protocols</li>
+<li>The client <strong>requests the digital certificate from the server</strong> (or the server sends it); the client <strong>verifies the server’s digital certificate</strong> and <strong>obtains the server’s public key</strong></li>
+<li>The <strong>encryption algorithms are agreed</strong> and the <strong>symmetric session keys are generated/defined</strong></li>
+<li>A <strong>secure session</strong> is established between client and server</li>
+<li>The two main protocols that form TLS:
+<ul>
+<li><strong>Handshake protocol</strong> — to establish a secure and reliable connection between two devices, systems or networks // permits the web server and client to authenticate each other and make use of encryption algorithms</li>
+<li><strong>Record protocol</strong> — provides a secure and reliable way to send and receive data over a network // exchanges records between client and server // secures application data and ensures its integrity and authenticity during transmission // encrypts and authenticates data exchanged between a client and a server // deals with the format for data transmission</li>
+</ul>
+</li>
+<li>Appropriate situations for SSL/TLS:
+<ul>
+<li>when transmitting <strong>authentication data</strong>, e.g. passwords, session cookies</li>
+<li>when transmitting data that must be <strong>protected from modification</strong> on its way to or from a server, e.g. user input or results from the server</li>
+<li>when transmitting data classified as <strong>non-public</strong></li>
+</ul>
+</li>
+</ul>
+<p><img alt="SSL/TLS handshake sequence" src="images/p3-ch14-1-ssl-tls-handshake.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q7 · 4 marks</div><div class="callout-body"><p>Secure Socket Layer (SSL) and Transport Layer Security (TLS) are two protocols. Explain how SSL/TLS is used when client-server communication is initiated. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7</strong>
+One mark for each correct marking point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 An SSL/TLS connection is initiated by an application/client.</li>
+<li>MP2 Every new session begins with a handshake as defined by the SSL/TLS protocols.</li>
+<li>MP3 The client requests the digital certificate from the server // The server sends the digital certificate to the client.</li>
+<li>MP4 The client verifies the server’s digital certificate</li>
+<li>MP5 … and obtains the server’s public key.</li>
+<li>MP6 The encryption algorithms are agreed. // The symmetric session keys are generated/defined.</li>
+<li>MP7 A secure session is established between client and server.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q8 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the purpose of the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Explain how SSL/TLS protocols are used when a client-server communication is initiated. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(a)</strong></p>
+<ul>
+<li>The SSL and TLS protocols provide communications security over the internet / network</li>
+<li>… they provide encryption</li>
+<li>They enable two parties to identify and authenticate each other</li>
+<li>… and communicate with confidentiality and integrity</li>
+</ul>
+<p><strong>Q8(b)</strong></p>
+<ul>
+<li>An SSL/TLS connection is initiated by an application</li>
+<li>… which becomes the client;</li>
+<li>the application which receives the connection becomes the server</li>
+<li>Every new session begins with a handshake (as defined by the (SSL/TLS) protocols)</li>
+<li>The client requests the digital certificate from the server // the server sends the digital certificate to the client;</li>
+<li>the client verifies the server’s digital certificate</li>
+<li>… and obtains the server’s public key</li>
+<li>The encryption algorithms are agreed;</li>
+<li>the symmetric session keys are generated / defined</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q10 · 4 marks</div><div class="callout-body"><p>Identify the two main protocols that form Transport Layer Security (TLS) and state the purpose of each. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10</strong>
+One mark for identifying a protocol and one mark for stating its purpose</p>
+<ul>
+<li>Protocol 1: Handshake protocol — Purpose: To establish a secure and reliable connection between two devices, systems or networks // Permits the web server and client to authenticate each other to make use of encryption algorithms</li>
+<li>Protocol 2: Record protocol — Purpose: Provides a secure and reliable way to send and receive data over a network // To exchange records between the client and server // Responsible for securing application data and ensuring its integrity and authenticity during transmission // Encrypts and authenticates data exchanged between a client and a server // Deals with the format for data transmission</li>
+</ul>
+</div></details></p>
 <h2 id="beyond-the-syllabus">Beyond the syllabus</h2>
 <ul>
 <li>The syllabus names only the six application protocols above and does not require the following — but they are needed to answer <strong>why</strong> the four layers exist, and they appear in textbook and past-paper wording</li>
@@ -456,6 +765,203 @@ body::before {
 <li>A <strong>socket</strong> is the combination of an <strong>IP address and a port number</strong>, for example <code>192.168.4.17:443</code></li>
 <li>A connection is fully identified by <strong>two sockets</strong> — the sender’s and the receiver’s — which is why the transport layer header must carry <strong>both port numbers</strong></li>
 </ul>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Why a protocol is essential</td>
+<td>2025 Winter P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(a)</td>
+<td>Why a protocol is essential</td>
+<td>2024 Summer P32 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Why a protocol is essential</td>
+<td>2022 Winter P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P33 Q2</td>
+<td>Protocols as a layered stack</td>
+<td>2026 Summer P33 Q2</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Layered stack / host-to-host message flow</td>
+<td>2025 Summer P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q4</td>
+<td>Layer interaction in the stack</td>
+<td>2024 Winter P31 Q4</td>
+</tr>
+<tr>
+<td>P32 Q4</td>
+<td>stack / layered model / TCP/IP</td>
+<td>2023 Winter P32 Q4</td>
+</tr>
+<tr>
+<td>P32 Q2</td>
+<td>Four layers; link layer interconnects nodes</td>
+<td>2026 Summer P32 Q2</td>
+</tr>
+<tr>
+<td>P31 Q4</td>
+<td>Layer-to-description matching</td>
+<td>2026 Summer P31 Q4</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Application &amp; Transport layer purposes</td>
+<td>2025 Summer P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Identify two TCP/IP layers</td>
+<td>2025 Summer P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(a)</td>
+<td>Four-layer order</td>
+<td>2024 Summer P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)</td>
+<td>Transport layer function</td>
+<td>2024 Summer P31 Q2(b)</td>
+</tr>
+<tr>
+<td>P32 Q5(b)</td>
+<td>Application layer purpose and function</td>
+<td>2024 Winter P32 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)</td>
+<td>Link layer purpose</td>
+<td>2023 Winter P31 Q2(b)</td>
+</tr>
+<tr>
+<td>P31 Q2</td>
+<td>Transport &amp; Internet layer functions</td>
+<td>2022 Winter P31 Q2</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Two other layers and their functions</td>
+<td>2022 Summer P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Complete the TCP/IP stack diagram</td>
+<td>2022 Winter P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>SMTP and IMAP (email protocols)</td>
+<td>2025 Winter P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>HTTP and IMAP purposes</td>
+<td>2025 Winter P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>BitTorrent file sharing</td>
+<td>2025 Winter P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P33 Q4</td>
+<td>Identify &amp; describe three application protocols</td>
+<td>2025 Winter P33 Q4</td>
+</tr>
+<tr>
+<td>P31 Q2©</td>
+<td>One Application layer protocol</td>
+<td>2024 Summer P31 Q2©</td>
+</tr>
+<tr>
+<td>P32 Q2(b)</td>
+<td>SMTP / POP3 / IMAP for email</td>
+<td>2024 Summer P32 Q2(b)</td>
+</tr>
+<tr>
+<td>P32 Q2©</td>
+<td>BitTorrent peer-to-peer file sharing</td>
+<td>2024 Summer P32 Q2©</td>
+</tr>
+<tr>
+<td>P32 Q5(a)</td>
+<td>Name &amp; describe two Application layer protocols</td>
+<td>2024 Winter P32 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(a)</td>
+<td>Match protocol to use</td>
+<td>2023 Winter P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Two Application layer protocols and uses</td>
+<td>2022 Summer P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3©</td>
+<td>Purpose of IMAP</td>
+<td>2022 Winter P32 Q3©</td>
+</tr>
+<tr>
+<td>P33 Q7</td>
+<td>SSL/TLS client-server handshake</td>
+<td>2025 Summer P33 Q7</td>
+</tr>
+<tr>
+<td>P31 Q9(a)</td>
+<td>Functions of SSL/TLS</td>
+<td>2025 Summer P31 Q9(a)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>Situations where SSL/TLS is appropriate</td>
+<td>2025 Summer P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P32 Q10</td>
+<td>TLS Handshake and Record protocols</td>
+<td>2025 Summer P32 Q10</td>
+</tr>
+<tr>
+<td>P31 Q8(a)</td>
+<td>Purpose of SSL/TLS</td>
+<td>2021 Winter P31 Q8(a)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)</td>
+<td>SSL/TLS client-server handshake</td>
+<td>2021 Winter P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Packet switching (indexed as §14.1; actually §14.2)</td>
+<td>2025 Summer P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q3©</td>
+<td>Packet switching (indexed as §14.1; actually §14.2)</td>
+<td>2025 Winter P31 Q3©</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="133-floating-point-numbers-representation-manipulation.html" title="Previous: 13.3 Floating-point Numbers, Representation &amp;Manipulation" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">13.3 Floating-point Numbers, Representation &amp;Manipulation</span></a>

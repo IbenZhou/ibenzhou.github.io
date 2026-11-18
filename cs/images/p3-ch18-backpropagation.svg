@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 380" width="940" height="380" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="agreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#1d9e75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#d85a30" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="940" height="380" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Forward pass and backpropagation</text>
+  <text x="470" y="54" text-anchor="middle" font-size="14" fill="#5a6b6b">Two passes: compute the output, then send the error back to update weights</text>
+
+  <!-- forward panel -->
+  <rect x="24" y="72" width="440" height="212" rx="12" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="44" y="100" font-size="15" font-weight="700" fill="#0f6e56">1. Forward pass</text>
+  <g stroke="#1d9e75" stroke-width="1.6">
+    <line x1="100" y1="150" x2="200" y2="130" marker-end="url(#agreen)"/>
+    <line x1="100" y1="150" x2="200" y2="190" marker-end="url(#agreen)"/>
+    <line x1="100" y1="230" x2="200" y2="190" marker-end="url(#agreen)"/>
+    <line x1="100" y1="230" x2="200" y2="250" marker-end="url(#agreen)"/>
+    <line x1="222" y1="130" x2="330" y2="190" marker-end="url(#agreen)"/>
+    <line x1="222" y1="190" x2="330" y2="190" marker-end="url(#agreen)"/>
+    <line x1="222" y1="250" x2="330" y2="190" marker-end="url(#agreen)"/>
+  </g>
+  <g fill="#d5efe6" stroke="#1d9e75" stroke-width="1.5" font-size="11" text-anchor="middle">
+    <circle cx="88" cy="150" r="16"><title>input</title></circle><text x="88" y="154" fill="#0f3d3e">x₁</text>
+    <circle cx="88" cy="230" r="16"/><text x="88" y="234" fill="#0f3d3e">x₂</text>
+    <circle cx="210" cy="130" r="16"/><circle cx="210" cy="190" r="16"/><circle cx="210" cy="250" r="16"/>
+    <circle cx="346" cy="190" r="18"/><text x="346" y="194" fill="#0f3d3e">ŷ</text>
+  </g>
+  <text x="44" y="270" font-size="12" fill="#233b3a">Inputs × weights → hidden nodes → output ŷ</text>
+
+  <!-- backward panel -->
+  <rect x="476" y="72" width="440" height="212" rx="12" fill="#faece7" stroke="#d85a30" stroke-width="1.5"/>
+  <text x="496" y="100" font-size="15" font-weight="700" fill="#993c1d">2. Backward pass (backpropagation)</text>
+  <g stroke="#d85a30" stroke-width="2">
+    <line x1="690" y1="190" x2="570" y2="130" marker-end="url(#ared)"/>
+    <line x1="690" y1="190" x2="570" y2="190" marker-end="url(#ared)"/>
+    <line x1="690" y1="190" x2="570" y2="250" marker-end="url(#ared)"/>
+    <line x1="558" y1="130" x2="460" y2="150" marker-end="url(#ared)"/>
+    <line x1="558" y1="190" x2="460" y2="150" marker-end="url(#ared)"/>
+    <line x1="558" y1="190" x2="460" y2="230" marker-end="url(#ared)"/>
+    <line x1="558" y1="250" x2="460" y2="230" marker-end="url(#ared)"/>
+  </g>
+  <g fill="#f5c4b3" stroke="#d85a30" stroke-width="1.5">
+    <circle cx="700" cy="190" r="18"/><circle cx="580" cy="130" r="16"/><circle cx="580" cy="190" r="16"/><circle cx="580" cy="250" r="16"/>
+    <circle cx="448" cy="150" r="16"/><circle cx="448" cy="230" r="16"/>
+  </g>
+  <text x="496" y="270" font-size="12" fill="#233b3a">Error gradient flows back; each Δw is computed</text>
+
+  <!-- loss + update -->
+  <rect x="24" y="302" width="440" height="56" rx="9" fill="#fbf0d8" stroke="#d9a441" stroke-width="1"/>
+  <text x="44" y="325" font-size="12.5" fill="#233b3a">Loss = |ŷ − y|² — how far the output is from the target</text>
+  <text x="44" y="346" font-size="12.5" fill="#854f0b">The error gradient ∂L/∂w drives the weight update</text>
+
+  <rect x="476" y="302" width="440" height="56" rx="9" fill="#eef3fb" stroke="#378add" stroke-width="1"/>
+  <text x="496" y="325" font-size="13" fill="#185fa5" font-family="Consolas, monospace">w_new = w_old − η × ∂Loss/∂w</text>
+  <text x="496" y="346" font-size="12.5" fill="#233b3a">η = learning rate · repeat over many examples to train the network</text>
+</svg>

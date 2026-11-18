@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" width="900" height="380" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="900" height="380" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Call stack for factorial(3)</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Winding creates frames; unwinding returns values</text>
+
+  <!-- stack frames during winding -->
+  <text x="40" y="94" font-size="13" font-weight="700" fill="#0f6e56">Winding (calls)</text>
+  <g font-size="12.5">
+    <rect x="40" y="106" width="220" height="40" rx="7" fill="#eef7f5" stroke="#1d9e75"/>
+    <text x="60" y="131" fill="#0f3d3e">factorial(3) · frame 1</text>
+    <rect x="278" y="106" width="220" height="40" rx="7" fill="#eef7f5" stroke="#1d9e75"/>
+    <text x="298" y="131" fill="#0f3d3e">factorial(2) · frame 2</text>
+    <rect x="516" y="106" width="220" height="40" rx="7" fill="#eef7f5" stroke="#1d9e75"/>
+    <text x="536" y="131" fill="#0f3d3e">factorial(1) · frame 3</text>
+  </g>
+  <line x1="262" y1="126" x2="276" y2="126" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="500" y1="126" x2="514" y2="126" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="750" y="131" font-size="12" font-weight="700" fill="#0f6e56">base case → return 1</text>
+
+  <!-- base case note -->
+  <rect x="516" y="158" width="220" height="34" rx="6" fill="#fbf0d8" stroke="#d9a441" stroke-width="1"/>
+  <text x="626" y="179" text-anchor="middle" font-size="12" fill="#854f0b">stopping condition: n = 1</text>
+
+  <!-- unwinding -->
+  <text x="40" y="224" font-size="13" font-weight="700" fill="#185fa5">Unwinding (returns)</text>
+  <g font-size="12.5">
+    <rect x="516" y="238" width="220" height="40" rx="7" fill="#eef3fb" stroke="#378add"/>
+    <text x="536" y="263" fill="#042c53">frame 3 returns 1</text>
+    <rect x="278" y="238" width="220" height="40" rx="7" fill="#eef3fb" stroke="#378add"/>
+    <text x="298" y="263" fill="#042c53">frame 2 returns 2×1 = 2</text>
+    <rect x="40" y="238" width="220" height="40" rx="7" fill="#eef3fb" stroke="#378add"/>
+    <text x="60" y="263" fill="#042c53">frame 1 returns 3×2 = 6</text>
+  </g>
+  <line x1="514" y1="258" x2="500" y2="258" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="276" y1="258" x2="262" y2="258" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="304" width="820" height="52" rx="9" fill="#f4effb" stroke="#7f77dd" stroke-width="1.2"/>
+  <text x="60" y="326" font-size="12.5" fill="#233b3a">Each call pushes a stack frame holding the return address, parameter (n) and local variables</text>
+  <text x="60" y="346" font-size="12.5" fill="#993c1d">On return the frame is popped · too many nested calls → stack overflow</text>
+</svg>

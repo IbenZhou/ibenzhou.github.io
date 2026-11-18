@@ -227,12 +227,14 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="compression">Compression</h2>
+        
+<h2 id="compression">Compression</h2>
 <h2 id="the-need-for-compression">The need for compression</h2>
 <h3 id="what-is-compression">What is compression?</h3>
 <ul>
 <li>Compression is <strong>reducing the the size of a file</strong> so that it <strong>takes up less space on secondary storage</strong></li>
-<li>There are scenarios where compression may be needed, such as:<ul>
+<li>There are scenarios where compression may be needed, such as:
+<ul>
 <li><strong>Maximise the amount of data you can store</strong> on a digital device such as a mobile phone or tablet</li>
 <li><strong>Minimise the transfer time</strong> of data being uploaded, downloaded or streamed across a network such as the Internet</li>
 </ul>
@@ -246,13 +248,9 @@ body::before {
 <li>Lossy compression is <strong>irreversible</strong></li>
 <li>Lossy can <strong>greatly reduce the size</strong> of a file but at the <strong>expense of losing quality</strong></li>
 <li>Lossy is only suitable for data <strong>where reducing quality is acceptable</strong>, for example images, video and sound</li>
-<li>
-<p>In photographs, lossy compression <strong>will try to group similar colours together</strong>, reducing the amount of colours in the image without compromising the overall quality of the image
-<img alt="lossy-images" src="images/lossy-images.png" /></p>
-</li>
-<li>
-<p>In the images above, lossy compression is applied to a photograph and <strong>dramatically reduces the file size</strong></p>
-</li>
+<li>In photographs, lossy compression <strong>will try to group similar colours together</strong>, reducing the amount of colours in the image without compromising the overall quality of the image
+<img alt="lossy-images" src="images/lossy-images.png" /></li>
+<li>In the images above, lossy compression is applied to a photograph and <strong>dramatically reduces the file size</strong></li>
 <li><strong>Data has been removed</strong> and the <strong>overall quality has been reduced</strong>, however it is acceptable as it is difficult to visually see a difference</li>
 <li>Lossy compressed photographs <strong>take up less storage space</strong> which means you can store more and they are quicker to share across a network</li>
 </ul>
@@ -262,50 +260,51 @@ body::before {
 <li>Lossless compression is <strong>reversible</strong>, the file <strong>can be returned to its original state</strong></li>
 <li>Lossless can reduce the size of a file but not as dramatically as lossy</li>
 <li>Lossless can be used on all data but is more suitable for data where <strong>a loss in quality is unacceptable</strong>, for example documents</li>
-<li>
-<p>In a document, lossless compression uses algorithms to analyse the contents looking for <strong>patterns</strong> and <strong>repetition</strong>
-<img alt="lossless-compression-demo---word-vs-pdf" src="images/lossless-compression-demo---word-vs-pdf.png" /></p>
-</li>
-<li>
-<p>In the image above, lossless compression is <strong>automatically applied</strong> to document formats such as <strong>DOCX</strong> and <strong>PDF</strong> with a different rate of success</p>
-</li>
+<li>In a document, lossless compression uses algorithms to analyse the contents looking for <strong>patterns</strong> and <strong>repetition</strong>
+<img alt="lossless-compression-demo---word-vs-pdf" src="images/lossless-compression-demo---word-vs-pdf.png" /></li>
+<li>In the image above, lossless compression is <strong>automatically applied</strong> to document formats such as <strong>DOCX</strong> and <strong>PDF</strong> with a different rate of success</li>
 <li>When you open a lossless compressed document the <strong>decompression process reverses the algorithms</strong> and returns the data back to its <strong>original state</strong></li>
 <li>Lossless compressed documents <strong>take up less storage space</strong> which means you can store more and they are quicker to share across a network</li>
 </ul>
 <h2 id="compression-techniques">Compression Techniques</h2>
 <h2 id="file-compression">File compression</h2>
-<h3 id="mpeg-3-mp3-audio-compression">MPEG-3 (MP3) - Audio compression</h3>
+<h3 id="mpeg-3-mp3---audio-compression">MPEG-3 (MP3) - Audio compression</h3>
 <ul>
 <li>MP3 uses <strong>audio compression</strong> to reduce file size</li>
 <li>A typical music file can be reduced by <strong>up to 90%</strong> (e.g. 80 MB to 8 MB)</li>
-<li>MP3 files are used on:<ul>
+<li>MP3 files are used on:
+<ul>
 <li><strong>MP3 players</strong></li>
 <li><strong>Computers</strong></li>
 <li><strong>Smart phones</strong></li>
 </ul>
 </li>
-<li>Music can be:<ul>
+<li>Music can be:
+<ul>
 <li><strong>Downloaded or streamed</strong> from the internet</li>
 <li><strong>Converted from a CD</strong> to MP3 format</li>
 </ul>
 </li>
 <li>MP3 quality isn’t as high as the original CD, but it’s <strong>good enough for most people</strong></li>
-<li>MP3 uses <strong>perceptual music shaping</strong> to remove sounds we don’t notice:<ul>
+<li>MP3 uses <strong>perceptual music shaping</strong> to remove sounds we don’t notice:
+<ul>
 <li>Frequencies <strong>outside human hearing range</strong></li>
 <li><strong>Quieter sounds</strong> that are masked by louder ones</li>
 </ul>
 </li>
 <li>This makes the file smaller <strong>without a big drop in quality</strong></li>
-<li>MP3 is a <strong>lossy</strong> format:<ul>
+<li>MP3 is a <strong>lossy</strong> format:
+<ul>
 <li>Some original data is <strong>permanently lost</strong></li>
 <li>You <strong>can’t get the original file back</strong></li>
 </ul>
 </li>
 </ul>
-<h3 id="mpeg-4-mp4-multimedia-file-format">MPEG-4 (MP4) - Multimedia file format</h3>
+<h3 id="mpeg-4-mp4---multimedia-file-format">MPEG-4 (MP4) - Multimedia file format</h3>
 <ul>
 <li>MP4 is similar to MP3, but stores <strong>more than just audio</strong></li>
-<li>It can store:<ul>
+<li>It can store:
+<ul>
 <li><strong>Music</strong></li>
 <li><strong>Videos</strong></li>
 <li><strong>Photos</strong></li>
@@ -331,20 +330,22 @@ body::before {
 </ul>
 <h4 id="text-data">Text data</h4>
 <ul>
-<li>For text data containing the string &rdquo; <strong>AAAABBBCCDAA</strong> &ldquo;, the plain RLE encoding would be &rdquo; <strong>4A3B2C1D2A</strong> &ldquo;</li>
-<li>The string has:<ul>
-<li>four &lsquo;A&rsquo;s (<strong>4A</strong>)</li>
-<li>three &lsquo;B&rsquo;s (<strong>3B</strong>)</li>
-<li>two &lsquo;C&rsquo;s (<strong>2C</strong>)</li>
-<li>one &lsquo;D&rsquo; (<strong>1D</strong>)</li>
-<li>two &lsquo;A&rsquo;s (<strong>2A</strong>)</li>
+<li>For text data containing the string &quot; <strong>AAAABBBCCDAA</strong> &quot;, the plain RLE encoding would be &quot; <strong>4A3B2C1D2A</strong> &quot;</li>
+<li>The string has:
+<ul>
+<li>four 'A’s (<strong>4A</strong>)</li>
+<li>three 'B’s (<strong>3B</strong>)</li>
+<li>two 'C’s (<strong>2C</strong>)</li>
+<li>one ‘D’ (<strong>1D</strong>)</li>
+<li>two 'A’s (<strong>2A</strong>)</li>
 </ul>
 </li>
 <li>To represent this in binary, the <strong>count is stored in a fixed size binary format</strong> (e.g. 7 or 8 bits)</li>
 <li>The character is stored using its <strong>ASCII</strong> value (7 bits)</li>
-<li>The binary RLE representation of <strong>4A</strong> would be <strong>0000100 1000001</strong><ul>
+<li>The binary RLE representation of <strong>4A</strong> would be <strong>0000100 1000001</strong>
+<ul>
 <li><strong>0000100</strong> - binary for the count (4)</li>
-<li><strong>1000001</strong> - binary for &lsquo;A&rsquo; (65)</li>
+<li><strong>1000001</strong> - binary for ‘A’ (65)</li>
 </ul>
 </li>
 </ul>
@@ -368,16 +369,13 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>
-<p>Using RLE we <strong>group pixel colours</strong> and can create frequency/data pairs as follows</p>
+<li>Using RLE we <strong>group pixel colours</strong> and can create frequency/data pairs as follows
 <ul>
-<li>3 <strong>0</strong>, 1 <strong>1</strong>, 2 <strong>0</strong>, 1 <strong>1</strong>, 2 <strong>0</strong>, 1 <strong>1</strong>, 5 <strong>0</strong>, 1 <strong>1</strong>, 3 <strong>0</strong>, 1 <strong>1</strong>, 1 <strong>0</strong>, 1 <strong>1</strong>, 6 <strong>0</strong>, 1 <strong>1</strong>......
+<li>3 <strong>0</strong>, 1 <strong>1</strong>, 2 <strong>0</strong>, 1 <strong>1</strong>, 2 <strong>0</strong>, 1 <strong>1</strong>, 5 <strong>0</strong>, 1 <strong>1</strong>, 3 <strong>0</strong>, 1 <strong>1</strong>, 1 <strong>0</strong>, 1 <strong>1</strong>, 6 <strong>0</strong>, 1 <strong>1</strong>…
 <img alt="rle-groups" src="images/rle-groups.png" /></li>
 </ul>
 </li>
-<li>
-<p><strong>3 x 0 =</strong> 3 x white, <strong>1 x 1 =</strong> 1 x black</p>
-</li>
+<li><strong>3 x 0 =</strong> 3 x white, <strong>1 x 1 =</strong> 1 x black</li>
 <li>Data pairs <strong>can carry over on to the next line</strong>, e.g. end of first line and start of second line is 5 x 0 (<strong>5 x white</strong>)</li>
 <li>The <strong>original</strong> file would need to use <strong>195 bits</strong> of storage space</li>
 <li>The <strong>RLE compressed</strong> file would need use <strong>38 bits</strong> of storage space, <strong>a saving of 157 bits (80%)</strong></li>
@@ -421,7 +419,8 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li>The data stored could look like:<ul>
+<li>The data stored could look like:
+<ul>
 <li>10 0 0 0 5 255 0 0 3 0 255 0</li>
 </ul>
 </li>

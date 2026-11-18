@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 340" width="860" height="340" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="860" height="340" fill="#ffffff"/>
+  <text x="430" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Graph features</text>
+  <text x="430" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Vertices (nodes) connected by edges — directed/undirected, weighted/unweighted</text>
+
+  <!-- undirected unweighted -->
+  <rect x="24" y="80" width="390" height="230" rx="12" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="44" y="108" font-size="14" font-weight="700" fill="#0f6e56">Undirected, unweighted</text>
+  <g stroke="#1d9e75" stroke-width="1.8">
+    <line x1="110" y1="160" x2="230" y2="140"/>
+    <line x1="110" y1="160" x2="160" y2="250"/>
+    <line x1="230" y1="140" x2="320" y2="190"/>
+    <line x1="160" y1="250" x2="320" y2="190"/>
+  </g>
+  <g fill="#d5efe6" stroke="#1d9e75" stroke-width="1.5">
+    <circle cx="110" cy="160" r="16"/><circle cx="230" cy="140" r="16"/><circle cx="320" cy="190" r="16"/><circle cx="160" cy="250" r="16"/>
+  </g>
+  <text x="44" y="298" font-size="12" fill="#233b3a">Edges have no direction and no cost</text>
+
+  <!-- directed weighted -->
+  <rect x="446" y="80" width="390" height="230" rx="12" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="466" y="108" font-size="14" font-weight="700" fill="#185fa5">Directed, weighted</text>
+  <g stroke="#378add" stroke-width="1.8">
+    <line x1="530" y1="160" x2="660" y2="140" marker-end="url(#arrow)"/>
+    <line x1="530" y1="160" x2="580" y2="250" marker-end="url(#arrow)"/>
+    <line x1="660" y1="140" x2="760" y2="190" marker-end="url(#arrow)"/>
+    <line x1="580" y1="250" x2="760" y2="190" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#d7e8fa" stroke="#378add" stroke-width="1.5">
+    <circle cx="530" cy="160" r="16"/><circle cx="660" cy="140" r="16"/><circle cx="760" cy="190" r="16"/><circle cx="580" cy="250" r="16"/>
+  </g>
+  <g font-size="11.5" font-weight="700" fill="#854f0b">
+    <text x="598" y="142">4</text><text x="542" y="212">2</text><text x="716" y="158">7</text><text x="680" y="234">3</text>
+  </g>
+  <text x="466" y="298" font-size="12" fill="#233b3a">Arrows show direction; numbers are weights (costs)</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 350" width="900" height="350" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="900" height="350" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Digital certificate and the CA trust chain</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">A browser trusts a site because a trusted authority signed its certificate</text>
+
+  <!-- Root CA -->
+  <rect x="60" y="92" width="220" height="90" rx="10" fill="#eef7f5" stroke="#1d9e75" stroke-width="2"/>
+  <text x="170" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#0f6e56">Root CA</text>
+  <text x="170" y="142" text-anchor="middle" font-size="12" fill="#233b3a">public key built into</text>
+  <text x="170" y="159" text-anchor="middle" font-size="12" fill="#233b3a">browser / OS</text>
+  <text x="170" y="176" text-anchor="middle" font-size="11.5" fill="#0f6e56">implicitly trusted</text>
+
+  <line x1="284" y1="137" x2="356" y2="137" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="320" y="127" text-anchor="middle" font-size="11" fill="#5a6b6b">signs</text>
+
+  <!-- Certificate -->
+  <rect x="360" y="82" width="300" height="110" rx="10" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+  <text x="510" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#185fa5">Website's certificate</text>
+  <g font-size="12" fill="#233b3a">
+    <text x="380" y="132">• Site identity / domain name</text>
+    <text x="380" y="152">• Site's public key</text>
+    <text x="380" y="172">• Serial &amp; version number</text>
+    <text x="380" y="190">• CA's digital signature</text>
+  </g>
+
+  <line x1="664" y1="137" x2="736" y2="137" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="700" y="127" text-anchor="middle" font-size="11" fill="#5a6b6b">presented to</text>
+
+  <!-- Browser -->
+  <rect x="740" y="92" width="120" height="90" rx="10" fill="#f4effb" stroke="#7f77dd" stroke-width="2"/>
+  <text x="800" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#534ab7">Browser</text>
+  <text x="800" y="142" text-anchor="middle" font-size="12" fill="#233b3a">verifies the</text>
+  <text x="800" y="159" text-anchor="middle" font-size="12" fill="#233b3a">CA signature</text>
+  <text x="800" y="176" text-anchor="middle" font-size="11.5" fill="#534ab7">then trusts site</text>
+
+  <rect x="60" y="222" width="800" height="96" rx="12" fill="#fbf0d8" stroke="#d9a441" stroke-width="1.2"/>
+  <text x="80" y="248" font-size="13.5" font-weight="700" fill="#854f0b">Verification steps</text>
+  <text x="80" y="272" font-size="12.5" fill="#233b3a">1. Browser decrypts the CA's signature using the CA's public key → recovers a hash of the certificate</text>
+  <text x="80" y="292" font-size="12.5" fill="#233b3a">2. Browser hashes the certificate itself and compares — a match proves the certificate was signed by the CA and not altered</text>
+  <text x="80" y="310" font-size="12.5" fill="#993c1d">If the CA is not trusted or the hashes differ, the browser warns the user</text>
+</svg>

@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -217,7 +256,6 @@ body::before {
 <ul>
 <li><a href="#file-organisation">File Organisation</a></li>
 <li><a href="#file-organisation-methods">File organisation methods</a></li>
-<li><a href="#file-access">File Access</a></li>
 <li><a href="#file-access-methods">File access methods</a></li>
 <li><a href="#hashing-algorithms">Hashing algorithms</a></li>
 </ul>
@@ -226,7 +264,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="file-organisation">File Organisation</h2>
+        
+<h2 id="file-organisation">File organisation</h2>
 <ul>
 <li>Modern computer systems <strong>handle vast amounts of data</strong></li>
 <li>Everything from <strong>bank transactions</strong> to <strong>music libraries</strong> is stored in <strong>files</strong></li>
@@ -267,6 +306,8 @@ body::before {
 </tbody>
 </table>
 <h2 id="file-organisation-methods">File organisation methods</h2>
+<p><strong>Serial, sequential and random organisation ★</strong></p>
+<p><img alt="Comparison of serial, sequential and random file organisation: record layout, how new records are added, and how records are located" src="images/p3-ch13-2-file-organisation-comparison.svg" /></p>
 <h3 id="what-are-the-different-file-organisation-methods">What are the different file organisation methods?</h3>
 <ul>
 <li>The way data is arranged within a file <strong>affects how efficiently it can be accessed</strong> and <strong>updated</strong></li>
@@ -282,13 +323,14 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td>Records are stored <strong>in the order they arrive</strong> (no sorting). To find data, the file must be searched from the beginning.</td>
-<td>Logging sensor data, storing queued messages</td>
+<td>Records are stored <strong>one after the other in the order they arrive / chronological order</strong> (no sorting). New records are <strong>appended at the end of the file</strong>. To find a record, the file is searched from the physical start, record by record, until the record is found or the end of file is reached.</td>
+<td>Batch processing tasks, creating transaction files, data logging, storing bills/payroll, backup</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><strong>Simple to implement</strong>, but <strong>slow to search</strong> if there are many records</li>
+<li>Every record (including earlier ones) must be checked, so it suits files that are <strong>processed in full</strong> rather than looked up one record at a time</li>
 </ul>
 <h4 id="sequential-file-organisation">Sequential file organisation</h4>
 <table>
@@ -300,13 +342,15 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td>Records are stored <strong>in a sorted order</strong> based on a key field. Searching can stop once the target is passed.</td>
-<td>Payroll systems, exam results</td>
+<td>Records are stored <strong>one after the other in a given order</strong>, normally <strong>sorted by a key field / unique identifier</strong>. A search can stop as soon as the current key passes the target key. New records are <strong>inserted in the correct position</strong>; updating normally requires <strong>a new version of the file to be created</strong>.</td>
+<td>Payroll systems, generating bills, exam results, printed reports</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><strong>More efficient for searches</strong> and ideal for files that are <strong>read often but rarely updated</strong></li>
+<li><strong>Chronological order is not</strong> sequential organisation — that would be serial organisation</li>
+<li><strong>Direct access</strong> is possible with an <strong>index of all key fields</strong>, which is searched for the address of the target record</li>
 </ul>
 <h4 id="direct-random-file-organisation">Direct (random) file organisation</h4>
 <table>
@@ -318,16 +362,100 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td>Records are placed at specific locations using a <strong>hashing algorithm</strong>. This allows <strong>instant access</strong> to any record.</td>
-<td>Bank account access, real-time stock updates</td>
+<td>Records are stored in <strong>no particular order / in any available position</strong>, but there is a <strong>relationship between a record’s key and its location</strong>: a <strong>hash function</strong> applied to the key field calculates the address. New records are added in an <strong>empty location</strong> and updates can be carried out <strong>directly</strong>.</td>
+<td>Booking systems (e.g. airline), operating system file management, video games, encryption utilities, compression utilities, bank account access, real-time stock updates</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li>Best for <strong>fast, real-time access</strong> to individual records</li>
+<li>Uses <strong>direct file access</strong></li>
 </ul>
-<h2 id="file-access">File Access</h2>
+<p><strong>Choosing a file organisation method ★</strong></p>
+<ul>
+<li><strong>Serial</strong> — best when every record is processed in turn and single-record lookups are rare (end-of-day transaction logs), because a new record is simply <strong>appended</strong> and no re-sorting is needed</li>
+<li><strong>Sequential</strong> — best when the file is sorted on a <strong>key field</strong> and most processing sweeps through it in key order (payroll, printed reports), because a search can stop as soon as the key is passed</li>
+<li><strong>Direct (random)</strong> — best when one record must be found or updated quickly by key (bank accounts, seat booking), because the address is <strong>calculated</strong> rather than searched</li>
+<li><strong>Choosing</strong> — ask: is one record needed, or the whole file? is there a <strong>unique key</strong>? how often are records <strong>added or deleted</strong>? how much storage can be spared for an index or for empty slots?</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q3 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> State one example of where serial file organisation could be used.</p>
+<p><strong>(b)</strong> Describe how records are organised in serial files.</p>
+<p><strong>©</strong> Outline the process used to find a record in a serial file.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>3(a) [1 mark]</strong>
+One mark for an appropriate use of serial file organisation (<strong>Max 1</strong>)</p>
+<ul>
+<li>Batch processing tasks</li>
+<li>Creating a transaction file for a batch</li>
+<li>Storing bills/payroll</li>
+<li>Backup</li>
+<li>Appropriate example where data is added chronologically</li>
+</ul>
+<p><strong>3(b) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 Records are stored in a file one after the other</li>
+<li>MP2 … in chronological order</li>
+<li>MP3 New records are appended/added at the end of the file</li>
+</ul>
+<p><strong>3© [3 marks]</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 Sequential file access is used</li>
+<li>MP2 Each record in the file is searched / checked, one after the other,</li>
+<li>MP3 … until the end of the file is reached</li>
+<li>MP4 … until the record is found.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q4 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe sequential and random methods of file organisation.
+<strong>Sequential file organisation:</strong> …
+<strong>Random file organisation:</strong> …</p>
+<p><strong>(b)</strong> Outline the process of sequential access for serial and sequential files.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>4(a) — sequential (Max 2)</strong>
+One mark per mark point</p>
+<ul>
+<li>MP1: Records (in the file) are ordered</li>
+<li>MP2: …based on the key field</li>
+<li>MP3: A new version (of the file) has to be created to update the file</li>
+</ul>
+<p><strong>4(a) — random (Max 2)</strong>
+One mark per mark point</p>
+<ul>
+<li>MP4: Records are stored in no particular order within the file // There is no sequencing in the placement of the records</li>
+<li>MP5: There is a relationship between the key of the record and its location within the file // a hashing algorithm is used to find the location of the record</li>
+<li>MP6: Updates to the file can be carried out directly.</li>
+</ul>
+<p><strong>4(b) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1: Start at the beginning of the file</li>
+<li>MP2: …check records linearly</li>
+<li>MP3: …until the desired record is found // … processing / updating records as required //… EOF found.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q5 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Compare sequential and serial methods of file organisation. [4]</p>
+<p><strong>(b)</strong> State the most suitable method of file access when a record is referenced by a unique address on a disk-type storage medium. [1]</p>
+<p><strong>©</strong> State the most suitable method of file access when a bank stores its data records in ascending order of account number. [1]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5a [4 marks]</strong></p>
+<ul>
+<li>In both serial and sequential files records are stored one after the other</li>
+<li>… and need to be accessed one after the other</li>
+<li>Serial files are stored in chronological order</li>
+<li>Sequential files are stored with ordered records</li>
+<li>… and stored in the order of the key field</li>
+<li>In serial files, new records are added in the next available space / records are appended to the file;</li>
+<li>In sequential files, new records are inserted in the correct position</li>
+</ul>
+<p><strong>5b [1 mark]</strong>
+Direct (access)</p>
+<p><strong>5c [1 mark]</strong>
+Sequential (access)</p>
+</div></details></p>
 <h2 id="file-access-methods">File access methods</h2>
+<p><strong>Sequential access and direct access ★</strong></p>
+<p><img alt="Sequential access versus direct (random) access: how records are located and which file organisations each is used with" src="images/p3-ch13-2-file-access.svg" /></p>
 <h3 id="what-are-file-access-methods">What are file access methods?</h3>
 <ul>
 <li>Once a file is organised and stored, it must be accessed correctly <strong>in order to retrieve or update data</strong></li>
@@ -335,7 +463,8 @@ body::before {
 </ul>
 <h4 id="sequential-access">Sequential access</h4>
 <ul>
-<li>Sequential access means accessing records <strong>one after another, in order</strong>, starting from the beginning of the file</li>
+<li>Sequential access means accessing records <strong>one after another, in order</strong>, starting from the <strong>physical start of the file</strong></li>
+<li>The record <strong>key</strong> is compared as each record is read; the search stops when the record is found, when the key of the current record exceeds the target key, or at the end of the file</li>
 </ul>
 <table>
 <thead>
@@ -346,12 +475,16 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td>Reads records in <strong>sequence</strong></td>
+<td>Reads records in <strong>sequence</strong> from the physical start</td>
 <td><strong>Serial</strong> and <strong>Sequential</strong> files</td>
 </tr>
 <tr>
-<td><strong>Slower</strong> for searching <strong>large files</strong></td>
+<td>For <strong>serial</strong> files every record is checked (stored in chronological order)</td>
 <td>Must process <strong>earlier records first</strong></td>
+</tr>
+<tr>
+<td>For <strong>sequential</strong> files the key field is compared and the search can stop early</td>
+<td>Records ordered by a <strong>key field / index</strong></td>
 </tr>
 <tr>
 <td><strong>Efficient</strong> when reading the <strong>whole file</strong></td>
@@ -360,11 +493,12 @@ body::before {
 </tbody>
 </table>
 <ul>
-<li><strong>Example</strong>: Reading every student&rsquo;s exam result in order of candidate number</li>
+<li><strong>Example</strong>: Reading every student’s exam result in order of candidate number</li>
 </ul>
 <h4 id="direct-random-access">Direct (random) access</h4>
 <ul>
-<li>Direct access allows a program to <strong>jump straight to the location</strong> of a specific record, without reading previous ones</li>
+<li>Direct access allows a program to <strong>jump straight to the location</strong> of a specific record, <strong>without other records being read</strong></li>
+<li>The location is found using the <strong>key field</strong> of the target record — via a <strong>hashing algorithm</strong> (random files) or an <strong>index of key fields</strong> (sequential files)</li>
 </ul>
 <table>
 <thead>
@@ -391,7 +525,84 @@ body::before {
 <ul>
 <li><strong>Example</strong>: Accessing a bank account record by account number</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Summer P31 Q4 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the sequential method of file access.</p>
+<p><strong>(b)</strong> Explain how the sequential method of file access is applied to files with serial organisation and to files with sequential organisation.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>4(a) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>Sequential access method searches for records one after the other…</li>
+<li>…from the physical start of the file until the record is found / the end of file.</li>
+</ul>
+<p><strong>4(b) [3 marks]</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>For serial files, records are stored in chronological order…</li>
+<li>…every record needs to be checked until the record is found, or all records have been checked.</li>
+<li>For sequential files, records are stored in order of a key field/index, and it is the key field/index that is compared.</li>
+<li>…every record is checked until the record is found, or the key field of the current record is greater than the key field of the target record.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q7 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Outline what is meant by direct access as a method of file access.</p>
+<p><strong>(b)</strong> Explain how direct access is used to locate a specific record in sequential files and random files.
+(i) Sequential files …
+(ii) Random files …</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>7a [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>Direct access allows a record to be found in a file without other records being read.</li>
+<li>Records are found by using the key field of the target record // the location of the record is found using a hashing algorithm.</li>
+</ul>
+<p><strong>7b(i) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>In sequential files, an index of all key fields is kept</li>
+<li>The index is searched for the address of the file location where the target record is stored.</li>
+</ul>
+<p><strong>7b(ii) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>A hashing algorithm is used on the key field of the record</li>
+<li>… to calculate the address of the memory location where the target record is expected to be stored.</li>
+<li>Method to find a record if it is not at the expected location e.g. linear probing, search overflow area etc.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q4 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> State one example of where sequential file organisation could be used.</p>
+<p><strong>(b)</strong> Describe how records are organised in sequential files.</p>
+<p><strong>©</strong> Outline the process of sequential file access to find a record in a sequential file.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>4(a) [1 mark]</strong>
+One mark for an appropriate use of sequential file organisation (<strong>Max 1</strong>)</p>
+<ul>
+<li>Batch processing tasks;</li>
+<li>Recording log files;</li>
+<li>Generating bills/payroll;</li>
+<li>Backup;</li>
+<li>A valid example where the data is stored in a specified order.</li>
+</ul>
+<p>Examiner’s note (not part of the mark scheme): Guidance: Do not allow examples that simply describe sequential file organisation, such as ‘records are stored one after the other’.</p>
+<p><strong>4(b) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 Records are stored in a file one after the other / linearly;</li>
+<li>MP2 … in a given order;</li>
+<li>MP3 … usually based on a key field / unique identifier.</li>
+</ul>
+<p>Examiner’s note (not part of the mark scheme): Guidance: Chronological order is not correct for MP2 – that would be serial organisation.</p>
+<p><strong>4© [3 marks]</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 Each record in the file is searched, one after the other / linearly // Each record in the file is searched from the physical start of the file;</li>
+<li>MP2 … using the record key;</li>
+<li>MP3 … until the record is found;</li>
+<li>MP4 … until the value of the record key being searched has been exceeded // … until the end of the file is reached.</li>
+</ul>
+<p>Examiner’s note (not part of the mark scheme): Guidance: Candidates whose answer is about searching an index as for index sequential files do not answer this question.</p>
+</div></details></p>
 <h2 id="hashing-algorithms">Hashing algorithms</h2>
+<p><strong>Hashing algorithms ★</strong></p>
+<p><img alt="Hashing mechanism: a key is converted to a storage address by a hash function, with collision resolution by linear probing" src="images/p3-ch13-2-hashing.svg" /></p>
 <h3 id="what-is-a-hashing-algorithm">What is a hashing algorithm?</h3>
 <ul>
 <li>A hashing algorithm is used to calculate the <strong>storage location (address)</strong> of a record in a <strong>random (direct access) file</strong></li>
@@ -409,23 +620,20 @@ body::before {
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HashFunction</span><span class="p">(</span><span class="n">Key</span><span class="p">)</span>
 </code></pre></div>
-
 <ul>
 <li>If two keys produce the same address, a <strong>collision</strong> occurs</li>
-<li>This must be resolved (e.g. via <strong>linear probing</strong> or <strong>overflow areas</strong>)
-<strong>Writing a record to a file:</strong></li>
+<li>This must be resolved (e.g. via <strong>linear probing</strong> or <strong>overflow areas</strong>)</li>
 </ul>
+<p><strong>Writing a record to a file:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">Address</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">HashFunction</span><span class="p">(</span><span class="n">Key</span><span class="p">)</span>
 <span class="n">WRITE</span><span class="w"> </span><span class="n">file</span><span class="o">[</span><span class="n">Address</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">Record</span>
 </code></pre></div>
-
 <p><strong>Reading a record from a file:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">Address</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">HashFunction</span><span class="p">(</span><span class="n">Key</span><span class="p">)</span>
 <span class="n">READ</span><span class="w"> </span><span class="n">file</span><span class="o">[</span><span class="n">Address</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">Record</span>
 </code></pre></div>
-
 <ul>
-<li>If the expected record is <strong>not found</strong>, collision handling must be applied to find the correct record</li>
+<li>If the expected record is <strong>not found</strong> at the hashed location, a <strong>collision resolution strategy</strong> must be applied to find the correct record</li>
 </ul>
 <h3 id="types-of-hashing-algorithms">Types of hashing algorithms</h3>
 <table>
@@ -477,6 +685,214 @@ body::before {
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>Hashing is also examined inside direct-access questions — see <strong>2024 Summer P32 Q7(b)(ii)</strong> and <strong>2023 Winter P31 Q4(a)</strong> in the index below.</p>
+</blockquote>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q2 · 6 marks</div><div class="callout-body"><p>Random file organisation can be used with a database management system.
+<strong>(a)</strong> State <strong>one</strong> other example of where random file organisation could be used.</p>
+<p><strong>(b)</strong> Describe how records are organised in random files.</p>
+<p><strong>©</strong> Outline the process used to find a record in a random file.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>2(a) [1 mark]</strong>
+One mark for an appropriate use of random file organisation (<strong>Max 1</strong>)</p>
+<ul>
+<li>Booking systems e.g. airline</li>
+<li>Operating system file management systems</li>
+<li>Video games</li>
+<li>Encryption utilities</li>
+<li>Compression utilities</li>
+</ul>
+<p><strong>2(b) [2 marks]</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 Records are stored in no particular order / any available position</li>
+<li>MP2 A record key is used to determine the location where the record is to be stored</li>
+<li>MP3 … which is generated using a hash function on the key field</li>
+<li>MP4 New records are added in an empty location</li>
+</ul>
+<p><strong>2© [3 marks]</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 Direct file access is used</li>
+<li>MP2 A hashing function is used on the key field to find the location in the file where the record is stored</li>
+<li>MP3 If the required record is found at the hashed location it is retrieved</li>
+<li>MP4 If the required record is not found, a collision resolution strategy is employed // Records from that point are searched linearly until the required record is found // Linear probing</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q2 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe how records are organised and accessed in a sequential file.</p>
+<p><strong>(b)</strong> A hashing algorithm is used to calculate storage locations for records in a random access file. The algorithm calculates hash values using the function modulus 5.
+The function modulus gives the remainder after integer division.
+For example, <code>3003 modulus 5 = 3</code>, so the record key 3003 gives a hash value of 3.
+Complete the table to show the remaining hash values.</p>
+<table>
+<thead>
+<tr>
+<th>Record key</th>
+<th>Hash value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3003</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1029</td>
+<td></td>
+</tr>
+<tr>
+<td>7630</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>2(a) [3 marks]</strong>
+One mark for each correct point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Records are stored in a particular order</li>
+<li>The order is determined based on the value in a key field</li>
+<li>Records are accessed one after the other</li>
+<li>Records can be found by searching from the beginning of the file, record by record</li>
+<li>… until the required record is found or the key field value is exceeded</li>
+</ul>
+<p><strong>2(b) [2 marks]</strong>
+One mark for each correct hash value (<strong>Max 2</strong>)</p>
+<ul>
+<li>1029 → 4; 7630 → 0</li>
+<li>Working: 1029 mod 5 = 4, 7630 mod 5 = 0.</li>
+</ul>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q2(a)</td>
+<td>File organisation methods &amp; choice — appropriate use of random file organisation</td>
+<td>2026 Summer P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)</td>
+<td>File organisation methods &amp; choice — organisation of records in random files</td>
+<td>2026 Summer P31 Q2(b)</td>
+</tr>
+<tr>
+<td>P32 Q4(a)</td>
+<td>File organisation methods &amp; choice — use of sequential file organisation</td>
+<td>2026 Summer P32 Q4(a)</td>
+</tr>
+<tr>
+<td>P32 Q4(b)</td>
+<td>File organisation methods &amp; choice — organisation of records in sequential files</td>
+<td>2026 Summer P32 Q4(b)</td>
+</tr>
+<tr>
+<td>P33 Q3(a)</td>
+<td>File organisation methods &amp; choice — use of serial file organisation</td>
+<td>2026 Summer P33 Q3(a)</td>
+</tr>
+<tr>
+<td>P33 Q3(b)</td>
+<td>File organisation methods &amp; choice — organisation of records in serial files</td>
+<td>2026 Summer P33 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q2(a)</td>
+<td>File organisation methods &amp; choice — serial file organisation described</td>
+<td>2024 Winter P32 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(b)</td>
+<td>File organisation methods &amp; choice — use of serial file organisation</td>
+<td>2024 Winter P32 Q2(b)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)</td>
+<td>File organisation methods &amp; choice — sequential and random organisation described</td>
+<td>2023 Winter P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>File organisation methods &amp; choice — compare sequential and serial organisation</td>
+<td>2021 Winter P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(a)</td>
+<td>File organisation methods &amp; choice; Methods of file access — organisation and access in a sequential file</td>
+<td>2023 Summer P32 Q2(a)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)</td>
+<td>Methods of file access — sequential access described</td>
+<td>2024 Summer P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>Methods of file access; File organisation methods &amp; choice — sequential access on serial vs sequential files</td>
+<td>2024 Summer P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P32 Q7(a)</td>
+<td>Methods of file access — direct access defined</td>
+<td>2024 Summer P32 Q7(a)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)(i)</td>
+<td>Methods of file access — direct access in sequential files (index)</td>
+<td>2024 Summer P32 Q7(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)(ii)</td>
+<td>Methods of file access; Hashing algorithms — direct access in random files</td>
+<td>2024 Summer P32 Q7(b)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q4©</td>
+<td>Methods of file access — sequential access to find a record</td>
+<td>2026 Summer P32 Q4©</td>
+</tr>
+<tr>
+<td>P33 Q3©</td>
+<td>Methods of file access — finding a record in a serial file</td>
+<td>2026 Summer P33 Q3©</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>Methods of file access — sequential access for serial and sequential files</td>
+<td>2023 Winter P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)</td>
+<td>Methods of file access — direct access for unique-address lookup</td>
+<td>2021 Winter P31 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q5©</td>
+<td>Methods of file access — sequential access for key-ordered records</td>
+<td>2021 Winter P31 Q5©</td>
+</tr>
+<tr>
+<td>P31 Q2©</td>
+<td>Hashing algorithms; Methods of file access — finding a record in a random file</td>
+<td>2026 Summer P31 Q2©</td>
+</tr>
+<tr>
+<td>P32 Q2(b)</td>
+<td>Hashing algorithms — modulus-5 hash value computation</td>
+<td>2023 Summer P32 Q2(b)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Note: §13.2 has 9 questions / 23 sub-questions. Sub-questions marked with two exam points genuinely span both (verified against the mark scheme, e.g. 2026 Summer P31 Q2© uses direct access <em>and</em> hashing); they are grouped under the dominant point for the callouts above.</p>
+</blockquote>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="131-user-defined-data-types.html" title="Previous: 13.1 User-defined Data Types" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">13.1 User-defined Data Types</span></a>

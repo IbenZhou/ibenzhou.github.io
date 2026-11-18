@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 380" width="780" height="380" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#8a9a98" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="780" height="380" fill="#ffffff"/>
+  <text x="390" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Binary search tree as an ADT</text>
+  <text x="390" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Left child &lt; parent &lt; right child — each node holds a value and two pointers</text>
+
+  <!-- edges -->
+  <g stroke="#8a9a98" stroke-width="1.4">
+    <line x1="390" y1="108" x2="230" y2="176" marker-end="url(#arrow)"/>
+    <line x1="390" y1="108" x2="560" y2="176" marker-end="url(#arrow)"/>
+    <line x1="230" y1="192" x2="150" y2="256" marker-end="url(#arrow)"/>
+    <line x1="230" y1="192" x2="310" y2="256" marker-end="url(#arrow)"/>
+    <line x1="560" y1="192" x2="490" y2="256" marker-end="url(#arrow)"/>
+    <line x1="560" y1="192" x2="640" y2="256" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- nodes (value + L/R pointer depiction) -->
+  <g font-size="12" text-anchor="middle">
+    <circle cx="390" cy="92" r="22" fill="#eef7f5" stroke="#1d9e75" stroke-width="2"/>
+    <text x="390" y="97" font-weight="700" fill="#0f6e56">50</text>
+    <circle cx="230" cy="184" r="22" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+    <text x="230" y="189" font-weight="700" fill="#185fa5">30</text>
+    <circle cx="560" cy="184" r="22" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+    <text x="560" y="189" font-weight="700" fill="#185fa5">70</text>
+    <circle cx="150" cy="268" r="22" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+    <text x="150" y="273" fill="#185fa5">20</text>
+    <circle cx="310" cy="268" r="22" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+    <text x="310" y="273" fill="#185fa5">40</text>
+    <circle cx="490" cy="268" r="22" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+    <text x="490" y="273" fill="#185fa5">60</text>
+    <circle cx="640" cy="268" r="22" fill="#eef3fb" stroke="#378add" stroke-width="2"/>
+    <text x="640" y="273" fill="#185fa5">80</text>
+  </g>
+
+  <!-- node structure annotation -->
+  <rect x="60" y="316" width="330" height="46" rx="8" fill="#f4effb" stroke="#7f77dd" stroke-width="1"/>
+  <text x="76" y="336" font-size="12" fill="#233b3a">Each node = value + Left pointer + Right pointer</text>
+  <text x="76" y="354" font-size="11.5" fill="#534ab7">Pointers are NULL at a leaf</text>
+
+  <text x="430" y="342" font-size="12.5" fill="#0f6e56">Search: compare with root, then go</text>
+  <text x="430" y="362" font-size="12.5" fill="#0f6e56">left or right — O(log n) balanced</text>
+</svg>

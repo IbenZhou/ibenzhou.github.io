@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -215,12 +254,11 @@ body::before {
     <aside class="post-sidebar">
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
-<li><a href="#floating-point-basics">Floating-Point Basics</a></li>
 <li><a href="#floating-point-binary">Floating-point binary</a></li>
 <li><a href="#normalising-floating-point-numbers">Normalising floating-point numbers</a></li>
 <li><a href="#denary-to-floating-point-binary">Denary to floating-point binary</a></li>
 <li><a href="#floating-point-binary-to-denary">Floating-point binary to denary</a></li>
-<li><a href="#approximation-rounding">Approximation &amp; rounding</a></li>
+<li><a href="#approximation-rounding-underflow-and-overflow">Approximation, rounding, underflow &amp; overflow</a></li>
 </ul>
 </div>
 </div>
@@ -228,19 +266,21 @@ body::before {
     <div class="post-main">
       <article class="card">
         
-<h2 id="floating-point-basics">Floating-Point Basics</h2>
+
 <h2 id="floating-point-binary">Floating-point binary</h2>
 <h3 id="what-is-floating-point-binary">What is floating-point binary?</h3>
 <ul>
 <li>Floating-point binary is a <strong>method of representing real numbers in binary</strong>, including fractions and very large or very small values</li>
-<li>Uses <strong>scientific notation in base-2</strong></li>
-<li>Unlike fixed-point (where the binary point is fixed), the binary point can “float” using a <strong>mantissa</strong> and an <strong>exponent</strong></li>
+<li>Uses <strong>scientific notation in base-2</strong>: the stored value is <code>mantissa × 2^exponent</code></li>
+<li>Unlike fixed-point (where the binary point is fixed), the binary point can “float”: its position is recorded by an <strong>exponent</strong> while the significant digits are held in a <strong>mantissa</strong></li>
+<li>In Cambridge 9618 both the <strong>mantissa and the exponent are stored in two’s complement form</strong></li>
 </ul>
 <h4 id="why-use-floating-point">Why use floating-point?</h4>
 <ul>
-<li>Can represent a <strong>much wider range</strong> of numbers</li>
-<li>Provides <strong>more precision</strong> for fractional values</li>
+<li>Can represent a <strong>much wider range</strong> of numbers than fixed-point of the same word length</li>
+<li>Allocates bits between range (exponent) and precision (mantissa), so the format suits both very large and very small magnitudes</li>
 <li>Makes <strong>efficient use</strong> of limited storage (e.g. 8-bit, 16-bit representations)</li>
+<li><strong>Caution:</strong> Do not say “floating point is more precise than fixed point of the same width” — it is not. Fixed point is more precise <em>within its narrow range</em>; floating point buys range by spending bits on the exponent, leaving fewer significant bits. This is the central trade-off examined in the question bank.</li>
 </ul>
 <h4 id="components-of-floating-point">Components of floating-point</h4>
 <table>
@@ -253,14 +293,23 @@ body::before {
 <tbody>
 <tr>
 <td><strong>Mantissa</strong></td>
-<td>- Holds the significant digits of the number<br>- The <strong>first bit</strong> is the sign (0 = +, 1 = −)<br>- The remaining bits are the fraction</td>
+<td>- Holds the significant digits of the number<br>- Stored in <strong>two’s complement</strong>: the first bit is the sign (0 = +, 1 = −)<br>- For a negative mantissa the remaining bits carry <strong>negative place values</strong>, not a pure magnitude fraction<br>- After normalisation a positive mantissa starts <code>0 1…</code> and a negative one starts <code>1 0…</code></td>
 </tr>
 <tr>
 <td><strong>Exponent</strong></td>
-<td>- Shows how far to move the binary point (positive = right, negative = left)<br>- Stored in <strong>two’s complement</strong> (unbiased)</td>
+<td>- Gives the power of two by which the mantissa is multiplied<br>- Stored in <strong>two’s complement</strong> (unbiased)<br>- Positive exponent → move the binary point right; negative exponent → move it left</td>
 </tr>
 </tbody>
 </table>
+<p><img alt="Layout of a binary floating-point word showing the sign bit, mantissa bits and two's-complement exponent" src="images/p3-ch13-3-format.svg" /></p>
+<p><strong>Range and precision trade-off ★</strong></p>
+<ul>
+<li><strong>More bits for the mantissa → greater precision</strong> — each extra mantissa bit halves the smallest difference that can be stored, so more significant digits survive</li>
+<li><strong>More bits for the exponent → greater range</strong> — each extra exponent bit doubles the span of powers of two that can be stored, so larger and smaller magnitudes become representable</li>
+<li><strong>Fixed word length forces a trade-off</strong> — bits given to the exponent are taken from the mantissa, so a wider range is paid for with coarser precision, and vice versa</li>
+<li><strong>Where the range comes from</strong> — the largest positive exponent (e.g. <code>0111</code> in a 4-bit two’s-complement field) fixes the largest magnitude; the most negative exponent (<code>1000</code>) fixes the smallest non-zero magnitude</li>
+<li>Common examiner phrasing: “when the range increases the accuracy decreases; when the range decreases the accuracy increases”</li>
+</ul>
 <h4 id="example-in-decimal">Example in decimal</h4>
 <p><code>3.14 × 10³</code></p>
 <ul>
@@ -270,38 +319,58 @@ body::before {
 <h4 id="example-in-binary">Example in binary</h4>
 <p><code>110.01₂ = 0.11001 × 2³</code></p>
 <ul>
-<li>Mantissa = <code>011001…</code> (sign 0, fraction 11001 padded to available bits)</li>
-<li>Exponent = <code>0011</code> (+3 in two’s complement)</li>
+<li>Mantissa = <code>011001…</code> (sign 0, fraction <code>11001</code> padded to the available bits)</li>
+<li>Exponent = <code>0011</code> (+3 in 4-bit two’s complement)</li>
 </ul>
-<h4 id="positive-floating-point-representation">Positive floating-point representation</h4>
+<h4 id="positive-and-negative-representation">Positive and negative representation</h4>
 <ul>
-<li>Sign bit = 0</li>
-<li>Fraction part stored in the remaining mantissa bits</li>
-<li>Exponent shifts the binary point</li>
+<li><strong>Positive number</strong>: sign bit = 0; the following bits are the magnitude fraction; the exponent shifts the binary point</li>
+<li><strong>Negative number</strong>: take the positive binary pattern, invert every bit and add 1 (two’s complement); the exponent is unchanged when only the sign changes</li>
+<li>Example: <code>−6.25 = 1.00111₂ × 2³</code> → mantissa <code>100111000000</code>, exponent <code>0011</code></li>
+<li>Write a normalised positive mantissa as <code>0.1xxxx × 2ⁿ</code> and a normalised negative mantissa as <code>1.0xxxx × 2ⁿ</code>. The <code>1.xxxxx × 2ⁿ</code> form with an implicit leading 1 is IEEE-754, <strong>not</strong> the CIE convention.</li>
 </ul>
-<h4 id="negative-floating-point-representation">Negative floating-point representation</h4>
+<h4 id="classic-questions-format-and-bit-allocation">Classic questions — format and bit allocation</h4>
+<p><div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q1(a) · 2 marks</div><div class="callout-body"><p>Describe the effect of changing the allocation of bits used for the mantissa and for the exponent in a floating-point number with a fixed total number of bits.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
 <ul>
-<li>Sign bit = 1</li>
-<li>Fraction part stored in the remaining mantissa bits</li>
-<li>Exponent is in two’s complement</li>
-<li>Example:
+<li>When the number of bits in the mantissa is raised, the precision / accuracy of the number represented increases // when the number of bits in the mantissa is lowered, the precision / accuracy of the number represented reduces.</li>
+<li>When the number of bits in the exponent is reduced, the range of numbers that can be represented is reduced // when the number of bits in the exponent is increased, the range of possible numbers that can be represented increases.</li>
+<li>When the range increases the accuracy decreases // When the range decreases the accuracy increases.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q2(a) · 3 marks</div><div class="callout-body"><p>Numbers are stored in a computer system using binary floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both, and 2 bytes in total.</p>
+<p>Outline the effect of changing the number of bits used to store the mantissa to 10 bits, in this system. [3]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
 <ul>
-<li><code>−6.25 = -(110.01₂) = -(0.11001 × 2³) = 1.00111 × 2³</code></li>
-<li>Mantissa = <code>100111000000</code></li>
-<li>Exponent = <code>0011</code></li>
+<li>MP1 the precision of the number stored in the mantissa will be reduced</li>
+<li>MP2 the number of bits available for the exponent will increase to 6</li>
+<li>MP3 … this will increase the range of numbers that can be stored.</li>
 </ul>
-</li>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q2(a) · 2 marks</div><div class="callout-body"><p>Numbers are stored in a computer using binary floating-point representation with 8 bits for the mantissa, 8 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Give the largest normalised positive two’s complement binary number that can be stored in this system <strong>and</strong> state its denary equivalent. The denary answer should be expressed in terms of powers of 2.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+One mark for two’s complement version and one mark for denary version</p>
+<ul>
+<li><code>127 x 2^120 // 0.9921875 x 2^127 // 127/128 x 2^127</code></li>
 </ul>
+<p>Mantissa: <code>0 1 1 1 1 1 1 1</code>  ·  Exponent: <code>0 1 1 1 1 1 1 1</code></p>
+</div></details></p>
 <h2 id="normalising-floating-point-numbers">Normalising floating-point numbers</h2>
 <ul>
-<li>A floating-point number is <strong>normalised</strong> when the mantissa begins with:
+<li>A floating-point number is <strong>normalised</strong> when the two most significant bits of the mantissa are different:
 <ul>
 <li><code>01</code> for positive numbers</li>
 <li><code>10</code> for negative numbers</li>
 </ul>
 </li>
 </ul>
-<h4 id="why-normalise">Why normalise?</h4>
+<h3 id="why-normalise">Why normalise?</h3>
 <table>
 <thead>
 <tr>
@@ -312,11 +381,15 @@ body::before {
 <tbody>
 <tr>
 <td><strong>Consistency</strong></td>
-<td>All numbers follow the same structure</td>
+<td>Every number has one unique representation</td>
 </tr>
 <tr>
 <td><strong>Precision</strong></td>
-<td>Leading zeros removed so mantissa makes full use of available bits</td>
+<td>Leading zeros/ones removed so the mantissa carries the maximum number of significant bits</td>
+</tr>
+<tr>
+<td><strong>Range</strong></td>
+<td>The maximum range of numbers can be stored in the minimum number of bits</td>
 </tr>
 <tr>
 <td><strong>Easier processing</strong></td>
@@ -324,17 +397,27 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="steps-to-normalise-a-floating-point-number">Steps to normalise a floating-point number</h4>
+<h3 id="steps-to-normalise-a-floating-point-number">Steps to normalise a floating-point number</h3>
 <ol>
-<li>Shift the binary point until the mantissa begins with <code>01</code> (positive) or <code>10</code> (negative)</li>
-<li>Adjust the exponent by the number of shifts:
+<li>Shift the binary point (or the mantissa bits) until the mantissa starts with <code>01</code> (positive) or <code>10</code> (negative)</li>
+<li>Adjust the exponent by the number of places moved so the value is unchanged</li>
+<li>Remember: the mantissa is two’s complement; only the <strong>direction</strong> of the shift controls the exponent sign</li>
+</ol>
+<p><strong>Normalising in more detail ★</strong></p>
 <ul>
-<li>Moving left → increase exponent</li>
-<li>Moving right → decrease exponent</li>
+<li><strong>Why <code>01</code> / <code>10</code> works</strong> — after normalisation the sign bit and the next bit are opposite, so no leading sign-extension bits are wasted and the mantissa holds the maximum number of significant digits</li>
+<li><strong>Keep the two viewpoints distinct</strong> (this is the most common source of wrong exponents):
+<ul>
+<li><strong>Moving the binary point</strong> (the written position of the point): point moves <strong>left</strong> → exponent <strong>increases</strong>; point moves <strong>right</strong> → exponent <strong>decreases</strong></li>
+<li><strong>Shifting the mantissa bits</strong> with the point fixed: bits shift <strong>right</strong> → exponent <strong>increases</strong>; bits shift <strong>left</strong> → exponent <strong>decreases</strong></li>
+<li>These are the same rule seen from opposite sides. A fraction such as <code>0.00000011…</code> has its bits shifted <strong>left</strong> to reach <code>0.11…</code>, so its exponent <strong>decreases</strong> (becomes negative); an integer such as <code>10101.0011</code> has its point moved <strong>left</strong> to <code>1.01010011</code>, so its exponent <strong>increases</strong> (becomes positive).</li>
 </ul>
 </li>
-</ol>
-<h4 id="example">Example</h4>
+<li><strong>Negative example (fraction with leading ones)</strong> — <code>1.1101000</code> → shift bits left 2 places → <code>1.0100000</code>, exponent reduced by 2</li>
+<li><strong>Zero cannot be normalised</strong> — there is no significant <code>1</code> to shift, so zero is defined as all bits <code>0</code></li>
+</ul>
+<p><img alt="Normalisation by shifting the mantissa left and reducing the exponent, with the mantissa changing from 1.1101000 to 1.0100000" src="images/p3-ch13-3-normalisation.svg" /></p>
+<h3 id="worked-example">Worked example</h3>
 <ul>
 <li>Before normalisation:
 <ul>
@@ -344,8 +427,8 @@ body::before {
 </li>
 <li>Process:
 <ul>
-<li>Shift binary point 2 places right → mantissa = <code>01100</code></li>
-<li>Decrease exponent by 2 → exponent = <code>0000</code></li>
+<li>Move the binary point 2 places right → mantissa = <code>01100</code></li>
+<li>Decrease the exponent by 2 → exponent = <code>0000</code></li>
 </ul>
 </li>
 <li>After normalisation:
@@ -354,99 +437,84 @@ body::before {
 <li>Exponent = <code>0000</code></li>
 </ul>
 </li>
-<li>Remember: <strong>mantissa sign = first bit</strong>, not two’s complement</li>
-<li>Only the <strong>exponent</strong> uses two’s complement</li>
-<li>In CIE questions, always write mantissas as <code>0.xxxxx × 2ⁿ</code>, not <code>1.xxxxx × 2ⁿ</code> (that’s IEEE)</li>
+<li>Check the value is unchanged: <code>0.0011 × 2² = 0.11 × 2⁰</code></li>
 </ul>
+<h4 id="classic-questions-normalisation">Classic questions — normalisation</h4>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q2(a) · 2 marks</div><div class="callout-body"><p>Numbers are stored in a computer system using binary floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both mantissa and exponent.</p>
+<p>Write the normalised floating-point representation of the following positive binary number using this system.</p>
+<p><code>0.00000001110101101</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 Correct mantissa</li>
+<li>MP2 Correct exponent</li>
+</ul>
+<p>Mantissa: <code>0 1 1 1 0 1 0 1 1 0 1 0</code> (12 bits)
+Exponent: <code>1 0 0 1</code> (4 bits)</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q1(c) · 3 marks</div><div class="callout-body"><p>A binary number is stored in the computer system (8-bit mantissa, 8-bit exponent, two’s complement for both).</p>
+<p>Mantissa <code>0 0 0 1 1 1 1 0</code>  ·  Exponent <code>0 0 0 1 1 0 0 0</code></p>
+<p><strong>(i)</strong> State why the number is not normalised. <strong>[1]</strong><br>
+<strong>(ii)</strong> Write the normalised floating-point representation of the number. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1©(i)</strong>
+The mantissa does not begin with 01/10 (as its most significant bits) // the mantissa begins with 00 // first two digits are the same.</p>
+<p><strong>Q1©(ii)</strong>
+One mark for each point:</p>
+<ul>
+<li>Correct mantissa</li>
+<li>Correct exponent</li>
+</ul>
+<p>Mantissa <code>0 1 1 1 1 0 0 0</code>  ·  Exponent <code>0 0 0 1 0 1 1 0</code></p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q1(b) · 3 marks</div><div class="callout-body"><p>Explain the reason why binary numbers are stored in normalised form.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(b)</strong></p>
+<ul>
+<li>To store the maximum range of numbers in the minimum number of bytes / bits</li>
+<li>Normalisation minimises the number of leading zeros/ones represented;</li>
+<li>Maximising the number of significant bits // maximising the (potential) precision / accuracy of the number for the given number of bits</li>
+<li>… enables very large / small numbers to be stored with accuracy;</li>
+<li>Avoids the possibility of many numbers having multiple representations</li>
+</ul>
+</div></details></p>
 <h2 id="denary-to-floating-point-binary">Denary to floating-point binary</h2>
 <h3 id="how-do-you-convert-denary-to-floating-point-binary">How do you convert denary to floating-point binary?</h3>
 <ul>
-<li>For the following conversions we are assuming:
-<ul>
-<li>12-bit <strong>mantissa</strong> (bit 0 is the sign: 0 = +, 1 = -)</li>
-<li>4-bit <strong>exponent</strong> (in two’s complement, <strong>unbiased</strong>)</li>
-</ul>
-</li>
+<li>For the following conversions we assume a <strong>12-bit mantissa</strong> (bit 0 is the sign) and a <strong>4-bit exponent</strong> (two’s complement), unless the question says otherwise</li>
 </ul>
 <ol>
-<li><strong>Convert the number into binary</strong> (split into integer part + fractional part)
+<li><strong>Convert the number into binary</strong> (integer part + fractional part)
 <ul>
 <li>Example: 5 = <code>101₂</code>, 0.25 = <code>0.01₂</code>, so 5.25 = <code>101.01₂</code></li>
 </ul>
 </li>
-<li><strong>Normalise the binary</strong> into the form <code>0.xxxxx × 2ⁿ</code>
+<li><strong>Normalise the binary</strong> into the form <code>0.1… × 2ⁿ</code> (positive) or <code>1.0… × 2ⁿ</code> (negative)
 <ul>
-<li>Move the binary point until there is one non-zero digit to the right of it</li>
-<li>Count how many places the binary point moved = the exponent</li>
+<li>Count how many places the binary point moves = the magnitude of the exponent</li>
 </ul>
 </li>
-<li><strong>Build the mantissa (12 bits):</strong>
+<li><strong>Build the mantissa</strong>: write the sign bit first, then the significant bits, padding on the right with zeros to fill the field
 <ul>
-<li>First bit = sign (0 for +, 1 for −)</li>
-<li>Next 11 bits = binary digits after the binary point</li>
-<li>Pad with zeros on the right if needed</li>
+<li>For a negative number, take the two’s complement of the whole mantissa and keep the <code>10…</code> leading pattern</li>
 </ul>
 </li>
-<li><strong>Convert the exponent to 4-bit two’s complement</strong> (unbiased)
-<ul>
-<li>Positive exponents are normal binary</li>
-<li>Negative exponents use two’s complement</li>
-</ul>
-</li>
-<li><strong>Write the final floating-point number</strong> as (Mantissa | Exponent)</li>
+<li><strong>Convert the exponent to its two’s-complement field</strong> (positive = ordinary binary; negative = invert and add 1)</li>
+<li><strong>Write the final pair</strong> as (Mantissa | Exponent)</li>
 </ol>
 <h4 id="example-525">Example: +5.25</h4>
 <ul>
-<li><strong>Step 1: Convert to binary</strong>
-<ul>
-<li>5.25 = <code>101.01₂</code></li>
+<li><code>5.25 = 101.01₂ = 0.10101 × 2³</code></li>
+<li>Mantissa (12 bits) = <code>010101000000</code></li>
+<li>Exponent (4 bits) = <code>0011</code></li>
 </ul>
-</li>
-<li><strong>Step 2: Normalise</strong>
+<h4 id="example-525_1">Example: −5.25</h4>
 <ul>
-<li><code>101.01₂ = 0.10101 × 2³</code></li>
-</ul>
-</li>
-<li><strong>Step 3: Build mantissa (12 bits)</strong>
-<ul>
-<li>Sign = 0 (positive)</li>
-<li>Fraction = <code>10101</code> → pad → <code>10101000000</code></li>
-<li>Mantissa = <code>010101000000</code></li>
-</ul>
-</li>
-<li><strong>Step 4: Exponent</strong>
-<ul>
-<li>+3 = <code>0011</code></li>
-</ul>
-</li>
-<li><strong>Final representation:</strong><br>
-Mantissa = <code>010101000000</code><br>
-Exponent = <code>0011</code></li>
-</ul>
-<h4 id="example-525_2">Example: −5.25</h4>
-<ul>
-<li><strong>Step 1: Convert the magnitude</strong>
-<ul>
-<li>First, convert <strong>+5.25</strong> to binary → <code>101.01₂</code> → <code>0101.01₂</code></li>
-<li>Then, invert each bit <code>0101.01₂</code>  → <code>1010.10₂</code></li>
-<li>Add 1 to the last bit  <code>1010.10₂</code> → <code>1010.11₂</code></li>
-<li>Normalise: <code>1010.11₂ = 1.01011 × 2³</code></li>
-</ul>
-</li>
-<li><strong>Step 2: Build the mantissa (12 bits)</strong>
-<ul>
-<li>Fraction: <code>1.01011</code> → pad → <code>101011000000</code></li>
-<li>Mantissa = <code>101011000000</code></li>
-</ul>
-</li>
-<li><strong>Step 3: Exponent</strong>
-<ul>
-<li>Exponent is the same as for +5.25 → +3 = <code>0011</code></li>
-</ul>
-</li>
-<li><strong>Final representation:</strong><br>
-Mantissa = <code>101011000000</code><br>
-Exponent = <code>0011</code></li>
+<li>Start from the normalised positive form: <code>+5.25 = 0.10101 × 2³</code>, mantissa <code>010101000000</code>, exponent <code>0011</code></li>
+<li>Negate the mantissa by taking its two’s complement: invert <code>010101000000</code> → <code>101010111111</code>, then add 1 → <code>101011000000</code></li>
+<li>The result <code>1.01011000000</code> begins <code>10</code>, so it is already normalised; the exponent is unchanged at <code>0011</code></li>
+<li>Check: <code>1.01011₂</code> in two’s complement = <code>−1 + 0.01011₂ = −0.65625</code>, and <code>−0.65625 × 2³ = −5.25</code></li>
 </ul>
 <h4 id="summary-table">Summary table</h4>
 <table>
@@ -476,159 +544,22 @@ Exponent = <code>0011</code></li>
 </tr>
 </tbody>
 </table>
-<h2 id="floating-point-binary-to-denary">Floating-point binary to denary</h2>
-<h3 id="how-do-you-convert-floating-point-binary-to-denary">How do you convert floating-point binary to denary?</h3>
+<h4 id="quiz-retained-from-the-original-note">Quiz (retained from the original note)</h4>
+<p>Numbers are stored in two different computer systems by using floating-point representation.</p>
 <ul>
-<li>For the following conversions we are assuming:
-<ul>
-<li>12-bit <strong>mantissa</strong> (sign + 11 fraction bits)</li>
-<li>4-bit <strong>exponent</strong> (two’s complement, <strong>unbiased</strong>)</li>
+<li><strong>System 1 uses:</strong> 10 bits for the mantissa, 6 bits for the exponent, two’s complement form for both the mantissa and the exponent.</li>
+<li><strong>System 2 uses:</strong> 8 bits for the mantissa, 8 bits for the exponent, two’s complement form for both the mantissa and the exponent.</li>
 </ul>
-</li>
-</ul>
-<ol>
-<li><strong>Read the exponent (4 bits)</strong>
+<p>Calculate the normalised floating-point representation of 113.75 and show how it would be represented in each of these two systems. Show your working. <strong>[4]</strong></p>
+<p><strong>Answer</strong></p>
 <ul>
-<li>Convert from two’s complement into denary</li>
-<li>Positive values = normal binary</li>
-<li>Negative values = two’s complement</li>
-</ul>
-</li>
-<li><strong>Check the mantissa sign</strong>
-<ul>
-<li>First bit = sign (0 = +, 1 = −)</li>
-<li>Remember: the rest of the mantissa is <strong>just the fraction</strong>, not in two’s complement</li>
-</ul>
-</li>
-<li><strong>Restore the fraction</strong>
-<ul>
-<li>Write it as <code>0.&lt;fraction bits&gt;</code> in binary</li>
-<li>Example: mantissa <code>010101000000</code> → fraction bits <code>10101000000</code> → <code>0.10101₂</code></li>
-</ul>
-</li>
-<li><strong>Apply the exponent</strong>
-<ul>
-<li>Shift the binary point <strong>right</strong> if exponent is positive, <strong>left</strong> if exponent is negative</li>
-<li>Multiply the fraction by <code>2^(exponent)</code></li>
-</ul>
-</li>
-<li><strong>Apply the sign</strong>
-<ul>
-<li>If the sign bit was 1, make the final result negative</li>
-</ul>
-</li>
-</ol>
-<h4 id="convert-the-following-to-denary">Convert the following to denary (+)</h4>
-<pre><code>Mantissa: 010101000000
-Exponent: 0011
-</code></pre>
-<ul>
-<li><strong>Step 1: Exponent</strong>
-<ul>
-<li><code>0011₂ = +3</code></li>
-</ul>
-</li>
-<li><strong>Step 2: Mantissa sign</strong>
-<ul>
-<li>First bit = 0 → positive</li>
-</ul>
-</li>
-<li><strong>Step 3: Restore fraction</strong>
-<ul>
-<li>Fraction bits = <code>10101000000</code></li>
-<li>Fraction = <code>0.10101₂</code></li>
-</ul>
-</li>
-<li><strong>Step 4: Apply exponent</strong>
-<ul>
-<li><code>0.10101 × 2³ = 101.01₂ = 5.25₁₀</code></li>
-</ul>
-</li>
-<li><strong>Step 5: Apply sign</strong>
-<ul>
-<li>Positive → stays <code>+5.25</code></li>
-</ul>
-</li>
-<li><strong>Final result:</strong> <code>+5.25</code></li>
-</ul>
-<h4 id="convert-the-following-to-denary_2">Convert the following to denary (-)</h4>
-<div class="highlight"><pre><span></span><code><span class="nl">Mantissa</span><span class="p">:</span><span class="w"> </span><span class="mi">101011000000</span>
-<span class="nl">Exponent</span><span class="p">:</span><span class="w"> </span><span class="mo">0011</span>
-</code></pre></div>
-<ul>
-<li><strong>Step 1: Exponent</strong>
-<ul>
-<li><code>0011₂ = +3</code></li>
-</ul>
-</li>
-<li><strong>Step 2: Mantissa sign</strong>
-<ul>
-<li>First bit = 1 → negative</li>
-</ul>
-</li>
-<li><strong>Step 3: Restore fraction</strong>
-<ul>
-<li>Fraction bits = <code>101011000000</code>
-<ul>
-<li>Fraction = <code>1.01011₂</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Step 4: Apply exponent</strong>
-<ul>
-<li><code>1.0101 × 2³ = 1010.11₂ = -5.25₁₀</code></li>
-</ul>
-</li>
-<li><strong>Final result:</strong> <code>−5.25</code></li>
-<li>Always handle <strong>sign first</strong> (0 = +, 1 = −)</li>
-<li>Show the normalisation step (<code>0.xxxxx × 2ⁿ</code>) if the question asks to “show your working”</li>
-</ul>
-<h4 id="summary-table_2">Summary table</h4>
-<table>
-<thead>
-<tr>
-<th><strong>Mantissa</strong></th>
-<th><strong>Exponent</strong></th>
-<th><strong>Result (Denary)</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>010101000000</code></td>
-<td><code>0011</code></td>
-<td>+5.25</td>
-</tr>
-<tr>
-<td><code>101011000000</code></td>
-<td><code>0011</code></td>
-<td>−5.25</td>
-</tr>
-</tbody>
-</table>
-<p>Numbers are stored in two different computer systems by using floating-point representation.
-<strong>System 1 uses:</strong></p>
-<ul>
-<li>10 bits for the mantissa</li>
-<li>6 bits for the exponent</li>
-<li>two’s complement form for both the mantissa and the exponent.
-<strong>System 2 uses:</strong></li>
-<li>8 bits for the mantissa</li>
-<li>8 bits for the exponent</li>
-<li>two’s complement form for both the mantissa and the exponent.</li>
-</ul>
-<h4 id="quiz">Quiz</h4>
-<p>Calculate the normalised floating-point representation of 113.75 and show how it would be represented in each of these two systems.
-Show your working. <strong>[4]</strong>
-<strong>Answer</strong></p>
-<ul>
-<li>conversion of 113.75 to binary seen <code>1110001.11 </code> [1 mark]</li>
+<li>conversion of 113.75 to binary seen <code>1110001.11</code> [1 mark]</li>
 <li>exponent for normalisation 7 converted to binary <code>111</code> <strong>OR</strong> evidence of binary [1 mark]</li>
 <li>point moved 7 places <strong>OR</strong> evidence of finding exponent = 7 [1 mark]</li>
 <li>system 1 answer [1 mark]</li>
-<li>system 2 answer showing correct version from system 1 [1 mark]
-<strong>System 1</strong></li>
+<li>system 2 answer showing correct version from system 1 [1 mark]</li>
 </ul>
+<p><strong>System 1</strong></p>
 <table>
 <thead>
 <tr>
@@ -658,58 +589,279 @@ Show your working. <strong>[4]</strong>
 </tr>
 </tbody>
 </table>
-<h2 id="approximation-rounding">Approximation &amp; rounding</h2>
+<h4 id="classic-questions-denary-to-floating-point">Classic questions — denary to floating-point</h4>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q3(a) · 3 marks</div><div class="callout-body"><p>Numbers are stored in a computer system using binary floating-point representation with 10 bits for the mantissa, 6 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Calculate the normalised binary floating-point representation of <strong>–10.8125</strong> in this system. Show your working.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong>
+One mark per mark point (Max 3):
+MP1 correct method to find the binary number;
+MP2 correct use of exponent;
+MP3 correct answer in the space provided.</p>
+<p>Working:
+–10.8125 → positive binary version of 10.8125 = 01010.1101 // two’s complement version – bits flipped and 1 added = 10101.0011 // –8+2+0.5+0.25+0.0625 // –16+4+1+0.125+0.0625.</p>
+<p>Movement of binary point by 4 places → mantissa <code>1010100110</code>, exponent <code>000100</code>.</p>
+<p>Allow other methods of working.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q4(b) · 4 marks</div><div class="callout-body"><p>Numbers are stored in a computer using binary floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Calculate the normalised binary floating-point representation of <strong>-49.1875</strong> in this system. Show your working.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4(b)</strong>
+One mark per mark point (Max 2)</p>
 <ul>
-<li>In computing, <strong>real numbers</strong> are often stored using <strong>floating-point binary</strong>, which has a <strong>limited number of bits</strong> for the mantissa and exponent</li>
-<li>This means not all real numbers can be represented <strong>exactly</strong>, only <strong>approximated</strong></li>
-<li>Some decimal values cannot be <strong>precisely represented</strong> in binary</li>
-<li><strong>Example</strong>:</li>
+<li>correct mantissa — exact answer only: <code>1 0 0 1 1 1 0 1 1 0 1 0</code></li>
+<li>correct exponent — exact answer only: <code>0 1 1 0</code></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nl">Decimal</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="w">  </span>
-<span class="nl">Binary</span><span class="p">:</span><span class="w"> </span><span class="mf">0.000110011001100</span><span class="p">...</span><span class="w"> </span><span class="p">(</span><span class="n">recurring</span><span class="p">)</span>
-</code></pre></div>
+<p>One mark per mark point for working (Max 2)</p>
 <ul>
-<li>Because memory is limited (e.g. 32 or 64 bits), the binary value must be <strong>truncated or rounded</strong>, which introduces <strong>small errors</strong></li>
-<li><strong>Consequence</strong>:
-<ul>
-<li>Calculations using approximated values may <strong>accumulate errors</strong></li>
-<li>Final results may be <strong>slightly inaccurate</strong></li>
+<li>number converted to binary e.g. positive binary version of 49.1875 = <code>0110001.0011</code> // two’s complement version bits flipped and 1 added = <code>1001110.1101</code> // <code>-64 + 8 + 4 + 2 + .5 + .25 + .0625</code> // <code>-64 + 14.8125</code></li>
+<li>use of the exponent e.g. moving the binary point 6 places / × 2^6.</li>
 </ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q2(a) · 3 marks</div><div class="callout-body"><p>Numbers are stored in a computer using binary floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Calculate the normalised binary floating-point representation of +124.4375 in this system. Show your working.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+Two marks for working</p>
+<ul>
+<li>number converted to binary (0)1111100.0111</li>
+<li>use of exponent = 7 // Moving binary point the correct number (7) of places</li>
+</ul>
+<p>One mark for correct answer</p>
+<ul>
+<li>Mantissa (12 bits): <code>0 1 1 1 1 1 0 0 0 1 1 1</code></li>
+<li>Exponent (4 bits): <code>0 1 1 1</code></li>
+</ul>
+</div></details></p>
+<h2 id="floating-point-binary-to-denary">Floating-point binary to denary</h2>
+<h3 id="how-do-you-convert-floating-point-binary-to-denary">How do you convert floating-point binary to denary?</h3>
+<ul>
+<li>Assume the same 12-bit mantissa / 4-bit exponent layout unless the question specifies another</li>
+</ul>
+<ol>
+<li><strong>Read the exponent</strong> and convert it from two’s complement to denary</li>
+<li><strong>Read the mantissa sign</strong> (first bit: 0 = +, 1 = −); remember the whole mantissa is two’s complement</li>
+<li><strong>Apply the exponent</strong> — write the mantissa with the binary point immediately after the sign bit, then move it right for a positive exponent or left for a negative one</li>
+<li><strong>Evaluate</strong> the resulting bit pattern: for a negative pattern, use two’s-complement place values (the sign bit carries the largest negative weight)</li>
+<li><strong>Apply the sign</strong> if your method evaluated the magnitude separately</li>
+</ol>
+<h4 id="example-positive-result">Example: positive result</h4>
+<pre><code>Mantissa: 010101000000
+Exponent: 0011
+</code></pre>
+<ul>
+<li>Exponent <code>0011₂ = +3</code>; sign bit 0 → positive</li>
+<li>Restore the point: <code>0.10101₂</code></li>
+<li>Apply exponent: <code>0.10101 × 2³ = 101.01₂ = +5.25₁₀</code></li>
+</ul>
+<h4 id="example-negative-result">Example: negative result</h4>
+<pre><code>Mantissa: 101011000000
+Exponent: 0011
+</code></pre>
+<ul>
+<li>
+<p>Exponent <code>0011₂ = +3</code>; sign bit 1 → negative</p>
+</li>
+<li>
+<p>The mantissa <code>1.01011000000</code> is in two’s complement, so its value is <code>−1 + 0.01011₂ = −0.65625</code></p>
+</li>
+<li>
+<p>Apply exponent: <code>−0.65625 × 2³ = −5.25₁₀</code></p>
+</li>
+<li>
+<p>Equivalently, write <code>1.01011 × 2³ = 1010.11₂</code> and evaluate as two’s complement: <code>−8 + 2 + 0.5 + 0.25 = −5.25</code></p>
+</li>
+<li>
+<p>Always handle the <strong>sign / two’s-complement weighting</strong> explicitly; the fraction bits of a negative mantissa are not a plain positive magnitude</p>
+</li>
+<li>
+<p>Show the exponent step if the question asks to “show your working”</p>
 </li>
 </ul>
-<h4 id="underflow">Underflow</h4>
+<h4 id="summary-table_1">Summary table</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Mantissa</strong></th>
+<th><strong>Exponent</strong></th>
+<th><strong>Result (Denary)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>010101000000</code></td>
+<td><code>0011</code></td>
+<td>+5.25</td>
+</tr>
+<tr>
+<td><code>101011000000</code></td>
+<td><code>0011</code></td>
+<td>−5.25</td>
+</tr>
+</tbody>
+</table>
+<h4 id="classic-questions-floating-point-to-denary">Classic questions — floating-point to denary</h4>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q3(a) · 3 marks</div><div class="callout-body"><p>Numbers are stored in a computer system using binary floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Calculate the denary value of the given normalised binary floating-point number. Show your working.</p>
+<p>Mantissa <code>1 0 1 1 0 1 0 0 0 1 1 0</code>  ·  Exponent <code>0 1 1 0</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong>
+Two marks for working (Max 2):</p>
 <ul>
-<li>Underflow occurs when a number is <strong>too close to zero</strong> to be stored in the available number of bits</li>
-<li><strong>Example</strong>:
+<li>correct use of exponent seen;</li>
+<li>correct conversion method from binary to denary.</li>
+</ul>
+<p>One mark for correct answer (Max 1).</p>
+<p>Working: <code>1011010.00110</code> (moving bp 6 places to right) // multiply by 64 / 2⁶.
+Evaluation of two’s complement −64 +16 + 8 + 2 + 0.125 + 0.0625 // −64 +16 + 8 + 2 + 1/8 + 1/16 // 32 + 4 + 1 + 0.5 + 0.25 + 0.0625 // 32 + 4 + 1 + 1/2 + 1/4 + 1/16 // −1 + 1/4 + 1/8 + 1/32 + 1/512 + 1/1024 x 64.</p>
+<p>Answer: −37.8125 // −37 13/16.</p>
+<p>Guidance: Allow other methods of working.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q2(a) · 3 marks</div><div class="callout-body"><p>Numbers are stored in a computer system using binary floating-point representation with 10 bits for the mantissa, 6 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Calculate the denary value of the given normalised binary floating-point number. Show your working.</p>
+<p>Mantissa <code>0 1 1 1 1 0 0 1 0 1</code>  ·  Exponent <code>0 0 1 0 1 1</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong>
+Two marks for working:</p>
 <ul>
-<li>A very small number like <code>1.2 × 10⁻⁴⁰</code></li>
-<li>The exponent is too negative to be stored</li>
-<li>Result: <strong>Stored as 0</strong></li>
+<li>correct calculation/application of exponent seen</li>
+<li>correct method to find the final answer</li>
 </ul>
-</li>
-<li><strong>Consequence:</strong>
+<p>Working:</p>
 <ul>
-<li>Loss of precision</li>
-<li>Can affect accuracy in scientific or financial calculations</li>
+<li>Exponent = <code>8 + 2 + 1 = 11</code></li>
+<li><code>// = 0.111100101 × 2¹¹</code></li>
+<li><code>// = 11110010100.0</code> (moving bp 11 places to right)</li>
+<li>Method to find the answer: <code>// 1024 + 512 + 256 + 128 + 16 + 4</code></li>
 </ul>
-</li>
-</ul>
-<h4 id="overflow">Overflow</h4>
+<p>One mark for correct answer</p>
 <ul>
-<li><strong>Overflow</strong> occurs when a number is <strong>too large</strong> to fit in the allocated bits for the exponent or mantissa</li>
-<li><strong>Example:</strong>
+<li>Denary value: <strong>1940</strong></li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P31 Q1(a) · 3 marks</div><div class="callout-body"><p>Real numbers are stored in a computer system using floating-point representation with 10 bits for the mantissa, 6 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Calculate the denary value of the given normalised floating-point number. Show your working.</p>
+<p>Mantissa <code>0 1 0 0 1 1 1 1 0 0</code>  ·  Exponent <code>0 0 1 0 0 1</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
 <ul>
-<li>A calculation produces <code>1.2 × 10⁵⁰</code>, but the maximum representable number is <code>1.2 × 10³⁸</code></li>
+<li><strong>MP1</strong> conversion of exponent <code>001001</code> to 9</li>
+<li><strong>MP2</strong> application of exponent to mantissa to go from <code>0.100111100</code> to <code>100111100</code> // <code>256 + 32 + 16 + 8 + 4</code> seen // <code>64/128 + 8/128 + 4/128 + 2/128 + 1/128 = 79/128</code> // <code>1/2 + 1/16 + 1/32 + 1/64 + 1/128 = 79/128</code></li>
+<li><strong>MP3</strong> correct answer = <strong>316</strong></li>
 </ul>
-</li>
-<li><strong>Consequence:</strong>
+</div></details></p>
+<h2 id="approximation-rounding-underflow-and-overflow">Approximation, rounding, underflow and overflow</h2>
+<h3 id="why-approximation-is-unavoidable">Why approximation is unavoidable</h3>
 <ul>
-<li>Program may crash or return an <strong>infinity</strong>, <strong>error</strong>, or <strong>wraparound value</strong></li>
-<li>Can be especially dangerous in loops or financial applications</li>
+<li>Real numbers are stored using floating-point binary with a <strong>limited number of bits</strong> for the mantissa and exponent</li>
+<li>Not all real numbers can be represented exactly — only <strong>approximated</strong></li>
+<li>Some decimal values cannot be represented precisely in binary:</li>
 </ul>
-</li>
+<pre><code>Decimal: 0.1
+Binary: 0.000110011001100... (recurring)
+</code></pre>
+<ul>
+<li>The binary value must be <strong>truncated or rounded</strong> to fit the mantissa, introducing a small error</li>
+<li>Consequences: calculations using approximated values may <strong>accumulate errors</strong>; final results may be slightly inaccurate</li>
 </ul>
-<h3 id="summary-table_3">Summary table</h3>
+<h3 id="rounding-errors">Rounding errors</h3>
+<p><strong>Truncation and rounding errors ★</strong></p>
+<ul>
+<li><strong>Truncation</strong> — the bits that do not fit in the mantissa are simply discarded, so the stored value is biased towards zero</li>
+<li><strong>Rounding</strong> — if the first discarded bit is <code>1</code>, 1 is added to the last kept bit; the error is smaller than with truncation but the value is still not exact</li>
+<li><strong>Accumulation</strong> — every operation re-rounds its result to the available mantissa bits, so repeated addition (e.g. adding <code>0.1</code> thousands of times) drifts further from the exact answer</li>
+<li><strong>Practical effect</strong> — because <code>0.1 + 0.2</code> is stored as an approximation of <code>0.3</code>, two calculated values should be compared within a <strong>tolerance</strong> rather than with <code>=</code></li>
+<li>A recurring exam case: a finite decimal fraction such as <code>0.20</code> has no exact binary form, so storing it loses precision even though the integer part fits</li>
+</ul>
+<h4 id="classic-questions-rounding-errors">Classic questions — rounding errors</h4>
+<p><div class="callout callout-question"><div class="callout-title">2023 Winter P32 Q1(b) · 3 marks</div><div class="callout-body"><p>Explain why a binary representation is sometimes only an approximation to the real number it represents.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(b)</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1: Real numbers (can) have a fractional part (such as 1/3 and ½) / (such as 0.4 and 0.25)</li>
+<li>MP2: The fixed length of the storage means that you can’t store very large / very small numbers</li>
+<li>MP3: Binary numbers represent numbers based on powers of 2, with limited fractional representations such as 1/2, 1/4, 1/8, 1/16, etc.</li>
+<li>MP4: It isn’t possible to store all fractions with the level of precision provided by this system</li>
+<li>MP5: …the fractional part of the number is as close as possible within these constraints.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q1(b) · 2 marks</div><div class="callout-body"><p>Real numbers are stored in a computer using floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both the mantissa and exponent.</p>
+<p>Explain the problem that will occur in storing the normalised floating-point representation of +65.20 in this system.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(b)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1: the decimal fraction 0.20 cannot be represented exactly (the closest is 0.25 / 0.1875)</li>
+<li>MP2: therefore, there will be a loss of precision due to a rounding error/truncation</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q1a(ii) · 2 marks</div><div class="callout-body"><p>Numbers are stored in a computer using floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both mantissa and exponent.</p>
+<p>The binary number <code>1011100.011001</code> is stored in this system (normalised mantissa <code>010111000110</code>, exponent <code>0111</code>).</p>
+<p>State the consequence of storing the binary number as a floating-point number in this system. Justify your answer. [2]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1a(ii)</strong></p>
+<ul>
+<li>Consequence: The precision/accuracy of the number would be reduced</li>
+<li>Justification: … because the least significant bits of the original number have been truncated/lost // the original number had 13 bits / 14 bits with sign but the mantissa can only store 12 bits</li>
+</ul>
+</div></details></p>
+<h3 id="underflow">Underflow</h3>
+<p><strong>Underflow and overflow ★</strong></p>
+<ul>
+<li>Underflow occurs when the result of a calculation has an <strong>absolute value smaller than the smallest non-zero value the system can store</strong> — the exponent required is too negative for the exponent field</li>
+<li>Result: the value is <strong>stored as 0</strong></li>
+<li>Consequence: loss of precision; can affect accuracy in scientific or financial calculations</li>
+</ul>
+<p><img alt="Number line of representable floating-point magnitudes with underflow below the smallest value and overflow above the largest" src="images/p3-ch13-3-underflow-overflow.svg" /></p>
+<blockquote>
+<p><strong>Wording caveat for exams (not part of the mark scheme):</strong> the mark scheme for 2026 Summer P32 Q3(b) says the limit depends on “the number of bits in the mantissa” — underflow is in fact governed by the <strong>exponent</strong> field. The 2022 Winter P32 Q1© wording “too small to be precisely represented” describes rounding/truncation, not underflow. In your own answer write “magnitude below the smallest representable non-zero value → exponent underflows → result becomes 0”.</p>
+</blockquote>
+<h4 id="classic-questions-underflow">Classic questions — underflow</h4>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q3(b) · 2 marks</div><div class="callout-body"><p>Describe one example of a situation that could cause underflow to occur and the consequences of this underflow.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(b)</strong>
+One mark per mark point (Max 2):
+MP1 When a calculation is performed on a normalised floating-point number // allow a specific example;
+MP2 … so that the result obtained is less than the lowest possible value that can be stored in the system an underflow will occur // the exponent is too small / too negative for the number of bits in the mantissa, so the result becomes zero.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q1(c) · 2 marks</div><div class="callout-body"><p>State when underflow occurs in a binary floating-point system.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1©</strong>
+One mark per point</p>
+<ul>
+<li>Following an arithmetic/logical operation</li>
+<li>… the result is too small to be precisely represented in the available system // When the number of bits is not enough / too small for the computer’s allocated word size / to represent the binary number</li>
+</ul>
+</div></details></p>
+<h3 id="overflow">Overflow</h3>
+<ul>
+<li><strong>Overflow</strong> occurs when a number (or the result of a calculation) is <strong>too large in magnitude to be stored</strong> — the exponent needed exceeds the largest positive exponent available</li>
+<li>Example: adding 91.5 and 123.25 in a 12-bit/4-bit system gives 214.75, but the largest storable value is about 127.9375, so an exponent of 8 would be needed</li>
+<li>Consequences: the most significant bits are lost, the result is wrong, or the program returns an infinity / error / wraparound value</li>
+<li><strong>Note:</strong> A precision failure is <strong>not</strong> overflow: 513 needing 11 significant bits in a 10-bit mantissa is truncated to 512, which is a <strong>loss of precision</strong> (the 2021 Summer P31 Q1(d) mark scheme’s use of “overflow” for this case is non-standard — describe it as precision loss in your own answer).</li>
+</ul>
+<h4 id="classic-questions-overflow">Classic questions — overflow</h4>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q5(b) · 3 marks</div><div class="callout-body"><p>Numbers are stored in a computer system using binary floating-point representation with 12 bits for the mantissa, 4 bits for the exponent, two’s complement form for both the mantissa and the exponent.</p>
+<p>Explain the problem that would occur if the two binary floating-point numbers representing the denary numbers <strong>91.5</strong> and <strong>123.25</strong> were added together and the result stored in the given system.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(b)</strong>
+One mark per mark point (Max 3):
+MP1 If the two numbers were added together, the value would be 214.75;
+MP2 This value exceeds the highest/largest number that can be stored in this system with an exponent of 7, (which is 127.9375);
+MP3 An exponent of 8 would be required to increase the range of possible numbers beyond 128;
+MP4 Overflow would occur.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q2(b) · 3 marks</div><div class="callout-body"><p>Describe <strong>one</strong> example of a situation that could cause an overflow to occur and the consequences of such an overflow. [3]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(b)</strong>
+One mark per mark point (Max 3)
+MP1 a process involving a calculation / the multiplication of two large numbers could take place
+MP2 the result might be outside of the range of values possible to store in the given system
+MP3 … leading to the most significant bits of the mantissa/exponent being lost (which is an overflow)</p>
+</div></details></p>
+<h3 id="summary-table_2">Summary table</h3>
 <table>
 <thead>
 <tr>
@@ -726,13 +878,270 @@ Show your working. <strong>[4]</strong>
 </tr>
 <tr>
 <td><strong>Underflow</strong></td>
-<td>Number too small to be stored (exponent too negative)</td>
+<td>Magnitude too small to be stored (exponent too negative)</td>
 <td>Value becomes 0</td>
 </tr>
 <tr>
 <td><strong>Overflow</strong></td>
-<td>Number too large to be stored (exponent too positive)</td>
+<td>Magnitude too large to be stored (exponent too positive)</td>
 <td>Incorrect result or program error</td>
+</tr>
+</tbody>
+</table>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2026 Summer P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2026 Summer P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2026 Summer P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Approximation: underflow &amp; overflow</td>
+<td>2026 Summer P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P33 Q5(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2026 Summer P33 Q5(a)</td>
+</tr>
+<tr>
+<td>P33 Q5(b)</td>
+<td>Approximation: underflow &amp; overflow</td>
+<td>2026 Summer P33 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q2(a)</td>
+<td>Normalising floating-point numbers</td>
+<td>2025 Summer P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2025 Summer P31 Q2(b)</td>
+</tr>
+<tr>
+<td>P32 Q2(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2025 Summer P32 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(b)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2025 Summer P32 Q2(b)</td>
+</tr>
+<tr>
+<td>P33 Q2(a)</td>
+<td>Binary floating-point format</td>
+<td>2025 Summer P33 Q2(a)</td>
+</tr>
+<tr>
+<td>P33 Q2(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2025 Summer P33 Q2(b)</td>
+</tr>
+<tr>
+<td>P31 Q2(a)</td>
+<td>Normalising floating-point numbers</td>
+<td>2025 Winter P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2025 Winter P31 Q2(b)</td>
+</tr>
+<tr>
+<td>P32 Q2(a)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2025 Winter P32 Q2(a)</td>
+</tr>
+<tr>
+<td>P32 Q2(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2025 Winter P32 Q2(b)</td>
+</tr>
+<tr>
+<td>P33 Q2(a)</td>
+<td>Binary floating-point format</td>
+<td>2025 Winter P33 Q2(a)</td>
+</tr>
+<tr>
+<td>P33 Q2(b)</td>
+<td>Approximation: underflow &amp; overflow</td>
+<td>2025 Winter P33 Q2(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2024 Summer P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2024 Summer P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Binary floating-point format</td>
+<td>2024 Summer P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2024 Summer P32 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation + Rounding errors</td>
+<td>2024 Winter P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2024 Winter P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P32 Q4(a)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2024 Winter P32 Q4(a)</td>
+</tr>
+<tr>
+<td>P32 Q4(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2024 Winter P32 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation + Binary floating-point format</td>
+<td>2023 Summer P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Rounding errors + Binary floating-point format</td>
+<td>2023 Summer P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Normalising floating-point numbers</td>
+<td>2023 Summer P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)</td>
+<td>Rounding errors</td>
+<td>2023 Summer P32 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2023 Winter P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Rounding errors</td>
+<td>2023 Winter P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2023 Winter P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)</td>
+<td>Rounding errors</td>
+<td>2023 Winter P32 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2022 Winter P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2022 Winter P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1©(i)</td>
+<td>Normalising floating-point numbers</td>
+<td>2022 Winter P31 Q1©(i)</td>
+</tr>
+<tr>
+<td>P31 Q1©(ii)</td>
+<td>Normalising floating-point numbers</td>
+<td>2022 Winter P31 Q1©(ii)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Binary floating-point format</td>
+<td>2022 Winter P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2022 Winter P32 Q1(b)</td>
+</tr>
+<tr>
+<td>P32 Q1©</td>
+<td>Approximation: underflow &amp; overflow</td>
+<td>2022 Winter P32 Q1©</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Floating-point ↔ denary conversion + Normalisation</td>
+<td>2021 Summer P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Floating-point ↔ denary conversion</td>
+<td>2021 Summer P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1©</td>
+<td>Normalising floating-point numbers</td>
+<td>2021 Summer P31 Q1©</td>
+</tr>
+<tr>
+<td>P31 Q1(d)(i)</td>
+<td>Rounding errors + Binary floating-point format</td>
+<td>2021 Summer P31 Q1(d)(i)</td>
+</tr>
+<tr>
+<td>P31 Q1(d)(ii)</td>
+<td>Binary floating-point format</td>
+<td>2021 Summer P31 Q1(d)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q1a(i)</td>
+<td>Normalising floating-point numbers + Rounding errors</td>
+<td>2021 Winter P31 Q1a(i)</td>
+</tr>
+<tr>
+<td>P31 Q1a(ii)</td>
+<td>Rounding errors</td>
+<td>2021 Winter P31 Q1a(ii)</td>
+</tr>
+<tr>
+<td>P31 Q1b</td>
+<td>Normalising floating-point numbers</td>
+<td>2021 Winter P31 Q1b</td>
 </tr>
 </tbody>
 </table>

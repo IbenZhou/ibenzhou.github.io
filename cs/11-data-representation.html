@@ -248,11 +248,12 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="binary-prefixes">Binary prefixes</h2>
+        
+<h2 id="binary-prefixes">Binary prefixes</h2>
 <h3 id="what-is-a-binary-prefix">What is a binary prefix?</h3>
 <ul>
 <li>A binary prefix is a unit <span style="color: red">prefix</span> used to <strong>indicate multiples of bytes in binary</strong></li>
-<li>Consider the word <strong>kilobyte</strong>, &ldquo;kilo&rdquo; is the <strong>prefix</strong></li>
+<li>Consider the word <strong>kilobyte</strong>, “kilo” is the <strong>prefix</strong></li>
 <li><strong>Bytes</strong> are the <span style="color: green">smallest</span> u<span style="color: red"></span><span style="color: red"></span>nit <span style="color: red">of</span> data that can be stored in a computer so there needs to be a way of expressing bytes in larger multiples</li>
 </ul>
 <h4 id="denary-prefixes">Denary prefixes</h4>
@@ -291,7 +292,8 @@ body::before {
 </table>
 <ul>
 <li>This system relies on the assumption that <strong>1 kilo = 1000</strong></li>
-<li>This assumption is based on the <strong>denary (base 10)</strong> number system<ul>
+<li>This assumption is based on the <strong>denary (base 10)</strong> number system
+<ul>
 <li><strong>E.g. a 1 GB hard drive can store 1 x 10</strong> <sup><b>9</b></sup> <strong>bytes</strong></li>
 </ul>
 </li>
@@ -312,28 +314,28 @@ body::before {
 <tbody>
 <tr>
 <td>1 kibibyte (1 KiB)</td>
-<td>2<sup>10</sup></td>
+<td>2 10</td>
 <td>1024</td>
 </tr>
 <tr>
 <td>1 mebibyte (1 MiB)</td>
-        <td>2<sup>20</sup></td>
-        <td>1,048,576</td>
+<td>2 20</td>
+<td>1,048,576</td>
 </tr>
 <tr>
 <td>1 gibibyte (1 GiB)</td>
-        <td>2<sup>30</sup></td>
-        <td>1,073,741,824</td>
+<td>2 30</td>
+<td>1,073,741,824</td>
 </tr>
 <tr>
 <td>1 tebibyte (1 TiB)</td>
-        <td>2<sup>40</sup></td>
-        <td>1,099,511,627,776</td>
+<td>2 40</td>
+<td>1,099,511,627,776</td>
 </tr>
 <tr>
 <td>1 pebibyte (1 PiB)</td>
-        <td>2<sup>50</sup></td>
-        <td>1,125,899,906,842,624</td>
+<td>2 50</td>
+<td>1,125,899,906,842,624</td>
 </tr>
 </tbody>
 </table>
@@ -343,11 +345,13 @@ body::before {
 <h4 id="why-does-it-matter">Why does it matter?</h4>
 <ul>
 <li>The importance of the system being used depends on how precise you need to be</li>
-<li>Identifying the <strong>total amount of memory (RAM)</strong> available to a computer must be accurate (use binary prefixes)<ul>
+<li>Identifying the <strong>total amount of memory (RAM)</strong> available to a computer must be accurate (use binary prefixes)
+<ul>
 <li><strong>E.g. 16 GiB RAM can store 16 x 2</strong> <sup><b>30</b></sup> <strong>bytes of data (17,179,869,184 bytes)</strong></li>
 </ul>
 </li>
-<li>when describing <strong>storage space</strong>, a rough estimate is acceptable (use denary prefixes)<ul>
+<li>when describing <strong>storage space</strong>, a rough estimate is acceptable (use denary prefixes)
+<ul>
 <li><strong>E.g. a 16 GB memory stick can store 16 x 10</strong> <sup><b>9</b></sup> <strong>bytes of data (16,000,000,000 bytes)</strong></li>
 </ul>
 </li>
@@ -365,13 +369,9 @@ body::before {
 <li>Denary is referred to as a <strong>base-10</strong> number system</li>
 <li>Each digit has a weight factor of <strong>10 raised to a power</strong>, the rightmost digit is 1s (10 <sup>0</sup>), the next digit to the left 10s (10 <sup>1</sup>) and so on</li>
 <li>Humans use the denary system for <strong>counting</strong>, <strong>measuring</strong> and <strong>performing maths calculations</strong></li>
-<li>
-<p>Using combinations of the 10 digits we can represent any number
-<img alt="Diagram showing denary number 3268 with column headings" src="images/1-1-number-systems-number-systems-1-ib-computer-science-revision.webp" /></p>
-</li>
-<li>
-<p>In this example, (3 x 1000) + (2 x 100) + (6 x 10) + (8 x 1) = 3268</p>
-</li>
+<li>Using combinations of the 10 digits we can represent any number
+<img alt="Diagram showing denary number 3268 with column headings" src="images/1-1-number-systems-number-systems-1-ib-computer-science-revision.webp" /></li>
+<li>In this example, (3 x 1000) + (2 x 100) + (6 x 10) + (8 x 1) = 3268</li>
 <li>To represent a bigger number we <strong>add more digits</strong></li>
 </ul>
 <h3 id="binary">Binary</h3>
@@ -380,13 +380,9 @@ body::before {
 <li>Binary is referred to as a <strong>base-2</strong> number system</li>
 <li>Each digit has a weight factor of <strong>2 raised to a power</strong>, the rightmost digit is 1s (2 <sup>0</sup>), the next digit to the left 2s (2 <sup>1</sup>) and so on</li>
 <li>Each time a new digit is added, the <strong>column value is multiplied by 2</strong></li>
-<li>
-<p>Using <strong>combinations of the 2 digits</strong> we can represent any number
-<img alt="Diagram showing binary 1101 using binary column headings" src="images/uCiRLNB9_1-1-number-systems-number-systems-2-ib-psychology-revision.webp" /></p>
-</li>
-<li>
-<p>In this example, <strong>Binary 1100</strong> = <strong>(1 x 8) + (1 x 4) = 12</strong></p>
-</li>
+<li>Using <strong>combinations of the 2 digits</strong> we can represent any number
+<img alt="Diagram showing binary 1101 using binary column headings" src="images/uCiRLNB9_1-1-number-systems-number-systems-2-ib-psychology-revision.webp" /></li>
+<li>In this example, <strong>Binary 1100</strong> = <strong>(1 x 8) + (1 x 4) = 12</strong></li>
 <li>To represent bigger numbers we add more <strong>binary digits</strong> (bits)</li>
 </ul>
 <table>
@@ -412,22 +408,22 @@ body::before {
 </thead>
 <tbody>
 <tr>
-<td>2<sup>15</sup></td>
-<td>2<sup>14</sup></td>
-<td>2<sup>13</sup></td>
-<td>2<sup>12</sup></td>
-<td>2<sup>11</sup></td>
-<td>2<sup>10</sup></td>
-<td>2<sup>9</sup></td>
-<td>2<sup>8</sup></td>
-<td>2<sup>7</sup></td>
-<td>2<sup>6</sup></td>
-<td>2<sup>5</sup></td>
-<td>2<sup>4</sup></td>
-<td>2<sup>3</sup></td>
-<td>2<sup>2</sup></td>
-<td>2<sup>1</sup></td>
-<td>2<sup>0</sup></td>
+<td>2 15</td>
+<td>2 14</td>
+<td>2 13</td>
+<td>2 12</td>
+<td>2 11</td>
+<td>2 10</td>
+<td>2 9</td>
+<td>2 8</td>
+<td>2 7</td>
+<td>2 6</td>
+<td>2 5</td>
+<td>2 4</td>
+<td>2 3</td>
+<td>2 2</td>
+<td>2 1</td>
+<td>2 0</td>
 </tr>
 </tbody>
 </table>
@@ -600,14 +596,10 @@ body::before {
 <h3 id="binary-to-denary-denary-to-binary">Binary to denary &amp; denary to binary</h3>
 <ul>
 <li>Binary numbers can be converted into denary and vice-versa</li>
-<li>
-<p>For example the 8-bit binary number <strong>01101001</strong> can be converted into denary using the following method:
+<li>For example the 8-bit binary number <strong>01101001</strong> can be converted into denary using the following method:
 <img alt="Binary to decimal conversion: binary 01101001 equals decimal 105. Bit values shown from 128 to 1 with corresponding binary digits." src="images/binary-to-decimal.png" />
-Binary to denary conversion</p>
-</li>
-<li>
-<p>Therefore the 8-bit binary number <strong>01101001</strong> is <strong>105</strong> as a denary value</p>
-</li>
+Binary to denary conversion</li>
+<li>Therefore the 8-bit binary number <strong>01101001</strong> is <strong>105</strong> as a denary value</li>
 <li>To convert the denary number <strong>101</strong> to binary, we firstly write out binary number system</li>
 </ul>
 <table>
@@ -640,26 +632,30 @@ Binary to denary conversion</p>
 <li>Then we start at the left and look for the highest number that is less than or equal to <strong>101</strong> and if so, place a 1 in that column</li>
 <li>Otherwise, place a 0 in the column</li>
 <li><strong>128</strong> is bigger than <strong>101</strong> and therefore we place a 0 in that column</li>
-<li><strong>64</strong> is smaller than <strong>101</strong> so we place a 1 in that column<ul>
+<li><strong>64</strong> is smaller than <strong>101</strong> so we place a 1 in that column
+<ul>
 <li><strong>101 - 64 = 37</strong></li>
 <li>This now means we have <strong>37</strong> left to find</li>
 </ul>
 </li>
-<li><strong>32</strong> is smaller than <strong>37</strong> so we place a 1 in that column<ul>
+<li><strong>32</strong> is smaller than <strong>37</strong> so we place a 1 in that column
+<ul>
 <li><strong>37 - 32 = 5</strong></li>
 <li>This now means we have <strong>5</strong> left to find</li>
 </ul>
 </li>
 <li><strong>16</strong> is bigger than <strong>5</strong> and therefore we place a 0 in that column</li>
 <li><strong>8</strong> is bigger than <strong>5</strong> and therefore we place a 0 in that column</li>
-<li><strong>4</strong> is smaller than <strong>5</strong> so we place a <strong>1</strong> in that column<ul>
+<li><strong>4</strong> is smaller than <strong>5</strong> so we place a <strong>1</strong> in that column
+<ul>
 <li><strong>5 - 1 = 1</strong></li>
 <li>This now means we have <strong>1</strong> left to find</li>
 </ul>
 </li>
 <li><strong>2</strong> is bigger than <strong>1</strong> and therefore we place a 0 in that column</li>
 <li><strong>1</strong> is equal to the number we have left so we place a 1 in that column</li>
-<li>64 + 32 + 4 + 1 = <strong>101</strong><ul>
+<li>64 + 32 + 4 + 1 = <strong>101</strong>
+<ul>
 <li>Therefore the denary number <strong>101</strong> in binary is <strong>01100101</strong></li>
 </ul>
 </li>
@@ -711,28 +707,28 @@ Binary to denary conversion</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: center;"><strong>8</strong></th>
-<th style="text-align: center;"><strong>4</strong></th>
-<th style="text-align: center;"><strong>2</strong></th>
-<th style="text-align: center;"><strong>1</strong></th>
-<th style="text-align: center;"></th>
-<th style="text-align: center;"><strong>8</strong></th>
-<th style="text-align: center;"><strong>4</strong></th>
-<th style="text-align: center;"><strong>2</strong></th>
-<th style="text-align: center;"><strong>1</strong></th>
+<th style="text-align:center"><strong>8</strong></th>
+<th style="text-align:center"><strong>4</strong></th>
+<th style="text-align:center"><strong>2</strong></th>
+<th style="text-align:center"><strong>1</strong></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"><strong>8</strong></th>
+<th style="text-align:center"><strong>4</strong></th>
+<th style="text-align:center"><strong>2</strong></th>
+<th style="text-align:center"><strong>1</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>0</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"><strong>0</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align:center"><strong>1</strong></td>
+<td style="text-align:center"><strong>0</strong></td>
+<td style="text-align:center"><strong>1</strong></td>
+<td style="text-align:center"><strong>1</strong></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"><strong>0</strong></td>
+<td style="text-align:center"><strong>1</strong></td>
+<td style="text-align:center"><strong>1</strong></td>
+<td style="text-align:center"><strong>1</strong></td>
 </tr>
 </tbody>
 </table>
@@ -808,14 +804,10 @@ Binary to denary conversion</p>
 </tbody>
 </table>
 <ul>
-<li>
-<p>Hexadecimal <strong>5F</strong> is <strong>01011111</strong> in binary
+<li>Hexadecimal <strong>5F</strong> is <strong>01011111</strong> in binary
 Convert the positive binary integer 1010 0010 into hexadecimal. <strong>[1]</strong>
-Answer</p>
-</li>
-<li>
-<p>A2 [1 mark]</p>
-</li>
+Answer</li>
+<li>A2 [1 mark]</li>
 </ul>
 <h2 id="binary-coded-decimal-bcd">Binary Coded Decimal (BCD)</h2>
 <h3 id="what-is-binary-coded-decimal">What is Binary Coded Decimal?</h3>
@@ -873,7 +865,8 @@ Answer</p>
 </tbody>
 </table>
 <ul>
-<li>To represent the denary number <strong>2500</strong> in <strong>BCD</strong> format would be:<ul>
+<li>To represent the denary number <strong>2500</strong> in <strong>BCD</strong> format would be:
+<ul>
 <li><strong>2500</strong> = 0010 0101 0000 0000</li>
 </ul>
 </li>
@@ -959,10 +952,10 @@ Answer</p>
 </tr>
 </tbody>
 </table>
-<p>One&rsquo;s &amp; two&rsquo;s complement</p>
-<h3 id="what-is-ones-complement">What is one&rsquo;s complement?</h3>
+<p>One’s &amp; two’s complement</p>
+<h3 id="what-is-ones-complement">What is one's complement?</h3>
 <ul>
-<li>One&rsquo;s complement is a method of representing <strong>both positive and negative numbers</strong></li>
+<li>One’s complement is a method of representing <strong>both positive and negative numbers</strong></li>
 <li>To turn a positive binary number in to a negative the <strong>positive binary number is inverted</strong> (0 becomes 1 and 1 becomes 0)</li>
 </ul>
 <table>
@@ -994,18 +987,19 @@ Answer</p>
 </tbody>
 </table>
 <ul>
-<li>The issue with one&rsquo;s complement is that it can have <strong>two representations for 0</strong> (positive and negative)
+<li>The issue with one’s complement is that it can have <strong>two representations for 0</strong> (positive and negative)
 Be careful not to confuse one’s complement with two’s complement. In one’s complement, you just invert the bits to get the negative version, you don’t treat the MSB as negative like you would in two’s complement. That’s a different system!</li>
 </ul>
-<h3 id="what-is-twos-complement">What is two&rsquo;s complement?</h3>
+<h3 id="what-is-twos-complement">What is two's complement?</h3>
 <ul>
-<li>Two&rsquo;s complement is another method of representing <strong>both positive and negative numbers</strong></li>
-<li>To turn a positive binary number into a negative:<ul>
+<li>Two’s complement is another method of representing <strong>both positive and negative numbers</strong></li>
+<li>To turn a positive binary number into a negative:
+<ul>
 <li>Positive binary number is <strong>inverted</strong></li>
-<li><strong>&lsquo;1&rsquo; is added</strong> to the right most bit</li>
+<li><strong>‘1’ is added</strong> to the right most bit</li>
 </ul>
 </li>
-<li>Using two&rsquo;s complement the <strong>leftmost bit</strong> is designated the <strong>most significant bit</strong> (<strong>MSB</strong>)</li>
+<li>Using two’s complement the <strong>leftmost bit</strong> is designated the <strong>most significant bit</strong> (<strong>MSB</strong>)</li>
 <li>To represent negative numbers this bit <strong>must equal 1</strong>, turning the column value into a <strong>negative</strong></li>
 <li>Working with <strong>8 bits</strong>, the <strong>128</strong> column becomes <strong>-128</strong></li>
 </ul>
@@ -1103,30 +1097,33 @@ Be careful not to confuse one’s complement with two’s complement. In one’s
 </tr>
 </tbody>
 </table>
-<p><strong>8 bit two&rsquo;s complement</strong> can represent values between 0111 1111 (<strong>+127</strong>) and 1000 0000 (<strong>-128</strong>)</p>
+<p><strong>8 bit two’s complement</strong> can represent values between 0111 1111 (<strong>+127</strong>) and 1000 0000 (<strong>-128</strong>)</p>
 <ul>
-<li>An alternative way of thinking about this is:<ul>
-<li>Starting from the right, keep all the bits the same <strong>up to and including</strong> the first 1<ul>
+<li>An alternative way of thinking about this is:
+<ul>
+<li>Starting from the right, keep all the bits the same <strong>up to and including</strong> the first 1</li>
 <li>Flip the rest of the digits</li>
-<li>0101 1000 becomes&hellip;</li>
+<li>0101 1000 becomes…</li>
 <li>1010 1000</li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<h4 id="key-reasons-to-use-twos-complement">Key reasons to use two&rsquo;s complement</h4>
+<h4 id="key-reasons-to-use-twos-complement">Key reasons to use two's complement</h4>
 <ul>
-<li><strong>Consistency</strong><ul>
-<li>You <strong>don’t need</strong> different rules for signed and unsigned numbers<ul>
-<li>Whether you&rsquo;re adding +37 and +58, or −37 and +58, or −37 and −58, the <strong>binary addition process is the same</strong></li>
+<li><strong>Consistency</strong>
+<ul>
+<li>You <strong>don’t need</strong> different rules for signed and unsigned numbers
+<ul>
+<li>Whether you’re adding +37 and +58, or −37 and +58, or −37 and −58, the <strong>binary addition process is the same</strong></li>
 <li>Two’s complement works for <strong>any combination</strong> of positive and negative values</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>Hardware simplicity</strong><ul>
-<li><strong>CPUs</strong> are built to do simple binary addition<ul>
+<li><strong>Hardware simplicity</strong>
+<ul>
+<li><strong>CPUs</strong> are built to do simple binary addition
+<ul>
 <li>Two’s complement means:</li>
 <li>The same <strong>adder circuit</strong> can handle everything</li>
 </ul>
@@ -1134,17 +1131,14 @@ Be careful not to confuse one’s complement with two’s complement. In one’s
 <li>No special logic is needed to detect signs or subtract manually</li>
 </ul>
 </li>
-<li>
-<p><strong>It still works, up to a point</strong></p>
+<li><strong>It still works, up to a point</strong>
 <ul>
-<li>As long as the <strong>sum doesn&rsquo;t exceed the max value (+127 in 8-bit)</strong>, you can add two positive numbers with two’s complement without any issues
+<li>As long as the <strong>sum doesn’t exceed the max value (+127 in 8-bit)</strong>, you can add two positive numbers with two’s complement without any issues
 Convert the denary number 649 into Binary Coded Decimal (BCD) <strong>[1]</strong>
 Answer</li>
 </ul>
 </li>
-<li>
-<p>0110 0100 1001 [1 mark]</p>
-</li>
+<li>0110 0100 1001 [1 mark]</li>
 </ul>
 <h2 id="binary-arithmetic">Binary Arithmetic</h2>
 <h2 id="binary-addition">Binary addition</h2>
@@ -1223,7 +1217,7 @@ Answer</p>
 </ul>
 <h2 id="binary-subtraction">Binary subtraction</h2>
 <ul>
-<li>To carry out subtraction, the number being subtracted is <strong>converted into its negative equivalent</strong> using two&rsquo;s complement</li>
+<li>To carry out subtraction, the number being subtracted is <strong>converted into its negative equivalent</strong> using two’s complement</li>
 <li>The two numbers are then <strong>added together</strong></li>
 </ul>
 <h4 id="example">Example</h4>
@@ -1272,7 +1266,7 @@ Answer</p>
 </tr>
 <tr>
 <td></td>
-<td><strong>find two&rsquo;s complement of -12</strong></td>
+<td><strong>find two’s complement of -12</strong></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1467,7 +1461,7 @@ Answer</p>
 <ul>
 <li>48 - 12 = <strong>36</strong></li>
 <li>The <strong>additional overflow bit is ignored</strong> leaving a result of 0010 0100, denary equivalent of <strong>36</strong>, which is the <strong>correct answer</strong></li>
-<li>In <strong>two&rsquo;s complement</strong> arithmetic, the <strong>overflow bit</strong> does not contribute to the actual value of the operation but is more of a <strong>by-product</strong> of the method</li>
+<li>In <strong>two’s complement</strong> arithmetic, the <strong>overflow bit</strong> does not contribute to the actual value of the operation but is more of a <strong>by-product</strong> of the method</li>
 </ul>
 <h2 id="uses-of-number-systems">Uses of Number Systems</h2>
 <h2 id="applications-of-binary-coded-decimal-bcd">Applications of Binary Coded Decimal (BCD)</h2>
@@ -1508,16 +1502,19 @@ Answer</p>
 <h3 id="why-is-hexadecimal-used">Why is hexadecimal used?</h3>
 <ul>
 <li>In Computer Science hexadecimal is often preferred when working with <strong>large values</strong></li>
-<li>It takes <strong>fewer digits to represent a given value</strong> in hexadecimal than in binary<ul>
+<li>It takes <strong>fewer digits to represent a given value</strong> in hexadecimal than in binary
+<ul>
 <li>1 hexadecimal digit corresponds 4 bits and can represent 16 unique values (0-F)</li>
 </ul>
 </li>
-<li>It is <strong>beneficial</strong> to use hexadecimal over binary because:<ul>
+<li>It is <strong>beneficial</strong> to use hexadecimal over binary because:
+<ul>
 <li>The more bits there are in a binary number, the <strong>harder it makes for a human to read</strong></li>
 <li>Numbers with more bits are more <strong>prone to errors</strong> when being copied</li>
 </ul>
 </li>
-<li>Examples of where hexadecimal can be seen:<ul>
+<li>Examples of where hexadecimal can be seen:
+<ul>
 <li><strong>MAC addresses</strong></li>
 <li><strong>Colour codes</strong></li>
 <li><strong>URLs</strong></li>
@@ -1526,7 +1523,8 @@ Answer</p>
 </ul>
 <h4 id="mac-addresses">MAC addresses</h4>
 <ul>
-<li>A typical MAC address consists of <strong>12 hexadecimal digits</strong>, equivalent to <strong>48 digits</strong> in binary<ul>
+<li>A typical MAC address consists of <strong>12 hexadecimal digits</strong>, equivalent to <strong>48 digits</strong> in binary
+<ul>
 <li><strong>AA:BB:CC:DD:EE:FF</strong></li>
 <li><strong>10101010:10111011:11001100:11011101:11101110:11111111</strong></li>
 </ul>
@@ -1536,14 +1534,15 @@ Answer</p>
 </ul>
 <h4 id="colour-codes">Colour codes</h4>
 <ul>
-<li>A typical hexadecimal colour code consists of <strong>6 hexadecimal digits</strong>, equivalent to <strong>24 digits</strong> in binary<ul>
+<li>A typical hexadecimal colour code consists of <strong>6 hexadecimal digits</strong>, equivalent to <strong>24 digits</strong> in binary
+<ul>
 <li><strong>#66FF33</strong> (green)</li>
 <li><strong>01000010:11111111:00110011</strong>
 <img alt="Example colour palette with colours and their hexadecimal codes" src="images/hexcolours.png" /></li>
 </ul>
 </li>
 </ul>
-<h4 id="urls">URL&rsquo;s</h4>
+<h4 id="urls">URL's</h4>
 <ul>
 <li>A URL can only contain <strong>standard characters</strong> (a-z and A-Z), <strong>numbers</strong> (0-9) and some <strong>special symbols</strong> which is enough for basic web browsing</li>
 <li>If a URL needs to include a character <strong>outside of this set</strong>, they are converted into a <strong>hexadecimal code</strong></li>
@@ -1559,7 +1558,8 @@ Answer</p>
 <li>A character set provides a <strong>standard</strong> for computers to communicate and send/receive information</li>
 <li>Without a character set, one system might interpret 01000001 differently from another</li>
 <li>The number of characters that can be represented is determined by the <strong>number of bits used</strong> by the character set</li>
-<li>Two common character sets are:<ul>
+<li>Two common character sets are:
+<ul>
 <li>American Standard Code for Information Interchange (<strong>ASCII</strong>)</li>
 <li>Universal Character Encoding (<strong>UNICODE</strong>)</li>
 </ul>
@@ -1571,7 +1571,8 @@ Answer</p>
 <li>ASCII is a character set and was an accepted standard for information interchange</li>
 <li>ASCII uses <strong>7 bits</strong>, providing 2 <sup>7</sup> unique codes (128) or a maximum of <strong>128 characters</strong> it can represent</li>
 <li>This is enough to represent the letters, numbers, and symbols from a <strong>standard keyboard</strong></li>
-<li>The <strong>sixth bit</strong> changes from 1 to 0 when <strong>comparing uppercase and lowercase characters</strong><ul>
+<li>The <strong>sixth bit</strong> changes from 1 to 0 when <strong>comparing uppercase and lowercase characters</strong>
+<ul>
 <li><strong>a</strong> 0110 0001</li>
 <li><strong>A</strong> 0100 0001</li>
 <li><strong>b</strong> 0110 0010</li>
@@ -1579,14 +1580,10 @@ Answer</p>
 </ul>
 </li>
 <li>This made conversion between the two much easier</li>
-<li>
-<p>This speeds up the overall usability of the character set
+<li>This speeds up the overall usability of the character set
 <img alt="A table showing letters with corresponding ASCII codes and binary values, separated into lowercase and uppercase sections." src="images/-ascii-table.png" />
-Part of the ASCII code table</p>
-</li>
-<li>
-<p>ASCII <strong>only</strong> represents basic characters needed for <strong>English</strong>, limiting its use for other languages</p>
-</li>
+Part of the ASCII code table</li>
+<li>ASCII <strong>only</strong> represents basic characters needed for <strong>English</strong>, limiting its use for other languages</li>
 </ul>
 <h2 id="extended-ascii">Extended ASCII</h2>
 <h4 id="what-is-extended-ascii">What is extended ASCII?</h4>
@@ -1632,11 +1629,11 @@ Part of the ASCII code table</p>
 <tr>
 <td><strong>Benefits</strong></td>
 <td>It uses a lot less storage space than UNICODE.</td>
-<td>It can represent more characters than ASCII.<br>It can support all common characters across the world.<br>It can represent special characters such as emoji&rsquo;s.</td>
+<td>It can represent more characters than ASCII.<br>It can support all common characters across the world.<br>It can represent special characters such as emoji’s.</td>
 </tr>
 <tr>
 <td><strong>Drawbacks</strong></td>
-<td>It can only represent 128 characters.<br>It cannot store special characters such as emoji&rsquo;s.</td>
+<td>It can only represent 128 characters.<br>It cannot store special characters such as emoji’s.</td>
 <td>It uses a lot more storage space than ASCII.</td>
 </tr>
 </tbody>

@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -236,8 +275,10 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
 <h2 id="classes-object-oriented-programming">Classes (Object-Oriented Programming)</h2>
 <h3 id="what-is-a-class">What is a class?</h3>
+<p><strong>Classes and objects ★</strong></p>
 <ul>
 <li>A <strong>class</strong> is a <strong>blueprint</strong> used to create <strong>objects</strong> in Object-Oriented Programming (OOP)</li>
 <li>It <strong>defines a structure for attributes</strong> (data) and <strong>methods</strong> (behaviour)</li>
@@ -311,8 +352,37 @@ body::before {
 <img alt="Example of a class and objects" src="images/classesandobjects.png" />
 <em><strong>Example of a class and objects</strong></em></li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q10(a) · 3 marks</div><div class="callout-body"><p>Outline the structure of a class.
+…</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(a)</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Attributes/properties …</li>
+<li>… with their data types // … are variables bound to the class</li>
+<li>Methods …</li>
+<li>… that are subroutines / functions / procedures that act upon the attributes</li>
+<li>Getters/setters …</li>
+<li>… are methods that can fetch / update the contents of attributes</li>
+<li>A constructor …</li>
+<li>… that is used to create instances / objects of this class.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q10(b) · 3 marks</div><div class="callout-body"><p>Give <strong>three</strong> differences between an object and a class.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(b)</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>A class is only defined once but many objects can be created from that class // A class is a template / blueprint from which objects are created // An object is an instance of a class</li>
+<li>No memory is allocated when a class is defined, but objects are allocated memory space whenever they are created</li>
+<li>A class cannot be manipulated as it is not available in the memory, but objects can be manipulated</li>
+<li>A class is defined but an object is declared / created / instantiated.</li>
+<li>A class can use inheritance. An object cannot.</li>
+</ul>
+</div></details></p>
 <h2 id="programming-classes-oop">Programming classes (OOP)</h2>
 <h3 id="how-do-you-program-a-class">How do you program a class?</h3>
+<p><strong>Declaring a class and its constructor ★</strong></p>
 <ul>
 <li>In this example we will:
 <ul>
@@ -438,8 +508,22 @@ End Class
     <span class="bp">self</span><span class="o">.</span><span class="n">__CurrentSpeed</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__HorizontalPosition</span> <span class="o">=</span> <span class="mi">0</span>
 </code></pre></div>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q11(a) · 5 marks</div><div class="callout-body"><p>OOP is used to design a class called <code>Node</code>. A partial design includes the STRING attribute <code>Content</code> and the INTEGER attribute <code>Pointer</code>, together with their getters and setters. The class also includes a constructor with two parameters to set these attributes. Write pseudocode statements to declare the <code>Node</code> class, its attributes and the constructor.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(a)</strong>
+One mark per mark point (<strong>Max 5</strong>)</p>
+<ul>
+<li>MP1 Correct <code>CLASS Node</code> and <code>ENDCLASS</code> statements</li>
+<li>MP2 Correct attribute declaration section before the constructor</li>
+<li>MP3 Correct statement to begin and end the constructor as <code>PUBLIC PROCEDURE NEW … ENDPROCEDURE</code></li>
+<li>MP4 Two parameters identified in the constructor with appropriate names and data types</li>
+<li>MP5 Values passed using the constructor are assigned correctly – allow use of setters</li>
+<li>Guidance: MP1 <code>Node</code> is given in the question, so must be used. MP2 must use <code>Content</code> and <code>Pointer</code> as STRING and INTEGER respectively. MP4 any names can be used except <code>Content</code> and <code>Pointer</code>. MP5 the candidate’s parameters from MP4 must be assigned to the attributes from MP2.</li>
+</ul>
+</div></details></p>
 <h2 id="objects-oop">Objects (OOP)</h2>
 <h3 id="what-is-an-object">What is an object?</h3>
+<p><strong>Objects and instantiation ★</strong></p>
 <ul>
 <li>An <strong>object</strong> is a representation of a real-world entity eg teacher, aeroplane, mobile phone, cat etc</li>
 <li>A <strong>class</strong> is like a blueprint that describes the properties and behaviours of objects, while an <strong>object</strong> is a specific instance created based on that blueprint with its own unique values for the properties</li>
@@ -448,12 +532,17 @@ End Class
 <img alt="Example of 2 objects belonging to a class" src="images/objectsand-classes.png" />
 <em><strong>Example of 2 objects belonging to a class</strong></em></li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q12(b)(i) · 1 mark</div><div class="callout-body"><p>Identify the object-oriented programming (OOP) term described as ‘an occurrence of an object’.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(b)(i)</strong>
+Instance // instantiation</p>
+</div></details></p>
 <h2 id="programming-objects-oop">Programming objects (OOP)</h2>
 <h3 id="how-do-you-program-an-object">How do you program an object?</h3>
-<h4 id="pseudocode_2">Pseudocode</h4>
+<h4 id="pseudocode_1">Pseudocode</h4>
 <p><img alt="Pseudocode for the class 'person' and instantiating two objects" src="images/objects.png" />
 <em><strong>Pseudocode for the class ‘person’ and instantiating two objects</strong></em></p>
-<h4 id="java_2">Java</h4>
+<h4 id="java_1">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">//creating the person class</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Person</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="c1">// creating 4 attributes for the person class</span>
@@ -472,7 +561,7 @@ End Class
 <span class="n">Person</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Bob&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;06/10/1981&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">“</span><span class="n">E</span><span class="w"> </span><span class="n">Sports</span><span class="err">”</span><span class="p">);</span>
 <span class="n">Person</span><span class="w"> </span><span class="n">person2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">(</span><span class="s">&quot;Jess&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jones&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;05/04/1980&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">“</span><span class="n">Astronomy</span><span class="err">”</span><span class="p">);</span>
 </code></pre></div>
-<h4 id="python_2">Python</h4>
+<h4 id="python_1">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">#creating the person class</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
         <span class="c1">#Constructor -This creates objects of the person class     </span>
@@ -487,6 +576,7 @@ End Class
 </code></pre></div>
 <h2 id="methods-oop">Methods (OOP)</h2>
 <h3 id="what-is-a-method">What is a method?</h3>
+<p><strong>Methods ★</strong></p>
 <ul>
 <li><strong>Methods</strong> are fundamental in <strong>object-oriented programming (OOP)</strong> and are functions associated with <strong>objects</strong> or <strong>classes</strong> that define the behaviour and actions that objects can perform</li>
 <li>There are two main types of methods:
@@ -578,12 +668,33 @@ End Class
 <ul>
 <li>If a method does not specify the keyword public or private then its default value is set to public.</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P31 Q7(b) · 6 marks</div><div class="callout-body"><p>Describe what is meant by the terms <em>properties</em>, <em>methods</em> and <em>inheritance</em>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(b)</strong>
+<strong>Properties</strong> (max 2):</p>
+<ul>
+<li>Data items / attributes</li>
+<li>Have data types / characteristics</li>
+<li>Defined in a class</li>
+</ul>
+<p><strong>Methods</strong> (max 2):</p>
+<ul>
+<li>Procedures / functions in class / super / base class</li>
+<li>Implement behaviours</li>
+<li>Act on properties</li>
+</ul>
+<p><strong>Inheritance</strong> (max 2):</p>
+<ul>
+<li>Methods / properties available to derived classes</li>
+<li>Derived classes inherit from parent / base / super class</li>
+</ul>
+</div></details></p>
 <h2 id="programming-methods-oop">Programming methods (OOP)</h2>
 <h3 id="how-do-you-program-a-method">How do you program a method?</h3>
-<h4 id="pseudocode_3">Pseudocode</h4>
+<h4 id="pseudocode_2">Pseudocode</h4>
 <p><img alt="pseudocode for creating methods" src="images/methods-pseudo.png" />
 <em><strong>Pseudocode for creating methods</strong></em></p>
-<h4 id="java_3">Java</h4>
+<h4 id="java_2">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">//Creating a public method called BankLeft</span>
 <span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bankLeft</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w"> </span><span class="c1">// Code to make the aircraft bank left</span>
@@ -593,7 +704,7 @@ End Class
 <span class="w"> </span><span class="c1">// Code to make the aircraft bank left</span>
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
-<h4 id="python_3">Python</h4>
+<h4 id="python_2">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">#Creating a public method called BankLeft</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">bank_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Code to make the aircraft bank left</span>
@@ -612,6 +723,7 @@ End Class
 </ul>
 <h2 id="attributes-oop">Attributes (OOP)</h2>
 <h3 id="what-is-an-attribute">What is an attribute?</h3>
+<p><strong>Attributes and encapsulation ★</strong></p>
 <ul>
 <li>In object-oriented programming (OOP), an attribute refers to <strong>a data member or a property associated with</strong> an <strong>object</strong> or a <strong>class</strong></li>
 <li>They define the <strong>state of an object</strong> and can have different values for different instances of the same class</li>
@@ -632,10 +744,10 @@ End Class
 </ul>
 <h2 id="programming-attributes-oop">Programming attributes (OOP)</h2>
 <h3 id="how-do-you-program-attributes">How do you program attributes?</h3>
-<h4 id="pseudocode_4">Pseudocode</h4>
+<h4 id="pseudocode_3">Pseudocode</h4>
 <p><img alt="Example of a created class, &quot;Person&quot;, containing several attributes" src="images/attributes-psuedo.png" />
 <em><strong>Example of a created class, “Person”, containing several attributes</strong></em></p>
-<h4 id="java_4">Java</h4>
+<h4 id="java_3">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Person</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// Attributes for the person class</span>
 <span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
@@ -645,7 +757,7 @@ End Class
 <span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isMarried</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<h4 id="python_4">Python</h4>
+<h4 id="python_3">Python</h4>
 <ul>
 <li>In Python attributes are defined using the <code>self</code> keyword followed by the attribute name and its initial value</li>
 </ul>
@@ -655,8 +767,23 @@ End Class
       <span class="bp">self</span><span class="o">.</span><span class="n">attribute1</span> <span class="o">=</span> <span class="n">attribute1</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">attribute2</span> <span class="o">=</span> <span class="n">attribute2</span>
 </code></pre></div>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q1(c)(i) · 1 mark</div><div class="callout-body"><p>The data type <code>BuildingRecord</code> is changed to a class <code>BuildingClass</code>. All properties are set to <code>PRIVATE</code>, for example <code>PRIVATE PriceLastSold : REAL</code>. Write the declaration in pseudocode for <code>OwnerName</code> as <code>PRIVATE</code>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1©(i)</strong>
+<code>PRIVATE OwnerName : STRING</code></p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q1(c)(ii) · 2 marks</div><div class="callout-body"><p>Explain why the properties have been set to <code>PRIVATE</code>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1©(ii)</strong>
+One mark per mark point</p>
+<ul>
+<li>To ensure that attributes can only be accessed by the class’s own methods</li>
+<li>To enforce encapsulation // ensure they are hidden</li>
+</ul>
+</div></details></p>
 <h2 id="inheritance-oop">Inheritance (OOP)</h2>
 <h3 id="what-is-inheritance">What is inheritance?</h3>
+<p><strong>Inheritance ★</strong></p>
 <ul>
 <li><strong>Inheritance</strong> is a key concept in <strong>object-oriented programming (OOP)</strong> that allows a <strong>class</strong> to inherit the properties and behaviours (methods and attributes) of another class</li>
 <li><strong>Inheritance</strong> promotes code reuse by allowing <strong>derived classes</strong> to inherit and utilise the existing code from the <strong>base class</strong>. This avoids duplicating code and promotes better organization and maintainability</li>
@@ -703,12 +830,47 @@ End Class
 <li>The above <strong>methods</strong> are only a select few and there could be many more added for extra functionality</li>
 <li>In the following code, the <strong>super keyword</strong> is used in inheritance to refer to the superclass (Base class: Vehicles) and access its members (methods, attributes, or constructors) from within the subclass (Derived Class: Cars)</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q11(b)(ii) · 2 marks</div><div class="callout-body"><p>Describe what is meant by the OOP feature inheritance.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(b)(ii)</strong>
+One mark per mark point</p>
+<ul>
+<li>MP1 Inheritance is where a derived class takes properties / behaviours (attributes / methods)</li>
+<li>MP2 … of a parent / super class / base class</li>
+<li>MP3 The attributes / methods / properties taken from the parent / super class / base class can also be extended / copied / used / changed / overwritten / overridden in the subclass</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P31 Q7(a) · 5 marks</div><div class="callout-body"><p>A program is to be written using OOP for a shop that sells knitting yarn (acrylic, wool, mix). Complete the class inheritance diagram to show the properties, methods and inheritance.
+Base class <code>Yarn</code>: <code>Name : STRING</code>, <code>Colour : STRING</code>, <code>BatchCode : STRING</code>, <code>Weight : INTEGER</code>, <code>NumberBalls : INTEGER</code>, <code>Type : STRING</code>; methods <code>Constructor()</code>, <code>EditNumberBalls()</code>, <code>YarnInfo()</code>.
+Acrylic can be soft or not soft; Wool can be lamb, merino or alpaca; Mix contains a percentage of acrylic.
+Subclasses <code>Acrylic</code>, <code>Wool</code>, <code>Mix</code> are partially completed.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(a)</strong>
+1 mark per point</p>
+<ul>
+<li><code>Acrylic</code> has attribute <code>Soft</code> of type <code>BOOLEAN</code></li>
+<li><code>Wool</code> has attribute <code>WoolType</code> with suitable data type</li>
+<li><code>Acrylic</code> and <code>Wool</code> have method <code>YarnInfo()</code></li>
+<li><code>Acrylic</code>, <code>Wool</code> and <code>Mix</code> at least one inherits (one arrow correct) from <code>Yarn</code></li>
+<li><code>Acrylic</code>, <code>Wool</code> and <code>Mix</code> all inherit (all arrows correct) from <code>Yarn</code></li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q11(a) · 3 marks</div><div class="callout-body"><p>Define these Object-Oriented Programming (OOP) terms: <strong>Instance</strong>; <strong>Inheritance</strong>; <strong>Polymorphism</strong>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(a)</strong>
+One mark for each correct OOP term definition</p>
+<ul>
+<li><strong>Inheritance</strong> – the capability of defining a new class of objects that has all the attributes and methods from a parent class</li>
+<li>(<strong>Instance</strong> – an occurrence of an object // a specific object based on the class // an instantiation of a class.)</li>
+<li>(<strong>Polymorphism</strong> – allows the same method to take on different behaviours depending on which class is instantiated // methods can be redefined for derived classes.)</li>
+</ul>
+</div></details></p>
 <h2 id="programming-inheritance">Programming inheritance</h2>
 <h3 id="how-do-you-program-inheritance">How do you program inheritance?</h3>
-<h3 id="pseudocode_5">Pseudocode</h3>
+<h3 id="pseudocode_4">Pseudocode</h3>
 <p><img alt="Pseudocode for a class created using inheritance (part 1)" src="images/inheritance-pseudo-1.png" /> <img alt="Pseudocode for a class created using inheritance (part 2)" src="images/inheritance-pseudo-2.png" />
 <em><strong>Pseudocode for a class created using inheritance</strong></em></p>
-<h4 id="java_5">Java</h4>
+<h4 id="java_4">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">//vehicle class created</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Vehicle</span><span class="w"> </span><span class="p">{</span>
 <span class="w">       </span><span class="c1">//attributes created for the vehicle class</span>
@@ -760,7 +922,7 @@ End Class
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h4 id="python_5">Python</h4>
+<h4 id="python_4">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">#Base class (Vehicle)</span>
 <span class="c1">#Vehicle class created</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Vehicle</span><span class="p">:</span>
@@ -850,6 +1012,7 @@ End Class
 </code></pre></div>
 <h2 id="encapsulation-oop">Encapsulation (OOP)</h2>
 <h3 id="what-is-encapsulation">What is encapsulation?</h3>
+<p><strong>Encapsulation ★</strong></p>
 <ul>
 <li>In A Level Computer Science, encapsulation refers to the <strong>practice of grouping data</strong> (attributes) <strong>and methods</strong> (functions) <strong>within a class</strong></li>
 <li>Using encapsulation ensures that data remains secure and is not accidentally modified or misused by controlling access to them using access modifiers (e.g., public, private)</li>
@@ -871,8 +1034,24 @@ End Class
 <ul>
 <li>When determining whether a method or attribute is public or private, if neither keyword appears, then assume it is public</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q11(b)(i) · 1 mark</div><div class="callout-body"><p>Identify the object-oriented programming (OOP) feature whose function includes restricting external access to the data.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(b)(i)</strong>
+Encapsulation</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q10(a) · 3 marks</div><div class="callout-body"><p>Define these Object-Oriented Programming (OOP) terms: <strong>Encapsulation</strong>; <strong>Getter</strong>; <strong>Setter</strong>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(a)</strong>
+One mark for each correct OOP term definition</p>
+<ul>
+<li><strong>Encapsulation</strong> – putting properties and methods inside a class // ensures sensitive data is hidden from users by hiding values of a structured data object inside a class.</li>
+<li><strong>Getter</strong> – method that is used to return the value of a property.</li>
+<li><strong>Setter</strong> – method that is used to update the value of a property.</li>
+</ul>
+</div></details></p>
 <h2 id="programming-encapsulation-oop">Programming encapsulation (OOP)</h2>
 <h3 id="what-is-a-get-method">What is a get method?</h3>
+<p><strong>Getters and setters ★</strong></p>
 <ul>
 <li>The “get” method is a common naming convention for a type of method that is <strong>used to retrieve the value of an object’s private</strong> <strong>attributes</strong> (instance variables)</li>
 <li>These methods are also known as “getter” methods or “accessor” methods</li>
@@ -880,10 +1059,10 @@ End Class
 <li><strong>Attributes</strong> are often declared as private to achieve <strong>encapsulation</strong>, so cannot be accessed directly from outside the class</li>
 <li>External code can use the public get methods to read the values of these private attributes (also known as instance variables)</li>
 </ul>
-<h4 id="pseudocode_6">Pseudocode</h4>
+<h4 id="pseudocode_5">Pseudocode</h4>
 <p><img alt="Pseudocode for a get method" src="images/get-methods-pseudocode.png" />
 <em><strong>Pseudocode for a get method</strong></em></p>
-<h4 id="java_6">Java</h4>
+<h4 id="java_5">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">//creating a class called NumberUpdater</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">NumberUpdater</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">//setting the private attribute to the value of 10</span>
@@ -894,7 +1073,7 @@ End Class
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h4 id="python_6">Python</h4>
+<h4 id="python_5">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">#creating a class called NumberUpdater</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">NumberUpdater</span><span class="p">:</span>
     <span class="c1">#setting the private attribute to the value of 10 </span>
@@ -911,10 +1090,10 @@ End Class
 <li>Setter methods, also known as “setter” methods or “mutator” methods</li>
 <li>Generally additional code is written within the method to allow controlled access by enforcing certain conditions or validations before updating the attribute</li>
 </ul>
-<h4 id="pseudocode_7">Pseudocode</h4>
+<h4 id="pseudocode_6">Pseudocode</h4>
 <p><img alt="Pseudocode for a &quot;setter&quot; method" src="images/set-methods-pseudocode.png" />
 <em><strong>Pseudocode for a “setter” method</strong></em></p>
-<h4 id="java_7">Java</h4>
+<h4 id="java_6">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="c1">//creating a class called NumberUpdater</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">NumberUpdater</span><span class="w">  </span>
 <span class="w">        </span><span class="c1">//setting attribute value to 10</span>
@@ -932,7 +1111,7 @@ End Class
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h4 id="python_7">Python</h4>
+<h4 id="python_6">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="o">//</span><span class="n">creating</span> <span class="n">a</span> <span class="k">class</span><span class="w"> </span><span class="nc">called</span> <span class="n">NumberUpdater</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">NumberUpdater</span><span class="p">:</span>
      <span class="o">//</span><span class="n">setting</span> <span class="n">attribute</span> <span class="n">value</span> <span class="n">to</span> <span class="mi">10</span>
@@ -998,8 +1177,56 @@ End Function
 <span class="k">def</span><span class="w"> </span><span class="nf">GetMaxSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
   <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MaxSpeed</span>
 </code></pre></div>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q5 · 4 marks</div><div class="callout-body"><p>Complete the table by filling in the missing object-oriented programming (OOP) terms and descriptions.</p>
+<table>
+<thead>
+<tr>
+<th>OOP term</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>A method that accesses the value of a property.</td>
+</tr>
+<tr>
+<td></td>
+<td>A method that changes the value of a property.</td>
+</tr>
+<tr>
+<td>Object</td>
+<td></td>
+</tr>
+<tr>
+<td>Method</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5</strong>
+One mark per correct answer (<strong>Max 4</strong>)</p>
+<ul>
+<li><strong>Getter</strong> – A method that accesses the value of a property</li>
+<li><strong>Setter</strong> – A method that changes the value of a property</li>
+<li>Object – <strong>An instantiation / instance of a class</strong></li>
+<li>Method – <strong>A programmed function / procedure / subroutine / subprogram defined as part of a class</strong></li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q10(b) · 3 marks</div><div class="callout-body"><p>The object <code>SubstituteTeacher</code> stores full name, telephone number and whether the teacher is in school today. Complete the diagram for the object <code>SubstituteTeacher</code>, including appropriate properties and their getters and setters.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(b)</strong>
+One mark for each point</p>
+<ul>
+<li>properties correct</li>
+<li>setters correct</li>
+<li>getters correct</li>
+</ul>
+</div></details></p>
 <h2 id="polymorphism-oop">Polymorphism (OOP)</h2>
 <h3 id="what-is-polymorphism">What is polymorphism?</h3>
+<p><strong>Polymorphism ★</strong></p>
 <ul>
 <li>In A Level Computer Science**,** polymorphism is a <strong>concept in programming</strong> that allows <strong>objects</strong> to take on <strong>different forms or behaviours</strong></li>
 <li>Different <strong>objects</strong> can share the same name or behaviour but can work in different ways</li>
@@ -1039,6 +1266,28 @@ End Function
 </li>
 <li>This flexibility provided by <strong>polymorphism</strong> are essential for creating more maintainable and modular code</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q12(b)(ii) · 2 marks</div><div class="callout-body"><p>Describe what is meant by the OOP term <strong>polymorphism</strong>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(b)(ii)</strong>
+One mark for each mark point</p>
+<ul>
+<li>MP1 Polymorphism is when methods with the same name are redefined / behave differently …</li>
+<li>MP2 … in derived / inherited classes / subclasses</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q4 · 4 marks</div><div class="callout-body"><p>Draw one line from each Object-Oriented Programming (OOP) term to its most appropriate description.
+Terms: Encapsulation; Getters; Polymorphism; Setters.
+Descriptions: methods used to return the value of a property; the process of putting data and methods together as a single unit; methods used to update the value of a property; allows methods to be redefined for derived classes; enables the defining of a new class that inherits from a parent class.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4</strong></p>
+<ul>
+<li>Encapsulation → the process of putting data and methods together as a single unit</li>
+<li>Getters → methods used to return the value of a property</li>
+<li>Polymorphism → allows methods to be redefined for derived classes</li>
+<li>Setters → methods used to update the value of a property</li>
+<li>(The unmatched description “enables the defining of a new class that inherits from a parent class” describes inheritance.)</li>
+</ul>
+</div></details></p>
 <h2 id="programming-polymorphism-oop">Programming polymorphism (OOP)</h2>
 <h3 id="how-do-you-program-polymorphism">How do you program polymorphism?</h3>
 <h4 id="run-time-polymorphism">Run-time polymorphism</h4>
@@ -1080,7 +1329,7 @@ CALL make_sound(myCat)  // Outputs: Meow
 <li><code>make_sound()</code> takes an <code>Animal</code> object but <strong>calls the correct version</strong> of <code>speak()</code> depending on whether it’s a <code>Dog</code> or a <code>Cat</code></li>
 <li>This demonstrates <strong>run-time polymorphism</strong> – the method call is resolved based on the actual type of the object</li>
 </ul>
-<h4 id="python_8">Python</h4>
+<h4 id="python_7">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>  <span class="c1"># Placeholder method</span>
@@ -1101,7 +1350,7 @@ CALL make_sound(myCat)  // Outputs: Meow
 <li>This shows <strong>method overriding</strong></li>
 <li>The <code>make_sound()</code> function relies on <strong>dynamic method binding</strong></li>
 </ul>
-<h4 id="java_8">Java</h4>
+<h4 id="java_7">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">Animal</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">speak</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Empty default method</span>
@@ -1191,6 +1440,276 @@ End Sub
 <span class="n">Vehicle</span><span class="o">.</span><span class="n">SetHorizontalPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">GetHorizontalPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span>
 <span class="n">Vehicle</span><span class="o">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 </code></pre></div>
+<h2 id="containment-aggregation-oop">Containment / Aggregation (OOP)</h2>
+<h3 id="what-is-containment-aggregation">What is containment (aggregation)?</h3>
+<p><strong>Containment / aggregation ★</strong></p>
+<ul>
+<li><strong>Containment (aggregation)</strong> is an OOP relationship where <strong>one class contains, or is made up of, other classes/objects</strong> as attributes — the contained object is a <em>part of</em> the containing object.</li>
+<li>It is described as a <strong>“has-a” relationship</strong>: e.g. a <code>Car</code> <em>has a</em> <code>Engine</code>; an <code>Order</code> <em>has</em> <code>OrderLine</code> objects. The containing class is sometimes called the <strong>whole/aggregate</strong> and the contained class the <strong>part</strong>.</li>
+<li>The Cambridge 9618 syllabus lists “containment (aggregation)” explicitly among the OOP terms, so its definition is examinable.</li>
+<li>Mark scheme wording (2026 Summer P32 Q11(b)): <em>“One class/object contains another // Hierarchy of nested classes/objects // Process by which one class can contain other classes // Represents a ‘has a’ relationship between classes.”</em></li>
+<li>Aggregation may be <strong>nested</strong> – a contained object may itself contain further objects, giving a hierarchy of nested classes/objects.</li>
+</ul>
+<h4 id="aggregation-vs-inheritance">Aggregation vs inheritance</h4>
+<table>
+<thead>
+<tr>
+<th><strong>Aggregation (containment)</strong></th>
+<th><strong>Inheritance</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>“has-a”</strong> relationship</td>
+<td><strong>“is-a”</strong> relationship</td>
+</tr>
+<tr>
+<td>One class <strong>contains</strong> another as an attribute / part</td>
+<td>A <strong>derived class</strong> is a specialised form of a <strong>base class</strong></td>
+</tr>
+<tr>
+<td>Contained and container can exist independently; the part may be shared</td>
+<td>The subclass depends on / is the parent type; inherits attributes and methods</td>
+</tr>
+<tr>
+<td>Reuse by <strong>composition</strong> of objects</td>
+<td>Reuse by <strong>deriving</strong> a new class from an existing one</td>
+</tr>
+<tr>
+<td>e.g. <code>Car</code> has an <code>Engine</code></td>
+<td>e.g. <code>Car</code> is a <code>Vehicle</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Related but stronger form: <strong>composition</strong> is aggregation where the contained part cannot exist independently of the whole (if the whole is destroyed, the parts are too).</li>
+<li>Both are ways of relating classes but they model different ideas — exam questions may ask you to distinguish “has-a” (aggregation/containment) from “is-a” (inheritance).
+<img alt="Aggregation (has-a) compared with inheritance (is-a)" src="images/p3-ch20-1-aggregation-vs-inheritance.svg" /></li>
+</ul>
+<h3 id="representing-aggregation">Representing aggregation</h3>
+<ul>
+<li><strong>UML class diagram</strong>: aggregation is shown as a line joining the two classes with a <strong>hollow (unfilled) diamond</strong> at the <em>containing</em> (whole) end; composition uses a <strong>filled diamond</strong>. The contained class name is also listed as an attribute type inside the containing class.</li>
+<li><strong>Pseudocode</strong>: the containing class declares a private attribute whose data type is the contained class, and creates/stores it via the constructor or a setter.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>CLASS Car
+   PRIVATE regNo : STRING
+   PRIVATE engine : Engine        // Car CONTAINS an Engine (has-a)
+
+   PUBLIC PROCEDURE NEW(reg : STRING, e : Engine)
+      regNo ← reg
+      engine ← e
+   ENDPROCEDURE
+
+   PUBLIC FUNCTION GetEngine() RETURNS Engine
+      RETURN engine
+   ENDFUNCTION
+ENDCLASS
+</code></pre></div>
+<ul>
+<li>Java/Python use the same idea: an attribute whose type is another class, e.g. <code>private Engine engine;</code> or <code>self.engine = engine</code>.</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q11(b) · 4 marks</div><div class="callout-body"><p>Complete the table by filling in the missing OOP terms and descriptions.</p>
+<table>
+<thead>
+<tr>
+<th>OOP term</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>…</td>
+<td>A method used to change values in private attributes in a class.</td>
+</tr>
+<tr>
+<td>…</td>
+<td>An occurrence of a class during the execution of a program.</td>
+</tr>
+<tr>
+<td>aggregation</td>
+<td>…</td>
+</tr>
+<tr>
+<td>inheritance</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(b)</strong>
+One mark per correct answer (<strong>Max 4</strong>)</p>
+<ul>
+<li>setter = A method used to change values in private attributes in a class</li>
+<li>instance(s) // object(s) = An occurrence of a class during the execution of a program</li>
+<li>aggregation = One class/object contains another // Hierarchy of nested classes/objects // Process by which one class can contain other classes // Represents a “has a” relationship between classes</li>
+<li>inheritance = Deriving new classes/objects on existing classes/objects // Process in which the methods and data from one class, a superclass or base class, are copied to another class, a derived class // Represents a hierarchy of derived classes // Represents an “is a” relationship between classes</li>
+</ul>
+</div></details></p>
+<h2 id="designing-appropriate-classes-oop">Designing appropriate classes (OOP)</h2>
+<h3 id="designing-classes-from-a-problem">Designing classes from a problem</h3>
+<p><strong>Designing appropriate classes ★</strong></p>
+<ul>
+<li>To solve a problem by designing appropriate classes, identify the <strong>entities</strong> in the problem as classes, their <strong>data items</strong> as (private) attributes with data types, and the <strong>operations</strong> on that data as methods (getters, setters and other behaviour).</li>
+<li>Common exam tasks: <strong>complete a class diagram</strong> by adding missing attributes + data types and missing setters/getters with appropriate parameter names and data types; the getter name must match the attribute it returns.</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q11(a) · 5 marks</div><div class="callout-body"><p>A medical centre uses objects of class <code>Appointment</code>. Attributes include <code>DateSeen : DATE</code>, <code>Treatments : STRING</code>, <code>Medications : STRING</code>; patients have a unique 8-digit number, doctors are identified by name. Complete the class diagram to include: attribute and data type for patient identification; attribute and data type for doctor identification; methods to assign date seen, treatments and medications; a method to return the date seen and the patient and doctor attributes.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(a)</strong>
+One mark per mark point</p>
+<ul>
+<li>MP1 Two correct attributes (<code>PatientID : INTEGER</code> and <code>Doctor : STRING</code>)</li>
+<li>MP2 <code>SetTreatments(...)</code> and <code>SetMedications(...)</code> seen</li>
+<li>MP3 … and appropriate parameters, with string data types</li>
+<li>MP4 <code>GetPatientID()</code> and <code>GetDoctor()</code> seen</li>
+<li>MP5 <code>SetDateSeen(...)</code> and <code>GetDateSeen</code> fully correct with appropriate parameter and correct data type in setter</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q12(a) · 5 marks</div><div class="callout-body"><p>A medical clinic uses objects of class <code>Patient</code> with attributes <code>PatientID : STRING</code>, <code>Name : STRING</code>, <code>DoctorID : STRING</code>; treatment is prioritised on a numeric scale 1 to 5. Complete the class diagram to include: attribute and data type for date of birth; attribute and data type for priority; methods to assign the patient ID, priority and doctor ID; methods to return the patient ID, date of birth and priority.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(a)</strong>
+One mark per mark point</p>
+<ul>
+<li>MP1 Two correct attributes (<code>DateOfBirth : DATE</code>) and priority with a sensible name and integer data type</li>
+<li>MP2 <code>SetPatientID(...)</code> and <code>SetDoctorID(...)</code> seen</li>
+<li>MP3 … and appropriate parameters, with string data types</li>
+<li>MP4 <code>GetPatientID()</code> and <code>GetDateOfBirth()</code> seen</li>
+<li>MP5 Priority setter and getter fully correct with name matching Priority attribute, with appropriate parameter and correct data type</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q9(b) · 5 marks</div><div class="callout-body"><p>A veterinary surgery wants a class for individual pets with attributes <code>PetID : STRING</code>, <code>PetType : STRING</code>, <code>OwnerTelephone : STRING</code>, <code>DateRegistered : DATE</code>. Complete the class diagram for <code>Pet</code> to include: attribute and data type for the name of the pet; attribute and data type for the name of the owner; a method to create a <code>Pet</code> object and set attributes at registration; a method to assign a pet ID; a method to assign the date of registration; a method to return the pet name; a method to return the owner’s telephone number.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)</strong>
+One mark per mark point (<strong>Max 5</strong>)</p>
+<ul>
+<li>MP1 Two correct attributes with sensible names and correct data types</li>
+<li>MP2 Constructor present</li>
+<li>MP3 Two correct setters with exact names and appropriate parameters and data types</li>
+<li>MP4 Two correct getters with appropriate names</li>
+<li>MP5 Name assigned to pet name getter matches the attribute</li>
+</ul>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P32 Q11(b)</td>
+<td>OOP terminology — setter, instance, aggregation, inheritance</td>
+<td>2026 Summer P32 Q11(b)</td>
+</tr>
+<tr>
+<td>P33 Q5</td>
+<td>OOP terminology — getter, setter, object, method</td>
+<td>2025 Summer P33 Q5</td>
+</tr>
+<tr>
+<td>P32 Q12(b)(i)</td>
+<td>OOP terminology — instance / instantiation</td>
+<td>2025 Summer P32 Q12(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q12(b)(ii)</td>
+<td>OOP terminology — polymorphism</td>
+<td>2025 Summer P32 Q12(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)(i)</td>
+<td>OOP terminology — encapsulation</td>
+<td>2025 Summer P31 Q11(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)(ii)</td>
+<td>OOP terminology — inheritance</td>
+<td>2025 Summer P31 Q11(b)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q10(a)</td>
+<td>OOP terminology — structure of a class</td>
+<td>2024 Winter P32 Q10(a)</td>
+</tr>
+<tr>
+<td>P32 Q10(b)</td>
+<td>OOP terminology — object vs class</td>
+<td>2024 Winter P32 Q10(b)</td>
+</tr>
+<tr>
+<td>P32 Q4</td>
+<td>OOP terminology — matching terms to descriptions</td>
+<td>2023 Summer P32 Q4</td>
+</tr>
+<tr>
+<td>P32 Q10(a)</td>
+<td>OOP terminology — encapsulation, getter, setter</td>
+<td>2022 Winter P32 Q10(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(a)</td>
+<td>OOP terminology — instance, inheritance, polymorphism</td>
+<td>2022 Winter P31 Q11(a)</td>
+</tr>
+<tr>
+<td>P31 Q7(b)</td>
+<td>OOP terminology — properties, methods, inheritance</td>
+<td>2022 Summer P31 Q7(b)</td>
+</tr>
+<tr>
+<td>P32 Q1©(ii)</td>
+<td>OOP terminology — encapsulation (why PRIVATE)</td>
+<td>2022 Summer P32 Q1©(ii)</td>
+</tr>
+<tr>
+<td>P31 Q9(a)</td>
+<td>OOP terminology — encapsulation (why PRIVATE)</td>
+<td>2024 Winter P31 Q9(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(a)</td>
+<td>Designing appropriate classes — class diagram (Appointment)</td>
+<td>2025 Summer P31 Q11(a)</td>
+</tr>
+<tr>
+<td>P32 Q12(a)</td>
+<td>Designing appropriate classes — class diagram (Patient)</td>
+<td>2025 Summer P32 Q12(a)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>Designing appropriate classes — class diagram (Pet)</td>
+<td>2024 Winter P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q7(a)</td>
+<td>Designing appropriate classes — inheritance diagram</td>
+<td>2022 Summer P31 Q7(a)</td>
+</tr>
+<tr>
+<td>P32 Q10(b)</td>
+<td>Designing appropriate classes — object diagram with getters/setters</td>
+<td>2022 Winter P32 Q10(b)</td>
+</tr>
+<tr>
+<td>P32 Q1©(i)</td>
+<td>Designing appropriate classes — declare PRIVATE attribute</td>
+<td>2022 Summer P32 Q1©(i)</td>
+</tr>
+<tr>
+<td>P32 Q11(a)</td>
+<td>Writing OOP code — declare class + constructor (pseudocode)</td>
+<td>2026 Summer P32 Q11(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)</td>
+<td>Writing OOP code — complete class (Car)</td>
+<td>2022 Winter P31 Q11(b)</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="201-programming-paradigms.html" title="Previous: 20.1 Programming Paradigms" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">20.1 Programming Paradigms</span></a>

@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -225,6 +264,7 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
 <h2 id="what-are-user-defined-data-types">What are user-defined data types?</h2>
 <ul>
 <li>A user-defined data type is a <strong>custom data structure</strong> created by the programmer to match the specific needs of a program
@@ -233,6 +273,8 @@ body::before {
 <li>It helps represent <strong>real-world entities</strong> more accurately than built-in types alone</li>
 </ul>
 </li>
+<li>A <strong>non-composite</strong> data type is defined <strong>without referencing any other data type</strong> in its definition; it can be a primitive type supplied by the language <strong>or</strong> a user-defined type (enumerated or pointer)</li>
+<li>A <strong>composite</strong> data type <strong>references other data types</strong> in its definition, grouping a collection of related data items (of the same or different types) under a <strong>single identifier</strong>; it can be a record, set or class/object</li>
 </ul>
 <table>
 <thead>
@@ -252,62 +294,145 @@ body::before {
 </tr>
 </tbody>
 </table>
+<p><strong>Why user-defined data types are necessary ★</strong></p>
+<ul>
+<li><strong>Type safety / validity</strong> — a variable of a user-defined type can only hold a <strong>valid value from that type</strong>, so an invalid assignment such as <code>Today ← Funday</code> is rejected instead of silently storing a meaningless value</li>
+<li><strong>Modelling reality</strong> — built-in types store a single primitive value, so related data and the allowed values must be <strong>grouped into one named type</strong> before a real-world entity can be represented faithfully</li>
+<li><strong>Types not available in the language</strong> — the programmer may need a data type that does not exist in the language, or may wish to <strong>extend the flexibility</strong> of the language by building a new type from existing ones</li>
+<li><strong>Maintainability and reuse</strong> — a type is defined <strong>once</strong> and reused wherever it is needed, so a change to its definition is made in a single place</li>
+<li><strong>Self-documenting code</strong> — a meaningful type name such as <code>PupilType</code> or <code>Grade</code> states the programmer’s intent, so the code is easier to understand / read without extra comments</li>
+<li><strong>Exact fit</strong> — the result is a data type that exactly matches the program’s requirements (a particular group of data under a single identifier)</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q1(a) · 3 marks</div><div class="callout-body"><p>User-defined data types may be created by programmers when writing software.</p>
+<p>Explain the reasons why user-defined data types are needed.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong> — One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 The programmer may require a data type for their application that doesn’t exist within the programming language</li>
+<li>MP2 … to represent a particular set/group of data / custom data structure</li>
+<li>MP3 … under a single identifier</li>
+<li>MP4 They may wish to extend those data types that are already there using composite data types</li>
+<li>MP5 … to make the code easier to understand / read</li>
+<li>MP6 To produce a data type that exactly matches a program’s requirements.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Summer P31 Q2(a) · 2 marks</div><div class="callout-body"><p>Describe the purpose of a user-defined data type.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2(a)</strong> — One mark for each correct marking point (<strong>Max 2</strong>)</p>
+<ul>
+<li>To create a new data type (from existing data types)</li>
+<li>To allow data types not available in a programming language to be constructed // To extend the flexibility of the programming language</li>
+</ul>
+</div></details></p>
 <h2 id="non-composite">Non-composite</h2>
 <h3 id="what-is-an-enumerated-data-type">What is an enumerated data type?</h3>
 <ul>
 <li>An enumerated data type is a type of <strong>non-composite, user-defined data type</strong> that consists of a <strong>list of named, fixed values</strong></li>
 <li>It allows the programmer to define a variable that can only take one of a <strong>limited set of values</strong></li>
-<li>Making code <strong>clearer</strong>, <strong>more readable</strong>, and <strong>easier to validate</strong></li>
+<li>Using an enumerated type makes code <strong>clearer</strong>, <strong>more readable</strong> and <strong>easier to validate</strong></li>
 <li>An enumerated data type should be used:
 <ul>
 <li>When a variable should only hold <strong>predefined values</strong></li>
 <li>To improve <strong>code readability</strong> and <strong>reduce errors</strong></li>
-<li>To <strong>restrict input</strong> to a known, fixed list
-<strong>Pseudocode</strong></li>
+<li>To <strong>restrict input</strong> to a known, fixed list</li>
 </ul>
 </li>
+<li>The values in an enumerated declaration have these characteristics (tested repeatedly): the list is <strong>ordered / ordinal</strong>, it <strong>contains all possible values</strong> (is complete / of fixed length), it has <strong>no duplicate values</strong>, and <strong>all values are the same data type</strong></li>
+<li>The values need not be names — an enumerated type may hold <strong>numeric values</strong>, e.g. <code>TYPE Prime = (2, 3, 5, 7, 11, 13, 17, 19)</code> or <code>TYPE Fibonacci = (0, 1, 2, 3, 5, 8, 13, 21)</code>. Exam papers sometimes describe these as a “set of numbers”, but the mark scheme still expects the <strong>enumerated</strong> <code>( ... )</code> declaration, not <code>SET OF</code>
+<strong>Pseudocode</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code>TYPE &lt;identifier&gt; = (value1, value2, value3, … )
-</code></pre></div>
+<pre><code>TYPE &lt;identifier&gt; = (value1, value2, value3, … )
+</code></pre>
 <p><strong>Example code</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">DayType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Monday</span><span class="p">,</span><span class="w"> </span><span class="n">Tuesday</span><span class="p">,</span><span class="w"> </span><span class="n">Wednesday</span><span class="p">,</span><span class="w"> </span><span class="n">Thursday</span><span class="p">,</span><span class="w"> </span><span class="n">Friday</span><span class="p">,</span><span class="w"> </span><span class="n">Saturday</span><span class="p">,</span><span class="w"> </span><span class="n">Sunday</span><span class="p">)</span>
-<span class="n">DECLARE</span><span class="w"> </span><span class="n">Today</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">DayType</span>
-<span class="n">Today</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">Monday</span>
-<span class="n">IF</span><span class="w"> </span><span class="n">Today</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Saturday</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">Today</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sunday</span><span class="w"> </span><span class="n">THEN</span>
-<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;It&#39;s the weekend!&quot;</span>
-<span class="n">ELSE</span>
-<span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;It&#39;s a weekday.&quot;</span>
-<span class="n">ENDIF</span>
+<div class="highlight"><pre><span></span><code>TYPE DayType = (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday)
+DECLARE Today : DayType
+Today ← Monday
+IF Today = Saturday OR Today = Sunday THEN
+    OUTPUT &quot;It&#39;s the weekend!&quot;
+ELSE
+    OUTPUT &quot;It&#39;s a weekday.&quot;
+ENDIF
 </code></pre></div>
 <ul>
 <li><code>DayType</code> is the enumerated type</li>
 <li><code>Today</code> can only be one of the seven values listed in <code>DayType</code></li>
 <li>This makes it easy to check against valid options and avoids invalid assignments</li>
 </ul>
+<p>An enumerated type restricts a variable to a fixed, ordered list, whereas a set is an unordered collection of unique values:</p>
+<p><img alt="Comparison of an enumerated type (ordered, fixed list of named values) and a set (unordered collection of unique values)" src="images/p3-ch13-1-enumerated-vs-set.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q1 · 5 marks</div><div class="callout-body"><p>A user-defined data type is required to store the types of animals in a children’s zoo:</p>
+<p><strong>(a)</strong> Write the pseudocode statement to declare a non-composite data type, <code>Animals</code>, that holds this data: Alpaca, Chicken, Donkey, Duck, Goat, Pony, Sheep <strong>[2]</strong></p>
+<p><strong>(b)(i)</strong> State the type of user-defined non-composite data type created in 1(a). <strong>[1]</strong>
+<strong>(b)(ii)</strong> Give two features that would apply to any list used in the data type in 1(a). <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 <code>TYPE Animals =</code></li>
+<li>MP2 <code>(Alpaca, Chicken, Donkey, Duck, Goat, Pony, Sheep)</code></li>
+</ul>
+<p>Example answer: <code>TYPE Animals = (Alpaca, Chicken, Donkey, Duck, Goat, Pony, Sheep)</code></p>
+<p>Guidance: Only allow equals sign. Do not allow quotation marks around data elements. The order of the elements must be correct. Do not allow extra punctuation, such as underscore, between elements, or when going onto the next line.</p>
+<p><strong>Q1(b)(i)</strong> — Enumerated.</p>
+<p><strong>Q1(b)(ii)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 The list is complete / contains all possible values // Cannot change values of list after it is defined/declared // The list is of fixed length</li>
+<li>MP2 The list is ordinal / ordered / in alphabetical order</li>
+<li>MP3 Elements are unique / not repeated</li>
+</ul>
+<p>Guidance: Do not allow chronological order for MP2.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q1(a) · 4 marks</div><div class="callout-body"><p><strong>(a)(i)</strong> An enumerated data type, <code>Spectrum</code>, is required to hold the names of colours. Write the pseudocode statement for the type declaration of <code>Spectrum</code> to hold the names of the colours available: Red, Orange, Yellow, Green, Blue, Indigo, Violet. <strong>[2]</strong></p>
+<p><strong>(a)(ii)</strong> Identify two characteristics of the list of values given in an enumerated data type declaration. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)(i)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 <code>TYPE Spectrum =</code></li>
+<li>MP2 <code>(Red, Orange, Yellow, Green, Blue, Indigo, Violet)</code></li>
+</ul>
+<p>Example answer: <code>TYPE Spectrum = (Red, Orange, Yellow, Green, Blue, Indigo, Violet)</code></p>
+<p><strong>Q1(a)(ii)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>the list is ordered/ordinal</li>
+<li>the list contains all possible values</li>
+<li>no duplicate values in list</li>
+<li>all values are the same data type</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q3(a), Q3(c) · 3 marks</div><div class="callout-body"><p><strong>(a)</strong> State what is meant by the term <strong>enumerated data type</strong>. <strong>[1]</strong></p>
+<p><strong>©</strong> Write the pseudocode statement to define the data type <code>Quarter1</code>, to hold the names of the first three months of a year. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong> — A (user-defined non-composite) data type with an <strong>ordered list</strong> of possible values.</p>
+<p><strong>Q3©</strong> — <code>TYPE Quarter1 = (January, February, March)</code></p>
+<ul>
+<li><code>TYPE Quarter1 =</code> [1]</li>
+<li><code>(January, February, March)</code> [1]</li>
+</ul>
+</div></details></p>
 <h3 id="what-is-a-pointer-data-type">What is a pointer data type?</h3>
 <ul>
 <li>A pointer is a special type of variable that <strong>stores the memory address</strong> of another variable or data item, rather than the data itself</li>
-<li>Pointers are used to demonstrate <strong>dynamic data structures</strong>, such as <strong>linked lists</strong></li>
+<li>A pointer type is used to <strong>reference a memory location</strong>, and it also <strong>indicates the type of data stored in that memory location</strong></li>
+<li>Pointers are used to <strong>implement dynamic data structures</strong>, such as <strong>linked lists</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">^&lt;</span><span class="n">data</span><span class="w"> </span><span class="n">type</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><code>TYPE &lt;identifier&gt; = ^&lt;data type&gt;
 </code></pre></div>
 <ul>
 <li>The <code>^</code> indicates the data type is a pointer</li>
 <li><code>&lt;data type&gt;</code> indicates the type of data stored in the memory location
 <strong>Example code</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Node</span>
-<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
-<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Next</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">Node</span>
-<span class="n">ENDTYPE</span>
-<span class="n">DECLARE</span><span class="w"> </span><span class="n">StartPtr</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">Node</span>
-<span class="n">DECLARE</span><span class="w"> </span><span class="n">NewNode</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">^</span><span class="n">Node</span>
-<span class="c1">// Create a new node</span>
-<span class="n">NEW</span><span class="p">(</span><span class="n">NewNode</span><span class="p">)</span>
-<span class="n">NewNode</span><span class="o">^</span><span class="p">.</span><span class="na">Data</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">10</span>
-<span class="n">NewNode</span><span class="o">^</span><span class="p">.</span><span class="na">Next</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">NULL</span>
-<span class="c1">// Initialise the list</span>
-<span class="n">StartPtr</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">NewNode</span>
+<div class="highlight"><pre><span></span><code>TYPE Node
+    DECLARE Data : INTEGER
+    DECLARE Next : ^Node
+ENDTYPE
+DECLARE StartPtr : ^Node
+DECLARE NewNode : ^Node
+// Create a new node
+NEW(NewNode)
+NewNode^.Data ← 10
+NewNode^.Next ← NULL
+// Initialise the list
+StartPtr ← NewNode
 </code></pre></div>
 <table>
 <thead>
@@ -339,6 +464,36 @@ body::before {
 </tr>
 </tbody>
 </table>
+<ul>
+<li>In an answer, giving only “points to” / “a pointer” as the <em>purpose</em> is not accepted — the purpose is to <strong>reference a memory location</strong>.</li>
+</ul>
+<p>A pointer links each node to the next, with the last pointer set to <code>NULL</code>:</p>
+<p><img alt="A linked list of nodes connected by pointer fields, with the final pointer set to NULL" src="images/p3-ch13-1-pointer-linked-list.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q1(b) · 3 marks</div><div class="callout-body"><p><strong>(b)(i)</strong> A pointer data type is a non-composite user-defined data type. State the purpose of a pointer user-defined data type. <strong>[1]</strong>
+<strong>(b)(ii)</strong> Write pseudocode to declare a pointer data type called <code>Word</code> to be used with <code>STRING</code> data. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(b)(i)</strong> — A user-defined data type that is used to reference a memory location.</p>
+<p><em>Do not allow point/pointer as the purpose.</em></p>
+<p><strong>Q1(b)(ii)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1 <code>TYPE Word</code></li>
+<li>MP2 <code>= ^STRING</code></li>
+</ul>
+<p>Example answer: <code>TYPE Word = ^STRING.</code></p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q3 (pointer) · 2 marks</div><div class="callout-body"><p>Describe what is meant by <strong>pointer</strong> data types.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3 — pointer type</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP4: A user-defined non-composite (data type) (only award once)</li>
+<li>MP5: …that stores addresses/memory locations only</li>
+<li>MP6: …and indicates the type of data stored in the memory location.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q3(b) · 2 marks</div><div class="callout-body"><p><strong>(b)</strong> Write pseudocode to create a pointer type called <code>SelectParts</code> that references the memory location where the current part name is stored.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(b)</strong> — <code>TYPE SelectParts = ^Parts</code></p>
+</div></details></p>
 <h3 id="use-of-pointers-in-dynamic-structures">Use of pointers in dynamic structures</h3>
 <ul>
 <li><strong>Linked lists</strong>: Each node uses a pointer to link to the next</li>
@@ -349,6 +504,8 @@ body::before {
 <h3 id="what-are-records">What are records?</h3>
 <ul>
 <li>A record is a <strong>composite user-defined data type</strong> that allows you to group together multiple <strong>related fields</strong>, each of which can have <strong>different data types</strong></li>
+<li>Its definition <strong>references other data types</strong> to form a single new data type; these may be primitive types from the language or other user-defined types</li>
+<li>A record contains a <strong>fixed number of items</strong></li>
 <li>Records are used to represent <strong>real-world entities</strong>, such as a student, product, or customer, in a single structure</li>
 </ul>
 <table>
@@ -377,38 +534,112 @@ body::before {
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">RecordTypeName</span><span class="o">&gt;</span>
-<span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">FieldName1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">DataType1</span><span class="o">&gt;</span>
-<span class="n">DECLARE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">FieldName2</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">DataType2</span><span class="o">&gt;</span>
-<span class="p">...</span>
-<span class="n">ENDTYPE</span>
+<div class="highlight"><pre><span></span><code>TYPE &lt;RecordTypeName&gt;
+    DECLARE &lt;FieldName1&gt; : &lt;DataType1&gt;
+    DECLARE &lt;FieldName2&gt; : &lt;DataType2&gt;
+    ...
+ENDTYPE
 </code></pre></div>
 <p><strong>Example code</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">TYPE</span><span class="w"> </span><span class="n">Student</span>
-<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span>
-<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
-<span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">Enrolled</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BOOLEAN</span>
-<span class="n">ENDTYPE</span>
-<span class="n">DECLARE</span><span class="w"> </span><span class="n">S1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Student</span>
-<span class="n">S1</span><span class="p">.</span><span class="na">Name</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="s">&quot;Ali&quot;</span>
-<span class="n">S1</span><span class="p">.</span><span class="na">Age</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="mi">17</span>
-<span class="n">S1</span><span class="p">.</span><span class="na">Enrolled</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">TRUE</span>
-<span class="n">OUTPUT</span><span class="w"> </span><span class="n">S1</span><span class="p">.</span><span class="na">Name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; is &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">S1</span><span class="p">.</span><span class="na">Age</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; years old.&quot;</span>
+<div class="highlight"><pre><span></span><code>TYPE Student
+    DECLARE Name : STRING
+    DECLARE Age : INTEGER
+    DECLARE Enrolled : BOOLEAN
+ENDTYPE
+DECLARE S1 : Student
+S1.Name ← &quot;Ali&quot;
+S1.Age ← 17
+S1.Enrolled ← TRUE
+OUTPUT S1.Name, &quot; is &quot;, S1.Age, &quot; years old.&quot;
 </code></pre></div>
 <ul>
 <li>Groups <strong>related data</strong> together for easy access</li>
 <li>Makes programs <strong>easier to manage and read</strong></li>
 <li>Ideal for <strong>arrays of records</strong> (e.g. a list of students)</li>
+<li>A field may itself be a user-defined type: an <strong>enumerated type</strong> (to restrict its values), a <strong>subrange</strong> such as <code>DECLARE NumberOfCopies : 1 .. 10</code>, or an <strong>array</strong> such as <code>DECLARE AccessionNumber : ARRAY[1:NumberOfCopies] OF INTEGER</code></li>
 </ul>
+<p>A record groups named fields of different types under one identifier:</p>
+<p><img alt="Structure of a record data type showing named fields of different data types grouped under one identifier" src="images/p3-ch13-1-record-structure.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q4 · 10 marks</div><div class="callout-body"><p>A program to manage regular flight details at an airport requires some user-defined data types.</p>
+<p><strong>(a)</strong> Write pseudocode statements to declare the enumerated data type <code>Aircraft</code> to hold: C300, C350, D242, E757, X380. <strong>[2]</strong>
+<strong>(b)</strong> Write pseudocode statements to declare the composite data type <code>Flight</code> to hold: flight number, destination, date of departure, type of aircraft used. Use the enumerated data type from part (a). <strong>[4]</strong>
+<strong>©(i)</strong> Write the pseudocode statement to set up a variable for one record of the composite data type <code>Flight</code>. <strong>[1]</strong>
+<strong>©(ii)</strong> Write pseudocode to store the details of the following flight in the variable from ©(i): XA782, Cambridge, 12/12/2022, C350. <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4(a)</strong> — <code>TYPE Aircraft = (C300, C350, D242, E757, X380)</code></p>
+<ul>
+<li><code>TYPE Aircraft =</code> [1]</li>
+<li><code>(C300, C350, D242, E757, X380)</code> [1]</li>
+</ul>
+<p><strong>Q4(b)</strong> — One mark for each point (<strong>Max 4</strong>)</p>
+<ul>
+<li>TYPE Flight and ENDTYPE correct</li>
+<li>DECLARE FlightNumber and DECLARE Destination as STRING</li>
+<li>DECLARE DepartureDate as DATE</li>
+<li>DECLARE AircraftType as Aircraft (correct data type from part 4(a))</li>
+</ul>
+<p><strong>Q4©(i)</strong> — <code>DECLARE Flight1 : Flight</code></p>
+<p><strong>Q4©(ii)</strong> — One mark for each point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Correct assignments of both string data values</li>
+<li>Correct assignments of date data value</li>
+<li>Correct assignments of enumerated data value</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q1 · 6 marks</div><div class="callout-body"><p>The composite record data type <code>ClubMember</code> is defined in pseudocode with fields: Code, LastName, FirstName, Telephone, JoinDate, Fees, FeesPaid.</p>
+<p><strong>(a)(i)</strong> Write the pseudocode statement to set up a variable for one record of <code>ClubMember</code>. <strong>[1]</strong>
+<strong>(a)(ii)</strong> Write the pseudocode statements to assign <code>984632</code> to <code>Code</code> and <code>TRUE</code> to <code>FeesPaid</code>. <strong>[2]</strong>
+<strong>(b)(i)</strong> Write the pseudocode statement for the type declaration of <code>Activity</code> to hold: Badminton, Football, Golf, Snooker, Swimming, Tennis. <strong>[2]</strong>
+<strong>(b)(ii)</strong> Write the new pseudocode statement required to update the declaration of <code>Choice</code> in the definition of <code>ClubMember</code>. <strong>[1]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)(i)</strong> — <code>DECLARE Member1 : ClubMember</code></p>
+<p><strong>Q1(a)(ii)</strong> — One mark for each correct answer</p>
+<ul>
+<li><code>Member1.Code ← 984632</code></li>
+<li><code>Member1.FeesPaid ← TRUE</code></li>
+</ul>
+<p><strong>Q1(b)(i)</strong> — <code>TYPE Activity = (Badminton, Football, Golf, Snooker, Swimming, Tennis)</code></p>
+<p><strong>Q1(b)(ii)</strong> — <code>DECLARE Choice : Activity</code></p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q3(a) · 3 marks</div><div class="callout-body"><p>Describe the user-defined data type <strong>record</strong>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong> — One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>A user-defined record data type is a composite data type</li>
+<li>It uses other data types in its definition to form a single new data type</li>
+<li>The data types referenced may be primitive data types from a programming language or they may be other user-defined data types</li>
+<li>Includes related items</li>
+<li>Includes a fixed number of items.</li>
+</ul>
+</div></details></p>
+<h3 id="what-are-classes-and-objects">What are classes and objects? ★</h3>
+<ul>
+<li>A <strong>class</strong> is a <strong>template (blueprint)</strong> that defines the <strong>attributes</strong> (data) and <strong>methods</strong> (operations) shared by every object of that class; no attribute values exist until an object is created</li>
+<li>An <strong>object</strong> is an <strong>instance</strong> of a class, created at run time, and holds its <strong>own copy</strong> of the attribute values</li>
+<li><strong>Attributes</strong> are usually declared <code>PRIVATE</code> and can only be read or changed through the class’s <code>PUBLIC</code> <strong>methods</strong>, so the data is protected from invalid values (<strong>encapsulation</strong>)</li>
+<li><strong>Class versus record</strong> — a record groups <strong>data fields only</strong>; a class groups data <strong>and the methods that operate on that data</strong>, so the behaviour travels with the data</li>
+<li>In the exam, a class/object is most often asked for as one of the “other” composite user-defined data types (alongside a set) rather than as a full class definition</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q1(a) · 2 marks</div><div class="callout-body"><p>A record data type is a type of composite user-defined data type.</p>
+<p>Identify <strong>two</strong> other types of composite user-defined data types.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong> — One mark per correct data type (<strong>Max 2</strong>)</p>
+<ul>
+<li>set</li>
+<li>class / object</li>
+</ul>
+<p><em>Do not allow record.</em></p>
+</div></details></p>
 <h3 id="what-are-sets">What are sets?</h3>
 <ul>
 <li>A set is an <strong>unordered collection</strong> of <strong>unique elements</strong></li>
+<li>A set data type is a <strong>composite</strong> data type that <strong>includes the data type it uses as part of its definition</strong>; all elements must be of the <strong>same data type</strong></li>
 <li>Sets are useful for situations where <strong>duplication is not allowed</strong>, and where <strong>membership testing</strong> is common</li>
 <li>Features of a set include:
 <ul>
 <li><strong>No duplicate values</strong></li>
 <li><strong>Order is not important</strong></li>
-<li><strong>Can perform operations like union, intersection, and difference</strong></li>
+<li><strong>Can perform set-theory operations</strong> such as union and intersection</li>
 </ul>
 </li>
 </ul>
@@ -424,6 +655,435 @@ ENDIF
 <ul>
 <li>This creates a set named <code>Colours</code> containing <code>&quot;Red&quot;</code>, <code>&quot;Green&quot;</code>, and <code>&quot;Blue&quot;</code> using the user-defined set type <code>ColourSet</code></li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q6 · 7 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the user-defined data type <strong>set</strong>. <strong>[3]</strong>
+<strong>(b)</strong> Write pseudocode statements to declare the set data type, <code>SymbolSet</code>, to hold the following set of mathematical operators, using the variable <code>Operators</code>: <code>+  –  *  /  ^</code>. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(a)</strong> — One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 A set user-defined data type is a composite data type</li>
+<li>MP2 … which includes a list of unordered elements</li>
+<li>MP3 Set theory operations, such as intersection and union, can be applied to these elements</li>
+<li>MP4 A set data type includes the type of data/data type it uses as part of its definition</li>
+<li>MP5 All the elements are of the same data type.</li>
+</ul>
+<p><strong>Q6(b)</strong> — One mark for each mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 <code>TYPE SymbolSet/Operators =</code></li>
+<li>MP2 <code>SET OF CHAR</code></li>
+<li>MP3 <code>DEFINE Operators/SymbolSet</code></li>
+<li>MP4 <code>('+', '–', '*', '/', '^')</code></li>
+<li>MP5 <code>: SymbolSet/Operators</code></li>
+</ul>
+<p>Example answer:</p>
+<pre><code>TYPE SymbolSet = SET OF CHAR
+DEFINE Operators ('+', '–', '*', '/', '^') : SymbolSet
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q3 · 7 marks</div><div class="callout-body"><p><strong>(a)</strong> Explain what is meant by the term <strong>non-composite data type</strong> and give an example. <strong>[3]</strong>
+<strong>(b)</strong> Write pseudocode statements to declare the set data type <code>EvenNumbers</code> to hold this set of even numbers between 2 and 12: 2, 4, 6, 8, 10, 12. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong> — One mark per mark point (Max 3)</p>
+<ul>
+<li>A data type that is defined without referencing another data type</li>
+<li>It can be a primitive data type found in a programming language <strong>or</strong> a user-defined data type</li>
+<li>Example – enumerated data type / pointer data type / allow a correct example of an enumerated or pointer data type declaration</li>
+</ul>
+<p><strong>Q3(b)</strong> — One mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>Type statement fully correct</li>
+<li><code>DEFINE EvenNumbers</code></li>
+<li>Correct list of values in brackets</li>
+<li><code>: &lt;set identifier&gt;</code> from Type statement used</li>
+</ul>
+<p>Example answer:</p>
+<pre><code>TYPE Numbers = SET OF INTEGER
+DEFINE EvenNumbers (2, 4, 6, 8, 10, 12): Numbers
+</code></pre>
+</div></details>
+<strong>Choosing and designing a user-defined type ★</strong></p>
+<ul>
+<li><strong>A value from a fixed list</strong> → <strong>enumerated type</strong> (e.g. <code>TYPE Grade = (A, B, C, D, E)</code>), because any value outside the list is rejected</li>
+<li><strong>A link that is created or removed at run time</strong> → <strong>pointer</strong>, because the address can be reassigned while the program runs</li>
+<li><strong>Several related fields describing one entity</strong> → <strong>record</strong>, because the fields are grouped and accessed by name</li>
+<li><strong>An entity that also needs behaviour or protected data</strong> → <strong>class</strong>, because methods and <code>PRIVATE</code> attributes keep the data consistent</li>
+<li><strong>A collection where duplicates are meaningless and membership is tested often</strong> → <strong>set</strong> (e.g. the modules a student has passed), because the same value cannot be stored twice</li>
+<li><strong>Design steps</strong> — identify the entity → list its attributes with a type each → decide whether behaviour is needed (class) or data only (record) → check whether any attribute is itself a <strong>fixed list</strong> (enumerated) or a <strong>link</strong> (pointer)</li>
+<li>When a question asks for “the most appropriate data type in each case”, choose per field (e.g. an identifier code is <code>STRING</code>, a count is <code>INTEGER</code>, a date is <code>DATE</code>, a yes/no value is <code>BOOLEAN</code>, a fixed list is an enumerated type) and reuse any enumerated type you defined earlier as a field type</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q1 · 6 marks</div><div class="callout-body"><p>A programmer is writing a program to manage a video library. They require a user-defined data type.</p>
+<p><strong>(a)</strong> Write pseudocode statements to declare the composite data type <code>VideoLibrary</code> to hold data about each video: identity code, title, year released, date purchased, format, running time. Use the most appropriate data type in each case. <strong>[4]</strong>
+<strong>(b)</strong> Identify <strong>one</strong> field in <code>VideoLibrary</code> that could be an efficient enumerated data type and give a reason for your choice. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong> — One mark per mark point</p>
+<ul>
+<li>MP1 <code>TYPE VideoLibrary</code> and <code>ENDTYPE</code> correct</li>
+<li>MP2 Declare used correctly for every field in the response</li>
+<li>MP3 All Three STRING fields correct</li>
+<li>MP4 Remaining Three fields correct</li>
+</ul>
+<p><strong>Q1(b)</strong> — One mark for identification of field and one mark for reason</p>
+<ul>
+<li><code>VideoFormat</code></li>
+<li>This field can have a fixed range of possible values</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q4 · 4 marks</div><div class="callout-body"><p>Two descriptions of user-defined data types are given. Give appropriate type declaration statements for each, including appropriate names.</p>
+<p><strong>(a)</strong> A data type to hold a set of prime numbers below 20. These prime numbers are: 2, 3, 5, 7, 11, 13, 17, 19. <strong>[2]</strong>
+<strong>(b)</strong> A data type to point to a day in the week, for example Monday. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4(a)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li><code>Type Prime</code></li>
+<li><code>= (2, 3, 5, 7, 11, 13, 17, 19)</code></li>
+</ul>
+<p>Example answer: <code>TYPE Prime = (2, 3, 5, 7, 11, 13, 17, 19)</code></p>
+<p><strong>Q4(b)</strong> — One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li><code>TYPE TDayPointer</code></li>
+<li><code>= ^STRING // ^DayOfWeek</code></li>
+</ul>
+<p>Example answer: <code>TYPE TDayPointer = ^STRING // ^DayOfWeek</code></p>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<p>All genuine §13.1 sub-questions, grouped by exam point. Each source is given as <code>YYYY Season PXX QN(sub-part)</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P33 Q1(a)</td>
+<td>Need for user-defined data types</td>
+<td>2026 Summer P33 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(a)</td>
+<td>Need for user-defined data types</td>
+<td>2021 Summer P31 Q2(a)</td>
+</tr>
+<tr>
+<td>P31 Q1c</td>
+<td>Need for user-defined data types / composite concepts</td>
+<td>2022 Summer P31 Q1c</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Composite vs non-composite concepts</td>
+<td>2024 Summer P31 Q3(a)</td>
+</tr>
+<tr>
+<td>Q2 (composite)</td>
+<td>Composite vs non-composite concepts</td>
+<td>2023 Winter P32 Q2 (composite)</td>
+</tr>
+<tr>
+<td>Q2 (non-composite)</td>
+<td>Composite vs non-composite concepts</td>
+<td>2023 Winter P32 Q2 (non-composite)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Non-composite — definition</td>
+<td>2024 Summer P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Non-composite — enumerated (declaration / choosing)</td>
+<td>2026 Summer P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)(i)</td>
+<td>Non-composite — enumerated (identify type)</td>
+<td>2026 Summer P32 Q1(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)(ii)</td>
+<td>Non-composite — enumerated (list features)</td>
+<td>2026 Summer P32 Q1(b)(ii)</td>
+</tr>
+<tr>
+<td>P33 Q1(b)</td>
+<td>Non-composite — enumerated (numeric values)</td>
+<td>2026 Summer P33 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2025 Summer P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)(i)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2025 Summer P32 Q1(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)(ii)</td>
+<td>Non-composite — enumerated (field type)</td>
+<td>2025 Summer P32 Q1(b)(ii)</td>
+</tr>
+<tr>
+<td>P33 Q1(b)</td>
+<td>Non-composite — enumerated (choose field + reason)</td>
+<td>2025 Summer P33 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)(i)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2025 Winter P31 Q1(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)(ii)</td>
+<td>Non-composite — enumerated (field type)</td>
+<td>2025 Winter P31 Q1(b)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)(i)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2025 Winter P32 Q1(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)(ii)</td>
+<td>Non-composite — enumerated (field type)</td>
+<td>2025 Winter P32 Q1(b)(ii)</td>
+</tr>
+<tr>
+<td>P33 Q1(a)(i)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2025 Winter P33 Q1(a)(i)</td>
+</tr>
+<tr>
+<td>P33 Q1(a)(ii)</td>
+<td>Non-composite — enumerated (list characteristics)</td>
+<td>2025 Winter P33 Q1(a)(ii)</td>
+</tr>
+<tr>
+<td>Q3 (enumerated)</td>
+<td>Non-composite — enumerated (definition)</td>
+<td>2023 Winter P31 Q3 (enumerated)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)</td>
+<td>Non-composite — enumerated / choosing</td>
+<td>2023 Summer P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Non-composite — enumerated (definition)</td>
+<td>2022 Winter P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P31 Q3©</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2022 Winter P31 Q3©</td>
+</tr>
+<tr>
+<td>P32 Q4(a)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2022 Winter P32 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)(i)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2021 Summer P31 Q2(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q2(b)(ii)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2021 Summer P31 Q2(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Non-composite — enumerated (declaration)</td>
+<td>2021 Winter P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)(i)</td>
+<td>Non-composite — pointer (purpose)</td>
+<td>2026 Summer P31 Q1(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)(ii)</td>
+<td>Non-composite — pointer (declaration)</td>
+<td>2026 Summer P31 Q1(b)(ii)</td>
+</tr>
+<tr>
+<td>Q3 (pointer)</td>
+<td>Non-composite — pointer (definition)</td>
+<td>2023 Winter P31 Q3 (pointer)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>Non-composite — pointer / choosing</td>
+<td>2023 Summer P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Non-composite — pointer (definition)</td>
+<td>2022 Winter P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Non-composite — pointer (declaration)</td>
+<td>2021 Winter P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)</td>
+<td>Composite — class/object (identify)</td>
+<td>2026 Summer P31 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(b)</td>
+<td>Composite — record / choosing</td>
+<td>2025 Summer P31 Q1(b)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Composite — record (assign fields)</td>
+<td>2025 Summer P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P33 Q1(a)</td>
+<td>Composite — record / choosing</td>
+<td>2025 Summer P33 Q1(a)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)(i)</td>
+<td>Composite — record (declare variable)</td>
+<td>2025 Winter P31 Q1(a)(i)</td>
+</tr>
+<tr>
+<td>P31 Q1(a)(ii)</td>
+<td>Composite — record (assign fields)</td>
+<td>2025 Winter P31 Q1(a)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)(i)</td>
+<td>Composite — record (declare variable)</td>
+<td>2025 Winter P32 Q1(a)(i)</td>
+</tr>
+<tr>
+<td>P32 Q1(a)(ii)</td>
+<td>Composite — record (assign fields)</td>
+<td>2025 Winter P32 Q1(a)(ii)</td>
+</tr>
+<tr>
+<td>P33 Q1(b)</td>
+<td>Composite — record / choosing</td>
+<td>2025 Winter P33 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Composite — record (declaration)</td>
+<td>2024 Summer P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Composite — record (definition)</td>
+<td>2024 Winter P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Composite — record (declaration)</td>
+<td>2024 Winter P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q6(a)</td>
+<td>Composite — record (declaration)</td>
+<td>2023 Summer P32 Q6(a)</td>
+</tr>
+<tr>
+<td>P31 Q1a</td>
+<td>Composite — record (assign fields)</td>
+<td>2022 Summer P31 Q1a</td>
+</tr>
+<tr>
+<td>P31 Q1b(i)</td>
+<td>Composite — record (subrange field)</td>
+<td>2022 Summer P31 Q1b(i)</td>
+</tr>
+<tr>
+<td>P31 Q1b(ii)</td>
+<td>Composite — record (array field)</td>
+<td>2022 Summer P31 Q1b(ii)</td>
+</tr>
+<tr>
+<td>P31 Q3(d)(i)</td>
+<td>Composite — record (declare variable)</td>
+<td>2022 Winter P31 Q3(d)(i)</td>
+</tr>
+<tr>
+<td>P31 Q3(d)(ii)</td>
+<td>Composite — record (assign fields)</td>
+<td>2022 Winter P31 Q3(d)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q4(b)</td>
+<td>Composite — record (declaration)</td>
+<td>2022 Winter P32 Q4(b)</td>
+</tr>
+<tr>
+<td>P32 Q4©(i)</td>
+<td>Composite — record (declare variable)</td>
+<td>2022 Winter P32 Q4©(i)</td>
+</tr>
+<tr>
+<td>P32 Q4©(ii)</td>
+<td>Composite — record (assign fields)</td>
+<td>2022 Winter P32 Q4©(ii)</td>
+</tr>
+<tr>
+<td>P31 Q2©</td>
+<td>Composite — record (declaration)</td>
+<td>2021 Summer P31 Q2©</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Composite — set (declaration)</td>
+<td>2024 Summer P32 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q6(a)</td>
+<td>Composite — set (definition)</td>
+<td>2024 Winter P31 Q6(a)</td>
+</tr>
+<tr>
+<td>P31 Q6(b)</td>
+<td>Composite — set (declaration)</td>
+<td>2024 Winter P31 Q6(b)</td>
+</tr>
+</tbody>
+</table>
+<p>Frontmatter-tagged §13.1 but, on reading the body and mark scheme, the content is <strong>not</strong> §13.1 — listed here for verification, not counted above:</p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Actual content</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P33 Q10</td>
+<td>Stack ADT implemented with an array; <code>Base</code>/<code>Top</code> are integer indices, not pointer UDTs</td>
+<td>2025 Winter P33 Q10</td>
+</tr>
+<tr>
+<td>P32 Q6(b)</td>
+<td>Random-file handling (<code>OPENFILE</code>, <code>SEEK</code>, <code>GETRECORD</code>) — belongs to §13.2</td>
+<td>2023 Summer P32 Q6(b)</td>
+</tr>
+<tr>
+<td>P31 Q10</td>
+<td>Recursion and stack ADT (<code>StackFull</code>, <code>AddInteger</code>) — not a user-defined data type</td>
+<td>2021 Winter P31 Q10</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="123-program-testing-maintenance.html" title="Previous: 12.3 Program Testing &amp; Maintenance" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">12.3 Program Testing &amp; Maintenance</span></a>

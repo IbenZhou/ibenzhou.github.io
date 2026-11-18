@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="960" height="430" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Hashing: key → storage address</text>
+  <text x="480" y="57" text-anchor="middle" font-size="14" fill="#5a6b6b">Example hash function: address = key MOD 5</text>
+
+  <!-- normal path -->
+  <text x="40" y="100" font-size="14" font-weight="700" fill="#0f6e56">Normal lookup</text>
+  <g font-size="13" fill="#0f3d3e">
+    <rect x="40" y="116" width="130" height="46" rx="9" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="105" y="137" text-anchor="middle" font-size="12" fill="#5a6b6b">Record key</text>
+    <text x="105" y="155" text-anchor="middle" font-weight="700">3003</text>
+
+    <line x1="174" y1="139" x2="236" y2="139" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <rect x="240" y="116" width="180" height="46" rx="9" fill="#e3f2ed" stroke="#1d9e75"/>
+    <text x="330" y="137" text-anchor="middle" font-size="12" fill="#5a6b6b">Hash function</text>
+    <text x="330" y="155" text-anchor="middle" font-weight="700">3003 MOD 5 = 3</text>
+
+    <line x1="424" y1="139" x2="486" y2="139" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <rect x="490" y="116" width="140" height="46" rx="9" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="560" y="137" text-anchor="middle" font-size="12" fill="#5a6b6b">Address</text>
+    <text x="560" y="155" text-anchor="middle" font-weight="700">slot 3</text>
+
+    <line x1="634" y1="139" x2="696" y2="139" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <rect x="700" y="110" width="220" height="58" rx="9" fill="#f4effb" stroke="#7f77dd"/>
+    <text x="810" y="133" text-anchor="middle" font-size="12" fill="#534ab7">File (random access)</text>
+    <text x="810" y="152" text-anchor="middle" font-weight="700" fill="#26215c">read/write at slot 3</text>
+  </g>
+
+  <!-- collision path -->
+  <line x1="40" y1="192" x2="920" y2="192" stroke="#d3d1c7" stroke-width="1"/>
+  <text x="40" y="222" font-size="14" font-weight="700" fill="#993c1d">Collision: two keys hash to the same address</text>
+
+  <g font-size="13" fill="#0f3d3e">
+    <rect x="40" y="240" width="130" height="46" rx="9" fill="#faece7" stroke="#d85a30"/>
+    <text x="105" y="261" text-anchor="middle" font-size="12" fill="#993c1d">Key A</text>
+    <text x="105" y="279" text-anchor="middle" font-weight="700">→ slot 3</text>
+
+    <rect x="40" y="298" width="130" height="46" rx="9" fill="#faece7" stroke="#d85a30"/>
+    <text x="105" y="319" text-anchor="middle" font-size="12" fill="#993c1d">Key B</text>
+    <text x="105" y="337" text-anchor="middle" font-weight="700">→ slot 3</text>
+
+    <line x1="174" y1="264" x2="236" y2="278" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <line x1="174" y1="321" x2="236" y2="307" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <rect x="240" y="262" width="200" height="60" rx="9" fill="#fbf0d8" stroke="#d9a441"/>
+    <text x="340" y="285" text-anchor="middle" font-weight="700" fill="#854f0b">Collision at slot 3</text>
+    <text x="340" y="305" text-anchor="middle" font-size="12" fill="#854f0b">Apply collision resolution</text>
+
+    <line x1="444" y1="292" x2="506" y2="292" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+    <rect x="510" y="240" width="410" height="114" rx="10" fill="#eef7f5" stroke="#1d9e75"/>
+    <text x="528" y="266" font-size="13" font-weight="700" fill="#0f6e56">Linear probing</text>
+    <text x="528" y="286" font-size="12.5" fill="#233b3a">Try the next slot in sequence until empty</text>
+    <g font-size="12" fill="#0f3d3e">
+      <rect x="528" y="298" width="60" height="34" rx="5" fill="#f5c4b3" stroke="#d85a30"/>
+      <text x="558" y="319" text-anchor="middle">3 used</text>
+      <line x1="592" y1="315" x2="620" y2="315" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+      <rect x="624" y="298" width="60" height="34" rx="5" fill="#d5efe6" stroke="#1d9e75"/>
+      <text x="654" y="319" text-anchor="middle">4 free</text>
+      <text x="700" y="319" font-size="12" fill="#0f6e56">→ store Key B here</text>
+    </g>
+    <text x="528" y="348" font-size="12" fill="#5a6b6b">Alternative: overflow area or chaining</text>
+  </g>
+</svg>

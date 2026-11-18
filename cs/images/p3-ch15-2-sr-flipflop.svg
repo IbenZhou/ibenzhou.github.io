@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="800" height="320" fill="#ffffff"/>
+  <text x="400" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">SR flip-flop (cross-coupled NOR gates)</text>
+  <text x="400" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">A bistable circuit that stores one bit</text>
+
+  <!-- top NOR -->
+  <g stroke="#1d9e75" stroke-width="2" fill="#eef7f5">
+    <path d="M330 100 Q 380 100 410 140 Q 380 180 330 180 Q 352 140 330 100 Z"/>
+  </g>
+  <text x="384" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="#0f6e56">≥1</text>
+  <circle cx="418" cy="140" r="6" fill="#ffffff" stroke="#1d9e75" stroke-width="2"/>
+
+  <!-- bottom NOR -->
+  <g stroke="#378add" stroke-width="2" fill="#eef3fb">
+    <path d="M330 210 Q 380 210 410 250 Q 380 290 330 290 Q 352 250 330 210 Z"/>
+  </g>
+  <text x="384" y="255" text-anchor="middle" font-size="14" font-weight="700" fill="#185fa5">≥1</text>
+  <circle cx="418" cy="250" r="6" fill="#ffffff" stroke="#378add" stroke-width="2"/>
+
+  <!-- S input to top NOR -->
+  <text x="60" y="120" font-size="15" font-weight="700" fill="#233b3a">S</text>
+  <line x1="80" y1="116" x2="328" y2="116" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <!-- R input to bottom NOR -->
+  <text x="60" y="280" font-size="15" font-weight="700" fill="#233b3a">R</text>
+  <line x1="80" y1="276" x2="328" y2="276" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- outputs Q and NOT Q -->
+  <line x1="424" y1="140" x2="600" y2="140" stroke="#1d9e75" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="610" y="145" font-size="15" font-weight="700" fill="#0f6e56">Q</text>
+  <line x1="424" y1="250" x2="600" y2="250" stroke="#378add" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="610" y="255" font-size="15" font-weight="700" fill="#185fa5">Q̄</text>
+
+  <!-- cross-coupling feedback -->
+  <path d="M500 140 L500 180 L290 180 L290 220" fill="none" stroke="#7f77dd" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <path d="M500 250 L500 210 L290 210 L290 170" fill="none" stroke="#7f77dd" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <text x="250" y="200" font-size="11.5" fill="#534ab7">cross-coupled feedback</text>
+
+  <text x="400" y="312" text-anchor="middle" font-size="12.5" fill="#993c1d">S=1,R=0 → Q=1 (set) · S=0,R=1 → Q=0 (reset) · S=R=0 → holds · S=R=1 → invalid</text>
+</svg>

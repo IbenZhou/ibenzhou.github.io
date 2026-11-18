@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="900" height="480" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="900" height="480" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Karnaugh map grouping</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Groups wrap around edges and may overlap — size is always a power of two</text>
+
+  <!-- column labels -->
+  <g font-size="13" text-anchor="middle" fill="#5a6b6b">
+    <text x="440" y="96">AB →</text>
+    <text x="190" y="118">00</text>
+    <text x="310" y="118">01</text>
+    <text x="430" y="118">11</text>
+    <text x="550" y="118">10</text>
+  </g>
+  <text x="105" y="255" font-size="13" fill="#5a6b6b" transform="rotate(-90 105 255)" text-anchor="middle">CD</text>
+  <g font-size="13" text-anchor="end" fill="#5a6b6b">
+    <text x="158" y="180">00</text>
+    <text x="158" y="240">01</text>
+    <text x="158" y="300">11</text>
+    <text x="158" y="360">10</text>
+  </g>
+
+  <!-- grid -->
+  <g stroke="#b4b2a9" stroke-width="1" fill="none">
+    <rect x="170" y="132" width="480" height="240"/>
+    <line x1="290" y1="132" x2="290" y2="372"/>
+    <line x1="410" y1="132" x2="410" y2="372"/>
+    <line x1="530" y1="132" x2="530" y2="372"/>
+    <line x1="170" y1="192" x2="650" y2="192"/>
+    <line x1="170" y1="252" x2="650" y2="252"/>
+    <line x1="170" y1="312" x2="650" y2="312"/>
+  </g>
+
+  <!-- 1s: row CD=00 has 1s at AB=11,10 ; row CD=01 has 1s at all four -->
+  <g font-size="17" font-weight="700" fill="#2c2c2a" text-anchor="middle">
+    <text x="470" y="172">1</text><text x="590" y="172">1</text>
+    <text x="230" y="232">1</text><text x="350" y="232">1</text><text x="470" y="232">1</text><text x="590" y="232">1</text>
+  </g>
+
+  <!-- Green group: row CD=01, AB=00,01 (2 cells) -->
+  <rect x="172" y="194" width="236" height="56" rx="4" fill="none" stroke="#1d9e75" stroke-width="2.5"/>
+  <!-- Blue group: row CD=01, AB=11,10 (2 cells) -->
+  <rect x="412" y="194" width="236" height="56" rx="4" fill="none" stroke="#378add" stroke-width="2.5"/>
+  <!-- Wrap group: AB=10 column (right) + AB=00 column (left), rows CD=00,01 -> four corners of a 2x2 wrapped block -->
+  <rect x="530" y="134" width="118" height="116" rx="4" fill="none" stroke="#7f77dd" stroke-width="2" stroke-dasharray="6 3"/>
+  <rect x="172" y="134" width="116" height="116" rx="4" fill="none" stroke="#7f77dd" stroke-width="2" stroke-dasharray="6 3"/>
+
+  <!-- legend -->
+  <g font-size="12.5" fill="#233b3a">
+    <text x="686" y="164" font-weight="700" fill="#0f6e56">Green group</text>
+    <text x="686" y="184">2 cells → one product term</text>
+    <text x="686" y="216" font-weight="700" fill="#185fa5">Blue group</text>
+    <text x="686" y="236">2 cells → another term</text>
+    <text x="686" y="268" font-weight="700" fill="#534ab7">Purple (dashed)</text>
+    <text x="686" y="288">wraps the AB=10 and AB=00</text>
+    <text x="686" y="306">columns — left &amp; right</text>
+    <text x="686" y="324">edges are adjacent</text>
+    <text x="686" y="360" font-weight="700" fill="#993c1d">Overlap allowed:</text>
+    <text x="686" y="380">a 1 may sit in two groups</text>
+  </g>
+
+  <text x="170" y="414" font-size="12.5" fill="#5a6b6b">Group 1, 2, 4 or 8 adjacent 1s; larger groups eliminate more variables from the product term.</text>
+  <text x="170" y="442" font-size="12.5" fill="#5a6b6b">Every 1 must be covered; groups may overlap but always in powers of two.</text>
+</svg>

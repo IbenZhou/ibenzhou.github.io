@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -216,86 +255,114 @@ body::before {
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
 <li><a href="#features-of-recursion">Features of recursion</a></li>
-<li><a href="#compilation-stack">Compilation &amp; stack</a></li>
+<li><a href="#compilation-and-stack">Compilation &amp; stack</a></li>
 </ul>
 </div>
 </div>
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="features-of-recursion">Features of recursion</h2>
+        
+<h2 id="features-of-recursion">Features of recursion</h2>
 <h3 id="what-is-recursion">What is recursion?</h3>
+<p><strong>Understanding recursion ★</strong></p>
 <ul>
-<li>Recursion is a highly effective programming technique where a <strong>function</strong> <strong>calls</strong> itself to <strong>solve a problem</strong> or <strong>execute a task</strong></li>
-<li>Recursion doesn&rsquo;t rely on iterative loops</li>
-<li>Instead, it uses the idea of <strong>self-reference</strong> to <strong>break down</strong> complicated problems into <strong>more manageable</strong> subproblems</li>
-<li>A recursive algorithm has three features:<ul>
-<li>the function must <strong>call itself</strong></li>
-<li>a <strong>base case</strong> - this means that it can return a value without further recursive calls</li>
-<li>a <strong>stopping base</strong> - this must be reachable after a finite number of times</li>
+<li>Recursion is a programming technique where a <strong>function or procedure calls itself</strong> to solve a problem or execute a task.</li>
+<li>Recursion does not rely on iterative loops; instead it uses <strong>self-reference</strong> to break a complicated problem down into <strong>more manageable subproblems of the same form</strong>.</li>
+<li>A recursive solution is built from two kinds of case:
+<ul>
+<li>the <strong>base case</strong> (stopping case), which returns a value directly without making a recursive call;</li>
+<li>the <strong>general / recursive case</strong>, in which the function calls itself on a smaller instance of the problem.</li>
 </ul>
 </li>
+<li>The recursive calls must always <strong>move towards the base case</strong> so that the chain of calls terminates after a finite number of steps; otherwise the program runs indefinitely and eventually exhausts the stack.</li>
 </ul>
-<h3 id="how-does-recursion-work">How does recursion work?</h3>
+<p><div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q12(a) · 2 marks</div><div class="callout-body"><p>Describe what is meant by recursion.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(a)</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
 <ul>
-<li>In a recursive function, <strong>the function calls itself with a modified input</strong> <strong>parameter</strong> until it reaches a base case — a condition that stops the recursion and provides the final result</li>
-<li>Each recursive call breaks down the problem into more minor instances until it reaches the base case</li>
+<li>A process using a function or procedure defined in terms of itself / calls itself.</li>
+<li>A recursive process must have a base case (which is a way to return without making a recursive call) // terminating solution // concept of unwinding described</li>
+<li>There must (also) be a general case where the recursive call takes place.</li>
+</ul>
+</div></details></p>
+<h3 id="essential-features-of-recursion">Essential features of recursion</h3>
+<p><strong>Essential features of recursion ★</strong>
+For a recursive algorithm to work correctly it must have <strong>all three</strong> of the following features:</p>
+<ol>
+<li>It must <strong>call itself</strong> — there is a general case in which the recursive call takes place.</li>
+<li>It must have a <strong>base case</strong> (a stopping condition) that allows it to return without making a further recursive call.</li>
+<li>It must <strong>change its state and move towards the base case</strong>, so that the base case is reached after a finite number of calls.</li>
+</ol>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q9(b) · 3 marks</div><div class="callout-body"><p>A stack is used to implement recursion. State the <strong>three</strong> essential features of recursion.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>A recursive algorithm must call itself / have a general case</li>
+<li>It must have a base case / have a stopping condition</li>
+<li>It must change its state and move towards the base case</li>
+</ul>
+</div></details></p>
+<h3 id="how-recursion-is-expressed-in-a-programming-language">How recursion is expressed in a programming language</h3>
+<p><strong>Expressing recursion in a programming language</strong></p>
+<ul>
+<li>Recursion is written as an ordinary subroutine whose body contains a <strong>call to itself</strong>, with a modified argument.</li>
+<li>A <strong>function</strong> version <strong>returns a value</strong>; a <strong>procedure</strong> version performs an action (e.g. prints or updates an array) and returns nothing.</li>
+<li>The parameter list carries the state that changes between calls (e.g. <code>n</code> in <code>factorial(n)</code>), and the return value carries the partial result back to the caller.</li>
 </ul>
 <h4 id="example-factorial-calculation">Example: factorial calculation</h4>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="c1"># Base case</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>             <span class="c1"># base case</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Recursive call with a smaller instance of the problem`</span>
-        <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        
+        <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># recursive call with a smaller instance</span>
+
 <span class="n">result</span> <span class="o">=</span> <span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 <span class="c1"># Output: 120 (5! = 5 * 4 * 3 * 2 * 1)</span>
 </code></pre></div>
-
 <ul>
-<li>In this example, the <code>factorial</code> function calculates the <strong>factorial</strong> of a positive integer <code>n</code></li>
-<li>It does so by breaking down the problem into smaller instances, multiplying <code>n</code> with the factorial of <code>(n - 1)</code> until it reaches the base case (<code>n == 0</code> or <code>n == 1</code>)</li>
+<li><code>factorial</code> breaks the problem into smaller instances, multiplying <code>n</code> by <code>factorial(n - 1)</code> until the base case (<code>n == 0</code> or <code>n == 1</code>) is reached.</li>
 </ul>
 <h4 id="importance-of-a-proper-stopping-condition">Importance of a proper stopping condition</h4>
 <ul>
-<li>It is important to have a proper <strong>stopping condition or base case</strong> when using recursion toavoid <strong>stack overflow</strong> errors which result in program crashes</li>
-<li>If a recursive function does not have a stopping condition, it will continue to call itself indefinitely, which can use up excessive <strong>memory</strong> and cause the program to malfunction</li>
+<li>A proper <strong>stopping condition / base case</strong> is essential to avoid <strong>stack overflow</strong>: if the function never stops calling itself, memory is exhausted and the program crashes.</li>
+<li>Each recursive call must bring the state <strong>closer to the base case</strong> (e.g. <code>n - 1</code>), never further away.</li>
 </ul>
 <h4 id="designing-a-stopping-condition">Designing a stopping condition</h4>
 <ul>
-<li>When creating a stopping condition, it&rsquo;s important to consider the problem being solved</li>
-<li>Identify the easiest scenario where the function can provide a direct result. This scenario should be defined as the base case, covering the simplest instances of the problem</li>
-<li>By doing so, the function will be able to stop the recursion when those conditions are met</li>
-<li>The difference between line 7 and the function declaration on line 1, is that num1 is replaced with result + 1 so we&rsquo;ll need to set num1 equal to result + 1</li>
+<li>Identify the simplest instance of the problem for which the answer is known directly — this becomes the base case.</li>
+<li>Check that every recursive call reduces the problem towards that simplest instance, so the recursion terminates in a finite number of steps.</li>
 </ul>
-<h3 id="recursion-benefits-drawbacks">Recursion: Benefits &amp; drawbacks</h3>
+<h3 id="recursion-benefits-and-drawbacks">Recursion: benefits and drawbacks</h3>
+<p><strong>When the use of recursion is beneficial ★</strong></p>
 <ul>
-<li>Programs can be written using either recursion or <strong>iteration</strong> - which one is used will depend on the problem being solved</li>
-<li>There are many benefits and drawbacks to using either, depending on the situation:
-<strong>Recursion</strong></li>
+<li>Programs can be written using either recursion or <strong>iteration</strong>; the choice depends on the problem.</li>
+<li>Recursion is at its best when a problem can naturally be <strong>broken down into smaller, repetitive subproblems of the same form</strong>, especially where there are <strong>many possible branches</strong> and an iterative solution would be complex — e.g. tree/graph traversal, divide-and-conquer algorithms, mathematical series.</li>
+<li>It is generally <strong>less efficient</strong> than iteration in time and memory, because every call adds a stack frame.</li>
 </ul>
+<p><strong>Recursion</strong></p>
 <table>
 <thead>
 <tr>
-<th><strong>Benefits</strong></th>
-<th><strong>Drawbacks</strong></th>
+<th>Benefits</th>
+<th>Drawbacks</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Concise</strong> - can often be expressed in a more concise way, especially for structures like trees or fractals</td>
-<td><strong>Performance</strong> - repeated function calls can be CPU and Memory intensive, leading to slower execution</td>
+<td><strong>Concise</strong> – often shorter and clearer, especially for trees, fractals and divide-and-conquer problems</td>
+<td><strong>Performance</strong> – repeated function calls are CPU- and memory-intensive, so execution is slower</td>
 </tr>
 <tr>
-<td><strong>Simple</strong> - simply stating what needs to be done without having to focus on the how can make it more readable and maintainable</td>
-<td><strong>Debugging</strong> - recursive code can be much more difficult to track the state of the program</td>
+<td><strong>Simple</strong> – states <em>what</em> must be done rather than <em>how</em>, improving readability and maintainability</td>
+<td><strong>Debugging</strong> – tracking the state of nested calls is harder</td>
 </tr>
 <tr>
 <td></td>
-<td><strong>Limited application</strong> - not all problems are suited to recursive solutions</td>
+<td><strong>Limited application</strong> – not all problems suit a recursive solution</td>
 </tr>
 </tbody>
 </table>
@@ -303,96 +370,77 @@ body::before {
 <table>
 <thead>
 <tr>
-<th><strong>Benefits</strong></th>
-<th><strong>Drawbacks</strong></th>
+<th>Benefits</th>
+<th>Drawbacks</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Performance</strong> - more efficient that recursion, less memory usage.</td>
-<td><strong>Complexity</strong> - can get very complex and use more lines of code than recursive alternatives</td>
+<td><strong>Performance</strong> – more efficient than recursion and uses less memory</td>
+<td><strong>Complexity</strong> – can need more lines of code for the same task</td>
 </tr>
 <tr>
-<td><strong>Debugging</strong> - easier to understand and debug</td>
-<td><strong>Less concise</strong> - compared to recursive alternatives, making them harder to understand</td>
+<td><strong>Debugging</strong> – easier to understand and trace</td>
+<td><strong>Less concise</strong> – harder to read for naturally recursive problems</td>
 </tr>
 <tr>
-<td><strong>Wider application</strong> - more suitable to a wider range of problems</td>
+<td><strong>Wider application</strong> – suitable for a wider range of problems</td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<h3 id="writing-recursive-algorithms">Writing recursive algorithms</h3>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q11 · 3 marks</div><div class="callout-body"><p>Describe when the use of recursion would be beneficial <strong>and</strong> give an example.
+Description …
+Example …</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11</strong>
+One mark per mark point (<strong>Max 3</strong>)</p>
 <ul>
-<li>
-<p>Here is a <strong>recursive algorithm</strong> for a simple countdown program written in <strong>Python</strong> to countdown from 10 to 0
-<strong>Step 1</strong></p>
-</li>
-<li>
-<p>Create the <strong>subroutine</strong> (in this example it will be a <strong>function</strong> as it will <strong>return a value</strong>) and identify any <strong>parameters</strong>
-<code>def countdown_rec(n): #n is the parameter passed when we call the subroutine</code>
-<strong>Step 2</strong></p>
-</li>
-<li>
-<p>Create a <strong>stopping condition</strong> - when n is 0 the function will stop
-<code>def countdown_rec(n):</code>
-<code>print(n) #output the starting number</code><br />
-<code>if n == 0: #stopping condition</code><br />
-<code>return</code>
-<strong>Step 3</strong></p>
-</li>
-<li>
-<p>Add a <strong>recursive function</strong> call
-<code>def countdown_rec(n):</code><br />
-<code>print(n)</code><br />
-<code>if n == 0:</code><br />
-<code>return</code><br />
-<code>countdown_rec(n -1) #recursive functional call</code>
-<strong>Step 4</strong></p>
-</li>
-<li>
-<p>Call the <strong>function</strong>
-<code>def countdown_rec(n):</code><br />
-<code>print(n)</code><br />
-<code>if n == 0:</code><br />
-<code>return</code><br />
-<code>countdown_rec(n -1)</code>
-<code>countdown_rec(10) #call the function and pass 10 as a starting value</code>
-<strong>Output to user</strong>
-<code>10</code><br />
-<code>9</code><br />
-<code>8</code><br />
-<code>7</code><br />
-<code>6</code><br />
-<code>5</code><br />
-<code>4</code><br />
-<code>3</code><br />
-<code>2</code><br />
-<code>1</code><br />
-<code>0</code></p>
-</li>
+<li>MP1 Recursion is beneficial for problems that can be broken down into smaller, repetitive problems</li>
+<li>MP2 … especially for problems that have many possible branches / are too complex for an iterative approach</li>
+<li>MP3 An example e.g. solving mathematical series, sorting a pile of documents, etc.</li>
 </ul>
+</div></details></p>
+<h3 id="writing-recursive-algorithms">Writing recursive algorithms</h3>
+<p><strong>Writing recursive algorithms</strong>
+Here is a recursive algorithm for a countdown from 10 to 0, written in Python.</p>
+<p><strong>Step 1</strong> – Create the subroutine (a <strong>function</strong> here, because it returns a value) and identify its parameters:
+<code>def countdown_rec(n):   # n is the parameter passed when we call the subroutine</code></p>
+<p><strong>Step 2</strong> – Add a <strong>stopping condition</strong> – when <code>n</code> is 0 the function stops:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countdown_rec</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>              <span class="c1"># output the starting number</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>            <span class="c1"># stopping condition</span>
+        <span class="k">return</span>
+</code></pre></div>
+<p><strong>Step 3</strong> – Add the <strong>recursive call</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countdown_rec</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">countdown_rec</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># recursive call</span>
+</code></pre></div>
+<p><strong>Step 4</strong> – Call the function:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countdown_rec</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">countdown_rec</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">countdown_rec</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>         <span class="c1"># call the function with 10 as the starting value</span>
+</code></pre></div>
+<p><strong>Output to user:</strong> <code>10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0</code></p>
 <h3 id="tracing-recursive-algorithms">Tracing recursive algorithms</h3>
+<p><strong>Writing and tracing recursive algorithms ★</strong></p>
 <ul>
-<li>Now lets <strong>trace</strong> the <strong>recursive algorithm</strong> we have just written to check what happens during the execution of the program</li>
-<li>
-<p>Here is the completed program and we are going to start it using the command <code>countdown_rec(5)</code>
-<code>def countdown_rec(n):</code><br />
-<code>print(n)</code><br />
-<code>if n == 0:</code><br />
-<code>return</code><br />
-<code>countdown_rec(n -1)</code></p>
-</li>
-<li>
-<p>Using a simple <strong>trace table</strong> we can trace the <strong>recursive</strong> function call</p>
-</li>
+<li>To <strong>trace</strong> a recursive algorithm, follow each call in turn, recording the changing parameters and the value returned at each level until the base case is reached, then work back up (unwind).</li>
+<li>Starting <code>countdown_rec(5)</code>:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th><strong>Function call</strong></th>
-<th><strong>print(n)</strong></th>
-<th><strong>countdown_rec(n -1)</strong></th>
+<th>Function call</th>
+<th>print(n)</th>
+<th>countdown_rec(n - 1)</th>
 </tr>
 </thead>
 <tbody>
@@ -419,17 +467,320 @@ body::before {
 <tr>
 <td><code>countdown_rec(1)</code></td>
 <td>1</td>
-<td><strong>0 (return)</strong></td>
+<td>0 (return)</td>
 </tr>
 </tbody>
 </table>
-<h3 id="translate-between-iteration-recursion">Translate between iteration &amp; recursion</h3>
+<p><div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q12(b) · 5 marks</div><div class="callout-body"><p>A Fibonacci sequence is formed by adding together the two preceding numbers, e.g. <code>0, 1, 1, 2, …</code>. The recursive function below calculates and returns values in the sequence. Complete the trace table for the call <code>Fib(5)</code>.</p>
+<div class="highlight"><pre><span></span><code>FUNCTION Fib(Number : INTEGER) RETURNS INTEGER
+   IF Number &lt;= 1 THEN
+      Result ← Number
+   ELSE
+      Result ← Fib(Number – 1) + Fib(Number – 2)
+   ENDIF
+   RETURN Result
+ENDFUNCTION
+</code></pre></div>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(b)</strong>
+One mark per mark point (<strong>Max 5</strong>):</p>
 <ul>
-<li><strong>Recursive</strong> algorithms can be <strong>translated</strong> to use <strong>iteration</strong>, and <strong>vice versa</strong></li>
-<li>Let&rsquo;s look at the previous example <strong>recursive</strong> program and see how it would change to <strong>solve the same problem</strong> but using an <strong>iterative</strong> approach
-<strong>Recursive approach</strong></li>
+<li><code>call number</code> column correct;</li>
+<li><code>function call</code> and <code>Number</code> columns correct;</li>
+<li><code>Result</code> column down to base case (Winding) rows 1–6 correct;</li>
+<li><code>Result</code> column down from base case (Unwinding) rows 7–10 correct;</li>
+<li>Return value column correct.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countdown_rec</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Call number</th>
+<th style="text-align:left">Function call</th>
+<th style="text-align:center">Number</th>
+<th style="text-align:left">Result</th>
+<th style="text-align:center">Return value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>1</code></td>
+<td style="text-align:left"><code>Fib(5)</code></td>
+<td style="text-align:center"><code>5</code></td>
+<td style="text-align:left"><code>Fib(4) + Fib(3)</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>2</code></td>
+<td style="text-align:left"><code>Fib(4)</code></td>
+<td style="text-align:center"><code>4</code></td>
+<td style="text-align:left"><code>Fib(3) + Fib(2)</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>3</code></td>
+<td style="text-align:left"><code>Fib(3)</code></td>
+<td style="text-align:center"><code>3</code></td>
+<td style="text-align:left"><code>Fib(2) + Fib(1)</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>4</code></td>
+<td style="text-align:left"><code>Fib(2)</code></td>
+<td style="text-align:center"><code>2</code></td>
+<td style="text-align:left"><code>Fib(1) + Fib(0)</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>5</code></td>
+<td style="text-align:left"><code>Fib(1)</code></td>
+<td style="text-align:center"><code>1</code></td>
+<td style="text-align:left"><code>1</code></td>
+<td style="text-align:center"><code>1</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>6</code></td>
+<td style="text-align:left"><code>Fib(0)</code></td>
+<td style="text-align:center"><code>0</code></td>
+<td style="text-align:left"><code>0</code></td>
+<td style="text-align:center"><code>0</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>(4)</code></td>
+<td style="text-align:left"><code>Fib(2)</code></td>
+<td style="text-align:center"><code>2</code></td>
+<td style="text-align:left"><code>1 + 0</code></td>
+<td style="text-align:center"><code>1</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>(3)</code></td>
+<td style="text-align:left"><code>Fib(3)</code></td>
+<td style="text-align:center"><code>3</code></td>
+<td style="text-align:left"><code>1 + 1</code></td>
+<td style="text-align:center"><code>2</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>(2)</code></td>
+<td style="text-align:left"><code>Fib(4)</code></td>
+<td style="text-align:center"><code>4</code></td>
+<td style="text-align:left"><code>2 + 1</code></td>
+<td style="text-align:center"><code>3</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>(1)</code></td>
+<td style="text-align:left"><code>Fib(5)</code></td>
+<td style="text-align:center"><code>5</code></td>
+<td style="text-align:left"><code>3 + 2</code></td>
+<td style="text-align:center"><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q13 · 4 marks</div><div class="callout-body"><p>The recursive procedure <code>Delete()</code> is defined as follows. An array <code>Numbers</code> holds a sorted set of non-zero positive integers; unused cells contain zero. Complete the trace table for <code>CALL Delete(1, 15)</code>.</p>
+<div class="highlight"><pre><span></span><code>PROCEDURE Delete(Index, Target)
+    IF Numbers[Index] &gt; 0 THEN
+        IF Numbers[Index] &gt;= Target THEN
+            Numbers[Index] &lt;- Numbers[Index + 1]
+        ENDIF
+        Index &lt;- Index + 1
+        CALL Delete(Index, Target)
+    ENDIF
+ENDPROCEDURE
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Numbers</th>
+<th>[1]</th>
+<th>[2]</th>
+<th>[3]</th>
+<th>[4]</th>
+<th>[5]</th>
+<th>[6]</th>
+<th>[7]</th>
+<th>[8]</th>
+<th>[9]</th>
+<th>[10]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>2</td>
+<td>3</td>
+<td>7</td>
+<td>11</td>
+<td>15</td>
+<td>17</td>
+<td>19</td>
+<td>23</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q13</strong>
+One mark for each marking point</p>
+<ul>
+<li><strong>MP1</strong> Correct Index and Target columns</li>
+<li><strong>MP2</strong> Correct Numbers[5] column</li>
+<li><strong>MP3</strong> Correct Numbers[6] and Numbers[7] columns</li>
+<li><strong>MP4</strong> Correct Numbers[8] column and no incorrect data added to any other of columns [1, 2, 3, 4, 9, 10]</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Target</th>
+<th>[1]</th>
+<th>[2]</th>
+<th>[3]</th>
+<th>[4]</th>
+<th>[5]</th>
+<th>[6]</th>
+<th>[7]</th>
+<th>[8]</th>
+<th>[9]</th>
+<th>[10]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>15</td>
+<td>2</td>
+<td>3</td>
+<td>7</td>
+<td>11</td>
+<td>15</td>
+<td>17</td>
+<td>19</td>
+<td>23</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>17</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>19</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>23</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></details></p>
+<h3 id="translating-between-iteration-and-recursion">Translating between iteration and recursion</h3>
+<ul>
+<li>Recursive algorithms can be <strong>translated</strong> into iterative ones, and vice versa.</li>
+<li>Comparing the countdown example:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Recursive approach</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">countdown_rec</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
@@ -437,86 +788,71 @@ body::before {
 
 <span class="n">countdown_rec</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div>
-
-<p><strong>Iterative approach</strong></p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">countdown_rec</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Iterative approach</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">countdown</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
     <span class="k">return</span>
 
-<span class="n">countdown_rec</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">countdown</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div>
-
 <ul>
-<li>The <strong>recursive function</strong> call on line <strong>05</strong> has been replaced with a <strong>while loop</strong> (line <strong>02</strong>) which checks if n &gt; 0</li>
-<li>Using an <strong>iterative</strong> approach we use exactly the same amount of code (6 lines) <strong>BUT</strong>&hellip;<ul>
-<li>less memory would be used (<strong>increased performance</strong>)</li>
-<li><strong>easier to debug</strong></li>
+<li>The recursive call is replaced by a <code>while</code> loop that checks <code>n &gt;= 0</code> (so <code>0</code> is still printed, matching the recursive version).</li>
+<li>The iterative form uses less memory (no stack frames) and is easier to debug, but can be less concise.</li>
 </ul>
-</li>
-</ul>
-<h2 id="compilation-stack">Compilation &amp; stack</h2>
+<h2 id="compilation-and-stack">Compilation and stack</h2>
 <h3 id="what-happens-when-recursion-runs">What happens when recursion runs?</h3>
+<p><strong>How a compiler translates recursive code ★</strong></p>
 <ul>
-<li>When a recursive function is called, the <strong>compiler (or interpreter)</strong> doesn’t treat it like a loop</li>
-<li>Instead, it uses a special structure called the <strong>call stack</strong> to keep track of each function call</li>
+<li>When a recursive function is called, the compiler / interpreter does <strong>not</strong> treat it like a loop. It must generate code that, for <strong>every call</strong>, saves the information needed to resume the caller.</li>
+<li>It uses a special structure called the <strong>call stack</strong> to keep track of each active function call.</li>
 </ul>
-<h4 id="the-call-stack">The call stack</h4>
+<h3 id="the-call-stack">The call stack</h3>
 <ul>
-<li>Each time a function calls itself, the system <strong>stores a snapshot of that call</strong> on the <strong>call stack</strong></li>
-<li>This snapshot (called a <strong>stack frame</strong>) contains:<ul>
-<li>The function name</li>
-<li>The value of parameters and variables at that level</li>
-<li>The place to return to when the function finishes</li>
+<li>Each time a function calls itself, the system stores a <strong>snapshot of that call</strong> (a <strong>stack frame</strong>) on the call stack. A stack frame contains:
+<ul>
+<li>the function name and the <strong>return address</strong> — the place to return to when the call finishes;</li>
+<li>the values of <strong>parameters and local variables</strong> at that level;</li>
+<li>any intermediate results being held.</li>
 </ul>
 </li>
-<li>This continues until the <strong>base case is reached</strong></li>
+<li>This continues until the <strong>base case</strong> is reached.</li>
 </ul>
-<h4 id="stack-frames-and-unwinding">Stack frames and unwinding</h4>
+<h3 id="stack-frames-and-unwinding">Stack frames and unwinding</h3>
+<p><strong>Stacks and unwinding ★</strong></p>
 <ul>
-<li>Once the base case is reached, no more function calls are made</li>
-<li>At this point, the stack <strong>unwinds</strong>, which means:<ul>
-<li>The <strong>most recent call</strong> completes and <strong>returns a value</strong></li>
-<li>Control goes back to the <strong>previous stack frame</strong></li>
-<li>This continues until the original call receives the final result</li>
+<li>Once the base case is reached, no further calls are made and the stack <strong>unwinds</strong>:
+<ul>
+<li>the most recent call completes and <strong>returns a value</strong>;</li>
+<li>its stack frame is removed (<strong>popped</strong>) and control returns to the previous frame;</li>
+<li>this continues until the original call receives the final result.</li>
 </ul>
 </li>
-<li>This is called <strong>stack unwinding</strong></li>
+<li>This is called <strong>stack unwinding</strong>.</li>
 </ul>
 <h4 id="example-factorial3">Example: factorial(3)</h4>
-<ul>
-<li>Let’s trace the function <code>factorial(3)</code> using a call stack</li>
-</ul>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
+<h4 id="call-stack-trace">Call stack trace</h4>
+<pre><code>Winding (pushing frames):
+factorial(3) → 3 * factorial(2)
+factorial(2) → 2 * factorial(1)
+factorial(1) → base case → returns 1
 
-<h3 id="call-stack-trace">Call stack trace:</h3>
-<div class="highlight"><pre><span></span><code><span class="n">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="err">→</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">factorial</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="err">→</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">factorial</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">→</span> <span class="n">base</span> <span class="n">case</span> <span class="err">→</span> <span class="n">returns</span> <span class="mi">1</span>
-<span class="n">Unwinding</span><span class="p">:</span>
-<span class="n">factorial</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">6</span>
-</code></pre></div>
-
-<ul>
-<li>At the deepest point, the stack held:<ul>
-<li><strong>factorial(3)</strong></li>
-<li><strong>factorial(2)</strong></li>
-<li><strong>factorial(1)</strong></li>
-</ul>
-</li>
-<li>Each was popped off (unwound) as the return values passed back up</li>
-</ul>
+Unwinding (popping frames, returning values):
+factorial(2) = 2 * 1 = 2
+factorial(3) = 3 * 2 = 6
+</code></pre>
+<p>At the deepest point the stack holds <code>factorial(3)</code>, <code>factorial(2)</code>, <code>factorial(1)</code>; each is popped as its return value passes back up.</p>
+<p><img alt="Call stack for factorial(3) showing the winding and unwinding phases" src="images/p3-ch19-2-factorial-call-stack.svg" /></p>
 <h4 id="why-understanding-the-call-stack-matters">Why understanding the call stack matters</h4>
 <ul>
-<li>If <strong>no base case</strong> is present, the stack <strong>never stops growing</strong></li>
-<li>This leads to a <strong>stack overflow</strong>, causing the program to crash</li>
-<li>Recursive programs should always be designed to <strong>reach the base case</strong> in a finite number of steps</li>
+<li>If there is <strong>no base case</strong> (or the recursive call moves away from it), the stack never stops growing and a <strong>stack overflow</strong> occurs, crashing the program.</li>
+<li>Recursive programs must therefore be designed so that the base case is always reached in a finite number of steps.</li>
 </ul>
 <h3 id="summary">Summary</h3>
 <table>
@@ -529,19 +865,56 @@ body::before {
 <tbody>
 <tr>
 <td><strong>Call stack</strong></td>
-<td>Structure used by the compiler to store function calls</td>
+<td>Structure used by the compiler to store active function calls</td>
 </tr>
 <tr>
 <td><strong>Stack frame</strong></td>
-<td>Snapshot of a single function call (with local variables and return info)</td>
+<td>Snapshot of a single call: local variables, parameters and return information</td>
 </tr>
 <tr>
 <td><strong>Unwinding</strong></td>
-<td>The process of returning values back up the stack after reaching the base</td>
+<td>Returning values back up the stack after the base case is reached</td>
 </tr>
 <tr>
 <td><strong>Stack overflow</strong></td>
-<td>Happens when recursive calls never stop, exhausting available memory</td>
+<td>Recursive calls never stop, exhausting available memory</td>
+</tr>
+</tbody>
+</table>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q12(a)</td>
+<td>Show understanding of recursion</td>
+<td>2023 Summer P31 Q12(a)</td>
+</tr>
+<tr>
+<td>P31 Q12(b)</td>
+<td>Write and trace recursive algorithms</td>
+<td>2023 Summer P31 Q12(b)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>Essential features of recursion</td>
+<td>2025 Winter P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P33 Q11</td>
+<td>When the use of recursion is beneficial</td>
+<td>2025 Winter P33 Q11</td>
+</tr>
+<tr>
+<td>P33 Q13</td>
+<td>Write and trace recursive algorithms</td>
+<td>2025 Summer P33 Q13</td>
 </tr>
 </tbody>
 </table>

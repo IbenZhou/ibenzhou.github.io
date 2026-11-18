@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -227,48 +266,139 @@ body::before {
     <div class="post-main">
       <article class="card">
         
+
 <h2 id="circuit-switching">Circuit switching</h2>
 <h3 id="what-is-circuit-switching">What is circuit switching?</h3>
 <ul>
 <li>Circuit switching sets up a <strong>dedicated channel (circuit)</strong> between sender and receiver that <strong>lasts for the whole connection</strong> — the line is effectively <strong>tied up</strong> until the call ends</li>
 <li>This is how a traditional <strong>telephone call</strong> works</li>
-<li>Every message follows <strong>the same single route</strong>, in the order it was sent</li>
+<li>Every message follows <strong>the same single route</strong>, in the order it was sent, as a <strong>continuous stream</strong></li>
+<li>Transmission is usually <strong>bidirectional</strong></li>
 <li>There are <strong>three stages</strong> in every circuit-switched connection:
 <ol>
 <li><strong>Establish</strong> the circuit between sender and receiver</li>
 <li><strong>Transfer</strong> the data (analogue or digital, usually <strong>bi-directional</strong>)</li>
-<li><strong>Terminate</strong> the connection when the transfer is complete</li>
+<li><strong>Terminate</strong> the connection when the transfer is complete (the circuit is closed / released at the end)</li>
 </ol>
 </li>
 </ul>
-<h4 id="advantages">Advantages</h4>
+<h3 id="advantages">Advantages</h3>
 <ul>
 <li>The circuit is <strong>dedicated to that single transmission</strong> only</li>
-<li>The <strong>whole bandwidth</strong> is available to the user</li>
-<li>The data transfer rate is <strong>faster</strong> than with packet switching</li>
-<li>Data (frames) <strong>arrive in the same order</strong> they were sent</li>
-<li>A packet <strong>cannot get lost</strong> — all of them follow one route in sequence</li>
-<li>It works better than packet switching for <strong>real-time applications</strong> (voice, video)</li>
+<li>The <strong>whole bandwidth</strong> is available to the user, giving a <strong>steady / fixed / high data transfer rate</strong></li>
+<li>Data transfer rate is <strong>constant and predictable</strong>, because the whole bandwidth of the circuit is reserved for the connection</li>
+<li>Data (frames) <strong>arrive in the same order</strong> they were sent — <strong>no need to reassemble</strong> and <strong>no time lost reordering</strong></li>
+<li><strong>Data cannot get lost</strong> — all of it follows one route in sequence</li>
+<li><strong>No waiting time at switches</strong> and <strong>no intermediate delays</strong> once the circuit is established</li>
+<li><strong>Simple</strong> method of data transfer</li>
+<li>Suitable for <strong>long, continuous</strong> transmission</li>
+<li>Works better than packet switching for <strong>real-time applications</strong> (voice, video, video streaming)</li>
 </ul>
-<h4 id="disadvantages">Disadvantages</h4>
+<h3 id="disadvantages">Disadvantages</h3>
 <ul>
-<li><strong>Not flexible</strong> — empty frames are still sent, and only a single dedicated line is used</li>
-<li><strong>Nobody else can use</strong> the circuit, even when it is idle</li>
-<li>The circuit is <strong>always reserved</strong>, whether or not it is being used</li>
+<li><strong>Not flexible</strong> — empty frames may still be sent, and only a single dedicated line is used</li>
+<li><strong>Nobody else can use</strong> the circuit, even when it is idle — the circuit is <strong>always there whether or not it is being used</strong></li>
+<li>Bandwidth <strong>cannot be shared</strong>, so system resources are <strong>underutilised / inefficient</strong> and <strong>bandwidth may be wasted</strong></li>
+<li><strong>High / whole bandwidth</strong> is required, and establishing a dedicated path for each connection can have <strong>cost implications</strong></li>
 <li>If there is a <strong>failure on the dedicated line there is no alternative route</strong> — the call is dropped and must be re-established</li>
-<li>Dedicated channels require <strong>greater bandwidth</strong></li>
 <li>The time needed to <strong>establish the link can be long</strong>, before any data moves</li>
+<li><strong>Reduced security</strong> — all data travels along a single path, so it can be intercepted</li>
+<li><strong>Scalability is difficult</strong> — more users require more physical paths</li>
 </ul>
 <h3 id="where-it-is-used">Where it is used</h3>
 <ul>
 <li>Public telephone networks (PSTN)</li>
 <li>Private telephone networks</li>
 <li>Private data networks</li>
+<li>Any situation where a <strong>dedicated path must be sustained throughout the call</strong>, where the <strong>whole bandwidth is required</strong>, or where <strong>real-time communication</strong> is needed (standard voice communications, video streaming)</li>
 </ul>
+<p><strong>Definition, benefits, drawbacks and appropriate use ★</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q5 · 6 marks</div><div class="callout-body"><p>State, with a reason, where it would be appropriate to use circuit switching.</p>
+<p><strong>(a)</strong> [2]</p>
+<p>Give two benefits and two drawbacks of circuit switching.</p>
+<p><strong>(b)</strong> Benefit 1 … Benefit 2 … Drawback 1 … Drawback 2 … [4]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(a)</strong></p>
+<ul>
+<li>Circuit switching is used where a dedicated path needs to be sustained throughout the call / communication // where the whole bandwidth is required // where a real time communication is used (1).</li>
+<li>A typical application is standard voice communications / video streaming / private data networks (1).</li>
+</ul>
+<p><strong>Q5(b)</strong> Two benefits and two drawbacks (any from the lists below). One mark per benefit (Max 2); one mark per drawback (Max 2).</p>
+<p>Benefits (one mark each, Max 2):</p>
+<ul>
+<li>Whole of bandwidth is available</li>
+<li>Dedicated communication channel increases the quality of transmission</li>
+<li>Data is transmitted with a fixed data rate</li>
+<li>No waiting time at switches</li>
+<li>Suitable for long continuous communication</li>
+<li>Fast method of data transfer</li>
+<li>Data arrives in the same order as it was sent</li>
+<li>Data can’t get lost</li>
+<li>Data all follows the same path / route</li>
+<li>Better for real-time</li>
+<li>Simple method of data transfer</li>
+</ul>
+<p>Drawbacks (one mark each, Max 2):</p>
+<ul>
+<li>A dedicated connection makes it impossible to transmit other data even if the channel is free</li>
+<li>Not very flexible</li>
+<li>No alternative route in case of failure</li>
+<li>The time required to establish the physical link between the two stations can be too long</li>
+<li>The need to establish a dedicated path for each connection can have cost implications</li>
+<li>Dedicated channels require the whole bandwidth / bandwidth can’t be shared</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q3 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe circuit switching as a method of data transmission. [3]</p>
+<p><strong>(b)</strong> State one benefit and one drawback of circuit switching as a method of data transmission. [2]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3(a)</strong> One mark per mark point (Max 3)</p>
+<ul>
+<li><strong>MP1</strong> A dedicated circuit / channel is required</li>
+<li><strong>MP2</strong> The circuit is established before the transmission begins</li>
+<li><strong>MP3</strong> The circuit lasts for the whole of the transmission // The circuit is closed at the end of the transmission</li>
+<li><strong>MP4</strong> Data travels in a continuous stream along the same route</li>
+<li><strong>MP5</strong> Transmission is usually bidirectional.</li>
+</ul>
+<p><strong>Q3(b)</strong> One mark for a benefit (Max 1)</p>
+<ul>
+<li><strong>MP1</strong> No need for data to be reassembled // data / frames arrive in the same order in which they were sent</li>
+<li><strong>MP2</strong> Suitable for real time transmission // fast data transfer rate</li>
+<li><strong>MP3</strong> The whole of the bandwidth is available</li>
+</ul>
+<p>One mark for a drawback (Max 1)</p>
+<ul>
+<li><strong>MP4</strong> No other transmission can use the same circuit when it is in use // Bandwidth can be wasted as it cannot be used by other messages</li>
+<li><strong>MP5</strong> Not secure // Can be intercepted as all data travelling along the same route</li>
+<li><strong>MP6</strong> If there is a problem with the route the transmission ends // No other route is available without first doing the setup</li>
+<li><strong>MP7</strong> The circuit is always there whether or not it’s being used</li>
+<li><strong>MP8</strong> Can take time to set up before transmission starts.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q4 · 4 marks</div><div class="callout-body"><p>Circuit switching may be used as a method of data transmission.</p>
+<p>State two benefits and two drawbacks of circuit switching.</p>
+<p>Benefit 1 … Benefit 2 … Drawback 1 … Drawback 2 …</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4</strong> One mark for each benefit (Max 2)</p>
+<ul>
+<li>MP1: Suitable for long continuous transmission once the connection is made, it is available until the end of the transmission</li>
+<li>MP2: No time lost in resending/rearranging packets as no loss of packets or out of order packets</li>
+<li>MP3: Steady/high rate of transmission because the whole of the bandwidth is available</li>
+<li>MP4: Data loss unlikely as all data follows the same path</li>
+</ul>
+<p>One mark for each drawback (Max 2)</p>
+<ul>
+<li>MP5: Delays due to dedicated connection required to be set up/established before transmission can begin</li>
+<li>MP6: The dedicated connection cannot be used to transmit any other data</li>
+<li>MP7: System resources may be underutilised/inefficient/not very flexible because the bandwidth can’t be shared/high bandwidth is required // Bandwidth may be wasted // May send empty frames // the circuit is always there whether or not used</li>
+<li>MP8: There are no alternative routes if there is a failure or fault on the line</li>
+<li>MP9: Reduced security due to use of single path</li>
+<li>MP10: Scalability is difficult</li>
+</ul>
+</div></details></p>
 <h2 id="packet-switching">Packet switching</h2>
 <h3 id="what-is-packetising">What is packetising?</h3>
 <ul>
-<li>Packetising is the process of <strong>dividing a large message into smaller</strong>, manageable units called <strong>packets</strong></li>
+<li>Packetising is the process of <strong>dividing a large message into smaller</strong>, equal-sized, manageable units called <strong>packets</strong></li>
 <li>Each packet can be <strong>transmitted individually</strong> across a network</li>
 </ul>
 <h4 id="structure-of-a-packet">Structure of a packet</h4>
@@ -279,7 +409,7 @@ body::before {
 <ul>
 <li><strong>Source IP address</strong> – who sent the packet</li>
 <li><strong>Destination IP address</strong> – where it’s going</li>
-<li><strong>Sequence number</strong> – used to reassemble packets in the correct order</li>
+<li><strong>Sequence number / packet number</strong> – used to reassemble packets in the correct order</li>
 <li><strong>Hop count</strong> – how many more routers the packet may pass through</li>
 <li><strong>Protocol</strong> – e.g. TCP or UDP</li>
 <li><strong>Packet length</strong> – the size of the packet</li>
@@ -295,26 +425,30 @@ body::before {
 <ul>
 <li>Packet switching is a communication method where <strong>data is broken into packets</strong> and sent across a <strong>shared</strong> network</li>
 <li>Each packet may <strong>take a different path</strong> to the destination and is reassembled on arrival</li>
-<li>Each packet <strong>follows its own path</strong>; the route chosen depends on the <strong>number of datagrams waiting to be processed at each node (router)</strong>, and the <strong>shortest available path</strong> is selected</li>
+<li>Each packet <strong>follows its own path</strong>; the route chosen depends on the <strong>congestion — the number of datagrams waiting to be processed at each node (router)</strong> — and the <strong>optimum / shortest available path</strong> is selected using a <strong>routing table</strong></li>
 <li>Packets can therefore reach the destination <strong>in a different order</strong> from the one in which they were sent</li>
 </ul>
-<h4 id="advantages_2">Advantages</h4>
+<h4 id="advantages_1">Advantages</h4>
 <ul>
-<li><strong>No need to tie up</strong> a communication line</li>
+<li><strong>No need to tie up</strong> a communication line — the path is available to multiple users and <strong>bandwidth is shared</strong></li>
 <li><strong>Efficient</strong> use of network <strong>bandwidth</strong> — capacity is shared, not reserved</li>
-<li>Failed or faulty lines are <strong>overcome by re-routing</strong> packets</li>
-<li><strong>Easy to expand</strong> traffic usage</li>
+<li><strong>Resilience</strong>: if the network changes, a router can detect this and send the data another way</li>
+<li><strong>Accuracy</strong>: ensures accurate delivery of the message</li>
+<li><strong>Completeness</strong>: missing packets can be easily detected and a re-send request sent, so the message arrives complete</li>
+<li>Failed or faulty lines are <strong>overcome by re-routing</strong> packets, and <strong>individual lost / damaged packets can be re-sent</strong> (so packets are more likely to arrive)</li>
+<li><strong>Easy to expand</strong> traffic usage — highly scalable</li>
 <li>Users are charged only for the <strong>duration of the connectivity</strong>, not the distance</li>
 <li><strong>High data transmission</strong> rates are possible</li>
 <li>Always uses <strong>digital</strong> networks, so digital data is transmitted directly</li>
+<li><strong>Good security</strong> — packets can be hashed and sent by different routes, so a message is harder to intercept</li>
 </ul>
-<h4 id="disadvantages_2">Disadvantages</h4>
+<h4 id="disadvantages_1">Disadvantages</h4>
 <ul>
-<li>The protocols are <strong>more complex</strong> than those for circuit switching</li>
+<li>The protocols are <strong>more complex</strong> than those for circuit switching — a <strong>complex algorithm</strong> is required to function</li>
 <li>If a packet is lost, the sender must <strong>re-send</strong> it, which wastes time</li>
-<li>Does <strong>not work well with real-time</strong> data streams (VoIP, video calls)</li>
+<li><strong>Time delays</strong> to correct errors / while packets are reassembled at the destination / because bandwidth is shared</li>
+<li><strong>Does not work well with real-time</strong> data streams (VoIP, video calls) — unsuitable for real-time transmission applications</li>
 <li>The channel has to <strong>share its bandwidth</strong> with other packets</li>
-<li>There is a <strong>delay at the destination</strong> while packets are reassembled</li>
 <li>Needs <strong>large amounts of RAM</strong> to handle large volumes of data</li>
 </ul>
 <h4 id="lost-packets-and-error-checking">Lost packets and error checking</h4>
@@ -322,21 +456,67 @@ body::before {
 <li>Left alone, a lost packet can keep ‘bouncing’ between routers and never arrive — eventually the network clogs up</li>
 <li><strong>Hop count</strong>: each packet may only be forwarded a finite number of times; the hop number <strong>decreases by 1 at every router</strong>, and the packet is <strong>deleted when it reaches 0</strong></li>
 <li><strong>Checksum</strong>: calculated and added to the header by the sender, <strong>recalculated at the destination</strong>; if the two values differ, a request is made to <strong>re-send</strong> the packet</li>
-<li><strong>Priority value</strong>: sometimes added to the header; a high priority value selects a <strong>higher-priority queue</strong> at the router
-<a href="images/ch14-packet-switching.svg" target="_blank" rel="noopener" title="Open the diagram full size"><img alt="Packets from one message taking different routes and being reassembled at the destination" src="images/ch14-packet-switching.svg" /></a></li>
+<li><strong>Priority value</strong>: sometimes added to the header; a high priority value selects a <strong>higher-priority queue</strong> at the router</li>
 </ul>
+<p><img alt="Packets from one message taking different routes and being reassembled at the destination" src="images/ch14-packet-switching.svg" /></p>
+<p><strong>Definition, benefits, drawbacks and appropriate uses ★</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q1(b) · 4 marks</div><div class="callout-body"><p>State two benefits and two drawbacks of packet switching as a method of transmitting messages across a network. [4]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(b)</strong> Benefits — one mark for each benefit (Max 2)</p>
+<ul>
+<li>Packets are more likely to arrive because they can be re-routed if a problem occurs with one of the routes // Packets are more likely to arrive because if a packet is lost, it can be re-transmitted</li>
+<li>Bandwidth can be shared allowing packets from different messages to share the same path</li>
+<li>Considered secure as the packets generally travel via different routes</li>
+<li>High data transmission rate is possible</li>
+</ul>
+<p>Drawbacks — one mark for each drawback (Max 2)</p>
+<ul>
+<li>Time delay because packets need to be re-ordered/reassembled at the destination // Time delay caused by missing packets needing to be re-sent // Time delay because it has to share the bandwidth of the circuit / channel with other packets</li>
+<li>Requires a complex algorithm to function</li>
+<li>Needs lots of RAM to handle large amounts of data.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q7(a) · 2 marks</div><div class="callout-body"><p><strong>(a)</strong> State two examples of where it would be appropriate to use packet switching. [2]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(a)</strong> One mark per mark point (Max 2)</p>
+<ul>
+<li>On data networks like the internet for sending non-live files</li>
+<li>To overcome failed/faulty lines by re-routing packets</li>
+<li>When communication needs to be more secure</li>
+<li>For high volume data transmission</li>
+<li>When it is not necessary to use all the bandwidth</li>
+<li>Examples: email, text messages, documents, VOIP</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Summer P31 Q6 · 4 marks</div><div class="callout-body"><p>Give two benefits and two drawbacks of packet switching.</p>
+<p>Benefit 1: … Benefit 2: … Drawback 1: … Drawback 2: …</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6</strong> One mark for each correct benefit (Max 2)</p>
+<ul>
+<li>Accuracy – Ensures accurate delivery of the message</li>
+<li>Completeness – Missing packets can be easily detected and a re-send request sent so the message arrives complete</li>
+<li>Resilience – if a network changes the router can detect this and send the data another way to ensure it arrives</li>
+<li>Path also available to other users // Doesn’t use whole bandwidth // allows simultaneous use of channel by multiple users</li>
+<li>Better security as packets hashed and sent by different routes.</li>
+</ul>
+<p>One mark for each correct drawback (Max 2)</p>
+<ul>
+<li>Time delays to correct errors // Network problems may introduce errors in packets</li>
+<li>Requires complex protocols for delivery</li>
+<li>Unsuitable for real time transmission applications</li>
+</ul>
+</div></details></p>
 <h2 id="the-function-of-a-router">The function of a router</h2>
 <h3 id="what-a-router-does">What a router does</h3>
 <ul>
-<li>A router <strong>connects different networks</strong> and <strong>forwards packets towards their destination</strong></li>
+<li>A router <strong>connects different networks</strong> and <strong>forwards packets towards their destination</strong> (a network-layer device)</li>
 <li>When a packet arrives, the router:
 <ol>
-<li><strong>Examines the packet header</strong> — specifically the destination IP address</li>
-<li><strong>Compares it with the entries in its routing table</strong></li>
-<li><strong>Selects the best route</strong> (lowest metric / fewest hops) to the destination network</li>
-<li><strong>Decreases the hop count by 1</strong></li>
-<li><strong>Replaces the MAC address</strong> in the frame header with the MAC address of the next router</li>
-<li><strong>Forwards (hops) the packet</strong> out of the correct interface</li>
+<li><strong>Examines the packet header</strong> — specifically <strong>reads the IP address of the destination</strong></li>
+<li><strong>Uses its routing table</strong> to find information about available hops / netmask / gateway used / adjacent routers / the status of the routers along the route</li>
+<li><strong>Determines the next hop / optimum (best) route</strong> to the destination network</li>
+<li><strong>Sends the packet on its next hop</strong> out of the correct interface</li>
+<li><strong>Manages the hop counter</strong> — it is <strong>reduced by 1 every time the packet passes a router</strong> (and replaces the MAC address in the frame header with that of the next router)</li>
 </ol>
 </li>
 <li>The <strong>IP addresses stay the same from end to end</strong> — only the <strong>MAC address changes at every hop</strong></li>
@@ -352,17 +532,43 @@ body::before {
 <li>A routing table contains the information needed to forward a packet along the <strong>shortest or best route</strong> to its destination</li>
 <li>A routing table includes:
 <ul>
-<li><strong>Number of hops</strong> to the destination</li>
+<li><strong>Number of hops / available hops</strong> to the destination</li>
 <li><strong>MAC address of the next router</strong> the packet will be forwarded to</li>
 <li><strong>Metrics</strong> — a cost assigned to each route, so the most efficient path can be found</li>
 <li><strong>Network destination (network ID)</strong> or pathway</li>
 <li><strong>Gateway</strong> — the next hop through which the target network can be reached</li>
 <li><strong>Netmask</strong> — used to generate the network ID</li>
-<li><strong>Interface</strong> — which locally available interface reaches that gateway
-<a href="images/ch14-router.svg" target="_blank" rel="noopener" title="Open the diagram full size"><img alt="A router comparing a packet header with its routing table" src="images/ch14-router.svg" /></a></li>
+<li><strong>Interface</strong> — which locally available interface reaches that gateway</li>
+<li><strong>Status of the routers / routes</strong> along the route, and <strong>adjacent routers</strong></li>
 </ul>
 </li>
 </ul>
+<p><img alt="A router comparing a packet header with its routing table" src="images/ch14-router.svg" /></p>
+<p><strong>Function of a router ★</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q4(b) · 4 marks</div><div class="callout-body"><p><strong>(b)</strong> Describe the function of a router in packet switching. [4]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4(b)</strong> One mark for each correct marking point (Max 4)</p>
+<ul>
+<li><strong>MP1</strong> The router reads the IP address of the destination from the packet header.</li>
+<li><strong>MP2</strong> A router uses a routing table to find information …</li>
+<li><strong>MP3</strong> … about e.g., available hops / netmask / gateway used / adjacent routers / the status of the routers along the route.</li>
+<li><strong>MP4</strong> The router determines the next hop / optimum route. // The router sends the packet on its next hop.</li>
+<li><strong>MP5</strong> The router manages the hop counter // The hop counter is reduced by 1 every time the packet passes a router.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q6b · 3 marks</div><div class="callout-body"><p><strong>(b)</strong> Outline the function of a router in packet switching. [3]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(b)</strong> [3 marks]</p>
+<ul>
+<li>The router examines the packet’s header;</li>
+<li>it reads the IP address of the destination (from the packet header)</li>
+<li>A router has access to a routing table</li>
+<li>… containing information about, e.g., available hops / netmask / gateway used</li>
+<li>… and the status of the routes along the route</li>
+<li>… the router decides on the next hop / best route</li>
+<li>… and sends the packet on its next hop</li>
+</ul>
+</div></details></p>
 <h2 id="circuit-switching-vs-packet-switching">Circuit switching vs packet switching</h2>
 <table>
 <thead>
@@ -376,7 +582,7 @@ body::before {
 <tr>
 <td><strong>Route</strong></td>
 <td>Must be <strong>set up before</strong> transmission begins</td>
-<td>No route is set up in advance</td>
+<td>No route is set up in advance — data transfer starts straight away</td>
 </tr>
 <tr>
 <td><strong>Path</strong></td>
@@ -384,19 +590,29 @@ body::before {
 <td>Path is <strong>shared</strong> with other users’ packets</td>
 </tr>
 <tr>
+<td><strong>Addressing</strong></td>
+<td>Each data unit knows the <strong>entire path address</strong></td>
+<td>Each data unit only knows the <strong>final address</strong> (routers decide intermediate paths)</td>
+</tr>
+<tr>
 <td><strong>Routing of data</strong></td>
 <td><strong>Every</strong> frame follows the same route</td>
 <td><strong>Each</strong> packet may take a different route</td>
 </tr>
 <tr>
+<td><strong>Form of data</strong></td>
+<td>Message remains <strong>intact / a continuous stream</strong></td>
+<td>Data is <strong>split into packets</strong></td>
+</tr>
+<tr>
 <td><strong>Order of arrival</strong></td>
-<td>Always <strong>in the correct order</strong></td>
+<td>Always <strong>in the correct order</strong>, no reassembly needed</td>
 <td>May arrive <strong>out of order</strong> — reassembled at the destination</td>
 </tr>
 <tr>
 <td><strong>Bandwidth</strong></td>
-<td>The <strong>whole</strong> bandwidth of the channel is used</td>
-<td>Bandwidth is <strong>shared</strong> between packets</td>
+<td>The <strong>whole</strong> bandwidth of the channel is used (constant high bandwidth)</td>
+<td>Bandwidth is <strong>shared</strong> between packets (variable bandwidth)</td>
 </tr>
 <tr>
 <td><strong>Idle time</strong></td>
@@ -405,13 +621,23 @@ body::before {
 </tr>
 <tr>
 <td><strong>Efficiency</strong></td>
-<td>Low — resources are tied up for each communication</td>
+<td>Low — resources are tied up, underutilised for each communication</td>
 <td>High — uses bandwidth as needed</td>
 </tr>
 <tr>
 <td><strong>Reliability</strong></td>
-<td>If the path fails the call is <strong>dropped</strong></td>
-<td>Packets are <strong>re-routed</strong> around a failure</td>
+<td>If the path fails the call is <strong>dropped</strong>; the whole transmission must be resent</td>
+<td>Packets are <strong>re-routed / individual packets re-sent</strong> around a failure</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Less secure — single path can be intercepted</td>
+<td>More secure — packets take different routes</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>Implemented at the <strong>physical layer</strong>; simpler</td>
+<td>Implemented at the <strong>network layer</strong>; more complex</td>
 </tr>
 <tr>
 <td><strong>Scalability</strong></td>
@@ -421,27 +647,145 @@ body::before {
 <tr>
 <td><strong>Suitable for</strong></td>
 <td>Real-time communication (voice calls, video conferencing)</td>
-<td>Emails, web pages, file downloads</td>
+<td>Emails, web pages, text messages, file downloads, high-volume non-live files</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
 <p>Do not write about “the speed of data transmission” in a packet/circuit switching answer — it earns no marks and in some questions is explicitly excluded. Talk about <strong>bit rate</strong> or <strong>bandwidth</strong> (bits per second) and the <strong>efficiency</strong> of the transmission instead.</p>
 </blockquote>
+<p><img alt="A side-by-side comparison of a single dedicated circuit path and independently routed packets being reassembled" src="images/p3-ch14-2-circuit-vs-packet.svg" /></p>
+<p><strong>Benefits, differences and comparison of the two methods ★</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q4 · 4 marks</div><div class="callout-body"><p><strong>(a)</strong> Identify one benefit of circuit switching and one benefit of packet switching. [2]</p>
+<p><strong>(b)</strong> Identify two differences between circuit switching and packet switching. [2]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4(a)</strong> One mark for a benefit of circuit switching (Max 1)</p>
+<ul>
+<li>Once the connection is made, it is available until the end of the transmission (suitable for long continuous transmission)</li>
+<li>The dedicated path ensures a steady rate of data transmission, once connection has been made (because the whole bandwidth is available)</li>
+<li>The dedicated path ensures data is less likely to be lost.</li>
+<li>No intermediate delays once the circuit is established, enables real time transmission</li>
+<li>No additional time/delay to reorder needed because data arrives in the order it was sent / data sent as a continuous stream</li>
+</ul>
+<p>One mark for a benefit of packet switching (Max 1)</p>
+<ul>
+<li>No need to tie up a communication line // path available to multiple users // bandwidth can be shared by multiple users</li>
+<li>Possible to overcome failed / faulty / busy lines by re-routing packets</li>
+<li>Individual packets can be resent if lost/damaged</li>
+<li>Users only charged for the duration of connectivity</li>
+<li>High rate of data transmission possible</li>
+<li>Always uses digital networks so data is transmitted directly to the destination</li>
+<li>Good security because all packets can take different routes // A more secure method because all packets can take different routes</li>
+</ul>
+<p><strong>Q4(b)</strong> One mark per difference (Max 2)</p>
+<ul>
+<li>Circuit switching requires a dedicated line to be connected before the data transfer takes place; in packet switching, data transfer commences directly / straight away</li>
+<li>In circuit switching, each data unit knows the entire path address, but in packet switching, each data unit only knows the final address (routers decide intermediate paths)</li>
+<li>Circuit switching uses the whole bandwidth of the transmission path, but packet switching shares it with other users // circuit switching uses a constant high bandwidth; packet switching has variable bandwidth</li>
+<li>In circuit switching each data unit follows the same route, but in packet switching, packets can follow any route</li>
+<li>In circuit switching data arrives in the correct order but in packet switching it has to be reordered</li>
+<li>Data remains intact / a continuous stream in circuit switching but is segmented in packet switching</li>
+<li>Lost data in circuit switching requires the whole transmission to be resent, but individual packets can be resent in packet switching</li>
+<li>Circuit switching doesn’t suffer data loss but packets can be lost in packet switching.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q7(b) · 4 marks</div><div class="callout-body"><p><strong>(b)</strong> Give four differences between circuit switching and packet switching. [4]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(b)</strong> One mark per mark point (Max 4)</p>
+<table>
+<thead>
+<tr>
+<th>Circuit Switching</th>
+<th>Packet Switching</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uses a dedicated channel for the entire communication</td>
+<td>Data is split into packets and transmitted over a digital network</td>
+</tr>
+<tr>
+<td>A dedicated path must be established before data transfer</td>
+<td>No dedicated path needs to be established beforehand</td>
+</tr>
+<tr>
+<td>The message remains intact</td>
+<td>Data is split into packets</td>
+</tr>
+<tr>
+<td>All data follows the same path</td>
+<td>Different packets may take different routes</td>
+</tr>
+<tr>
+<td>Message received in the same order as sent</td>
+<td>Packets can arrive out of order and must be reassembled</td>
+</tr>
+<tr>
+<td>Implemented at the physical layer</td>
+<td>Implemented at the network layer</td>
+</tr>
+<tr>
+<td>Uses the whole bandwidth</td>
+<td>Allows sharing of bandwidth between multiple communications</td>
+</tr>
+<tr>
+<td>Communication ends with a single error (less fault tolerant)</td>
+<td>Allows re-sending of lost/corrupted packets</td>
+</tr>
+<tr>
+<td>Simpler to implement</td>
+<td>More complex</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P31 Q3 · 8 marks</div><div class="callout-body"><p>Data can be sent over networks using either circuit switching or packet switching.</p>
+<p>Describe both methods of data transmission. Include a different advantage and disadvantage for each method.</p>
+<p><strong>Circuit switching</strong> … Advantage: … Disadvantage: …</p>
+<p><strong>Packet switching</strong> … Advantage: … Disadvantage: …</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q3</strong> Circuit switching (max 4 marks)
+Any <strong>two</strong> from:</p>
+<ul>
+<li>A dedicated circuit</li>
+<li>Circuit is established before transmission starts // circuit is released after transmission ends</li>
+<li>Data is transferred using the whole bandwidth</li>
+<li>All data is transferred over the same route</li>
+</ul>
+<p><strong>Two</strong> from:</p>
+<ul>
+<li>Advantage: data/frames arrive in order and do not need to be reassembled</li>
+<li>Disadvantage: nobody else can use the same circuit even if it is idle // less secure as only one route used</li>
+</ul>
+<p>Packet switching (max 4 marks)
+Any <strong>two</strong> from:</p>
+<ul>
+<li>Data is split into packets</li>
+<li>Each packet is given its own route</li>
+<li>The routing for a packet depends on the congestion</li>
+<li>Packets may not arrive in the order sent</li>
+</ul>
+<p><strong>Two</strong> from:</p>
+<ul>
+<li>Advantage: packets can be rerouted if there are problems // more secure as harder to intercept messages</li>
+<li>Disadvantage: time taken to reassemble packets at the destination</li>
+</ul>
+</div></details></p>
 <h2 id="how-packet-switching-is-used-to-pass-a-message-across-a-network">How packet switching is used to pass a message across a network</h2>
 <ul>
 <li>This is the syllabus requirement <em>“Explain how packet switching is used to pass messages across a network, including the internet”</em> — practise writing it as a numbered sequence</li>
 </ul>
 <h3 id="worked-answer-downloading-a-web-page">Worked answer: downloading a web page</h3>
 <ol>
-<li>The web page is <strong>divided up into data packets</strong></li>
-<li>Each packet has a <strong>header</strong>, which includes the <strong>IP address of the destination</strong></li>
+<li>The web page (large message) is <strong>divided up into equal-sized data packets</strong></li>
+<li>Each packet has a <strong>header</strong>, which includes the <strong>source IP address, destination IP address and sequence / packet number</strong></li>
+<li>Each packet is <strong>dispatched/transmitted independently</strong> and may take a <strong>different route</strong>, with the <strong>optimum route chosen depending on congestion</strong></li>
 <li>At each <strong>router</strong> the header is <strong>checked against the values stored in the routing table</strong></li>
-<li>… to <strong>determine which router the packet needs to be sent to next</strong> (hopped)</li>
+<li>… to <strong>determine which router the packet needs to be sent to next</strong> (hopped / next hop)</li>
 <li>… the <strong>MAC address of the next router</strong> is added to the packet header</li>
 <li>The <strong>hop value is checked</strong> to see whether it equals zero; if it does, the packet is deleted</li>
-<li>Each packet may go by a <strong>different route</strong></li>
-<li>The <strong>destination computer reassembles the packets</strong>, building up the final web page</li>
+<li>Packets usually <strong>arrive out of order</strong> and the <strong>destination computer reassembles them</strong>, using the <strong>sequence number</strong>, building up the final web page</li>
+<li>If packets are <strong>missing / corrupted, a re-transmission request is sent</strong></li>
 </ol>
 <h3 id="worked-answer-why-a-video-call-performs-badly">Worked answer: why a video call performs badly</h3>
 <ul>
@@ -461,6 +805,155 @@ body::before {
 </ul>
 </li>
 </ul>
+<p><strong>Across the internet ★</strong></p>
+<ul>
+<li>The message is carried by <strong>many networks owned by different organisations</strong>; each router only needs the <strong>destination IP address</strong> and its <strong>own routing table</strong></li>
+<li>No single device needs a map of the whole internet, which is what allows the network to keep growing</li>
+<li>Large messages are split into <strong>equal-sized packets with a header (source/destination IP, sequence number) and a payload</strong>, each dispatched independently, possibly along <strong>different routes</strong>, then <strong>reassembled into the original message at the destination</strong>; missing or corrupted packets trigger a <strong>re-transmission request</strong></li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q1(a) · 3 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe how packet switching is used to transmit messages across a network. [3]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q1(a)</strong> One mark per mark point (Max 3)</p>
+<ul>
+<li>The data to be transmitted is divided into equal sized packets</li>
+<li>A packet header is attached to each packet containing key information … such as source/destination IP addresses, packet number, etc</li>
+<li>Packets are transmitted independently … and may travel through different routes/paths to the destination</li>
+<li>Routes are determined using a routing table // Packets take the optimum route depending on congestion</li>
+<li>The packets usually arrive out of order</li>
+<li>The packets are reassembled in the correct order at the destination // The packets are re-ordered using the sequence number / the header</li>
+<li>If packets are missing/corrupted a re-transmission request is sent / packets are re-sent.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Winter P31 Q6a · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Explain how packet switching is used to transfer messages across the internet. [5]</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(a)</strong> [5 marks]</p>
+<ul>
+<li>A large message is divided up into a group of smaller chunks of the same size called packets</li>
+<li>The packet has a header and a payload; the header contains a source IP address, destination IP address (and sequence number)</li>
+<li>Each packet is dispatched independently</li>
+<li>… and may travel along different routes / paths</li>
+<li>The packets may arrive out of order</li>
+<li>… and are reassembled into the original message at the destination</li>
+<li>If packets are missing / corrupted a re-transmission request is sent</li>
+</ul>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<p><strong>Circuit switching</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P32 Q4</td>
+<td>Circuit switching — benefits &amp; drawbacks</td>
+<td>2025 Summer P32 Q4</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Circuit switching — description</td>
+<td>2024 Winter P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Circuit switching — benefit &amp; drawback</td>
+<td>2024 Winter P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>Circuit switching — appropriate use</td>
+<td>2023 Summer P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)</td>
+<td>Circuit switching — benefits &amp; drawbacks</td>
+<td>2023 Summer P31 Q5(b)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Packet switching</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P32 Q1(a)</td>
+<td>Packet switching — how messages are transmitted</td>
+<td>2024 Winter P32 Q1(a)</td>
+</tr>
+<tr>
+<td>P32 Q1(b)</td>
+<td>Packet switching — benefits &amp; drawbacks</td>
+<td>2024 Winter P32 Q1(b)</td>
+</tr>
+<tr>
+<td>P31 Q6</td>
+<td>Packet switching — benefits &amp; drawbacks</td>
+<td>2021 Summer P31 Q6</td>
+</tr>
+<tr>
+<td>P32 Q7(a)</td>
+<td>Packet switching — appropriate uses</td>
+<td>2023 Summer P32 Q7(a)</td>
+</tr>
+<tr>
+<td>P33 Q4(b)</td>
+<td>Router function in packet switching</td>
+<td>2025 Summer P33 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q6a</td>
+<td>Packet switching — across the internet</td>
+<td>2021 Winter P31 Q6a</td>
+</tr>
+<tr>
+<td>P31 Q6b</td>
+<td>Router function in packet switching</td>
+<td>2021 Winter P31 Q6b</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Circuit switching vs packet switching (both exam points)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P32 Q4(a)</td>
+<td>Benefits of circuit switching and packet switching</td>
+<td>2025 Winter P32 Q4(a)</td>
+</tr>
+<tr>
+<td>P32 Q4(b)</td>
+<td>Differences between the two methods</td>
+<td>2025 Winter P32 Q4(b)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)</td>
+<td>Four differences between the two methods</td>
+<td>2023 Summer P32 Q7(b)</td>
+</tr>
+<tr>
+<td>P31 Q3</td>
+<td>Describe both methods + one advantage/disadvantage each</td>
+<td>2022 Summer P31 Q3</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="141-protocols.html" title="Previous: 14.1 Protocols" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">14.1 Protocols</span></a>

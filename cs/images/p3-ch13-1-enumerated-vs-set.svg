@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" width="900" height="330" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="900" height="330" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Enumerated type vs set</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Two non-composite / composite user-defined types</text>
+
+  <!-- Enumerated -->
+  <rect x="28" y="80" width="410" height="228" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <rect x="28" y="80" width="410" height="44" rx="14" fill="#1d9e75"/>
+  <text x="233" y="109" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Enumerated type</text>
+  <text x="48" y="150" font-size="13.5" fill="#233b3a">TYPE DayType = (Mon, Tue, Wed, Thu, Fri, Sat, Sun)</text>
+  <text x="48" y="176" font-size="13" font-weight="700" fill="#0f6e56">Ordered, fixed list of named values</text>
+
+  <g font-size="12.5" fill="#0f3d3e">
+    <rect x="48" y="194" width="52" height="34" rx="6" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="74" y="215" text-anchor="middle">Mon</text>
+    <rect x="108" y="194" width="52" height="34" rx="6" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="134" y="215" text-anchor="middle">Tue</text>
+    <rect x="168" y="194" width="52" height="34" rx="6" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="194" y="215" text-anchor="middle">Wed</text>
+    <text x="232" y="215" font-size="14" fill="#5a6b6b">…</text>
+  </g>
+  <text x="48" y="252" font-size="13" fill="#233b3a">A variable holds exactly ONE value from the list</text>
+  <text x="48" y="276" font-size="13" fill="#233b3a">DECLARE Today : DayType → Today ← Mon</text>
+  <text x="48" y="298" font-size="12.5" fill="#5a6b6b">Use: restrict input to a known fixed set</text>
+
+  <!-- Set -->
+  <rect x="462" y="80" width="410" height="228" rx="14" fill="#f4effb" stroke="#7f77dd" stroke-width="1.5"/>
+  <rect x="462" y="80" width="410" height="44" rx="14" fill="#7f77dd"/>
+  <text x="667" y="109" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Set</text>
+  <text x="482" y="150" font-size="13.5" fill="#233b3a">TYPE ColourSet = SET OF STRING</text>
+  <text x="482" y="176" font-size="13" font-weight="700" fill="#534ab7">Unordered collection of unique values</text>
+
+  <g font-size="12.5" fill="#26215c">
+    <rect x="482" y="194" width="52" height="34" rx="6" fill="#e6e2fa" stroke="#7f77dd"/>
+    <text x="508" y="215" text-anchor="middle">Red</text>
+    <rect x="542" y="194" width="52" height="34" rx="6" fill="#e6e2fa" stroke="#7f77dd"/>
+    <text x="568" y="215" text-anchor="middle">Green</text>
+    <rect x="602" y="194" width="52" height="34" rx="6" fill="#e6e2fa" stroke="#7f77dd"/>
+    <text x="628" y="215" text-anchor="middle">Blue</text>
+  </g>
+  <text x="482" y="252" font-size="13" fill="#233b3a">A variable holds a COLLECTION of values</text>
+  <text x="482" y="276" font-size="13" fill="#233b3a">ISIN tests membership; no duplicates allowed</text>
+  <text x="482" y="298" font-size="12.5" fill="#5a6b6b">Use: membership tests, union / intersection</text>
+</svg>

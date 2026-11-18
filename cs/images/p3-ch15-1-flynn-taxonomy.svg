@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" width="880" height="440" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="880" height="440" fill="#ffffff"/>
+  <text x="440" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Flynn's taxonomy of parallel processing</text>
+  <text x="440" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Classified by instruction stream and data stream</text>
+
+  <g font-size="12.5" fill="#5a6b6b">
+    <text x="210" y="92" text-anchor="middle">Data stream →</text>
+    <text x="650" y="92" text-anchor="middle">Data stream →</text>
+  </g>
+  <text x="30" y="180" font-size="12.5" fill="#5a6b6b" transform="rotate(-90 30 180)">Instruction stream ↓</text>
+
+  <!-- SISD -->
+  <rect x="80" y="112" width="280" height="140" rx="12" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="220" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="#0f6e56">SISD</text>
+  <text x="220" y="164" text-anchor="middle" font-size="12" fill="#0f6e56">Single Instruction, Single Data</text>
+  <rect x="170" y="186" width="100" height="34" rx="6" fill="#d5efe6" stroke="#1d9e75"/>
+  <text x="220" y="207" text-anchor="middle" font-size="12.5" fill="#233b3a">1 CPU</text>
+  <text x="220" y="240" text-anchor="middle" font-size="11.5" fill="#5a6b6b">conventional sequential computer</text>
+
+  <!-- SIMD -->
+  <rect x="380" y="112" width="420" height="140" rx="12" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="590" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="#185fa5">SIMD</text>
+  <text x="590" y="164" text-anchor="middle" font-size="12" fill="#185fa5">Single Instruction, Multiple Data</text>
+  <g fill="#d7e8fa" stroke="#378add">
+    <rect x="490" y="186" width="50" height="34" rx="6"/><rect x="550" y="186" width="50" height="34" rx="6"/><rect x="610" y="186" width="50" height="34" rx="6"/><rect x="670" y="186" width="50" height="34" rx="6"/>
+  </g>
+  <g font-size="11" fill="#042c53" text-anchor="middle">
+    <text x="515" y="207">PE</text><text x="575" y="207">PE</text><text x="635" y="207">PE</text><text x="695" y="207">PE</text>
+  </g>
+  <text x="590" y="240" text-anchor="middle" font-size="11.5" fill="#5a6b6b">same operation on many data items (array processing, GPU)</text>
+
+  <!-- MISD -->
+  <rect x="80" y="268" width="280" height="140" rx="12" fill="#f4effb" stroke="#7f77dd" stroke-width="1.5"/>
+  <text x="220" y="298" text-anchor="middle" font-size="17" font-weight="700" fill="#534ab7">MISD</text>
+  <text x="220" y="320" text-anchor="middle" font-size="12" fill="#534ab7">Multiple Instruction, Single Data</text>
+  <g fill="#e6e2fa" stroke="#7f77dd">
+    <rect x="145" y="342" width="60" height="34" rx="6"/><rect x="215" y="342" width="60" height="34" rx="6"/>
+  </g>
+  <g font-size="11" fill="#26215c" text-anchor="middle">
+    <text x="175" y="363">CPU1</text><text x="245" y="363">CPU2</text>
+  </g>
+  <text x="220" y="398" text-anchor="middle" font-size="11.5" fill="#5a6b6b">rare in practice</text>
+
+  <!-- MIMD -->
+  <rect x="380" y="268" width="420" height="140" rx="12" fill="#fbf0d8" stroke="#d9a441" stroke-width="1.5"/>
+  <text x="590" y="298" text-anchor="middle" font-size="17" font-weight="700" fill="#854f0b">MIMD</text>
+  <text x="590" y="320" text-anchor="middle" font-size="12" fill="#854f0b">Multiple Instruction, Multiple Data</text>
+  <g fill="#faeed0" stroke="#d9a441">
+    <rect x="480" y="342" width="60" height="34" rx="6"/><rect x="550" y="342" width="60" height="34" rx="6"/><rect x="620" y="342" width="60" height="34" rx="6"/>
+  </g>
+  <g font-size="11" fill="#412402" text-anchor="middle">
+    <text x="510" y="363">CPU1</text><text x="580" y="363">CPU2</text><text x="650" y="363">CPU3</text>
+  </g>
+  <text x="590" y="398" text-anchor="middle" font-size="11.5" fill="#5a6b6b">each processor runs its own instruction stream on its own data</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="960" height="400" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Instruction pipeline timing</text>
+  <text x="480" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Five stages, one stage completed per clock cycle</text>
+
+  <g font-size="12" fill="#5a6b6b">
+    <text x="20" y="100">Cycle →</text>
+    <text x="180" y="92" text-anchor="middle">1</text>
+    <text x="260" y="92" text-anchor="middle">2</text>
+    <text x="340" y="92" text-anchor="middle">3</text>
+    <text x="420" y="92" text-anchor="middle">4</text>
+    <text x="500" y="92" text-anchor="middle">5</text>
+    <text x="580" y="92" text-anchor="middle">6</text>
+    <text x="660" y="92" text-anchor="middle">7</text>
+    <text x="740" y="92" text-anchor="middle">8</text>
+    <text x="820" y="92" text-anchor="middle">9</text>
+    <text x="900" y="92" text-anchor="middle">10</text>
+  </g>
+
+  <g font-size="12.5" font-weight="600" fill="#233b3a">
+    <text x="20" y="130">I1</text>
+    <text x="20" y="164">I2</text>
+    <text x="20" y="198">I3</text>
+    <text x="20" y="232">I4</text>
+    <text x="20" y="266">I5</text>
+    <text x="20" y="300">I6</text>
+  </g>
+
+  <!-- stage cells -->
+  <g font-size="11" text-anchor="middle">
+    <!-- I1 -->
+    <rect x="140" y="112" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="180" y="129" fill="#0f6e56">IF</text>
+    <rect x="220" y="112" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="260" y="129" fill="#0f6e56">ID</text>
+    <rect x="300" y="112" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="340" y="129" fill="#0f6e56">OF</text>
+    <rect x="380" y="112" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="420" y="129" fill="#0f6e56">IE</text>
+    <rect x="460" y="112" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="500" y="129" fill="#0f6e56">WB</text>
+
+    <!-- I2 -->
+    <rect x="220" y="146" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="260" y="163" fill="#0f6e56">IF</text>
+    <rect x="300" y="146" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="340" y="163" fill="#0f6e56">ID</text>
+    <rect x="380" y="146" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="420" y="163" fill="#0f6e56">OF</text>
+    <rect x="460" y="146" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="500" y="163" fill="#0f6e56">IE</text>
+    <rect x="540" y="146" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="580" y="163" fill="#0f6e56">WB</text>
+
+    <!-- I3 -->
+    <rect x="300" y="180" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="340" y="197" fill="#0f6e56">IF</text>
+    <rect x="380" y="180" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="420" y="197" fill="#0f6e56">ID</text>
+    <rect x="460" y="180" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="500" y="197" fill="#0f6e56">OF</text>
+    <rect x="540" y="180" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="580" y="197" fill="#0f6e56">IE</text>
+    <rect x="620" y="180" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="660" y="197" fill="#0f6e56">WB</text>
+
+    <!-- I4 -->
+    <rect x="380" y="214" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="420" y="231" fill="#0f6e56">IF</text>
+    <rect x="460" y="214" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="500" y="231" fill="#0f6e56">ID</text>
+    <rect x="540" y="214" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="580" y="231" fill="#0f6e56">OF</text>
+    <rect x="620" y="214" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="660" y="231" fill="#0f6e56">IE</text>
+    <rect x="700" y="214" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="740" y="231" fill="#0f6e56">WB</text>
+
+    <!-- I5 -->
+    <rect x="460" y="248" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="500" y="265" fill="#0f6e56">IF</text>
+    <rect x="540" y="248" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="580" y="265" fill="#0f6e56">ID</text>
+    <rect x="620" y="248" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="660" y="265" fill="#0f6e56">OF</text>
+    <rect x="700" y="248" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="740" y="265" fill="#0f6e56">IE</text>
+    <rect x="780" y="248" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="820" y="265" fill="#0f6e56">WB</text>
+
+    <!-- I6 -->
+    <rect x="540" y="282" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="580" y="299" fill="#0f6e56">IF</text>
+    <rect x="620" y="282" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="660" y="299" fill="#0f6e56">ID</text>
+    <rect x="700" y="282" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="740" y="299" fill="#0f6e56">OF</text>
+    <rect x="780" y="282" width="80" height="26" rx="4" fill="#e3f2ed" stroke="#1d9e75"/><text x="820" y="299" fill="#0f6e56">IE</text>
+    <rect x="860" y="282" width="80" height="26" rx="4" fill="#d5efe6" stroke="#1d9e75"/><text x="900" y="299" fill="#0f6e56">WB</text>
+  </g>
+
+  <g font-size="12" fill="#233b3a">
+    <text x="60" y="344" font-weight="700" fill="#0f6e56">IF</text><text x="90" y="344">Instruction fetch</text>
+    <text x="230" y="344" font-weight="700" fill="#0f6e56">ID</text><text x="260" y="344">Instruction decode</text>
+    <text x="420" y="344" font-weight="700" fill="#0f6e56">OF</text><text x="450" y="344">Operand fetch</text>
+    <text x="600" y="344" font-weight="700" fill="#0f6e56">IE</text><text x="630" y="344">Instruction execute</text>
+    <text x="790" y="344" font-weight="700" fill="#0f6e56">WB</text><text x="820" y="344">Write back</text>
+  </g>
+  <text x="60" y="376" font-size="12.5" fill="#5a6b6b">While one instruction is fetched, another is decoded, another executed — no two at the same stage in the same cycle.</text>
+</svg>

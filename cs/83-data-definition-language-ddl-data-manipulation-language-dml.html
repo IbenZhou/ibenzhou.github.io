@@ -241,7 +241,8 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="sql">SQL</h2>
+        
+<h2 id="sql">SQL</h2>
 <h2 id="ddl-dml">DDL &amp; DML</h2>
 <h3 id="what-is-ddl-dml">What is DDL &amp; DML?</h3>
 <ul>
@@ -330,7 +331,7 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="example-school-database">Example: School database</h4>
+<h3 id="example-school-database">Example: School database</h3>
 <ul>
 <li>You are designing a database to store information about <strong>students</strong> and the <strong>courses</strong> they are enrolled in</li>
 <li>Each student can enrol in many courses, and each course can have many students (a <strong>many-to-many relationship</strong>)</li>
@@ -342,7 +343,7 @@ body::before {
 </ul>
 </li>
 </ul>
-<pre><code class="language-SQL"><div class="highlight"><pre><span></span><span class="c1">-- Create the Students table</span>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Create the Students table</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">StudentID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">FirstName</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
@@ -366,10 +367,9 @@ body::before {
 <span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Students</span><span class="p">(</span><span class="n">StudentID</span><span class="p">),</span>
 <span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">CourseID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Courses</span><span class="p">(</span><span class="n">CourseID</span><span class="p">)</span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <h2 id="basic-dml-commands">Basic DML commands</h2>
-<h4 id="retrieving-data">Retrieving data</h4>
+<h3 id="retrieving-data">Retrieving data</h3>
 <table>
 <thead>
 <tr>
@@ -421,7 +421,7 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="data-maintenance">Data maintenance</h4>
+<h3 id="data-maintenance">Data maintenance</h3>
 <table>
 <thead>
 <tr>
@@ -448,7 +448,7 @@ body::before {
 </tr>
 </tbody>
 </table>
-<h4 id="example-school-database_2">Example: School database</h4>
+<h3 id="example-school-database_1">Example: School database</h3>
 <ul>
 <li>You’re working with a school database containing three tables:
 <ul>
@@ -460,7 +460,7 @@ body::before {
 <li>You want to <strong>query the database</strong> and <strong>maintain the data</strong> as students enrol in courses, update their details, or leave the school
 <strong>Querying</strong></li>
 </ul>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="c1">-- 1. Get the first and last names of all students</span>
+<div class="highlight"><pre><span></span><code><span class="c1">-- 1. Get the first and last names of all students</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">LastName</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Students</span><span class="p">;</span>
 <span class="c1">-- 2. List students who are older than 16</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
@@ -477,10 +477,9 @@ body::before {
 <span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">Credits</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Courses</span><span class="p">;</span>
 <span class="c1">-- 7. Get the average age of all students</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Students</span><span class="p">;</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Maintaining</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="c1">-- 1. Add a new student to the Students table</span>
+<div class="highlight"><pre><span></span><code><span class="c1">-- 1. Add a new student to the Students table</span>
 <span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">LastName</span><span class="p">,</span><span class="w"> </span><span class="n">Age</span><span class="p">)</span>
 <span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Amira&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Patel&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span>
 <span class="c1">-- 2. Enrol that student on CourseID 2</span>
@@ -490,8 +489,7 @@ body::before {
 <span class="k">UPDATE</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">StudentID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 <span class="c1">-- 4. Delete a student who has left the school</span>
 <span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">StudentID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p>Part of a database table <code>BIRD_TYPE</code> is shown:</p>
 <table>
 <thead>
@@ -522,13 +520,9 @@ body::before {
 <td>Robin</td>
 <td>Small</td>
 </tr>
-<tr>
-<td>The database only supports these data types:</td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<p>The database only supports these data types:</p>
 <ul>
 <li>character</li>
 <li>varchar</li>
@@ -545,14 +539,13 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 <li>Bird ID as primary key [1 mark]
 <strong>Example answer</strong></li>
 </ul>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">BIRD_TYPE</span><span class="p">(</span><span class="w"> </span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">BIRD_TYPE</span><span class="p">(</span><span class="w"> </span>
 <span class="n">BirdID</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
 <span class="n">Name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span>
 <span class="k">Size</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span><span class="w">  </span>
 <span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">BirdID</span><span class="p">)</span><span class="w">  </span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <hr>
 <h1 id="exercises-83-ddl-dml">🏋️ Exercises — 8.3 DDL &amp; DML</h1>
 <blockquote>
@@ -590,15 +583,14 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 </ul>
 <p><code>PatientID</code> must be the primary key. <strong>[4]</strong></p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Patients</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Patients</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">PatientID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span>
 <span class="w">    </span><span class="n">AdmissionDate</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Fee</span><span class="w"> </span><span class="nb">REAL</span><span class="p">,</span>
 <span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">PatientID</span><span class="p">)</span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p>Mark scheme: <code>CREATE TABLE</code> with brackets [1], correct data types [2], primary key [1].</p>
 <h2 id="3-key-point-data-types">3. Key point: Data types</h2>
 <p><strong>Exercise 3.1</strong> — Choose the most appropriate data type for each field from: <code>CHARACTER</code>, <code>VARCHAR</code>, <code>BOOLEAN</code>, <code>INTEGER</code>, <code>REAL</code>, <code>DATE</code>, <code>TIME</code>.
@@ -612,15 +604,14 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 <p><strong>Answer</strong> — 1. <code>VARCHAR</code> stores only the characters actually used, so a short name such as ‘Ali’ uses little space, whereas <code>CHARACTER(30)</code> always reserves 30 characters. 2. Because the storage is variable, no padding of trailing spaces is needed and values compare cleanly, saving storage and simplifying data handling.</p>
 <p><strong>Exercise 3.3</strong> — The database supports the data types: <code>character</code>, <code>varchar</code>, <code>Boolean</code>, <code>integer</code>, <code>real</code>, <code>date</code>, <code>time</code>. Write a SQL script to define the table <code>MEMBER</code> where <code>MemberID</code> is always exactly 4 characters, <code>Name</code> holds up to 20 characters, <code>HasPaid</code> holds a true/false value, and <code>JoinedDate</code> holds a calendar date. <code>MemberID</code> is the primary key. <strong>[4]</strong></p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">MEMBER</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">MEMBER</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">MemberID</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
 <span class="w">    </span><span class="n">Name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
 <span class="w">    </span><span class="n">HasPaid</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="p">,</span>
 <span class="w">    </span><span class="n">JoinedDate</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
 <span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">MemberID</span><span class="p">)</span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <h2 id="4-key-point-alter-table">4. Key point: ALTER TABLE</h2>
 <p><strong>Exercise 4.1</strong> — The <code>Students</code> table currently has the columns <code>StudentID</code>, <code>FirstName</code>, <code>LastName</code>. Write SQL to add a new column <code>Email VARCHAR(100)</code>.</p>
 <p><strong>Answer</strong> — <code>ALTER TABLE Students ADD Email VARCHAR(100);</code></p>
@@ -633,20 +624,19 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 <p><strong>Answer</strong> — <code>StudentID</code>. It is guaranteed to be unique for every student, never changes, and is never blank. <code>FirstName</code>/<code>LastName</code> would not be suitable because two students could share the same name.</p>
 <p><strong>Exercise 5.2</strong> — The <code>Enrolments</code> table stores <code>StudentID</code>, <code>CourseID</code> and <code>EnrolDate</code>. A student may appear in many rows and a course may appear in many rows, but each <code>(StudentID, CourseID)</code> pair appears only once. Write a <code>CREATE TABLE</code> statement for <code>Enrolments</code> using a <strong>composite primary key</strong>.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">StudentID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">CourseID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">EnrolDate</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
 <span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">CourseID</span><span class="p">)</span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Exercise 5.3</strong> — State <strong>two</strong> properties of a primary key.</p>
 <p><strong>Answer</strong> — 1. It must be unique for every record in the table. 2. It cannot contain NULL (blank) values.</p>
 <h2 id="6-key-point-foreign-key-relationships">6. Key point: FOREIGN KEY &amp; relationships</h2>
 <p><strong>Exercise 6.1</strong> — Using <code>Students(StudentID, FirstName, LastName, Age)</code> and <code>Courses(CourseID, CourseName, Credits)</code>, write a <code>CREATE TABLE</code> statement for <code>Enrolments</code> that links to both tables with foreign keys.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">StudentID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">CourseID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">EnrolDate</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
@@ -654,22 +644,20 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 <span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Students</span><span class="p">(</span><span class="n">StudentID</span><span class="p">),</span>
 <span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">CourseID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Courses</span><span class="p">(</span><span class="n">CourseID</span><span class="p">)</span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Exercise 6.2</strong> — Explain the purpose of a foreign key and describe what happens if you try to insert an <code>Enrolments</code> record with a <code>StudentID</code> that does not exist in the <code>Students</code> table.</p>
 <p><strong>Answer</strong> — A foreign key links a field in one table to the primary key of another table, enforcing <strong>referential integrity</strong>: every value entered must already exist in the referenced table. Inserting an enrolment for a non-existent student is rejected by the DBMS, so orphan records can never be created.</p>
 <p><strong>Exercise 6.3</strong> — A <code>Departments</code> table has primary key <code>DepartmentID</code>. Write a <code>CREATE TABLE</code> statement for <code>Staff(StaffID, Name, DepartmentID)</code> where <code>StaffID</code> is the primary key and <code>DepartmentID</code> is a foreign key referencing <code>Departments</code>.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Staff</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">Staff</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">StaffID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
 <span class="w">    </span><span class="n">DepartmentID</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
 <span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">StaffID</span><span class="p">),</span>
 <span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">DepartmentID</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Departments</span><span class="p">(</span><span class="n">DepartmentID</span><span class="p">)</span>
 <span class="p">);</span>
-</pre></div>
-</code></pre>
-<h2 id="7-key-point-select-from">7. Key point: SELECT … FROM</h2>
+</code></pre></div>
+<h2 id="7-key-point-select-from">7. Key point: SELECT ... FROM</h2>
 <p><strong>Exercise 7.1</strong> — Write SQL to retrieve the first name and last name of every student.</p>
 <p><strong>Answer</strong> — <code>SELECT FirstName, LastName FROM Students;</code></p>
 <p><strong>Exercise 7.2</strong> — Write SQL to retrieve all columns from the <code>Courses</code> table.</p>
@@ -700,19 +688,17 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 <h2 id="11-key-point-inner-join">11. Key point: INNER JOIN</h2>
 <p><strong>Exercise 11.1</strong> — Write SQL to show each student’s first name and the <code>CourseID</code> of every course they are enrolled on (join <code>Students</code> with <code>Enrolments</code>).</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">Enrolments</span><span class="p">.</span><span class="n">CourseID</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">Enrolments</span><span class="p">.</span><span class="n">CourseID</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Students</span>
 <span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">StudentID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Enrolments</span><span class="p">.</span><span class="n">StudentID</span><span class="p">;</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Exercise 11.2</strong> — Write SQL to show each student’s first name, surname and the name of each course they take. This needs a three-table join.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">LastName</span><span class="p">,</span><span class="w"> </span><span class="n">Courses</span><span class="p">.</span><span class="n">CourseName</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">LastName</span><span class="p">,</span><span class="w"> </span><span class="n">Courses</span><span class="p">.</span><span class="n">CourseName</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Students</span>
 <span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">Students</span><span class="p">.</span><span class="n">StudentID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Enrolments</span><span class="p">.</span><span class="n">StudentID</span>
 <span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Courses</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">Enrolments</span><span class="p">.</span><span class="n">CourseID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Courses</span><span class="p">.</span><span class="n">CourseID</span><span class="p">;</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Exercise 11.3</strong> — Explain what an <code>INNER JOIN</code> does and state when you would use one.</p>
 <p><strong>Answer</strong> — An INNER JOIN combines rows from two or more tables where there is a matching value, usually between a foreign key and a primary key. Only rows with a match in <em>both</em> tables appear in the result. It is used whenever related data stored in separate tables must be combined in a single query.</p>
 <h2 id="12-key-point-aggregate-functions-sum-count-avg">12. Key point: Aggregate functions (SUM, COUNT, AVG)</h2>
@@ -724,25 +710,22 @@ Write a Structured Query Language (SQL) script to define the table <code>Bird_Ty
 <p><strong>Answer</strong> — <code>SELECT AVG(Age) FROM Students;</code></p>
 <p><strong>Exercise 12.4</strong> — Write SQL to show how many courses each student is enrolled on, ordered from the most courses to the fewest.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">Enrolments</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">StudentID</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <h2 id="13-key-point-insert-into">13. Key point: INSERT INTO</h2>
 <p><strong>Exercise 13.1</strong> — Write SQL to add a new student to the <code>Students</code> table: StudentID 5, FirstName ‘Omar’, LastName ‘Hussain’, Age 16.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">LastName</span><span class="p">,</span><span class="w"> </span><span class="n">Age</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Students</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">FirstName</span><span class="p">,</span><span class="w"> </span><span class="n">LastName</span><span class="p">,</span><span class="w"> </span><span class="n">Age</span><span class="p">)</span>
 <span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Omar&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Hussain&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Exercise 13.2</strong> — Write SQL to enrol StudentID 5 on CourseID 3 with the date <code>02/09/2025</code>.</p>
 <p><strong>Answer</strong></p>
-<pre><code class="language-sql"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">CourseID</span><span class="p">,</span><span class="w"> </span><span class="n">EnrolDate</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Enrolments</span><span class="w"> </span><span class="p">(</span><span class="n">StudentID</span><span class="p">,</span><span class="w"> </span><span class="n">CourseID</span><span class="p">,</span><span class="w"> </span><span class="n">EnrolDate</span><span class="p">)</span>
 <span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;02/09/2025&#39;</span><span class="p">);</span>
-</pre></div>
-</code></pre>
+</code></pre></div>
 <p><strong>Exercise 13.3</strong> — <code>StudentID</code> is the primary key of <code>Students</code>. What happens if you try to <code>INSERT</code> a new student without providing a <code>StudentID</code>?</p>
 <p><strong>Answer</strong> — The insert fails, because a primary key cannot be NULL (and must be unique). The DBMS rejects the record.</p>
 <h2 id="14-key-point-update">14. Key point: UPDATE</h2>

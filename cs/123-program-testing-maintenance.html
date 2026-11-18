@@ -227,20 +227,23 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="faults-errors">Faults &amp; Errors</h2>
+        
+<h2 id="faults-errors">Faults &amp; Errors</h2>
 <h2 id="error-types">Error types</h2>
 <h2 id="what-are-the-common-types-of-error">What are the common types of error?</h2>
 <ul>
 <li>Designing algorithms is a skill that must be developed and when designing algorithms, <strong>mistakes and issues will occur</strong></li>
 <li><strong>Trace tables</strong> can also help to find any kind of error in a program or algorithm</li>
-<li>There are three main categories of errors that when designing algorithms a programmer must be able to identify &amp; fix, they are:<ul>
+<li>There are three main categories of errors that when designing algorithms a programmer must be able to identify &amp; fix, they are:
+<ul>
 <li><strong>Syntax errors</strong></li>
 <li><strong>Logic errors</strong></li>
 <li><strong>Runtime errors</strong></li>
 </ul>
 </li>
 <li>A syntax error is <strong>an error that breaks the grammatical rules of a programming language</strong> and <strong>stops it from running</strong></li>
-<li>Examples of syntax errors are:<ul>
+<li>Examples of syntax errors are:
+<ul>
 <li><strong>Typos and spelling errors</strong></li>
 <li><strong>Missing or extra brackets or quotes</strong></li>
 <li><strong>Misplaced or missing semicolons</strong></li>
@@ -250,7 +253,7 @@ body::before {
 </ul>
 </li>
 </ul>
-<h4 id="pseudocode-with-syntax-errors">Pseudocode - with syntax errors</h4>
+<h4 id="pseudocode---with-syntax-errors">Pseudocode - with syntax errors</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">STRING</span>
 <span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
 <span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
@@ -270,8 +273,7 @@ body::before {
 <span class="c1">// Main program</span>
 <span class="n">CALL</span><span class="w"> </span><span class="n">Main</span>
 </code></pre></div>
-
-<h4 id="pseudocode-without-syntax-errors">Pseudocode - without syntax errors</h4>
+<h4 id="pseudocode---without-syntax-errors">Pseudocode - without syntax errors</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="n">generate_username</span><span class="p">(</span><span class="n">first_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">STRING</span>
 <span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">STRING</span>
 <span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="err">←</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SUBSTRING</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
@@ -291,25 +293,28 @@ body::before {
 <span class="c1">// Main program</span>
 <span class="n">CALL</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-
 <h4 id="syntax-error">Syntax error</h4>
 <ul>
-<li><code>FUNCTION generate_username(first_name STRING...)</code><ul>
+<li><code>FUNCTION generate_username(first_name STRING...)</code>
+<ul>
 <li><strong>Missing colon</strong>: between parameter name and type</li>
 <li><code>first_name : STRING and last_name : STRING</code></li>
 </ul>
 </li>
-<li><code>username = SUBSTRING(...)</code><ul>
+<li><code>username = SUBSTRING(...)</code>
+<ul>
 <li><strong>Uses =</strong> instead of correct assignment operator ←</li>
 <li>Should be <code>username ← ...</code></li>
 </ul>
 </li>
-<li><code>username ← generate_username[first_name, last_name]</code><ul>
+<li><code>username ← generate_username[first_name, last_name]</code>
+<ul>
 <li><strong>Incorrect use of square brackets []</strong> instead of parentheses () for function call</li>
 <li>Should be <code>generate_username(first_name, last_name)</code></li>
 </ul>
 </li>
-<li><code>CALL Main</code><ul>
+<li><code>CALL Main</code>
+<ul>
 <li><strong>Incorrect capitalisation and missing parentheses</strong> — procedure name is case-sensitive</li>
 <li>Should be <code>CALL main()</code></li>
 </ul>
@@ -318,8 +323,9 @@ body::before {
 <h4 id="logic-error">Logic error</h4>
 <ul>
 <li>A logic error is where <strong>incorrect code is used that causes the program to run</strong>, but <strong>produces an incorrect output or result</strong></li>
-<li>Logic errors can be difficult to identify by the person who wrote the program, so one method of finding them is to use &rsquo; <strong>Trace Tables</strong> &lsquo;</li>
-<li>Examples of logic errors are:<ul>
+<li>Logic errors can be difficult to identify by the person who wrote the program, so one method of finding them is to use ’ <strong>Trace Tables</strong> ’</li>
+<li>Examples of logic errors are:
+<ul>
 <li><strong>Incorrect use of operators (&lt; and &gt;)</strong></li>
 <li><strong>Logical operator confusion (AND for OR)</strong></li>
 <li><strong>Looping one extra time</strong></li>
@@ -354,7 +360,6 @@ body::before {
 <span class="c1">// Main program</span>
 <span class="n">CALL</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -378,7 +383,8 @@ body::before {
 </table>
 <ul>
 <li>A runtime error is where <strong>an error causes a program to crash</strong></li>
-<li>Examples of runtime errors are:<ul>
+<li>Examples of runtime errors are:
+<ul>
 <li><strong>Dividing a number by 0</strong></li>
 <li><strong>Index out of the range of an array</strong></li>
 <li><strong>Unable to read or write a drive</strong></li>
@@ -409,7 +415,6 @@ body::before {
 <span class="c1">// Main program</span>
 <span class="n">CALL</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -442,7 +447,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td></td>
 </tr>
 <tr>
-<td><code>SubString ← MID("pseudocode", 4, 1)</code></td>
+<td><code>SubString ← MID(&quot;pseudocode&quot;, 4, 1)</code></td>
 <td></td>
 </tr>
 <tr>
@@ -454,7 +459,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td></td>
 </tr>
 <tr>
-<td><code>Message ← "Done" + LENGTH(MyString)</code></td>
+<td><code>Message ← &quot;Done&quot; + LENGTH(MyString)</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -473,7 +478,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>Should be arithmetic<br><br>operator (not &amp;) <strong>OR</strong> 2 and 4<br><br>should be CHAR / STRING</td>
 </tr>
 <tr>
-<td><code>SubString ← MID("pseudocode", 4, 1)</code></td>
+<td><code>SubString ← MID(&quot;pseudocode&quot;, 4, 1)</code></td>
 <td>NO ERROR</td>
 </tr>
 <tr>
@@ -482,18 +487,19 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 </tr>
 <tr>
 <td><code>Result ← Status AND INT(x/2)</code></td>
-<td><code>INT(X/2)</code> doesn&rsquo;t evaluate<br><br>to a Boolean value /<br><br>incorrect operator</td>
+<td><code>INT(X/2)</code> doesn’t evaluate<br><br>to a Boolean value /<br><br>incorrect operator</td>
 </tr>
 <tr>
-<td><code>Message ← "Done" + LENGTH(MyString)</code></td>
-<td>Can’t add string to number /<br><br>&ldquo;Done&rdquo; is not a number</td>
+<td><code>Message ← &quot;Done&quot; + LENGTH(MyString)</code></td>
+<td>Can’t add string to number /<br><br>“Done” is not a number</td>
 </tr>
 </tbody>
 </table>
 <h2 id="testing-methods">Testing methods</h2>
 <h3 id="what-are-the-different-methods-of-testing">What are the different methods of testing?</h3>
 <ul>
-<li>Testing takes place during the <strong>testing stage</strong> of the <strong>program development life cycle</strong>, once the program has been written and compiled<ul>
+<li>Testing takes place during the <strong>testing stage</strong> of the <strong>program development life cycle</strong>, once the program has been written and compiled
+<ul>
 <li><strong>Syntax errors</strong> are usually detected during compilation</li>
 <li>Testing focuses on checking for <strong>logic errors</strong>, <strong>unexpected behaviour</strong>, and <strong>operational integrity</strong></li>
 <li>A detailed <strong>test plan</strong>, outlining test cases and expected results, should be created during the <strong>analysis stage</strong></li>
@@ -502,7 +508,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 </ul>
 <h4 id="sample-test-plan">Sample test plan</h4>
 <ul>
-<li>Scenario: A program accepts a user&rsquo;s age between 0 and 120 inclusive</li>
+<li>Scenario: A program accepts a user’s age between 0 and 120 inclusive</li>
 </ul>
 <table>
 <thead>
@@ -520,15 +526,15 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>1</td>
 <td>Valid age within accepted range</td>
 <td>25</td>
-<td>&ldquo;Age accepted&rdquo;</td>
+<td>“Age accepted”</td>
 <td>Normal</td>
 <td></td>
 </tr>
 <tr>
 <td>2</td>
 <td>Input is not a number</td>
-<td>&ldquo;twenty&rdquo;</td>
-<td>&ldquo;Invalid input: enter a number&rdquo;</td>
+<td>“twenty”</td>
+<td>“Invalid input: enter a number”</td>
 <td>Abnormal</td>
 <td></td>
 </tr>
@@ -536,7 +542,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>3</td>
 <td>Age above the maximum allowed</td>
 <td>130</td>
-<td>&ldquo;Age out of range&rdquo;</td>
+<td>“Age out of range”</td>
 <td>Extreme</td>
 <td></td>
 </tr>
@@ -544,7 +550,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>4</td>
 <td>Age exactly at the upper boundary</td>
 <td>120</td>
-<td>&ldquo;Age accepted&rdquo;</td>
+<td>“Age accepted”</td>
 <td>Boundary</td>
 <td></td>
 </tr>
@@ -552,7 +558,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>5</td>
 <td>Age exactly at the lower boundary</td>
 <td>0</td>
-<td>&ldquo;Age accepted&rdquo;</td>
+<td>“Age accepted”</td>
 <td>Boundary</td>
 <td></td>
 </tr>
@@ -560,7 +566,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>6</td>
 <td>Age just below lower boundary</td>
 <td>-1</td>
-<td>&ldquo;Age out of range&rdquo;</td>
+<td>“Age out of range”</td>
 <td>Extreme</td>
 <td></td>
 </tr>
@@ -568,7 +574,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <td>7</td>
 <td>Blank input</td>
 <td>(blank)</td>
-<td>&ldquo;Please enter your age&rdquo;</td>
+<td>“Please enter your age”</td>
 <td>Abnormal</td>
 <td></td>
 </tr>
@@ -625,7 +631,8 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <h3 id="what-is-suitable-test-data">What is suitable test data?</h3>
 <ul>
 <li>Suitable test data is <strong>specially chosen to test the functionality</strong> of a program or design</li>
-<li>Developers or test-users would pick <strong>a selection of test data</strong> from the following categories<ul>
+<li>Developers or test-users would pick <strong>a selection of test data</strong> from the following categories
+<ul>
 <li><strong>Normal</strong></li>
 <li><strong>Abnormal</strong></li>
 <li><strong>Extreme</strong></li>
@@ -649,7 +656,6 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <span class="w">    </span><span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Sorry, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;. Your age is not accepted.&quot;</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <h4 id="normal-data">Normal data</h4>
 <ul>
 <li>Normal test data is data that <strong>should be accepted</strong> in the program</li>
@@ -658,7 +664,7 @@ You can assume that none of the variables referenced are of an incorrect type.<s
 <h4 id="abnormal-data">Abnormal data</h4>
 <ul>
 <li>Abnormal test data is data that is the <strong>wrong data type</strong></li>
-<li>An example would be a user entering their age as &ldquo;F&rdquo; into the age field of the program</li>
+<li>An example would be a user entering their age as “F” into the age field of the program</li>
 </ul>
 <h4 id="extreme-data">Extreme data</h4>
 <ul>

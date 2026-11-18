@@ -255,11 +255,10 @@ details.callout > summary:hover { background: var(--accent-light); }
     <aside class="post-sidebar">
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
-<li><a href="#processor-types">Processor Types</a></li>
-<li><a href="#interrupt-handling-on-risc-cisc">Interrupt handling on RISC &amp; CISC</a></li>
-<li><a href="#pipelining">Pipelining</a></li>
-<li><a href="#architecture-types">Architecture types</a></li>
-<li><a href="#massively-parallel-systems">Massively parallel systems</a></li>
+<li><a href="#risc-and-cisc-processors">RISC and CISC processors</a></li>
+<li><a href="#pipelining-and-registers-in-risc-processors">Pipelining and registers in RISC processors</a></li>
+<li><a href="#the-four-basic-computer-architectures">The four basic computer architectures</a></li>
+<li><a href="#massively-parallel-computers">Massively parallel computers</a></li>
 <li><a href="#virtual-machines">Virtual machines</a></li>
 </ul>
 </div>
@@ -270,34 +269,41 @@ details.callout > summary:hover { background: var(--accent-light); }
         
 
 
-<h2 id="processor-types">Processor Types</h2>
+
+<h2 id="processors-parallel-processing-and-virtual-machines">Processors, Parallel Processing and Virtual Machines</h2>
+<p>This section covers the five A2 exam points of §15.1: RISC and CISC processor designs (including interrupt handling), pipelining and registers in RISC, the four basic computer architectures, massively parallel computers, and the concept of a virtual machine.</p>
+<h3 id="risc-and-cisc-processors">RISC and CISC processors</h3>
+<h4 id="instruction-sets">Instruction sets</h4>
 <ul>
-<li>A computer processor will have an <strong>instruction set</strong> that it can use to execute programs</li>
-<li>This will <strong>vary from one processor to the next</strong></li>
-<li>There are <strong>2 types of processors</strong>:
+<li>A computer processor has an <strong>instruction set</strong> — the complete collection of machine-code instructions it can recognise and execute.</li>
+<li>The instruction set <strong>varies from one processor to another</strong>, and different design philosophies make different trade-offs between instruction complexity, clock cycles per instruction and hardware simplicity.</li>
+<li>There are two contrasting designs:
 <ul>
 <li>Reduced Instruction Set Computer (<strong>RISC</strong>)</li>
 <li>Complex Instruction Set Computer (<strong>CISC</strong>)</li>
 </ul>
 </li>
 </ul>
-<h3 id="risc">RISC</h3>
+<h4 id="risc">RISC</h4>
 <ul>
-<li><strong>Reduced Instruction Set Computer</strong> <strong>(RISC)</strong> consists of a <strong>smaller instruction set</strong> with more simple instructions</li>
-<li>Each instruction takes <strong>one clock cycle to execute</strong> which makes it more <strong>suitable for pipelining</strong></li>
-<li>A RISC program <strong>may require more instructions</strong> because each instruction performs a simpler operation</li>
-<li>Has <strong>fewer addressing modes</strong></li>
-<li>Is usually used in <strong>smartphones and tablets</strong></li>
+<li><strong>Reduced Instruction Set Computer (RISC)</strong> uses a <strong>smaller instruction set</strong> built from simple instructions.</li>
+<li>Each instruction generally takes <strong>one clock cycle to execute</strong>, which makes RISC <strong>well suited to pipelining</strong>.</li>
+<li>Uses <strong>fixed-length / fixed-format instructions</strong> and <strong>few addressing modes</strong>, so decoding is simple.</li>
+<li>Uses <strong>many general-purpose registers</strong> and relies heavily on software / the compiler (design emphasis is on the <strong>software</strong>).</li>
+<li>Uses a <strong>hard-wired control unit</strong> and relatively few transistors.</li>
+<li>A RISC program <strong>may require more instructions</strong>, because each instruction performs a simpler operation.</li>
+<li>Typically used in <strong>smartphones and tablets</strong>.</li>
 </ul>
-<h3 id="cisc">CISC</h3>
+<h4 id="cisc">CISC</h4>
 <ul>
-<li><strong>Complex Instruction Set Computer (CISC)</strong> consists of a <strong>larger instruction set</strong> which includes more complex instructions</li>
-<li>As the instructions are more complex, they can <strong>take more than one clock cycle to execute</strong></li>
-<li>Has <strong>fewer general-purpose registers</strong></li>
-<li>Instructions take up <strong>less space in memory</strong></li>
-<li>Is usually used in <strong>laptops and desktop</strong> computers</li>
+<li><strong>Complex Instruction Set Computer (CISC)</strong> uses a <strong>larger instruction set</strong>, including complex, multi-operation instructions.</li>
+<li>Instructions are <strong>variable length</strong> and may take <strong>more than one clock cycle</strong> to execute; decoding is complex and uses <strong>microcode / a programmable control unit</strong>.</li>
+<li>Uses <strong>many addressing modes</strong> but <strong>fewer general-purpose registers</strong>.</li>
+<li>Instructions take up <strong>less space in memory</strong> (fewer instructions are needed).</li>
+<li>Design emphasis is on the <strong>hardware</strong>; makes frequent use of cache memory.</li>
+<li>Typically used in <strong>laptops and desktop computers</strong>.</li>
 </ul>
-<h3 id="whats-the-difference-between-risc-cisc">What’s the difference between RISC &amp; CISC?</h3>
+<p><strong>RISC and CISC compared ★</strong></p>
 <table>
 <thead>
 <tr>
@@ -308,69 +314,86 @@ details.callout > summary:hover { background: var(--accent-light); }
 </thead>
 <tbody>
 <tr>
-<td><strong>Instruction set size</strong></td>
+<td>Instruction set size</td>
 <td>Small</td>
 <td>Large</td>
 </tr>
 <tr>
-<td><strong>Instruction complexity</strong></td>
+<td>Instruction complexity</td>
 <td>Simple</td>
 <td>Complex</td>
 </tr>
 <tr>
-<td><strong>Clock cycles per instruction</strong></td>
+<td>Instruction length</td>
+<td>Fixed</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>Clock cycles per instruction</td>
 <td>One</td>
 <td>Multiple</td>
 </tr>
 <tr>
-<td><strong>Pipelining suitability</strong></td>
+<td>Addressing modes</td>
+<td>Few</td>
+<td>Many</td>
+</tr>
+<tr>
+<td>General-purpose registers</td>
+<td>Many</td>
+<td>Few</td>
+</tr>
+<tr>
+<td>Control unit</td>
+<td>Hard-wired</td>
+<td>Micro-programmed / programmable</td>
+</tr>
+<tr>
+<td>Pipelining suitability</td>
 <td>Well suited</td>
 <td>Less suited</td>
 </tr>
 <tr>
-<td><strong>Compiler complexity</strong></td>
+<td>Compiler complexity</td>
 <td>More complex</td>
 <td>Less complex</td>
 </tr>
 <tr>
-<td><strong>Addressing modes</strong></td>
-<td>Fewer</td>
-<td>More</td>
+<td>Design emphasis</td>
+<td>Software</td>
+<td>Hardware</td>
 </tr>
 <tr>
-<td><strong>General-purpose registers</strong></td>
-<td>More</td>
-<td>Fewer</td>
-</tr>
-<tr>
-<td><strong>Power usage</strong></td>
+<td>Power usage</td>
 <td>Lower</td>
 <td>Higher</td>
 </tr>
 <tr>
-<td><strong>Cost</strong></td>
+<td>Cost</td>
 <td>Lower</td>
 <td>Higher</td>
 </tr>
 <tr>
-<td><strong>Memory use</strong></td>
+<td>Memory use</td>
 <td>More (due to more instructions)</td>
 <td>Less (fewer instructions)</td>
 </tr>
 <tr>
-<td><strong>Typical devices</strong></td>
+<td>Typical devices</td>
 <td>Smartphones, tablets</td>
 <td>Laptops, desktops</td>
 </tr>
 </tbody>
 </table>
+<p><img alt="Side-by-side diagram of RISC and CISC design trade-offs" src="images/p3-ch15-1-risc-vs-cisc.svg" /></p>
 <ul>
-<li>A program that has been <strong>written for a RISC</strong> processor <strong>won’t work on a CISC</strong> processor and vice versa</li>
-<li>A program that has been <strong>written for a RISC</strong> processor <strong>won’t necessarily work on another RISC</strong> processor as they may have different instruction sets</li>
+<li>A program written for a RISC processor <strong>will not run directly on a CISC processor</strong>, and vice versa, because the instruction sets differ.</li>
+<li>A program written for one RISC processor may <strong>not necessarily run on another RISC processor</strong> if their instruction sets differ.</li>
 </ul>
-<h2 id="interrupt-handling-on-risc-cisc">Interrupt handling on RISC &amp; CISC</h2>
+<h4 id="interrupt-handling-on-risc-and-cisc">Interrupt handling on RISC and CISC</h4>
 <ul>
-<li>The concept of interrupt handling is covered in Chapter04-Interrupt</li>
+<li>The general concept of interrupts is covered in Chapter04-Interrupt.</li>
+<li>Both architectures support interrupts and aim to <strong>respond quickly and resume execution correctly</strong>; they differ in how much of the work is done in hardware.</li>
 </ul>
 <table>
 <thead>
@@ -382,128 +405,72 @@ details.callout > summary:hover { background: var(--accent-light); }
 </thead>
 <tbody>
 <tr>
-<td><strong>Instruction complexity</strong></td>
-<td>CISC has <strong>complex instructions</strong>, often with built-in support for interrupt routines</td>
-<td>RISC has <strong>simple, fixed-length instructions</strong>, interrupt handling done using simpler routines</td>
+<td>Instruction complexity</td>
+<td>Complex instructions, often with built-in support for interrupt routines</td>
+<td>Simple, fixed-length instructions; interrupt handling done with simpler routines</td>
 </tr>
 <tr>
-<td><strong>Interrupt handling</strong></td>
-<td>Often uses <strong>microcode and dedicated hardware instructions</strong> to manage interrupts efficiently</td>
-<td>Uses <strong>software-based interrupt handlers</strong>, managed through general-purpose registers and simple instructions</td>
+<td>Interrupt handling</td>
+<td>Often uses microcode and dedicated hardware instructions</td>
+<td>Uses software-based handlers through general-purpose registers and simple instructions</td>
 </tr>
 <tr>
-<td><strong>Context switching</strong></td>
-<td>May have <strong>hardware support</strong> to save and restore processor state automatically</td>
-<td>Typically handled in <strong>software</strong>, giving more control but requiring more instructions</td>
+<td>Context switching</td>
+<td>May have hardware support to save/restore processor state automatically</td>
+<td>Typically handled in software, giving the OS more control but needing more instructions</td>
 </tr>
 <tr>
-<td><strong>Speed of response</strong></td>
-<td>Generally <strong>faster interrupt handling</strong> due to built-in support</td>
-<td><strong>Slower</strong>, but more flexible and consistent across all instructions</td>
-</tr>
-<tr>
-<td><strong>Instruction cycle impact</strong></td>
-<td>CISC can handle <strong>multiple tasks in a single instruction</strong>, including context saving</td>
-<td>RISC uses <strong>multiple simple instructions</strong>, giving the OS greater control</td>
+<td>Speed of response</td>
+<td>Generally faster due to built-in support</td>
+<td>Slower but more flexible and consistent across instructions</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Interrupt handling ★</strong></p>
+<p>The process that can be applied to either architecture:</p>
 <ul>
-<li><strong>CISC processors</strong> often have <strong>dedicated instructions</strong> for handling interrupts, making the process more efficient but less flexible</li>
-<li><strong>RISC processors</strong> rely more on <strong>software routines</strong>, making interrupt handling <strong>slightly slower</strong>, but simpler and more predictable</li>
-<li>Both architectures aim to <strong>respond to interrupts quickly and resume execution</strong> correctly, but they do so using different design philosophies</li>
+<li>The processor <strong>detects an interrupt</strong> at the start or end of the fetch-execute cycle (raised by hardware, a timer or software).</li>
+<li>The current program is <strong>temporarily stopped</strong> and the <strong>status of each register is stored on the stack</strong> (context is saved); the interrupt vector identifies the correct ISR.</li>
+<li>The <strong>Interrupt Service Routine (ISR)</strong> is executed.</li>
+<li>Afterwards the registers are <strong>restored to their original status</strong> from the stack and the interrupted program <strong>resumes at the correct point</strong>.</li>
+<li>With <strong>pipelining</strong>, several instructions may still be in the pipeline when the interrupt arrives; this adds complexity. Instructions currently in operation are usually <strong>discarded except for the one at write back</strong>, the handler is applied to the remaining instruction, and the processor <strong>restarts with the next instruction in sequence</strong> once the interrupt has been serviced.</li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2022 冬季 P31 Q10 · 6 marks</div><div class="callout-body"><p>Reduced Instruction Set Computers (RISC) and Complex Instruction Set Computers (CISC) are two types of processor.</p>
-<p><strong>(a)</strong> Tick (✓) one box in each row to show if the statement applies to RISC or CISC processors. <strong>[2]</strong></p>
-<table>
-<thead>
-<tr>
-<th>Statement</th>
-<th>RISC</th>
-<th>CISC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>uses a smaller instruction set</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uses single-cycle instructions and limited addressing modes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uses fewer general-purpose registers</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uses both hardwired and micro-coded control unit</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uses a system where cache is split between data and instructions</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong>(b)</strong> Describe the process of pipelining during the fetch-execute cycle in RISC processors. <strong>[4]</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q2 · 4 marks</div><div class="callout-body"><p>Reduced Instruction Set Computers (RISC) is a type of processor.</p>
+<p>Identify <strong>four</strong> features of a RISC processor. <strong>[4]</strong></p>
 </div></div>
-<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>10(a)</strong>
-<strong>Two</strong> marks for all five rows correct
-<strong>One</strong> mark for four rows correct</p>
-<table>
-<thead>
-<tr>
-<th>Statement</th>
-<th>RISC</th>
-<th>CISC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>uses a smaller instruction set</td>
-<td>✓</td>
-<td></td>
-</tr>
-<tr>
-<td>uses single-cycle instructions and limited addressing modes</td>
-<td>✓</td>
-<td></td>
-</tr>
-<tr>
-<td>uses fewer general-purpose registers</td>
-<td></td>
-<td>✓</td>
-</tr>
-<tr>
-<td>uses both hardwired and micro coded control unit</td>
-<td></td>
-<td>✓</td>
-</tr>
-<tr>
-<td>uses a system where cache is split between data and instructions</td>
-<td>✓</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong>10(b)</strong>
-<strong>One</strong> mark for each correct point (<strong>Max 4</strong>)</p>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q2</strong>
+<strong>One</strong> mark per mark point (<strong>Max 4</strong>)</p>
 <ul>
-<li>Instructions are divided into subtasks / 5 stages</li>
-<li>… Instruction fetch / IF, Instruction decode / ID, operand fetch / OF, opcode/instruction execute IE, result store / write back result / WB</li>
-<li>Each subtask is completed during one clock cycle</li>
-<li>No two instructions can execute their same stage at the same clock cycle</li>
-<li>The second instruction begins in the second clock cycle, while the first instruction has moved on to its second subtask.</li>
-<li>The third instruction begins in the third clock cycle while the first and second instructions move on to their second and third subtasks, respectively, etc.</li>
+<li><strong>MP1</strong> low number of instruction formats // low number of instruction sets</li>
+<li><strong>MP2</strong> uses single-clock cycle instructions</li>
+<li><strong>MP3</strong> uses fixed length instructions</li>
+<li><strong>MP4</strong> uses many general-purpose registers</li>
+<li><strong>MP5</strong> works well with pipelining</li>
+<li><strong>MP6</strong> hard-wired control unit</li>
+<li><strong>MP7</strong> makes extensive use of RAM</li>
+<li><strong>MP8</strong> uses a low number of addressing modes</li>
+<li><strong>MP9</strong> the design emphasis is on the software.</li>
 </ul>
 </div></details>
-<div class="callout callout-question"><div class="callout-title">2024 夏季 P31 Q11 · 8 marks</div><div class="callout-body"><p>Reduced Instruction Set Computers (RISC) and Complex Instruction Set Computers (CISC) are two types of processor.</p>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q8 · 4 marks</div><div class="callout-body"><p>Complex Instruction Set Computer (CISC) is a type of processor.</p>
+<p>Identify <strong>four</strong> features of a CISC processor. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8</strong>
+<strong>One</strong> mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>many instruction formats possible</li>
+<li>large instruction set</li>
+<li>many addressing modes available</li>
+<li>uses variable length / multi-operation instructions</li>
+<li>multi-clock cycle instructions</li>
+<li>complex decoding of instructions</li>
+<li>uses complex circuits</li>
+<li>makes frequent use of cache memory</li>
+<li>uses programmable control unit // uses micro-programmed control unit // uses hardwired control unit</li>
+<li>hardware needs to be able to handle more complex instructions convert into sub-instructions // Design emphasis is on the hardware.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P31 Q11 · 8 marks</div><div class="callout-body"><p>Reduced Instruction Set Computers (RISC) and Complex Instruction Set Computers (CISC) are two types of processor.</p>
 <p><strong>(a)</strong> State <strong>two</strong> features of RISC processors. <strong>[2]</strong></p>
 <p><strong>(b)</strong> Outline the process of interrupt handling as it could be applied to RISC or CISC processors. <strong>[3]</strong></p>
 <p><strong>©</strong> Explain how pipelining affects interrupt handling for RISC processors. <strong>[3]</strong></p>
@@ -535,14 +502,13 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tbody>
 </table>
 </div></details></p>
-<h2 id="pipelining">Pipelining</h2>
-<h3 id="what-is-pipelining">What is pipelining?</h3>
+<h3 id="pipelining-and-registers-in-risc-processors">Pipelining and registers in RISC processors</h3>
+<h4 id="what-is-pipelining">What is pipelining?</h4>
 <ul>
-<li>Pipelining is the process of carrying out multiple instructions <strong>concurrently</strong></li>
-<li>Each instruction will be at a different stage of the <strong>fetch-decode-execute cycle</strong></li>
-<li>One instruction can be <strong>fetched</strong> while the previous one is being <strong>decoded</strong> and the one before is being <strong>executed</strong></li>
-<li>In the case of a <strong>branch</strong>, the pipeline is flushed</li>
-<li>This table shows which stage each instruction is at during each step:</li>
+<li>Pipelining is the process of carrying out several instructions <strong>concurrently</strong>, with each instruction at a different stage of the fetch-execute cycle.</li>
+<li>One instruction can be <strong>fetched</strong> while the previous one is being <strong>decoded</strong> and the one before is being <strong>executed</strong> — this raises the number of instructions completed per unit time (<strong>throughput</strong>).</li>
+<li>Each stage / subtask is completed during <strong>one clock cycle</strong>, and <strong>no two instructions execute the same stage at the same clock cycle</strong>.</li>
+<li>On a <strong>branch</strong>, the pipeline may need to be flushed.</li>
 </ul>
 <table>
 <thead>
@@ -580,53 +546,24 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
+<p><strong>The five pipeline stages ★</strong></p>
 <ul>
-<li>While one instruction is being executed, the next instruction will be decoded and the following instruction will be fetched</li>
+<li>Instruction fetch (<strong>IF</strong>) → instruction decode (<strong>ID</strong>) → operand fetch (<strong>OF</strong>) → instruction execute (<strong>IE</strong>) → write back result (<strong>WB</strong>).</li>
+<li>Each stage is carried out using <strong>a different register</strong> when pipelining is used, so a partially processed instruction can be handed from one stage to the next.</li>
+<li>The first instruction completes after five clock cycles; with six instructions, the last completes after ten cycles (no extra cycles per row).</li>
 </ul>
-<h4 id="pipelining-in-risc-processors">Pipelining in RISC processors</h4>
+<p><img alt="Five-stage IF/ID/OF/IE/WB pipeline timing diagram for six instructions" src="images/p3-ch15-1-pipeline-timing.svg" /></p>
+<p><strong>Pipelining and registers in RISC ★</strong></p>
 <ul>
-<li>
-<p>RISC (Reduced Instruction Set Computer) processors are <strong>designed for pipelining efficiency</strong></p>
-</li>
-<li>
-<p>Key features that support pipelining:</p>
-<ul>
-<li><strong>Each instruction takes one clock cycle</strong> (or close to it)</li>
-<li><strong>Fixed-length instructions</strong>, making decoding easier</li>
-<li><strong>Limited instruction set</strong>, reducing complexity and stage duration</li>
-<li><strong>A large number of general-purpose registers</strong>, reducing memory access</li>
+<li>RISC processors are <strong>designed for pipelining efficiency</strong>: one clock cycle per instruction, fixed-length instructions and a limited instruction set keep every stage short and uniform.</li>
+<li>A <strong>large general-purpose register file</strong> lets operands be held <strong>inside the CPU</strong> instead of repeatedly accessing RAM, reducing memory bottlenecks and avoiding stall cycles that would break the pipeline.</li>
+<li>Intermediate values are stored in registers <strong>between stages</strong> — e.g. instruction A loads a value into R1, instruction B computes R1 + R2 into R3, all within the CPU.</li>
 </ul>
-</li>
-<li>
-<p>Registers are <strong>fast, temporary storage</strong> inside the CPU</p>
-</li>
-<li>
-<p>RISC processors rely heavily on <strong>registers for operand storage</strong> rather than accessing RAM</p>
-</li>
-<li>
-<p>Intermediate values are stored in registers between stages</p>
-</li>
-<li>
-<p>Register usage reduces <strong>memory bottlenecks</strong>, allowing pipelining to run smoothly</p>
-</li>
-<li>
-<p><strong>Example:</strong></p>
+<p><strong>Pipelining hazards ★</strong></p>
 <ul>
-<li>Instruction A loads value into <strong>Register R1</strong></li>
-<li>Instruction B adds <strong>R1 + R2</strong> and stores result in <strong>R3</strong></li>
-<li>All of these can be done efficiently <strong>within the CPU</strong> using registers
-<strong>Pipelining hazards ★</strong></li>
-</ul>
-</li>
-<li>
-<p><strong>Structural hazard</strong> — two instructions need the same hardware resource in the same clock cycle (e.g. one memory used for both instruction fetch and operand fetch); removed by duplicating the resource, such as separate instruction and data caches, or by stalling</p>
-</li>
-<li>
-<p><strong>Data hazard</strong> — an instruction needs an operand that an earlier instruction in the pipeline has not yet written back; removed by <strong>forwarding</strong>, by inserting a stall, or by the compiler re-ordering independent instructions</p>
-</li>
-<li>
-<p><strong>Control hazard</strong> — a branch means the address of the next instruction is unknown until the branch is resolved; the pipeline is then <strong>flushed</strong> and re-fetched, or branch prediction is used to keep it full</p>
-</li>
+<li><strong>Structural hazard</strong> — two instructions need the same hardware resource in the same clock cycle (e.g. one memory used for both instruction fetch and operand fetch); removed by duplicating the resource (separate instruction and data caches) or by stalling.</li>
+<li><strong>Data hazard</strong> — an instruction needs an operand that an earlier instruction has not yet written back; removed by <strong>forwarding</strong>, inserting a <strong>stall</strong>, or compiler re-ordering of independent instructions.</li>
+<li><strong>Control hazard</strong> — a branch means the next address is unknown until the branch resolves; the pipeline is <strong>flushed</strong> and re-fetched, or <strong>branch prediction</strong> is used to keep it full.</li>
 </ul>
 <h4 id="benefits-of-pipelining">Benefits of pipelining</h4>
 <table>
@@ -638,24 +575,24 @@ details.callout > summary:hover { background: var(--accent-light); }
 </thead>
 <tbody>
 <tr>
-<td><strong>Increased throughput</strong></td>
+<td>Increased throughput</td>
 <td>Multiple instructions handled at once</td>
 </tr>
 <tr>
-<td><strong>Better use of CPU components</strong></td>
-<td>Fetch, decode, and execute units are all in use simultaneously</td>
+<td>Better use of CPU components</td>
+<td>Fetch, decode and execute units are all in use simultaneously</td>
 </tr>
 <tr>
-<td><strong>Reduced idle time</strong></td>
+<td>Reduced idle time</td>
 <td>No waiting between stages</td>
 </tr>
 <tr>
-<td><strong>Faster execution of instruction stream</strong></td>
-<td>Even if individual instructions don’t run faster</td>
+<td>Faster execution of an instruction stream</td>
+<td>Even if individual instructions do not run faster</td>
 </tr>
 </tbody>
 </table>
-<p><div class="callout callout-question"><div class="callout-title">2023 夏季 P32 Q8 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the use of pipelining in Reduced Instruction Set Computers (RISC). <strong>[2]</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q8 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the use of pipelining in Reduced Instruction Set Computers (RISC). <strong>[2]</strong></p>
 <p><strong>(b)</strong> The processing of instructions is divided into five stages:</p>
 <ul>
 <li>instruction fetch (IF)</li>
@@ -881,7 +818,6 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
-<p>(Each cell shows which instruction is being processed in that stage at that clock cycle. Instruction 1 completes after cycle 5; instruction 6 completes after cycle 10.)</p>
 <p><strong>Example answer 2:</strong></p>
 <table>
 <thead>
@@ -979,154 +915,178 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q10 · 6 marks</div><div class="callout-body"><p>Reduced Instruction Set Computers (RISC) and Complex Instruction Set Computers (CISC) are two types of processor.</p>
+<p><strong>(a)</strong> Tick (✓) one box in each row to show if the statement applies to RISC or CISC processors. <strong>[2]</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>RISC</th>
+<th>CISC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uses a smaller instruction set</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses single-cycle instructions and limited addressing modes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses fewer general-purpose registers</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses both hardwired and micro-coded control unit</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uses a system where cache is split between data and instructions</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>(b)</strong> Describe the process of pipelining during the fetch-execute cycle in RISC processors. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>10(a)</strong>
+<strong>Two</strong> marks for all five rows correct
+<strong>One</strong> mark for four rows correct</p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>RISC</th>
+<th>CISC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uses a smaller instruction set</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>uses single-cycle instructions and limited addressing modes</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>uses fewer general-purpose registers</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>uses both hardwired and micro coded control unit</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>uses a system where cache is split between data and instructions</td>
+<td>✓</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>10(b)</strong>
+<strong>One</strong> mark for each correct point (<strong>Max 4</strong>)</p>
+<ul>
+<li>Instructions are divided into subtasks / 5 stages</li>
+<li>… Instruction fetch / IF, Instruction decode / ID, operand fetch / OF, opcode/instruction execute IE, result store / write back result / WB</li>
+<li>Each subtask is completed during one clock cycle</li>
+<li>No two instructions can execute their same stage at the same clock cycle</li>
+<li>The second instruction begins in the second clock cycle, while the first instruction has moved on to its second subtask.</li>
+<li>The third instruction begins in the third clock cycle while the first and second instructions move on to their second and third subtasks, respectively, etc.</li>
+</ul>
 </div></details></p>
-<h2 id="architecture-types">Architecture types</h2>
-<h3 id="what-is-a-computer-architecture">What is a computer architecture?</h3>
+<h3 id="the-four-basic-computer-architectures">The four basic computer architectures</h3>
+<h4 id="flynns-classification">Flynn's classification</h4>
 <ul>
-<li>A computer architecture is the design and structure of a computer system</li>
-<li>It describes how it <strong>fetches, processes, and stores data and instructions</strong></li>
-<li>It defines how components like the CPU, memory, and input/output devices <strong>work together to execute programs</strong></li>
-<li>Each architecture is categorised as:
+<li>A computer architecture is the design and structure of a system — how it <strong>fetches, processes and stores</strong> data and instructions, and how CPU, memory and I/O work together.</li>
+<li>Flynn’s taxonomy classifies architectures by how many <strong>instruction streams</strong> and <strong>data streams</strong> they support:
 <ul>
-<li><strong>S</strong> ingle or <strong>M</strong> ultiple <strong>Instruction</strong> stream</li>
-<li><strong>S</strong> ingle or <strong>M</strong> ultiple <strong>Data</strong> stream</li>
+<li><strong>S</strong>ingle or <strong>M</strong>ultiple <strong>Instruction</strong> stream</li>
+<li><strong>S</strong>ingle or <strong>M</strong>ultiple <strong>Data</strong> stream</li>
 </ul>
 </li>
 </ul>
-<h3 id="sisd-single-instruction-single-data">SISD – Single Instruction, Single Data</h3>
-<table>
-<thead>
-<tr>
-<th><strong>Description</strong></th>
-<th><strong>Key Features</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>One processor executes <strong>one instruction</strong> on <strong>one data stream</strong> at a time</td>
-<td>Traditional serial (non-parallel) architecture</td>
-</tr>
-<tr>
-<td>Used in <strong>basic, single-core processors</strong></td>
-<td>Step-by-step processing</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example</strong>: Classic desktop CPU running one task at a time
-<img alt="Diagram showing data flow: blue box labelled 'Data' connected by arrow to green 'Processor', leading to orange box labelled 'Instructions'." src="images/48364_1.png" />
-Single Instruction, Single Data Diagram</p>
-<h3 id="simd-single-instruction-multiple-data">SIMD – Single Instruction, Multiple Data</h3>
-<table>
-<thead>
-<tr>
-<th><strong>Description</strong></th>
-<th><strong>Key Features</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>One instruction is applied to <strong>multiple pieces of data</strong> at once</td>
-<td>Useful for <strong>parallel processing</strong></td>
-</tr>
-<tr>
-<td>All processing units perform the <strong>same operation</strong> in parallel</td>
-<td>Ideal for graphics or scientific computation</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example</strong>: GPU operations, image processing
-<img alt="Flowchart depicting data flowing from a blue &quot;Data&quot; block to three &quot;Processor&quot; blocks, and orange arrows to an &quot;Instructions&quot; block." src="images/18769_2.png" />
-Single Instruction, Multiple Data Diagram</p>
-<h3 id="misd-multiple-instruction-single-data">MISD – Multiple Instruction, Single Data</h3>
-<table>
-<thead>
-<tr>
-<th><strong>Description</strong></th>
-<th><strong>Key Features</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Multiple processors execute <strong>different instructions</strong> on the <strong>same data</strong></td>
-<td>Very uncommon in practice</td>
-</tr>
-<tr>
-<td>Used in specialised systems for <strong>fault tolerance</strong></td>
-<td>Each unit checks the same input differently</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example</strong>: Redundant systems in safety-critical environments
-<img alt="Diagram with a blue &quot;Data&quot; box connected to four green &quot;Processor&quot; boxes, which in turn connect to an orange &quot;Instructions&quot; box." src="images/28038_3.png" />
-Multiple Instruction, Single Data Diagram</p>
-<h3 id="mimd-multiple-instruction-multiple-data">MIMD – Multiple Instruction, Multiple Data</h3>
-<table>
-<thead>
-<tr>
-<th><strong>Description</strong></th>
-<th><strong>Key Features</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Multiple processors</strong> execute <strong>different instructions</strong> on <strong>different data sets</strong></td>
-<td>Most <strong>modern multi-core processors</strong> use this model</td>
-</tr>
-<tr>
-<td>Allows full <strong>concurrent processing</strong> of independent tasks</td>
-<td>Flexible and scalable for parallel programs</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example</strong>: Multi-core CPUs, distributed systems, cloud computing
-<img alt="Diagram showing data and instructions connecting to several processors with blue and orange arrows indicating data and instruction flow." src="images/48232_4.png" />
-Multiple Instruction, Multiple Data Diagram</p>
-<h3 id="summary-table">Summary table</h3>
+<p><img alt="Flynn's taxonomy showing SISD, SIMD, MISD and MIMD instruction and data streams" src="images/p3-ch15-1-flynn-taxonomy.svg" /></p>
+<h4 id="sisd-single-instruction-single-data">SISD — Single Instruction, Single Data</h4>
+<ul>
+<li><strong>One processor</strong> executes <strong>one instruction</strong> on <strong>one data stream</strong> at a time.</li>
+<li>Data comes from a single source and one instruction is performed on it.</li>
+<li>Contains <strong>one processor, a control unit and a memory unit</strong>, executing instructions <strong>sequentially</strong>.</li>
+<li>Traditional serial (non-parallel) architecture; used in basic single-core processors.</li>
+</ul>
+<h4 id="simd-single-instruction-multiple-data">SIMD — Single Instruction, Multiple Data</h4>
+<ul>
+<li><strong>One instruction</strong> is applied to <strong>many different data streams / elements simultaneously</strong> (e.g. array processors).</li>
+<li>The instructions may be performed <strong>sequentially, taking advantage of pipelining</strong>.</li>
+<li>Parallel computers with <strong>multiple processors</strong>, all performing the same operation in parallel.</li>
+<li>Ideal for graphics, image processing and scientific computation (e.g. GPUs).</li>
+</ul>
+<h4 id="misd-multiple-instruction-single-data">MISD — Multiple Instruction, Single Data</h4>
+<ul>
+<li><strong>Multiple processors</strong> execute <strong>different operations on the same data stream</strong>.</li>
+<li>Each processor works on the same data stream <strong>independently</strong>.</li>
+<li>Very uncommon in practice; used in specialised <strong>fault-tolerant</strong> systems where each unit checks the same input differently.</li>
+</ul>
+<h4 id="mimd-multiple-instruction-multiple-data">MIMD — Multiple Instruction, Multiple Data</h4>
+<ul>
+<li><strong>Multiple processors</strong> execute <strong>different instructions on different sets of data</strong>; any processor can do so at any time.</li>
+<li>Processors operate <strong>asynchronously / independently</strong>, allowing full concurrent processing of separate tasks.</li>
+<li>Most modern <strong>multi-core processors</strong>, distributed systems and cloud computing use this model; flexible and scalable.</li>
+</ul>
+<p><strong>Summary table</strong></p>
 <table>
 <thead>
 <tr>
 <th><strong>Architecture</strong></th>
-<th><strong>Instruction Stream</strong></th>
-<th><strong>Data Stream</strong></th>
-<th><strong>Used In</strong></th>
+<th><strong>Instruction stream</strong></th>
+<th><strong>Data stream</strong></th>
+<th><strong>Used in</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>SISD</strong></td>
+<td>SISD</td>
 <td>Single</td>
 <td>Single</td>
-<td>Standard sequential processors</td>
+<td>Standard sequential / single-core processors</td>
 </tr>
 <tr>
-<td><strong>SIMD</strong></td>
+<td>SIMD</td>
 <td>Single</td>
 <td>Multiple</td>
-<td>Vector processing (e.g. GPUs)</td>
+<td>Vector processing (e.g. GPUs), array processors</td>
 </tr>
 <tr>
-<td><strong>MISD</strong></td>
+<td>MISD</td>
 <td>Multiple</td>
 <td>Single</td>
 <td>Specialised fault-tolerant systems</td>
 </tr>
 <tr>
-<td><strong>MIMD</strong></td>
+<td>MIMD</td>
 <td>Multiple</td>
 <td>Multiple</td>
-<td>Multi-core processors, parallel systems</td>
+<td>Multi-core processors, parallel / distributed systems</td>
 </tr>
 </tbody>
 </table>
-<p><div class="callout callout-question"><div class="callout-title">2022 夏季 P32 Q5 · 6 marks</div><div class="callout-body"><p>There are four basic categories of computer architecture. Single Instruction Single Data (SISD) is one architecture.</p>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q5 · 6 marks</div><div class="callout-body"><p>There are four basic categories of computer architecture. Single Instruction Single Data (SISD) is one architecture.</p>
 <p>Identify the three other categories of computer architecture.</p>
 <p>Describe each category that you identify. <strong>[6]</strong></p>
-<p>Architecture 1
-Description</p>
-<p>Architecture 2
-Description</p>
-<p>Architecture 3
-Description</p>
+<p>Architecture 1 / Description
+Architecture 2 / Description
+Architecture 3 / Description</p>
 </div></div>
 <details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
 <thead>
@@ -1144,20 +1104,49 @@ Description</p>
 </tr>
 </tbody>
 </table>
-</div></details></p>
-<h2 id="massively-parallel-systems">Massively parallel systems</h2>
-<h3 id="what-are-massively-parallel-computers">What are massively parallel computers?</h3>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q5 · 4 marks</div><div class="callout-body"><p>Describe the features of SISD and MIMD computer architectures. <strong>[4]</strong></p>
+<p><strong>SISD:</strong></p>
+<p><strong>MIMD:</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5</strong>
+One mark per mark point – SISD (<strong>Max 2</strong>)</p>
 <ul>
-<li>Massively parallel computers are systems made up of <strong>thousands of processors</strong> working <strong>simultaneously</strong> to solve a single large problem</li>
-<li>Each processor <strong>executes part of a program</strong>, and <strong>results are combined</strong> to produce the final output</li>
-<li>They are designed to tackle <strong>complex, large-scale tasks</strong> in fields like
-<ul>
-<li><strong>Scientific research</strong></li>
-<li><strong>Weather simulation</strong></li>
-<li><strong>Cryptography</strong></li>
-<li><strong>AI</strong></li>
+<li>MP1: Single Instruction, Single Data (architecture). // Data is taken from a single source and a single instruction is performed on the data.</li>
+<li>MP2: Contains one processor, a control unit and a memory unit.</li>
+<li>MP3: …that executes instructions sequentially.</li>
 </ul>
-</li>
+<p>One mark per mark point – MIMD (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP4: Multiple Instruction, Multiple Data (architecture). // At any time, any processor can execute different instructions on different sets of data.</li>
+<li>MP5: Contains many processors</li>
+<li>MP6: …that operate asynchronously / independently.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P32 Q10 · 4 marks</div><div class="callout-body"><p>Describe the features of the SIMD and MISD computer architectures. <strong>[4]</strong></p>
+<p><strong>SIMD:</strong></p>
+<p><strong>MISD:</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>10</strong>
+One mark per mark point – SIMD (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1: Single Instruction, Multiple Data (architecture) // Performs the same operation on multiple different data streams simultaneously.</li>
+<li>MP2: The instructions can be performed sequentially, taking advantage of pipelining.</li>
+<li>MP3: Parallel computers with multiple processors.</li>
+</ul>
+<p>One mark per mark point – MISD (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP4: Multiple Instruction, Single Data (architecture) // Performs different operations on the same data stream.</li>
+<li>MP5: Each processor works on the same data stream independently.</li>
+<li>MP6: Parallel computers with multiple processors.</li>
+</ul>
+</div></details></p>
+<h3 id="massively-parallel-computers">Massively parallel computers</h3>
+<h4 id="what-are-massively-parallel-computers">What are massively parallel computers?</h4>
+<ul>
+<li>Massively parallel computers link <strong>many (thousands of) processors / computers</strong> together to form a more powerful <strong>single machine</strong>.</li>
+<li>All the processors work <strong>simultaneously on the same large problem</strong>, each responsible for its <strong>own part</strong> of the problem; the partial results are combined to give the final output.</li>
+<li>They tackle complex, large-scale tasks that can be decomposed into parallel work, e.g. scientific research, weather simulation, cryptography and AI.</li>
 </ul>
 <h4 id="key-characteristics">Key characteristics</h4>
 <table>
@@ -1169,32 +1158,32 @@ Description</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Thousands of processors</strong></td>
-<td>Many processors are connected and work together to execute different parts of the same task</td>
+<td>Many processors</td>
+<td>Thousands of processors are linked and work together on different parts of the same task</td>
 </tr>
 <tr>
-<td><strong>Shared or distributed memory</strong></td>
+<td>Single machine</td>
+<td>They form a more powerful ‘single machine’</td>
+</tr>
+<tr>
+<td>Simultaneous operation</td>
+<td>All processors work simultaneously with coordinated / collaborative processing</td>
+</tr>
+<tr>
+<td>Interconnects</td>
+<td>Communication via interconnected data pathways / networks, or via shared pools of memory</td>
+</tr>
+<tr>
+<td>Message passing</td>
+<td>Processors communicate through a message interface / by sending messages</td>
+</tr>
+<tr>
+<td>Shared or distributed memory</td>
 <td>Each processor may have its own memory or access shared memory resources</td>
 </tr>
 <tr>
-<td><strong>High-speed interconnects</strong></td>
-<td>Processors are linked via <strong>fast communication pathways</strong> to share results</td>
-</tr>
-<tr>
-<td><strong>Data parallelism</strong></td>
-<td>Many data items can be processed at once — often using <strong>SIMD</strong> or <strong>MIMD</strong></td>
-</tr>
-<tr>
-<td><strong>Task parallelism</strong></td>
-<td>Different processors may perform <strong>different tasks</strong> on <strong>different data sets</strong></td>
-</tr>
-<tr>
-<td><strong>Specialised software</strong></td>
-<td>Requires software written to <strong>distribute the work efficiently</strong> across processors</td>
-</tr>
-<tr>
-<td><strong>Tightly coupled</strong></td>
-<td>Processors <strong>depend on one another</strong> and work collaboratively as a single system</td>
+<td>Specialised software</td>
+<td>Work must be distributed efficiently across the processors</td>
 </tr>
 </tbody>
 </table>
@@ -1208,33 +1197,28 @@ Description</p>
 </thead>
 <tbody>
 <tr>
-<td>Thousands of processors form a <strong>single tightly integrated system</strong></td>
+<td>Thousands of processors form a single tightly integrated system</td>
 <td>Multiple independent systems networked together</td>
 </tr>
 <tr>
-<td>Processors <strong>communicate continuously</strong> via shared architecture</td>
-<td>Communication occurs via network, often loosely coupled</td>
+<td>Processors communicate continuously via shared architecture</td>
+<td>Communication via a network, often loosely coupled</td>
 </tr>
 <tr>
-<td>Acts like <strong>one machine</strong> with distributed processing</td>
-<td>A group of <strong>co-operating systems</strong> (can be SIMD-based)</td>
+<td>Acts like one machine with distributed processing</td>
+<td>A group of co-operating systems</td>
 </tr>
 <tr>
-<td>Higher performance, used for <strong>supercomputing tasks</strong></td>
+<td>Higher performance, used for supercomputing tasks</td>
 <td>More general-purpose or batch processing systems</td>
 </tr>
 </tbody>
 </table>
-<h3 id="link-to-computer-architectures">Link to computer architectures</h3>
+<h4 id="link-to-computer-architectures">Link to computer architectures</h4>
 <ul>
-<li>Massively parallel systems often use:
-<ul>
-<li><strong>SIMD</strong>: Apply one instruction to many data points simultaneously</li>
-<li><strong>MIMD</strong>: Run different instructions on different data, fully independently</li>
+<li>Massively parallel systems often use <strong>SIMD</strong> (one instruction applied to many data points) or <strong>MIMD</strong> (different instructions on different data, fully independently).</li>
 </ul>
-</li>
-</ul>
-<p><div class="callout callout-question"><div class="callout-title">2026 夏季 P33 Q4 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the characteristics of massively parallel computers. <strong>[3]</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q4 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the characteristics of massively parallel computers. <strong>[3]</strong></p>
 <p><strong>(b)</strong> State one difference and one similarity between the SIMD and MISD computer architectures. <strong>[2]</strong></p>
 <p>difference</p>
 <p>similarity</p>
@@ -1260,80 +1244,67 @@ Description</p>
 </tr>
 </tbody>
 </table>
-</div></details></p>
-<h2 id="virtual-machines">Virtual machines</h2>
-<h3 id="what-are-virtual-machines">What are virtual machines?</h3>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q8 · 3 marks</div><div class="callout-body"><p>Outline the characteristics of massively parallel computers. <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>8</strong>
+<strong>One</strong> mark per mark point (<strong>Max 3</strong>)</p>
 <ul>
-<li>
-<p>Virtual machines (VMs) are entire operating systems <strong>running inside another operating system</strong></p>
-</li>
-<li>
-<p>A user running <strong>Windows 11</strong> could run a <strong>virtual machine of MacOS</strong></p>
-</li>
-<li>
-<p>This would allow them to <strong>navigate the GUI</strong> of MacOS and <strong>install software</strong> on it</p>
-</li>
-<li>
-<p>Running a virtual machine <strong>helps access software</strong> that is only <strong>designed to run on specific</strong> operating systems</p>
-</li>
-<li>
-<p>VM management software includes a <strong>Hypervisor</strong> that monitors all activity happening inside the VM
-<strong>Host, guest and hypervisor ★</strong></p>
-</li>
-<li>
-<p><strong>Host operating system</strong> — the operating system installed directly on the physical machine; it owns the real CPU, memory and I/O devices and runs the virtual machine software</p>
-</li>
-<li>
-<p><strong>Guest operating system</strong> — the operating system installed inside the virtual machine; it only sees <strong>virtual hardware</strong> and reaches the real devices through the host and the hypervisor</p>
-</li>
-<li>
-<p><strong>Hypervisor (virtual machine monitor)</strong> — the layer that shares the host’s processor time, memory and storage between guests and traps privileged instructions so that a guest cannot damage the host</p>
-</li>
-<li>
-<p><strong>System VM versus process VM</strong> — a <strong>system VM</strong> runs a complete operating system; a <strong>process VM</strong> runs a single program, such as the JVM executing bytecode, on top of the host OS</p>
-</li>
+<li>A large number of computer processors / separate computers connected together (1)</li>
+<li>… simultaneously performing a set of coordinated computations // collaborative processing (1);</li>
+<li>network infrastructure (1);</li>
+<li>communicate using a message interface / by sending messages (1). (Max 3)</li>
 </ul>
-<h4 id="structure-of-several-virtual-machines-running-on-a-single-piece-of-hardware">Structure of several virtual machines running on a single piece of hardware</h4>
-<p><img alt="Structure of several virtual machines running on a single piece of hardware" src="images/software-development-virtual-machines-alevel.png" /></p>
+</div></details></p>
+<h3 id="virtual-machines">Virtual machines</h3>
+<h4 id="what-is-a-virtual-machine">What is a virtual machine?</h4>
+<ul>
+<li>A <strong>virtual machine (VM)</strong> is a <strong>standalone environment running on a physical computer</strong> — it is <strong>not itself a physical machine</strong>.</li>
+<li>It <strong>emulates the hardware / software of another system</strong>: the VM software has all the components of a physical computer system, while the <strong>host machine provides the physical resources</strong> (RAM, ROM, processor, storage) and is controlled by a <strong>host operating system</strong>.</li>
+<li>This lets a user run software designed for a different operating system (e.g. Windows running a macOS VM), navigate its GUI and install software inside it.</li>
+<li>VM management software runs a <strong>hypervisor</strong>, which monitors all activity inside the VM.</li>
+</ul>
+<p><strong>Host, guest and hypervisor ★</strong></p>
+<ul>
+<li><strong>Host operating system</strong> — installed directly on the physical machine; controls all its physical resources, runs the virtual machine software and provides the user interface to operate it.</li>
+<li><strong>Guest operating system</strong> — installed inside the VM; runs under the control of the host, controls/accesses the <strong>virtual hardware</strong>, and reaches real devices only through the VM and host OS.</li>
+<li><strong>Hypervisor (virtual machine monitor)</strong> — sits between host and guest; creates and runs VMs, allocates host resources to each guest and traps privileged instructions so a guest cannot damage the host.</li>
+</ul>
+<p><img alt="Layers of a virtual machine: physical hardware, host OS, hypervisor and guest OS" src="images/p3-ch15-1-vm-layers.svg" /></p>
+<p><strong>System VM versus process VM ★</strong></p>
+<ul>
+<li>A <strong>system VM</strong> runs a <strong>complete operating system</strong> on virtual hardware (e.g. VMware / VirtualBox running a full OS, or a cloud instance).</li>
+<li>A <strong>process VM</strong> runs a <strong>single program</strong> on top of the host OS — e.g. the <strong>JVM</strong> executing Java bytecode.</li>
+</ul>
 <h4 id="cross-platform-and-forwards-compatibility">Cross-platform and forwards compatibility</h4>
 <ul>
-<li>Not all software is designed to run on all operating systems</li>
-<li>Apple commonly makes software that <strong>only runs on MacOS</strong> for performance reasons</li>
-<li>A Windows user could run a virtual machine of MacOS and install the software they need</li>
-<li>Most software <strong>needs to be updated</strong> to work on the latest versions of operating systems</li>
-<li>A user running the latest release of Windows may need to run a virtual machine of a <em>previous</em> release of Windows to use an application that hasn’t received a <strong>forwards-compatibility update</strong></li>
+<li>Not all software runs on all operating systems (e.g. some macOS software is performance-locked to macOS); a VM of the required OS lets a user run it.</li>
+<li>Some software needs updating for the latest OS; a VM of an <strong>earlier release</strong> can run an application that has not received a forwards-compatibility update.</li>
 </ul>
-<h4 id="in-software-testing">In software testing</h4>
+<h4 id="benefits-and-limitations-of-vms">Benefits and limitations of VMs ★</h4>
+<p><strong>Benefits</strong> (examples from the mark schemes):</p>
 <ul>
-<li>VMs are a way to create <strong>isolated test environments</strong>, that leave the host operating system unaffected</li>
-<li>Isolated environments allow a developer to:
+<li><strong>Compatibility</strong> — run applications / legacy software incompatible with the host; emulate old software; emulate a different instruction set architecture; try software on different OS on the same hardware; multiple OS environments on one computer.</li>
+<li><strong>Protection</strong> — the guest has no effect on the host or other VMs; a guest can crash without crashing the host; suspicious software only infects the VM.</li>
+<li><strong>Cost</strong> — no need to buy extra hardware, since multiple VMs run on the same machine.</li>
+</ul>
+<p><strong>Limitations</strong>:</p>
 <ul>
-<li>Monitor the way their software <strong>affects system performance</strong></li>
-<li>Test on a <strong>clean-slate system</strong>, while no other applications are running</li>
+<li><strong>Performance</strong> — the guest is less efficient than a real machine because hardware is accessed indirectly through the host; response times cannot be measured accurately; multiple VMs compete for host resources.</li>
+<li><strong>Dependence on the host</strong> — the VM is limited by the host’s features/weaknesses and not all hardware/software can be emulated.</li>
+<li><strong>Complexity</strong> — building and maintaining a VM in-house is expensive, time-consuming and specialised.</li>
 </ul>
-</li>
-<li>VM management software can create virtual machines that <strong>act</strong> like they have <strong>older hardware</strong></li>
-<li>This allows developers to build software that can be run on older hardware so that <strong>more users can use the software</strong></li>
-<li>A developer can test against <strong>various operating systems</strong>, such as MacOS, Linux and Windows, for <strong>greater compatibility</strong></li>
-<li>In A Level Computer Science, <strong>intermediate code</strong> is generated through compilation and allows programs to run across different operating systems</li>
-</ul>
-<h4 id="consequences">Consequences</h4>
+<h4 id="vms-in-software-testing">VMs in software testing</h4>
 <ul>
-<li>VMs <strong>share</strong> the same system <strong>hardware</strong> as the <strong>host</strong> OS</li>
-<li>Over-use of VMs can <strong>exhaust</strong> the host system of CPU, hard disk space and memory
+<li>VMs create <strong>isolated test environments</strong> that leave the host unaffected: developers can monitor performance impact, test on a clean-slate system and test against various OS (macOS, Linux, Windows).</li>
+<li>VM software can emulate <strong>older hardware</strong>, so developers can build software that works on older machines and reach more users.</li>
+</ul>
+<h4 id="consequences-of-running-vms">Consequences of running VMs</h4>
 <ul>
-<li>VM software such as <strong>VirtualBox</strong> can set maximum limits on system resources</li>
-<li>A <strong>low-specification</strong> machine could be configured to allocate only 1GB of memory and 20% of CPU</li>
-<li>A <strong>high-specification</strong> machine could afford up to 8GB of memory and 50% of the CPU</li>
+<li>VMs <strong>share the host’s hardware</strong>; over-use can exhaust CPU, disk space and memory. VM software (e.g. VirtualBox) can cap resources — e.g. 1 GB RAM and 20% CPU on a low-spec machine, up to 8 GB RAM and 50% CPU on a high-spec machine.</li>
 </ul>
-</li>
-<li>Operating systems are commonly <strong>free to download</strong>, but require an <strong>activation payment</strong> to access all features</li>
-</ul>
-<p><div class="callout callout-question"><div class="callout-title">2024 夏季 P32 Q9 · 7 marks</div><div class="callout-body"><p><strong>(a)</strong> Outline <strong>two</strong> benefits and <strong>two</strong> limitations of a virtual machine. <strong>[4]</strong></p>
-<p>Benefit 1</p>
-<p>Benefit 2</p>
-<p>Limitation 1</p>
-<p>Limitation 2</p>
+<p><div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q9 · 7 marks</div><div class="callout-body"><p><strong>(a)</strong> Outline <strong>two</strong> benefits and <strong>two</strong> limitations of a virtual machine. <strong>[4]</strong></p>
+<p>Benefit 1 / Benefit 2 / Limitation 1 / Limitation 2</p>
 <p><strong>(b)</strong> Explain the roles of the host operating system and the guest operating system as used in a computer system running a virtual machine. <strong>[3]</strong></p>
 </div></div>
 <details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
@@ -1357,7 +1328,171 @@ Description</p>
 </tr>
 </tbody>
 </table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q5 · 4 marks</div><div class="callout-body"><p>Explain what is meant by the term <strong>virtual machine</strong>. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5</strong>
+One mark per mark point (Max 4):</p>
+<ul>
+<li>MP1 A VM is a standalone environment running on a physical computer // A VM is not a physical machine;</li>
+<li>MP2 It can emulate the hardware/software of another system;</li>
+<li>MP3 VM software has all the components of a physical computer system;</li>
+<li>MP4 The host machine provides all the physical resources e.g. RAM/ROM;</li>
+<li>MP5 … and is controlled via a host operating system;</li>
+<li>MP6 The hypervisor runs between the host and guest operating systems;</li>
+<li>MP7 … and creates and runs virtual machines / allocates resources from the host to the guest OS;</li>
+<li>MP8 A guest OS runs within the VM/host OS;</li>
+<li>MP9 Multiple guest OS can run on the same VM // Multiple VMs can run on the same host OS;</li>
+<li>MP10 The guest operating system controls/accesses the virtual hardware/software.</li>
+</ul>
+<p>Guidance: Do not allow benefits, drawbacks or uses, as the question is about the meaning of the term virtual machine, so requires a description.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q5 · 4 marks</div><div class="callout-body"><p>A virtual machine may be used to emulate computer hardware using software.</p>
+<p>Outline two benefits and two limitations of using a virtual machine. <strong>[4]</strong></p>
+<p>benefit 1 / benefit 2 / limitation 1 / limitation 2</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5</strong>
+<strong>One</strong> mark for each correct benefit (<strong>Max 2</strong>)</p>
+<ul>
+<li><strong>MP1</strong> Virtual machines can provide an instruction set architecture that is different to the actual computer. // Multiple operating system environments can be used on the same computer. // You can run an application / legacy software which is not compatible with the host computer / operating system using a guest operating system that is compatible with the application / software.</li>
+<li><strong>MP2</strong> Costs can be saved by not having to purchase additional hardware to test / use applications.</li>
+<li><strong>MP3</strong> The guest operating system can crash without affecting the host machine. // Guest operating system hosted on a virtual machine can be used without impacting anything outside the virtual machine. // When trying a piece of suspicious software, if it causes a problem, it will only infect the virtual machine.</li>
+</ul>
+<p><strong>One</strong> mark for each correct limitation (<strong>Max 2</strong>)</p>
+<ul>
+<li><strong>MP4</strong> Degraded performance. // A virtual machine is less efficient than real machines because they access hardware indirectly. // The virtual machine has to request access to the hardware from the host, which slows usability. // If multiple virtual machines are running on the same host, performance may be negatively affected if the host lacks sufficient power to deal with all their requirements.</li>
+<li><strong>MP5</strong> A virtual machine is dependent on the features / standard of the host machine. // It may be affected by the weaknesses of the host machine // Not all hardware/software can be emulated.</li>
+<li><strong>MP6</strong> Managing and maintaining a virtual machine can be quite complex/specialised.</li>
+</ul>
 </div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<p>All §15.1 past-paper sub-questions, grouped by exam point. The Source column gives <code>Year Season Paper QQuestion(sub-part)</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q2</td>
+<td>RISC vs CISC — identify four RISC features</td>
+<td>2024 Winter P31 Q2</td>
+</tr>
+<tr>
+<td>P32 Q8</td>
+<td>RISC vs CISC — identify four CISC features</td>
+<td>2024 Winter P32 Q8</td>
+</tr>
+<tr>
+<td>P31 Q11(a)</td>
+<td>RISC vs CISC — two RISC features</td>
+<td>2024 Summer P31 Q11(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)</td>
+<td>RISC vs CISC — interrupt handling process</td>
+<td>2024 Summer P31 Q11(b)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)</td>
+<td>RISC vs CISC — describe RISC and CISC</td>
+<td>2022 Summer P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>RISC vs CISC — two differences</td>
+<td>2022 Summer P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q10(a)</td>
+<td>RISC vs CISC — RISC/CISC statement table</td>
+<td>2022 Winter P31 Q10(a)</td>
+</tr>
+<tr>
+<td>P31 Q11©</td>
+<td>Pipelining &amp; registers in RISC — effect on interrupt handling</td>
+<td>2024 Summer P31 Q11©</td>
+</tr>
+<tr>
+<td>P32 Q8(a)</td>
+<td>Pipelining &amp; registers in RISC — use of pipelining</td>
+<td>2023 Summer P32 Q8(a)</td>
+</tr>
+<tr>
+<td>P32 Q8(b)</td>
+<td>Pipelining &amp; registers in RISC — five-stage pipeline table</td>
+<td>2023 Summer P32 Q8(b)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)</td>
+<td>Pipelining &amp; registers in RISC — describe the process</td>
+<td>2022 Winter P31 Q10(b)</td>
+</tr>
+<tr>
+<td>P33 Q4(b)</td>
+<td>Four architectures — SIMD vs MISD difference/similarity</td>
+<td>2026 Summer P33 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q5</td>
+<td>Four architectures — SISD and MIMD features</td>
+<td>2023 Winter P31 Q5</td>
+</tr>
+<tr>
+<td>P32 Q10</td>
+<td>Four architectures — SIMD and MISD features</td>
+<td>2023 Winter P32 Q10</td>
+</tr>
+<tr>
+<td>P32 Q5</td>
+<td>Four architectures — identify and describe three categories</td>
+<td>2022 Summer P32 Q5</td>
+</tr>
+<tr>
+<td>P33 Q4(a)</td>
+<td>Massively parallel computers — characteristics</td>
+<td>2026 Summer P33 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q8</td>
+<td>Massively parallel computers — outline characteristics</td>
+<td>2023 Summer P31 Q8</td>
+</tr>
+<tr>
+<td>P31 Q5</td>
+<td>Virtual machines — two benefits and two limitations</td>
+<td>2026 Summer P31 Q5</td>
+</tr>
+<tr>
+<td>P32 Q5</td>
+<td>Virtual machines — meaning of the term</td>
+<td>2026 Summer P32 Q5</td>
+</tr>
+<tr>
+<td>P32 Q9(a)</td>
+<td>Virtual machines — benefits and limitations</td>
+<td>2024 Summer P32 Q9(a)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)</td>
+<td>Virtual machines — host and guest OS roles</td>
+<td>2024 Summer P32 Q9(b)</td>
+</tr>
+<tr>
+<td>P32 Q5</td>
+<td>Virtual machines — meaning, benefits and drawbacks</td>
+<td>2022 Winter P32 Q5</td>
+</tr>
+<tr>
+<td>P31 Q6</td>
+<td>Virtual machines — benefits and limitation</td>
+<td>2022 Summer P31 Q6</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="142-circuit-packet-switching.html" title="Previous: 14.2 Circuit &amp; Packet Switching" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">14.2 Circuit &amp; Packet Switching</span></a>

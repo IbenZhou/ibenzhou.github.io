@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" width="900" height="380" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="900" height="380" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">TLS handshake</text>
+  <text x="450" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">TLS sits between HTTP and TCP, securing the connection</text>
+
+  <rect x="120" y="82" width="130" height="44" rx="8" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="185" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#0f6e56">Client</text>
+  <rect x="650" y="82" width="130" height="44" rx="8" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="715" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#185fa5">Server</text>
+  <line x1="185" y1="126" x2="185" y2="340" stroke="#b4b2a9" stroke-width="1" stroke-dasharray="5 4"/>
+  <line x1="715" y1="126" x2="715" y2="340" stroke="#b4b2a9" stroke-width="1" stroke-dasharray="5 4"/>
+
+  <line x1="185" y1="156" x2="710" y2="156" stroke="#1d9e75" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="268" y="136" width="360" height="20" rx="5" fill="#ffffff"/>
+  <text x="448" y="151" text-anchor="middle" font-size="12" fill="#0f6e56">1. ClientHello — supported versions &amp; cipher suites</text>
+
+  <line x1="715" y1="206" x2="190" y2="206" stroke="#378add" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="250" y="186" width="400" height="20" rx="5" fill="#ffffff"/>
+  <text x="450" y="201" text-anchor="middle" font-size="12" fill="#185fa5">2. ServerHello + digital certificate (contains public key)</text>
+
+  <rect x="205" y="224" width="380" height="34" rx="6" fill="#f4effb" stroke="#7f77dd" stroke-width="0.8"/>
+  <text x="395" y="246" text-anchor="middle" font-size="12" fill="#534ab7">3. Client uses CA's public key to verify the certificate is genuine</text>
+
+  <line x1="185" y1="284" x2="710" y2="284" stroke="#7f77dd" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="250" y="264" width="400" height="20" rx="5" fill="#ffffff"/>
+  <text x="450" y="279" text-anchor="middle" font-size="12" fill="#534ab7">4. Agree session keys (encrypted with server public key)</text>
+
+  <rect x="205" y="302" width="380" height="32" rx="6" fill="#eef7f5" stroke="#1d9e75" stroke-width="0.8"/>
+  <text x="395" y="322" text-anchor="middle" font-size="12" fill="#0f6e56">5. Secure communication begins using symmetric session keys</text>
+</svg>

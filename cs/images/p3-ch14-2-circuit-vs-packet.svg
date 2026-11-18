@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="900" height="420" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Circuit switching vs packet switching</text>
+
+  <!-- Circuit -->
+  <rect x="24" y="58" width="852" height="150" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="44" y="87" font-size="16" font-weight="700" fill="#0f6e56">Circuit switching — one dedicated path</text>
+  <g>
+    <rect x="60" y="108" width="70" height="40" rx="7" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="95" y="133" text-anchor="middle" font-size="13" fill="#0f3d3e">Sender</text>
+    <line x1="132" y1="128" x2="760" y2="128" stroke="#1d9e75" stroke-width="3"/>
+    <rect x="382" y="110" width="130" height="36" rx="6" fill="#ffffff" stroke="#1d9e75" stroke-width="1"/>
+    <text x="447" y="133" text-anchor="middle" font-size="12.5" fill="#0f6e56">dedicated circuit</text>
+    <rect x="762" y="108" width="80" height="40" rx="7" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="802" y="133" text-anchor="middle" font-size="13" fill="#0f3d3e">Receiver</text>
+  </g>
+  <text x="60" y="178" font-size="12.5" fill="#233b3a">Establish → transfer → terminate · whole bandwidth reserved · same route, in order · no reassembly</text>
+
+  <!-- Packet -->
+  <rect x="24" y="224" width="852" height="178" rx="14" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="44" y="253" font-size="16" font-weight="700" fill="#185fa5">Packet switching — independent routes</text>
+  <g>
+    <rect x="60" y="278" width="70" height="40" rx="7" fill="#d7e8fa" stroke="#378add"/>
+    <text x="95" y="303" text-anchor="middle" font-size="13" fill="#042c53">Sender</text>
+
+    <path d="M132 292 Q 300 270 430 292" fill="none" stroke="#378add" stroke-width="2"/>
+    <path d="M132 303 Q 300 315 430 303" fill="none" stroke="#7f77dd" stroke-width="2"/>
+    <path d="M132 314 Q 300 335 430 314" fill="none" stroke="#d85a30" stroke-width="2"/>
+
+    <rect x="382" y="284" width="96" height="30" rx="6" fill="#ffffff" stroke="#378add" stroke-width="0.8"/>
+    <text x="430" y="303" text-anchor="middle" font-size="11.5" fill="#185fa5">routers</text>
+
+    <path d="M478 292 Q 600 270 744 292" fill="none" stroke="#378add" stroke-width="2"/>
+    <path d="M478 303 Q 600 315 744 303" fill="none" stroke="#7f77dd" stroke-width="2"/>
+    <path d="M478 314 Q 600 335 744 314" fill="none" stroke="#d85a30" stroke-width="2"/>
+
+    <rect x="746" y="278" width="80" height="40" rx="7" fill="#d7e8fa" stroke="#378add"/>
+    <text x="786" y="303" text-anchor="middle" font-size="13" fill="#042c53">Receiver</text>
+  </g>
+  <text x="60" y="348" font-size="12.5" fill="#233b3a">Message split into packets · packets may take different routes and arrive out of order</text>
+  <text x="60" y="372" font-size="12.5" fill="#233b3a">Reassembled at destination · retransmit if lost · bandwidth shared · scalable</text>
+</svg>

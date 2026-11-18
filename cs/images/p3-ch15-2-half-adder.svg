@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="800" height="320" fill="#ffffff"/>
+  <text x="400" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Half adder</text>
+  <text x="400" y="56" text-anchor="middle" font-size="14" fill="#5a6b6b">Adds two single bits — outputs Sum and Carry</text>
+
+  <!-- XOR gate -->
+  <g stroke="#1d9e75" stroke-width="2" fill="#eef7f5">
+    <path d="M300 100 Q 350 100 380 140 Q 350 180 300 180 Q 320 140 300 100 Z"/>
+  </g>
+  <text x="352" y="145" text-anchor="middle" font-size="15" font-weight="700" fill="#0f6e56">≥1</text>
+  <text x="345" y="128" text-anchor="middle" font-size="9" fill="#0f6e56">XOR</text>
+
+  <!-- AND gate -->
+  <g stroke="#378add" stroke-width="2" fill="#eef3fb">
+    <path d="M300 210 L 350 210 A 40 40 0 0 1 350 290 L 300 290 Z"/>
+  </g>
+  <text x="345" y="254" text-anchor="middle" font-size="15" font-weight="700" fill="#185fa5">&amp;</text>
+
+  <!-- inputs A B -->
+  <text x="90" y="140" font-size="14" font-weight="700" fill="#233b3a">A</text>
+  <line x1="110" y1="136" x2="298" y2="136" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="90" y="170" font-size="14" font-weight="700" fill="#233b3a">B</text>
+  <line x1="110" y1="168" x2="220" y2="168" stroke="#5a6b6b" stroke-width="1.6"/>
+  <line x1="220" y1="168" x2="220" y2="136" stroke="#5a6b6b" stroke-width="1.6"/>
+  <line x1="110" y1="246" x2="298" y2="246" stroke="#5a6b6b" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="110" y1="278" x2="220" y2="278" stroke="#5a6b6b" stroke-width="1.6"/>
+  <line x1="220" y1="278" x2="220" y2="246" stroke="#5a6b6b" stroke-width="1.6"/>
+
+  <!-- outputs -->
+  <line x1="378" y1="140" x2="560" y2="140" stroke="#1d9e75" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="570" y="145" font-size="14" font-weight="700" fill="#0f6e56">Sum = A ⊕ B</text>
+  <line x1="388" y1="250" x2="560" y2="250" stroke="#378add" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="570" y="255" font-size="14" font-weight="700" fill="#185fa5">Carry = A · B</text>
+
+  <text x="400" y="312" text-anchor="middle" font-size="12.5" fill="#5a6b6b">XOR gives the sum bit; AND gives the carry bit</text>
+</svg>

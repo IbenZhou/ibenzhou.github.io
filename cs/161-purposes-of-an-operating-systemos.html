@@ -256,16 +256,13 @@ details.callout > summary:hover { background: var(--accent-light); }
       <div class="toc"><div class="toc-title">Contents</div><div class="toc">
 <ul>
 <li><a href="#resource-management">Resource Management</a></li>
-<li><a href="#resource-management_1">Resource management</a></li>
 <li><a href="#process-management">Process Management</a></li>
-<li><a href="#multitasking-process-states">Multitasking &amp; process states</a></li>
-<li><a href="#scheduling-routines">Scheduling routines</a></li>
-<li><a href="#interrupt-handling-kernel">Interrupt handling &amp; kernel</a></li>
+<li><a href="#what-is-multi-tasking">Multitasking &amp; process states</a></li>
+<li><a href="#scheduling-routines">Scheduling Routines</a></li>
+<li><a href="#interrupt-handling-kernel">Interrupt Handling &amp; Kernel</a></li>
 <li><a href="#memory-management">Memory Management</a></li>
-<li><a href="#memory-management_1">Memory management</a></li>
-<li><a href="#paging">Paging</a></li>
-<li><a href="#segmentation">Segmentation</a></li>
-<li><a href="#virtual-memory">Virtual memory</a></li>
+<li><a href="#paging-and-segmentation">Paging and Segmentation</a></li>
+<li><a href="#virtual-memory-page-replacement-and-disk-thrashing">Virtual Memory &amp; Disk Thrashing</a></li>
 </ul>
 </div>
 </div>
@@ -274,11 +271,11 @@ details.callout > summary:hover { background: var(--accent-light); }
       <article class="card">
         
 
+
 <h2 id="resource-management">Resource Management</h2>
-<h2 id="resource-management_1">Resource management</h2>
 <h3 id="how-does-an-operating-system-maximise-the-use-of-resources">How does an operating system maximise the use of resources?</h3>
 <ul>
-<li>The Operating System (OS) is responsible for <strong>managing the computer’s hardware efficiently</strong> to ensure the system runs smoothly</li>
+<li>The Operating System (OS) is responsible for <strong>managing the computer’s hardware efficiently</strong> to ensure the system runs smoothly.</li>
 <li>This is known as <strong>resource management</strong> and is vital for:
 <ul>
 <li><strong>Maximising performance</strong></li>
@@ -286,10 +283,10 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li><strong>Ensuring multitasking</strong> works correctly</li>
 </ul>
 </li>
-<li>When a computer is switched on, the <strong>BIOS</strong> (stored in ROM) runs a <strong>bootstrap</strong> program</li>
-<li>This loads the <strong>kernel</strong> and essential parts of the OS from the hard disk or flash storage into <strong>main memory (RAM)</strong></li>
-<li>On tablets and smartphones, flash memory contains a read-only section for the OS and a second section for apps and user data</li>
-<li><strong>RAM</strong> is then used to <strong>execute apps</strong> and <strong>store active data</strong></li>
+<li>When a computer is switched on, the <strong>BIOS</strong> (stored in ROM) runs a <strong>bootstrap</strong> program.</li>
+<li>This loads the <strong>kernel</strong> and essential parts of the OS from the hard disk or flash storage into <strong>main memory (RAM)</strong>.</li>
+<li>On tablets and smartphones, flash memory contains a read-only section for the OS and a second section for apps and user data.</li>
+<li><strong>RAM</strong> is then used to <strong>execute apps</strong> and <strong>store active data</strong>.</li>
 </ul>
 <h4 id="kernel">Kernel</h4>
 <ul>
@@ -327,26 +324,27 @@ details.callout > summary:hover { background: var(--accent-light); }
 </table>
 <h4 id="cpu-resource-management-scheduling">CPU resource management – scheduling</h4>
 <ul>
-<li>The OS maximises CPU usage through <strong>scheduling</strong>, which allows multiple processes to be managed efficiently
+<li>The OS maximises CPU usage through <strong>scheduling</strong>, which allows multiple processes to be managed efficiently.
 <ul>
-<li><strong>Multitasking</strong> ensures that the CPU switches rapidly between processes</li>
-<li>Different <strong>scheduling algorithms</strong> (e.g. round-robin, priority-based) are used to share CPU time fairly</li>
+<li><strong>Multitasking</strong> ensures that the CPU switches rapidly between processes.</li>
+<li>Different <strong>scheduling algorithms</strong> (e.g. round robin, shortest job first) are used to share CPU time fairly.</li>
 </ul>
 </li>
+<li><strong>Scheduling</strong> = managing the processes running on the CPU (a standard OS term).</li>
 </ul>
 <h4 id="memory-resource-management">Memory resource management</h4>
 <ul>
-<li>RAM is <strong>allocated dynamically</strong> to active programs and system processes</li>
-<li>If RAM is full, the OS may use <strong>virtual memory</strong> on disk to simulate extra memory</li>
-<li>This allows <strong>more programs to run</strong> than would otherwise fit in RAM</li>
+<li>RAM is <strong>allocated dynamically</strong> to active programs and system processes.</li>
+<li>If RAM is full, the OS may use <strong>virtual memory</strong> on disk to simulate extra memory.</li>
+<li>This allows <strong>more programs to run</strong> than would otherwise fit in RAM.</li>
 </ul>
 <h4 id="inputoutput-management-and-dma">Input/output management and DMA</h4>
 <ul>
-<li>I/O devices are <strong>much slower</strong> than the CPU, so the OS optimises their use:</li>
-<li>I/O operations are managed through <strong>device drivers</strong> and <strong>interrupts</strong></li>
-<li>The <strong>Direct Memory Access (DMA) controller</strong> allows data transfer between memory and devices <strong>without CPU involvement</strong></li>
-<li>This <strong>frees up the CPU</strong> to perform other tasks while data is being moved</li>
-<li>When the transfer is complete, the DMA sends an <strong>interrupt</strong> to the CPU</li>
+<li>I/O devices are <strong>much slower</strong> than the CPU, so the OS optimises their use.</li>
+<li>I/O operations are managed through <strong>device drivers</strong> and <strong>interrupts</strong>.</li>
+<li>The <strong>Direct Memory Access (DMA) controller</strong> allows data transfer between memory and devices <strong>without CPU involvement</strong>.</li>
+<li>This <strong>frees up the CPU</strong> to perform other tasks while data is being moved.</li>
+<li>When the transfer is complete, the DMA sends an <strong>interrupt</strong> to the CPU.</li>
 </ul>
 <table>
 <thead>
@@ -376,24 +374,27 @@ details.callout > summary:hover { background: var(--accent-light); }
 </table>
 <h3 id="hiding-hardware-complexity">Hiding hardware complexity</h3>
 <ul>
-<li>
-<p>The OS provides a <strong>user-friendly interface</strong> and handles the complexity of interacting with hardware:</p>
-</li>
-<li>
-<p><strong>GUIs</strong> make tasks like file transfers easy (e.g. drag-and-drop instead of command-line)</p>
-</li>
-<li>
-<p><strong>Device drivers</strong> handle communication with specific hardware</p>
-</li>
-<li>
-<p>Users <strong>don’t need to know</strong> technical commands, the OS abstracts this complexity
-<strong>How the command line interface hides complexity ★</strong></p>
-</li>
-<li>
-<p>The user types commands and the <strong>shell</strong> converts them into <strong>system calls</strong>, so memory addresses, registers and device registers are never handled directly</p>
-</li>
+<li>The OS provides a <strong>user-friendly interface</strong> and handles the complexity of interacting with hardware.</li>
+<li><strong>GUIs</strong> make tasks like file transfers easy (e.g. drag-and-drop instead of command-line).</li>
+<li><strong>Device drivers</strong> handle communication with specific hardware.</li>
+<li>Users <strong>don’t need to know</strong> technical commands; the OS abstracts this complexity.</li>
 </ul>
-<h4 id="summary">Summary</h4>
+<p><strong>How the user interface hides complexity ★</strong></p>
+<p>Real exam questions have asked for benefits of a user interface and ways in which hardware complexity is hidden. The marking points below are taken directly from the mark schemes:</p>
+<ul>
+<li>Provision of a <strong>User Interface</strong> // <strong>Graphical User Interface</strong> — the user interacts with the computer in a more intuitive way; <strong>icons and menus</strong> are used to control devices by simply ‘pointing and clicking’.</li>
+<li><strong>Device drivers</strong> — makes it easier to control peripherals such as printers within the operating system rather than on the separate device itself.</li>
+<li><strong>Device mapping</strong> — different devices (physical and virtual) are easy to identify on the network, check their status, or use.</li>
+<li>The user interacts only with the <strong>Application / top layer</strong> (of the TCP/IP protocol suite), leaving the lower layers and their complexities hidden from the user.</li>
+<li>The user interface <strong>hides the complexities of the computer hardware/operating system</strong> from the user; complex commands involving memory locations/buses/computer hardware are avoided.</li>
+<li>It provides <strong>appropriate access systems for users with differing needs</strong>.</li>
+<li>Valid examples: clicking on an icon rather than writing code; using a graphical user interface / icons for navigation.</li>
+</ul>
+<p><strong>How the command line interface hides complexity ★</strong></p>
+<ul>
+<li>The user types commands and the <strong>shell</strong> converts them into <strong>system calls</strong>, so memory addresses, registers and device registers are never handled directly.</li>
+</ul>
+<h3 id="summary-resource-to-technique">Summary: resource to technique</h3>
 <table>
 <thead>
 <tr>
@@ -424,44 +425,78 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tr>
 </tbody>
 </table>
-<p><div class="callout callout-question"><div class="callout-title">2025 冬季 P31 Q4 · 6 marks</div><div class="callout-body"><p>A scheduling routine determines how processes are managed by the operating system.</p>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q4 · 6 marks</div><div class="callout-body"><p>A scheduling routine determines how processes are managed by the operating system.</p>
 <p><strong>(a)</strong> Identify <strong>two</strong> scheduling routines. <strong>[2]</strong></p>
 <p><strong>(b)</strong> Describe <strong>two</strong> ways in which the complexities of the computer hardware are hidden from the user. <strong>[4]</strong></p>
 </div></div>
-<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
-<thead>
-<tr>
-<th>Question</th>
-<th>Answer</th>
-<th>Marks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4(a)</td>
-<td><strong>One</strong> mark per scheduling routine (<strong>Max 2</strong>) from:<br><br>• Round robin<br>• Shortest job first<br>• First come first served<br>• Shortest remaining time</td>
-<td>2</td>
-</tr>
-<tr>
-<td>4(b)</td>
-<td><strong>One</strong> mark for identification and one mark for a description (<strong>Max 4</strong>)<br><br><strong>Two</strong> from:<br>• Provision of a User Interface // Provision of a Graphical User Interface [1]<br>• Allows the user to interact with the computer in a more intuitive way // Icons and menus are used to control devices by simply ‘pointing and clicking’ [1]<br><br>• Use of device drivers [1]<br>• Makes it easier to control peripherals such as printers within the operating system of the computer rather than on the separate device itself [1]<br><br>• Device mapping [1]<br>• Different devices (physical and virtual) are easy to identify on the network, check their status, or use [1]<br><br>• The user interacts only with the Application / top layer (of the TCP/IP protocol suite) [1]<br>leaving the lower layers and their complexities hidden from the user [1]</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>4(a)</strong>
+<strong>One</strong> mark per scheduling routine (<strong>Max 2</strong>) from:</p>
+<ul>
+<li>Round robin</li>
+<li>Shortest job first</li>
+<li>First come first served</li>
+<li>Shortest remaining time</li>
+</ul>
+<p><strong>4(b)</strong>
+<strong>One</strong> mark for identification and one mark for a description (<strong>Max 4</strong>); <strong>Two</strong> from:</p>
+<ul>
+<li>Provision of a User Interface // Provision of a Graphical User Interface [1]</li>
+<li>Allows the user to interact with the computer in a more intuitive way // Icons and menus are used to control devices by simply ‘pointing and clicking’ [1]</li>
+<li>Use of device drivers [1]</li>
+<li>Makes it easier to control peripherals such as printers within the operating system of the computer rather than on the separate device itself [1]</li>
+<li>Device mapping [1]</li>
+<li>Different devices (physical and virtual) are easy to identify on the network, check their status, or use [1]</li>
+<li>The user interacts only with the Application / top layer (of the TCP/IP protocol suite) [1]</li>
+<li>leaving the lower layers and their complexities hidden from the user [1]</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q7 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> A student buys a new computer. State <strong>one</strong> benefit to the student of a user interface and give an example. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Two of the process states are the running state and the ready state. Identify <strong>one</strong> other process state. <strong>[1]</strong></p>
+<p><strong>©</strong> Outline conditions under which a process could change from the running state to the ready state. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>7(a)</strong>
+One mark for a benefit (<strong>Max 1</strong>) e.g.</p>
+<ul>
+<li>MP1: The user interface hides the complexities of the computer hardware/operating system from the user</li>
+<li>MP2: It provides appropriate access systems for users with differing needs</li>
+<li>MP3: Complex commands involving memory locations/buses/computer hardware/ are avoided</li>
+</ul>
+<p>One mark for a valid example (<strong>Max 1</strong>) e.g.</p>
+<ul>
+<li>Clicking on icon rather than writing code</li>
+<li>Using a graphical user interface / icons for navigation</li>
+</ul>
+<p><strong>7(b)</strong>
+Blocked (state)</p>
+<p><strong>7©</strong>
+One mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>MP1: When the time slice of the running process expires (round robin).</li>
+<li>MP2: …and there is a process with a higher priority in the ready queue, the running process is pre-empted</li>
+<li>MP3: When an interrupt arrives at the CPU, (the process running on the CPU gets pre-empted).</li>
+</ul>
 </div></details></p>
 <h2 id="process-management">Process Management</h2>
-<h2 id="multitasking-process-states">Multitasking &amp; process states</h2>
-<h3 id="what-is-multitasking">What is multitasking?</h3>
+<h3 id="what-is-multi-tasking">What is multi-tasking?</h3>
+<p><strong>Purpose of multi-tasking ★</strong></p>
 <ul>
-<li>Multitasking is the ability of the operating system to <strong>manage system resources</strong> (such as memory and the CPU) in a way that <strong>gives the user the impression</strong> that multiple programs are running at the same time</li>
-<li>In reality, the CPU can only execute <strong>one instruction at a time</strong></li>
-<li>It can process <strong>billions of instructions per second</strong>, and can switch between tasks so quickly that it gives the <strong>illusion</strong> of programs running simultaneously</li>
-<li>The OS <strong>splits tasks and allocates system resources</strong> based on a priority</li>
+<li>Multi-tasking enables <strong>multiple programs/processes to be executed at the same time</strong>.</li>
+<li>It runs multiple processes <strong>concurrently</strong>, which benefits process management by allowing more tasks to complete than would be the case if they had to run one task after another.</li>
+<li>In reality, the CPU can only execute <strong>one instruction at a time</strong>.</li>
+<li>It can process <strong>billions of instructions per second</strong>, and can switch between tasks so quickly that it gives the <strong>illusion</strong> of programs running simultaneously.</li>
+<li>The OS <strong>splits tasks and allocates system resources</strong> based on a priority.</li>
+</ul>
+<p><strong>How multi-tasking is implemented efficiently ★</strong></p>
+<ul>
+<li>The operating system <strong>monitors the state of each task/process</strong>.</li>
+<li>It uses <strong>scheduling</strong> to ensure hardware resources are used efficiently.</li>
+<li>It makes sure that <strong>tasks/processes do not clash</strong>.</li>
+<li><strong>Processor time / common hardware and resources are shared</strong> between tasks.</li>
+<li>One task of a <strong>higher priority can interrupt</strong> another task that is currently running.</li>
 </ul>
 <h3 id="what-is-a-process">What is a process?</h3>
 <ul>
-<li>A process is a <strong>program in execution</strong></li>
+<li>A process is a <strong>program in execution</strong>.</li>
 <li>This includes:
 <ul>
 <li><strong>The program code</strong></li>
@@ -470,11 +505,10 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li><strong>Memory space</strong></li>
 </ul>
 </li>
-<li>Each running application is <strong>treated as a separate process</strong> by the OS</li>
-<li>A process <strong>does not always run continuously</strong></li>
-<li>It <strong>changes state</strong> depending on what it’s doing and whether it has access to the CPU or is waiting for something</li>
+<li>Each running application is <strong>treated as a separate process</strong> by the OS.</li>
+<li>A process <strong>does not always run continuously</strong>; it <strong>changes state</strong> depending on what it is doing and whether it has access to the CPU or is waiting for something.</li>
 </ul>
-<h4 id="process-states">Process states</h4>
+<h3 id="the-process-states-running-ready-and-blocked">The process states: running, ready and blocked</h3>
 <table>
 <thead>
 <tr>
@@ -485,143 +519,178 @@ details.callout > summary:hover { background: var(--accent-light); }
 <tbody>
 <tr>
 <td><strong>Running</strong></td>
-<td>The process is actively being executed by the CPU</td>
+<td><strong>CPU time has been allocated and the process is being executed.</strong></td>
 </tr>
 <tr>
 <td><strong>Ready</strong></td>
-<td>The process is prepared to run but is <strong>waiting for the CPU</strong> to be available</td>
+<td><strong>The process is waiting (in the ready queue) for a slice of CPU time. It could run.</strong> // It has been displaced by a higher priority process and could otherwise still run.</td>
 </tr>
 <tr>
 <td><strong>Blocked</strong></td>
-<td>The process is <strong>waiting for an event or resource</strong>, such as I/O completion</td>
+<td><strong>The process is waiting for an I/O operation / some event to take place / be completed.</strong></td>
 </tr>
 </tbody>
 </table>
-<p><div class="callout callout-question"><div class="callout-title">2025 夏季 P32 Q5 · 7 marks</div><div class="callout-body"><p>The management and scheduling of processes are tasks carried out by an operating system.</p>
+<p><strong>Process state transitions ★</strong></p>
+<ul>
+<li><strong>Ready → Running</strong> — the scheduler selects the process and allocates the CPU to it.</li>
+<li><strong>Running → Ready</strong> — the time slice of the running process expires (round robin); a process with a higher priority in the ready queue pre-empts it; an interrupt arrives at the CPU and the running process is pre-empted.</li>
+<li><strong>Running → Blocked</strong> — the process requests I/O or waits for an event it cannot continue without.</li>
+<li><strong>Blocked → Ready</strong> — the I/O or event completes, so the process rejoins the ready queue.</li>
+</ul>
+<p><img alt="Process state transition diagram (running, ready, blocked)" src="images/p3-ch16-1-process-state-transitions.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2025 Summer P32 Q5 · 7 marks</div><div class="callout-body"><p>The management and scheduling of processes are tasks carried out by an operating system.</p>
 <p><strong>(a)</strong> Identify <strong>three</strong> process states. <strong>[3]</strong></p>
 <p><strong>(b)</strong> Describe the function of the shortest job first scheduling routine <strong>and</strong> give a benefit of this routine. <strong>[4]</strong></p>
-<p>Function</p>
-<p>Benefit</p>
 </div></div>
-<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
-<thead>
-<tr>
-<th>Question</th>
-<th>Answer</th>
-<th>Marks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>5(a)</td>
-<td><strong>One mark per point</strong><br>• Running state<br>• Ready state<br>• Blocked state</td>
-<td>3</td>
-</tr>
-<tr>
-<td>5(b)</td>
-<td><strong>One mark per mark point (Max 3)</strong><br>• MP1: The processes are queued as they arrive<br>• MP2: The process with the shortest time to complete/burst time is selected first and executed<br>• MP3: The process will continue until complete or put in a waiting state once execution has begun // it is non-pre-emptive<br>• MP4: The scheduler will continue to choose shorter processes over longer processes if they continue to be added to the queue can cause starvation for longer jobs<br><br><strong>One mark for a benefit (Max 1)</strong><br>• MP5: Shorter jobs don’t have to wait for longer jobs to complete before processing // Significantly reduces the average overall waiting time for processes // Ensures starvation doesn’t occur for process with shorter burst times<br>• MP6: Higher throughput of processes</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-</div></details>
-<strong>Process state transitions ★</strong></p>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5(a)</strong>
+<strong>One</strong> mark per point</p>
 <ul>
-<li><strong>Ready → Running</strong> — the scheduler selects the process and allocates the CPU to it</li>
-<li><strong>Running → Ready</strong> — the time quantum expires, or a higher-priority process pre-empts the running process</li>
-<li><strong>Running → Blocked</strong> — the process requests I/O or waits for an event it cannot continue without</li>
-<li><strong>Blocked → Ready</strong> — the I/O or event completes, so the process rejoins the ready queue</li>
+<li>Running state</li>
+<li>Ready state</li>
+<li>Blocked state</li>
 </ul>
-<h2 id="scheduling-routines">Scheduling routines</h2>
+<p><strong>5(b)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1: The processes are queued as they arrive</li>
+<li>MP2: The process with the shortest time to complete/burst time is selected first and executed</li>
+<li>MP3: The process will continue until complete or put in a waiting state once execution has begun // it is non-pre-emptive</li>
+<li>MP4: The scheduler will continue to choose shorter processes over longer processes if they continue to be added to the queue can cause starvation for longer jobs</li>
+</ul>
+<p><strong>One</strong> mark for a benefit (<strong>Max 1</strong>)</p>
+<ul>
+<li>MP5: Shorter jobs don’t have to wait for longer jobs to complete before processing // Significantly reduces the average overall waiting time for processes // Ensures starvation doesn’t occur for process with shorter burst times</li>
+<li>MP6: Higher throughput of processes</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q5 · 4 marks</div><div class="callout-body"><p><strong>(a)</strong> State the purpose of multi-tasking. <strong>[1]</strong></p>
+<p><strong>(b)</strong> Explain how an operating system ensures that multi-tasking operates efficiently. <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5(a)</strong>
+To enable multiple programs/processes to be executed at the same time</p>
+<p><strong>5(b)</strong></p>
+<ul>
+<li>The operating system monitors the state of each task/process</li>
+<li>Using <strong>scheduling</strong> to ensure hardware resources are used efficiently</li>
+<li>And making sure that tasks/processes do not clash</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q8 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe what is meant by multi-tasking and how it benefits process management. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Explain the function of the shortest remaining time scheduling routine and give a benefit of this routine. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>8a</strong>
+MP1: Running multiple processes concurrently
+MP2: … which benefits process management by allowing more tasks to complete than would be the case if they had to run one task after another</p>
+<p><strong>8b</strong>
+<strong>Function (max 3):</strong></p>
+<ul>
+<li>MP1: The processes are queued as they arrive</li>
+<li>MP2: Processes with the shortest burst time are executed first</li>
+<li>MP3: It is a pre-emptive scheduling function // When a process with a shorter burst time arrives the existing process is replaced by the shorter process</li>
+<li>MP4: The scheduler will continue to choose shorter processes over longer processes if they continue to be added to the queue can cause starvation for longer jobs</li>
+</ul>
+<p><strong>Benefit (max 1):</strong></p>
+<ul>
+<li>MP5: Processes with a short burst time are processed very quickly</li>
+<li>MP6: Waiting time is minimised</li>
+</ul>
+</div></details></p>
+<h2 id="scheduling-routines">Scheduling Routines</h2>
 <h3 id="what-is-scheduling">What is scheduling?</h3>
 <ul>
-<li>
-<p>Deciding <strong>which tasks</strong> to process, for <strong>how long</strong>, and in <strong>what order</strong> is achieved through scheduling algorithms</p>
-</li>
-<li>
-<p>A CPU is responsible for <strong>processing tasks</strong> as fast as possible</p>
-</li>
-<li>
-<p>Different algorithms are used to <strong>prioritise and process</strong> tasks that need CPU time</p>
-</li>
-<li>
-<p>The algorithms have different <strong>uses</strong>, <strong>benefits</strong> and <strong>drawbacks</strong>
-<strong>Why scheduling is needed ★</strong></p>
-</li>
-<li>
-<p><strong>Fair sharing</strong> — without scheduling one process could keep the CPU and starve the others</p>
-</li>
-<li>
-<p><strong>Keep the CPU busy</strong> — scheduling runs another ready process while the current one waits for I/O</p>
-</li>
-<li>
-<p><strong>Priority and response time</strong> — urgent or interactive processes can be served first, keeping response times short</p>
-</li>
-<li>
-<p><strong>Throughput</strong> — the order and length of CPU turns decide how many processes complete in a given time</p>
-</li>
+<li>Deciding <strong>which tasks</strong> to process, for <strong>how long</strong>, and in <strong>what order</strong> is achieved through scheduling algorithms.</li>
+<li>A CPU is responsible for <strong>processing tasks</strong> as fast as possible.</li>
+<li>Different algorithms are used to <strong>prioritise and process</strong> tasks that need CPU time.</li>
+<li>The algorithms have different <strong>uses</strong>, <strong>benefits</strong> and <strong>drawbacks</strong>.</li>
 </ul>
-<h4 id="scheduling-categories">Scheduling categories</h4>
+<p><strong>Why scheduling is needed ★</strong></p>
+<p>Real mark schemes accept the following reasons:</p>
 <ul>
-<li><strong>Pre-emptive</strong>: allocates the CPU for <strong>time-limited slots</strong>
+<li>Process scheduling allows more than one program/task to <strong>appear to be executed at the same time</strong> / enables <strong>multi-tasking / multiprogramming / multiprocessing</strong>.</li>
+<li>To allow <strong>high priority jobs to be completed first</strong> / ensures jobs are completed in order of priority.</li>
+<li>To <strong>keep the CPU busy all the time</strong> / minimise CPU idle time.</li>
+<li>To ensure that <strong>all processes execute efficiently</strong>.</li>
+<li>To give <strong>reduced wait times</strong> for all processes / ensure <strong>fair access to the CPU</strong> / <strong>prevent starvation</strong> of some processes.</li>
+<li>To ensure all processes are executed in a <strong>timely manner</strong>.</li>
+</ul>
+<h3 id="scheduling-categories">Scheduling categories</h3>
 <ul>
-<li>Allocates the CPU for a specific <strong>time quantum</strong> to a process</li>
-<li>Allows interruption of processes currently being handled</li>
-<li>It can result in low-priority processes being neglected if high-priority processes arrive frequently</li>
-<li>Example algorithms include <strong>Round Robin</strong> and <strong>Shortest Remaining Time First</strong></li>
+<li><strong>Pre-emptive</strong>: allocates the CPU for <strong>time-limited slots</strong>.
+<ul>
+<li>Allocates the CPU for a specific <strong>time quantum</strong> to a process.</li>
+<li>Allows interruption of processes currently being handled.</li>
+<li>It can result in low-priority processes being neglected if high-priority processes arrive frequently.</li>
+<li>Example algorithms include <strong>Round Robin</strong> and <strong>Shortest Remaining Time First</strong>.</li>
 </ul>
 </li>
-<li><strong>Non-pre-emptive</strong>: allocates the CPU to tasks for <strong>unlimited time slots</strong>
+<li><strong>Non-pre-emptive</strong>: allocates the CPU to tasks for <strong>unlimited time slots</strong>.
 <ul>
-<li>Once the CPU is allocated to a process, the process holds it until it completes its <strong>burst time</strong> or switches to a ‘waiting’ state</li>
-<li>A process cannot be interrupted; it keeps the CPU until it terminates or blocks while waiting for I/O or an event</li>
-<li>If a process with a long burst time is running, shorter processes will be neglected</li>
-<li>Example algorithms include <strong>First Come First Serve</strong> and <strong>Shortest Job First</strong></li>
+<li>Once the CPU is allocated to a process, the process holds it until it completes its <strong>burst time</strong> or switches to a ‘waiting’ state.</li>
+<li>A process cannot be interrupted; it keeps the CPU until it terminates or blocks while waiting for I/O or an event.</li>
+<li>If a process with a long burst time is running, shorter processes will be neglected.</li>
+<li>Example algorithms include <strong>First Come First Served</strong> and <strong>Shortest Job First</strong>.</li>
 </ul>
 </li>
 </ul>
 <h3 id="scheduling-algorithms">Scheduling algorithms</h3>
 <h4 id="round-robin-rr">Round robin (RR)</h4>
 <ul>
-<li>RR is a pre-emptive scheduling algorithm</li>
-<li>RR distributes processor time equally amongst all processes</li>
-<li>Each process is given a <strong>time quantum</strong> to execute</li>
-<li>Processes that are ready to be worked on get queued</li>
-<li>If a process hasn’t been completed by the end of its time quantum, it will be moved to the back of the queue
-<img alt="Round robin scheduling algorithm" src="images/scheduling-algorithm-round-robin-alevel.png" />
-<em><strong>Round robin scheduling algorithm</strong></em></li>
+<li>RR is a <strong>pre-emptive</strong> scheduling algorithm; it distributes processor time <strong>equally</strong> amongst all processes.</li>
+<li>Each process is given a <strong>time quantum</strong> (a fixed time slice) to execute; processes that are ready are queued.</li>
+<li>If a process hasn’t been completed by the end of its time quantum, it will be moved to the <strong>back of the queue</strong>.</li>
+<li>When a time slice ends, the <strong>status of the process is saved/queued</strong> so it can continue from where it left off in its next time slice.</li>
+<li>The next process is executed for its time slice; its previous state is <strong>reinstated/restored</strong>, if applicable.</li>
+<li>If a process completes within its time slice, the next process is executed for its time slice.</li>
+<li>Benefits: <strong>reduces average response time</strong> by limiting each process to a fixed amount of time; <strong>no issue with starvation</strong> because every process gets a fixed time slice each cycle.</li>
+<li>Drawbacks: choosing the right time quantum can be difficult; high turnaround and waiting time for long processes.</li>
 </ul>
+<p><img alt="Round robin scheduling algorithm" src="images/scheduling-algorithm-round-robin-alevel.png" />
+<em><strong>Round robin scheduling algorithm</strong></em></p>
 <h4 id="first-come-first-served-fcfs">First-Come-First-Served (FCFS)</h4>
 <ul>
-<li>FCFS is non-pre-emptive, prioritising processes that arrive at the queue first</li>
-<li>The process currently being worked on will block all other processes until it is complete</li>
-<li>All new tasks join the back of the queue
-<img alt="First-Come-First-Served scheduling algorithm" src="images/scheduling-algorithm-first-come-first-served-fcfs-alevel.png" />
-<em><strong>First-Come-First-Served scheduling algorithm</strong></em></li>
-<li>MLFQ is a pre-emptive priority algorithm where shorter and more critical tasks are processed first</li>
-<li>Multiple queues are used so that tasks of equal size are grouped together</li>
-<li>All processes will join the highest priority queue but will trickle down to lower priority queues if they exceed the time quantum
-<img alt="Multi-Level Feedback Queue scheduling algorithm" src="images/scheduling-algorithm-multi-level-feedback-queue-mlfq-alevel.png" />
-<em><strong>Multi-Level Feedback Queue scheduling algorithm</strong></em></li>
+<li>FCFS is <strong>non-pre-emptive</strong>, prioritising processes that arrive at the queue first.</li>
+<li>No complex logic: each process request is <strong>queued as it is received and executed one by one</strong>.</li>
+<li>The process currently being worked on will block all other processes until it is complete.</li>
+<li>All new tasks join the back of the queue.</li>
+<li>Benefits: simple; starvation does not occur (every process eventually gets a chance to run); less processor overhead.</li>
+<li>Drawbacks: poor performance if a long process arrives before shorter processes; high-priority tasks wait for their turn.</li>
 </ul>
+<p><img alt="First-Come-First-Served scheduling algorithm" src="images/scheduling-algorithm-first-come-first-served-fcfs-alevel.png" />
+<em><strong>First-Come-First-Served scheduling algorithm</strong></em></p>
+<p><strong>Multi-Level Feedback Queues (extension — not required by the 9618 syllabus)</strong></p>
+<ul>
+<li>MLFQ is a pre-emptive priority algorithm where shorter and more critical tasks are processed first.</li>
+<li>Multiple queues are used so that tasks of equal size are grouped together.</li>
+<li>All processes join the highest priority queue but trickle down to lower priority queues if they exceed the time quantum.</li>
+</ul>
+<p><img alt="Multi-Level Feedback Queue scheduling algorithm" src="images/scheduling-algorithm-multi-level-feedback-queue-mlfq-alevel.png" />
+<em><strong>Multi-Level Feedback Queue scheduling algorithm</strong></em></p>
 <h4 id="shortest-job-first-sjf">Shortest Job First (SJF)</h4>
 <ul>
-<li>SJF is non-pre-emptive, where all processes are continuously sorted by burst time from shortest to longest</li>
-<li>When new processes arrive on the queue, they are prioritised based on their burst time in the next cycle</li>
-<li>Shorter jobs are placed at the front of the priority queue</li>
-<li>Longer jobs have lower priority, so they are placed at the back
-<img alt="Shortest job first scheduling algorithm" src="images/tclVnVUI_scheduling-algorithm-shortest-job-first-alevel.png" />
-<em><strong>Shortest job first scheduling algorithm</strong></em></li>
+<li>SJF is <strong>non-pre-emptive</strong>, where all processes are continuously sorted by burst time from shortest to longest.</li>
+<li>The processes are <strong>queued as they arrive</strong>; the process with the <strong>shortest time to complete / burst time</strong> is selected first and executed.</li>
+<li>The process will <strong>continue until complete</strong>, or be put in a waiting state once execution has begun.</li>
+<li>When new processes arrive on the queue, they are prioritised based on their burst time in the next cycle.</li>
+<li>If shorter processes continue to be added to the queue, the scheduler keeps choosing them over longer processes, which can cause <strong>starvation for longer jobs</strong>.</li>
+<li>Benefits: shorter jobs do not wait for longer jobs; significantly reduces average waiting time; higher throughput.</li>
+<li>Drawbacks: requires knowing the burst time in advance.</li>
 </ul>
+<p><img alt="Shortest job first scheduling algorithm" src="images/tclVnVUI_scheduling-algorithm-shortest-job-first-alevel.png" />
+<em><strong>Shortest job first scheduling algorithm</strong></em></p>
 <h4 id="shortest-remaining-time-first-srtf">Shortest Remaining Time First (SRTF)</h4>
 <ul>
-<li>SRTF is a pre-emptive version of SJF, where processes with the shortest remaining time are higher priority</li>
-<li>Time quantum is set, and if a task doesn’t complete in time, it will be re-queued for further processing</li>
-<li>Before the next cycle starts, all processes are inspected and ordered by the shortest remaining time to complete
-<img alt="Shortest remaining time first scheduling algorithm part 1" src="images/scheduling-algorithm-shortest-time-remaining-1-alevel.png" /> <img alt="Shortest remaining time first scheduling algorithm part 2" src="images/VTVvIYKO_scheduling-algorithm-shortest-time-remaining-2-alevel.png" />
-<em><strong>Shortest remaining time first scheduling algorithm</strong></em></li>
+<li>SRTF is the <strong>pre-emptive</strong> version of SJF: processes with the <strong>shortest remaining time</strong> have higher priority.</li>
+<li>Processes are queued as they arrive and those with the shortest burst time are executed first.</li>
+<li><strong>When a process with a shorter burst time arrives, the currently running process is pre-empted and replaced by the shorter process.</strong> (This pre-emption on arrival — not merely the expiry of a time quantum — is what distinguishes SRTF from SJF.)</li>
+<li>Before the next cycle starts, all processes are inspected and ordered by the shortest remaining time to complete.</li>
+<li>Continued arrival of shorter processes can cause <strong>starvation for longer jobs</strong>.</li>
+<li>Benefits: processes with a short burst time are processed very quickly; waiting time is minimised.</li>
+<li>Drawbacks: requires knowing the burst time in advance; high context-switching overhead due to pre-emption.</li>
 </ul>
-<h3 id="summary_1">Summary</h3>
+<p><img alt="Shortest remaining time first scheduling algorithm part 1" src="images/scheduling-algorithm-shortest-time-remaining-1-alevel.png" /> <img alt="Shortest remaining time first scheduling algorithm part 2" src="images/VTVvIYKO_scheduling-algorithm-shortest-time-remaining-2-alevel.png" />
+<em><strong>Shortest remaining time first scheduling algorithm</strong></em></p>
+<h3 id="summary-of-scheduling-algorithms">Summary of scheduling algorithms</h3>
 <table>
 <thead>
 <tr>
@@ -642,27 +711,27 @@ details.callout > summary:hover { background: var(--accent-light); }
 <td>This can lead to poor performance if a long process arrives before shorter processes<br><br>High-priority tasks wait for their turn in the queue</td>
 </tr>
 <tr>
-<td><strong>Multi-Level Feedback Queues</strong></td>
-<td>Smaller tasks are prioritised<br><br>Creates a prioritisation system where similar-sized tasks are queued together</td>
-<td>More complex than other algorithms<br><br>Setting the correct parameters (e.g., number of queues, ageing rules) can be complex</td>
-</tr>
-<tr>
 <td><strong>Shortest Job First</strong></td>
 <td>Minimises waiting time<br><br>Efficient and fast for short processes</td>
 <td>Requires knowing the burst time of processes in advance<br><br>Long processes can starve if short processes keep arriving</td>
 </tr>
 <tr>
-<td><strong>Shortest Time Remaining</strong></td>
+<td><strong>Shortest Remaining Time</strong></td>
 <td>Ideal for jobs that have shorter burst times<br><br>It is pre-emptive, so it can be aligned with CPU for best performance (time quantum)</td>
 <td>Like SJF, it requires knowing the burst time of processes in advance<br><br>High context switching overhead due to pre-emption</td>
+</tr>
+<tr>
+<td><strong>Multi-Level Feedback Queues</strong></td>
+<td>Smaller tasks are prioritised<br><br>Creates a prioritisation system where similar-sized tasks are queued together</td>
+<td>More complex than other algorithms<br><br>Setting the correct parameters (e.g., number of queues, ageing rules) can be complex</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>The suitability of a scheduling algorithm largely depends on the <strong>specific scenario</strong> and the <strong>system requirements</strong></li>
-<li>A drawback in one scenario may not be a drawback in another</li>
+<li>The suitability of a scheduling algorithm largely depends on the <strong>specific scenario</strong> and the <strong>system requirements</strong>.</li>
+<li>A drawback in one scenario may not be a drawback in another.</li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2022 冬季 P32 Q9 · 9 marks</div><div class="callout-body"><p><strong>(a)</strong> Explain the need for scheduling in process management. <strong>[3]</strong></p>
+<p><div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q9 · 9 marks</div><div class="callout-body"><p><strong>(a)</strong> Explain the need for scheduling in process management. <strong>[3]</strong></p>
 <p><strong>(b)</strong> Describe these scheduling routines and identify a benefit for each one. <strong>[6]</strong></p>
 <p><strong>Shortest job first</strong></p>
 <p><strong>Round robin</strong></p>
@@ -693,17 +762,57 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li>No complex logic, each process request is queued as it is received and executed one by one.</li>
 <li>Starvation doesn’t occur (because every process will eventually get a chance to run) // less processor overhead.</li>
 </ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q6 · 6 marks</div><div class="callout-body"><p>The management and scheduling of processes are tasks carried out by an operating system.</p>
+<p><strong>(a)</strong> Describe <strong>one</strong> reason why scheduling is necessary in process management. <strong>[2]</strong></p>
+<p><strong>(b)</strong> Explain the function of the round robin scheduling routine <strong>and</strong> give a benefit of this routine. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>6(a)</strong>
+<strong>One</strong> mark for each mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>Process scheduling is required to ensure that all processes are executed in a timely manner</li>
+<li>… and enables multitasking/multiprogramming/multiprocessing</li>
+<li>… to minimise CPU idle time</li>
+<li>… to ensure that no process is starved of resources. // … to ensure fair access to resources.</li>
+<li>… ensures jobs/processes are completed in order of priority.</li>
+</ul>
+<p><strong>6(b)</strong>
+<strong>One</strong> mark for each mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li><strong>MP1</strong> Processes are queued as they arrive.</li>
+<li><strong>MP2</strong> It is a pre-emptive scheduling routine.</li>
+<li><strong>MP3</strong> A fixed time quantum is given to each process. // Each process has an equal time slice.</li>
+<li><strong>MP4</strong> When a time slice ends, the status of the process is saved/queued so it can continue from where it left off in its next time slice.</li>
+<li><strong>MP5</strong> and the next process is executed for its time slice; its previous state is reinstated/restored, if applicable.</li>
+<li><strong>MP6</strong> If a process completes within its time slice, the next process is executed for its time slice.</li>
+</ul>
+<p><strong>One</strong> mark for benefit (<strong>Max 1</strong>)</p>
+<ul>
+<li><strong>MP7</strong> Reduces average response time by limiting each process to a fixed amount of time.</li>
+<li><strong>MP8</strong> No issue with starvation of resources.</li>
+</ul>
 </div></details></p>
-<h2 id="interrupt-handling-kernel">Interrupt handling &amp; kernel</h2>
+<h2 id="interrupt-handling-kernel">Interrupt Handling &amp; Kernel</h2>
 <h3 id="what-is-the-interrupt-handling-process">What is the interrupt handling process?</h3>
 <ol>
-<li><strong>Interrupt signal occurs</strong> (e.g. input from keyboard, DMA completion, timer)</li>
-<li><strong>Current process is paused</strong> and its state is saved (registers, PC, etc.)</li>
-<li>The kernel identifies the <strong>source and priority</strong> of the interrupt</li>
-<li>The appropriate <strong>Interrupt Service Routine (ISR)</strong> is called</li>
-<li>Once complete, the original process is <strong>restored and resumed</strong></li>
+<li><strong>Interrupt signal occurs</strong> (e.g. input from keyboard, DMA completion, timer).</li>
+<li><strong>Current process is paused</strong> and its state is saved (registers, PC, etc.).</li>
+<li>The kernel identifies the <strong>source and priority</strong> of the interrupt.</li>
+<li>The appropriate <strong>Interrupt Service Routine (ISR)</strong> is called.</li>
+<li>Once complete, the original process is <strong>restored and resumed</strong>.</li>
 </ol>
-<h4 id="low-level-scheduling-via-interrupts">Low-level scheduling via interrupts</h4>
+<p><strong>Interrupt handling</strong> = transferring control to another routine when a service is required (a standard OS term).</p>
+<p><strong>Kernel as an interrupt handler ★</strong></p>
+<ul>
+<li>The kernel <strong>receives a signal</strong> when an interrupt is generated.</li>
+<li>The kernel <strong>checks the priority</strong> and reviews the status/priority of the current interrupts.</li>
+<li>The system <strong>enters kernel mode</strong> if the type of interrupt is of higher priority than the current process.</li>
+<li>The kernel consults the <strong>interrupt dispatch table / IDT</strong>.</li>
+<li>It <strong>saves the state of the interrupted process</strong> / contents of the registers on the kernel stack.</li>
+<li>The kernel <strong>restores the process state</strong>, e.g. contents of registers, once the interrupt is serviced.</li>
+</ul>
+<p><img alt="Interrupt handling flow (signal, priority check, ISR, restore)" src="images/p3-ch16-1-interrupt-handling-flow.svg" /></p>
+<h3 id="low-level-scheduling-via-interrupts">Low-level scheduling via interrupts</h3>
 <ul>
 <li>Interrupts are essential for the <strong>OS to perform low-level scheduling</strong>, which involves:</li>
 </ul>
@@ -734,75 +843,89 @@ details.callout > summary:hover { background: var(--accent-light); }
 </tbody>
 </table>
 <ul>
-<li>The <strong>scheduler</strong>, which is part of the kernel, uses these interrupts to decide which process should run next, often based on a <strong>priority</strong> or <strong>time slice</strong> system</li>
+<li>The <strong>scheduler</strong>, which is part of the kernel, uses these interrupts to decide which process should run next, often based on a <strong>priority</strong> or <strong>time slice</strong> system.</li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2024 冬季 P32 Q9 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> The kernel is the central component of an Operating System (OS). Outline how the kernel of an OS acts as an interrupt handler. <strong>[2]</strong></p>
+<p><strong>How interrupt handling is used in low-level scheduling ★</strong></p>
+<ul>
+<li>The <strong>low-level scheduler manages the handling of interrupts based on priority</strong>, ensuring that critical events are handled without delay.</li>
+<li>It uses an <strong>Interrupt Vector Table (IVT) / Interrupt Descriptor/Despatch Table (IDT) / Interrupt Service Routine (ISR) lookup</strong> to map the interrupt to the specific handling routine / ISR.</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q9 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> The kernel is the central component of an Operating System (OS). Outline how the kernel of an OS acts as an interrupt handler. <strong>[2]</strong></p>
 <p><strong>(b)(i)</strong> State what is meant by the term <strong>multi-tasking</strong> in an Operating System. <strong>[1]</strong></p>
 <p><strong>(b)(ii)</strong> Describe how multi-tasking is implemented in an Operating System. <strong>[2]</strong></p>
 </div></div>
-<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><table>
-<thead>
-<tr>
-<th>Question</th>
-<th>Answer</th>
-<th>Marks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>9(a)</td>
-<td><strong>One</strong> mark per mark point (<strong>Max 2</strong>)<br>• the kernel receives a signal when an interrupt is generated<br>• the kernel checks the priority and reviews the status/priority of the current interrupts<br>• system enters kernel mode if the type of interrupt is of higher priority than the current process<br>• the kernel consults the interrupt dispatch table / IDT<br>• … and saves the state of the interrupted process / contents of the registers on the kernel stack<br>• the kernel restores the process state e.g. contents of registers once the interrupt is serviced</td>
-<td>2</td>
-</tr>
-<tr>
-<td>9(b)(i)</td>
-<td><strong>One</strong> mark per mark point (<strong>Max 1</strong>)<br>• multi-tasking allows computers to carry out / seem to carry out more than one process at a time</td>
-<td>1</td>
-</tr>
-<tr>
-<td>9(b)(ii)</td>
-<td><strong>One</strong> mark per mark point (<strong>Max 2</strong>)<br>• processor time/common hardware and resources is/are shared between tasks<br>• scheduling is used to decide on the processes to be carried out to ensure multi-tasking operates correctly / efficiently / without clashes<br>• one task of a higher priority can interrupt another task that is currently running</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>9(a)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>the kernel receives a signal when an interrupt is generated</li>
+<li>the kernel checks the priority and reviews the status/priority of the current interrupts</li>
+<li>system enters kernel mode if the type of interrupt is of higher priority than the current process</li>
+<li>the kernel consults the interrupt dispatch table / IDT</li>
+<li>… and saves the state of the interrupted process / contents of the registers on the kernel stack</li>
+<li>the kernel restores the process state e.g. contents of registers once the interrupt is serviced</li>
+</ul>
+<p><strong>9(b)(i)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 1</strong>)</p>
+<ul>
+<li>multi-tasking allows computers to carry out / seem to carry out more than one process at a time</li>
+</ul>
+<p><strong>9(b)(ii)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>processor time/common hardware and resources is/are shared between tasks</li>
+<li>scheduling is used to decide on the processes to be carried out to ensure multi-tasking operates correctly / efficiently / without clashes</li>
+<li>one task of a higher priority can interrupt another task that is currently running</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q5 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe how interrupt handling is used in low-level scheduling. <strong>[2]</strong></p>
+<p><strong>(b)</strong> In process management, a process can be in one of three process states: <strong>running</strong>, <strong>ready</strong> or <strong>blocked</strong>. Complete the table to identify one reason why a process could be in each of the three states. <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5(a)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>The low-level scheduler manages the handling of interrupts based on priority</li>
+<li>… ensuring that critical events are handled without delay</li>
+<li>It uses an Interrupt Vector Table (IVT) / Interrupt Descriptor/Despatch Table (IDT) / Interrupt Service Routine (ISR) lookup</li>
+<li>… to map the interrupt to the specific handling routine / ISR.</li>
+</ul>
+<p><strong>5(b)</strong>
+<strong>One</strong> mark per correct answer (<strong>Max 3</strong>)</p>
+<ul>
+<li>running: CPU time has been allocated and the process is being executed.</li>
+<li>ready: The process is waiting (in the ready queue) for a slice of CPU time. It could run. // It has been displaced by a higher priority process and could otherwise still run.</li>
+<li>blocked: The process is waiting for an I/O operation / some event to take place / be completed.</li>
+</ul>
 </div></details></p>
 <h2 id="memory-management">Memory Management</h2>
-<h2 id="memory-management_1">Memory management</h2>
 <h3 id="what-is-memory-management">What is memory management?</h3>
 <ul>
-<li>Memory management is a <strong>fundamental</strong> role of the operating system, dealing with the <strong>allocation</strong> and <strong>deallocation</strong> of the computer’s primary memory</li>
-<li>When a user opens an application, its <strong>data is loaded from storage</strong> into active memory so that it can run <strong>smoothly</strong></li>
-<li>When a user opens a file from the file system, e.g. word document, the CPU loads this <strong>file data,</strong> as well as <strong>application data,</strong> into the primary memory</li>
-<li>Primary memory is a <strong>limited resource</strong> in the system, so it needs <strong>careful management</strong></li>
+<li>Memory management is a <strong>fundamental</strong> role of the operating system, dealing with the <strong>allocation</strong> and <strong>deallocation</strong> of the computer’s primary memory.</li>
+<li>When a user opens an application, its <strong>data is loaded from storage</strong> into active memory so that it can run <strong>smoothly</strong>.</li>
+<li>When a user opens a file from the file system, e.g. a word document, the CPU loads this <strong>file data</strong>, as well as <strong>application data</strong>, into the primary memory.</li>
+<li>Primary memory is a <strong>limited resource</strong> in the system, so it needs <strong>careful management</strong>.</li>
 <li><strong>Benefits</strong> of memory management are:
 <ul>
-<li>Efficient allocation of memory <strong>enables multitasking</strong>, allowing multiple programs to run at once</li>
-<li>Memory management <strong>maintains security</strong>, it does not let programs access memory reserved for other programs</li>
+<li>Efficient allocation of memory <strong>enables multitasking</strong>, allowing multiple programs to run at once.</li>
+<li>Memory management <strong>maintains security</strong>; it does not let programs access memory reserved for other programs.</li>
 </ul>
 </li>
-<li>Memory management is made <strong>more efficient</strong> through 3 techniques:
+<li>Memory management is made <strong>more efficient</strong> through 3 techniques: <strong>paging</strong>, <strong>segmentation</strong> and <strong>virtual memory</strong>.</li>
+</ul>
+<p><img alt="Links between different types of memory and memory management" src="images/memory-management-alevel.png" />
+<em><strong>Links between different types of memory</strong></em></p>
 <ul>
-<li><strong>Paging</strong></li>
-<li><strong>Segmentation</strong></li>
-<li><strong>Virtual memory</strong>
-<img alt="Links between different types of memory and memory management" src="images/memory-management-alevel.png" />
-<em><strong>Links between different types of memory</strong></em></li>
+<li>The main benefit of memory management is to make computer systems run smoothly. As users move between applications, the OS is rapidly reallocating memory depending on the task being completed.</li>
+<li>Make sure you can name <strong>one benefit and one drawback</strong> for each memory management method in this revision note.</li>
 </ul>
-</li>
-<li>The main benefit of memory management is to make computer systems run smoothly. Most users don’t realise that as they effortlessly move between applications, it’s made possible because the OS is rapidly reallocating memory depending on the task that the user is completing.</li>
-<li>Make sure you can name one benefit and one drawback for each memory management method in this revision note.</li>
-</ul>
-<h2 id="paging">Paging</h2>
+<h2 id="paging-and-segmentation">Paging and Segmentation</h2>
 <h3 id="what-is-paging">What is paging?</h3>
 <ul>
-<li>In A Level Computer Science, paging is a method of <strong>chunking</strong> the primary memory <strong>into equal-sized blocks</strong></li>
-<li>Data stored in memory will lead to the smooth running of applications</li>
-<li>When an application is launched, data will be moved from the hard disk into Pages for faster access</li>
-<li>As users move between applications, memory is dynamically allocated</li>
-<li>Pages will be taken away from applications not in active use and granted to applications that are in active use</li>
-<li>Paging can lead to <strong>internal fragmentation</strong></li>
-<li>If a 200KB file is divided into four 64KB Pages, the last Page would have 56KB of unused space
+<li>Paging is a method of <strong>chunking the primary memory into equal-sized blocks</strong> (pages).</li>
+<li>When an application is launched, data is moved from the hard disk into pages for faster access.</li>
+<li>As users move between applications, memory is dynamically allocated: pages are taken away from applications not in active use and granted to applications that are in active use.</li>
+<li><strong>Paging</strong> = reading/writing <strong>same-size blocks</strong> of data from/to secondary storage when required (a standard OS term).</li>
+<li>Paging can lead to <strong>internal fragmentation</strong>.</li>
+<li>If a 200KB file is divided into four 64KB pages, the last page holds only 8KB, leaving <strong>56KB of unused space</strong>:
 <ul>
 <li><strong>First 64KB</strong> → Full page (64KB used, 0KB unused)</li>
 <li><strong>Second 64KB</strong> → Full page (64KB used, 0KB unused)</li>
@@ -810,29 +933,80 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li><strong>Fourth 64KB</strong> → Partial page (<strong>8KB</strong> used, <strong>56KB</strong> unused)</li>
 </ul>
 </li>
-<li>Unused space in a Page is wasteful because other unrelated data cannot be stored in this Page</li>
-<li>Over time, more pockets of wasted space will exist across the memory; this process is called <strong>internal fragmentation</strong></li>
-<li>The image below shows a single 64KB Page with 4KB of unoccupied space</li>
-<li>The box below this shows many Pages, each with varying sizes of internal fragments
-<img alt="Internal fragmentation" src="images/paging-internal-fragmentation-alevel.png" />
-<em><strong>Internal fragmentation</strong></em></li>
+<li>Unused space in a page is wasteful because other unrelated data cannot be stored in this page. Over time, more pockets of wasted space exist across memory — this is <strong>internal fragmentation</strong>.</li>
 </ul>
-<h2 id="segmentation">Segmentation</h2>
+<p><img alt="Internal fragmentation" src="images/paging-internal-fragmentation-alevel.png" />
+<em><strong>Internal fragmentation</strong></em></p>
 <h3 id="what-is-segmentation">What is segmentation?</h3>
 <ul>
-<li>Segmentation is a method of <strong>chunking</strong> memory into <strong>blocks that correspond to different types of data</strong> needed by an application</li>
-<li>A video editing application may have a Segment for video data, audio data and special effects</li>
-<li>Segments are <strong>not all the same size</strong>; they are sized depending on their allocated data</li>
-<li>Segmentation is space-efficient due to only allocating space depending on the amount an application needs</li>
-<li>Segmentation can lead to <strong>external fragmentation</strong></li>
-<li>As Segments fill up the memory, physical gaps reduce the maximum size of new Segments that can be allocated</li>
-<li>Below (left) shows different application data assigned to a Segment</li>
-<li>The arrangement of data in the segment <strong>becomes more fragmented over time</strong> because as blocks are taken away it’s not possible to guarantee a new block will occupy the same amount of space</li>
-<li>Below (right) shows a defragmented version of the Segment to highlight the total unused space
-<img alt="segmentation-external-fragmentation-alevel" src="images/segmentation-external-fragmentation-alevel.png" />
-<em><strong>External fragmentation</strong></em></li>
+<li>Segmentation is a method of <strong>chunking memory into blocks that correspond to different types of data</strong> needed by an application (variable-sized blocks).</li>
+<li>A video editing application may have a segment for video data, audio data and special effects.</li>
+<li>Segments are <strong>not all the same size</strong>; they are sized depending on their allocated data.</li>
+<li>Segmentation is space-efficient due to only allocating space depending on the amount an application needs.</li>
+<li>Segmentation can lead to <strong>external fragmentation</strong>: as segments fill up memory, physical gaps reduce the maximum size of new segments that can be allocated.</li>
 </ul>
-<p><div class="callout callout-question"><div class="callout-title">2022 冬季 P31 Q8 · 4 marks</div><div class="callout-body"><p>Virtual memory, paging and segmentation are used in memory management.</p>
+<p><img alt="segmentation-external-fragmentation-alevel" src="images/segmentation-external-fragmentation-alevel.png" />
+<em><strong>External fragmentation</strong></em></p>
+<p><strong>The process of segmentation ★</strong></p>
+<p>Mark scheme points for describing segmentation for memory management:</p>
+<ul>
+<li>In segmented memory, the <strong>logical / virtual address space is broken into varying sized blocks</strong> called segments / sections.</li>
+<li>Each segment has a <strong>name and size</strong>.</li>
+<li>During execution, <strong>segments from logical / virtual memory are loaded into physical memory</strong>.</li>
+<li>The address is specified by the user … it contains the <strong>segment name and offset value</strong>.</li>
+<li>Segments are <strong>numbered</strong> … and this number is used as an <strong>index in the segment map table</strong>.</li>
+<li>The <strong>offset value determines the size of the segment</strong>.</li>
+<li>A <strong>segment map table maps logical / virtual addresses to physical addresses</strong> / contains the segment number and offset.</li>
+</ul>
+<p><strong>Page tables and address translation ★</strong></p>
+<ul>
+<li><strong>Page</strong> — a fixed-size block of a program; a <strong>page frame</strong> is a fixed-size block of physical memory of the same size.</li>
+<li><strong>Page table</strong> — maps each page number of a process to the page frame that currently holds it, and records a <strong>present/absent bit</strong>.</li>
+<li><strong>Logical address to physical address</strong> — the page number indexes the page table to give the frame number, while the <strong>offset</strong> within the page is unchanged.</li>
+<li><strong>Segment table</strong> — stores the base address and the length of each segment; the offset is checked against the length before access.</li>
+</ul>
+<p><strong>The difference between paging and segmentation ★</strong></p>
+<ul>
+<li><strong>Paging</strong> divides memory into <strong>fixed-size blocks</strong>; <strong>segmentation</strong> divides memory into <strong>variable-sized blocks</strong>.</li>
+<li>The <strong>operating system</strong> divides the memory into pages; the <strong>compiler</strong> is responsible for calculating the segment size.</li>
+<li><strong>Access times for paging are faster than for segmentation.</strong></li>
+<li>Paging can cause <strong>internal fragmentation</strong>; segmentation can cause <strong>external fragmentation</strong>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Memory Management Technique</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Benefits</strong></th>
+<th><strong>Drawbacks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Paging</strong></td>
+<td>Divides memory into fixed-sized blocks (pages)</td>
+<td>A process needing 200KB is divided into four 64KB pages, leaving 8KB used and 56KB unused in the last</td>
+<td>Facilitates efficient memory management and enables the use of virtual memory</td>
+<td>This can lead to internal fragmentation</td>
+</tr>
+<tr>
+<td><strong>Segmentation</strong></td>
+<td>Divides memory into variable-sized segments based on logical parts of a process</td>
+<td>A video editing application may have segments for video, audio, effects and UI elements</td>
+<td>Allows for intuitive and efficient memory access</td>
+<td>This can result in external fragmentation</td>
+</tr>
+<tr>
+<td><strong>Virtual Memory</strong></td>
+<td>Uses hard drive space as an ‘extension’ of RAM</td>
+<td>Less frequently accessed pages are moved to the hard disk when RAM is exceeded</td>
+<td>Allows larger programs to run and facilitates effective multitasking</td>
+<td>Slower to access than physical memory, which degrades performance if overused</td>
+</tr>
+</tbody>
+</table>
+<p><div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q8 · 4 marks</div><div class="callout-body"><p>Virtual memory, paging and segmentation are used in memory management.</p>
 <p><strong>(a)</strong> Explain what is meant by <strong>virtual memory</strong>. <strong>[3]</strong></p>
 <p><strong>(b)</strong> State <strong>one</strong> difference between paging and segmentation in the way memory is divided. <strong>[1]</strong></p>
 </div></div>
@@ -852,58 +1026,109 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li>Access times for paging is faster than for segmentation.</li>
 </ul>
 </div></details>
-<strong>Page tables and address translation ★</strong></p>
-<ul>
-<li><strong>Page</strong> — a fixed-size block of a program; a <strong>page frame</strong> is a fixed-size block of physical memory of the same size</li>
-<li><strong>Page table</strong> — maps each page number of a process to the page frame that currently holds it, and records a <strong>present/absent bit</strong></li>
-<li><strong>Logical address to physical address</strong> — the page number indexes the page table to give the frame number, while the <strong>offset</strong> within the page is unchanged</li>
-<li><strong>Segment table</strong> — stores the base address and the length of each segment; the offset is checked against the length before access</li>
-</ul>
-<h2 id="virtual-memory">Virtual memory</h2>
-<h3 id="what-is-virtual-memory">What is virtual memory?</h3>
-<ul>
-<li>If a computer is <strong>running low</strong> on primary memory, it can make secondary storage act as an ‘extension’ of the main memory</li>
-<li>The operating system can <strong>offload data</strong> from the primary memory into virtual memory</li>
-<li>Virtual memory creates <strong>an illusion of a larger memory</strong> and enables applications to continue to multitask</li>
-<li>However, accessing data in virtual memory is <strong>considerably slower</strong> compared to RAM</li>
-<li><strong>Solid-state drives</strong> are faster than traditional hard-disk drives, but <strong>neither are as fast</strong> as RAM</li>
-<li><strong>Over-reliance</strong> on virtual memory can lead to <strong>performance issues</strong></li>
-</ul>
+<div class="callout callout-question"><div class="callout-title">2021 Summer P31 Q3 · 5 marks [part (a) only — part (b) is §16.2 interpreter and is out of scope]</div><div class="callout-body"><p><strong>(a)</strong> Draw one line to connect each Operating System (OS) term to the most appropriate description about it. <strong>[5]</strong></p>
 <table>
 <thead>
 <tr>
-<th><strong>Memory Management Technique</strong></th>
-<th><strong>Description</strong></th>
-<th><strong>Example</strong></th>
-<th><strong>Benefits</strong></th>
-<th><strong>Drawbacks</strong></th>
+<th>OS term</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Paging</strong></td>
-<td>Divides memory into fixed-sized blocks (pages)</td>
-<td>A process needing 200KB of memory is divided into four 64KB pages, leaving 8KB unused in the last page</td>
-<td>Facilitates efficient memory management and enables the use of virtual memory</td>
-<td>This can lead to internal fragmentation</td>
+<td>Multi-tasking</td>
+<td>Using secondary storage to simulate additional main memory</td>
 </tr>
 <tr>
-<td><strong>Segmentation</strong></td>
-<td>Divides memory into variable-sized segments based on logical parts of a process</td>
-<td>In a video editing application, different segments may be created for video data, audio data, effects, and UI elements</td>
-<td>Allows for intuitive and efficient memory access</td>
-<td>This can result in external fragmentation</td>
+<td>Paging</td>
+<td>Managing the processes running on the CPU</td>
 </tr>
 <tr>
-<td><strong>Virtual Memory</strong></td>
-<td>Uses hard drive space as an ‘extension’ of RAM</td>
-<td>When memory-intensive applications exceed the available RAM, the OS moves less frequently accessed pages to the hard disk</td>
-<td>Allows more extensive programs to be run and facilitates effective multitasking</td>
-<td>Slower to access than physical memory, which degrades performance if overused</td>
+<td>Interrupt handling</td>
+<td>Managing the execution of many programs that appear to run at the same time</td>
+</tr>
+<tr>
+<td>Scheduling</td>
+<td>Locating non-contiguous blocks of data and relocating them</td>
+</tr>
+<tr>
+<td>Virtual memory</td>
+<td>Transferring control to another routine when a service is required</td>
+</tr>
+<tr>
+<td></td>
+<td>Reading/writing same-size blocks of data from/to secondary storage when required</td>
 </tr>
 </tbody>
 </table>
-<p><div class="callout callout-question"><div class="callout-title">2023 冬季 P32 Q5 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Outline the reasons why an operating system may need to use virtual memory. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>3(a)</strong>
+One mark for each correct line from Operating System Term to Description</p>
+<ul>
+<li>Multi-tasking → Managing the execution of many programs that appear to run at the same time</li>
+<li>Paging → Reading/writing same-size blocks of data from/to secondary storage when required</li>
+<li>Interrupt handling → Transferring control to another routine when a service is required</li>
+<li>Scheduling → Managing the processes running on the CPU</li>
+<li>Virtual memory → Using secondary storage to simulate additional main memory</li>
+</ul>
+<p>Unused description: Locating non-contiguous blocks of data and relocating them.</p>
+</div></details></p>
+<h2 id="virtual-memory-page-replacement-and-disk-thrashing">Virtual Memory, Page Replacement and Disk Thrashing</h2>
+<h3 id="what-is-virtual-memory">What is virtual memory?</h3>
+<ul>
+<li>If a computer is <strong>running low</strong> on primary memory, it can make secondary storage act as an ‘extension’ of the main memory.</li>
+<li>The operating system can <strong>offload data</strong> from the primary memory into virtual memory.</li>
+<li>Virtual memory creates <strong>an illusion of a larger memory</strong> and enables applications to continue to multitask.</li>
+<li>However, accessing data in virtual memory is <strong>considerably slower</strong> compared to RAM.</li>
+<li><strong>Solid-state drives</strong> are faster than traditional hard-disk drives, but <strong>neither are as fast</strong> as RAM.</li>
+<li><strong>Over-reliance</strong> on virtual memory can lead to <strong>performance issues</strong>.</li>
+</ul>
+<p><strong>Why an OS may need virtual memory ★</strong></p>
+<ul>
+<li>Virtual memory is used when <strong>RAM is running low</strong>, such as when a computer is running <strong>many processes at once</strong>.</li>
+<li>Virtual memory may be used for <strong>efficient use of RAM / the processor</strong>.</li>
+<li>Data / programs that are <strong>not immediately needed</strong> can be moved from RAM to virtual memory.</li>
+<li>Disk / secondary storage extends the RAM so the CPU <strong>appears to access more memory space</strong> than the available RAM; only the data in use needs to be in main memory so data can be swapped as necessary.</li>
+<li>Virtual memory is <strong>created temporarily</strong>.</li>
+</ul>
+<h3 id="page-replacement-and-disk-thrashing">Page replacement and disk thrashing</h3>
+<ul>
+<li><strong>Page fault</strong> — occurs when a process refers to a page that is not currently in main memory, so the OS must load it from virtual memory.</li>
+<li><strong>Page replacement</strong> — the OS selects one resident page to move out so that a free page frame is available for the incoming page.</li>
+<li><strong>FIFO (first in, first out)</strong> — the page that has been in memory longest is replaced first; simple, but a heavily used page can be evicted.</li>
+<li><strong>LRU (least recently used)</strong> — the page that has not been referenced for the longest time is replaced first; it needs a record of page use, so it costs more to implement.</li>
+<li><strong>Dirty bit</strong> — a page that has been changed must be written back to virtual memory before it is replaced.</li>
+<li><strong>Disk thrashing</strong> — the OS spends more time swapping pages between RAM and virtual memory than executing useful instructions.</li>
+</ul>
+<p><strong>Circumstances in which disk thrashing occurs ★</strong></p>
+<p>The mark schemes for thrashing questions accept the following points:</p>
+<ul>
+<li>
+<p>Disk thrashing is a problem that may occur when <strong>virtual memory is being used</strong> / when <strong>frequent transfers between main memory and secondary memory</strong> take place.</p>
+</li>
+<li>
+<p>As main memory fills up, <strong>more pages need to be swapped in and out</strong> of secondary / virtual memory.</p>
+</li>
+<li>
+<p>This swapping leads to a <strong>very high rate of hard disk access / excessive disk head movements</strong>.</p>
+</li>
+<li>
+<p>Moving a hard disk read/write head takes a <strong>relatively long time / long latency time</strong>.</p>
+</li>
+<li>
+<p>Eventually, <strong>more time is spent swapping pages than processing data</strong> — the thrash point, which can cause the program to freeze or not run.</p>
+</li>
+<li>
+<p><strong>Cause</strong> — too many processes are active and the memory they need exceeds the available RAM, so pages are evicted and reloaded before they are used.</p>
+</li>
+<li>
+<p><strong>Symptom</strong> — continuous paging, a very high rate of disk head movement, and a sharp fall in CPU utilisation.</p>
+</li>
+<li>
+<p><strong>Reduction</strong> — increase RAM, reduce the number of active processes, or improve the page replacement routine.</p>
+</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2023 Winter P32 Q5 · 5 marks</div><div class="callout-body"><p><strong>(a)</strong> Outline the reasons why an operating system may need to use virtual memory. <strong>[2]</strong></p>
 <p><strong>(b)</strong> Explain the circumstances in which disk thrashing could occur. <strong>[3]</strong></p>
 </div></div>
 <details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>5(a)</strong></p>
@@ -923,18 +1148,244 @@ details.callout > summary:hover { background: var(--accent-light); }
 <li>MP4: Eventually, more time is spent swapping the pages/data than processing the data.</li>
 </ul>
 </div></details>
-<strong>Page replacement and disk thrashing ★</strong></p>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q8 · 7 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the process of segmentation for memory management. <strong>[4]</strong></p>
+<p><strong>(b)</strong> Explain what is meant by disk thrashing. <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>8(a)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 4</strong>)</p>
 <ul>
-<li><strong>Page fault</strong> — occurs when a process refers to a page that is not currently in main memory, so the OS must load it from virtual memory</li>
-<li><strong>Page replacement</strong> — the OS selects one resident page to move out so that a free page frame is available for the incoming page</li>
-<li><strong>FIFO (first in, first out)</strong> — the page that has been in memory longest is replaced first; simple, but a heavily used page can be evicted</li>
-<li><strong>LRU (least recently used)</strong> — the page that has not been referenced for the longest time is replaced first; it needs a record of page use, so it costs more to implement</li>
-<li><strong>Dirty bit</strong> — a page that has been changed must be written back to virtual memory before it is replaced</li>
-<li><strong>Disk thrashing</strong> — the OS spends more time swapping pages between RAM and virtual memory than executing useful instructions</li>
-<li><strong>Cause</strong> — too many processes are active and the memory they need exceeds the available RAM, so pages are evicted and reloaded before they are used</li>
-<li><strong>Symptom</strong> — continuous paging, a very high rate of disk head movement, and a sharp fall in CPU utilisation</li>
-<li><strong>Reduction</strong> — increase RAM, reduce the number of active processes, or improve the page replacement routine</li>
+<li><strong>MP1</strong> In segmented memory, the logical / virtual address space is broken into varying sized blocks called segments / sections.</li>
+<li><strong>MP2</strong> Each segment has a name and size.</li>
+<li><strong>MP3</strong> During execution segments from logical / virtual memory are loaded into physical memory.</li>
+<li><strong>MP4</strong> The address is specified by the user</li>
+<li><strong>MP5</strong> … it contains the segment name and offset value.</li>
+<li><strong>MP6</strong> Segments are numbered</li>
+<li><strong>MP7</strong> … and this number is used as an index in the segment map table.</li>
+<li><strong>MP8</strong> The offset value determines the size of the segment.</li>
+<li><strong>MP9</strong> A segment map table maps logical / virtual addresses to physical addresses / contains the segment number and offset.</li>
 </ul>
+<p><strong>8(b)</strong>
+<strong>One</strong> mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li><strong>MP1</strong> Disk thrashing is a problem that may occur when virtual memory is being used.</li>
+<li><strong>MP2</strong> As the main memory fills up, more and more pages need to be swapped in and out of virtual memory.</li>
+<li><strong>MP3</strong> This swapping leads to a very high rate of hard disk access / excessive disk head movements.</li>
+<li><strong>MP4</strong> Moving a hard disk read/write head takes a relatively long time / long latency time.</li>
+<li><strong>MP5</strong> Eventually, more time is spent swapping pages than processing data thrash point, which can cause the program to freeze or not run.</li>
+</ul>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<p>Every sub-question of the 13 §16.1 past-paper questions recorded in this note, grouped by exam point. The source column uses <code>YYYY Season PXX QN(part)</code> format.</p>
+<p><strong>Resource management and the user interface</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q4(a)</td>
+<td>Scheduling routines (identify)</td>
+<td>2025 Winter P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>User interface hiding hardware complexity</td>
+<td>2025 Winter P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q7(a)</td>
+<td>User interface hiding hardware complexity</td>
+<td>2023 Winter P31 Q7(a)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Process management, multi-tasking and process states</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P32 Q5(a)</td>
+<td>Process states (identify)</td>
+<td>2025 Summer P32 Q5(a)</td>
+</tr>
+<tr>
+<td>P32 Q5(b)</td>
+<td>Scheduling — shortest job first</td>
+<td>2025 Summer P32 Q5(b)</td>
+</tr>
+<tr>
+<td>P32 Q5(b)</td>
+<td>Process states (reasons for running/ready/blocked)</td>
+<td>2025 Winter P32 Q5(b)</td>
+</tr>
+<tr>
+<td>P33 Q5(a)</td>
+<td>Multi-tasking (purpose)</td>
+<td>2025 Winter P33 Q5(a)</td>
+</tr>
+<tr>
+<td>P33 Q5(b)</td>
+<td>Multi-tasking (efficient implementation)</td>
+<td>2025 Winter P33 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q8(a)</td>
+<td>Multi-tasking (benefit to process management)</td>
+<td>2025 Summer P31 Q8(a)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)</td>
+<td>Scheduling — shortest remaining time</td>
+<td>2025 Summer P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)(i)</td>
+<td>Multi-tasking (meaning)</td>
+<td>2024 Winter P32 Q9(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)(ii)</td>
+<td>Multi-tasking (implementation)</td>
+<td>2024 Winter P32 Q9(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q7(b)</td>
+<td>Process states (blocked)</td>
+<td>2023 Winter P31 Q7(b)</td>
+</tr>
+<tr>
+<td>P31 Q7©</td>
+<td>Process states (running → ready transition)</td>
+<td>2023 Winter P31 Q7©</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scheduling</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P33 Q6(a)</td>
+<td>Need for scheduling</td>
+<td>2025 Summer P33 Q6(a)</td>
+</tr>
+<tr>
+<td>P33 Q6(b)</td>
+<td>Scheduling — round robin</td>
+<td>2025 Summer P33 Q6(b)</td>
+</tr>
+<tr>
+<td>P32 Q9(a)</td>
+<td>Need for scheduling</td>
+<td>2022 Winter P32 Q9(a)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)</td>
+<td>Scheduling — shortest job first, round robin, first come first served</td>
+<td>2022 Winter P32 Q9(b)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kernel as an interrupt handler</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P32 Q9(a)</td>
+<td>Kernel as interrupt handler</td>
+<td>2024 Winter P32 Q9(a)</td>
+</tr>
+<tr>
+<td>P32 Q5(a)</td>
+<td>Interrupt handling in low-level scheduling</td>
+<td>2025 Winter P32 Q5(a)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Virtual memory, paging and segmentation</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q8(a)</td>
+<td>Segmentation (process of segmentation)</td>
+<td>2024 Winter P31 Q8(a)</td>
+</tr>
+<tr>
+<td>P32 Q5(a)</td>
+<td>Virtual memory (reasons for use)</td>
+<td>2023 Winter P32 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q8(a)</td>
+<td>Virtual memory (meaning)</td>
+<td>2022 Winter P31 Q8(a)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)</td>
+<td>Paging vs segmentation</td>
+<td>2022 Winter P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>OS terms: multi-tasking, paging, interrupt handling, scheduling, virtual memory</td>
+<td>2021 Summer P31 Q3(a)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Page replacement and disk thrashing</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q8(b)</td>
+<td>Disk thrashing (meaning)</td>
+<td>2024 Winter P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P32 Q5(b)</td>
+<td>Disk thrashing (circumstances)</td>
+<td>2023 Winter P32 Q5(b)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Note on scope: 2021 Summer P31 Q3 is a mixed question. Only part (a) tests §16.1 OS terms; part (b) tests “how an interpreter executes a program” which belongs to §16.2 Translation Software and is therefore excluded from this note. No past-paper sub-question in the §16.1 set directly tests “how pages can be replaced” (page replacement algorithms); that exam point is covered by the note text only. “How an OS can maximise the use of resources” is examined indirectly through scheduling, virtual memory and multi-tasking rather than by a standalone sub-question.</p>
+</blockquote>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="152-boolean-algebra-logic-circuits.html" title="Previous: 15.2 Boolean Algebra &amp; Logic Circuits" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">15.2 Boolean Algebra &amp; Logic Circuits</span></a>

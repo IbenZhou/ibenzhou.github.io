@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#5a6b6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="960" height="400" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f3d3e">Sequential access vs direct access</text>
+  <text x="480" y="57" text-anchor="middle" font-size="14" fill="#5a6b6b">How the target record is located</text>
+
+  <!-- Sequential row -->
+  <rect x="24" y="80" width="912" height="140" rx="14" fill="#eef7f5" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="44" y="110" font-size="16" font-weight="700" fill="#0f6e56">Sequential access</text>
+  <text x="44" y="132" font-size="13" fill="#5a6b6b">Used with serial and sequential files</text>
+
+  <g font-size="12.5" fill="#0f3d3e">
+    <rect x="46" y="152" width="120" height="42" rx="8" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="106" y="177" text-anchor="middle">1. Start at physical</text>
+    <text x="106" y="190" text-anchor="middle">start of file</text>
+
+    <line x1="170" y1="173" x2="222" y2="173" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="226" y="152" width="130" height="42" rx="8" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="291" y="177" text-anchor="middle">2. Read &amp; check</text>
+    <text x="291" y="190" text-anchor="middle">each record's key</text>
+
+    <line x1="360" y1="173" x2="412" y2="173" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="416" y="152" width="150" height="42" rx="8" fill="#d5efe6" stroke="#1d9e75"/>
+    <text x="491" y="177" text-anchor="middle">3. Stop when found,</text>
+    <text x="491" y="190" text-anchor="middle">key passed, or EOF</text>
+
+    <line x1="570" y1="173" x2="622" y2="173" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="626" y="152" width="292" height="42" rx="8" fill="#e3f2ed" stroke="#1d9e75" stroke-width="0.6"/>
+    <text x="772" y="171" text-anchor="middle" font-size="12" fill="#0f6e56">Serial: check every record</text>
+    <text x="772" y="187" text-anchor="middle" font-size="12" fill="#0f6e56">Sequential: compare key, stop early</text>
+  </g>
+
+  <!-- Direct row -->
+  <rect x="24" y="238" width="912" height="140" rx="14" fill="#eef3fb" stroke="#378add" stroke-width="1.5"/>
+  <text x="44" y="268" font-size="16" font-weight="700" fill="#185fa5">Direct (random) access</text>
+  <text x="44" y="290" font-size="13" fill="#5a6b6b">Used with random files, and sequential files with an index</text>
+
+  <g font-size="12.5" fill="#042c53">
+    <rect x="46" y="310" width="120" height="42" rx="8" fill="#d7e8fa" stroke="#378add"/>
+    <text x="106" y="335" text-anchor="middle">1. Take the</text>
+    <text x="106" y="348" text-anchor="middle">record key</text>
+
+    <line x1="170" y1="331" x2="222" y2="331" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="226" y="310" width="150" height="42" rx="8" fill="#d7e8fa" stroke="#378add"/>
+    <text x="301" y="335" text-anchor="middle">2. Compute address</text>
+    <text x="301" y="348" text-anchor="middle">(hash) or search index</text>
+
+    <line x1="380" y1="331" x2="432" y2="331" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="436" y="310" width="160" height="42" rx="8" fill="#d7e8fa" stroke="#378add"/>
+    <text x="516" y="335" text-anchor="middle">3. Jump straight</text>
+    <text x="516" y="348" text-anchor="middle">to that location</text>
+
+    <line x1="600" y1="331" x2="652" y2="331" stroke="#5a6b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <rect x="656" y="310" width="262" height="42" rx="8" fill="#e6f0fb" stroke="#378add" stroke-width="0.6"/>
+    <text x="787" y="335" text-anchor="middle" font-size="12" fill="#185fa5">Random: hashing · Sequential: key index</text>
+    <text x="787" y="348" text-anchor="middle" font-size="12" fill="#185fa5">No other records read</text>
+  </g>
+</svg>

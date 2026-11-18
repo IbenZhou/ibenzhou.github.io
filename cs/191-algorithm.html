@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -239,29 +278,28 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="linear-search">Linear Search</h2>
+        
+<h2 id="linear-search">Linear Search</h2>
+<p><strong>Linear search ★</strong></p>
 <h3 id="what-is-a-linear-search">What is a linear search?</h3>
 <ul>
 <li>The linear search is a standard algorithm used to find elements in an <strong>unordered list</strong></li>
 <li>The list is searched <strong>sequentially</strong> and <strong>systematically</strong> from the start to the end one element at a time</li>
-<li><strong>Comparing each element</strong> to the <strong>value being searched</strong> for<ul>
+<li><strong>Comparing each element</strong> to the <strong>value being searched</strong> for
+<ul>
 <li>If the <strong>value is found</strong> the algorithm <strong>outputs where it was found in the list</strong></li>
 <li>If the <strong>value is not found</strong> it <strong>outputs a message stating it is not in the list</strong></li>
 </ul>
 </li>
-<li>
-<p>An example of using a linear search would be looking for a specific student name in a list or searching for a supermarket item in a shopping list
+<li>An example of using a linear search would be looking for a specific student name in a list or searching for a supermarket item in a shopping list
 <img alt="figure-1--performing-the-linear-search-revision-notes-computer-science" src="images/figure-1--performing-the-linear-search-revision-notes-computer-science.png" />
-<strong><em>Figure 1: Performing the Linear Search</em></strong></p>
-</li>
-<li>
-<p>To determine the algorithm&rsquo;s execution time as measured by the number of instructions or steps carried out, Big-O notation must be used</p>
-</li>
+<em><strong>Figure 1: Performing the Linear Search</strong></em></li>
+<li>To determine the algorithm’s execution time as measured by the number of instructions or steps carried out, Big-O notation must be used</li>
 <li>The loop is executed n times, once for each item. There are two instructions within the loop, the if statement and an assignment, hence the Big-O for the loop is O(2n)</li>
 <li>There are three initial statements which are O(1)</li>
 <li>The overall Big-O notation is therefore 2n + 3, which when coefficients are factored out, becomes <strong>O(n) as linear time dominates constant time</strong>. The <strong>constant term and coefficients contribute significantly less</strong> as the input size n grows larger</li>
 <li>It is important to remember here that <strong>O(n) is the worst case scenario</strong>. The <strong>best case scenario O(1)</strong> would find the item the first time, while the <strong>average case</strong> would be O(n/2) which when we remove coefficients still becomes <strong>O(n)</strong></li>
-<li>As the linear search requires no additional space, it is space complexity O(n) where n is the number of items in the list</li>
+<li>As the linear search requires no additional space beyond a few variables, it has <strong>space complexity O(1)</strong> (a recursive version would use O(log n) stack space)</li>
 <li>Given the following list [5, 4, 7, 1, 3, 8, 9, 2], a trace table for the linear search is shown below
 <strong>Trace Table of the Linear Search</strong></li>
 </ul>
@@ -338,60 +376,66 @@ body::before {
 <span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">index</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <ul>
-<li>
-<p><strong>Function definition</strong>:<br />
-<code>FUNCTION linearSearch(list : ARRAY OF STRING, item : STRING) RETURNS INTEGER</code></p>
+<li><strong>Function definition</strong>:<br>
+<code>FUNCTION linearSearch(list : ARRAY OF STRING, item : STRING) RETURNS INTEGER</code>
 <ul>
 <li>The function takes a list and a target item.</li>
 <li>It returns the <strong>index</strong> of the item if found, or <strong>-1</strong> if not.</li>
-<li>
-<p><strong>Variable declarations</strong>:<br />
-<code>index</code>, <code>i</code>, and <code>found</code> are declared:</p>
+</ul>
 </li>
-<li>
-<p><code>index</code> stores the result (default is -1 if not found).</p>
-</li>
+<li><strong>Variable declarations</strong>:<br>
+<code>index</code>, <code>i</code>, and <code>found</code> are declared:
+<ul>
+<li><code>index</code> stores the result (default is -1 if not found).</li>
 <li><code>i</code> is the loop counter.</li>
 <li><code>found</code> is a boolean used to stop the search once the item is found.</li>
-<li><strong>Initialisation</strong>:</li>
-<li><code>index ← -1</code> → start with &ldquo;not found&rdquo;</li>
+</ul>
+</li>
+<li><strong>Initialisation</strong>:
+<ul>
+<li><code>index ← -1</code> → start with “not found”</li>
 <li><code>i ← 0</code> → start from the first index of the list</li>
 <li><code>found ← FALSE</code> → the item hasn’t been found yet</li>
-<li>
-<p><strong>Loop condition</strong>:<br />
-<code>WHILE i &lt; LENGTH(list) AND found = FALSE</code></p>
+</ul>
 </li>
-<li>
-<p>Continue looping <strong>while</strong> there are items left to check <strong>and</strong> the item hasn’t been found.</p>
+<li><strong>Loop condition</strong>:<br>
+<code>WHILE i &lt; LENGTH(list) AND found = FALSE</code>
+<ul>
+<li>Continue looping <strong>while</strong> there are items left to check <strong>and</strong> the item hasn’t been found.</li>
+</ul>
 </li>
-<li>
-<p><strong>Comparison inside loop</strong>:<br />
-<code>IF list[i] = item THEN</code></p>
+<li><strong>Comparison inside loop</strong>:<br>
+<code>IF list[i] = item THEN</code>
+<ul>
+<li>Check if the current element equals the search item.</li>
+</ul>
 </li>
-<li>
-<p>Check if the current element equals the search item.</p>
-</li>
-<li><strong>If a match is found</strong>:</li>
+<li><strong>If a match is found</strong>:
+<ul>
 <li><code>index ← i</code> → save the current index</li>
 <li><code>found ← TRUE</code> → stop searching</li>
-<li><strong>Increment</strong>:</li>
+</ul>
+</li>
+<li><strong>Increment</strong>:
+<ul>
 <li><code>i ← i + 1</code> → move to the next item</li>
-<li><strong>End of loop</strong>:</li>
+</ul>
+</li>
+<li><strong>End of loop</strong>:
+<ul>
 <li>Once the loop finishes (either item is found or end of list is reached), return the result.</li>
-<li>
-<p><strong>Return value</strong>:<br />
-<code>RETURN index</code></p>
+</ul>
 </li>
-<li>
-<p>Returns the index where the item was found.</p>
-</li>
+<li><strong>Return value</strong>:<br>
+<code>RETURN index</code>
+<ul>
+<li>Returns the index where the item was found.</li>
 <li>If it wasn’t found, it returns <code>-1</code>.</li>
 </ul>
-<h4 id="python">Python</h4>
 </li>
 </ul>
+<h4 id="python">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">linear_search</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
     <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">)):</span>
@@ -400,7 +444,6 @@ body::before {
             <span class="k">break</span>  <span class="c1"># Stop the loop once the item is found</span>
     <span class="k">return</span> <span class="n">index</span>
 </code></pre></div>
-
 <h4 id="java">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LinearSearch</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">linearSearch</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -414,30 +457,55 @@ body::before {
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">index</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
-
+<p><div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q8(a) · 4 marks</div><div class="callout-body"><p>Complete the pseudocode to find an item in a 1D array <code>Widgets</code> of type <code>STRING</code>, using a <strong>linear search</strong>.
+<code>DECLARE Widgets : ARRAY[1:50000] OF STRING</code> … <code>NotInList ← FALSE</code> <code>Count ← TopOfList</code>
+<code>WHILE .... AND ....</code> <code>IF .... THEN Found ← TRUE</code> <code>Count ← Count + 1</code> <code>IF .... THEN NotInList ← TRUE</code>
+<code>ENDWHILE</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(a)</strong>
+One mark for each correctly completed line (<strong>Max 4</strong>)</p>
+<ul>
+<li><code>Found ← FALSE</code></li>
+<li>WHILE <code>Found = FALSE</code> AND <code>NotInList = FALSE</code> // <code>Count &lt;= EndOfList</code></li>
+<li>IF <code>ToFind = Widgets[Count]</code> // <code>Widgets[Count] = ToFind</code> THEN</li>
+<li>IF <code>Found = FALSE</code> AND <code>Count &gt; EndOfList</code> THEN</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q8a · 4 marks</div><div class="callout-body"><p>Complete this pseudocode algorithm for a linear search.
+<code>DECLARE ValueToFind : ...........</code> <code>MaxIndex ← ...........</code>
+<code>REPEAT</code> … <code>UNTIL Found OR Index &gt; MaxIndex</code> … <code>OUTPUT ...........</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8a</strong>
+One mark for each correct answer</p>
+<ul>
+<li><code>INTEGER</code></li>
+<li><code>9 // LENGTH(MyList) - 1</code></li>
+<li><code>Index + 1</code></li>
+<li><code>&quot;Value not found&quot;</code> (or any similar phrase)</li>
+</ul>
+</div></details></p>
 <h2 id="binary-search">Binary Search</h2>
+<p><strong>Binary search ★</strong></p>
 <h3 id="what-is-a-binary-search">What is a binary search?</h3>
 <ul>
 <li>The binary search is a more efficient search method than linear search</li>
-<li>The binary search <strong>compares the middle item to the searched for target item</strong>. If the <strong>values match</strong> then the <strong>index is returned</strong>. If not then the list is adjusted such that:<ul>
+<li>The binary search <strong>compares the middle item to the searched for target item</strong>. If the <strong>values match</strong> then the <strong>index is returned</strong>. If not then the list is adjusted such that:
+<ul>
 <li>the <strong>top half is ignored</strong> if the <strong>target item is less</strong> than the middle value</li>
 <li>or the <strong>bottom half is ignored</strong> if the <strong>target item is larger</strong> than the middle value</li>
 </ul>
 </li>
 <li>Once the list has been adjusted, the search continues until the item is found or the item is not in the list</li>
 <li>It is important to note that the <strong>list must be sorted</strong> for the binary search to work correctly</li>
-<li>
-<p>The implementation of the binary search is shown below
+<li>The implementation of the binary search is shown below
 <img alt="figure-2-performing-the-binary-search-revision-notes-computer-science" src="images/figure-2-performing-the-binary-search-revision-notes-computer-science.png" />
-<strong><em>Figure 2: Performing the Binary Search</em></strong></p>
-</li>
-<li>
-<p>When determining the rounding of the midpoint, rounding up or down are both valid provided consistent use of the same rounding is used throughout the algorithm</p>
-</li>
+<em><strong>Figure 2: Performing the Binary Search</strong></em></li>
+<li>When determining the rounding of the midpoint, rounding up or down are both valid provided consistent use of the same rounding is used throughout the algorithm</li>
 <li>It is important to note that the binary search does not discard, delete or remove parts of the list, it only adjusts the start, end and mid pointers. This only gives the appearance that items have been discarded or deleted</li>
 <li>The binary search is an example of a logarithmic time complexity O(logn) as it halves the search space with each iteration of the while loop. This approach is known as <strong>divide and conquer</strong>, where a problem is progressively reduced in size such that when each problem is at its smallest it is easiest to solve</li>
 <li>The algorithm starts with n items before the first iteration. After the first there are n/2 items, after the second there are n/4 items, after the third there are n/8 items and so on, leading to n/2 <sup>i</sup> after i iterations</li>
-<li>The <strong>worst case scenario</strong> or maximum number of iterations to find one item is where n/2 <sup>i</sup> = 1<ul>
+<li>The <strong>worst case scenario</strong> or maximum number of iterations to find one item is where n/2 <sup>i</sup> = 1
+<ul>
 <li>Multiply both sides by 2 <sup>i</sup> to get: n = 2 <sup>i</sup></li>
 <li>Take the logarithm of both sides: logn = log2 <sup>i</sup></li>
 <li>Rewrite with i at the front (using laws of logarithms): logn = ilog2</li>
@@ -446,7 +514,7 @@ body::before {
 </ul>
 </li>
 <li>The <strong>best case scenario would be O(1)</strong> where the item is found on the first comparison, while the <strong>average case</strong> would be O(logn/2) which would find the item somewhere in the middle of the search. Removing coefficients means the average case would therefore still be <strong>O(logn)</strong></li>
-<li>As the binary search requires no additional space, it is space complexity O(n), where n is the number of items in the list</li>
+<li>As the iterative binary search requires no additional space beyond a few pointer variables, it has <strong>space complexity O(1)</strong> (a recursive version would use O(log n) stack space)</li>
 <li>Given the following list [3, 5, 9, 10, 14, 16, 17, 21, 24, 26, 28, 30, 42, 44, 50, 51], a trace table for the binary search is shown below
 <strong>Trace Table for the Binary Search</strong></li>
 </ul>
@@ -528,65 +596,70 @@ body::before {
 <span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">index</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <ul>
-<li>
-<p><strong>Function definition</strong>:<br />
-<code>FUNCTION binarySearch(list : ARRAY OF INTEGER, item : INTEGER) RETURNS INTEGER</code></p>
+<li><strong>Function definition</strong>:<br>
+<code>FUNCTION binarySearch(list : ARRAY OF INTEGER, item : INTEGER) RETURNS INTEGER</code>
 <ul>
 <li>The function searches a <strong>sorted array</strong> for a given item.</li>
 <li>It returns the <strong>index</strong> of the item if found, or <strong>-1</strong> if not found.</li>
-<li><strong>Variable declarations</strong>:</li>
+</ul>
+</li>
+<li><strong>Variable declarations</strong>:
+<ul>
 <li><code>found</code> → a flag to indicate if the item is found (initially <code>FALSE</code>)</li>
 <li><code>index</code> → the result to be returned (initially <code>-1</code>)</li>
 <li><code>start</code> → index of the start of the current search range (initially <code>0</code>)</li>
 <li><code>end</code> → index of the end of the current search range (initially <code>LENGTH(list) - 1</code>)</li>
 <li><code>mid</code> → index of the middle element in the current range</li>
-<li>
-<p><strong>Loop condition</strong>:<br />
-<code>WHILE start &lt;= end AND found = FALSE</code></p>
+</ul>
 </li>
-<li>
-<p>Keep searching while the search range is valid <strong>and</strong> the item hasn&rsquo;t been found.</p>
+<li><strong>Loop condition</strong>:<br>
+<code>WHILE start &lt;= end AND found = FALSE</code>
+<ul>
+<li>Keep searching while the search range is valid <strong>and</strong> the item hasn’t been found.</li>
+</ul>
 </li>
-<li>
-<p><strong>Middle element calculation</strong>:<br />
-<code>mid ← (start + end) DIV 2</code></p>
+<li><strong>Middle element calculation</strong>:<br>
+<code>mid ← (start + end) DIV 2</code>
+<ul>
+<li>Calculates the index of the middle element of the current search range.</li>
+</ul>
 </li>
-<li>
-<p>Calculates the index of the middle element of the current search range.</p>
-</li>
-<li>
-<p><strong>Check for match</strong>:<br />
-<code>IF list[mid] = item THEN</code></p>
-</li>
-<li>
-<p>If the middle element is equal to the target item:</p>
+<li><strong>Check for match</strong>:<br>
+<code>IF list[mid] = item THEN</code>
+<ul>
+<li>If the middle element is equal to the target item:
 <ul>
 <li>Set <code>found ← TRUE</code></li>
 <li>Store the <code>index ← mid</code></li>
 </ul>
 </li>
-<li><strong>Adjust search range</strong>:</li>
-<li>If the middle value is <strong>less than</strong> the item:<ul>
+</ul>
+</li>
+<li><strong>Adjust search range</strong>:
+<ul>
+<li>If the middle value is <strong>less than</strong> the item:
+<ul>
 <li>Search the <strong>right half</strong> → <code>start ← mid + 1</code></li>
 <li>Otherwise:</li>
 <li>Search the <strong>left half</strong> → <code>end ← mid - 1</code></li>
 </ul>
 </li>
-<li><strong>Loop ends</strong>:</li>
-<li>The loop stops when the item is found <strong>or</strong> the search range becomes invalid.</li>
-<li>
-<p><strong>Return value</strong>:<br />
-<code>RETURN index</code></p>
+</ul>
 </li>
-<li>
-<p>Returns the index if found, or <code>-1</code> if not found</p>
+<li><strong>Loop ends</strong>:
+<ul>
+<li>The loop stops when the item is found <strong>or</strong> the search range becomes invalid.</li>
+</ul>
+</li>
+<li><strong>Return value</strong>:<br>
+<code>RETURN index</code>
+<ul>
+<li>Returns the index if found, or <code>-1</code> if not found</li>
+</ul>
 </li>
 </ul>
 <h4 id="python_1">Python</h4>
-</li>
-</ul>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">binary_search</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
   <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
   <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -603,7 +676,6 @@ body::before {
     <span class="n">end</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
   <span class="k">return</span> <span class="n">index</span>
 </code></pre></div>
-
 <h4 id="java_1">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BinarySearch</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">binarySearch</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -625,30 +697,112 @@ body::before {
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">index</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
-
+<p><div class="callout callout-question"><div class="callout-title">2024 Summer P31 Q10 · 8 marks</div><div class="callout-body"><p><strong>(a)</strong> State a condition that must be true for an array to be searchable for a binary search. <strong>[1]</strong>
+<strong>(b)</strong> Complete the given pseudocode to find an item in a 1D array <code>Names[1:100000] OF STRING</code> using a binary search (<code>TopOfList</code>, <code>EndOfList</code>, <code>CurrentItem</code>, <code>ToFind</code>, <code>Found</code>, <code>NotInList</code>). <strong>[5]</strong>
+<strong>©</strong> Describe the performance of a binary search in relation to the number of data items in the array being searched. Refer to Big O notation. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(a)</strong></p>
+<ul>
+<li>The elements are sorted according to the compare function / in ascending / descending order.</li>
+</ul>
+<p><strong>Q10(b)</strong> — One mark per mark point (<strong>Max 5</strong>)</p>
+<pre><code>WHILE Found = FALSE AND NotInList = FALSE
+    CurrentItem ← (TopOfList + EndOfList) DIV 2
+    IF ToFind = Names[CurrentItem] THEN
+        Found ← TRUE
+    ELSE
+        IF TopOfList &gt;= EndOfList THEN
+            NotInList ← TRUE
+        ELSE
+            IF ToFind &gt; Names[CurrentItem] THEN
+                TopOfList ← CurrentItem + 1
+            ELSE
+                EndOfList ← CurrentItem - 1
+            ENDIF
+        ENDIF
+    ENDIF
+ENDWHILE
+</code></pre>
+<p><strong>Q10©</strong> — One mark for each of:</p>
+<ul>
+<li>Big O for a binary search is <strong>O(Log₂ n)</strong> // Big O notation indicates time/space complexity.</li>
+<li>The time taken increases logarithmically as the number of search items increases linearly // as the search field is repeatedly halved, relatively few comparisons are made.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q10(a)(ii) · 5 marks</div><div class="callout-body"><p>Complete the pseudocode for the function <code>PartSearch(Target : STRING) RETURNS INTEGER</code> to perform a binary search on <code>PartName[1:1000000]</code>, using the variables <code>Left</code>, <code>Right</code>, <code>Mid</code> and <code>Target</code>. Return the location if found, otherwise −1.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(a)(ii)</strong> — One mark per mark point (<strong>Max 5</strong>)</p>
+<ul>
+<li>Function header correctly completed</li>
+<li>Left and right indexes correctly initialised</li>
+<li>Appropriate loop and escape condition</li>
+<li>Setting of the search index (Mid)</li>
+<li>Conditional statement to find item</li>
+<li>Conditional statement and changing of left and right indexes if item not found</li>
+<li>Return of location if item/target found and −1 if not</li>
+</ul>
+<pre><code>FUNCTION PartSearch(Target : STRING) RETURNS INTEGER
+   Left ← 1
+   Right ← 1000000
+   WHILE Left &lt;= Right
+      Mid ← (Left + Right) DIV 2
+      IF PartName[Mid] = Target THEN
+         RETURN Mid
+      ELSE
+         IF PartName[Mid] &lt; Target THEN
+            Left ← Mid + 1
+         ELSE
+            Right ← Mid - 1
+         ENDIF
+      ENDIF
+   ENDWHILE
+   RETURN -1
+ENDFUNCTION
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q8b · 6 marks</div><div class="callout-body"><p><strong>(i)</strong> State the necessary condition for a binary search. <strong>[1]</strong>
+<strong>(ii)</strong> Describe how to perform a binary search. <strong>[4]</strong>
+<strong>(iii)</strong> Explain how the performance of a binary search varies according to the number of values in the array. <strong>[1]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8b(i)</strong></p>
+<ul>
+<li>The list to be searched must be ordered/sorted</li>
+</ul>
+<p><strong>Q8b(ii)</strong> — Any four from:</p>
+<ul>
+<li>Find the middle item / index</li>
+<li>Check the value of the middle item in the list to be searched</li>
+<li>If equal, item searched for is found</li>
+<li>If not equal / greater / less than the item searched for</li>
+<li>Discard the half of the list that does not contain the search item</li>
+<li>Repeat until the item is found</li>
+<li>Or there is only one item left and it is not the item // lower bound &gt;= upper bound</li>
+</ul>
+<p><strong>Q8b(iii)</strong></p>
+<ul>
+<li>As the number of items in the list increases the time to search the list increases</li>
+</ul>
+</div></details></p>
 <h2 id="bubble-sort">Bubble sort</h2>
+<p><strong>Bubble sort ★</strong></p>
 <h3 id="what-is-a-bubble-sort">What is a bubble sort?</h3>
 <ul>
 <li>In A Level Computer Science, a bubble sort sorts items into order, <strong>smallest to largest</strong></li>
 <li>It <strong>compares pairs of elements</strong> and swaps them if they are out of order</li>
 <li>The first element is compared to the second, the second to the third, the third to the fourth and so on, until the second to last is compared to the last. Swaps occur if each comparison is out of order</li>
-<li>
-<p>This overall process is called a <strong>pass</strong>
-The highest value in the list eventually “bubbles” its way to the top like a fizzy drink, hence the name “Bubble sort”</p>
-</li>
-<li>
-<p>Once the <strong>end of the list</strong> has been reached, the <strong>value at the top of the list is now in order</strong> and the <strong>sort resets back to the start of the list</strong>. The <strong>next largest value</strong> is then <strong>sorted</strong> to the top of the list</p>
-</li>
+<li>This overall process is called a <strong>pass</strong>
+The highest value in the list eventually “bubbles” its way to the top like a fizzy drink, hence the name “Bubble sort”</li>
+<li>Once the <strong>end of the list</strong> has been reached, the <strong>value at the top of the list is now in order</strong> and the <strong>sort resets back to the start of the list</strong>. The <strong>next largest value</strong> is then <strong>sorted</strong> to the top of the list</li>
 <li>More passes are completed until all elements are in the correct order</li>
 <li>A <strong>final pass</strong> checks all elements and if no swaps are made then the sort is complete</li>
 <li>An example of using a bubble sort would be sorting an array of names into alphabetical order, or sorting an array of student marks from a test</li>
 </ul>
 <h4 id="performing-the-bubble-sort">Performing the bubble sort</h4>
 <p><img alt="Performing the bubble sort" src="images/figure-1--performing-the-bubble-sort-1.png" />
-<strong><em>Figure 1: Performing the Bubble sort</em></strong></p>
+<em><strong>Figure 1: Performing the Bubble sort</strong></em></p>
 <h4 id="time-complexity-of-the-bubble-sort">Time complexity of the bubble sort</h4>
 <ul>
-<li>To determine the algorithm&rsquo;s execution time as measured by the number of instructions or steps carried out Big-O notation must be used</li>
+<li>To determine the algorithm’s execution time as measured by the number of instructions or steps carried out Big-O notation must be used</li>
 <li>Four statements are present in the above algorithm O(1), followed by a while loop O(n) containing two statements and a further for loop O(n). This results in the expression: 2n <sup>2</sup> + 4</li>
 <li>As <strong>coefficients and lower order values are not used</strong>, this give the bubble sort <strong>O(n</strong> <sup><b>2</b></sup><strong>)</strong> <strong>worst case time complexity</strong></li>
 <li>The <strong>best case scenario</strong> would be an <strong>already sorted list</strong> which means a time complexity of <strong>O(n)</strong> as each item must still be compared to check if they are in order</li>
@@ -662,7 +816,7 @@ The highest value in the list eventually “bubbles” its way to the top like a
 <h4 id="tracing-a-bubble-sort">Tracing a bubble sort</h4>
 <ul>
 <li>The trace table follows the algorithm through, updating values that change in the table</li>
-<li>Each iteration of the list reduces the overall size of the list by 1 as after each pass the previously sorted final digit is in order and does not need to be rechecked. This means that 9 is in order and doesn&rsquo;t need to be rechecked, followed by 9 and 7, followed by 9, 7 and 6 and so on</li>
+<li>Each iteration of the list reduces the overall size of the list by 1 as after each pass the previously sorted final digit is in order and does not need to be rechecked. This means that 9 is in order and doesn’t need to be rechecked, followed by 9 and 7, followed by 9, 7 and 6 and so on</li>
 <li>When the if statement is checked a new row has been added to show the swap of list[j], list[j + 1] and Temp, followed by the subsequent change to Swap from FALSE to TRUE</li>
 <li>After several iterations (that are not shown) the algorithm will eventually output a sorted list
 <strong>Trace table of the bubble sort</strong></li>
@@ -912,42 +1066,49 @@ The highest value in the list eventually “bubbles” its way to the top like a
 <span class="n">ENDWHILE</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="n">list</span>
 </code></pre></div>
-
 <ul>
-<li><strong>Declare and initialise variables</strong>:<ul>
+<li><strong>Declare and initialise variables</strong>:
+<ul>
 <li><code>list</code> is an array of 10 integers to be sorted</li>
 <li><code>last</code> stores the length of the list</li>
 <li><code>i</code> is used to track the number of completed passes</li>
 <li><code>swap</code> is a boolean flag to check if any swaps occurred in a pass</li>
 </ul>
 </li>
-<li><strong>Set initial conditions</strong>:<ul>
+<li><strong>Set initial conditions</strong>:
+<ul>
 <li><code>i ← 0</code> → start from the first pass</li>
 <li><code>swap ← TRUE</code> → assume a swap will happen to enter the loop</li>
 </ul>
 </li>
-<li><strong>Main WHILE loop</strong>:<ul>
+<li><strong>Main WHILE loop</strong>:
+<ul>
 <li>Continues <strong>while</strong> the list still needs sorting (<code>i &lt; last - 1</code>) <strong>and</strong> swaps are still happening (<code>swap = TRUE</code>)</li>
 <li>At the start of each pass, <code>swap</code> is set to <code>FALSE</code></li>
 </ul>
 </li>
-<li><strong>FOR loop (inner loop)</strong>:<ul>
+<li><strong>FOR loop (inner loop)</strong>:
+<ul>
 <li>Iterates through unsorted part of the list: from index <code>0</code> to <code>last - i - 2</code></li>
 <li>Compares each pair of adjacent items</li>
 </ul>
 </li>
-<li><strong>IF condition</strong>:<ul>
-<li>If the current item is <strong>greater than the next item</strong>, they are swapped<ul>
+<li><strong>IF condition</strong>:
+<ul>
+<li>If the current item is <strong>greater than the next item</strong>, they are swapped
+<ul>
 <li><code>swap ← TRUE</code> to indicate a change was made this pass</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>After inner loop</strong>:<ul>
+<li><strong>After inner loop</strong>:
+<ul>
 <li>Increment <code>i</code> to shorten the range on the next pass</li>
 </ul>
 </li>
-<li><strong>After sorting</strong>:<ul>
+<li><strong>After sorting</strong>:
+<ul>
 <li><code>OUTPUT list</code> displays the sorted list</li>
 </ul>
 </li>
@@ -965,7 +1126,6 @@ The highest value in the list eventually “bubbles” its way to the top like a
             <span class="k">break</span>  <span class="c1"># Early termination if no swaps occurred</span>
     <span class="k">return</span> <span class="nb">list</span>
 </code></pre></div>
-
 <h4 id="java_2">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BubbleSort</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bubbleSort</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -986,7 +1146,6 @@ The highest value in the list eventually “bubbles” its way to the top like a
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
-
 <p>A global 2D array <code>Result</code> of type <code>INTEGER</code> is used to store a list of exam candidate numbers together with their marks. The array contains 2000 elements, organised as 1000 rows and 2 columns.
 Column 1 contains the candidate number and column 2 contains the mark for the corresponding candidate. All elements contain valid exam result data.
 A procedure <code>Sort()</code> is needed to sort <code>Result</code> into ascending order of mark using an efficient bubble sort algorithm.
@@ -1013,7 +1172,6 @@ Write pseudocode for the procedure <code>Sort()</code>.<strong>[8]</strong>
 <span class="w">  </span><span class="n">UNTIL</span><span class="w"> </span><span class="n">NoSwaps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span>
 <span class="n">ENDPROCEDURE</span>
 </code></pre></div>
-
 <ol>
 <li>Outer loop [1 mark]</li>
 <li>Inner loop [1 mark]</li>
@@ -1025,6 +1183,7 @@ Write pseudocode for the procedure <code>Sort()</code>.<strong>[8]</strong>
 <li>Reducing Boundary <strong>in the outer loop</strong> [1 mark]</li>
 </ol>
 <h2 id="insertion-sort">Insertion sort</h2>
+<p><strong>Insertion sort ★</strong></p>
 <h3 id="what-is-an-insertion-sort">What is an insertion sort?</h3>
 <ul>
 <li>In A Level Computer Science, the insertion sort <strong>sorts one item at a time</strong> by <strong>placing it in the correct position</strong> of an unsorted list</li>
@@ -1035,7 +1194,7 @@ Write pseudocode for the procedure <code>Sort()</code>.<strong>[8]</strong>
 </ul>
 <h4 id="performing-the-insertion-sort">Performing the insertion sort</h4>
 <p><img alt="bS-Ng1JW_insertion-sort-revision-notes-computer-science" src="images/bS-Ng1JW_insertion-sort-revision-notes-computer-science.png" />
-<strong><em>Figure 2: Performing the Insertion sort</em></strong></p>
+<em><strong>Figure 2: Performing the Insertion sort</strong></em></p>
 <h4 id="time-complexity-of-an-insertion-sort">Time complexity of an insertion sort</h4>
 <ul>
 <li>In the above algorithm, one statement is present, a for loop with three statements and a nested while loop that contains two statements</li>
@@ -1346,44 +1505,46 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 <span class="n">CALL</span><span class="w"> </span><span class="nf">insertionSort</span><span class="p">(</span><span class="n">list</span><span class="p">)</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="n">list</span>
 </code></pre></div>
-
 <ul>
-<li>
-<p><strong>Procedure definition</strong>:<br />
-<code>insertionSort</code> takes an array called <code>list</code> and sorts it in ascending order</p>
-</li>
-<li>
-<p><strong>Initialisation</strong>:</p>
+<li><strong>Procedure definition</strong>:<br>
+<code>insertionSort</code> takes an array called <code>list</code> and sorts it in ascending order</li>
+<li><strong>Initialisation</strong>:
 <ul>
 <li><code>n ← LENGTH(list)</code> stores the number of items</li>
 <li>The sort begins from index <code>1</code> because the first item (index 0) is considered sorted</li>
 </ul>
 </li>
-<li><strong>Outer FOR loop (</strong><code>i ← 1 TO n - 1</code><strong>)</strong>:<ul>
+<li><strong>Outer FOR loop (</strong><code>i ← 1 TO n - 1</code><strong>)</strong>:
+<ul>
 <li>Each iteration picks the next item in the list to be inserted into the correct position in the sorted portion to its left</li>
 </ul>
 </li>
-<li><strong>Store the current item</strong>:<ul>
+<li><strong>Store the current item</strong>:
+<ul>
 <li><code>item ← list[i]</code> stores the current value to be positioned</li>
 <li><code>position ← i</code> is used to track where <code>item</code> should go</li>
 </ul>
 </li>
-<li><strong>Inner WHILE loop</strong>:<ul>
+<li><strong>Inner WHILE loop</strong>:
+<ul>
 <li>Shifts elements in the sorted portion <strong>to the right</strong> while they are greater than <code>item</code></li>
 <li>Stops when either:</li>
 <li>The start of the list is reached (<code>position = 0</code>)</li>
 <li>Or the correct spot is found (<code>list[position - 1] &lt;= item</code>)</li>
 </ul>
 </li>
-<li><strong>Insert the item</strong>:<ul>
+<li><strong>Insert the item</strong>:
+<ul>
 <li><code>list[position] ← item</code> inserts the value in the correct position</li>
 </ul>
 </li>
-<li><strong>Repeat</strong>:<ul>
+<li><strong>Repeat</strong>:
+<ul>
 <li>The next item is considered, and the process repeats until the entire list is sorted</li>
 </ul>
 </li>
-<li><strong>After sorting</strong>:<ul>
+<li><strong>After sorting</strong>:
+<ul>
 <li><code>OUTPUT list</code> displays the sorted array</li>
 </ul>
 </li>
@@ -1399,7 +1560,6 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
         <span class="n">data</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div>
-
 <h4 id="java_3">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">InsertionSort</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">insertionSort</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -1414,8 +1574,80 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
-
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q10 · 9 marks</div><div class="callout-body"><p>An insertion sort is used to sort unique ID numbers in <code>MemberID[0:499]</code> into ascending order; corresponding names are in <code>Names[0:499]</code>. Identifiers: <code>Count</code>, <code>Temp1</code>, <code>Temp2</code>, <code>Insert</code>.
+<strong>(a)</strong> Write the pseudocode for an insertion sort. Data in both arrays must be swapped so matching indices keep referring to the same person. Assume all variables declared. <strong>[5]</strong>
+<strong>(b)</strong> Describe the factors, other than changing the algorithm, that affect the time efficiency of the insertion sort. <strong>[3]</strong>
+<strong>©</strong> State the Big O notation for the worst-case time complexity of the insertion sort. <strong>[1]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(a)</strong> — One mark per mark point (<strong>Max 5</strong>)</p>
+<ul>
+<li>MP1 Correct outer loop iterating through entire array starting at second element</li>
+<li>MP2 Temporary variables both initialised to current value of arrays (must be <code>Temp1</code> and <code>Temp2</code>)</li>
+<li>MP3 Insertion variable initialised (must be <code>Insert</code>)</li>
+<li>MP4 Correct inner loop criteria</li>
+<li>MP5 Elements of both arrays inserted as appropriate</li>
+<li>MP6 Insertion variable decremented</li>
+<li>MP7 Temporary values replaced in correct place in arrays</li>
+</ul>
+<p>Guidance: do not accept bubble sort answers.</p>
+<pre><code>FOR Count ← 1 TO 499
+   Temp1 ← MemberID[Count]
+   Temp2 ← Names[Count]
+   Insert ← Count - 1
+   WHILE Insert &gt;= 0 AND MemberID[Insert] &gt; Temp1
+      MemberID[Insert + 1] ← MemberID[Insert]
+      Names[Insert + 1] ← Names[Insert]
+      Insert ← Insert - 1
+   ENDWHILE
+   MemberID[Insert + 1] ← Temp1
+   Names[Insert + 1] ← Temp2
+NEXT Count
+</code></pre>
+<p><strong>Q10(b)</strong> — One mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 Array size // number of elements in the array</li>
+<li>MP2 … time efficiency will improve if the number of elements to be sorted are fewer</li>
+<li>MP3 Initial order</li>
+<li>MP4 … if the array is partially sorted the insertion sort works better</li>
+</ul>
+<p>Guidance: allow the opposite for MP2 (worse/more); allow the opposite for MP4 (reversed/slower).</p>
+<p><strong>Q10©</strong></p>
+<ul>
+<li>O(n²) // O(N²). Must be completely correct (including brackets).</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P33 Q12(b)(c) · 6 marks</div><div class="callout-body"><p><strong>(b)</strong> A 1D array <code>DataArray</code> holds up to 1000 integers and needs sorting ascending. Write the pseudocode for an insertion sort, using identifiers <code>Index</code>, <code>Position</code>, <code>DataArray</code>, <code>Value</code>. First line: <code>FOR Index ← 2 to 1000</code>. <strong>[4]</strong>
+<strong>©</strong> Describe <strong>two</strong> ways in which the performance of a sort routine is affected by the data to be sorted. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(b)</strong> — One mark for each marking point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 Temporary assignment of the element being ‘inserted’ before inner loop</li>
+<li>MP2 Appropriate inner loop</li>
+<li>MP3 Check if current DataArray content is &gt; Value</li>
+<li>MP4 Moving data to adjacent element as required</li>
+<li>MP5 Appropriate updating of Position variable</li>
+<li>MP6 Re-insertion of the element outside the inner loop</li>
+</ul>
+<pre><code>FOR Index &lt;- 2 to 1000
+    Value &lt;- DataArray[Index]
+    Position &lt;- Index - 1
+    IF DataArray[Position] &gt; Value THEN
+        WHILE Position &gt;= 1 AND DataArray[Position] &gt; Value
+            DataArray[Position + 1] &lt;- DataArray[Position]
+            Position &lt;- Position - 1
+        ENDWHILE
+        DataArray[Position + 1] &lt;- Value
+    ENDIF
+NEXT Index
+</code></pre>
+<p><strong>Q12©</strong> — One mark for each marking point</p>
+<ul>
+<li>MP1 Performance improves if data already partially sorted // likely worse if completely out of order</li>
+<li>MP2 Sort may take longer if the number of items is larger // less time if fewer</li>
+</ul>
+</div></details></p>
 <h2 id="implementing-a-stack">Implementing a stack</h2>
+<p><strong>Stack ★</strong></p>
 <h2 id="how-do-you-program-a-stack">How do you program a stack?</h2>
 <ul>
 <li>To recap the main operations of stacks and how they work, read the <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/10-data-types-and-structures-/introduction-to-abstract-data-types-adt/adt-overview/">ADT overview</a></li>
@@ -1447,7 +1679,7 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 </tr>
 <tr>
 <td><strong>push(value)</strong></td>
-<td><code>PROCEDURE push(s : REF Stack, value : INTEGER) IF NOT isFull(s) THEN s.top ← s.top + 1 s.items[s.top] ← value ELSE OUTPUT "Stack is full" ENDIF ENDPROCEDURE</code></td>
+<td><code>PROCEDURE push(s : REF Stack, value : INTEGER) IF NOT isFull(s) THEN s.top ← s.top + 1 s.items[s.top] ← value ELSE OUTPUT &quot;Stack is full&quot; ENDIF ENDPROCEDURE</code></td>
 <td><code>stack.push(1)</code></td>
 <td><code>stack.push(1);</code></td>
 </tr>
@@ -1501,24 +1733,27 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 <span class="c1">// Output current stack size</span>
 <span class="n">OUTPUT</span><span class="w"> </span><span class="s">&quot;Current size: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </code></pre></div>
-
 <ul>
 <li><strong>Defines a Stack structure</strong> with a fixed-size array of 5 items, a <code>top</code> pointer, and a <code>capacity</code></li>
 <li><strong>Initialises the stack</strong> with <code>top ← -1</code> to indicate it is empty</li>
-<li><strong>Pushes 3 values</strong> (<code>10</code>, <code>20</code>, <code>30</code>) onto the stack one by one:<ul>
+<li><strong>Pushes 3 values</strong> (<code>10</code>, <code>20</code>, <code>30</code>) onto the stack one by one:
+<ul>
 <li>Each <code>push</code> increases <code>top</code> and adds the value to the <code>items</code> array</li>
 </ul>
 </li>
-<li><strong>Peeks</strong> at the current top of the stack:<ul>
+<li><strong>Peeks</strong> at the current top of the stack:
+<ul>
 <li>Returns <code>30</code> without removing it</li>
 </ul>
 </li>
-<li><strong>Pops two values</strong> off the stack:<ul>
+<li><strong>Pops two values</strong> off the stack:
+<ul>
 <li>First pop returns <code>30</code>, second returns <code>20</code></li>
 <li>Each <code>pop</code> decreases <code>top</code> by 1</li>
 </ul>
 </li>
-<li><strong>Outputs the current size</strong> of the stack:<ul>
+<li><strong>Outputs the current size</strong> of the stack:
+<ul>
 <li>After popping twice, only one value (<code>10</code>) remains → size is <code>1</code></li>
 </ul>
 </li>
@@ -1563,7 +1798,6 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 <span class="c1"># Output current size</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current size:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
 </code></pre></div>
-
 <h4 id="java_4">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Stack</span><span class="p">;</span>
 <span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StackExample</span><span class="w"> </span><span class="p">{</span>
@@ -1583,7 +1817,6 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>Study the pseudocode function <code>PushAnimal()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">PushAnimal</span><span class="p">(</span><span class="n">DataToPush</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">BOOLEAN</span>
 <span class="w">  </span><span class="n">IF</span><span class="w"> </span><span class="n">AnimalTopPointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="n">THEN</span>
@@ -1595,7 +1828,6 @@ The <strong>average case scenario</strong> would be a <strong>half sorted list</
 <span class="w">  </span><span class="n">ENDIF</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <p>Write program code for the function <code>PushAnimal()</code> <strong>[3]</strong>
 <strong>Answer</strong></p>
 <ul>
@@ -1615,19 +1847,17 @@ Example program code:
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
-<p><strong>VB.NET</strong></p>
-<div class="highlight"><pre><span></span><code><span class="nv">Function</span><span class="w"> </span><span class="nv">PushAnimal</span><span class="ss">(</span><span class="nv">DataToPush</span><span class="ss">)</span>
-<span class="w">  </span><span class="k">If</span><span class="w"> </span><span class="nv">AnimalTopPointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">Then</span>
-<span class="w">    </span><span class="k">Return</span><span class="w"> </span><span class="nv">False</span>
-<span class="w">  </span><span class="k">Else</span>
-<span class="w">    </span><span class="nv">Animal</span><span class="ss">(</span><span class="nv">AnimalTopPointer</span><span class="ss">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">DataToPush</span>
-<span class="w">    </span><span class="nv">AnimalTopPointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">AnimalTopPointer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="k">Return</span><span class="w"> </span><span class="nv">True</span>
-<span class="w">  </span><span class="k">End</span><span class="w"> </span><span class="k">If</span>
-<span class="k">End</span><span class="w"> </span><span class="nv">Function</span>
+<p><strong><a href="http://VB.NET">VB.NET</a></strong></p>
+<div class="highlight"><pre><span></span><code>Function PushAnimal(DataToPush)
+  If AnimalTopPointer = 20 Then
+    Return False
+  Else
+    Animal(AnimalTopPointer) = DataToPush
+    AnimalTopPointer = AnimalTopPointer + 1
+    Return True
+  End If
+End Function
 </code></pre></div>
-
 <p><strong>Python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">PushAnimal</span><span class="p">(</span><span class="n">DataToPush</span><span class="p">):</span>
   <span class="k">global</span> <span class="n">AnimalTopPointer</span>
@@ -1639,11 +1869,53 @@ Example program code:
     <span class="n">AnimalTopPointer</span> <span class="o">+=</span><span class="mi">1</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
-
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q12(a)(i) · 4 marks</div><div class="callout-body"><p>A stack stores a maximum of 100 string items using <code>Base = 0</code>, <code>Top = -1</code>, <code>StackArray[0:99]</code> and <code>Max = 100</code>. <code>Top</code> is incremented when an item is added and decremented when removed; if the stack is full an error message is output. Complete the procedure to add a data item onto the stack:
+<code>PROCEDURE Push(................)</code> <code>IF Top &lt; Max – 1 THEN</code> <code>Top ← ..............</code> <code>.............. ← NewData</code> <code>ELSE OUTPUT ..............</code> <code>ENDIF</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(a)(i)</strong> — one mark for each correctly completed line (<strong>Max 4</strong>)</p>
+<pre><code>PROCEDURE Push(NewData : STRING)
+   IF Top &lt; Max – 1 THEN
+      Top ← Top + 1
+      StackArray[Top] ← NewData
+   ELSE
+      OUTPUT &quot;Stack full; new data cannot be added&quot;
+   ENDIF
+ENDPROCEDURE
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q10(b) · 5 marks</div><div class="callout-body"><p>A stack uses <code>BasePointer</code>, <code>TopPointer</code> and a 1D array <code>Stack</code> of REAL. Complete the function <code>Pop()</code> to pop an item from <code>Stack</code>.
+<code>FUNCTION Pop() ..........</code> <code>DECLARE Item : REAL</code> <code>Item ← 0</code> <code>IF .......... BasePointer THEN</code> <code>Item ← ..........</code> <code>TopPointer ← ..........</code> <code>ELSE OUTPUT &quot;The stack is empty – error&quot;</code> <code>ENDIF</code> <code>..........</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10(b)</strong> — one mark for each correctly completed line (<strong>Max 5</strong>)</p>
+<pre><code>FUNCTION Pop() RETURNS REAL
+   DECLARE Item : REAL
+   Item ← 0
+   IF TopPointer &gt;= BasePointer THEN
+      Item ← Stack[TopPointer]
+      TopPointer ← TopPointer – 1
+   ELSE
+      OUTPUT &quot;The stack is empty – error&quot;
+   ENDIF
+   RETURN Item
+ENDFUNCTION
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P31 Q10(c) · 2 marks</div><div class="callout-body"><p>Compare and contrast the queue and stack Abstract Data Types (ADT).</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q10©</strong> — one mark per mark point (<strong>Max 2</strong>)</p>
+<ul>
+<li>A queue is FIFO and a stack is LIFO / FILO // data removed from a queue in order received, from a stack in reverse order</li>
+<li>Both ADTs can vary in size / are of indeterminate length</li>
+<li>Data is pushed/popped at the same end of a stack but enqueued/dequeued at different/opposite ends of a queue // queue has two accessible ends, stack only one</li>
+<li>A stack has only one moveable pointer whereas a queue has two</li>
+</ul>
+</div></details></p>
 <h2 id="implementing-a-queue">Implementing a queue</h2>
+<p><strong>Queue ★</strong></p>
 <h3 id="how-do-you-program-a-queue">How do you program a queue?</h3>
 <ul>
-<li>A <strong>queue</strong> is a <strong>linear ADT</strong> that follows the <strong>First In, First Out (FIFO)</strong> principle:<ul>
+<li>A <strong>queue</strong> is a <strong>linear ADT</strong> that follows the <strong>First In, First Out (FIFO)</strong> principle:
+<ul>
 <li><strong>Enqueue</strong>: Add item to the back</li>
 <li><strong>Dequeue</strong>: Remove item from the front</li>
 <li><strong>Peek/front</strong>: Look at the front item without removing</li>
@@ -1663,7 +1935,6 @@ Example program code:
 <span class="w">    </span><span class="n">ENDIF</span>
 <span class="n">ENDPROCEDURE</span>
 </code></pre></div>
-
 <h4 id="dequeue">Dequeue</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">dequeue</span><span class="p">(</span><span class="n">q</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">REF</span><span class="w"> </span><span class="n">Queue</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">STRING</span>
 <span class="w">    </span><span class="n">IF</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="nf">isEmpty</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="w"> </span><span class="n">THEN</span>
@@ -1677,7 +1948,6 @@ Example program code:
 <span class="w">    </span><span class="n">ENDIF</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <h4 id="isempty-isfull">isEmpty / isFull</h4>
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">isEmpty</span><span class="p">(</span><span class="n">q</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Queue</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">BOOLEAN</span>
 <span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="na">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
@@ -1686,7 +1956,6 @@ Example program code:
 <span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="na">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="na">capacity</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <div class="highlight"><pre><span></span><code><span class="n">FUNCTION</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="n">q</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Queue</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="n">BOOLEAN</span>
 <span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
 <span class="w">    </span><span class="n">DECLARE</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INTEGER</span>
@@ -1700,7 +1969,6 @@ Example program code:
 <span class="w">    </span><span class="n">RETURN</span><span class="w"> </span><span class="n">FALSE</span>
 <span class="n">ENDFUNCTION</span>
 </code></pre></div>
-
 <h4 id="python_5">Python</h4>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Queue</span><span class="p">:</span>
@@ -1737,7 +2005,6 @@ Example program code:
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Popped:&quot;</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">dequeue</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is &#39;Bob&#39; in queue?&quot;</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">))</span>
 </code></pre></div>
-
 <h4 id="java_5">Java</h4>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.LinkedList</span><span class="p">;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Queue</span><span class="p">;</span>
@@ -1757,12 +2024,67 @@ Example program code:
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p><div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q11(b) · 4 marks</div><div class="callout-body"><p>Complete the following pseudocode for the function <code>Dequeue</code>, which removes the front item from a circular queue implemented with <code>Length</code>, <code>FrontPointer</code>, <code>MaxSize</code> and <code>Initialise</code>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(b)</strong> — one mark for each correctly completed line (<strong>Max 4</strong>)</p>
+<pre><code>FUNCTION Dequeue RETURNS STRING
+    DECLARE Item : STRING
+    IF Length &gt; 0 THEN
+        Item ← Queue[FrontPointer]
+        FrontPointer ← FrontPointer + 1
+        Length ← Length - 1
+        IF Length = 0 THEN
+            CALL Initialise
+        ELSE
+            IF FrontPointer &gt; MaxSize THEN
+                FrontPointer ← 1
+            ENDIF
+        ENDIF
+    ELSE
+        OUTPUT &quot;The print queue was empty – error&quot;
+        Item ← &quot;&quot;
+    ENDIF
+    RETURN Item
+ENDFUNCTION
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q11(a)(ii) · 5 marks</div><div class="callout-body"><p>Complete the pseudocode for the queue ADT: <code>Initialise</code> (sets <code>FrontPointer ← -1</code>) and <code>Enqueue(NewItem : STRING)</code> for a circular queue with <code>MaxLength = 50</code>.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(a)(ii)</strong> — one mark for each correctly completed line (<strong>Max 5</strong>)</p>
+<pre><code>PROCEDURE Initialise
+    FrontPointer ← -1
+    RearPointer ← -1
+    Length ← 0
+ENDPROCEDURE
 
+PROCEDURE Enqueue(NewItem : STRING)
+    IF Length &lt; MaxLength THEN   // or Length &lt;= MaxLength - 1
+        RearPointer ← RearPointer + 1
+        IF RearPointer &gt; MaxLength − 1 THEN
+            RearPointer ← 0
+        ENDIF
+        Queue[RearPointer] ← NewItem
+        Length ← Length + 1
+    ENDIF
+ENDPROCEDURE
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q11(b) · 3 marks</div><div class="callout-body"><p>Explain the reasons why a queue ADT works better than a stack ADT in organising print jobs.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(b)</strong> — one mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Print jobs are expected to be actioned by the printer in the order they are received</li>
+<li>Because the printer queue is a queue, the first job sent to the printer would be the first job printed</li>
+<li>If the printer queue was a stack, the first job received would not be printed until all the other jobs had been printed</li>
+</ul>
+</div></details></p>
 <h2 id="linked-lists">Linked lists</h2>
+<p><strong>Linked list ★</strong></p>
 <h2 id="how-do-you-program-a-linked-list">How do you program a linked list?</h2>
 <ul>
 <li>To recap the main operations of linked lists and how they work, read our <a href="https://www.savemyexams.com/a-level/computer-science/cie/19/revision-notes/10-data-types-and-structures-/introduction-to-abstract-data-types-adt/adt-overview/">ADT Overview</a> page</li>
-<li>To program a Linked List you must be able to perform the following operations:<ul>
+<li>To program a Linked List you must be able to perform the following operations:
+<ul>
 <li><strong>Create a linked list</strong></li>
 <li><strong>Traverse a linked list</strong></li>
 <li><strong>Add data to a linked list</strong></li>
@@ -1797,7 +2119,6 @@ Example program code:
 <span class="n">SET</span><span class="w"> </span><span class="n">node2</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node3</span>
 <span class="n">SET</span><span class="w"> </span><span class="n">node3</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NULL</span>
 </code></pre></div>
-
 <p><strong>Python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fruit</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fruit</span> <span class="o">=</span> <span class="n">fruit</span>
@@ -1810,7 +2131,6 @@ Example program code:
 <span class="n">node1</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">node2</span>
 <span class="n">node2</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">node3</span>
 </code></pre></div>
-
 <p><strong>Java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">fruit</span><span class="p">;</span>
 <span class="w">    </span><span class="n">Node</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
@@ -1831,7 +2151,6 @@ Example program code:
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="algorithm-to-traverse-a-linked-list">Algorithm to traverse a linked list</h2>
 <ul>
 <li>We traverse the linked list starting from ‘node1’. We output the fruit value of each node and update the ‘current’ reference to the next node until we reach the end of the list
@@ -1844,24 +2163,21 @@ Example program code:
 <span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span>
 <span class="n">ENDWHILE</span>
 </code></pre></div>
-
 <p><strong>Python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Traverse the linked list</span>
 <span class="n">current</span> <span class="o">=</span> <span class="n">node1</span>
 <span class="k">while</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">fruit</span><span class="p">)</span>
-    <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">fruit</span><span class="p">)</span>
+	<span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
 </code></pre></div>
-
 <p><strong>Java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Traverse the linked list</span>
 <span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">node1</span><span class="p">;</span>
 <span class="k">while</span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">){</span>
-<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="na">fruit</span><span class="p">);</span>
-<span class="w">    </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
+<span class="w">	</span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="na">fruit</span><span class="p">);</span>
+<span class="w">	</span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="algorithm-to-add-data-to-a-linked-list">Algorithm to add data to a linked list</h2>
 <ul>
 <li>We create a new node with the new data and check if the list is empty</li>
@@ -1886,21 +2202,19 @@ Example program code:
 <span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newNode</span>
 <span class="n">ENDIF</span>
 </code></pre></div>
-
 <p><strong>Python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Add &quot;orange&quot; to the end of the linked list</span>
 <span class="n">new_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">node1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># If the list was empty, make &quot;orange&quot; the head</span>
-    <span class="n">node1</span> <span class="o">=</span> <span class="n">new_node</span>
+	<span class="c1"># If the list was empty, make &quot;orange&quot; the head</span>
+	<span class="n">node1</span> <span class="o">=</span> <span class="n">new_node</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="c1"># Find the last node and append &quot;orange&quot; to it</span>
-    <span class="n">current</span> <span class="o">=</span> <span class="n">node1</span>
-    <span class="k">while</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
-    <span class="n">current</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_node</span>
+	<span class="c1"># Find the last node and append &quot;orange&quot; to it</span>
+	<span class="n">current</span> <span class="o">=</span> <span class="n">node1</span>
+	<span class="k">while</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
+	<span class="n">current</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_node</span>
 </code></pre></div>
-
 <p><strong>Java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Add &quot;orange&quot; to the end of the linked list`  </span>
 <span class="n">Node</span><span class="w"> </span><span class="n">new_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;orange&quot;</span><span class="p">);</span>
@@ -1918,7 +2232,6 @@ Example program code:
 
 <span class="p">}</span>
 </code></pre></div>
-
 <h2 id="algorithm-to-remove-data-from-a-linked-list">Algorithm to remove data from a linked list</h2>
 <ul>
 <li>We traverse the list until we find the data to be removed</li>
@@ -1945,62 +2258,89 @@ Example program code:
 <span class="w">    </span><span class="n">SET</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span>
 <span class="n">ENDWHILE</span>
 </code></pre></div>
-
 <p><strong>Python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Find and remove &quot;apple&quot;</span>
 <span class="k">while</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">fruit</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">previous</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># If &quot;apple&quot; is the first node, update the head</span>
-            <span class="n">node1</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Remove the node by updating the previous node&#39;s next pointer</span>
+	<span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">fruit</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">previous</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="c1"># If &quot;apple&quot; is the first node, update the head</span>
+			<span class="n">node1</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Remove the node by updating the previous node&#39;s next pointer</span>
             <span class="n">previous</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
         <span class="k">break</span>
     <span class="n">previous</span> <span class="o">=</span> <span class="n">current</span>
     <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span>
 </code></pre></div>
-
 <p><strong>java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1">// Find and remove &quot;apple&quot;</span>
 <span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">){</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="na">fruit</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">)){</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">previous</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">){</span>
-<span class="w">            </span><span class="c1">// If &quot;apple&quot; is the first node, update the head</span>
-<span class="w">            </span><span class="n">node1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// Remove the node by updating the previous node&#39;s next pointer</span>
-<span class="w">            </span><span class="n">previous</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
-<span class="w">    </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="na">fruit</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">)){</span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">previous</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">){</span>
+<span class="w">			</span><span class="c1">// If &quot;apple&quot; is the first node, update the head</span>
+<span class="w">			</span><span class="n">node1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">			</span><span class="c1">// Remove the node by updating the previous node&#39;s next pointer</span>
+<span class="w">			</span><span class="n">previous</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
+<span class="w">		</span><span class="p">}</span>
+<span class="w">		</span><span class="k">break</span><span class="p">;</span>
+<span class="w">	</span><span class="p">}</span>
+<span class="w">	</span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="w">	</span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="na">next</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
-<p>The following diagram represents an Abstract Data Type (ADT) for a linked list.
+<p><div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q11(b) · 5 marks</div><div class="callout-body"><p>A linked list of flower names is stored in two 1D arrays (<code>Flower</code>, <code>NextPointer</code>), with <code>HeadPointer</code> giving the first node and 0 marking the end. Complete the pseudocode that inputs a flower name, searches the list in order, and outputs an appropriate found / not-found message. The loop terminates when the next pointer is 0.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(b)</strong> — one mark for each correct line</p>
+<pre><code>Pointer ← HeadPointer
+Found ← 0
+OUTPUT &quot;Enter a flower name &quot;
+INPUT FlowerName
+WHILE Pointer &lt;&gt; 0
+   IF Flower[Pointer] = FlowerName THEN
+      Found ← Pointer
+      Pointer ← 0
+   ELSE
+      Pointer ← NextPointer[Pointer]
+   ENDIF
+ENDWHILE
+IF Pointer = 0 THEN // IF Found &lt;&gt; 0 THEN
+   OUTPUT Flower[Found], &quot; is found&quot;
+ELSE
+   OUTPUT &quot;The flower you wanted is not in the list&quot;
+ENDIF
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q11(a) · 3 marks</div><div class="callout-body"><p>Several flower names have been deleted from the linked list (crossed out). Complete the table to show the new values of <code>HeadPointer</code> and <code>NextPointer</code> so that the remaining names stay in alphabetical order.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11(a)</strong> — one mark for each point</p>
+<ul>
+<li>Correct <code>HeadPointer</code></li>
+<li>Any three correct <code>NextPointer</code></li>
+<li>All six <code>NextPointer</code> correct</li>
+</ul>
+<p><code>HeadPointer = 5</code></p>
+</div></details>
+The following diagram represents an Abstract Data Type (ADT) for a linked list.
 <img alt="Flowchart of rectangular boxes connected by arrows showing sequence: A to C to D to E, ending in Ø. Each box represents a step in a process." src="images/43855_2025-06-03-0o3-kleki.png" />
 The free list is as follows:
-<img alt="Flowchart showing a series of connected boxes with arrows. The last box contains the symbol Ø, indicating an end or null operation." src="images/50240_2025-06-03-0o3-kleki-1.png" />
-Explain how a node containing data value B is added to the list in alphabetic sequence.<strong>[4]</strong>
-<strong>Answer</strong>
-<strong>One mark per point</strong></p>
+<img alt="Flowchart showing a series of connected boxes with arrows. The last box contains the symbol Ø, indicating an end or null operation." src="images/50240_2025-06-03-0o3-kleki-1.png" /></p>
+<p>Worked example — explain how a node containing data value B is added to the list in alphabetic sequence. <strong>One mark per point</strong>:</p>
 <ol>
-<li>Check for a free node [1 mark]</li>
-<li>Search for correct insertion point [1 mark]</li>
-<li>Assign data value B to first node in free list / node pointed to by start pointer of free list [1 mark]</li>
-<li>Pointer from A will be changed to point to node containing B (instead of C) [1 mark]</li>
-<li>Pointer from B will be changed to point to node containing C [1 mark]</li>
-<li>Start pointer in free list moved to point to next free node [1 mark]</li>
+<li>Check for a free node</li>
+<li>Search for correct insertion point</li>
+<li>Assign data value B to first node in free list / node pointed to by start pointer of free list</li>
+<li>Pointer from A will be changed to point to node containing B (instead of C)</li>
+<li>Pointer from B will be changed to point to node containing C</li>
+<li>Start pointer in free list moved to point to next free node</li>
 </ol>
 <h2 id="binary-trees">Binary trees</h2>
+<p><strong>Binary tree ★</strong></p>
 <h3 id="what-is-a-binary-tree">What is a binary tree?</h3>
 <ul>
 <li>A binary tree is a <strong>rooted tree</strong> where every node has a <strong>maximum of 2 nodes</strong></li>
 <li>A binary tree is essentially a <strong>graph</strong> and therefore can be implemented in the same way</li>
-<li>
-<p>You must understand:</p>
+<li>You must understand:
 <ul>
 <li><strong>Tree traversal of a tree data structure</strong></li>
 <li><strong>Add new data to a tree</strong></li>
@@ -2008,11 +2348,9 @@ Explain how a node containing data value B is added to the list in alphabetic se
 <img alt="binary-trees" src="images/binary-trees.png" /></li>
 </ul>
 </li>
-<li>
-<p>The most common way to represent a binary tree is by storing each node with a <strong>left and right pointer</strong>
+<li>The most common way to represent a binary tree is by storing each node with a <strong>left and right pointer</strong>
 This information is usually implemented <strong>using 2D arrays</strong>
-<img alt="binary-trees-2" src="images/binary-trees-2.png" /></p>
-</li>
+<img alt="binary-trees-2" src="images/binary-trees-2.png" /></li>
 </ul>
 <h4 id="tree-terminology">Tree terminology</h4>
 <table>
@@ -2059,15 +2397,18 @@ This information is usually implemented <strong>using 2D arrays</strong>
 </table>
 <h3 id="how-do-you-program-a-tree">How do you program a tree?</h3>
 <ul>
-<li>In the following example:<ul>
-<li>A tree is represented using a <code>TreeNode</code> <strong>structure</strong>, which includes:<ul>
+<li>In the following example:
+<ul>
+<li>A tree is represented using a <code>TreeNode</code> <strong>structure</strong>, which includes:
+<ul>
 <li>A <code>value</code> field to store the data held in the node</li>
 </ul>
 </li>
-<li>A <code>children</code> field to store a collection (e.g. list or array) of child nodes<ul>
+<li>A <code>children</code> field to store a collection (e.g. list or array) of child nodes
+<ul>
 <li>The <code>createTreeNode</code> function is used to <strong>initialise a new tree node</strong>, setting its value and creating an empty collection for its children</li>
 <li>The <code>addChild</code> function allows a new child node to be <strong>added to a parent node</strong></li>
-<li>It creates a new <code>TreeNode</code> with the given value and appends it to the parent&rsquo;s <code>children</code> collection</li>
+<li>It creates a new <code>TreeNode</code> with the given value and appends it to the parent’s <code>children</code> collection</li>
 <li>Finally, the <code>createTreeNode</code> function is used to create the <strong>root node</strong></li>
 <li>Additional child nodes are added using the <code>addChild</code> function, allowing a <strong>multi-level tree structure</strong> to be built with branches and sub-branches
 <strong>Pseudocode</strong></li>
@@ -2102,7 +2443,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="n">SET</span><span class="w"> </span><span class="n">child1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="p">.</span><span class="na">children</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
 <span class="n">CALL</span><span class="w"> </span><span class="nf">addChild</span><span class="p">(</span><span class="n">child1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Grandchild 1.1&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 <p><strong>python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -2121,7 +2461,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="n">child1</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">addChild</span><span class="p">(</span><span class="n">child1</span><span class="p">,</span> <span class="s2">&quot;Grandchild 1.1&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 <p><strong>Java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
 <span class="kd">class</span> <span class="nc">TreeNode</span><span class="w"> </span><span class="p">{</span>
@@ -2155,7 +2494,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <h3 id="algorithm-to-traverse-a-tree-structure">Algorithm to traverse a tree structure</h3>
 <p><strong>Pseudocode</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">PROCEDURE</span><span class="w"> </span><span class="nf">traverseTree</span><span class="p">(</span><span class="n">node</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">TreeNode</span><span class="p">)</span>
@@ -2170,7 +2508,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1">// Call the traversal on the root</span>
 <span class="n">CALL</span><span class="w"> </span><span class="nf">traverseTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 </code></pre></div>
-
 <p><strong>python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">traverseTree</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2181,7 +2518,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1"># Call the traversal</span>
 <span class="n">traverseTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 </code></pre></div>
-
 <p><strong>Java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">traverseTree</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="n">node</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2195,22 +2531,17 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1">// In main:</span>
 <span class="n">traverseTree</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
 </code></pre></div>
-
 <ul>
-<li>
-<p>For a tree like:
-    <code>Root</code>
-    <code>├── Child 1</code>
-    <code>│   └── Grandchild 1.1</code>
-    <code>└── Child 2</code></p>
-</li>
-<li>
-<p>The output will be:
-    <code>Root</code>
-    <code>Child 1</code>
-    <code>Grandchild 1.1</code>
-    <code>Child 2</code></p>
-</li>
+<li>For a tree like:
+<code>Root </code>
+<code>├── Child 1 </code>
+<code>│   └── Grandchild 1.1 </code>
+<code>└── Child 2 </code></li>
+<li>The output will be:
+<code>Root   </code>
+<code>Child 1   </code>
+<code>Grandchild 1.1   </code>
+<code>Child 2</code></li>
 </ul>
 <h3 id="algorithm-to-add-data-to-a-tree-structure">Algorithm to add data to a tree structure</h3>
 <p><strong>Pseudocode</strong></p>
@@ -2222,7 +2553,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1">// Usage:</span>
 <span class="n">CALL</span><span class="w"> </span><span class="nf">addChild</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;New Child&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 <p><strong>python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">addChild</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">childValue</span><span class="p">):</span>
     <span class="n">childNode</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">childValue</span><span class="p">)</span>
@@ -2230,7 +2560,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1"># Usage:</span>
 <span class="n">addChild</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;New Child&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">addChild</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="n">parent</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">childValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">TreeNode</span><span class="w"> </span><span class="n">childNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TreeNode</span><span class="p">(</span><span class="n">childValue</span><span class="p">);</span>
 <span class="w">    </span><span class="n">parent</span><span class="p">.</span><span class="na">children</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">childNode</span><span class="p">);</span>
@@ -2238,25 +2567,23 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1">// Usage in main:</span>
 <span class="n">addChild</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;New Child&quot;</span><span class="p">);</span>
 </code></pre></div>
-
 <ul>
 <li>These examples all <strong>create a new node</strong> with the provided value and <strong>attach it to the given parent node</strong></li>
 <li>This approach allows dynamic construction of trees with multiple levels</li>
 </ul>
 <h3 id="algorithm-to-remove-data-to-a-tree-structure">Algorithm to remove data to a tree structure</h3>
 <p><strong>Pseudocode</strong></p>
-<div class="highlight"><pre><span></span><code><span class="k">PROC</span><span class="nv">EDURE</span><span class="w"> </span><span class="nv">removeChild</span><span class="p">(</span><span class="nv">parent</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nv">TreeNode</span><span class="p">,</span><span class="w"> </span><span class="nv">targetValue</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nv">STRING</span><span class="p">)</span>
-<span class="w">    </span><span class="nf">FOR</span><span class="w"> </span><span class="nv">index</span><span class="w"> </span><span class="nv">FROM</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">TO</span><span class="w"> </span><span class="nv">LENGTH</span><span class="p">(</span><span class="nv">parent.children</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="nf">IF</span><span class="w"> </span><span class="nv">parent.children</span><span class="p">[</span><span class="nv">index</span><span class="p">]</span><span class="nv">.value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">targetValue</span><span class="w"> </span><span class="nv">THEN</span>
-<span class="w">            </span><span class="nf">REMOVE</span><span class="w"> </span><span class="nv">parent.children</span><span class="p">[</span><span class="nv">index</span><span class="p">]</span>
-<span class="w">            </span><span class="nf">RETURN</span>
-<span class="w">        </span><span class="k">END</span><span class="nv">IF</span>
-<span class="w">    </span><span class="nf">NEXT</span>
-<span class="k">ENDP</span><span class="nv">ROCEDURE</span>
-<span class="err">//</span><span class="w"> </span><span class="nf">Usage</span>
-<span class="nf">CALL</span><span class="w"> </span><span class="nv">removeChild</span><span class="p">(</span><span class="nv">root</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Child 1&quot;</span><span class="p">)</span>
-</code></pre></div>
-
+<pre><code>PROCEDURE removeChild(parent : TreeNode, targetValue : STRING)
+    FOR index FROM 0 TO LENGTH(parent.children) - 1
+        IF parent.children[index].value = targetValue THEN
+            REMOVE parent.children[index]
+            RETURN
+        ENDIF
+    NEXT
+ENDPROCEDURE
+// Usage
+CALL removeChild(root, &quot;Child 1&quot;)
+</code></pre>
 <p><strong>python</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">removeChild</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">targetValue</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">children</span><span class="p">)):</span>
@@ -2266,7 +2593,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1"># Usage:</span>
 <span class="n">removeChild</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;Child 1&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 <p><strong>Java</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">removeChild</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="n">parent</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">targetValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">parent</span><span class="p">.</span><span class="na">children</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2279,17 +2605,83 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <span class="c1">// Usage in main:</span>
 <span class="n">removeChild</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Child 1&quot;</span><span class="p">);</span>
 </code></pre></div>
-
 <ul>
 <li>This only removes the <strong>first matching child</strong> from the direct children of a node</li>
 <li>If you want to remove nodes <strong>anywhere in the tree</strong>, you’d need a recursive version</li>
 <li><code>REMOVE</code> and <code>del</code> and <code>.remove()</code> work because the <code>children</code> collection is a list/array</li>
 </ul>
+<h3 id="searching-an-ordered-binary-tree-bst">Searching an ordered binary tree (BST) ★</h3>
+<ul>
+<li>In an <strong>ordered / binary search tree</strong>, every node in the left subtree is <strong>less than</strong> the node’s value and every node in the right subtree is <strong>greater</strong> than it.</li>
+<li>To search, start at the root and compare the target with the current node:
+<ul>
+<li>equal → found; target less → go <strong>left</strong>; target greater → go <strong>right</strong>;</li>
+<li>stop when found or the null pointer is reached (target not present).</li>
+</ul>
+</li>
+<li>The tree is often stored as an <strong>array of records</strong> with <code>LeftPtr</code>, <code>Data</code> and <code>RightPtr</code> fields and a <code>RootPtr</code>; a null pointer is a sentinel such as −1.
+<img alt="Ordered binary search tree with left and right pointers used for BST search" src="images/p3-ch19-1-binary-search-tree.svg" /></li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Winter P31 Q11(c) · 4 marks</div><div class="callout-body"><p>A binary tree stored as an array of records <code>BinTree</code> (fields <code>LeftPtr</code>, <code>Data</code>, <code>RightPtr</code>) is searched by the function <code>SearchTree(Item : STRING)</code>, which returns the index of the record if found, or a null pointer (−1) otherwise. Complete the function:
+<code>NowPtr ← ..........</code> <code>WHILE NowPtr &lt;&gt; -1</code> <code>IF .......... THEN NowPtr ← BinTree[NowPtr].LeftPtr</code> <code>ELSE IF BinTree[NowPtr].Data &lt; Item THEN ..........</code> <code>ELSE RETURN NowPtr</code> <code>ENDIF</code> <code>ENDWHILE</code> <code>RETURN NowPtr</code></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11©</strong> — one mark for any correct row (<strong>Max 4</strong>)</p>
+<pre><code>FUNCTION SearchTree(Item : STRING) RETURNS INTEGER
+    NowPtr ← RootPtr
+    WHILE NowPtr &lt;&gt; -1
+        IF BinTree[NowPtr].Data &gt; Item THEN
+            NowPtr ← BinTree[NowPtr].LeftPtr
+        ELSE
+            IF BinTree[NowPtr].Data &lt; Item THEN
+                NowPtr ← BinTree[NowPtr].RightPtr
+            ELSE
+                RETURN NowPtr
+            ENDIF
+        ENDIF
+    ENDWHILE
+    RETURN NowPtr
+ENDFUNCTION
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Winter P32 Q11(c) · 4 marks</div><div class="callout-body"><p>The linked list is implemented as a 1D array of records <code>LinkList</code> (<code>LeftPtr</code>, <code>Data</code>, <code>RightPtr</code>). Complete <code>SearchList(Item : INTEGER)</code> which returns the record index if found, or a null pointer otherwise.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11©</strong> — one mark for any correct row (<strong>Max 4</strong>)</p>
+<pre><code>FUNCTION SearchList(Item : INTEGER) RETURNS INTEGER
+    NullPtr ← -1
+    NowPtr ← RootPtr
+    WHILE NowPtr &lt;&gt; NullPtr
+        IF LinkList[NowPtr].Data &lt; Item THEN
+            NowPtr ← LinkList[NowPtr].RightPtr
+        ELSE
+            IF LinkList[NowPtr].Data &gt; Item THEN
+                NowPtr ← LinkList[NowPtr].LeftPtr
+            ELSE
+                RETURN NowPtr
+            ENDIF
+        ENDIF
+    ENDWHILE
+    RETURN NullPtr
+ENDFUNCTION
+</code></pre>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Summer P31 Q4(a) · 4 marks</div><div class="callout-body"><p>A linked list stores an ordered list of integers; each node has a left pointer, data and a right pointer (−1 = null). Complete the binary tree, including null pointers, after adding <code>6, 15, 41, 66</code> to a tree rooted at 36.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4(a)</strong> — one mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>MP1 Any two nodes added correctly with correct data (6, 15, 41, 66) and arrows</li>
+<li>MP2 Remaining two nodes added with correct data and all nodes with connecting arrows starting from pointer boxes</li>
+<li>MP3 Correct null pointers (−1) added throughout</li>
+<li>MP4 No entries in other pointer boxes and all nodes correctly positioned and connected</li>
+</ul>
+<p>Root = 36; left child = 12 (left → 3 → 6, right → 15); right child = 40 (right → 41 → 66).</p>
+</div></details></p>
 <h2 id="adt-from-adt">ADT from ADT</h2>
+<p><strong>Implementing one ADT from another ★</strong></p>
 <h2 id="what-does-it-mean">What does it mean?</h2>
 <ul>
 <li>You should be able to <strong>explain or demonstrate</strong> how you can build one abstract data type <strong>on top of another</strong></li>
-<li>For example:<ul>
+<li>For example:
+<ul>
 <li>A <strong>stack</strong> can be implemented using a <strong>linked list</strong></li>
 <li>A <strong>queue</strong> can be implemented using two <strong>stacks</strong></li>
 <li>A <strong>dictionary</strong> can be implemented using a <strong>binary search tree</strong></li>
@@ -2382,11 +2774,176 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <li><code>dequeue()</code> → if <code>outStack</code> is empty, pop all items from <code>inStack</code> and push onto <code>outStack</code>, then pop from <code>outStack</code></li>
 <li>This simulates <strong>FIFO behaviour</strong> using <strong>LIFO operations</strong> from stacks</li>
 </ul>
+<p><div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q11(c) · 4 marks</div><div class="callout-body"><p>Explain how a new element can be added to a queue if it is implemented using two stacks.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q11©</strong> — one mark per mark point (<strong>Max 4</strong>)</p>
+<ul>
+<li>Two stacks are required so that the second stack can reverse the order of the first stack</li>
+<li>Stack 1 operates as the queue with the newest elements at the bottom; Stack 2 is empty</li>
+<li>To add an element, pop all the elements from stack 1 and push onto stack 2</li>
+<li>Push the new element onto either stack</li>
+<li>Pop all the elements of stack 2 back onto stack 1</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P32 Q9(b) · 2 marks</div><div class="callout-body"><p>Justify the use of a linked list instead of an array to implement a stack.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)</strong> — one mark for linked list and one mark for array (<strong>Max 2</strong>)</p>
+<ul>
+<li>Linked list: a dynamic data structure / not restricted in size; greater freedom to expand or contract by adding/removing nodes; allows more efficient editing using pointers instead of moving data</li>
+<li>Array: a static data structure generally fixed in size; when the array is full the stack cannot be extended further</li>
+</ul>
+</div></details></p>
+<h2 id="graph-as-an-adt">Graph as an ADT ★</h2>
+<h3 id="what-is-a-graph">What is a graph?</h3>
+<ul>
+<li>A <strong>graph</strong> is an Abstract Data Type consisting of a set of <strong>vertices / nodes</strong> connected by a set of <strong>edges / arcs</strong>.</li>
+<li>A graph is <strong>not</strong> a special case of a tree: a tree is a restricted (connected, acyclic) graph. A general graph may have cycles and may be disconnected.</li>
+<li><strong>Candidates are not required to write code to set up, access or search a graph structure</strong> — the requirement is to describe its features and justify when to use one.</li>
+</ul>
+<h3 id="key-features-of-a-graph">Key features of a graph</h3>
+<p><img alt="Directed and undirected, weighted graph showing vertices and edges" src="images/p3-ch19-1-graph-features.svg" /></p>
+<ul>
+<li><strong>Vertex (node)</strong> — an entity in the graph.</li>
+<li><strong>Edge / arc</strong> — a link between two vertices. An edge may be:
+<ul>
+<li><strong>undirected</strong> (no direction, e.g. a two-way road) or <strong>directed / digraph</strong> (one-way);</li>
+<li><strong>weighted</strong> (carries a cost, e.g. distance or time) or <strong>unweighted</strong>;</li>
+<li>a <strong>self-loop</strong> (an edge from a vertex to itself).</li>
+</ul>
+</li>
+<li><strong>Degree</strong> — the number of edges incident to a vertex (in-degree and out-degree for a directed graph).</li>
+<li><strong>Path</strong> — a sequence of vertices joined by edges; <strong>cycle</strong> — a path that returns to its start.</li>
+<li><strong>Connected</strong> — a path exists between every pair of vertices; otherwise the graph is disconnected.</li>
+<li>A graph can be represented by an <strong>adjacency matrix</strong> or an <strong>adjacency list</strong>.</li>
+</ul>
+<h3 id="when-to-use-a-graph-justification">When to use a graph (justification)</h3>
+<ul>
+<li>Use a graph whenever the problem is about <strong>relationships / connections between entities</strong> rather than a simple linear or hierarchical order:
+<ul>
+<li>road / rail / flight networks and shortest-route planning;</li>
+<li>computer networks and routing;</li>
+<li>dependencies (e.g. task scheduling, prerequisite ordering);</li>
+<li><strong>state-space search in AI</strong>, where nodes are states and edges are transitions (see §18.1 Artificial Intelligence).</li>
+</ul>
+</li>
+<li>A graph is preferred over a tree where a node may have <strong>many parents</strong>, where <strong>cycles</strong> exist, or where <strong>alternative routes</strong> must be compared by cost.</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q8 · 5 marks</div><div class="callout-body"><p>Calculate the shortest distance between the <strong>Start</strong> node and each of the nodes in the graph using Dijkstra’s algorithm. Show your working and write your answers in the table.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8</strong> — one mark per mark point, working (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 Initialisation – setting Start to 0</li>
+<li>MP2 … and the rest of the towns to ∞</li>
+<li>MP3 Evidence to show values at nodes being updated</li>
+<li>MP4 Evidence to show ‘visited node(s)’</li>
+<li>MP5 Evidence to show a correct calculation of at least one route</li>
+<li>MP6 Evidence to show more than one route has been calculated for at least one town</li>
+</ul>
+<p>Correct answers (<strong>Max 2</strong>): two marks for all six correct values, one mark for four or five correct values.</p>
+<table>
+<thead>
+<tr>
+<th>T</th>
+<th>V</th>
+<th>W</th>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>10</td>
+<td>13</td>
+<td>18</td>
+<td>21</td>
+<td>28</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Winter P32 Q8 · 5 marks</div><div class="callout-body"><p>Calculate the shortest distance between the Start and each of the destinations in the diagram using Dijkstra’s algorithm. Show your working.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8</strong> — one mark per mark point, working (<strong>Max 3</strong>)</p>
+<ul>
+<li>MP1 Initialisation – setting Start to 0</li>
+<li>MP2 … and the rest of the towns to ∞</li>
+<li>MP3 Evidence to show values at nodes being updated</li>
+<li>MP4 Evidence to show ‘visited node(s)’</li>
+<li>MP5 Evidence to show a calculation of at least one route</li>
+<li>MP6 Evidence to show more than one route has been calculated for at least one town</li>
+</ul>
+<p>Correct answers (<strong>Max 2</strong>): two marks for all six correct values, one mark for four or five correct values.</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+<th>F</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>12</td>
+<td>19</td>
+<td>14</td>
+<td>16</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2021 Summer P31 Q5 · 8 marks</div><div class="callout-body"><p><strong>(a)</strong> Calculate the shortest distance between the base and each of the other towns in the diagram using Dijkstra’s algorithm. <strong>[5]</strong>
+<strong>(b)</strong> Explain the use of graphs to aid Artificial Intelligence (AI). <strong>[3]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(a)</strong> — working (<strong>Max 3</strong>): initialisation setting Base to 0 and the rest to ∞; evidence of values at nodes being updated; evidence of visited nodes; evidence of calculation of at least one route; evidence of more than one route calculated.
+Correct answer (<strong>Max 2</strong>): one mark for four correct values, one mark for all values correct — Town 1 = 3, Town 2 = 5, Town 3 = 2, Town 4 = 9, Town 5 = 3, Town 6 = 8.</p>
+<p><strong>Q5(b)</strong> — one mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Artificial Neural Networks can be represented using graphs</li>
+<li>Graphs provide structures for relationships / relationships between nodes</li>
+<li>AI problems can be defined/solved as finding a path in a graph</li>
+<li>Graphs may be analysed/ingested by a range of algorithms e.g. A* / Dijkstra’s algorithm, used in machine learning</li>
+<li>Example of method e.g. back propagation of errors / regression methods</li>
+</ul>
+</div></details></p>
+<h2 id="dictionary-adt">Dictionary ADT</h2>
+<h3 id="what-is-a-dictionary">What is a dictionary?</h3>
+<ul>
+<li>A <strong>dictionary</strong> (also called a <strong>map</strong> or associative array) is an ADT that stores a collection of <strong>(key, value)</strong> pairs.</li>
+<li>Every <strong>key</strong> is unique; the associated <strong>value</strong> is retrieved by supplying its key — i.e. lookup is by key, not by position.</li>
+<li>It is sometimes called a <strong>key–value mapping</strong>.</li>
+</ul>
+<h3 id="operations">Operations</h3>
+<ul>
+<li><strong>insert / put(key, value)</strong> — add a new pair, or replace the value if the key already exists.</li>
+<li><strong>lookup / get / search(key)</strong> — return the value associated with the key, or an “absent” result.</li>
+<li><strong>delete / remove(key)</strong> — remove the pair with the given key.</li>
+<li><strong>isEmpty / size / contains(key)</strong> — query the state of the dictionary.</li>
+</ul>
+<h3 id="uses">Uses</h3>
+<ul>
+<li>Symbol tables in compilers; indexing records by a unique identifier (e.g. a student number or part code); counting frequencies; any task requiring fast retrieval by a unique key.</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<ul>
+<li>From a <strong>built-in type</strong>: most languages provide a hash table based <code>dict</code> / <code>Map</code> (Python <code>dict</code>, Java <code>HashMap</code>).</li>
+<li>From <strong>another ADT</strong>: store the pairs in a <strong>binary search tree</strong> keyed on the key (ordered lookup), or in a <strong>linked list / array</strong> of records (simple linear search by key), or in a <strong>hash table</strong> built from an array plus a linked list for collision chains.</li>
+<li>A hash table gives average O(1) lookup; a BST gives O(log n); a linear list gives O(n).</li>
+</ul>
+<p>No past-paper sub-question in the current bank asks specifically about the dictionary ADT; it is required syllabus content (describe the ADT and implement it from appropriate built-in types or other ADTs).</p>
 <h2 id="suitability-of-algorithms">Suitability of algorithms</h2>
+<p><strong>Comparing algorithms (time taken &amp; memory used) ★</strong></p>
 <h3 id="why-do-we-need-to-check-the-suitability-of-algorithms">Why do we need to check the suitability of algorithms?</h3>
 <ul>
 <li>Algorithms must be compared to <strong>determine how suitable they are for solving a specific problem</strong> or working with a particular set of data</li>
-<li>Key factors in comparing algorithms include:<ul>
+<li>Key factors in comparing algorithms include:
+<ul>
 <li><strong>How long</strong> they take to complete a task (<strong>time complexity</strong>)</li>
 <li><strong>How much memory</strong> they require to complete a task (<strong>space complexity</strong>)</li>
 </ul>
@@ -2408,23 +2965,27 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <h3 id="space-complexity">Space complexity</h3>
 <ul>
 <li>Space complexity refers to the <strong>amount of memory</strong> an algorithm needs to complete its task</li>
-<li>Memory usage includes:<ul>
+<li>Memory usage includes:
+<ul>
 <li>Space for input data</li>
 <li>Temporary variables</li>
 <li>Any additional data structures (e.g. arrays, stacks, queues)</li>
 </ul>
 </li>
-<li>For example:<ul>
+<li>For example:
+<ul>
 <li>If an algorithm <strong>creates a new copy</strong> of the input data, it will require more memory than one that modifies the data in place</li>
 <li>An algorithm that uses <strong>recursion</strong> may use more memory due to the <strong>call stack</strong></li>
 </ul>
 </li>
 </ul>
 <h2 id="big-o-notation">Big O Notation</h2>
+<p><strong>Big O notation for time &amp; space complexity ★</strong></p>
 <h3 id="what-is-big-o-notation">What is Big O Notation?</h3>
 <ul>
 <li>Big O Notation is a mathematical way to describe the <strong>time</strong> and <strong>space complexity</strong> of an algorithm</li>
-<li>It shows how well an algorithm scales as the size of the input increases<ul>
+<li>It shows how well an algorithm scales as the size of the input increases
+<ul>
 <li>It describes the <strong>order of growth</strong> (efficiency) of an algorithm</li>
 <li>It is <strong>hardware-independent</strong> – it measures steps or operations, not seconds</li>
 <li>Named after German mathematician <strong>Edmund Landau</strong></li>
@@ -2439,13 +3000,9 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <h2 id="types-of-time-complexity">Types of time complexity</h2>
 <h4 id="o1-constant-time">O(1) – Constant time</h4>
 <ul>
-<li>
-<p>The algorithm always takes the same number of steps, regardless of input size
-<code>totalLength = len(s)</code></p>
-</li>
-<li>
-<p>The length is returned in one step, even if the string is very long</p>
-</li>
+<li>The algorithm always takes the same number of steps, regardless of input size
+<code>totalLength = len(s)</code></li>
+<li>The length is returned in one step, even if the string is very long</li>
 </ul>
 <h4 id="on-linear-time">O(n) – Linear time</h4>
 <ul>
@@ -2459,7 +3016,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
     <span class="k">return</span> <span class="nb">sum</span>
 <span class="n">endfunction</span>
 </code></pre></div>
-
 <ul>
 <li>For input size <code>n</code>, the algorithm performs <code>n + 1</code> steps</li>
 <li>Example with multiple loops:</li>
@@ -2481,7 +3037,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
     <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="n">endfunction</span>
 </code></pre></div>
-
 <ul>
 <li>Total steps = <code>3x + 5</code> ⇒ Still O(n) as x grows</li>
 </ul>
@@ -2503,7 +3058,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
 <span class="n">endfunction</span>
 </code></pre></div>
-
 <ul>
 <li>Steps: <code>x^2 + x + 2</code> ⇒ Dominant term is <code>x^2</code> ⇒ O(n^2)</li>
 <li>As x increases, the impact of lower-order terms and constants becomes negligible</li>
@@ -2511,7 +3065,8 @@ This information is usually implemented <strong>using 2D arrays</strong>
 <h4 id="olog-n-logarithmic-time">O(log n) – Logarithmic time</h4>
 <ul>
 <li>The number of steps grows slowly even as input size grows rapidly</li>
-<li>Common in <strong>binary search</strong><ul>
+<li>Common in <strong>binary search</strong>
+<ul>
 <li>Example: <code>log2(8) = 3</code>, because 2^3 = 8</li>
 <li>Doubling input size barely affects total steps</li>
 </ul>
@@ -2622,13 +3177,15 @@ This information is usually implemented <strong>using 2D arrays</strong>
 </ul>
 <h3 id="how-to-derive-big-o-from-code">How to derive Big O from code</h3>
 <ol>
-<li><strong>Count loops</strong>:<ul>
+<li><strong>Count loops</strong>:
+<ul>
 <li>1 loop = O(n)</li>
 <li>2 nested loops = O(n^2)</li>
 <li>No loops = O(1)</li>
 </ul>
 </li>
-<li><strong>Ignore constants and lower-order terms</strong>:<ul>
+<li><strong>Ignore constants and lower-order terms</strong>:
+<ul>
 <li><code>3n^2 + 4n + 5</code> → O(n^2)</li>
 </ul>
 </li>
@@ -2645,7 +3202,6 @@ This information is usually implemented <strong>using 2D arrays</strong>
     <span class="k">return</span> <span class="nb">sum</span>
 <span class="n">endfunction</span>
 </code></pre></div>
-
 <ul>
 <li>One statement → O(1)</li>
 </ul>
@@ -2654,37 +3210,387 @@ This information is usually implemented <strong>using 2D arrays</strong>
     <span class="k">return</span> <span class="nb">sum</span>
 <span class="n">endfunction</span>
 </code></pre></div>
-
 <ul>
 <li>One statement → O(n<sup>2</sup>)</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sumNumbers3</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">total</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">total</span> <span class="o">*=</span> <span class="n">j</span>
-        <span class="n">res</span> <span class="o">+=</span> <span class="n">total</span>
-    <span class="k">return</span> <span class="n">res</span>
+	<span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+		<span class="n">total</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+			<span class="n">total</span> <span class="o">*=</span> <span class="n">j</span>
+		<span class="n">res</span> <span class="o">+=</span> <span class="n">total</span>
+	<span class="k">return</span> <span class="n">res</span>
 </code></pre></div>
-
 <h3 id="time-complexity-graph">Time complexity graph</h3>
 <p><img alt="figure-1--graph-of-big-o-notation-functions-revision-notes-computer-science" src="images/figure-1--graph-of-big-o-notation-functions-revision-notes.png" /></p>
 <ul>
 <li>From the graph, <strong>exponential time (2</strong> <sup><b>n</b></sup><strong>)</strong> grows the <strong>quickest</strong> and therefore is the most <strong>inefficient</strong> form of algorithm, followed by <strong>polynomial time (n</strong> <sup><b>2</b></sup><strong>)</strong>, <strong>linear time (n)</strong>, <strong>logarithmic time (logn)</strong> and finally <strong>constant time (1)</strong></li>
 <li>Further time complexities exist such as <strong>factorial time (n!)</strong> which performs <strong>worse than exponential time</strong> and <strong>linear-logarithmic time (nlogn)</strong> which sits <strong>between polynomial and linear time</strong>. Merge sort is an example of an algorithm that uses O(nlogn) time complexity</li>
 <li>The Big-O time complexity of an algorithm can be derived by inspecting its component parts</li>
-<li>It is important to know that when determining an algorithm&rsquo;s Big-O that <strong>only the dominant factor is used</strong>.</li>
-<li>This means the time complexity that <strong>contributes the most</strong> to the algorithm is used to describe the algorithm. For example:<ul>
+<li>It is important to know that when determining an algorithm’s Big-O that <strong>only the dominant factor is used</strong>.</li>
+<li>This means the time complexity that <strong>contributes the most</strong> to the algorithm is used to describe the algorithm. For example:
+<ul>
 <li>3x <sup>2</sup> + 4x + 5, which describes three nested loops, four standard loops and five statements is described as O(n <sup>2</sup>)</li>
 <li>x <sup>2</sup> is the dominating factor. As the input size grows x <sup>2</sup> contributes proportionally more than the other factors</li>
-<li>Coefficients are also removed from the Big-O notation. The 3 in 3x <sup>2</sup> acts as a multiplicative value whose contribution becomes smaller and smaller as the size of the input increases.<ul>
-<li>For an arbitrarily large value such as 10 <sup>100</sup>, which is 10 with one hundred 0’s after it, multiplying this number by 3 will have little contribution to the overall time complexity. 3 is therefore dropped from the overall time complexity</li>
+<li>Coefficients are also removed from the Big-O notation. The 3 in 3x <sup>2</sup> acts as a multiplicative value whose contribution becomes smaller and smaller as the size of the input increases.
+<ul>
+<li>For an arbitrarily large value such as 10 <sup>100</sup>, which is 10 with one hundred 0’s after it, multiplying this number by 3 will have little contribution to the overall time complexity. 3 is therefore dropped from the overall time complexity
+<img alt="Growth curves comparing O(1), O(log n), O(n), O(n log n), O(n²) and O(2ⁿ)" src="images/ch13_big_o_growth_curves.svg" /></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+<blockquote>
+<p>The file name retains its original chapter number but the content (common algorithm growth rates) applies directly here.</p>
+</blockquote>
+<p><div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q12(b) · 3 marks</div><div class="callout-body"><p>Big O notation is used to classify efficiency of algorithms. The Big O notation for time complexity in a binary search is O(log n).
+<strong>(i)</strong> State the Big O notation for time complexity of a linear search. <strong>[1]</strong>
+<strong>(ii)</strong> Describe the meaning of O(log n) as it applies to a binary search algorithm. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q12(b)(i)</strong></p>
+<ul>
+<li>O(n)</li>
+</ul>
+<p><strong>Q12(b)(ii)</strong> — one mark per point (<strong>Max 2</strong>)</p>
+<ul>
+<li>O(log n) is a time complexity that uses logarithmic time</li>
+<li>The time taken goes up linearly as the number of items rises exponentially</li>
+<li>O(log n) is the worst-case scenario (time complexity for a binary search)</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q8c · 3 marks</div><div class="callout-body"><p>Compare the performance of the algorithms for a binary search and a linear search using Big O notation for order of time complexity.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8c</strong> — one mark per mark point (<strong>Max 3</strong>)</p>
+<ul>
+<li>Linear search O(n) and Binary search O(log₂ n) / O(Log n)</li>
+<li>Time to search increases linearly with the number of items for a linear search and logarithmically for a binary search</li>
+<li>Time to search increases less rapidly for a binary search and more rapidly for a linear search</li>
+</ul>
+</div></details></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q10(a)</td>
+<td>Implementing an insertion sort</td>
+<td>2026 Summer P31 Q10(a)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)</td>
+<td>Sorting performance vs data order &amp; size</td>
+<td>2026 Summer P31 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q10©</td>
+<td>Big O notation for time &amp; space complexity</td>
+<td>2026 Summer P31 Q10©</td>
+</tr>
+<tr>
+<td>P32 Q10(a)</td>
+<td>Linear &amp; binary searching methods; binary search performance vs number of items</td>
+<td>2026 Summer P32 Q10(a)</td>
+</tr>
+<tr>
+<td>P33 Q10(a)(i)</td>
+<td>Implementing a binary search</td>
+<td>2026 Summer P33 Q10(a)(i)</td>
+</tr>
+<tr>
+<td>P33 Q10(a)(ii)</td>
+<td>Implementing a binary search</td>
+<td>2026 Summer P33 Q10(a)(ii)</td>
+</tr>
+<tr>
+<td>P33 Q10(b)</td>
+<td>Binary search performance vs number of items</td>
+<td>2026 Summer P33 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q4(a)</td>
+<td>Inserting into a binary tree</td>
+<td>2025 Summer P31 Q4(a)</td>
+</tr>
+<tr>
+<td>P31 Q4(b)</td>
+<td>Recursion (see §19.2 Recursion)</td>
+<td>2025 Summer P31 Q4(b)</td>
+</tr>
+<tr>
+<td>P31 Q4©</td>
+<td>Understanding &amp; using ADTs</td>
+<td>2025 Summer P31 Q4©</td>
+</tr>
+<tr>
+<td>P32 Q11(a)</td>
+<td>Inserting into a binary tree</td>
+<td>2025 Summer P32 Q11(a)</td>
+</tr>
+<tr>
+<td>P32 Q11(b)</td>
+<td>Recursion (see §19.2 Recursion)</td>
+<td>2025 Summer P32 Q11(b)</td>
+</tr>
+<tr>
+<td>P33 Q12(a)</td>
+<td>Understanding &amp; using ADTs</td>
+<td>2025 Summer P33 Q12(a)</td>
+</tr>
+<tr>
+<td>P33 Q12(b)</td>
+<td>Implementing an insertion sort</td>
+<td>2025 Summer P33 Q12(b)</td>
+</tr>
+<tr>
+<td>P33 Q12©</td>
+<td>Sorting performance vs data order &amp; size</td>
+<td>2025 Summer P33 Q12©</td>
+</tr>
+<tr>
+<td>P33 Q8</td>
+<td>Graph as an ADT (Dijkstra — see also §18.1)</td>
+<td>2025 Winter P33 Q8</td>
+</tr>
+<tr>
+<td>P32 Q12(a)(i)</td>
+<td>Inserting into a stack</td>
+<td>2025 Winter P32 Q12(a)(i)</td>
+</tr>
+<tr>
+<td>P32 Q12(a)(ii)</td>
+<td>Inserting into a stack</td>
+<td>2025 Winter P32 Q12(a)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q12(b)</td>
+<td>Recursion / stacks &amp; unwinding (see §19.2 Recursion)</td>
+<td>2025 Winter P32 Q12(b)</td>
+</tr>
+<tr>
+<td>P32 Q8(a)</td>
+<td>Implementing a linear search</td>
+<td>2024 Summer P32 Q8(a)</td>
+</tr>
+<tr>
+<td>P32 Q8(b)</td>
+<td>Linear &amp; binary searching methods; Big O notation</td>
+<td>2024 Summer P32 Q8(b)</td>
+</tr>
+<tr>
+<td>P31 Q10(a)</td>
+<td>Conditions necessary for a binary search</td>
+<td>2024 Summer P31 Q10(a)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)</td>
+<td>Implementing a binary search</td>
+<td>2024 Summer P31 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q10©</td>
+<td>Binary search performance vs number of items</td>
+<td>2024 Summer P31 Q10©</td>
+</tr>
+<tr>
+<td>P31 Q11(a)</td>
+<td>Implementing a binary tree from a linked list</td>
+<td>2024 Winter P31 Q11(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)</td>
+<td>Implementing a binary tree from a 1D array of records</td>
+<td>2024 Winter P31 Q11(b)</td>
+</tr>
+<tr>
+<td>P31 Q11©</td>
+<td>Finding an item in a binary tree</td>
+<td>2024 Winter P31 Q11©</td>
+</tr>
+<tr>
+<td>P32 Q11(a)</td>
+<td>Implementing a binary tree from a linked list</td>
+<td>2024 Winter P32 Q11(a)</td>
+</tr>
+<tr>
+<td>P32 Q11(b)</td>
+<td>Implementing a binary tree from a 2D array</td>
+<td>2024 Winter P32 Q11(b)</td>
+</tr>
+<tr>
+<td>P32 Q11©</td>
+<td>Finding an item in a binary tree</td>
+<td>2024 Winter P32 Q11©</td>
+</tr>
+<tr>
+<td>P32 Q8</td>
+<td>Graph as an ADT (Dijkstra — see also §18.1)</td>
+<td>2023 Winter P32 Q8</td>
+</tr>
+<tr>
+<td>P32 Q9(a)(i)</td>
+<td>Implementing a stack</td>
+<td>2023 Winter P32 Q9(a)(i)</td>
+</tr>
+<tr>
+<td>P32 Q9(a)(ii)</td>
+<td>Inserting into a stack</td>
+<td>2023 Winter P32 Q9(a)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q9(b)</td>
+<td>Implementing one ADT from another ADT</td>
+<td>2023 Winter P32 Q9(b)</td>
+</tr>
+<tr>
+<td>P32 Q9©</td>
+<td>Recursion / stacks &amp; unwinding (see §19.2 Recursion)</td>
+<td>2023 Winter P32 Q9©</td>
+</tr>
+<tr>
+<td>P31 Q10(a)</td>
+<td>Implementing a stack</td>
+<td>2023 Winter P31 Q10(a)</td>
+</tr>
+<tr>
+<td>P31 Q10(b)</td>
+<td>Deleting from a stack</td>
+<td>2023 Winter P31 Q10(b)</td>
+</tr>
+<tr>
+<td>P31 Q10©</td>
+<td>Understanding &amp; using ADTs</td>
+<td>2023 Winter P31 Q10©</td>
+</tr>
+<tr>
+<td>P31 Q11(a)</td>
+<td>Implementing a queue</td>
+<td>2023 Summer P31 Q11(a)</td>
+</tr>
+<tr>
+<td>P31 Q11(b)</td>
+<td>Deleting from a queue</td>
+<td>2023 Summer P31 Q11(b)</td>
+</tr>
+<tr>
+<td>P31 Q11©</td>
+<td>Implementing one ADT from another ADT</td>
+<td>2023 Summer P31 Q11©</td>
+</tr>
+<tr>
+<td>P32 Q11(a)(i)</td>
+<td>Understanding &amp; using ADTs</td>
+<td>2023 Summer P32 Q11(a)(i)</td>
+</tr>
+<tr>
+<td>P32 Q11(a)(ii)</td>
+<td>Inserting into a queue</td>
+<td>2023 Summer P32 Q11(a)(ii)</td>
+</tr>
+<tr>
+<td>P32 Q11(b)</td>
+<td>Understanding &amp; using ADTs</td>
+<td>2023 Summer P32 Q11(b)</td>
+</tr>
+<tr>
+<td>P32 Q8a</td>
+<td>Implementing a linear search</td>
+<td>2022 Summer P32 Q8a</td>
+</tr>
+<tr>
+<td>P32 Q8b(i)</td>
+<td>Conditions necessary for a binary search</td>
+<td>2022 Summer P32 Q8b(i)</td>
+</tr>
+<tr>
+<td>P32 Q8b(ii)</td>
+<td>Implementing a binary search</td>
+<td>2022 Summer P32 Q8b(ii)</td>
+</tr>
+<tr>
+<td>P32 Q8b(iii)</td>
+<td>Binary search performance vs number of items</td>
+<td>2022 Summer P32 Q8b(iii)</td>
+</tr>
+<tr>
+<td>P32 Q8c</td>
+<td>Big O notation for time &amp; space complexity</td>
+<td>2022 Summer P32 Q8c</td>
+</tr>
+<tr>
+<td>P32 Q11(a)</td>
+<td>Deleting from a linked list</td>
+<td>2022 Winter P32 Q11(a)</td>
+</tr>
+<tr>
+<td>P32 Q11(b)</td>
+<td>Finding an item in a linked list</td>
+<td>2022 Winter P32 Q11(b)</td>
+</tr>
+<tr>
+<td>P32 Q11©</td>
+<td>Understanding &amp; using ADTs (linked list, free list)</td>
+<td>2022 Winter P32 Q11©</td>
+</tr>
+<tr>
+<td>P31 Q12(a)</td>
+<td>Implementing a binary search</td>
+<td>2022 Winter P31 Q12(a)</td>
+</tr>
+<tr>
+<td>P31 Q12(b)(i)</td>
+<td>Big O notation for time &amp; space complexity</td>
+<td>2022 Winter P31 Q12(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q12(b)(ii)</td>
+<td>Big O notation / binary search performance</td>
+<td>2022 Winter P31 Q12(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>Graph as an ADT (Dijkstra — see also §18.1)</td>
+<td>2021 Summer P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)</td>
+<td>Graph as an ADT / graphs in AI (see §18.1)</td>
+<td>2021 Summer P31 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q8(a)</td>
+<td>Sorting performance vs data order &amp; size</td>
+<td>2021 Summer P31 Q8(a)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)</td>
+<td>Implementing an insertion sort</td>
+<td>2021 Summer P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P32 Q10(b)</td>
+<td>File processing (SEEK / GETRECORD) — misfiled, belongs to §20.2</td>
+<td>2026 Summer P32 Q10(b)</td>
+</tr>
+<tr>
+<td>P33 Q11</td>
+<td>File processing (SEEK / GETRECORD / PUTRECORD) — misfiled, belongs to §20.2</td>
+<td>2025 Summer P33 Q11</td>
+</tr>
+<tr>
+<td>P31 Q12</td>
+<td>File processing (SEEK / GETRECORD) — misfiled, belongs to §20.2</td>
+<td>2025 Summer P31 Q12</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="18-artificial-intelligence.html" title="Previous: 18 Artificial Intelligence" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">18 Artificial Intelligence</span></a>

@@ -194,6 +194,45 @@ body::before {
 .highlight .nb { color: #c09870 } /* Built-in */
 .highlight .nc { color: #e0c8a0 } /* Class */
 .highlight .nf { color: #e0c8a0 } /* Function */
+/* Obsidian callouts — question block + collapsible answer */
+.callout {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.callout-title,
+details.callout > summary {
+  padding: 9px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+div.callout { border-left: 4px solid var(--accent); }
+.callout-question { background: #fdf7ef; }
+.callout-question > .callout-title {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+details.callout > summary {
+  cursor: pointer;
+  color: var(--accent);
+  list-style: none;
+  user-select: none;
+}
+details.callout > summary::-webkit-details-marker { display: none; }
+details.callout > summary::before { content: '\25B8  '; }
+details.callout[open] > summary::before { content: '\25BE  '; }
+details.callout > summary:hover { background: var(--accent-light); }
+.callout-example { border-left: 4px solid #4a7c59; background: #f6faf5; }
+.callout-example > summary { color: #3f6b4c; }
+.callout-example > summary:hover { background: #ecf4ea; }
+.callout-body { padding: 2px 16px 12px; }
+.callout-body > :first-child { margin-top: 10px; }
+.callout-body > :last-child { margin-bottom: 10px; }
+.callout-body table { font-size: 13.5px; }
+.callout-body img { margin: 10px 0; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -219,7 +258,6 @@ body::before {
 <li><a href="#how-encryption-works">How encryption works</a></li>
 <li><a href="#symmetric-asymmetric-encryption">Symmetric &amp; asymmetric encryption</a></li>
 <li><a href="#quantum-cryptography">Quantum cryptography</a></li>
-<li><a href="#what-is-quantum-cryptograhy">What is quantum cryptograhy?</a></li>
 <li><a href="#protocols">Protocols</a></li>
 <li><a href="#ssltls">SSL/TLS</a></li>
 <li><a href="#what-is-tls">What is TLS?</a></li>
@@ -230,20 +268,21 @@ body::before {
     </aside>
     <div class="post-main">
       <article class="card">
-        <h2 id="encryption">Encryption</h2>
+        
+<h2 id="encryption">Encryption</h2>
 <h2 id="how-encryption-works">How encryption works</h2>
 <h3 id="what-is-encryption">What is encryption?</h3>
 <ul>
 <li>Encryption is a method of <strong>scrambling data</strong> before being transmitted across a network</li>
 <li>Encryption helps to protect the contents from unauthorised access by <strong>making data meaningless</strong></li>
-<li>While encryption is important on both <strong>wired</strong> and <strong>wireless</strong> networks, it&rsquo;s even more critical on wireless networks due to the data being transmitted over radio waves, making it easy to <strong>intercept</strong></li>
+<li>While encryption is important on both <strong>wired</strong> and <strong>wireless</strong> networks, it’s even more critical on wireless networks due to the data being transmitted over radio waves, making it easy to <strong>intercept</strong></li>
 </ul>
 <h3 id="how-is-wireless-data-encrypted">How is wireless data encrypted?</h3>
 <ul>
-<li>Wireless networks are identified by a &lsquo;Service Set Identifier&rsquo; (<strong>SSID</strong>) which along with a password is used to create a &rsquo; <strong>master key</strong> &lsquo;</li>
+<li>Wireless networks are identified by a ‘Service Set Identifier’ (<strong>SSID</strong>) which along with a password is used to create a ‘<strong>master key</strong>’</li>
 <li>When devices connect to the <strong>same wireless network</strong> using the SSID and password they are given a copy of the master key</li>
-<li>The master key is used to <strong>encrypt</strong> data into &rsquo; <strong>cipher text</strong> &lsquo;, before being transmitted</li>
-<li>The receiver uses the same master key to <strong>decrypt</strong> the cipher text back to &rsquo; <strong>plain text</strong> &lsquo;</li>
+<li>The master key is used to <strong>encrypt</strong> data into ‘<strong>cipher text</strong>’, before being transmitted</li>
+<li>The receiver uses the same master key to <strong>decrypt</strong> the cipher text back to ‘<strong>plain text</strong>’</li>
 <li>To guarantee the security of data, the <strong>master key is never transmitted</strong>. Without it, any intercepted data is rendered useless</li>
 <li>Wireless networks use dedicated <strong>protocols</strong> like <strong>WPA2</strong> specifically designed for <strong>Wi-Fi</strong> security
 <img alt="Overview diagram of basic wireless encryption" src="images/wireless-encryption.png" /></li>
@@ -253,37 +292,269 @@ body::before {
 <li>Wired networks are encrypted in a very similar way to a wireless network, using a <strong>master key to encrypt</strong> data and the <strong>same key to decrypt</strong> data</li>
 <li>Encryption on a wired network differs slightly as it is often left to <strong>individual applications to decide</strong> how encryption is used, for example <strong>HTTPS</strong></li>
 </ul>
+<h3 id="plain-text-and-cipher-text">Plain text and cipher text ★</h3>
+<ul>
+<li><strong>Plain text</strong> is the readable original data; <strong>cipher text</strong> is the scrambled output produced by encryption, and decryption returns it to plain text</li>
+<li><strong>Encryption</strong> is the process of converting plain text into cipher text using an algorithm and a key; <strong>decryption</strong> is the reverse process</li>
+</ul>
+<p><strong>Why use key cryptography ★</strong></p>
+<ul>
+<li>Reasons examined: to prove a message is <strong>authentic</strong> / came from a trusted source; to ensure <strong>only the intended receiver</strong> can understand it; to ensure it has <strong>not been altered</strong> during transmission; and <strong>non-repudiation</strong> (neither sender nor receiver can deny the transmission)</li>
+<li>The two methods of key cryptography are <strong>symmetric</strong> and <strong>asymmetric</strong> key cryptography</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P31 Q8 · 8 marks</div><div class="callout-body"><p>A message is to be sent securely. Software uses a key to encrypt the message before it is sent.</p>
+<p><strong>(a)(i)</strong> Give two reasons for using key cryptography. <strong>[2]</strong>
+<strong>(a)(ii)</strong> Give two methods of key cryptography that can be used. <strong>[2]</strong>
+<strong>(b)</strong> When there is a secure exchange of key(s), the message is sent. The use of quantum cryptography is being considered for the secure exchange.
+<strong>(b)(i)</strong> State two possible benefits of using quantum cryptography. <strong>[2]</strong>
+<strong>(b)(ii)</strong> State two possible drawbacks of using quantum cryptography. <strong>[2]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8a(i)</strong> Any two from:</p>
+<ul>
+<li>To ensure the message is authentic // came from a trusted source</li>
+<li>To ensure that only the intended receiver is able to understand the message</li>
+<li>To ensure the message has not been altered during transmission</li>
+<li>Non-repudiation, neither the sender or receiver can deny the transmission occurred</li>
+</ul>
+<p><strong>Q8a(ii)</strong></p>
+<ul>
+<li>Symmetric</li>
+<li>Asymmetric</li>
+</ul>
+<p><strong>Q8b(i)</strong> Any two from:</p>
+<ul>
+<li>Any eavesdropping can be identified (as the state will be changed)</li>
+<li>Integrity of the key once transferred can be guaranteed (cannot be copied and decrypted at a later date)</li>
+<li>Longer/more secure keys can be exchanged</li>
+</ul>
+<p><strong>Q8b(ii)</strong> Any two from:</p>
+<ul>
+<li>Limited range</li>
+<li>requires dedicated fibre (optic) line and specialist hardware</li>
+<li>cost of dedicated fibre (optic) line and specialist hardware is expensive</li>
+<li>polarisation of light may be altered whilst travelling down fibre optic cables</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q8(a)(i)–(ii) · 2 marks</div><div class="callout-body"><p>Define the following asymmetric key encryption terms:
+<strong>(a)(i)</strong> cipher text
+<strong>(a)(ii)</strong> public key</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(a)(i)</strong></p>
+<ul>
+<li>Text <strong>encrypted</strong> from plain text using an encryption algorithm. // The result of putting plain text through an <strong>encryption algorithm</strong>.</li>
+</ul>
+<p><strong>Q8(a)(ii)</strong></p>
+<ul>
+<li>A cryptographic/encryption key that can be obtained/used by anyone to send encrypted messages. // A key that is part of a matched pair // An encryption key known to all users // A decryption key obtained/used by anyone to decrypt sender’s digital signature.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q7(a) · 1 mark</div><div class="callout-body"><p>Asymmetric encryption is a type of cryptography. Identify <strong>one</strong> other type of cryptography.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(a)</strong> One from:</p>
+<ul>
+<li>Symmetric (cryptography / encryption)</li>
+<li>Quantum (cryptography)</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q6(a) · 2 marks</div><div class="callout-body"><p>State what is meant by a private key.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(a)</strong> One mark for each correct point (Max 2)</p>
+<ul>
+<li>A private key is the unpublished/secret key/never transmitted anywhere.</li>
+<li>It has a matching public key</li>
+<li>It is used to decrypt data that was encrypted with its matching public key.</li>
+</ul>
+</div></details></p>
 <h2 id="symmetric-asymmetric-encryption">Symmetric &amp; asymmetric encryption</h2>
 <h3 id="how-does-symmetric-encryption-work">How does symmetric encryption work?</h3>
 <ul>
 <li>The sender uses a key to <strong>encrypt</strong> the data before transmission</li>
 <li>The receiver <strong>uses the same key</strong> to <strong>decrypt</strong> the data</li>
-<li>It&rsquo;s usually <strong>faster</strong>, making it ideal for encrypting <strong>large amounts of data</strong></li>
+<li>It’s usually <strong>faster</strong>, making it ideal for encrypting <strong>large amounts of data</strong></li>
 <li>The significant downside is <strong>the challenge of securely sharing this key</strong> between the sender and receiver</li>
 <li>If a <strong>bad actor</strong> captures the key, they can <strong>decrypt all messages intercepted</strong> in transmission
 <img alt="Structure of Symmetric Encryption" src="images/utility-software-file-encryption-alevel.png" />
-<strong><em>Structure of Symmetric Encryption</em></strong></li>
+<em><strong>Structure of Symmetric Encryption</strong></em></li>
 </ul>
 <h3 id="how-does-asymmetric-encryption-work">How does asymmetric encryption work?</h3>
 <ul>
-<li>Asymmetric encryption uses <strong>two keys</strong>:<ul>
+<li>Asymmetric encryption uses <strong>two keys</strong>:
+<ul>
 <li>a <strong>public key</strong> for encryption</li>
 <li>and a <strong>private key</strong> for decryption</li>
 </ul>
 </li>
-<li><strong>Receivers</strong> openly sharetheir <strong>public key</strong></li>
+<li><strong>Receivers</strong> openly share their <strong>public key</strong></li>
 <li><strong>Senders</strong> use this public key to <strong>encrypt</strong> the data</li>
-<li>The <strong>receiver&rsquo;s private key</strong> is the <strong>only key</strong> that can decrypt the data and is kept locally on their side</li>
+<li>The <strong>receiver’s private key</strong> is the <strong>only key</strong> that can decrypt the data and is kept locally on their side</li>
 <li>The public and private keys are created at the same time and are <strong>designed to work together</strong> in this way</li>
 <li>It is typically <strong>slower than symmetric encryption</strong></li>
 <li>It is generally used for <strong>more secure and smaller</strong> data transactions, e.g. <strong>passwords</strong>, <strong>bank details</strong>
 <img alt="Structure of Asymmetric Encryption" src="images/asymmetric-encryption-public-key-private-key.png" />
-<strong><em>Structure of Asymmetric Encryption</em></strong></li>
+<em><strong>Structure of Asymmetric Encryption</strong></em></li>
+</ul>
+<p><img alt="Flow comparison of symmetric and asymmetric encryption" src="images/p3-ch17-symmetric-vs-asymmetric.svg" /></p>
+<p><strong>Symmetric vs asymmetric — differences ★</strong></p>
+<ul>
+<li><strong>Symmetric</strong>: a <strong>single shared key</strong> encrypts and decrypts; fast and simple; suffers from the <strong>key distribution problem</strong>; shorter keys (e.g. 128/256 bits)</li>
+<li><strong>Asymmetric</strong>: a <strong>mathematically linked key pair</strong> (public + private); one key encrypts, the matching key decrypts; only the public key is shared so the private key is never transmitted; much slower and needs <strong>much longer keys</strong> (e.g. 2048 bits) for the same security; supports <strong>sender verification / non-repudiation</strong></li>
+<li>The two modes can be combined: asymmetric encryption solves the key-distribution problem, symmetric encryption is then used for the bulk data</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q8(a) · 3 marks</div><div class="callout-body"><p>Describe the differences between symmetric key and asymmetric key cryptography.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(a)</strong> One mark per mark point (Max 3):</p>
+<ul>
+<li>MP1 Symmetric key encryption uses only one key but asymmetric encryption uses two keys // Asymmetric public and private keys are a mathematically linked pair, whereas symmetric uses the same key;</li>
+<li>MP2 Asymmetric key encryption uses one key to encrypt and the other key to decrypt, whereas symmetric key encryption uses the same key for both;</li>
+<li>MP3 Symmetric key encryption suffers from the key distribution problem, which the matched pair of keys for asymmetric has resolved;</li>
+<li>MP4 Asymmetric keys must be much larger/longer to achieve the same level of security as symmetric key encryption;</li>
+<li>MP5 Asymmetric key encryption allows verification of the sender, which symmetric key encryption does not.</li>
+</ul>
+<p>Guidance: Candidates are asked to describe the difference, so both key types need to be included for each mark, where applicable.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q6(a) · 2 marks</div><div class="callout-body"><p>State two differences between symmetric and asymmetric encryption.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(a)</strong> One mark for each point:</p>
+<ul>
+<li>Symmetric encryption uses a single key and asymmetric encryption uses a pair of keys.</li>
+<li>The symmetric single key is used by all, whereas only one of the keys for asymmetric encryption is available to everyone / one of the asymmetric encryption keys needs to be kept secret.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q5(b) · 3 marks</div><div class="callout-body"><p>Explain the differences between symmetric and asymmetric cryptography when encrypting and decrypting data.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(b)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Symmetric</th>
+<th>Asymmetric</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uses a single key to encrypt and decrypt messages</td>
+<td>Uses two keys (public and private)</td>
+</tr>
+<tr>
+<td>The single key is shared between both parties</td>
+<td>Only the public key is shared; the private key is kept secret</td>
+</tr>
+<tr>
+<td>Higher risk of compromise if the key is intercepted</td>
+<td>More secure as the private key is never shared</td>
+</tr>
+<tr>
+<td>Simple process, carried out quickly</td>
+<td>Much more complex, therefore slower</td>
+</tr>
+<tr>
+<td>Key lengths are usually shorter (128/256 bits)</td>
+<td>Key lengths are longer (e.g. 2048 bits)</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q9(a) · 2 marks</div><div class="callout-body"><p>Encryption is used to alter data into a form that makes it meaningless if intercepted.
+Describe the purpose of asymmetric key cryptography.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(a)</strong> One mark per mark point (Max 2):</p>
+<ul>
+<li>To provide better security …</li>
+<li>by using two different keys / a public key and a private key;</li>
+<li>one of the keys is used to encrypt the message;</li>
+<li>the matching key is used to decrypt the message. (Max 2)</li>
+</ul>
+</div></details>
+<strong>Sending a private message ★</strong></p>
+<ul>
+<li>The sender takes the receiver’s <strong>public key</strong>, encrypts the plain text with it, and only the receiver’s matching <strong>private key</strong> can turn the cipher text back into plain text</li>
+<li><strong>Why publishing the public key is safe</strong> — anyone may hold it, but it cannot decrypt; confidentiality rests on the private key never leaving the receiver</li>
+<li><strong>Getting the public key safely</strong> — the key is taken from a <strong>digital certificate</strong> signed by a CA, so the sender knows it really belongs to the receiver</li>
+<li>This achieves <strong>confidentiality</strong>: only the intended holder of the private key can read the message</li>
+</ul>
+<p><img alt="Sending a private message using the receiver's public key" src="images/p3-ch17-private-message.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P31 Q8(b) · 4 marks</div><div class="callout-body"><p>Outline the process that would allow an individual to use asymmetric key encryption to send a private message to an organisation.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(b)</strong> One mark per mark point (Max 4):</p>
+<ul>
+<li>MP1 The organisation generates a matched pair of encryption keys;</li>
+<li>MP2 The organisation makes its public key available to the individual;</li>
+<li>MP3 The individual uses the public key to encrypt their message;</li>
+<li>MP4 … and sends this message to the organisation;</li>
+<li>MP5 The organisation decrypts the message using their private key.</li>
+</ul>
+<p>Alternative answer (Max 4):</p>
+<ul>
+<li>MP6 The individual generates a matched pair of encryption keys;</li>
+<li>MP7 The individual sends their public key to the organisation;</li>
+<li>MP8 The individual uses their private key to encrypt their message;</li>
+<li>MP9 … and sends this message to the organisation;</li>
+<li>MP10 The organisation decrypts the message using the individual’s public key.</li>
+</ul>
+<p>Guidance: The correct sequence of steps is what is important.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P32 Q4 · 4 marks</div><div class="callout-body"><p>Sheila has a customer called Fred. Fred wants to send Sheila a confidential document as part of a transaction.
+Explain how Fred uses asymmetric encryption to send his document securely.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q4</strong> One mark per mark point (Max 4)</p>
+<ul>
+<li>Sheila’s computer uses an algorithm to generate a matching pair of keys private and public</li>
+<li>Sheila’s computer sends Fred’s computer Sheila’s public key // Fred’s computer acquires Sheila’s public key</li>
+<li>Fred’s computer encrypts the document/plain text using Sheila’s public key to create cipher text</li>
+<li>Fred’s computer sends the <strong>cipher text</strong> to Sheila’s computer. The cipher text can only be decrypted using Sheila’s private key // Sheila’s computer uses Sheila’s private key to decrypt the cipher text.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P32 Q7(b) · 4 marks</div><div class="callout-body"><p>An organisation holds two asymmetric encryption keys, which they intend to use to receive secure transmissions.
+Explain how the organisation makes use of the two keys to receive a secure transmission.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(b)</strong> One mark per mark point (Max 4)</p>
+<ul>
+<li>The two keys held by the organisation are a private key and a public key</li>
+<li>The organisation makes the public key available to anyone who wishes to send them secure transmissions // The sender obtains the organisation’s public key</li>
+<li>The sender uses the organisation’s public key to encrypt the message / plain text // The sender uses the organisation’s public key to turn the message into cipher text</li>
+<li>The organisation uses its private key to decrypt the message.</li>
+</ul>
+</div></details>
+<strong>Sending a verified message ★</strong></p>
+<ul>
+<li>To send a <strong>verified</strong> message, the sender encrypts with their <strong>own private key</strong>; anyone can then decrypt with the sender’s <strong>public key</strong></li>
+<li>Because only the sender holds the private key, a message that is successfully decrypted with the public key must have come from that sender — this gives <strong>authentication</strong> and <strong>non-repudiation</strong></li>
+<li>Note the reversal compared with a private message: <strong>private message → receiver’s public key; verified message → sender’s private key</strong></li>
+<li>In the examined scenario a business signs a message with its private key and publishes its public key so a whole group of people can verify it</li>
+</ul>
+<p><img alt="Sending a verified message using the sender's private key" src="images/p3-ch17-verified-message.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P32 Q8(b) · 4 marks</div><div class="callout-body"><p>Outline the process that would allow a business to use encryption keys to send a verified message to a group of people.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(b)</strong> One mark per mark point (Max 4):</p>
+<ul>
+<li>MP1 The organisation generates a matched pair of encryption keys;</li>
+<li>MP2 The organisation makes its public key available to the group of people / via its website;</li>
+<li>MP3 The organisation encrypts its message using its private key;</li>
+<li>MP4 … and sends it to the group of people;</li>
+<li>MP5 Anyone receiving the message can decrypt it using the organisation’s public key;</li>
+<li>MP6 Therefore, verifying the sender // Providing non-repudiation.</li>
+</ul>
+<p>Guidance: The correct sequence of steps that is important.</p>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q6(b) · 2 marks</div><div class="callout-body"><p>Describe the process of asymmetric encryption.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(b)</strong> One mark for each correct point (Max 2)</p>
+<ul>
+<li>The message to be sent is encrypted using the recipient’s public key. // The message to be sent is encrypted using the sender’s private key.</li>
+<li>The message is decrypted using the recipient’s private key. // The message is decrypted using the sender’s public key.</li>
+</ul>
+</div></details>
+<strong>Hybrid encryption in practice</strong></p>
+<ul>
+<li>Asymmetric encryption is used only to deliver a <strong>symmetric session key</strong>; the bulk data is then encrypted with that faster symmetric key</li>
+<li><strong>Named algorithms</strong> — symmetric examples include <strong>AES</strong>; asymmetric examples include <strong>RSA</strong></li>
+<li><strong>Session key</strong> — a one-off symmetric key generated for a single connection and discarded when the connection ends</li>
+<li><strong>Trade-off</strong> — symmetric is fast but needs a secure way to share the single key and gives no proof of who sent the data; asymmetric removes the key-sharing problem and supports signatures, but is far slower</li>
 </ul>
 <h3 id="choosing-an-encryption-type">Choosing an encryption type</h3>
 <ul>
 <li><strong>Symmetric encryption is fast</strong> but has key-sharing issues; <strong>asymmetric is slower</strong> but solves these issues.</li>
-<li>The choice should be made based on the <strong>situation&rsquo;s needs</strong>: whether <strong>speed</strong> or <strong>security</strong> is more critical.</li>
+<li>The choice should be made based on the <strong>situation’s needs</strong>: whether <strong>speed</strong> or <strong>security</strong> is more critical.</li>
 </ul>
 <table>
 <thead>
@@ -307,14 +578,23 @@ body::before {
 </tbody>
 </table>
 <h2 id="quantum-cryptography">Quantum cryptography</h2>
-<h2 id="what-is-quantum-cryptograhy">What is quantum cryptograhy?</h2>
+<h3 id="what-is-quantum-cryptography">What is quantum cryptography?</h3>
 <ul>
 <li>Quantum cryptography uses <strong>quantum mechanics</strong> to securely transmit encryption keys</li>
 <li>Its main goal is to enable <strong>unbreakable communication</strong> by detecting any attempt to intercept or tamper with the key</li>
-<li>The most well-known method is:<ul>
+<li>The most well-known method is:
+<ul>
 <li><strong>Quantum Key Distribution (QKD)</strong> – uses quantum particles (like photons) to share a secret key between two parties securely</li>
 </ul>
 </li>
+<li>It is based on the <strong>laws of quantum physics rather than mathematical formulae</strong>, so its security does not depend on the difficulty of problems such as factoring large primes</li>
+</ul>
+<p><strong>Purpose of quantum cryptography ★</strong></p>
+<ul>
+<li>To provide a <strong>more secure / virtually unbreakable</strong> method of encryption than current methods</li>
+<li>To detect <strong>eavesdropping</strong> — measuring a quantum state disturbs it, so interception is visible</li>
+<li>To provide encryption that can be <strong>guaranteed for a longer period of time</strong> than current methods</li>
+<li>To use <strong>longer / more secure keys</strong> and protect data on <strong>fibre optic cables</strong></li>
 </ul>
 <h4 id="benefits-of-quantum-cryptography">Benefits of quantum cryptography</h4>
 <table>
@@ -338,8 +618,12 @@ body::before {
 <td>Keys are used once and then discarded, reducing the impact of future key leaks</td>
 </tr>
 <tr>
+<td><strong>Keys are non-duplicable</strong></td>
+<td>The no-cloning theorem means a quantum key cannot be copied</td>
+</tr>
+<tr>
 <td><strong>Stronger than classical encryption</strong></td>
-<td>Not based on mathematical problems like factoring large primes, so it&rsquo;s not vulnerable to advances in computing (e.g. quantum computers)</td>
+<td>Not based on mathematical problems like factoring large primes, so it’s not vulnerable to advances in computing (e.g. quantum computers)</td>
 </tr>
 </tbody>
 </table>
@@ -369,29 +653,90 @@ body::before {
 <td>Technology is new and not yet widely available or standardised</td>
 </tr>
 <tr>
+<td><strong>Polarisation can change</strong></td>
+<td>The polarisation of light may be altered while travelling down fibre optic cables</td>
+</tr>
+<tr>
 <td><strong>Only secures key exchange</strong></td>
 <td>Quantum cryptography secures the key, but not the actual data encryption itself – traditional algorithms still needed</td>
 </tr>
+<tr>
+<td><strong>Misuse</strong></td>
+<td>Criminals and terrorists could use the technology to hide their communications</td>
+</tr>
 </tbody>
 </table>
-<h4 id="quiz">Quiz</h4>
-<p>Quantum cryptography isn&rsquo;t about encrypting the message – it’s about securing the <strong>key</strong> used in encryption (e.g. with QKD). Always mention this to show clear understanding.
-Encryption is used to alter data into a form that makes it meaningless if intercepted.
-Describe the purpose of asymmetric key cryptography.
-<strong>Answer</strong></p>
+<blockquote>
+<p>Quantum cryptography secures the <strong>key</strong>, not the message itself. Always make this distinction to show clear understanding.</p>
+</blockquote>
+<p><div class="callout callout-question"><div class="callout-title">2026 Summer P33 Q8 · 6 marks</div><div class="callout-body"><p><strong>(a)</strong> Describe the purpose of quantum cryptography. <strong>[2]</strong>
+<strong>(b)</strong> Outline two benefits and two drawbacks of quantum cryptography. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q8(a)</strong> One mark per mark point for the purpose (Max 2)</p>
 <ul>
-<li>To provide better security [1 mark]</li>
-<li>… by using two different keys / a public key and a private key [1 mark]</li>
-<li>One of the keys is used to encrypt the message [1 mark]</li>
-<li>… the matching key is used to decrypt the message [1 mark]</li>
+<li>MP1 To provide a more secure method of cryptography/encryption than current methods // To provide a virtually unbreakable method of encryption // To detect eavesdropping.</li>
+<li>MP2 … using the laws of quantum physics rather than mathematical formulae to generate keys.</li>
+<li>MP3 To provide encryption that can be guaranteed for a longer period of time than current methods</li>
 </ul>
+<p><strong>Q8(b)</strong> One mark per benefit (Max 2)</p>
+<ul>
+<li>MP1 Better security for internet communication</li>
+<li>MP2 Can detect eavesdropping, enabling the receiver to request another key</li>
+<li>MP3 Virtually unhackable due to rapidly changing quantum states</li>
+<li>MP4 Keys are non-duplicable // No-cloning theorem</li>
+</ul>
+<p>One mark per drawback (Max 2)</p>
+<ul>
+<li>MP5 Currently can only be used over relatively short distances</li>
+<li>MP6 Very expensive to implement initially due to costs of installation / hardware / implementation // Requires a dedicated line and specialist hardware</li>
+<li>MP7 The technology to fully implement quantum cryptography is not currently/readily available</li>
+<li>MP8 Photon polarization might be impacted in the travelling medium // It is possible for the polarisation of the light to be altered while travelling down fibre optic cables</li>
+<li>MP9 Due to the inherent security system generated by quantum cryptography, terrorists and other criminals can use the technology to hide their activities from government law enforcement</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P31 Q9(b) · 4 marks</div><div class="callout-body"><p>Identify two benefits and two drawbacks of quantum cryptography.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9(b)</strong> One mark per benefit (Max 2); one mark per drawback (Max 2). Two benefits and two drawbacks (any from the lists below).</p>
+<p>Benefits (one mark each, Max 2):</p>
+<ul>
+<li>Provides security based on laws of physics rather than mathematical algorithms, so more secure</li>
+<li>To protect the security of data transmitted over fibre optic cables</li>
+<li>Virtually unhackable</li>
+<li>The performance of quantum cryptography is continuously improved, making it suitable for most valuable government/industrial secrets</li>
+<li>Longer keys can be used</li>
+<li>Eavesdropping can be detected</li>
+</ul>
+<p>Drawbacks (one mark each, Max 2):</p>
+<ul>
+<li>Lacks many vital features such as digital signature, certified mail, etc.</li>
+<li>High cost of purchasing / maintaining equipment required</li>
+<li>Currently only works over relatively short distances</li>
+<li>Error rates are relatively high as technology is still being developed</li>
+<li>Polarisation of light can change during transmission</li>
+<li>Allows criminals and terrorists to hide their communications</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2023 Summer P32 Q5(a) · 2 marks</div><div class="callout-body"><p>Encryption is used to scramble data to make it meaningless if intercepted.
+Describe the purpose of quantum cryptography.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(a)</strong> One mark per mark point (Max 2)</p>
+<ul>
+<li>Provides a <strong>virtually unbreakable</strong> encryption system / sends <strong>virtually un-hackable</strong> secure messages</li>
+<li>Uses laws / principles of quantum mechanics / properties of photons</li>
+<li>Detects <strong>eavesdropping</strong> because the properties of photons change when observed</li>
+<li>Protects security of data transmitted over <strong>fibre optic cables</strong></li>
+<li><strong>Enables</strong> the use of longer keys</li>
+</ul>
+</div></details></p>
 <h2 id="protocols">Protocols</h2>
 <h2 id="ssltls">SSL/TLS</h2>
 <h3 id="what-is-ssl">What is SSL?</h3>
 <ul>
 <li>SSL (Secure Sockets Layer) is a <strong>security protocol</strong> used to <strong>encrypt data sent over the internet</strong></li>
+<li>It is the <strong>deprecated predecessor</strong> of TLS — modern websites use TLS, although people often still refer to it loosely as “SSL”</li>
 <li>Helps to prevent <strong>eavesdropping</strong>, <strong>tampering</strong>, or <strong>man-in-the-middle attacks</strong></li>
-<li>Commonly used for:<ul>
+<li>Commonly used for:
+<ul>
 <li><strong>Protecting websites</strong></li>
 <li><strong>Online payments</strong></li>
 <li><strong>Login credentials</strong></li>
@@ -399,19 +744,31 @@ Describe the purpose of asymmetric key cryptography.
 </li>
 <li>Creates a <strong>secure connection</strong> between a web server and a browser</li>
 </ul>
-<h2 id="what-is-tls">What is TLS?</h2>
+<h3 id="what-is-tls">What is TLS?</h3>
 <ul>
 <li>TLS (Transport Layer Security) is the <strong>successor to SSL</strong></li>
-<li>It performs the <strong>same functions</strong> but is <strong>more secure and efficient</strong><ul>
+<li>It performs the <strong>same functions</strong> but is <strong>more secure and efficient</strong>
+<ul>
 <li>Modern websites use <strong>TLS</strong>, although people often still refer to it as “SSL”</li>
 <li>When you see <strong>HTTPS</strong> in the browser, it means <strong>TLS/SSL encryption is active</strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="how-ssltls-works-with-digital-certificates">How SSL/TLS works with digital certificates</h4>
+<p><strong>Purpose of SSL/TLS</strong></p>
+<ul>
+<li>To establish an <strong>encrypted, authenticated communication channel</strong> between a client and a server over an insecure network</li>
+<li>To prevent <strong>eavesdropping</strong> (confidentiality), <strong>tampering</strong> (integrity) and <strong>impersonation</strong> (authentication)</li>
+</ul>
+<p><strong>When is SSL/TLS appropriate?</strong></p>
+<ul>
+<li>Any exchange of sensitive data: <strong>online banking</strong>, <strong>e-commerce / online payments</strong>, <strong>login credentials</strong>, and secure <strong>API</strong> communication</li>
+<li>Whenever identity must be proved and data must not be read or altered in transit</li>
+</ul>
+<h3 id="how-ssltls-works-with-digital-certificates">How SSL/TLS works with digital certificates</h3>
 <ol>
 <li>When you visit a secure website (e.g. <code>https://</code>), the server sends your browser its <strong>digital certificate</strong></li>
-<li>The certificate contains:<ul>
+<li>The certificate contains:
+<ul>
 <li>The server’s <strong>public key</strong></li>
 <li>Information about the website and Certificate Authority (CA)</li>
 <li>A <strong>digital signature</strong> from the CA</li>
@@ -420,6 +777,14 @@ Describe the purpose of asymmetric key cryptography.
 <li>Your browser checks that the <strong>certificate is valid and trusted</strong> using the CA’s public key</li>
 <li>If trusted, a <strong>secure connection is established</strong>, often using a shared secret key (symmetric encryption) created during the handshake</li>
 </ol>
+<p><strong>The TLS handshake</strong></p>
+<ul>
+<li>The client sends a <strong>ClientHello</strong>, the server replies with a <strong>ServerHello</strong> and its <strong>digital certificate</strong></li>
+<li>The client verifies the certificate with the <strong>CA’s public key</strong>, and the two sides agree a shared <strong>session key</strong></li>
+<li>All later traffic uses <strong>symmetric encryption</strong>, because it is much faster than asymmetric</li>
+<li><strong>Where TLS sits</strong> — between the application layer (HTTP) and the transport layer (TCP), so <strong>HTTPS is simply HTTP carried over TLS</strong></li>
+</ul>
+<p><img alt="TLS handshake steps between client and server" src="images/p3-ch17-tls-handshake.svg" /></p>
 <h4 id="summary-what-a-digital-certificate-does">Summary: What a digital certificate does</h4>
 <table>
 <thead>
@@ -439,7 +804,7 @@ Describe the purpose of asymmetric key cryptography.
 </tr>
 <tr>
 <td>Certificate Authority</td>
-<td>Signs the certificate to confirm it&rsquo;s trustworthy</td>
+<td>Signs the certificate to confirm it’s trustworthy</td>
 </tr>
 <tr>
 <td>Browser validation</td>
@@ -451,23 +816,58 @@ Describe the purpose of asymmetric key cryptography.
 <li>TLS has replaced SSL — but both are encryption protocols used with digital certificates</li>
 <li>Always mention digital certificates when explaining how websites create secure connections</li>
 </ul>
+<blockquote>
+<p>No past-paper sub-question in the current Ch17 set examines SSL/TLS directly; the four SSL/TLS exam points are retained here for syllabus coverage only.</p>
+</blockquote>
 <h2 id="digital-certificates">Digital certificates</h2>
 <h3 id="what-is-a-digital-certificate">What is a digital certificate?</h3>
 <ul>
 <li>A digital certificate is an <strong>electronic file</strong> that <strong>confirms someone’s identity</strong> and proves that a <strong>public key</strong> belongs to them</li>
 <li>It is issued by a trusted third party called a <strong>Certificate Authority (CA)</strong></li>
-<li>A digital certificate includes:<ul>
+<li>A digital certificate includes:
+<ul>
 <li>The owner’s <strong>public key</strong></li>
 <li>The owner’s <strong>identity details</strong> (e.g. name, email, company)</li>
 <li>The <strong>expiry date</strong> of the certificate</li>
 <li>The <strong>Certificate Authority’s digital signature</strong></li>
+<li>A <strong>serial number</strong> and <strong>version number</strong></li>
 </ul>
 </li>
 </ul>
+<p><img alt="Digital certificate and CA trust verification chain" src="images/p3-ch17-certificate-chain.svg" /></p>
+<p><strong>What a digital certificate proves ★</strong></p>
+<ul>
+<li>It binds an <strong>identity to a public key</strong>, so anyone can trust that a public key really belongs to the claimed person or website</li>
+<li>The <strong>CA’s signature</strong> on the certificate shows it was issued by a trusted third party; browsers verify it with the CA’s public key</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2024 Summer P31 Q7(a) · 3 marks</div><div class="callout-body"><p>Describe what is meant by a digital certificate.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(a)</strong> One mark per point (Max 3)</p>
+<ul>
+<li><strong>MP1</strong> A digital certificate is an electronic/online document.</li>
+<li><strong>MP2</strong> Used to authenticate/prove the identity of a website / the online identity of an individual/organisation.</li>
+<li><strong>MP3</strong> Typically issued by a CA (Certificate Authority).</li>
+<li><strong>MP4</strong> For example: it contains information identifying a website owner/individual and a public key.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q5(a) · 2 marks</div><div class="callout-body"><p>Identify <strong>two</strong> items commonly found within a digital certificate.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(a)</strong> Two from:</p>
+<ul>
+<li>Name of certificate holder // Subject</li>
+<li>Serial number</li>
+<li>Version number</li>
+<li>Expiration date // Start date // Validity (not before/not after)</li>
+<li>Certificate holder’s public key // Subject public key</li>
+<li>Subject digital signature</li>
+<li>Certificate Issuer // Digital signature of CA</li>
+</ul>
+</div></details></p>
 <h4 id="hash-function">Hash function</h4>
 <ul>
 <li>A hash function is a one-way algorithm that takes an input (e.g. a message) and produces a fixed-length output, called a <strong>hash value</strong> or <strong>message-digest</strong></li>
-<li><strong>Key features:</strong><ul>
+<li><strong>Key features:</strong>
+<ul>
 <li>The output is always the same length, regardless of input size</li>
 <li>It is <strong>one-way</strong> — you cannot reverse it to get the original input</li>
 <li>Even a small change in input produces a completely different output</li>
@@ -479,7 +879,8 @@ Describe the purpose of asymmetric key cryptography.
 <h4 id="message-digest">Message-digest</h4>
 <ul>
 <li>A message-digest is the <strong>output (the hash value) produced</strong> when a message is processed through a hash function</li>
-<li><strong>It is:</strong><ul>
+<li><strong>It is:</strong>
+<ul>
 <li>A fixed-length summary of the original message</li>
 <li>Unique to the message (ideally – collisions are rare)</li>
 <li>Used to check whether a message has been altered</li>
@@ -487,40 +888,142 @@ Describe the purpose of asymmetric key cryptography.
 </li>
 <li>Think of it as the unique ID or checksum of a message</li>
 </ul>
-<h3 id="how-is-a-digital-certificate-acquired">How is a digital certificate acquired?</h3>
+<h3 id="how-is-a-digital-certificate-acquired">How is a digital certificate acquired? ★</h3>
 <ol>
 <li><strong>Leila</strong> wants to be able to sign documents digitally</li>
 <li>She generates a <strong>key pair</strong> – one private key and one public key</li>
-<li>Leila sends a <strong>Certificate Signing Request (CSR)</strong> to a <strong>Certificate Authority (CA)</strong><ol>
+<li>Leila sends a <strong>Certificate Signing Request (CSR)</strong> to a <strong>Certificate Authority (CA)</strong>
+<ol>
 <li>This includes her <strong>public key</strong> and identity details</li>
 </ol>
 </li>
 <li>The CA <strong>verifies Leila’s identity</strong> using documents or other checks</li>
-<li>If approved, the CA <strong>digitally signs</strong> a certificate and sends it back to Leila<ol>
+<li>If approved, the CA <strong>digitally signs</strong> a certificate and sends it back to Leila
+<ol>
 <li>This certificate contains Leila’s <strong>public key</strong>, identity, and the CA’s signature</li>
 </ol>
 </li>
 </ol>
-<h3 id="how-is-a-digital-certificate-used-to-produce-a-digital-signature">How is a digital certificate used to produce a digital signature?</h3>
+<p><strong>Who signs what when a certificate is issued ★</strong></p>
+<ul>
+<li>The <strong>CSR</strong> carries the applicant’s public key and identity details and is signed with the applicant’s <strong>private key</strong>, proving they hold the matching key</li>
+<li>The <strong>CA signs the certificate with the CA’s own private key</strong>; browsers verify it with the CA’s <strong>public key</strong></li>
+<li>Operating systems and browsers ship with the public keys of <strong>trusted root CAs</strong>, so a certificate from one of them is accepted while a self-signed one raises a warning</li>
+</ul>
+<p><div class="callout callout-question"><div class="callout-title">2022 Winter P32 Q6(b) · 4 marks</div><div class="callout-body"><p>Explain the process by which an organisation may acquire its digital certificate.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6(b)</strong> One mark for each point (Max 4)</p>
+<ul>
+<li>The organisation requests a certificate from a Certificate Authority (CA)</li>
+<li>The organisation may send their public key to CA</li>
+<li>The organisation gathers all the information required by the CA in order to obtain their certificate, which includes information to prove their identity</li>
+<li>The CA verifies the organisation’s identity</li>
+<li>The CA generates / issues the certificate including the organisation’s public key (and other information).</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P33 Q9 · 4 marks</div><div class="callout-body"><p>A company requires a digital certificate to ensure the authenticity of its online communications.
+Outline the process followed to acquire a digital certificate.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q9</strong> One mark per mark point (Max 4)</p>
+<ul>
+<li>MP1: The company generates a public and private key pair locally using a web browser and an RSA key generator tool, which may be part of the CA’s web page</li>
+<li>MP2: The company requests a digital certificate from a Certificate Authority (CA)</li>
+<li>MP3: The CA responds with its public key and digital certificate</li>
+<li>MP4: … signed with its private key</li>
+<li>MP5: The company gathers authentication information e.g. its public key</li>
+<li>MP6: … and sends it to the CA signed with the company’s private key and encrypted with the CA’s public key</li>
+<li>MP7: The CA verifies the received information <strong>and</strong> generates/issues the digital certificate</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q7(a) · 3 marks</div><div class="callout-body"><p>State how a digital certificate is obtained.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7a</strong> Any three from:</p>
+<ul>
+<li>MP1 enquiry made to Certificate Authority (CA)</li>
+<li>MP2 enquirer’s details checked by CA</li>
+<li>MP3 if enquirer details verified by CA then public key is agreed</li>
+<li>MP4 CA creates/issues certificate that includes the enquirers public key</li>
+<li>MP5 encrypting data sent to/by CA with the CA’s public/private key</li>
+</ul>
+</div></details></p>
+<h3 id="how-is-a-digital-certificate-used-to-produce-a-digital-signature">How is a digital certificate used to produce a digital signature? ★</h3>
 <ol>
 <li>Leila writes a message she wants to send to <strong>Jonas</strong></li>
 <li>She applies a <strong>hash function</strong> to the message to create a <strong>message-digest</strong></li>
-<li>Leila then <strong>encrypts the message-digest using her private key</strong><ol>
+<li>Leila then <strong>encrypts the message-digest using her private key</strong>
+<ol>
 <li>This becomes her <strong>digital signature</strong></li>
 </ol>
 </li>
-<li>She sends Jonas:<ul>
+<li>She sends Jonas:
+<ul>
 <li>The <strong>original message</strong></li>
 <li>Her <strong>digital signature</strong></li>
 <li>Her <strong>digital certificate</strong></li>
 </ul>
 </li>
-<li>Jonas:<ul>
+<li>Jonas:
+<ul>
 <li>Uses Leila’s <strong>public key</strong> (from the certificate) to <strong>verify the digital signature</strong></li>
 <li>Uses the CA’s <strong>public key</strong> to verify that the certificate is genuine and hasn’t been forged</li>
 </ul>
 </li>
 </ol>
+<p><strong>Checking a signature ★</strong></p>
+<ul>
+<li>The verifier decrypts the signature with the sender’s <strong>public key</strong> to recover the digest, hashes the received message again and <strong>compares the two</strong>; a match means the message arrived unchanged</li>
+<li>Signing with the sender’s private key and checking with the sender’s public key gives <strong>authentication</strong> (it came from the claimed sender), <strong>integrity</strong> (it was not altered) and <strong>non-repudiation</strong> (the sender cannot deny sending it)</li>
+<li><strong>Why the digest is signed, not the message</strong> — a hash gives a short fixed-length digest, so signing is quick and any change to the message changes the digest</li>
+</ul>
+<p><img alt="Creating and verifying a digital signature with hashing" src="images/p3-ch17-digital-signature.svg" /></p>
+<p><div class="callout callout-question"><div class="callout-title">2022 Summer P32 Q7(b) · 7 marks</div><div class="callout-body"><p>A digital signature is used to validate the authenticity of an electronic message. In order to produce a digital signature, a digital certificate is required.
+<strong>(b)(i)</strong> Explain how a digital signature is produced before the message is sent. <strong>[3]</strong>
+<strong>(b)(ii)</strong> Explain how the digital signature can be checked on receipt to ensure that the message has not been altered during transmission. <strong>[4]</strong></p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7b(i)</strong></p>
+<ul>
+<li>MP1 The message is hashed with (the agreed hashing algorithm)…</li>
+<li>MP2 … to produce a message digest</li>
+<li>MP3 The message digest is then encrypted with the sender’s private key to form the digital signature</li>
+</ul>
+<p><strong>Q7b(ii)</strong> Any four from:</p>
+<ul>
+<li>MP1 The message together with the digital signature is decrypted using the receiver’s private key</li>
+<li>MP2 The digital signature received is decrypted with the sender’s public key to recover the message digest sent</li>
+<li>MP3 The decrypted message received is hashed with the agreed hashing algorithm to reproduce the message digest of the message received</li>
+<li>MP4 The two message digests are compared</li>
+<li>MP5 … if they are the same the message has not been altered // if they are different the message has been altered</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2022 Winter P31 Q6(c) · 4 marks</div><div class="callout-body"><p>Explain how a digital signature is used to verify a message when it is received.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q6©</strong> One mark for each correct point (Max 4)</p>
+<ul>
+<li>The message together with the digital signature is decrypted using the receiver’s private key</li>
+<li>The digital signature received is decrypted with the sender’s public key to recover the message digest sent</li>
+<li>The decrypted message received is hashed with the agreed hashing algorithm to reproduce the message digest of the message received</li>
+<li>The two message digests are compared</li>
+<li>… if both digests are the same the message has not been altered // if they are different the message has been altered.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2024 Summer P31 Q7(b) · 2 marks</div><div class="callout-body"><p>Explain the role of a digital certificate in creating a digital signature.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q7(b)</strong> One mark per point (Max 2)</p>
+<ul>
+<li><strong>MP1</strong> The digital certificate provides the public key…</li>
+<li><strong>MP2</strong> …that can be used to validate the private key associated with the organisation/website/digital signature.</li>
+</ul>
+</div></details>
+<div class="callout callout-question"><div class="callout-title">2025 Winter P31 Q5(b) · 3 marks</div><div class="callout-body"><p>Explain why a digital certificate is required to validate a digital signature.</p>
+</div></div>
+<details class="callout callout-example"><summary>Answer</summary><div class="callout-body"><p><strong>Q5(b)</strong> One mark per mark point (Max 3)</p>
+<ul>
+<li>A digital certificate provides a public key</li>
+<li>… which validates the private key used to create the digital signature</li>
+<li>It makes a digital signature virtually impossible to spoof // Provides evidence of signer identity that the document was not altered and the signatures are valid</li>
+<li>Non repudiation.</li>
+</ul>
+</div></details></p>
 <h4 id="summary">Summary</h4>
 <table>
 <thead>
@@ -550,9 +1053,206 @@ Describe the purpose of asymmetric key cryptography.
 </table>
 <ul>
 <li>The digital certificate <strong>proves ownership</strong> of a public key</li>
-<li>The digital signature <strong>proves a message came from the claimed sender</strong> and wasn’t altered
-<strong>Don&rsquo;t mix them up!</strong></li>
+<li>The digital signature <strong>proves a message came from the claimed sender</strong> and wasn’t altered</li>
 </ul>
+<p><strong>Don’t mix them up!</strong></p>
+<h2 id="exam-question-index">Exam Question Index</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Exam point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P31 Q8(a)(i)</td>
+<td>Encryption terminology (plain/cipher text)</td>
+<td>2026 Summer P31 Q8(a)(i)</td>
+</tr>
+<tr>
+<td>P31 Q8(a)(ii)</td>
+<td>Encryption terminology (public key)</td>
+<td>2026 Summer P31 Q8(a)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)</td>
+<td>Sending a private message using a public key</td>
+<td>2026 Summer P31 Q8(b)</td>
+</tr>
+<tr>
+<td>P32 Q8(a)</td>
+<td>Encryption &amp; decryption: symmetric vs asymmetric</td>
+<td>2026 Summer P32 Q8(a)</td>
+</tr>
+<tr>
+<td>P32 Q8(b)</td>
+<td>Sending a verified message using a private key</td>
+<td>2026 Summer P32 Q8(b)</td>
+</tr>
+<tr>
+<td>P33 Q8(a)</td>
+<td>Quantum cryptography (purpose)</td>
+<td>2026 Summer P33 Q8(a)</td>
+</tr>
+<tr>
+<td>P33 Q8(b)</td>
+<td>Quantum cryptography (benefits &amp; drawbacks)</td>
+<td>2026 Summer P33 Q8(b)</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>Digital certificates (contents)</td>
+<td>2025 Winter P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)</td>
+<td>Digital signatures (role of certificate)</td>
+<td>2025 Winter P31 Q5(b)</td>
+</tr>
+<tr>
+<td>P32 Q7(a)</td>
+<td>Encryption terminology (types of cryptography)</td>
+<td>2025 Winter P32 Q7(a)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)</td>
+<td>Sending a private message using a public key</td>
+<td>2025 Winter P32 Q7(b)</td>
+</tr>
+<tr>
+<td>P33 Q9</td>
+<td>Acquiring a digital certificate</td>
+<td>2025 Winter P33 Q9</td>
+</tr>
+<tr>
+<td>P32 Q4</td>
+<td>Sending a private message using a public key</td>
+<td>2024 Summer P32 Q4</td>
+</tr>
+<tr>
+<td>P31 Q7(a)</td>
+<td>Digital certificates (what it is)</td>
+<td>2024 Summer P31 Q7(a)</td>
+</tr>
+<tr>
+<td>P31 Q7(b)</td>
+<td>Digital signatures (role of certificate)</td>
+<td>2024 Summer P31 Q7(b)</td>
+</tr>
+<tr>
+<td>P32 Q5(a)</td>
+<td>Quantum cryptography (purpose)</td>
+<td>2023 Summer P32 Q5(a)</td>
+</tr>
+<tr>
+<td>P32 Q5(b)</td>
+<td>Encryption &amp; decryption: symmetric vs asymmetric</td>
+<td>2023 Summer P32 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q9(a)</td>
+<td>Encryption terminology (purpose of asymmetric)</td>
+<td>2023 Summer P31 Q9(a)</td>
+</tr>
+<tr>
+<td>P31 Q9(b)</td>
+<td>Quantum cryptography (benefits &amp; drawbacks)</td>
+<td>2023 Summer P31 Q9(b)</td>
+</tr>
+<tr>
+<td>P31 Q6(a)</td>
+<td>Encryption terminology (private key)</td>
+<td>2022 Winter P31 Q6(a)</td>
+</tr>
+<tr>
+<td>P31 Q6(b)</td>
+<td>Encryption &amp; decryption: symmetric vs asymmetric</td>
+<td>2022 Winter P31 Q6(b)</td>
+</tr>
+<tr>
+<td>P31 Q6©</td>
+<td>Digital signatures (verifying a message)</td>
+<td>2022 Winter P31 Q6©</td>
+</tr>
+<tr>
+<td>P32 Q6(a)</td>
+<td>Encryption &amp; decryption: symmetric vs asymmetric</td>
+<td>2022 Winter P32 Q6(a)</td>
+</tr>
+<tr>
+<td>P32 Q6(b)</td>
+<td>Acquiring a digital certificate</td>
+<td>2022 Winter P32 Q6(b)</td>
+</tr>
+<tr>
+<td>P32 Q7(a)</td>
+<td>Acquiring a digital certificate</td>
+<td>2022 Summer P32 Q7(a)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)(i)</td>
+<td>Digital signatures (producing a signature)</td>
+<td>2022 Summer P32 Q7(b)(i)</td>
+</tr>
+<tr>
+<td>P32 Q7(b)(ii)</td>
+<td>Digital signatures (checking a signature)</td>
+<td>2022 Summer P32 Q7(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q8(a)(i)</td>
+<td>Why use key cryptography (reasons)</td>
+<td>2022 Summer P31 Q8(a)(i)</td>
+</tr>
+<tr>
+<td>P31 Q8(a)(ii)</td>
+<td>Why use key cryptography (methods)</td>
+<td>2022 Summer P31 Q8(a)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)(i)</td>
+<td>Quantum cryptography (benefits)</td>
+<td>2022 Summer P31 Q8(b)(i)</td>
+</tr>
+<tr>
+<td>P31 Q8(b)(ii)</td>
+<td>Quantum cryptography (drawbacks)</td>
+<td>2022 Summer P31 Q8(b)(ii)</td>
+</tr>
+<tr>
+<td>P31 Q5(a)</td>
+<td>Mis-filed: hashing for file access (§13.2), not Security</td>
+<td>2024 Winter P31 Q5(a)</td>
+</tr>
+<tr>
+<td>P31 Q5(b)</td>
+<td>Mis-filed: hashing collision resolution (§13.2), not Security</td>
+<td>2024 Winter P31 Q5(b)</td>
+</tr>
+<tr>
+<td>P31 Q3(a)</td>
+<td>Mis-filed: hashing for file access (§13.2), not Security</td>
+<td>2023 Summer P31 Q3(a)</td>
+</tr>
+<tr>
+<td>P31 Q3(b)</td>
+<td>Mis-filed: hashing collision handling (§13.2), not Security</td>
+<td>2023 Summer P31 Q3(b)</td>
+</tr>
+<tr>
+<td>P32 Q3(a)</td>
+<td>Mis-filed: hashing collision definition (§13.2), not Security</td>
+<td>2023 Winter P32 Q3(a)</td>
+</tr>
+<tr>
+<td>P32 Q3(b)</td>
+<td>Mis-filed: hashing collision resolution (§13.2), not Security</td>
+<td>2023 Winter P32 Q3(b)</td>
+</tr>
+</tbody>
+</table>
       </article>
       <nav style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin-top:24px;position:relative;z-index:1;">
 <a href="162-translation-software.html" title="Previous: 16.2 Translation Software" style="display:block;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card-bg);text-decoration:none;min-width:0;"><span style="display:block;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;">← Previous</span><span style="display:block;font-size:14px;font-weight:600;color:var(--ink);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">16.2 Translation Software</span></a>
