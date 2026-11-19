@@ -1438,6 +1438,2080 @@ OUTPUT Line`,
       { label: "GB 73 60 45 30 15", setup: 'DECLARE GB : ARRAY[1:5] OF INTEGER\nDECLARE Check : ARRAY[0:75] OF BOOLEAN\nGB[1] <- 73\nGB[2] <- 60\nGB[3] <- 45\nGB[4] <- 30\nGB[5] <- 15' },
     ],
   },
+
+  {
+    id: "s2021_21-q5",
+    title: "Sort() — bubble sort the exam results",
+    source: "9618/21 Summer 2021 Q5",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Sort(), using the global 2D array Result[1:1000,1:2]",
+    prompt: [
+      "A global 2D array `Result` of type `INTEGER` stores exam candidate numbers with",
+      "their marks. It has 1000 rows and 2 columns: column 1 holds the candidate number",
+      "and column 2 holds the mark for that candidate. Every element holds valid data.",
+      "",
+      "A procedure `Sort()` is needed to sort `Result` into ascending order of mark using",
+      "an efficient bubble sort algorithm.",
+      "",
+      "Write pseudocode for the procedure `Sort()`. Assume that `Result` is global."
+    ].join("\n"),
+    model: `PROCEDURE Sort()
+    DECLARE TempNum : INTEGER
+    DECLARE TempMark : INTEGER
+    DECLARE NoSwaps : BOOLEAN
+    DECLARE Boundary : INTEGER
+    DECLARE Row : INTEGER
+    Boundary <- 999
+    REPEAT
+        NoSwaps <- TRUE
+        FOR Row <- 1 TO Boundary
+            IF Result[Row, 2] > Result[Row + 1, 2] THEN
+                TempNum <- Result[Row, 1]
+                Result[Row, 1] <- Result[Row + 1, 1]
+                Result[Row + 1, 1] <- TempNum
+                TempMark <- Result[Row, 2]
+                Result[Row, 2] <- Result[Row + 1, 2]
+                Result[Row + 1, 2] <- TempMark
+                NoSwaps <- FALSE
+            ENDIF
+        NEXT Row
+        Boundary <- Boundary - 1
+    UNTIL NoSwaps = TRUE
+ENDPROCEDURE`,
+    after: `DECLARE Index : INTEGER
+DECLARE SortedOk : BOOLEAN
+CALL Sort()
+SortedOk <- TRUE
+FOR Index <- 1 TO 999
+    IF Result[Index, 2] > Result[Index + 1, 2] THEN
+        SortedOk <- FALSE
+    ENDIF
+NEXT Index
+OUTPUT SortedOk
+OUTPUT Result[1, 1], " ", Result[1, 2]
+OUTPUT Result[500, 1], " ", Result[500, 2]
+OUTPUT Result[1000, 1], " ", Result[1000, 2]`,
+    cases: [
+      {
+        label: "marks 4, 8, 12 …",
+        setup: `DECLARE Result : ARRAY[1:1000,1:2] OF INTEGER
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+FOR I <- 1 TO 1000
+    Result[I, 1] <- 50000 + I
+    Result[I, 2] <- I * 4
+NEXT I
+FOR I <- 0 TO 11
+    T <- Result[I * 80 + 1, 2]
+    Result[I * 80 + 1, 2] <- Result[I * 80 + 41, 2]
+    Result[I * 80 + 41, 2] <- T
+    T <- Result[I * 80 + 1, 1]
+    Result[I * 80 + 1, 1] <- Result[I * 80 + 41, 1]
+    Result[I * 80 + 41, 1] <- T
+NEXT I`,
+      },
+      {
+        label: "marks 7, 12, 17 …",
+        setup: `DECLARE Result : ARRAY[1:1000,1:2] OF INTEGER
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+FOR I <- 1 TO 1000
+    Result[I, 1] <- 60000 + I
+    Result[I, 2] <- I * 5 + 2
+NEXT I
+FOR I <- 0 TO 11
+    T <- Result[I * 80 + 1, 2]
+    Result[I * 80 + 1, 2] <- Result[I * 80 + 41, 2]
+    Result[I * 80 + 41, 2] <- T
+    T <- Result[I * 80 + 1, 1]
+    Result[I * 80 + 1, 1] <- Result[I * 80 + 41, 1]
+    Result[I * 80 + 41, 1] <- T
+NEXT I`,
+      },
+      {
+        label: "marks 9, 15, 21 …",
+        setup: `DECLARE Result : ARRAY[1:1000,1:2] OF INTEGER
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+FOR I <- 1 TO 1000
+    Result[I, 1] <- 70000 + I
+    Result[I, 2] <- I * 6 + 3
+NEXT I
+FOR I <- 0 TO 11
+    T <- Result[I * 80 + 1, 2]
+    Result[I * 80 + 1, 2] <- Result[I * 80 + 41, 2]
+    Result[I * 80 + 41, 2] <- T
+    T <- Result[I * 80 + 1, 1]
+    Result[I * 80 + 1, 1] <- Result[I * 80 + 41, 1]
+    Result[I * 80 + 41, 1] <- T
+NEXT I`,
+      },
+    ],
+  },
+
+  {
+    id: "s2021_21-q7c",
+    title: "GetWord() — pick a word out of FNString",
+    source: "9618/21 Summer 2021 Q7(c)",
+    marks: 5,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION GetWord(StartPos : INTEGER) RETURNS STRING, using the global string FNString",
+    prompt: [
+      "A full name is stored in the global variable `FNString`. Words are separated by a",
+      "single space character, there are no spaces at the start or end, and there is at",
+      "least one word.",
+      "",
+      "A function `GetWord()` is called with the position of the first character of a word",
+      "in `FNString` and returns that word.",
+      "",
+      "For example, if `FNString` contains `\"hot and cold\"`, `GetWord(9)` returns `\"cold\"`.",
+      "",
+      "Write pseudocode for the module `GetWord()`. Assume that `FNString` is global."
+    ].join("\n"),
+    model: `FUNCTION GetWord(StartPos : INTEGER) RETURNS STRING
+    DECLARE NextWord : STRING
+    DECLARE ThisPos : INTEGER
+    NextWord <- ""
+    ThisPos <- StartPos
+    WHILE ThisPos <= LENGTH(FNString) AND MID(FNString, ThisPos, 1) <> ' '
+        NextWord <- NextWord & MID(FNString, ThisPos, 1)
+        ThisPos <- ThisPos + 1
+    ENDWHILE
+    RETURN NextWord
+ENDFUNCTION`,
+    setup: `DECLARE FNString : STRING
+FNString <- "hot and cold"`,
+    after: `OUTPUT GetWord(9)`,
+    cases: [
+      { label: '"hot and cold" — GetWord(9)', after: 'FNString <- "hot and cold"\nOUTPUT GetWord(9)' },
+      { label: '"hot and cold" — GetWord(1)', after: 'FNString <- "hot and cold"\nOUTPUT GetWord(1)' },
+      { label: '"hot and cold" — GetWord(5)', after: 'FNString <- "hot and cold"\nOUTPUT GetWord(5)' },
+      { label: '"the quick brown fox" — GetWord(11)', after: 'FNString <- "the quick brown fox"\nOUTPUT GetWord(11)' },
+    ],
+  },
+
+  {
+    id: "s2021_22-q8a",
+    title: "IgnoreWord() — is the word in IgnoreList?",
+    source: "9618/22 Summer 2021 Q8(a)",
+    marks: 5,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION IgnoreWord(ThisWord : STRING) RETURNS BOOLEAN, using the global array IgnoreList[1:10]",
+    prompt: [
+      "A program is needed to produce a string of initials from a full name.",
+      "",
+      "A global ten-element 1D array `IgnoreList` of type `STRING` stores the words that",
+      "are ignored. Unused elements contain the empty string (`\"\"`).",
+      "",
+      "A function `IgnoreWord()` is called with a string parameter representing a word.",
+      "It searches for the word in the `IgnoreList` array and returns `TRUE` if the word",
+      "is found, otherwise it returns `FALSE`. Upper and lower case characters are treated",
+      "as the same.",
+      "",
+      "Write pseudocode for the module `IgnoreWord()`. Assume that `IgnoreList` is global."
+    ].join("\n"),
+    model: `FUNCTION IgnoreWord(ThisWord : STRING) RETURNS BOOLEAN
+    DECLARE Found : BOOLEAN
+    DECLARE Index : INTEGER
+    Found <- FALSE
+    Index <- 1
+    WHILE Found = FALSE AND Index <= 10
+        IF TO_LOWER(IgnoreList[Index]) = TO_LOWER(ThisWord) THEN
+            Found <- TRUE
+        ELSE
+            Index <- Index + 1
+        ENDIF
+    ENDWHILE
+    RETURN Found
+ENDFUNCTION`,
+    setup: `DECLARE IgnoreList : ARRAY[1:10] OF STRING
+IgnoreList[1] <- "the"
+IgnoreList[2] <- "and"
+IgnoreList[3] <- "of"
+IgnoreList[4] <- "for"
+IgnoreList[5] <- "to"`,
+    after: `OUTPUT IgnoreWord("the")`,
+    cases: [
+      { label: '"the"', after: 'OUTPUT IgnoreWord("the")' },
+      { label: '"The" — different case', after: 'OUTPUT IgnoreWord("The")' },
+      { label: '"from" — not in the list', after: 'OUTPUT IgnoreWord("from")' },
+      { label: '"to"', after: 'OUTPUT IgnoreWord("to")' },
+    ],
+  },
+
+  {
+    id: "s2021_22-q8b",
+    title: "GetInitials() — build the initials string",
+    source: "9618/22 Summer 2021 Q8(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE GetInitials(), using the global string FNString",
+    prompt: [
+      "A program takes a string containing a full name and produces a new string of",
+      "initials. Words in `IgnoreList` such as `the`, `and`, `of`, `for` and `to` are",
+      "ignored. Each letter of the new string must be upper case.",
+      "",
+      "For example `\"Integrated Development Environment\"` gives `\"IDE\"` and",
+      "`\"The American Standard Code for Information Interchange\"` gives `\"ASCII\"`.",
+      "",
+      "The global variable `FNString` stores the full name. The modules `GetStart()`,",
+      "`GetWord()` and `IgnoreWord()` have already been written and are available.",
+      "",
+      "A procedure `GetInitials()` processes the words in `FNString` one word at a time,",
+      "calling `GetStart()`, `GetWord()` and `IgnoreWord()` for each word, and outputs",
+      "the new string.",
+      "",
+      "Write pseudocode for the module `GetInitials()`."
+    ].join("\n"),
+    model: `PROCEDURE GetInitials()
+    DECLARE NewString : STRING
+    DECLARE NextWord : STRING
+    DECLARE ThisWordNum : INTEGER
+    DECLARE ThisIndex : INTEGER
+    ThisWordNum <- 0
+    NewString <- ""
+    REPEAT
+        ThisWordNum <- ThisWordNum + 1
+        ThisIndex <- GetStart(ThisWordNum)
+        IF ThisIndex <> -1 THEN
+            NextWord <- GetWord(ThisIndex)
+            IF IgnoreWord(NextWord) = FALSE THEN
+                NewString <- NewString & TO_UPPER(LEFT(NextWord, 1))
+            ENDIF
+        ENDIF
+    UNTIL ThisIndex = -1
+    OUTPUT NewString
+ENDPROCEDURE`,
+    setup: `DECLARE FNString : STRING
+DECLARE IgnoreList : ARRAY[1:10] OF STRING
+IgnoreList[1] <- "the"
+IgnoreList[2] <- "and"
+IgnoreList[3] <- "of"
+IgnoreList[4] <- "for"
+IgnoreList[5] <- "to"
+
+FUNCTION GetStart(WordNum : INTEGER) RETURNS INTEGER
+    DECLARE Index : INTEGER
+    DECLARE ThisPos : INTEGER
+    DECLARE NumFound : INTEGER
+    Index <- -1
+    NumFound <- 0
+    ThisPos <- 1
+    IF WordNum = 1 THEN
+        Index <- 1
+    ELSE
+        WHILE ThisPos <= LENGTH(FNString) AND Index = -1
+            IF MID(FNString, ThisPos, 1) = ' ' THEN
+                NumFound <- NumFound + 1
+                IF NumFound = WordNum - 1 THEN
+                    Index <- ThisPos + 1
+                ENDIF
+            ENDIF
+            ThisPos <- ThisPos + 1
+        ENDWHILE
+    ENDIF
+    RETURN Index
+ENDFUNCTION
+
+FUNCTION GetWord(StartPos : INTEGER) RETURNS STRING
+    DECLARE NextWord : STRING
+    DECLARE ThisPos : INTEGER
+    NextWord <- ""
+    ThisPos <- StartPos
+    WHILE ThisPos <= LENGTH(FNString) AND MID(FNString, ThisPos, 1) <> ' '
+        NextWord <- NextWord & MID(FNString, ThisPos, 1)
+        ThisPos <- ThisPos + 1
+    ENDWHILE
+    RETURN NextWord
+ENDFUNCTION
+
+FUNCTION IgnoreWord(ThisWord : STRING) RETURNS BOOLEAN
+    DECLARE Found : BOOLEAN
+    DECLARE Index : INTEGER
+    Found <- FALSE
+    Index <- 1
+    WHILE Found = FALSE AND Index <= 10
+        IF TO_LOWER(IgnoreList[Index]) = TO_LOWER(ThisWord) THEN
+            Found <- TRUE
+        ELSE
+            Index <- Index + 1
+        ENDIF
+    ENDWHILE
+    RETURN Found
+ENDFUNCTION`,
+    after: `FNString <- "Integrated Development Environment"
+CALL GetInitials()`,
+    cases: [
+      { label: '"Integrated Development Environment"', after: 'FNString <- "Integrated Development Environment"\nCALL GetInitials()' },
+      { label: '"The American Standard Code for Information Interchange"', after: 'FNString <- "The American Standard Code for Information Interchange"\nCALL GetInitials()' },
+      { label: '"hot and cold"', after: 'FNString <- "hot and cold"\nCALL GetInitials()' },
+    ],
+  },
+
+  {
+    id: "s2022_23-q9b",
+    title: "AddPassword() — store a new password",
+    source: "9618/23 Summer 2022 Q9(b)",
+    marks: 6,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION AddPassword(Name : STRING, Password : STRING) RETURNS BOOLEAN, using the global 2D array Secret",
+    prompt: [
+      "A global 2D array `Secret` of type `STRING` stores passwords with the website",
+      "domain name where they are used: 500 rows by 2 columns. Column 1 holds the domain",
+      "name and column 2 the encrypted password. Unused elements contain the empty string",
+      "(`\"\"`), which may occur anywhere in the array.",
+      "",
+      "A function `AddPassword()` takes two string parameters: a website domain name and",
+      "a password. It searches for the domain name in `Secret` and, if it is not found,",
+      "adds the domain name and the **encrypted** password to the array. It returns `TRUE`",
+      "if they are added, otherwise returns `FALSE`.",
+      "",
+      "The modules `Encrypt()` and `FindPassword()` have already been written.",
+      "",
+      "Write pseudocode for the module `AddPassword()`."
+    ].join("\n"),
+    model: `FUNCTION AddPassword(Name : STRING, Password : STRING) RETURNS BOOLEAN
+    DECLARE Index : INTEGER
+    DECLARE Added : BOOLEAN
+    Added <- FALSE
+    Index <- 1
+    IF FindPassword(Name) = "" THEN
+        WHILE Added = FALSE AND Index <= 500
+            IF Secret[Index, 1] = "" THEN
+                Secret[Index, 1] <- Name
+                Secret[Index, 2] <- Encrypt(Password)
+                Added <- TRUE
+            ELSE
+                Index <- Index + 1
+            ENDIF
+        ENDWHILE
+    ENDIF
+    RETURN Added
+ENDFUNCTION`,
+    setup: `DECLARE Secret : ARRAY[1:500,1:2] OF STRING
+
+FUNCTION Encrypt(Plain : STRING) RETURNS STRING
+    RETURN "E" & Plain
+ENDFUNCTION
+
+FUNCTION FindPassword(Domain : STRING) RETURNS STRING
+    DECLARE Index : INTEGER
+    DECLARE ThisPassword : STRING
+    ThisPassword <- ""
+    FOR Index <- 1 TO 500
+        IF Secret[Index, 1] = Domain THEN
+            ThisPassword <- Secret[Index, 2]
+        ENDIF
+    NEXT Index
+    RETURN ThisPassword
+ENDFUNCTION`,
+    after: `OUTPUT AddPassword("c.com", "gamma333")`,
+    cases: [
+      {
+        label: 'new domain "c.com"',
+        after: `Secret[1, 1] <- "a.com"
+Secret[1, 2] <- "Ealpha1"
+Secret[2, 1] <- "b.com"
+Secret[2, 2] <- "Ebeta22"
+OUTPUT AddPassword("c.com", "gamma333")
+OUTPUT Secret[3, 1], " ", Secret[3, 2]`,
+      },
+      {
+        label: 'existing domain "b.com"',
+        after: `Secret[1, 1] <- "a.com"
+Secret[1, 2] <- "Ealpha1"
+Secret[2, 1] <- "b.com"
+Secret[2, 2] <- "Ebeta22"
+OUTPUT AddPassword("b.com", "other99")
+OUTPUT "[", Secret[3, 1], "][", Secret[3, 2], "]"`,
+      },
+      {
+        label: "array already full",
+        after: `DECLARE I : INTEGER
+FOR I <- 1 TO 500
+    Secret[I, 1] <- "site" & NUM_TO_STR(I)
+    Secret[I, 2] <- "Ep" & NUM_TO_STR(I)
+NEXT I
+OUTPUT AddPassword("new.com", "x12345")
+OUTPUT Secret[500, 1], " ", Secret[500, 2]`,
+      },
+    ],
+  },
+
+  {
+    id: "s2023_21-q8a",
+    title: "IsNewSupp() — validate a new supplier code",
+    source: "9618/21 Summer 2023 Q8(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch12 Software development",
+    requirement: "FUNCTION IsNewSupp(ThisString : STRING) RETURNS BOOLEAN",
+    prompt: [
+      "Each item in a stock file has the format `<ItemNum><SupplierCode><Description>`.",
+      "`SupplierCode` is 5 alphabetic characters and identifies the supplier.",
+      "",
+      "A function `IsNewSupp()` is called with a new supplier code. It returns `TRUE` if",
+      "the string is exactly 5 characters long, contains alphabetic characters only",
+      "(either upper or lower case) **and** the supplier code is not already in use.",
+      "Otherwise it returns `FALSE`.",
+      "",
+      "The module `SuppExists()` has already been written: it is called with a supplier",
+      "code and returns `TRUE` if that code is already in use. It generates a run-time",
+      "error if the parameter is not 5 characters long, so `IsNewSupp()` must use it.",
+      "",
+      "Write pseudocode for module `IsNewSupp()`."
+    ].join("\n"),
+    model: `FUNCTION IsNewSupp(ThisString : STRING) RETURNS BOOLEAN
+    DECLARE Index : INTEGER
+    DECLARE ThisChar : STRING
+    IF LENGTH(ThisString) <> 5 THEN
+        RETURN FALSE
+    ENDIF
+    IF SuppExists(ThisString) THEN
+        RETURN FALSE
+    ENDIF
+    FOR Index <- 1 TO 5
+        ThisChar <- TO_LOWER(MID(ThisString, Index, 1))
+        IF ThisChar < 'a' OR ThisChar > 'z' THEN
+            RETURN FALSE
+        ENDIF
+    NEXT Index
+    RETURN TRUE
+ENDFUNCTION`,
+    setup: `DECLARE Suppliers : ARRAY[1:4] OF STRING
+Suppliers[1] <- "ABCDE"
+Suppliers[2] <- "FGHIJ"
+Suppliers[3] <- "KLMNO"
+Suppliers[4] <- "PQRST"
+
+FUNCTION SuppExists(Code : STRING) RETURNS BOOLEAN
+    DECLARE Index : INTEGER
+    FOR Index <- 1 TO 4
+        IF Suppliers[Index] = Code THEN
+            RETURN TRUE
+        ENDIF
+    NEXT Index
+    RETURN FALSE
+ENDFUNCTION`,
+    after: `OUTPUT IsNewSupp("UVWXY")`,
+    cases: [
+      { label: '"UVWXY" — unused', after: 'OUTPUT IsNewSupp("UVWXY")' },
+      { label: '"ABCDE" — already used', after: 'OUTPUT IsNewSupp("ABCDE")' },
+      { label: '"ABC1E" — not alphabetic', after: 'OUTPUT IsNewSupp("ABC1E")' },
+      { label: '"ABCD" — wrong length', after: 'OUTPUT IsNewSupp("ABCD")' },
+    ],
+  },
+
+  {
+    id: "s2024_21-q6a",
+    title: "IsRA() — right-angled triangle?",
+    source: "9618/21 Summer 2024 Q6(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "FUNCTION IsRA(x1 : INTEGER, y1 : INTEGER, x2 : INTEGER, y2 : INTEGER, x3 : INTEGER, y3 : INTEGER) RETURNS BOOLEAN",
+    prompt: [
+      "Three points on a grid form a triangle with sides of length A, B and C. The",
+      "triangle is right-angled if `A * A = (B * B) + (C * C)` where A is the longest side.",
+      "",
+      "The square of the length of a side is found from the coordinates of its endpoints:",
+      "`B * B = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)`",
+      "",
+      "A function `IsRA()` takes three sets of integers as parameters representing the",
+      "coordinates of the three endpoints: `(x1, y1)`, `(x2, y2)` and `(x3, y3)`. It",
+      "returns `TRUE` if the endpoints form a right-angled triangle, otherwise it returns",
+      "`FALSE`.",
+      "",
+      "Write pseudocode for the function `IsRA()`, starting",
+      "`FUNCTION IsRA(x1 : INTEGER, y1 : INTEGER, x2 : INTEGER, y2 : INTEGER, x3 : INTEGER, y3 : INTEGER) RETURNS BOOLEAN`.",
+      "Any of the three sides may be the longest one, so all three squared-length",
+      "comparisons are needed."
+    ].join("\n"),
+    model: `FUNCTION IsRA(x1 : INTEGER, y1 : INTEGER, x2 : INTEGER, y2 : INTEGER, x3 : INTEGER, y3 : INTEGER) RETURNS BOOLEAN
+    DECLARE Len1 : INTEGER
+    DECLARE Len2 : INTEGER
+    DECLARE Len3 : INTEGER
+    Len1 <- (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
+    Len2 <- (x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3)
+    Len3 <- (x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3)
+    IF Len1 = Len2 + Len3 OR Len2 = Len1 + Len3 OR Len3 = Len1 + Len2 THEN
+        RETURN TRUE
+    ELSE
+        RETURN FALSE
+    ENDIF
+ENDFUNCTION`,
+    after: `OUTPUT IsRA(0, 0, 3, 0, 0, 4)`,
+    cases: [
+      { label: "(0,0) (3,0) (0,4)", after: "OUTPUT IsRA(0, 0, 3, 0, 0, 4)" },
+      { label: "(1,2) (4,6) (1,6)", after: "OUTPUT IsRA(1, 2, 4, 6, 1, 6)" },
+      { label: "(0,0) (5,0) (1,3)", after: "OUTPUT IsRA(0, 0, 5, 0, 1, 3)" },
+      { label: "(2,3) (7,4) (5,9)", after: "OUTPUT IsRA(2, 3, 7, 4, 5, 9)" },
+    ],
+  },
+
+  {
+    id: "s2024_22-q8b",
+    title: "DeleteSpaces() — strip leading spaces",
+    source: "9618/22 Summer 2024 Q8(b)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "FUNCTION DeleteSpaces(Line : STRING) RETURNS STRING",
+    prompt: [
+      "A teacher's program processes pseudocode projects written by students. Each line",
+      "of a project file may start with space characters.",
+      "",
+      "A function `DeleteSpaces()` is called with one line of pseudocode and returns the",
+      "line after removing any **leading** space characters. Space characters inside the",
+      "line are kept.",
+      "",
+      "For example:",
+      "Before: `\"      IF X2 > 13 THEN\"`",
+      "After: `\"IF X2 > 13 THEN\"`",
+      "",
+      "Write pseudocode for module `DeleteSpaces()`."
+    ].join("\n"),
+    model: `FUNCTION DeleteSpaces(Line : STRING) RETURNS STRING
+    DECLARE NewLine : STRING
+    DECLARE Index : INTEGER
+    DECLARE Found : BOOLEAN
+    Index <- 1
+    Found <- FALSE
+    WHILE Found = FALSE AND Index <= LENGTH(Line)
+        IF MID(Line, Index, 1) <> ' ' THEN
+            Found <- TRUE
+        ELSE
+            Index <- Index + 1
+        ENDIF
+    ENDWHILE
+    IF Found = FALSE THEN
+        NewLine <- ""
+    ELSE
+        NewLine <- RIGHT(Line, LENGTH(Line) - Index + 1)
+    ENDIF
+    RETURN NewLine
+ENDFUNCTION`,
+    after: `OUTPUT "[", DeleteSpaces("      IF X2 > 13 THEN"), "]"`,
+    cases: [
+      { label: "six leading spaces", after: 'OUTPUT "[", DeleteSpaces("      IF X2 > 13 THEN"), "]"' },
+      { label: "no leading spaces", after: 'OUTPUT "[", DeleteSpaces("PROCEDURE Go()"), "]"' },
+      { label: "spaces only", after: 'OUTPUT "[", DeleteSpaces("        "), "]"' },
+      { label: "three leading spaces", after: 'OUTPUT "[", DeleteSpaces("   Total <- 1 + 2"), "]"' },
+    ],
+  },
+
+  {
+    id: "s2024_23-q6a",
+    title: "Progress() — choose the progress bar image",
+    source: "9618/23 Summer 2024 Q6(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE Progress(Percent : INTEGER, Root : STRING)",
+    prompt: [
+      "A progress bar has 11 steps. A step represents the amount of progress as a",
+      "percentage and has its own image file, named `<root>-<step>.bmp`.",
+      "Step 1 is for a percentage below 10, step 11 is for exactly 100, and each step",
+      "covers the next range of ten percentage points: `BargraphA-1.bmp` for 0 to 9,",
+      "`BargraphA-2.bmp` for 10 to 19, and so on up to `BargraphA-11.bmp` for 100.",
+      "",
+      "A procedure `Progress()` is called with an integer representing the percentage",
+      "progress (0 to 100 inclusive) and a string representing the image filename root.",
+      "It generates the full image filename and calls a procedure `Display()` using that",
+      "filename as its parameter.",
+      "",
+      "Write pseudocode for procedure `Progress()`. Assume that `Display()` is already",
+      "written."
+    ].join("\n"),
+    model: `PROCEDURE Progress(Percent : INTEGER, Root : STRING)
+    DECLARE StepValue : INTEGER
+    DECLARE Filename : STRING
+    StepValue <- (Percent DIV 10) + 1
+    Filename <- Root & "-" & NUM_TO_STR(StepValue) & ".bmp"
+    CALL Display(Filename)
+ENDPROCEDURE`,
+    setup: `PROCEDURE Display(Filename : STRING)
+    OUTPUT Filename
+ENDPROCEDURE`,
+    after: `CALL Progress(25, "BargraphA")`,
+    cases: [
+      { label: "Progress(0, \"BargraphA\")", after: 'CALL Progress(0, "BargraphA")' },
+      { label: "Progress(25, \"BargraphA\")", after: 'CALL Progress(25, "BargraphA")' },
+      { label: "Progress(99, \"BarB\")", after: 'CALL Progress(99, "BarB")' },
+      { label: "Progress(100, \"BarB\")", after: 'CALL Progress(100, "BarB")' },
+    ],
+  },
+
+  {
+    id: "s2025_21-q6b",
+    title: "Sort() — bubble sort the sensor readings",
+    source: "9618/21 Summer 2025 Q6(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Sort(), using the global 2D array Reading[1:2000,1:2]",
+    prompt: [
+      "A program monitors the speed of vehicles. Each sensor reading is stored with the",
+      "sensor's unique ID in the global 2D array `Reading`, declared as",
+      "`DECLARE Reading : ARRAY[1:2000, 1:2] OF INTEGER`. Column 1 contains the sensor",
+      "value and column 2 contains the sensor ID.",
+      "",
+      "A procedure `Sort()` is needed to sort the array into ascending order of sensor",
+      "value using an efficient bubble sort algorithm. The sensor ID must stay with its",
+      "value.",
+      "",
+      "Write efficient pseudocode for the procedure `Sort()`. Assume that `Reading` is",
+      "global."
+    ].join("\n"),
+    model: `PROCEDURE Sort()
+    DECLARE TempValue : INTEGER
+    DECLARE TempID : INTEGER
+    DECLARE NoSwaps : BOOLEAN
+    DECLARE Boundary : INTEGER
+    DECLARE Row : INTEGER
+    Boundary <- 1999
+    REPEAT
+        NoSwaps <- TRUE
+        FOR Row <- 1 TO Boundary
+            IF Reading[Row, 1] > Reading[Row + 1, 1] THEN
+                TempValue <- Reading[Row, 1]
+                Reading[Row, 1] <- Reading[Row + 1, 1]
+                Reading[Row + 1, 1] <- TempValue
+                TempID <- Reading[Row, 2]
+                Reading[Row, 2] <- Reading[Row + 1, 2]
+                Reading[Row + 1, 2] <- TempID
+                NoSwaps <- FALSE
+            ENDIF
+        NEXT Row
+        Boundary <- Boundary - 1
+    UNTIL NoSwaps = TRUE
+ENDPROCEDURE`,
+    after: `DECLARE Index : INTEGER
+DECLARE SortedOk : BOOLEAN
+CALL Sort()
+SortedOk <- TRUE
+FOR Index <- 1 TO 1999
+    IF Reading[Index, 1] > Reading[Index + 1, 1] THEN
+        SortedOk <- FALSE
+    ENDIF
+NEXT Index
+OUTPUT SortedOk
+OUTPUT Reading[1, 1], " ", Reading[1, 2]
+OUTPUT Reading[1000, 1], " ", Reading[1000, 2]
+OUTPUT Reading[2000, 1], " ", Reading[2000, 2]`,
+    cases: [
+      {
+        label: "values 1 … 2000",
+        setup: `DECLARE Reading : ARRAY[1:2000,1:2] OF INTEGER
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+FOR I <- 1 TO 2000
+    Reading[I, 1] <- I
+    Reading[I, 2] <- 500 + I
+NEXT I
+FOR I <- 0 TO 19
+    T <- Reading[I * 100 + 1, 1]
+    Reading[I * 100 + 1, 1] <- Reading[I * 100 + 51, 1]
+    Reading[I * 100 + 51, 1] <- T
+    T <- Reading[I * 100 + 1, 2]
+    Reading[I * 100 + 1, 2] <- Reading[I * 100 + 51, 2]
+    Reading[I * 100 + 51, 2] <- T
+NEXT I`,
+      },
+      {
+        label: "values 2, 4 … 4000",
+        setup: `DECLARE Reading : ARRAY[1:2000,1:2] OF INTEGER
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+FOR I <- 1 TO 2000
+    Reading[I, 1] <- I * 2
+    Reading[I, 2] <- 8000 + I
+NEXT I
+FOR I <- 0 TO 19
+    T <- Reading[I * 100 + 1, 1]
+    Reading[I * 100 + 1, 1] <- Reading[I * 100 + 51, 1]
+    Reading[I * 100 + 51, 1] <- T
+    T <- Reading[I * 100 + 1, 2]
+    Reading[I * 100 + 1, 2] <- Reading[I * 100 + 51, 2]
+    Reading[I * 100 + 51, 2] <- T
+NEXT I`,
+      },
+      {
+        label: "values 10, 13, 16 …",
+        setup: `DECLARE Reading : ARRAY[1:2000,1:2] OF INTEGER
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+FOR I <- 1 TO 2000
+    Reading[I, 1] <- I * 3 + 7
+    Reading[I, 2] <- 300 + I
+NEXT I
+FOR I <- 0 TO 19
+    T <- Reading[I * 100 + 1, 1]
+    Reading[I * 100 + 1, 1] <- Reading[I * 100 + 51, 1]
+    Reading[I * 100 + 51, 1] <- T
+    T <- Reading[I * 100 + 1, 2]
+    Reading[I * 100 + 1, 2] <- Reading[I * 100 + 51, 2]
+    Reading[I * 100 + 51, 2] <- T
+NEXT I`,
+      },
+    ],
+  },
+
+  {
+    id: "s2025_21-q7a",
+    title: "CustomerOrder() — free coffees",
+    source: "9618/21 Summer 2025 Q7(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION CustomerOrder(Number : INTEGER, Points : INTEGER) RETURNS INTEGER",
+    prompt: [
+      "A coffee shop loyalty scheme gives one point for every coffee ordered.",
+      "",
+      "- The total number of points is increased by the number of coffees ordered.",
+      "- If just one cup of coffee is ordered and the number of points goes above 10,",
+      "  that cup is free and the number of points is reduced by 11.",
+      "- If the order is for multiple coffees and the number of points goes above 10,",
+      "  the customer gets one free coffee for every 11 points and the points are",
+      "  reduced by 11 for each free coffee.",
+      "",
+      "For example, a customer with 9 points who orders 16 coffees has 25 points, gets",
+      "2 free coffees and has 3 points left.",
+      "",
+      "A function `CustomerOrder()` is called with two integer parameters: the number of",
+      "coffees ordered and the current number of points. It outputs the number of free",
+      "coffees and returns the new points total.",
+      "",
+      "Write pseudocode for module `CustomerOrder()`."
+    ].join("\n"),
+    model: `FUNCTION CustomerOrder(Number : INTEGER, Points : INTEGER) RETURNS INTEGER
+    DECLARE NewPoints : INTEGER
+    DECLARE NumberFree : INTEGER
+    NewPoints <- Points + Number
+    NumberFree <- 0
+    WHILE NewPoints >= 11 AND Number > 0
+        NumberFree <- NumberFree + 1
+        NewPoints <- NewPoints - 11
+        Number <- Number - 1
+    ENDWHILE
+    OUTPUT "Number of free coffees: ", NumberFree
+    RETURN NewPoints
+ENDFUNCTION`,
+    after: `DECLARE NewPoints : INTEGER
+NewPoints <- CustomerOrder(16, 9)
+OUTPUT "${RESULT_MARKER}"
+OUTPUT NewPoints`,
+    cases: [
+      { label: "16 coffees, 9 points", after: `DECLARE NewPoints : INTEGER\nNewPoints <- CustomerOrder(16, 9)\nOUTPUT "${RESULT_MARKER}"\nOUTPUT NewPoints` },
+      { label: "1 coffee, 10 points", after: `DECLARE NewPoints : INTEGER\nNewPoints <- CustomerOrder(1, 10)\nOUTPUT "${RESULT_MARKER}"\nOUTPUT NewPoints` },
+      { label: "3 coffees, 9 points", after: `DECLARE NewPoints : INTEGER\nNewPoints <- CustomerOrder(3, 9)\nOUTPUT "${RESULT_MARKER}"\nOUTPUT NewPoints` },
+      { label: "5 coffees, 0 points", after: `DECLARE NewPoints : INTEGER\nNewPoints <- CustomerOrder(5, 0)\nOUTPUT "${RESULT_MARKER}"\nOUTPUT NewPoints` },
+    ],
+  },
+
+  {
+    id: "s2025_22-q7a",
+    title: "FindCustomer() — search for a loyalty customer",
+    source: "9618/22 Summer 2025 Q7(a)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION FindCustomer(CustomerID : INTEGER) RETURNS INTEGER, using the global 2D array Loyalty",
+    prompt: [
+      "Each customer of a coffee shop has a unique customer ID starting at 10001 and",
+      "increasing by one for each new customer. The scheme is limited to 1000 customers.",
+      "",
+      "A global 2D array `Loyalty` of type `INTEGER` has 1000 rows and 2 columns. Column 1",
+      "holds the customer ID and column 2 the loyalty points. Rows that are not in use",
+      "have the value `99999` in column 1. The array is sorted in ascending order of",
+      "customer ID.",
+      "",
+      "A function `FindCustomer()` is called with an integer customer ID. It searches",
+      "`Loyalty`, stops as soon as the ID is found, and deals efficiently with an ID that",
+      "is not stored. It returns the loyalty points if the customer is found, otherwise",
+      "it returns `-1`.",
+      "",
+      "Write efficient pseudocode for module `FindCustomer()`."
+    ].join("\n"),
+    model: `FUNCTION FindCustomer(CustomerID : INTEGER) RETURNS INTEGER
+    DECLARE Index : INTEGER
+    IF CustomerID < 10001 OR CustomerID > 11000 THEN
+        RETURN -1
+    ENDIF
+    FOR Index <- 1 TO 1000
+        IF Loyalty[Index, 1] = CustomerID THEN
+            RETURN Loyalty[Index, 2]
+        ENDIF
+        IF Loyalty[Index, 1] = 99999 THEN
+            RETURN -1
+        ENDIF
+    NEXT Index
+    RETURN -1
+ENDFUNCTION`,
+    setup: `DECLARE Loyalty : ARRAY[1:1000,1:2] OF INTEGER
+DECLARE I : INTEGER
+FOR I <- 1 TO 6
+    Loyalty[I, 1] <- 10000 + I
+    Loyalty[I, 2] <- I * 7
+NEXT I
+FOR I <- 7 TO 1000
+    Loyalty[I, 1] <- 99999
+NEXT I`,
+    after: `OUTPUT FindCustomer(10004)`,
+    cases: [
+      { label: "ID 10004 is stored", after: "OUTPUT FindCustomer(10004)" },
+      { label: "ID 10006 is stored", after: "OUTPUT FindCustomer(10006)" },
+      { label: "ID 10020 is not stored", after: "OUTPUT FindCustomer(10020)" },
+      { label: "ID 9000 is out of range", after: "OUTPUT FindCustomer(9000)" },
+    ],
+  },
+
+  {
+    id: "s2026_21-q6b",
+    title: "RejectDescription() — extract the fault description",
+    source: "9618/21 Summer 2026 Q6(b)",
+    marks: 4,
+    difficulty: 1,
+    chapter: "Ch12 Software development",
+    requirement: "FUNCTION RejectDescription(ThisReject : STRING) RETURNS STRING",
+    prompt: [
+      "The data for each rejected fence part is a data packet made of three data items",
+      "separated by the `/` character:",
+      "`<length>/<machine ID>/<description of the fault>`",
+      "",
+      "The length is 3 digits, the machine ID is a single character and the description",
+      "is a variable length string.",
+      "",
+      "For example, `DataPacket <- \"563/B/the fence length is too long\"`.",
+      "",
+      "A module `RejectDescription()` is needed to return the fault description from a",
+      "data packet.",
+      "",
+      "Write the pseudocode for the module `RejectDescription()`."
+    ].join("\n"),
+    model: `FUNCTION RejectDescription(ThisReject : STRING) RETURNS STRING
+    DECLARE Description : STRING
+    Description <- MID(ThisReject, 7, LENGTH(ThisReject) - 6)
+    RETURN Description
+ENDFUNCTION`,
+    after: `OUTPUT RejectDescription("563/B/the fence length is too long")`,
+    cases: [
+      { label: '"563/B/the fence length is too long"', after: 'OUTPUT RejectDescription("563/B/the fence length is too long")' },
+      { label: '"221/A/too short"', after: 'OUTPUT RejectDescription("221/A/too short")' },
+      { label: '"605/C/bent corner"', after: 'OUTPUT RejectDescription("605/C/bent corner")' },
+    ],
+  },
+
+  {
+    id: "s2026_22-q5cii",
+    title: "Swap() — swap two values by reference",
+    source: "9618/22 Summer 2026 Q5(c)(ii)",
+    marks: 2,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Swap(BYREF Num1 : INTEGER, BYREF Num2 : INTEGER)",
+    prompt: [
+      "A programmer wrote this procedure to swap the values of two variables:",
+      "",
+      "PROCEDURE Swap(Num1 : INTEGER, Num2 : INTEGER)",
+      "    DECLARE Temp : INTEGER",
+      "    Temp <- Num1",
+      "    Num1 <- Num2",
+      "    Num2 <- Temp",
+      "ENDPROCEDURE",
+      "",
+      "The block of code in a bubble sort that swaps two neighbouring array elements is",
+      "replaced with `CALL Swap(Numbers[Index], Numbers[Index + 1])`, but the procedure",
+      "does **not** work as expected.",
+      "",
+      "Write pseudocode to amend the version of the `Swap()` procedure so that it works",
+      "as expected. The amended version must **not** use global variables."
+    ].join("\n"),
+    model: `PROCEDURE Swap(BYREF Num1 : INTEGER, BYREF Num2 : INTEGER)
+    DECLARE Temp : INTEGER
+    Temp <- Num1
+    Num1 <- Num2
+    Num2 <- Temp
+ENDPROCEDURE`,
+    after: `DECLARE A : INTEGER
+DECLARE B : INTEGER
+A <- 3
+B <- 7
+CALL Swap(A, B)
+OUTPUT A, " ", B`,
+    cases: [
+      { label: "Swap(3, 7)", after: "DECLARE A : INTEGER\nDECLARE B : INTEGER\nA <- 3\nB <- 7\nCALL Swap(A, B)\nOUTPUT A, \" \", B" },
+      { label: "Swap(-4, 9)", after: "DECLARE A : INTEGER\nDECLARE B : INTEGER\nA <- -4\nB <- 9\nCALL Swap(A, B)\nOUTPUT A, \" \", B" },
+      { label: "Swap(0, 100)", after: "DECLARE A : INTEGER\nDECLARE B : INTEGER\nA <- 0\nB <- 100\nCALL Swap(A, B)\nOUTPUT A, \" \", B" },
+    ],
+  },
+
+  {
+    id: "s2026_22-q6a",
+    title: "AddPadding() — pad the plain text to 25 characters",
+    source: "9618/22 Summer 2026 Q6(a)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION AddPadding() RETURNS STRING",
+    prompt: [
+      "A Caesar box cipher uses a 5 by 5 grid, so the plain text must be exactly 25",
+      "characters long. If the message is shorter, space characters are added to the end",
+      "to make the padded plain text 25 characters long.",
+      "",
+      "For example the plain text `\"This is a message\"` is padded to",
+      "`\"This is a message        \"`.",
+      "",
+      "A module `AddPadding()` will:",
+      "- prompt the user for and input the plain text",
+      "- check that the plain text is between 1 and 25 characters inclusive, and re-input",
+      "  it until it is",
+      "- add space characters to the end, if required, so that it is exactly 25 characters",
+      "- return the amended plain text.",
+      "",
+      "Write pseudocode for module `AddPadding()`."
+    ].join("\n"),
+    model: `FUNCTION AddPadding() RETURNS STRING
+    DECLARE Plaintext : STRING
+    DECLARE LenOfPlaintext : INTEGER
+    REPEAT
+        OUTPUT "Enter plaintext"
+        INPUT Plaintext
+        LenOfPlaintext <- LENGTH(Plaintext)
+    UNTIL LenOfPlaintext >= 1 AND LenOfPlaintext <= 25
+    WHILE LenOfPlaintext < 25
+        Plaintext <- Plaintext & ' '
+        LenOfPlaintext <- LenOfPlaintext + 1
+    ENDWHILE
+    RETURN Plaintext
+ENDFUNCTION`,
+    after: `DECLARE Padded : STRING
+Padded <- AddPadding()
+OUTPUT "${RESULT_MARKER}"
+OUTPUT "[", Padded, "]"
+OUTPUT LENGTH(Padded)`,
+    cases: [
+      {
+        label: '"This is a message"',
+        inputs: ["This is a message"],
+        after: `DECLARE Padded : STRING\nPadded <- AddPadding()\nOUTPUT "${RESULT_MARKER}"\nOUTPUT "[", Padded, "]"\nOUTPUT LENGTH(Padded)`,
+      },
+      {
+        label: '"AB"',
+        inputs: ["AB"],
+        after: `DECLARE Padded : STRING\nPadded <- AddPadding()\nOUTPUT "${RESULT_MARKER}"\nOUTPUT "[", Padded, "]"\nOUTPUT LENGTH(Padded)`,
+      },
+      {
+        label: "27 characters then 25",
+        inputs: ["123456789012345678901234567", "Exactly twenty five chars"],
+        after: `DECLARE Padded : STRING\nPadded <- AddPadding()\nOUTPUT "${RESULT_MARKER}"\nOUTPUT "[", Padded, "]"\nOUTPUT LENGTH(Padded)`,
+      },
+      {
+        label: "empty input then one space",
+        inputs: ["", " "],
+        after: `DECLARE Padded : STRING\nPadded <- AddPadding()\nOUTPUT "${RESULT_MARKER}"\nOUTPUT "[", Padded, "]"\nOUTPUT LENGTH(Padded)`,
+      },
+    ],
+  },
+
+  {
+    id: "w2021_21-q6a",
+    title: "SetRow() — set the touched pixels in a row",
+    source: "9618/21 Winter 2021 Q6(a)",
+    marks: 5,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "PROCEDURE SetRow(Row : INTEGER, SkipNum : INTEGER, SetNum : INTEGER)",
+    prompt: [
+      "A touchscreen is represented by the global 2D array `Screen` of type `INTEGER`, divided",
+      "into 800 rows and 1280 columns. An element is set to 0 unless the user touches that part",
+      "of the screen. Every element wholly or partly inside the touch is set to 1.",
+      "",
+      "A procedure `SetRow()` is called with three parameters:",
+      "- a row number",
+      "- the number of pixels to be skipped starting from column 1",
+      "- the number of pixels that should be set to 1",
+      "",
+      "It sets the required number of pixels in that row to 1. For example, `SetRow(3, 8, 5)`",
+      "sets columns 9 to 13 of row 3 to 1.",
+      "",
+      "Write pseudocode for `SetRow()`. Assume that `Screen` is global."
+    ].join("\n"),
+    model: `PROCEDURE SetRow(Row : INTEGER, SkipNum : INTEGER, SetNum : INTEGER)
+    DECLARE Col : INTEGER
+    FOR Col <- SkipNum + 1 TO SkipNum + SetNum
+        Screen[Row, Col] <- 1
+    NEXT Col
+ENDPROCEDURE`,
+    setup: `DECLARE Screen : ARRAY[1:800,1:1280] OF INTEGER`,
+    after: `DECLARE I : INTEGER
+DECLARE Line : STRING
+CALL SetRow(3, 8, 5)
+Line <- ""
+FOR I <- 1 TO 18
+    Line <- Line & NUM_TO_STR(Screen[3, I])
+NEXT I
+OUTPUT Line
+OUTPUT Screen[2, 9]`,
+    cases: [
+      {
+        label: "SetRow(3, 8, 5)",
+        after: `DECLARE I : INTEGER
+DECLARE Line : STRING
+CALL SetRow(3, 8, 5)
+Line <- ""
+FOR I <- 1 TO 18
+    Line <- Line & NUM_TO_STR(Screen[3, I])
+NEXT I
+OUTPUT Line
+OUTPUT Screen[2, 9]`,
+      },
+      {
+        label: "SetRow(1, 0, 3)",
+        after: `DECLARE I : INTEGER
+DECLARE Line : STRING
+CALL SetRow(1, 0, 3)
+Line <- ""
+FOR I <- 1 TO 8
+    Line <- Line & NUM_TO_STR(Screen[1, I])
+NEXT I
+OUTPUT Line
+OUTPUT Screen[1, 9]`,
+      },
+      {
+        label: "SetRow(6, 17, 4)",
+        after: `DECLARE I : INTEGER
+DECLARE Line : STRING
+CALL SetRow(6, 17, 4)
+Line <- ""
+FOR I <- 15 TO 24
+    Line <- Line & NUM_TO_STR(Screen[6, I])
+NEXT I
+OUTPUT Line
+OUTPUT Screen[6, 22]`,
+      },
+    ],
+  },
+
+  {
+    id: "w2021_21-q6b",
+    title: "SearchInRow() — first touched column",
+    source: "9618/21 Winter 2021 Q6(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION SearchInRow(ThisRow : INTEGER, StartCol : INTEGER) RETURNS INTEGER",
+    prompt: [
+      "A touchscreen is represented by the global 2D array `Screen` of type `INTEGER`, divided",
+      "into 800 rows and 1280 columns. Every element wholly or partly inside a touch is set to 1.",
+      "",
+      "A function `SearchInRow()` takes two integer parameters:",
+      "- a row number",
+      "- a start column (either 1 or 1280)",
+      "",
+      "It searches the given row from the start column (left to right if the start column is 1,",
+      "otherwise right to left) for the first column that contains an element set to 1. It",
+      "returns that column number, or returns -1 if no element in the row is set to 1.",
+      "",
+      "Write efficient pseudocode for `SearchInRow()`. Assume that `Screen` is global."
+    ].join("\n"),
+    model: `FUNCTION SearchInRow(ThisRow : INTEGER, StartCol : INTEGER) RETURNS INTEGER
+    DECLARE ThisCol : INTEGER
+    DECLARE Direction : INTEGER
+    DECLARE EndCol : INTEGER
+    DECLARE Found : BOOLEAN
+    Found <- FALSE
+    ThisCol <- StartCol
+    IF StartCol = 1 THEN
+        Direction <- 1
+        EndCol <- 1281
+    ELSE
+        Direction <- -1
+        EndCol <- 0
+    ENDIF
+    WHILE ThisCol <> EndCol AND Found = FALSE
+        IF Screen[ThisRow, ThisCol] = 1 THEN
+            Found <- TRUE
+        ELSE
+            ThisCol <- ThisCol + Direction
+        ENDIF
+    ENDWHILE
+    IF Found = FALSE THEN
+        ThisCol <- -1
+    ENDIF
+    RETURN ThisCol
+ENDFUNCTION`,
+    setup: `DECLARE Screen : ARRAY[1:800,1:1280] OF INTEGER
+DECLARE C : INTEGER
+FOR C <- 9 TO 13
+    Screen[6, C] <- 1
+NEXT C
+Screen[2, 5] <- 1
+FOR C <- 1 TO 10
+    Screen[3, C] <- 1
+NEXT C`,
+    after: `OUTPUT SearchInRow(6, 1), " ", SearchInRow(6, 1280)`,
+    cases: [
+      { label: "row 6, columns 9 to 13", after: 'OUTPUT SearchInRow(6, 1), " ", SearchInRow(6, 1280)' },
+      { label: "row 2, column 5 only", after: 'OUTPUT SearchInRow(2, 1), " ", SearchInRow(2, 1280)' },
+      { label: "row 3, columns 1 to 10", after: 'OUTPUT SearchInRow(3, 1), " ", SearchInRow(3, 1280)' },
+      { label: "row 1, nothing touched", after: 'OUTPUT SearchInRow(1, 1), " ", SearchInRow(1, 1280)' },
+    ],
+  },
+
+  {
+    id: "w2021_21-q6c",
+    title: "GetCentreCol() — centre column of a touch",
+    source: "9618/21 Winter 2021 Q6(c)",
+    marks: 6,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION GetCentreCol(ThisRow : INTEGER) RETURNS INTEGER, using SearchInRow()",
+    prompt: [
+      "A touchscreen is represented by the global 2D array `Screen` of type `INTEGER`, divided",
+      "into 800 rows and 1280 columns. Every element wholly or partly inside a touch is set to 1.",
+      "",
+      "`SearchInRow(ThisRow, StartCol)` has already been written. It searches the given row from",
+      "the start column and returns the column number of the first element set to 1, or returns",
+      "-1 if no element in the row is set to 1.",
+      "",
+      "A function `GetCentreCol()` is called with a row number. It uses `SearchInRow()` to find",
+      "the first and last columns in the given row that have an element set to 1, and returns the",
+      "index of the column midway between them. It returns -1 if no element is set to 1.",
+      "",
+      "Write pseudocode for `GetCentreCol()`. Assume that `Screen` is global."
+    ].join("\n"),
+    model: `FUNCTION GetCentreCol(ThisRow : INTEGER) RETURNS INTEGER
+    DECLARE StartCol : INTEGER
+    DECLARE EndCol : INTEGER
+    DECLARE CentreCol : INTEGER
+    StartCol <- SearchInRow(ThisRow, 1)
+    IF StartCol = -1 THEN
+        CentreCol <- -1
+    ELSE
+        EndCol <- SearchInRow(ThisRow, 1280)
+        CentreCol <- INT((StartCol + EndCol) / 2)
+    ENDIF
+    RETURN CentreCol
+ENDFUNCTION`,
+    setup: `DECLARE Screen : ARRAY[1:800,1:1280] OF INTEGER
+DECLARE C : INTEGER
+
+FUNCTION SearchInRow(ThisRow : INTEGER, StartCol : INTEGER) RETURNS INTEGER
+    DECLARE ThisCol : INTEGER
+    DECLARE Direction : INTEGER
+    DECLARE EndCol : INTEGER
+    DECLARE Found : BOOLEAN
+    Found <- FALSE
+    ThisCol <- StartCol
+    IF StartCol = 1 THEN
+        Direction <- 1
+        EndCol <- 1281
+    ELSE
+        Direction <- -1
+        EndCol <- 0
+    ENDIF
+    WHILE ThisCol <> EndCol AND Found = FALSE
+        IF Screen[ThisRow, ThisCol] = 1 THEN
+            Found <- TRUE
+        ELSE
+            ThisCol <- ThisCol + Direction
+        ENDIF
+    ENDWHILE
+    IF Found = FALSE THEN
+        ThisCol <- -1
+    ENDIF
+    RETURN ThisCol
+ENDFUNCTION
+
+FOR C <- 9 TO 13
+    Screen[6, C] <- 1
+NEXT C
+Screen[2, 5] <- 1
+FOR C <- 100 TO 111
+    Screen[4, C] <- 1
+NEXT C`,
+    after: `OUTPUT GetCentreCol(6)`,
+    cases: [
+      { label: "row 6, columns 9 to 13", after: "OUTPUT GetCentreCol(6)" },
+      { label: "row 4, columns 100 to 111", after: "OUTPUT GetCentreCol(4)" },
+      { label: "row 2, column 5 only", after: "OUTPUT GetCentreCol(2)" },
+      { label: "row 1, nothing touched", after: "OUTPUT GetCentreCol(1)" },
+    ],
+  },
+
+  {
+    id: "w2021_22-q6a",
+    title: "FirstRowSet() — first touched row",
+    source: "9618/22 Winter 2021 Q6(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION FirstRowSet() RETURNS INTEGER, using the global 2D array Screen",
+    prompt: [
+      "A touchscreen is represented by the global 2D array `Screen` of type `INTEGER`, divided",
+      "into 800 rows and 1280 columns. Every element wholly or partly inside a touch is set to 1.",
+      "All other elements are set to 0.",
+      "",
+      "A function `FirstRowSet()` searches for the first row that has an array element set to 1.",
+      "It returns the index of that row (1 is the first row), or returns -1 if there are no",
+      "elements set to 1.",
+      "",
+      "Write **efficient** pseudocode for `FirstRowSet()`. Assume that `Screen` is global."
+    ].join("\n"),
+    model: `FUNCTION FirstRowSet() RETURNS INTEGER
+    DECLARE Row : INTEGER
+    DECLARE Col : INTEGER
+    DECLARE Found : BOOLEAN
+    Row <- 1
+    Found <- FALSE
+    WHILE Row <= 800 AND Found = FALSE
+        Col <- 1
+        WHILE Col <= 1280 AND Found = FALSE
+            IF Screen[Row, Col] = 1 THEN
+                Found <- TRUE
+            ELSE
+                Col <- Col + 1
+            ENDIF
+        ENDWHILE
+        IF Found = FALSE THEN
+            Row <- Row + 1
+        ENDIF
+    ENDWHILE
+    IF Found = FALSE THEN
+        Row <- -1
+    ENDIF
+    RETURN Row
+ENDFUNCTION`,
+    after: `OUTPUT FirstRowSet()`,
+    cases: [
+      {
+        label: "touch starts in row 1",
+        setup: `DECLARE Screen : ARRAY[1:800,1:1280] OF INTEGER
+Screen[1, 3] <- 1
+Screen[4, 9] <- 1`,
+        after: "OUTPUT FirstRowSet()",
+      },
+      {
+        label: "touch starts in row 4",
+        setup: `DECLARE Screen : ARRAY[1:800,1:1280] OF INTEGER
+Screen[4, 9] <- 1
+Screen[9, 2] <- 1`,
+        after: "OUTPUT FirstRowSet()",
+      },
+      {
+        label: "touch starts in row 9",
+        setup: `DECLARE Screen : ARRAY[1:800,1:1280] OF INTEGER
+Screen[9, 2] <- 1
+Screen[12, 40] <- 1`,
+        after: "OUTPUT FirstRowSet()",
+      },
+    ],
+  },
+
+  {
+    id: "w2022_21-q5",
+    title: "Summarise() — average every three samples",
+    source: "9618/21 Winter 2022 Q5",
+    marks: 5,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Summarise(), using the global arrays Array1[1:600] and Array2[1:200]",
+    prompt: [
+      "A program uses two 1D arrays of type `INTEGER`. `Array1` contains 600 sample values read",
+      "from a sensor; the sensor always takes three consecutive samples. `Array2` contains 200",
+      "elements.",
+      "",
+      "A procedure `Summarise()` calculates the average of the first three values in `Array1` and",
+      "writes the result to the first element of `Array2`. It repeats this for every group of",
+      "three consecutive values in `Array1`.",
+      "",
+      "For example, if the first six values in `Array1` are 10, 20, 15, 40, 41, 42 then the first",
+      "two elements of `Array2` are 15 and 41.",
+      "",
+      "Write pseudocode for the procedure `Summarise()`. Assume both arrays are global and each",
+      "average is stored as an integer."
+    ].join("\n"),
+    model: `PROCEDURE Summarise()
+    DECLARE IxA : INTEGER
+    DECLARE IxB : INTEGER
+    DECLARE Value : REAL
+    IxB <- 1
+    FOR IxA <- 1 TO 598 STEP 3
+        Value <- Array1[IxA] + Array1[IxA + 1] + Array1[IxA + 2]
+        Value <- Value / 3
+        Array2[IxB] <- INT(Value)
+        IxB <- IxB + 1
+    NEXT IxA
+ENDPROCEDURE`,
+    after: `DECLARE I : INTEGER
+CALL Summarise()
+FOR I <- 1 TO 6
+    OUTPUT Array2[I]
+NEXT I
+OUTPUT Array2[200]`,
+    cases: [
+      {
+        label: "samples (I * 7) MOD 50",
+        setup: `DECLARE Array1 : ARRAY[1:600] OF INTEGER
+DECLARE Array2 : ARRAY[1:200] OF INTEGER
+DECLARE I : INTEGER
+FOR I <- 1 TO 600
+    Array1[I] <- (I * 7) MOD 50
+NEXT I`,
+      },
+      {
+        label: "samples 100 - (I MOD 20)",
+        setup: `DECLARE Array1 : ARRAY[1:600] OF INTEGER
+DECLARE Array2 : ARRAY[1:200] OF INTEGER
+DECLARE I : INTEGER
+FOR I <- 1 TO 600
+    Array1[I] <- 100 - (I MOD 20)
+NEXT I`,
+      },
+      {
+        label: "samples (I * I) MOD 97",
+        setup: `DECLARE Array1 : ARRAY[1:600] OF INTEGER
+DECLARE Array2 : ARRAY[1:200] OF INTEGER
+DECLARE I : INTEGER
+FOR I <- 1 TO 600
+    Array1[I] <- (I * I) MOD 97
+NEXT I`,
+      },
+    ],
+  },
+
+  {
+    id: "w2022_21-q7ai",
+    title: "Calculate() — evaluate a simple expression",
+    source: "9618/21 Winter 2022 Q7(a)(i)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE Calculate(Expression : STRING)",
+    prompt: [
+      "A simple arithmetic expression is stored as a string in the format",
+      "`<Value1><Operator><Value2>` where the operator is one of `'+'`, `'-'`, `'*'` or `'/'`.",
+      "",
+      "Examples of arithmetic expression strings are `\"803+1904\"` and `\"34/7\"`.",
+      "",
+      "A procedure `Calculate()` takes an arithmetic expression string as its parameter,",
+      "evaluates the expression and outputs the result.",
+      "",
+      "Assume that the string contains only numeric digits and a single operator character, that",
+      "`Value1` and `Value2` represent integer values and that they are unsigned.",
+      "",
+      "Write pseudocode for the procedure `Calculate()`."
+    ].join("\n"),
+    model: `PROCEDURE Calculate(Expression : STRING)
+    DECLARE Val1 : INTEGER
+    DECLARE Val2 : INTEGER
+    DECLARE Index : INTEGER
+    DECLARE Result : REAL
+    DECLARE Par1 : STRING
+    DECLARE Par2 : STRING
+    DECLARE Par3 : STRING
+    DECLARE ThisChar : STRING
+    FOR Index <- 1 TO LENGTH(Expression)
+        ThisChar <- MID(Expression, Index, 1)
+        IF IS_NUM(ThisChar) = FALSE THEN
+            Par1 <- LEFT(Expression, Index - 1)
+            Par2 <- ThisChar
+            Par3 <- RIGHT(Expression, LENGTH(Expression) - Index)
+        ENDIF
+    NEXT Index
+    Val1 <- STR_TO_NUM(Par1)
+    Val2 <- STR_TO_NUM(Par3)
+    CASE OF Par2
+        '+' : Result <- Val1 + Val2
+        '-' : Result <- Val1 - Val2
+        '*' : Result <- Val1 * Val2
+        '/' : Result <- Val1 / Val2
+    ENDCASE
+    OUTPUT Result
+ENDPROCEDURE`,
+    after: `CALL Calculate("803+1904")`,
+    cases: [
+      { label: '"803+1904"', after: 'CALL Calculate("803+1904")' },
+      { label: '"34*7"', after: 'CALL Calculate("34*7")' },
+      { label: '"500-125"', after: 'CALL Calculate("500-125")' },
+      { label: '"84/7"', after: 'CALL Calculate("84/7")' },
+    ],
+  },
+
+  {
+    id: "w2022_22-q7b",
+    title: "SortArrays() — sort ErrCode with ErrText",
+    source: "9618/22 Winter 2022 Q7(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE SortArrays(), using the global arrays ErrCode[1:500] and ErrText[1:500]",
+    prompt: [
+      "Two global 1D arrays store syntax error data. `ErrCode` contains integer error numbers in",
+      "ascending order and `ErrText` contains the matching error descriptions. Both arrays have",
+      "500 elements. Unused elements of `ErrCode` have the value 999 and occur at the end of the",
+      "array.",
+      "",
+      "A procedure `SortArrays()` sorts the arrays into ascending order of `ErrCode`. The",
+      "`ErrText` element must stay with its error number.",
+      "",
+      "Write an **efficient** bubble sort algorithm in pseudocode for `SortArrays()`.",
+      "Assume both arrays are global."
+    ].join("\n"),
+    model: `PROCEDURE SortArrays()
+    DECLARE TempInt : INTEGER
+    DECLARE TempStr : STRING
+    DECLARE J : INTEGER
+    DECLARE Boundary : INTEGER
+    DECLARE NoSwaps : BOOLEAN
+    Boundary <- 499
+    REPEAT
+        NoSwaps <- TRUE
+        FOR J <- 1 TO Boundary
+            IF ErrCode[J] > ErrCode[J + 1] THEN
+                TempInt <- ErrCode[J]
+                ErrCode[J] <- ErrCode[J + 1]
+                ErrCode[J + 1] <- TempInt
+                TempStr <- ErrText[J]
+                ErrText[J] <- ErrText[J + 1]
+                ErrText[J + 1] <- TempStr
+                NoSwaps <- FALSE
+            ENDIF
+        NEXT J
+        Boundary <- Boundary - 1
+    UNTIL NoSwaps = TRUE
+ENDPROCEDURE`,
+    after: `DECLARE I : INTEGER
+CALL SortArrays()
+FOR I <- 1 TO 14
+    OUTPUT ErrCode[I], " ", ErrText[I]
+NEXT I`,
+    cases: [
+      {
+        label: "10 to 120 with two swaps",
+        setup: `DECLARE ErrCode : ARRAY[1:500] OF INTEGER
+DECLARE ErrText : ARRAY[1:500] OF STRING
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+DECLARE S : STRING
+FOR I <- 1 TO 500
+    IF I <= 12 THEN
+        ErrCode[I] <- I * 10
+        ErrText[I] <- "Error " & NUM_TO_STR(I * 10)
+    ELSE
+        ErrCode[I] <- 999
+        ErrText[I] <- "Unused"
+    ENDIF
+NEXT I
+T <- ErrCode[1]
+ErrCode[1] <- ErrCode[5]
+ErrCode[5] <- T
+S <- ErrText[1]
+ErrText[1] <- ErrText[5]
+ErrText[5] <- S
+T <- ErrCode[8]
+ErrCode[8] <- ErrCode[11]
+ErrCode[11] <- T
+S <- ErrText[8]
+ErrText[8] <- ErrText[11]
+ErrText[11] <- S`,
+      },
+      {
+        label: "5 to 60 in reverse order",
+        setup: `DECLARE ErrCode : ARRAY[1:500] OF INTEGER
+DECLARE ErrText : ARRAY[1:500] OF STRING
+DECLARE I : INTEGER
+FOR I <- 1 TO 500
+    IF I <= 12 THEN
+        ErrCode[I] <- (13 - I) * 5
+        ErrText[I] <- "Code " & NUM_TO_STR((13 - I) * 5)
+    ELSE
+        ErrCode[I] <- 999
+        ErrText[I] <- "Unused"
+    ENDIF
+NEXT I`,
+      },
+      {
+        label: "700 to 920, last code first",
+        setup: `DECLARE ErrCode : ARRAY[1:500] OF INTEGER
+DECLARE ErrText : ARRAY[1:500] OF STRING
+DECLARE I : INTEGER
+DECLARE T : INTEGER
+DECLARE S : STRING
+FOR I <- 1 TO 500
+    IF I <= 12 THEN
+        ErrCode[I] <- 700 + I * 20
+        ErrText[I] <- "Problem " & NUM_TO_STR(700 + I * 20)
+    ELSE
+        ErrCode[I] <- 999
+        ErrText[I] <- "Unused"
+    ENDIF
+NEXT I
+T <- ErrCode[1]
+ErrCode[1] <- ErrCode[12]
+ErrCode[12] <- T
+S <- ErrText[1]
+ErrText[1] <- ErrText[12]
+ErrText[12] <- S`,
+      },
+    ],
+  },
+
+  {
+    id: "w2022_23-q7bi",
+    title: "AddError() — add an error code",
+    source: "9618/23 Winter 2022 Q7(b)(i)",
+    marks: 6,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION AddError(ErrNum : INTEGER, ErrMess : STRING) RETURNS INTEGER, using the global arrays ErrCode[1:500] and ErrText[1:500]",
+    prompt: [
+      "Two global 1D arrays store syntax error data. `ErrCode` contains integer error numbers in",
+      "ascending order and `ErrText` contains the matching error descriptions. Both arrays have",
+      "500 elements. Unused elements of `ErrCode` have the value 999 and occur at the end of the",
+      "array. `SortArrays()` has already been written and sorts the arrays into ascending order",
+      "of `ErrCode`.",
+      "",
+      "A function `AddError()` takes two parameters: an error number as an integer and an error",
+      "description as a string. It writes the error number and description to the first unused",
+      "element of the two arrays and ensures that `ErrCode` is still in ascending order. It",
+      "returns the number of unused elements **after** the new error number has been added, or",
+      "returns -1 if the new error number could not be added.",
+      "",
+      "Write pseudocode for `AddError()`. Assume that the error code is not already in `ErrCode`",
+      "and that `ErrCode`, `ErrText` and `SortArrays()` are global."
+    ].join("\n"),
+    model: `FUNCTION AddError(ErrNum : INTEGER, ErrMess : STRING) RETURNS INTEGER
+    DECLARE Index : INTEGER
+    DECLARE Remaining : INTEGER
+    CONSTANT Unused = 999
+    Index <- 1
+    Remaining <- -1
+    REPEAT
+        IF ErrCode[Index] = Unused THEN
+            ErrCode[Index] <- ErrNum
+            ErrText[Index] <- ErrMess
+            CALL SortArrays()
+            Remaining <- 500 - Index
+        ENDIF
+        Index <- Index + 1
+    UNTIL Remaining <> -1 OR Index > 500
+    RETURN Remaining
+ENDFUNCTION`,
+    setup: `DECLARE ErrCode : ARRAY[1:500] OF INTEGER
+DECLARE ErrText : ARRAY[1:500] OF STRING
+DECLARE I : INTEGER
+FOR I <- 1 TO 500
+    IF I <= 12 THEN
+        ErrCode[I] <- I * 10
+        ErrText[I] <- "Error " & NUM_TO_STR(I * 10)
+    ELSE
+        ErrCode[I] <- 999
+        ErrText[I] <- "Unused"
+    ENDIF
+NEXT I
+
+PROCEDURE SortArrays()
+    DECLARE TempInt : INTEGER
+    DECLARE TempStr : STRING
+    DECLARE J : INTEGER
+    DECLARE Boundary : INTEGER
+    DECLARE NoSwaps : BOOLEAN
+    Boundary <- 499
+    REPEAT
+        NoSwaps <- TRUE
+        FOR J <- 1 TO Boundary
+            IF ErrCode[J] > ErrCode[J + 1] THEN
+                TempInt <- ErrCode[J]
+                ErrCode[J] <- ErrCode[J + 1]
+                ErrCode[J + 1] <- TempInt
+                TempStr <- ErrText[J]
+                ErrText[J] <- ErrText[J + 1]
+                ErrText[J + 1] <- TempStr
+                NoSwaps <- FALSE
+            ENDIF
+        NEXT J
+        Boundary <- Boundary - 1
+    UNTIL NoSwaps = TRUE
+ENDPROCEDURE`,
+    after: `DECLARE I : INTEGER
+OUTPUT AddError(55, "Unexpected token")
+FOR I <- 1 TO 14
+    OUTPUT ErrCode[I], " ", ErrText[I]
+NEXT I`,
+    cases: [
+      {
+        label: "add code 55",
+        after: `DECLARE I : INTEGER
+OUTPUT AddError(55, "Unexpected token")
+FOR I <- 1 TO 14
+    OUTPUT ErrCode[I], " ", ErrText[I]
+NEXT I`,
+      },
+      {
+        label: "add code 5",
+        after: `DECLARE I : INTEGER
+OUTPUT AddError(5, "Missing bracket")
+FOR I <- 1 TO 14
+    OUTPUT ErrCode[I], " ", ErrText[I]
+NEXT I`,
+      },
+      {
+        label: "add code 205",
+        after: `DECLARE I : INTEGER
+OUTPUT AddError(205, "Unreachable code")
+FOR I <- 1 TO 14
+    OUTPUT ErrCode[I], " ", ErrText[I]
+NEXT I`,
+      },
+      {
+        label: "array already full",
+        after: `DECLARE I : INTEGER
+FOR I <- 1 TO 500
+    ErrCode[I] <- I * 2
+    ErrText[I] <- "Error " & NUM_TO_STR(I * 2)
+NEXT I
+OUTPUT AddError(1001, "No room")
+OUTPUT ErrCode[1]`,
+      },
+    ],
+  },
+
+  {
+    id: "w2023_21-q6a",
+    title: "MyOutput() — build a line of output",
+    source: "9618/21 Winter 2023 Q6(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE MyOutput(NewString : STRING, EOL : BOOLEAN), using the global string MyString",
+    prompt: [
+      "`OUTPUT` starts each output on a new line. A new procedure `MyOutput()` takes a string",
+      "and a Boolean parameter. It may be called repeatedly and uses concatenation to build a",
+      "string in the global variable `MyString`, up to a maximum length of 255 characters.",
+      "",
+      "`MyString` is output in either of these two cases:",
+      "1. the Boolean parameter value is `TRUE`",
+      "2. the resulting string (after concatenation) would be longer than 255 characters",
+      "",
+      "If `MyString` is not output, the string is concatenated onto `MyString`. When `MyString`",
+      "is output it is reset to the empty string.",
+      "",
+      "For example, these calls:",
+      "`MyOutput(\"Hello \", FALSE)`",
+      "`MyOutput(\"ginger \", FALSE)`",
+      "`MyOutput(\"cat\", TRUE)`",
+      "`MyOutput(\"How are you?\", TRUE)`",
+      "",
+      "produce the output `Hello ginger cat` and then `How are you?` on the next line.",
+      "",
+      "`MyString` is initialised to the empty string before `MyOutput()` is first called and no",
+      "string passed to `MyOutput()` is longer than 255 characters.",
+      "",
+      "Write pseudocode for `MyOutput()`. Assume that `MyString` is global."
+    ].join("\n"),
+    model: `PROCEDURE MyOutput(NewString : STRING, EOL : BOOLEAN)
+    IF LENGTH(MyString) + LENGTH(NewString) > 255 THEN
+        OUTPUT MyString
+        MyString <- NewString
+    ELSE
+        MyString <- MyString & NewString
+        IF EOL = TRUE THEN
+            OUTPUT MyString
+            MyString <- ""
+        ENDIF
+    ENDIF
+ENDPROCEDURE`,
+    setup: `DECLARE MyString : STRING`,
+    after: `MyString <- ""
+CALL MyOutput("Hello ", FALSE)
+CALL MyOutput("ginger ", FALSE)
+CALL MyOutput("cat", TRUE)
+CALL MyOutput("How are you?", TRUE)`,
+    cases: [
+      {
+        label: "the worked example",
+        after: `MyString <- ""
+CALL MyOutput("Hello ", FALSE)
+CALL MyOutput("ginger ", FALSE)
+CALL MyOutput("cat", TRUE)
+CALL MyOutput("How are you?", TRUE)`,
+      },
+      {
+        label: "two short lines",
+        after: `MyString <- ""
+CALL MyOutput("abc", FALSE)
+CALL MyOutput("def", TRUE)
+CALL MyOutput("ghi", TRUE)`,
+      },
+      {
+        label: "a 250 character string then six more",
+        after: `DECLARE Long : STRING
+DECLARE I : INTEGER
+Long <- ""
+FOR I <- 1 TO 25
+    Long <- Long & "abcdefghij"
+NEXT I
+MyString <- ""
+CALL MyOutput(Long, FALSE)
+CALL MyOutput("ABCDEF", TRUE)
+CALL MyOutput("", TRUE)`,
+      },
+    ],
+  },
+
+  {
+    id: "w2023_22-q8b",
+    title: "ProcessMsg() — choose the stack for a message",
+    source: "9618/22 Winter 2023 Q8(b)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE ProcessMsg(ThisMsg : STRING), using the global MyID and StackMsg()",
+    prompt: [
+      "Each computer on a wired network has a unique three-digit ID. Messages are sent as a",
+      "string containing the destination ID followed by the data:",
+      "`<DestinationID><Data>`",
+      "",
+      "Each computer runs the same program and has a global variable `MyID` of type string that",
+      "contains the ID of the computer it is running on. Received messages are placed on one of",
+      "two stacks: stack 1 is used for messages that have reached their destination and stack 2",
+      "is used for messages that will be forwarded to another computer.",
+      "",
+      "`StackMsg()` has already been written. It takes a message and a stack number, adds the",
+      "message to that stack and returns `TRUE` if the message is added, otherwise `FALSE`.",
+      "",
+      "A module `ProcessMsg()` takes a message as a parameter. It:",
+      "- ignores any message with a zero-length data field",
+      "- extracts the `DestinationID` from the message",
+      "- checks whether the message is for this computer or is to be forwarded",
+      "- uses `StackMsg()` to add the message to the appropriate stack",
+      "- outputs an error if the message could not be added to the stack",
+      "",
+      "Write pseudocode for `ProcessMsg()`. Module `StackMsg()` must be used."
+    ].join("\n"),
+    model: `PROCEDURE ProcessMsg(ThisMsg : STRING)
+    DECLARE ThisDest : STRING
+    DECLARE StackNum : INTEGER
+    DECLARE Response : BOOLEAN
+    IF LENGTH(ThisMsg) > 3 THEN
+        ThisDest <- LEFT(ThisMsg, 3)
+        IF ThisDest = MyID THEN
+            StackNum <- 1
+        ELSE
+            StackNum <- 2
+        ENDIF
+        Response <- StackMsg(ThisMsg, StackNum)
+        IF Response = FALSE THEN
+            OUTPUT "Message discarded - no room on stack"
+        ENDIF
+    ENDIF
+ENDPROCEDURE`,
+    setup: `DECLARE MyID : STRING
+MyID <- "123"
+
+FUNCTION StackMsg(ThisMsg : STRING, StackNum : INTEGER) RETURNS BOOLEAN
+    OUTPUT "Stack ", StackNum, ": ", ThisMsg
+    RETURN TRUE
+ENDFUNCTION`,
+    after: `CALL ProcessMsg("123Hello Jack")`,
+    cases: [
+      { label: "message for this computer", after: 'CALL ProcessMsg("123Hello Jack")' },
+      { label: "message to forward", after: 'CALL ProcessMsg("456Hello Jack")' },
+      { label: "zero-length data field", after: 'CALL ProcessMsg("123")\nCALL ProcessMsg("123Hi")' },
+    ],
+  },
+
+  {
+    id: "w2023_23-q6",
+    title: "TestNum() — classify a six-digit string",
+    source: "9618/23 Winter 2023 Q6",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION TestNum(ThisNum : STRING) RETURNS INTEGER",
+    prompt: [
+      "A function `TestNum()` takes a six-digit string as its parameter and tests whether the",
+      "string meets certain conditions. It returns an integer value as follows:",
+      "",
+      "| Return value | Condition | Example |",
+      "| --- | --- | --- |",
+      "| 1 | the last three digits are the same but non-zero | `\"253444\"` |",
+      "| 2 | the last three digits are zero | `\"253000\"` |",
+      "| 3 | the first three and last three digits are the same | `\"410410\"` |",
+      "",
+      "The function returns the highest possible value for the given string. If the string does",
+      "not meet any of the conditions, zero is returned.",
+      "",
+      "Write pseudocode for the function `TestNum()`. Assume that the parameter is valid."
+    ].join("\n"),
+    model: `FUNCTION TestNum(ThisNum : STRING) RETURNS INTEGER
+    IF LEFT(ThisNum, 3) = RIGHT(ThisNum, 3) THEN
+        RETURN 3
+    ENDIF
+    IF RIGHT(ThisNum, 3) = "000" THEN
+        RETURN 2
+    ENDIF
+    IF MID(ThisNum, 4, 1) = MID(ThisNum, 5, 1) AND MID(ThisNum, 5, 1) = MID(ThisNum, 6, 1) THEN
+        RETURN 1
+    ENDIF
+    RETURN 0
+ENDFUNCTION`,
+    after: `OUTPUT TestNum("253444")`,
+    cases: [
+      { label: '"253444"', after: 'OUTPUT TestNum("253444")' },
+      { label: '"253000"', after: 'OUTPUT TestNum("253000")' },
+      { label: '"410410"', after: 'OUTPUT TestNum("410410")' },
+      { label: '"123456"', after: 'OUTPUT TestNum("123456")' },
+    ],
+  },
+
+  {
+    id: "w2024_23-q6",
+    title: "AdjustClock() — third Sunday in March",
+    source: "9618/23 Winter 2024 Q6",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION AdjustClock(ThisYear : INTEGER) RETURNS INTEGER",
+    prompt: [
+      "In some countries, on the third Sunday in March, daylight saving time begins when clocks",
+      "move forward by one hour.",
+      "",
+      "A function `AdjustClock()` takes an integer parameter representing a year. It returns an",
+      "integer value representing the number of the day in March on which the clocks move",
+      "forward.",
+      "",
+      "For example, `DayNumber <- AdjustClock(2022)` assigns 20 to `DayNumber`.",
+      "",
+      "Write pseudocode for the function `AdjustClock()`. Use the date functions from the",
+      "insert. (`SETDATE()` builds a date and `DAYINDEX()` returns 1 for a Sunday.)"
+    ].join("\n"),
+    model: `FUNCTION AdjustClock(ThisYear : INTEGER) RETURNS INTEGER
+    DECLARE ThisDayNumber : INTEGER
+    DECLARE SundayCount : INTEGER
+    DECLARE ThisDate : DATE
+    ThisDayNumber <- 0
+    SundayCount <- 0
+    REPEAT
+        ThisDayNumber <- ThisDayNumber + 1
+        ThisDate <- SETDATE(ThisDayNumber, 3, ThisYear)
+        IF DAYINDEX(ThisDate) = 1 THEN
+            SundayCount <- SundayCount + 1
+        ENDIF
+    UNTIL SundayCount = 3
+    RETURN ThisDayNumber
+ENDFUNCTION`,
+    after: `OUTPUT AdjustClock(2022)`,
+    cases: [
+      { label: "AdjustClock(2022)", after: "OUTPUT AdjustClock(2022)" },
+      { label: "AdjustClock(2021)", after: "OUTPUT AdjustClock(2021)" },
+      { label: "AdjustClock(2023)", after: "OUTPUT AdjustClock(2023)" },
+      { label: "AdjustClock(2024)", after: "OUTPUT AdjustClock(2024)" },
+    ],
+  },
+
+  {
+    id: "w2025_21-q4a",
+    title: "Store() — keep an increasing sequence",
+    source: "9618/21 Winter 2025 Q4(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "PROCEDURE Store(), using the global array Number[1:20]",
+    prompt: [
+      "A program contains a global 1D array `Number` consisting of 20 elements of type `REAL`.",
+      "",
+      "A procedure `Store()` inputs a sequence of up to 20 real values, one value at a time.",
+      "The values are assigned to elements of the array using four steps:",
+      "1. store the first value in the sequence in the first element of the array",
+      "2. check each subsequent value input: if it is larger than the previous value input, then",
+      "   assign the value to the next array element, otherwise go to step 4",
+      "3. repeat from step 2 unless the array is full",
+      "4. output the count of the number of values stored in the array together with a suitable",
+      "   message",
+      "",
+      "Complete the pseudocode for `Store()`. All variables used must be declared and `Number`",
+      "is global."
+    ].join("\n"),
+    model: `PROCEDURE Store()
+    DECLARE ThisNum : REAL
+    DECLARE LastNum : REAL
+    DECLARE Index : INTEGER
+    INPUT ThisNum
+    Number[1] <- ThisNum
+    LastNum <- ThisNum
+    Index <- 2
+    INPUT ThisNum
+    WHILE Index < 21 AND ThisNum > LastNum
+        Number[Index] <- ThisNum
+        LastNum <- ThisNum
+        Index <- Index + 1
+        IF Index < 21 THEN
+            INPUT ThisNum
+        ENDIF
+    ENDWHILE
+    OUTPUT Index - 1, " values were stored in the array"
+ENDPROCEDURE`,
+    setup: `DECLARE Number : ARRAY[1:20] OF REAL`,
+    after: `DECLARE I : INTEGER
+DECLARE Line : STRING
+CALL Store()
+OUTPUT "${RESULT_MARKER}"
+Line <- ""
+FOR I <- 1 TO 20
+    Line <- Line & NUM_TO_STR(Number[I]) & " "
+NEXT I
+OUTPUT Line`,
+    cases: [
+      {
+        label: "20 increasing values",
+        inputs: ["1.5", "2.5", "3.5", "4.5", "5.5", "6.5", "7.5", "8.5", "9.5", "10.5", "11.5", "12.5", "13.5", "14.5", "15.5", "16.5", "17.5", "18.5", "19.5", "20.5"],
+      },
+      {
+        label: "five increasing then smaller",
+        inputs: ["2.5", "3.5", "4.5", "5.5", "6.5", "1.0", "7.5", "8.5", "9.5", "10.5", "11.5", "12.5", "13.5", "14.5", "15.5", "16.5", "17.5", "18.5", "19.5", "20.5"],
+      },
+      {
+        label: "two equal values",
+        inputs: ["10.5", "10.5", "11.5", "12.5", "13.5", "14.5", "15.5", "16.5", "17.5", "18.5", "19.5", "20.5", "21.5", "22.5", "23.5", "24.5", "25.5", "26.5", "27.5", "28.5"],
+      },
+    ],
+  },
+
+  {
+    id: "w2025_22-q6",
+    title: "Compare() — compare the start or end of a string",
+    source: "9618/22 Winter 2025 Q6",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION Compare(String1 : STRING, String2 : STRING, Position : CHAR, CaseMatters : BOOLEAN) RETURNS BOOLEAN",
+    prompt: [
+      "A string function `Compare()` compares two strings. It takes four parameters:",
+      "- two strings, `String1` and `String2`",
+      "- a character, `Position`, that indicates whether `String1` is compared with the start",
+      "  (`'s'`) or the end (`'e'`) of `String2`",
+      "- a Boolean, `CaseMatters`, that indicates whether an upper case character and a lower",
+      "  case character (for example `'A'` and `'a'`) are regarded as different (`TRUE`) or as",
+      "  the same (`FALSE`)",
+      "",
+      "The function returns `FALSE` if `String2` has fewer characters than `String1`, otherwise",
+      "it returns `TRUE` if the comparison is true and `FALSE` if it is not.",
+      "",
+      "| String1 | String2 | CaseMatters | Position | Return value |",
+      "| --- | --- | --- | --- | --- |",
+      "| `\"Cat\"` | `\"Catalogue\"` | TRUE | `'s'` | TRUE |",
+      "| `\"CAT\"` | `\"Catalogue\"` | TRUE | `'s'` | FALSE |",
+      "| `\"CAT\"` | `\"Catalogue\"` | FALSE | `'s'` | TRUE |",
+      "| `\"GUE\"` | `\"Catalogue\"` | FALSE | `'e'` | TRUE |",
+      "",
+      "Write pseudocode for the function `Compare()`, using the signature",
+      "`FUNCTION Compare(String1 : STRING, String2 : STRING, Position : CHAR, CaseMatters : BOOLEAN) RETURNS BOOLEAN`."
+    ].join("\n"),
+    model: `FUNCTION Compare(String1 : STRING, String2 : STRING, Position : CHAR, CaseMatters : BOOLEAN) RETURNS BOOLEAN
+    DECLARE S1Length : INTEGER
+    S1Length <- LENGTH(String1)
+    IF LENGTH(String2) < S1Length THEN
+        RETURN FALSE
+    ENDIF
+    IF CaseMatters = FALSE THEN
+        String1 <- TO_UPPER(String1)
+        String2 <- TO_UPPER(String2)
+    ENDIF
+    CASE OF Position
+        'e' : String2 <- RIGHT(String2, S1Length)
+        's' : String2 <- LEFT(String2, S1Length)
+    ENDCASE
+    IF String1 = String2 THEN
+        RETURN TRUE
+    ELSE
+        RETURN FALSE
+    ENDIF
+ENDFUNCTION`,
+    after: `OUTPUT Compare("Cat", "Catalogue", 's', TRUE)`,
+    cases: [
+      { label: '("Cat", "Catalogue", \'s\', TRUE)', after: `OUTPUT Compare("Cat", "Catalogue", 's', TRUE)` },
+      { label: '("CAT", "Catalogue", \'s\', TRUE)', after: `OUTPUT Compare("CAT", "Catalogue", 's', TRUE)` },
+      { label: '("CAT", "Catalogue", \'s\', FALSE)', after: `OUTPUT Compare("CAT", "Catalogue", 's', FALSE)` },
+      { label: '("GUE", "Catalogue", \'e\', FALSE)', after: `OUTPUT Compare("GUE", "Catalogue", 'e', FALSE)` },
+    ],
+  },
+
+  {
+    id: "w2025_23-q4",
+    title: "Store() — unpack three-digit numbers",
+    source: "9618/23 Winter 2025 Q4",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE Store(), using the global array Data[1:20] and global string NumString",
+    prompt: [
+      "A program contains a global 1D array `Data` containing 20 elements of type `INTEGER`.",
+      "",
+      "A global string `NumString` represents a sequence of three-digit numbers, separated by",
+      "commas, for example `\"101,456,219,754,328\"`. The string contains at least four",
+      "three-digit numbers; the total number of three-digit numbers is unknown.",
+      "",
+      "A procedure `Store()`:",
+      "- extracts one three-digit number at a time from `NumString`",
+      "- converts each three-digit number to an integer and assigns it to the next array",
+      "  element, starting from index 1",
+      "- ends when all three-digit numbers have been stored, or when the array is full",
+      "",
+      "Complete the pseudocode for `Store()`. All local variables used must be declared and",
+      "`Data` and `NumString` are global."
+    ].join("\n"),
+    model: `PROCEDURE Store()
+    DECLARE Index : INTEGER
+    DECLARE StartPos : INTEGER
+    DECLARE ThisString : STRING
+    Index <- 1
+    StartPos <- 1
+    REPEAT
+        ThisString <- MID(NumString, StartPos, 3)
+        Data[Index] <- STR_TO_NUM(ThisString)
+        Index <- Index + 1
+        StartPos <- StartPos + 4
+    UNTIL StartPos > LENGTH(NumString) OR Index > 20
+ENDPROCEDURE`,
+    setup: `DECLARE Data : ARRAY[1:20] OF INTEGER
+DECLARE NumString : STRING
+NumString <- "101,456,219,754,328"`,
+    after: `DECLARE I : INTEGER
+DECLARE Line : STRING
+CALL Store()
+Line <- ""
+FOR I <- 1 TO 20
+    Line <- Line & NUM_TO_STR(Data[I]) & " "
+NEXT I
+OUTPUT Line`,
+    cases: [
+      {
+        label: "five numbers",
+        setup: 'DECLARE Data : ARRAY[1:20] OF INTEGER\nDECLARE NumString : STRING\nNumString <- "101,456,219,754,328"',
+      },
+      {
+        label: "seven numbers",
+        setup: 'DECLARE Data : ARRAY[1:20] OF INTEGER\nDECLARE NumString : STRING\nNumString <- "999,100,250,375,410,555,600"',
+      },
+      {
+        label: "22 numbers, array overflows",
+        setup: 'DECLARE Data : ARRAY[1:20] OF INTEGER\nDECLARE NumString : STRING\nNumString <- "100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121"',
+      },
+      {
+        label: "four numbers",
+        setup: 'DECLARE Data : ARRAY[1:20] OF INTEGER\nDECLARE NumString : STRING\nNumString <- "345,678,901,234"',
+      },
+    ],
+  },
 ];
 
 export function taskById(id) {
