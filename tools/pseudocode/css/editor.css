@@ -12,7 +12,7 @@
   --err-bg: #fdecef;
   --note-bg: #fff7e6;
   --sel: #e8f0fe;
-  --mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Courier New", Courier, "Liberation Mono", monospace;
 }
 
 [data-theme="dark"] {

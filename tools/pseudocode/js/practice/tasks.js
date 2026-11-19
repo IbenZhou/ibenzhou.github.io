@@ -21,7 +21,7 @@ export const TASKS = [
       "",
       "For example, `MakeString(3, 'Z')` returns `\"ZZZ\"`.",
       "",
-      "Write pseudocode for the function `MakeString()`.",
+      "Write pseudocode for the function `MakeString()`."
     ].join("\n"),
     model: `FUNCTION MakeString(Count : INTEGER, AChar : CHAR) RETURNS STRING
     DECLARE MyString : STRING
@@ -62,7 +62,7 @@ ENDFUNCTION`,
       "You may **not** use `MID()` — only the other insert functions.",
       "Assume the values passed in are valid.",
       "",
-      "Name it exactly `MyMid` so it can be tested.",
+      "Name it exactly `MyMid` so it can be tested."
     ].join("\n"),
     model: `FUNCTION MyMid(InString : STRING, Start : INTEGER, Num : INTEGER) RETURNS STRING
     DECLARE WithoutFront : STRING
@@ -102,7 +102,7 @@ ENDFUNCTION`,
       "- store the average in the corresponding element of `Result`",
       "",
       "Write pseudocode for `Mix()`. Assume `Sample` and `Result` are global.",
-      "Use `INT()` or `DIV` to make each average an integer.",
+      "Use `INT()` or `DIV` to make each average an integer."
     ].join("\n"),
     model: `PROCEDURE Mix()
     DECLARE ThisSample : INTEGER
@@ -165,7 +165,7 @@ NEXT I`,
       "- total the element values in even index locations (2, 4, 6 … 100)",
       "- return `\"Odd\"`, `\"Even\"` or `\"Same\"` to show which total is greater.",
       "",
-      "Write pseudocode for `Check()`. Assume `Data` is global.",
+      "Write pseudocode for `Check()`. Assume `Data` is global."
     ].join("\n"),
     model: `FUNCTION Check() RETURNS STRING
     DECLARE Odd : INTEGER
@@ -216,7 +216,7 @@ ENDFUNCTION`,
       "4**4",
       "4444",
       "",
-      "Write pseudocode for `Square()`. Parameter validation is not required.",
+      "Write pseudocode for `Square()`. Parameter validation is not required."
     ].join("\n"),
     model: `PROCEDURE Square(Dim : INTEGER)
     DECLARE Count : INTEGER
@@ -264,7 +264,7 @@ ENDPROCEDURE`,
       "A function `BulbCost()` takes the quantity purchased and returns the total cost in dollars.",
       "Any whole group of 20 costs $30.00; the remaining bulbs cost $1.75 each.",
       "",
-      "Write pseudocode for `BulbCost()`.",
+      "Write pseudocode for `BulbCost()`."
     ].join("\n"),
     model: `FUNCTION BulbCost(Quantity : INTEGER) RETURNS REAL
     DECLARE Cost : REAL
@@ -304,7 +304,7 @@ ENDFUNCTION`,
       "",
       "Write pseudocode for `CountVowels()`. Assume that `CharCount` is global.",
       "",
-      "(`TO_LOWER()` accepts a string; `LCASE()` only accepts a single character.)",
+      "(`TO_LOWER()` accepts a string; `LCASE()` only accepts a single character.)"
     ].join("\n"),
     model: `PROCEDURE CountVowels(ThisString : STRING)
     DECLARE Index : INTEGER
@@ -358,7 +358,7 @@ CALL CountVowels("The Quick Brown Fox")`,
       "",
       "Write pseudocode for `IsPalindrome()`.",
       "",
-      "(Use `TO_UPPER()`, which accepts a string; `UCASE()` only accepts a single character.)",
+      "(Use `TO_UPPER()`, which accepts a string; `UCASE()` only accepts a single character.)"
     ].join("\n"),
     model: `FUNCTION IsPalindrome(InString : STRING) RETURNS BOOLEAN
     DECLARE IsPal : BOOLEAN
@@ -401,7 +401,7 @@ ENDFUNCTION`,
       "",
       "It returns `TRUE` if the character occurs in the string, otherwise it returns `FALSE`.",
       "",
-      "Write pseudocode for `Exists()` using a loop.",
+      "Write pseudocode for `Exists()` using a loop."
     ].join("\n"),
     model: `FUNCTION Exists(ThisString : STRING, Search : CHAR) RETURNS BOOLEAN
     DECLARE Found : BOOLEAN
@@ -441,7 +441,7 @@ ENDFUNCTION`,
       "A function `Factorial()` is called with an integer parameter and returns the",
       "factorial of that number, or returns −1 if the number is negative.",
       "",
-      "Write pseudocode for the function `Factorial()`.",
+      "Write pseudocode for the function `Factorial()`."
     ].join("\n"),
     model: `FUNCTION Factorial(ThisNum : INTEGER) RETURNS INTEGER
     DECLARE Value : INTEGER
@@ -486,7 +486,7 @@ ENDFUNCTION`,
       "It returns `TRUE` only when the string contains alphabetic characters alone.",
       "`CheckInfo()` must use `OnlyAlpha()`.",
       "",
-      "Write pseudocode for `CheckInfo()`.",
+      "Write pseudocode for `CheckInfo()`."
     ].join("\n"),
     model: `FUNCTION CheckInfo(NewLine : STRING) RETURNS BOOLEAN
     DECLARE ThisNum : STRING
@@ -544,7 +544,7 @@ ENDFUNCTION`,
       "and `End`) where the sum of the last two digits is 6 — for example, 142 because",
       "4 + 2 = 6.",
       "",
-      "Write pseudocode for `Select()`. Parameter validation is not required.",
+      "Write pseudocode for `Select()`. Parameter validation is not required."
     ].join("\n"),
     model: `PROCEDURE Select(Start : INTEGER, End : INTEGER)
     DECLARE ThisNum : INTEGER
@@ -589,8 +589,7 @@ CALL Select(9, 25)`,
       "After: `IF X2 > 13 THEN`",
       "",
       "Write pseudocode for `DeleteComment()`.",
-      "",
-      "(Write the marker as the literal `\"//\"`: this editor has no `CONSTANT` inside a routine.)",
+      ""
     ].join("\n"),
     model: `FUNCTION DeleteComment(Line : STRING) RETURNS STRING
     DECLARE NewLine : STRING
@@ -643,7 +642,7 @@ ENDFUNCTION`,
       "For example, `Header(\"FUNCTION Zap(X : INTEGER) RETURNS CHAR\")` returns",
       "`\"FZap(X : INTEGER) RETURNS CHAR\"`.",
       "",
-      "Write pseudocode for `Header()`.",
+      "Write pseudocode for `Header()`."
     ].join("\n"),
     model: `FUNCTION Header(Line : STRING) RETURNS STRING
     IF LENGTH(Line) >= 13 THEN
@@ -683,7 +682,7 @@ ENDFUNCTION`,
       "`\"00100101100\"` and `\"101010\"` returns `\"1010101\"`.",
       "",
       "Assume that the parameter can only contain the characters `'0'` and `'1'`.",
-      "Write pseudocode for `Parity()`.",
+      "Write pseudocode for `Parity()`."
     ].join("\n"),
     model: `FUNCTION Parity(BitString : STRING) RETURNS STRING
     DECLARE Index : INTEGER
@@ -731,7 +730,7 @@ ENDFUNCTION`,
       "A function `InterviewSummary()` takes the data packet as its only parameter and",
       "returns the interview summary text.",
       "",
-      "Write pseudocode for `InterviewSummary()`.",
+      "Write pseudocode for `InterviewSummary()`."
     ].join("\n"),
     model: `FUNCTION InterviewSummary(ThisApplicant : STRING) RETURNS STRING
     DECLARE Summary : STRING
@@ -763,7 +762,7 @@ ENDFUNCTION`,
       "- populates `Grid` from the plain text, filling row 1 first, then row 2, and so on",
       "- outputs the contents of `Grid` so that it is displayed row by row",
       "",
-      "Write pseudocode for `PopulateGrid()`. Assume that `Grid` is global.",
+      "Write pseudocode for `PopulateGrid()`. Assume that `Grid` is global."
     ].join("\n"),
     model: `PROCEDURE PopulateGrid(Plaintext : STRING)
     DECLARE Row : INTEGER
@@ -808,7 +807,7 @@ CALL PopulateGrid("The Quick Brown Fox Jumps")`,
       "",
       "For example, 120 returns 5, 6 returns 3 and 12 returns −1.",
       "",
-      "Write pseudocode for `FindBaseNumber()`.",
+      "Write pseudocode for `FindBaseNumber()`."
     ].join("\n"),
     model: `FUNCTION FindBaseNumber(ThisValue : INTEGER) RETURNS INTEGER
     DECLARE Num : INTEGER
@@ -851,8 +850,7 @@ ENDFUNCTION`,
       "For example, if `FNString` contains `\"hot and cold\"`, `GetStart(3)` returns 9.",
       "",
       "Write pseudocode for `GetStart()`. Assume that `FNString` is global.",
-      "",
-      "(Write `' '` as a literal: this editor has no `CONSTANT` inside a routine.)",
+      ""
     ].join("\n"),
     model: `FUNCTION GetStart(WordNum : INTEGER) RETURNS INTEGER
     DECLARE Index : INTEGER
@@ -905,7 +903,7 @@ FNString <- "hot and cold"`,
       "returns `TRUE` if the count is greater than the maximum value, otherwise it returns",
       "`FALSE`.",
       "",
-      "Write pseudocode for `TooMany()`. Assume that `Data` is global.",
+      "Write pseudocode for `TooMany()`. Assume that `Data` is global."
     ].join("\n"),
     model: `FUNCTION TooMany(Search : STRING, Max : INTEGER) RETURNS BOOLEAN
     DECLARE Count : INTEGER
@@ -963,7 +961,7 @@ NEXT I`,
       "(1 = `DestinationID`, 2 = `SourceID`, 3 = `Data`). It returns the field contents,",
       "or returns the empty string for any other field number.",
       "",
-      "Write pseudocode for `GetField()`.",
+      "Write pseudocode for `GetField()`."
     ].join("\n"),
     model: `FUNCTION GetField(Msg : STRING, FieldNo : INTEGER) RETURNS STRING
     DECLARE RetString : STRING
@@ -1006,7 +1004,7 @@ OUTPUT "[", GetField(Msg, 1), "]"`,
       "A function `GetPort()` takes the destination ID as a string and returns the port",
       "number to use, or −1 if no row matches.",
       "",
-      "Write pseudocode for `GetPort()`. Assume that `RouteTable` is global.",
+      "Write pseudocode for `GetPort()`. Assume that `RouteTable` is global."
     ].join("\n"),
     model: `FUNCTION GetPort(ThisDest : STRING) RETURNS INTEGER
     DECLARE Index : INTEGER
@@ -1070,7 +1068,7 @@ RouteTable[6,3] <- 1`,
       "",
       "Use the `DAY()`, `MONTH()`, `YEAR()` and `SETDATE()` functions.",
       "",
-      "Write pseudocode for `GetDate()`. Assume that `DaysInMonth` is global.",
+      "Write pseudocode for `GetDate()`. Assume that `DaysInMonth` is global."
     ].join("\n"),
     model: `FUNCTION GetDate(ProductionDate : DATE, ShelfLife : INTEGER) RETURNS DATE
     DECLARE NewDate : DATE
@@ -1134,7 +1132,7 @@ DaysInMonth[12] <- 31`,
       "A function `CheckMark()` is called with a mark and returns `TRUE` if that mark is",
       "within two marks of any of the five grade boundaries, otherwise returns `FALSE`.",
       "",
-      "Write pseudocode for `CheckMark()`. Assume that `GradeBoundary` is global.",
+      "Write pseudocode for `CheckMark()`. Assume that `GradeBoundary` is global."
     ].join("\n"),
     model: `FUNCTION CheckMark(Mark : INTEGER) RETURNS BOOLEAN
     DECLARE Index : INTEGER
@@ -1183,8 +1181,7 @@ GradeBoundary[5] <- 27`,
       "For example, `\"1234567890\"` returns `\"******7890\"`.",
       "",
       "Write pseudocode for `Conceal()`.",
-      "",
-      "(Write `'*'` as a literal: this editor has no `CONSTANT` inside a routine.)",
+      ""
     ].join("\n"),
     model: `FUNCTION Conceal(CardNumber : STRING) RETURNS STRING
     DECLARE MaskedString : STRING
@@ -1221,7 +1218,7 @@ ENDFUNCTION`,
       "without changing anything; otherwise it places the value on the stack, updates both",
       "variables and returns `TRUE`.",
       "",
-      "Write pseudocode for `Push()`. Assume `ThisStack`, `SP` and `OnStack` are global.",
+      "Write pseudocode for `Push()`. Assume `ThisStack`, `SP` and `OnStack` are global."
     ].join("\n"),
     model: `FUNCTION Push(ThisValue : REAL) RETURNS BOOLEAN
     IF OnStack = 60 THEN
@@ -1267,7 +1264,7 @@ OUTPUT Push(12.5), " ", SP, " ", OnStack`,
       "returns the new number which includes the check digit. The original number is",
       "always at least three digits long and the parameter is valid.",
       "",
-      "Write pseudocode for `Generate()`.",
+      "Write pseudocode for `Generate()`."
     ].join("\n"),
     model: `FUNCTION Generate(Number : INTEGER) RETURNS INTEGER
     DECLARE Total : INTEGER
@@ -1311,7 +1308,7 @@ ENDFUNCTION`,
       "For example, 41623 returns `TRUE` and 41633 returns `FALSE`.",
       "Assume that the parameter is valid.",
       "",
-      "Write pseudocode for `CheckNumber()`.",
+      "Write pseudocode for `CheckNumber()`."
     ].join("\n"),
     model: `FUNCTION CheckNumber(Number : INTEGER) RETURNS BOOLEAN
     DECLARE Total : INTEGER
@@ -1359,7 +1356,7 @@ ENDFUNCTION`,
       "procedure. The calling program uses those three values after the procedure ends,",
       "so they must be passed appropriately.",
       "",
-      "Write pseudocode for `UnPack()`.",
+      "Write pseudocode for `UnPack()`."
     ].join("\n"),
     model: `PROCEDURE UnPack(BYVAL TLine : STRING, BYREF SID : STRING, BYREF SDesc : STRING, BYREF SCost : STRING)
     SID <- LEFT(TLine, 5)
@@ -1400,7 +1397,7 @@ OUTPUT SCost`,
       "A procedure `GBInitialise()` sets every element of `Check` to `FALSE` and then",
       "sets `Check` to `TRUE` for the five marks either side of each boundary.",
       "",
-      "Write pseudocode for `GBInitialise()`. Assume `GB` and `Check` are global.",
+      "Write pseudocode for `GBInitialise()`. Assume `GB` and `Check` are global."
     ].join("\n"),
     model: `PROCEDURE GBInitialise()
     DECLARE GBIndex : INTEGER

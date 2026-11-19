@@ -31,6 +31,28 @@ function markSolved(id) {
   try { localStorage.setItem(STORE.solved, JSON.stringify(state.solved)); } catch { /* private mode */ }
 }
 
+// Prompts use `code` and **bold**; render them instead of showing the markers.
+function renderInline(text) {
+  const fragment = document.createDocumentFragment();
+  const pattern = /(`([^`]+)`|\*\*([^*]+)\*\*)/g;
+  let last = 0;
+  for (const match of text.matchAll(pattern)) {
+    if (match.index > last) fragment.append(text.slice(last, match.index));
+    if (match[2] !== undefined) {
+      const code = document.createElement("code");
+      code.textContent = match[2];
+      fragment.append(code);
+    } else {
+      const strong = document.createElement("strong");
+      strong.textContent = match[3];
+      fragment.append(strong);
+    }
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) fragment.append(text.slice(last));
+  return fragment;
+}
+
 function stars(level) {
   return "★".repeat(level) + "☆".repeat(3 - level);
 }
@@ -96,7 +118,8 @@ function select(id) {
   dom.title.textContent = task.title;
   dom.meta.textContent = `${task.source} · ${task.marks} marks · ${stars(task.difficulty)}`;
   dom.requirement.textContent = task.requirement;
-  dom.prompt.textContent = task.prompt;
+  dom.prompt.textContent = "";
+  dom.prompt.appendChild(renderInline(task.prompt));
   dom.answer.textContent = task.model;
   dom.answer.hidden = true;
   dom.showAnswer.textContent = "查看参考答案";
