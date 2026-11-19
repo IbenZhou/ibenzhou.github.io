@@ -350,5 +350,90 @@ export const GOLDENS = {
     "Odd = 1\nEven = 0",
     "Odd = 0\nEven = 3",
     "Odd = 1\nEven = 1"
+  ],
+  "s2021_22-q5ai": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "s2022_21-q8a": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "s2025_21-q3": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "s2025_23-q3": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "w2023_23-q4a": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "w2024_22-q6a": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "s2021_21-q2b": [],
+  "w2023_22-q6bii": [],
+  "s2022_21-q8b": [
+    "[pw1]",
+    "[pw3]",
+    "Domain name not found\n[]",
+    "Domain name not found\n[]"
+  ],
+  "s2022_22-q6": [
+    "Total = 498 Average = 124.5",
+    "Total = 5 Average = 5.0",
+    "Total = 60 Average = 20.0",
+    "Total = 10 Average = 2.5"
+  ],
+  "s2022_22-q8b": [
+    "No duplicate passwords found",
+    "Password for thiswebsite.com also used for site3.org",
+    "Password for a.com also used for b.net\nPassword for a.com also used for c.org",
+    "Password for a.com also used for c.org"
+  ],
+  "s2024_22-q4": [
+    "It is right-angled",
+    "It is right-angled",
+    "It is right-angled",
+    "Not right-angled"
+  ],
+  "s2024_23-q4a": [
+    "The average is 3.0",
+    "The average is 16.0",
+    "The average is 0.0",
+    "The average is 3.0"
+  ],
+  "w2022_23-q7a": [
+    "List of error numbers from 1 to 60\n10 : Invalid identifier name\n20 : Bracket mismatch\n50 : Error Text Missing\n60 : Type mismatch in assignment\n4 error numbers output",
+    "List of error numbers from 1 to 10\n10 : Invalid identifier name\n1 error numbers output",
+    "List of error numbers from 20 to 60\n20 : Bracket mismatch\n50 : Error Text Missing\n60 : Type mismatch in assignment\n3 error numbers output",
+    "List of error numbers from 10 to 40\n15 : Missing bracket\n25 : Error Text Missing\n35 : Unreachable code\n3 error numbers output"
   ]
 };

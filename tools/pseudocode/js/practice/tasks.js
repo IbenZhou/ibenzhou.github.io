@@ -3626,6 +3626,846 @@ ENDPROCEDURE`,
       { label: "7, 8, 99", inputs: ["7", "8", "99"] },
     ],
   },
+
+  {
+    id: "s2021_22-q5ai",
+    title: "Random array — count values in a range",
+    source: "9618/22 Summer 2021 Q5(a)(i)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "Write the whole program: declare RNum[1:100] of INTEGER, fill it with random 1..200, count and output 66..173",
+    prompt: [
+      "A student is learning about arrays.",
+      "",
+      "She wants to write a program to:",
+      "",
+      "- declare a 1D array `RNum` of 100 elements of type `INTEGER`",
+      "- assign each element a random value in the range 1 to 200 inclusive",
+      "- count and output how many numbers generated were between 66 and 173 inclusive.",
+      "",
+      "Write pseudocode to represent the algorithm.",
+      "",
+      "为便于自动判分,只输出统计结果这一个整数,不要输出其他文字。",
+    ].join("\n"),
+    model: `DECLARE RNum : ARRAY[1:100] OF INTEGER
+DECLARE Index : INTEGER
+DECLARE Count : INTEGER
+Count <- 0
+FOR Index <- 1 TO 100
+    RNum[Index] <- INT(RAND(200)) + 1
+    IF RNum[Index] >= 66 AND RNum[Index] <= 173 THEN
+        Count <- Count + 1
+    ENDIF
+NEXT Index
+OUTPUT Count`,
+    after: `DECLARE I : INTEGER
+FOR I <- 1 TO 100
+    OUTPUT RNum[I]
+NEXT I`,
+    cases: [1, 2, 3, 4, 5, 6].map((seed) => ({
+      label: `随机种子 ${seed}`,
+      seed,
+      expect: "100 个 1..200 的整数;输出计数等于 66..173 的个数",
+      check: (output) => {
+        const lines = output.trim().split("\n").map((line) => line.trim()).filter(Boolean);
+        if (lines.length !== 101) return false;
+        const count = Number(lines[0]);
+        const values = lines.slice(1).map(Number);
+        if (!Number.isInteger(count)) return false;
+        if (values.some((value) => !Number.isInteger(value) || value < 1 || value > 200)) return false;
+        const inRange = values.filter((value) => value >= 66 && value <= 173).length;
+        if (count !== inRange) return false;
+        return new Set(values).size >= 20;
+      },
+    })),
+  },
+
+  {
+    id: "s2022_21-q8a",
+    title: "RandomChar() — one alphanumeric character",
+    source: "9618/21 Summer 2022 Q8(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION RandomChar() RETURNS CHAR",
+    prompt: [
+      "A student is developing a program to generate a password. A module `RandomChar()`",
+      "generates a single random character from within one of the following ranges:",
+      "",
+      "- `'a'` to `'z'`",
+      "- `'A'` to `'Z'`",
+      "- `'0'` to `'9'`",
+      "",
+      "The module returns the character.",
+      "",
+      "Relevant ASCII values are: `'a'` to `'z'` = 97 to 122, `'A'` to `'Z'` = 65 to 90,",
+      "`'0'` to `'9'` = 48 to 57.",
+      "",
+      "Write pseudocode for module `RandomChar()`.",
+      "",
+      "为便于自动判分,函数只返回字符、不要 OUTPUT;测试代码会连续调用 60 次并逐行输出。",
+    ].join("\n"),
+    model: `FUNCTION RandomChar() RETURNS CHAR
+    DECLARE ThisRange : INTEGER
+    DECLARE ThisChar : CHAR
+    ThisRange <- INT(RAND(3)) + 1
+    CASE OF ThisRange
+        1: ThisChar <- TO_LOWER(CHR(INT(RAND(26)) + 65))
+        2: ThisChar <- CHR(INT(RAND(26)) + 65)
+        3: ThisChar <- CHR(INT(RAND(10)) + 48)
+    ENDCASE
+    RETURN ThisChar
+ENDFUNCTION`,
+    after: `DECLARE I : INTEGER
+FOR I <- 1 TO 60
+    OUTPUT RandomChar()
+NEXT I`,
+    cases: [1, 2, 3, 4, 5, 6].map((seed) => ({
+      label: `随机种子 ${seed}`,
+      seed,
+      expect: "每次返回一个 a-z、A-Z 或 0-9 字符;60 次覆盖三类",
+      check: (output) => {
+        const lines = output.trim().split("\n").map((line) => line.trim()).filter(Boolean);
+        if (lines.length !== 60) return false;
+        if (lines.some((ch) => ch.length !== 1 || !/[A-Za-z0-9]/.test(ch))) return false;
+        const classes = new Set(lines.map((ch) => (/[a-z]/.test(ch) ? "lower" : (/[A-Z]/.test(ch) ? "upper" : "digit"))));
+        return classes.size === 3 && new Set(lines).size >= 20;
+      },
+    })),
+  },
+
+  {
+    id: "s2025_21-q3",
+    title: "Guessing game — random target 1..100",
+    source: "9618/21 Summer 2025 Q3",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "Write the whole program (no input validation, only OUTPUT messages)",
+    prompt: [
+      "A student has been asked to create a simple guessing game program. This program",
+      "will generate a random integer value between 1 and 100. It will then repeatedly",
+      "prompt the user to input an integer value until they input the randomly generated value.",
+      "",
+      "The student has written a structured English description:",
+      "",
+      "step 1 – randomly generate an integer value between 1 and 100 inclusive",
+      "step 2 – prompt the user to input an integer value",
+      "step 3 – output an appropriate message if the value input was too high; then repeat from step 2",
+      "step 4 – output an appropriate message if the value input was too low; then repeat from step 2",
+      "step 5 – output an appropriate message if the value input was the same value that was randomly generated; then end the program.",
+      "",
+      "Write a pseudocode algorithm from this structured English description.",
+      "Assume no input validation is needed.",
+      "",
+      "为便于自动判分,不要输出输入提示语;只输出三种消息之一,每条单独一行:`Too high`、`Too low`、`Correct`。",
+    ].join("\n"),
+    kind: "program",
+    model: `DECLARE GeneratedValue : INTEGER
+DECLARE Guess : INTEGER
+GeneratedValue <- INT(RAND(100)) + 1
+REPEAT
+    INPUT Guess
+    IF Guess > GeneratedValue THEN
+        OUTPUT "Too high"
+    ELSE
+        IF Guess < GeneratedValue THEN
+            OUTPUT "Too low"
+        ELSE
+            OUTPUT "Correct"
+        ENDIF
+    ENDIF
+UNTIL Guess = GeneratedValue`,
+    cases: [1, 2, 3, 4, 5, 6].map((seed) => {
+      const ascending = seed % 2 === 1;
+      const inputs = Array.from({ length: 100 }, (_, index) => String(ascending ? index + 1 : 100 - index));
+      return {
+        label: `${ascending ? "1..100 递增" : "100..1 递减"} · 种子 ${seed}`,
+        seed,
+        inputs,
+        expect: "猜中前每条消息都表示偏小(或偏大),最后输出 Correct",
+        check: (output) => {
+          const lines = output.trim().split("\n").map((line) => line.trim()).filter(Boolean);
+          if (lines.length < 1 || lines.length > 100) return false;
+          if (lines[lines.length - 1] !== "Correct") return false;
+          const expected = ascending ? "Too low" : "Too high";
+          return lines.slice(0, -1).every((line) => line === expected);
+        },
+      };
+    }),
+  },
+
+  {
+    id: "s2025_23-q3",
+    title: "RollDice() — rolls and average",
+    source: "9618/23 Summer 2025 Q3",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "FUNCTION RollDice(NoOfTimes : INTEGER) RETURNS REAL",
+    prompt: [
+      "A programmer has been asked to create a module `RollDice()` to simulate multiple rolls",
+      "of a dice. This module will be used as part of a program for a game.",
+      "",
+      "The module will:",
+      "",
+      "step 1 – take a positive integer parameter representing the number of times the dice will be rolled",
+      "step 2 – simulate one roll of the dice by generating a random integer between 1 and 6 inclusive",
+      "step 3 – output the integer generated",
+      "step 4 – repeat, as required from step 2",
+      "step 5 – calculate the average value of the random integers generated",
+      "step 6 – return the average value.",
+      "",
+      "Write pseudocode for the module `RollDice()`.",
+      "",
+      "为便于自动判分,每次掷骰输出一个整数(每行一个),不要输出其他文字;测试代码会输出返回值。",
+    ].join("\n"),
+    model: `FUNCTION RollDice(NoOfTimes : INTEGER) RETURNS REAL
+    DECLARE RollValue : INTEGER
+    DECLARE Count : INTEGER
+    DECLARE Sum : INTEGER
+    DECLARE Average : REAL
+    Sum <- 0
+    FOR Count <- 1 TO NoOfTimes
+        RollValue <- INT(RAND(6)) + 1
+        OUTPUT RollValue
+        Sum <- Sum + RollValue
+    NEXT Count
+    Average <- Sum / NoOfTimes
+    RETURN Average
+ENDFUNCTION`,
+    after: "OUTPUT RollDice(12)",
+    cases: [1, 2, 3, 4, 5, 6].map((seed) => ({
+      label: `随机种子 ${seed}`,
+      seed,
+      expect: "12 个 1..6 的整数,返回值为其平均值",
+      check: (output) => {
+        const lines = output.trim().split("\n").map((line) => line.trim()).filter(Boolean);
+        if (lines.length !== 13) return false;
+        const rolls = lines.slice(0, 12).map(Number);
+        if (rolls.some((roll) => !Number.isInteger(roll) || roll < 1 || roll > 6)) return false;
+        const average = Number(lines[12]);
+        if (!Number.isFinite(average)) return false;
+        const sum = rolls.reduce((total, roll) => total + roll, 0);
+        if (Math.abs(average - sum / 12) > 1e-6) return false;
+        return new Set(rolls).size >= 2;
+      },
+    })),
+  },
+
+  {
+    id: "w2023_23-q4a",
+    title: "RandList() — 25 increasing random integers",
+    source: "9618/23 Winter 2023 Q4(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE RandList()",
+    prompt: [
+      "A procedure `RandList()` will output a sequence of 25 random integers, where each",
+      "integer is larger than the previous one.",
+      "",
+      "Write pseudocode for procedure `RandList()`.",
+      "",
+      "为便于自动判分,每个整数单独一行,不要输出其他文字。",
+    ].join("\n"),
+    model: `PROCEDURE RandList()
+    DECLARE Count : INTEGER
+    DECLARE BaseNum : INTEGER
+    DECLARE ThisNum : INTEGER
+    CONSTANT StepVal = 10
+    BaseNum <- 0
+    FOR Count <- 1 TO 25
+        ThisNum <- BaseNum + INT(RAND(StepVal))
+        OUTPUT ThisNum
+        BaseNum <- BaseNum + StepVal
+    NEXT Count
+ENDPROCEDURE`,
+    after: "CALL RandList()",
+    cases: [1, 2, 3, 4, 5, 6].map((seed) => ({
+      label: `随机种子 ${seed}`,
+      seed,
+      expect: "25 个整数严格递增,相邻差不止一种",
+      check: (output) => {
+        const numbers = output.trim().split("\n").map((line) => line.trim()).filter(Boolean).map(Number);
+        if (numbers.length !== 25) return false;
+        if (numbers.some((number) => !Number.isInteger(number))) return false;
+        for (let index = 1; index < numbers.length; index += 1) {
+          if (numbers[index] <= numbers[index - 1]) return false;
+        }
+        const gaps = numbers.slice(1).map((number, index) => number - numbers[index]);
+        return new Set(gaps).size >= 2;
+      },
+    })),
+  },
+
+  {
+    id: "w2024_22-q6a",
+    title: "Special() — random sandwich",
+    source: "9618/22 Winter 2024 Q6(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "PROCEDURE Special(), using the global arrays Filling[1:35] and Bread[1:10]",
+    prompt: [
+      "A shop sells sandwiches. The owner wants a program to randomly choose a 'daily special'",
+      "sandwich with two different fillings and one type of bread.",
+      "",
+      "The possible fillings are stored in a global 1D array of type string:",
+      "`DECLARE Filling : ARRAY [1:35] OF STRING`",
+      "",
+      "A second global 1D array stores the possible bread:",
+      "`DECLARE Bread : ARRAY [1:10] OF STRING`",
+      "",
+      "Both arrays may contain unused elements. The value of these will be an empty string and",
+      "they may occur anywhere in each array.",
+      "",
+      "A procedure `Special()` will output a message giving the 'daily special' sandwich made",
+      "from two randomly selected different fillings and one randomly selected bread.",
+      "Unused array elements must not be used.",
+      "",
+      "Using the example data, the output could be:",
+      "`The daily special is Cheese and Onion on Brown bread.`",
+      "",
+      "Complete the pseudocode for the procedure `Special()`. Assume that both arrays are global.",
+      "",
+      "为便于自动判分,请只输出一次:`The daily special is <filling1> and <filling2> on <bread> bread.`",
+    ].join("\n"),
+    model: `PROCEDURE Special()
+    DECLARE Index : INTEGER
+    DECLARE Filling1 : STRING
+    DECLARE Filling2 : STRING
+    REPEAT
+        Index <- INT(RAND(35)) + 1
+    UNTIL Filling[Index] <> ""
+    Filling1 <- Filling[Index]
+    REPEAT
+        Index <- INT(RAND(35)) + 1
+    UNTIL Filling[Index] <> "" AND Filling[Index] <> Filling1
+    Filling2 <- Filling[Index]
+    REPEAT
+        Index <- INT(RAND(10)) + 1
+    UNTIL Bread[Index] <> ""
+    OUTPUT "The daily special is ", Filling1, " and ", Filling2, " on ", Bread[Index], " bread."
+ENDPROCEDURE`,
+    after: "CALL Special()",
+    cases: [
+      {
+        fillings: [[1, "Cheese"], [2, "Onion"], [3, "Salmon"], [4, "Anchovies"], [5, "Peanut Butter"]],
+        breads: [[1, "White"], [2, "Brown"], [3, "Pitta"]],
+      },
+      {
+        fillings: [[1, "Cheese"], [4, "Ham"], [7, "Egg"], [9, "Tuna"], [12, "Beef"]],
+        breads: [[2, "Brown"], [5, "Pitta"], [9, "White"]],
+      },
+      {
+        fillings: [[3, "Cheese"], [8, "Tuna"]],
+        breads: [[4, "Pitta"]],
+      },
+      {
+        fillings: [[2, "Egg"], [5, "Cheese"], [6, "Ham"], [20, "Beef"], [35, "Tuna"]],
+        breads: [[1, "White"], [4, "Brown"], [7, "Pitta"], [10, "White"]],
+      },
+      {
+        fillings: [[10, "Cheese"], [11, "Ham"], [12, "Egg"], [13, "Tuna"], [14, "Beef"]],
+        breads: [[3, "Brown"], [6, "White"]],
+      },
+    ].map((data, index) => {
+      const fillingNames = data.fillings.map((pair) => pair[1]);
+      const breadNames = data.breads.map((pair) => pair[1]);
+      return {
+        label: `数组布局 ${index + 1}`,
+        seed: index + 1,
+        expect: "只输出一次,两种馅料不同且非空,面包非空",
+        setup: specialSetup(data.fillings, data.breads),
+        check: (output) => {
+          const lines = output.trim().split("\n").map((line) => line.trim()).filter(Boolean);
+          if (lines.length !== 1) return false;
+          const match = lines[0].match(/^The daily special is (.+?) and (.+?) on (.+?) bread\.$/);
+          if (!match) return false;
+          const [, first, second, bread] = match;
+          if (first === second) return false;
+          return fillingNames.includes(first) && fillingNames.includes(second) && breadNames.includes(bread);
+        },
+      };
+    }),
+  },
+
+  {
+    id: "s2021_21-q2b",
+    title: "LoanReturn() — amended module header",
+    source: "9618/21 Summer 2021 Q2(b)",
+    marks: 2,
+    difficulty: 1,
+    chapter: "Ch12 Software development",
+    requirement: "PROCEDURE LoanReturn(LoanID : STRING, BookID : STRING, BYREF Fine : REAL)",
+    structure: { kind: "proc", name: "LoanReturn", params: ["STRING", "STRING", "REAL"] },
+    prompt: [
+      "The definition for module `LoanReturn()` is amended as follows:",
+      "",
+      "`LoanReturn()` is called with parameters `LoanID`, `BookID` and `Fine`.",
+      "The module code checks whether the book has been returned on time and then assigns",
+      "a new value to `Fine`.",
+      "",
+      "- `LoanID` and `BookID` are of type `STRING`",
+      "- `Fine` is of type `REAL`",
+      "",
+      "Write the pseudocode header for the **amended** module `LoanReturn()`.",
+      "",
+      "本题只判模块头:名称、参数类型顺序(BYREF 不检查)。",
+    ].join("\n"),
+    model: `PROCEDURE LoanReturn(LoanID : STRING, BookID : STRING, BYREF Fine : REAL)
+ENDPROCEDURE`,
+    cases: [],
+  },
+
+  {
+    id: "w2023_22-q6bii",
+    title: "CheckFiles() — module header",
+    source: "9618/22 Winter 2023 Q6(b)(ii)",
+    marks: 1,
+    difficulty: 1,
+    chapter: "Ch12 Software development",
+    requirement: "FUNCTION CheckFiles(NameRoot : STRING) RETURNS INTEGER",
+    structure: { kind: "func", name: "CheckFiles", params: ["STRING"], returns: "INTEGER" },
+    prompt: [
+      "A module `CheckFiles()` will count the number of files produced by `CreateFiles()`",
+      "in part (a).",
+      "",
+      "`CheckFiles()` will take a string representing a file name and return the number of",
+      "files found.",
+      "",
+      "Write the module header for `CheckFiles()`.",
+      "",
+      "本题只判模块头:名称、参数类型和返回类型。",
+    ].join("\n"),
+    model: `FUNCTION CheckFiles(NameRoot : STRING) RETURNS INTEGER
+ENDFUNCTION`,
+    cases: [],
+  },
+
+  {
+    id: "s2022_21-q8b",
+    title: "FindPassword() — search the password array",
+    source: "9618/21 Summer 2022 Q8(b)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION FindPassword(Name : STRING) RETURNS STRING",
+    prompt: [
+      "A global 2D array `Secret` of type `STRING` stores passwords together with the website",
+      "domain name where they are used. `Secret` contains 500 rows by 2 columns; column 1",
+      "holds the domain name and column 2 the encrypted password. Unused elements contain",
+      "the empty string and may occur anywhere in the array.",
+      "",
+      "Modules `Encrypt()` and `Decrypt()` have already been written. `Decrypt()` takes an",
+      "encrypted password as a parameter and returns the decrypted password.",
+      "",
+      "A new module is defined as follows:",
+      "",
+      "`FindPassword()` takes a website domain name as a parameter of type string, searches",
+      "for the website domain name in the array `Secret`. If the website domain name is found,",
+      "the decrypted password is returned. If the website domain name is not found, a warning",
+      "message is output, and an empty string is returned.",
+      "",
+      "Write pseudocode for module `FindPassword()`.",
+      "",
+      "为便于自动判分,未找到时请输出 `Domain name not found`。",
+    ].join("\n"),
+    model: `FUNCTION FindPassword(Name : STRING) RETURNS STRING
+    DECLARE Index : INTEGER
+    DECLARE Password : STRING
+    Password <- ""
+    Index <- 1
+    WHILE Password = "" AND Index <= 500
+        IF Secret[Index, 1] = Name THEN
+            Password <- Decrypt(Secret[Index, 2])
+        ELSE
+            Index <- Index + 1
+        ENDIF
+    ENDWHILE
+    IF Password = "" THEN
+        OUTPUT "Domain name not found"
+    ENDIF
+    RETURN Password
+ENDFUNCTION`,
+    cases: [
+      {
+        rows: [["www.a.com", "pw1"], ["www.b.com", "pw2"]],
+        domain: "www.a.com",
+        label: "找到第一个网站",
+      },
+      {
+        rows: [["www.a.com", "pw1"], ["www.b.com", "pw2"], ["www.c.com", "pw3"]],
+        domain: "www.c.com",
+        label: "找到最后一个网站",
+      },
+      {
+        rows: [["www.a.com", "pw1"], ["www.b.com", "pw2"], ["www.c.com", "pw3"]],
+        domain: "www.z.com",
+        label: "网站不存在",
+      },
+      {
+        rows: [["www.shop.com", "p1"], ["www.news.com", "p2"]],
+        domain: "www.mail.com",
+        label: "另一个不存在的网站",
+      },
+    ].map((data) => ({
+      label: data.label,
+      setup: secretSetup(data.rows),
+      after: `OUTPUT "[" & FindPassword("${data.domain}") & "]"`,
+    })),
+  },
+
+  {
+    id: "s2022_22-q6",
+    title: "Parse() — total and average",
+    source: "9618/22 Summer 2022 Q6",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Parse(InString : STRING)",
+    prompt: [
+      "A string represents a series of whole numbers, separated by commas. For example:",
+      "`'12,13,451,22'`",
+      "",
+      "Assume that:",
+      "",
+      "- the comma character `','` is used as a separator",
+      "- the string contains only the characters `'0'` to `'9'` and the comma character `','`.",
+      "",
+      "A procedure `Parse` will:",
+      "",
+      "- take the string as a parameter",
+      "- extract each number in turn",
+      "- calculate the total value and average value of all the numbers",
+      "- output the total and average values with a suitable message.",
+      "",
+      "Write pseudocode for the procedure.",
+      "",
+      "为便于自动判分,请在一行内输出 `Total = <总和> Average = <平均值>`。",
+    ].join("\n"),
+    model: `PROCEDURE Parse(InString : STRING)
+    DECLARE Count : INTEGER
+    DECLARE Total : INTEGER
+    DECLARE Index : INTEGER
+    DECLARE Average : REAL
+    DECLARE NumString : STRING
+    DECLARE ThisChar : CHAR
+    Count <- 0
+    Total <- 0
+    NumString <- ""
+    FOR Index <- 1 TO LENGTH(InString)
+        ThisChar <- MID(InString, Index, 1)
+        IF ThisChar = ',' THEN
+            Total <- Total + STR_TO_NUM(NumString)
+            Count <- Count + 1
+            NumString <- ""
+        ELSE
+            NumString <- NumString & ThisChar
+        ENDIF
+    NEXT Index
+    Total <- Total + STR_TO_NUM(NumString)
+    Count <- Count + 1
+    Average <- Total / Count
+    OUTPUT "Total = ", Total, " Average = ", Average
+ENDPROCEDURE`,
+    cases: [
+      { label: 'Parse("12,13,451,22")', after: 'CALL Parse("12,13,451,22")' },
+      { label: 'Parse("5")', after: 'CALL Parse("5")' },
+      { label: 'Parse("10,20,30")', after: 'CALL Parse("10,20,30")' },
+      { label: 'Parse("1,2,3,4")', after: 'CALL Parse("1,2,3,4")' },
+    ],
+  },
+
+  {
+    id: "s2022_22-q8b",
+    title: "SearchDuplicates() — repeated passwords",
+    source: "9618/22 Summer 2022 Q8(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "PROCEDURE SearchDuplicates()",
+    prompt: [
+      "A global 2D array `Secret` of type `STRING` stores passwords together with the website",
+      "domain name where they are used. `Secret` contains 500 rows by 2 columns; column 1",
+      "holds the domain name and column 2 the encrypted password. Unused elements contain",
+      "the empty string and may occur anywhere in the array.",
+      "",
+      "A new module `SearchDuplicates()` will:",
+      "",
+      "- search for the **first** password that occurs more than once in the array and output",
+      "  a message each time a duplicate is found.",
+      "",
+      "For example, if the same password was used for the three websites ThisWebsite.com,",
+      "website27.net and websiteZ99.org, then the following messages will be output:",
+      "",
+      "`Password for ThisWebsite.com also used for website27.net`",
+      "`Password for ThisWebsite.com also used for websiteZ99.org`",
+      "",
+      "- end once all messages have been output.",
+      "",
+      "The module will output a message if no duplicates are found, for example:",
+      "`No duplicate passwords found`",
+      "",
+      "Write efficient pseudocode for the module `SearchDuplicates()`. `Encrypt()` and",
+      "`Decrypt()` functions have been written. It is necessary to decrypt each password",
+      "before checking its value.",
+      "",
+      "为便于自动判分,重复时输出 `Password for <网站A> also used for <网站B>`;没有重复时输出 `No duplicate passwords found`。",
+    ].join("\n"),
+    model: `PROCEDURE SearchDuplicates()
+    DECLARE IndexA : INTEGER
+    DECLARE IndexB : INTEGER
+    DECLARE ThisPassword : STRING
+    DECLARE ThisValue : STRING
+    DECLARE Duplicates : BOOLEAN
+    Duplicates <- FALSE
+    IndexA <- 1
+    WHILE Duplicates = FALSE AND IndexA < 500
+        ThisValue <- Secret[IndexA, 2]
+        IF ThisValue <> "" THEN
+            ThisPassword <- Decrypt(ThisValue)
+            FOR IndexB <- IndexA + 1 TO 500
+                IF Secret[IndexB, 2] <> "" THEN
+                    IF Decrypt(Secret[IndexB, 2]) = ThisPassword THEN
+                        OUTPUT "Password for ", Secret[IndexA, 1], " also used for ", Secret[IndexB, 1]
+                        Duplicates <- TRUE
+                    ENDIF
+                ENDIF
+            NEXT IndexB
+        ENDIF
+        IndexA <- IndexA + 1
+    ENDWHILE
+    IF Duplicates = FALSE THEN
+        OUTPUT "No duplicate passwords found"
+    ENDIF
+ENDPROCEDURE`,
+    cases: [
+      {
+        rows: [["thiswebsite.com", "pw1"], ["site2.net", "pw2"], ["site3.org", "pw3"], ["site4.com", "pw4"]],
+        label: "没有重复",
+      },
+      {
+        rows: [["thiswebsite.com", "pw1"], ["site2.net", "pw2"], ["site3.org", "pw1"], ["site4.com", "pw4"]],
+        label: "两处使用同一密码",
+      },
+      {
+        rows: [["a.com", "pw1"], ["b.net", "pw1"], ["c.org", "pw1"], ["d.com", "pw2"]],
+        label: "三处使用同一密码",
+      },
+      {
+        rows: [["", ""], ["a.com", "pw1"], ["b.net", "pw2"], ["c.org", "pw1"]],
+        label: "跳过空元素后找到重复",
+      },
+    ].map((data) => ({
+      label: data.label,
+      setup: secretSetup(data.rows),
+      after: "CALL SearchDuplicates()",
+    })),
+  },
+
+  {
+    id: "s2024_22-q4",
+    title: "IsRA() — right-angled triangle",
+    source: "9618/22 Summer 2024 Q4",
+    marks: 5,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE IsRA()",
+    prompt: [
+      "A triangle has sides of length A, B and C. The triangle is said to be right-angled if",
+      "the following equation is true, where A is the length of the longest side:",
+      "",
+      "`A × A = (B × B) + (C × C)`",
+      "",
+      "A procedure will be written to check whether three lengths represent a right-angled",
+      "triangle. The lengths will be input in any sequence.",
+      "",
+      "The procedure `IsRA()` will:",
+      "",
+      "- prompt and input three integer values representing the three lengths",
+      "- test whether the three lengths correspond to the sides of a right-angled triangle",
+      "- output a suitable message.",
+      "",
+      "The length of the longest side may **not** be the first value input.",
+      "",
+      "Write pseudocode for the procedure `IsRA()`.",
+      "",
+      "为便于自动判分,不要输出输入提示语;只输出 `It is right-angled` 或 `Not right-angled`。",
+    ].join("\n"),
+    model: `PROCEDURE IsRA()
+    DECLARE A : INTEGER
+    DECLARE B : INTEGER
+    DECLARE C : INTEGER
+    INPUT A
+    INPUT B
+    INPUT C
+    IF (A * A = (B * B) + (C * C)) OR (B * B = (A * A) + (C * C)) OR (C * C = (A * A) + (B * B)) THEN
+        OUTPUT "It is right-angled"
+    ELSE
+        OUTPUT "Not right-angled"
+    ENDIF
+ENDPROCEDURE`,
+    after: "CALL IsRA()",
+    cases: [
+      { label: "3, 4, 5", inputs: ["3", "4", "5"] },
+      { label: "4, 5, 3", inputs: ["4", "5", "3"] },
+      { label: "5, 12, 13", inputs: ["5", "12", "13"] },
+      { label: "2, 3, 4", inputs: ["2", "3", "4"] },
+    ],
+  },
+
+  {
+    id: "s2024_23-q4a",
+    title: "TwoParts() — average of two totals",
+    source: "9618/23 Summer 2024 Q4(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE TwoParts(), using the global variables TotalA and TotalB",
+    prompt: [
+      "A procedure `TwoParts()` will input a sequence of real values, one at a time.",
+      "",
+      "The procedure will:",
+      "",
+      "- process the sequence in two parts",
+      "- form a first total by adding the values until the first zero",
+      "- form a second total by adding the values after the first zero until the second zero",
+      "- output the average of the two totals, together with a suitable message",
+      "",
+      "Values input in the first part are totalled using global variable `TotalA` and those",
+      "input in the second part are totalled using global variable `TotalB`.",
+      "",
+      "Write pseudocode for the procedure `TwoParts()`.",
+      "",
+      "为便于自动判分,请输出 `The average is <平均值>`。",
+    ].join("\n"),
+    model: `PROCEDURE TwoParts()
+    DECLARE NextNum : REAL
+    DECLARE Average : REAL
+    TotalA <- 0.0
+    TotalB <- 0.0
+    REPEAT
+        INPUT NextNum
+        TotalA <- TotalA + NextNum
+    UNTIL NextNum = 0
+    REPEAT
+        INPUT NextNum
+        TotalB <- TotalB + NextNum
+    UNTIL NextNum = 0
+    Average <- (TotalA + TotalB) / 2
+    OUTPUT "The average is ", Average
+ENDPROCEDURE`,
+    setup: `DECLARE TotalA : REAL
+DECLARE TotalB : REAL`,
+    after: "CALL TwoParts()",
+    cases: [
+      { label: "1 2 0 3 0", inputs: ["1", "2", "0", "3", "0"] },
+      { label: "10.5 20.5 0 1.0 0", inputs: ["10.5", "20.5", "0", "1.0", "0"] },
+      { label: "0 0", inputs: ["0", "0"] },
+      { label: "-4 4 0 6 0", inputs: ["-4", "4", "0", "6", "0"] },
+    ],
+  },
+
+  {
+    id: "w2022_23-q7a",
+    title: "OutputRange() — list error numbers",
+    source: "9618/23 Winter 2022 Q7(a)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE OutputRange(), using the global arrays ErrCode and ErrText",
+    prompt: [
+      "A teacher is designing a program to perform simple syntax checks on programs written",
+      "by students. Two global 1D arrays, each of 500 elements, store the syntax error data.",
+      "",
+      "- `ErrCode` contains integer error numbers in the range 1 to 800, in ascending order.",
+      "  Unused elements have the value 999 and occur at the end of the array.",
+      "- `ErrText` contains the error description. For an undefined error number, the",
+      "  corresponding `ErrText` element contains an empty string.",
+      "",
+      "A module `OutputRange()` will:",
+      "",
+      "- prompt for input of two error numbers",
+      "- output a list of error numbers between the two numbers input (inclusive) together",
+      "  with the corresponding error description",
+      "- output a warning message when the error description is missing",
+      "- output a suitable header and a final count of error numbers found",
+      "",
+      "Example output for the range 1 to 60:",
+      "",
+      "`List of error numbers from 1 to 60`",
+      "`10 : Invalid identifier name`",
+      "`20 : Bracket mismatch`",
+      "`50 : Error Text Missing`",
+      "`60 : Type mismatch in assignment`",
+      "`4 error numbers output`",
+      "",
+      "Write pseudocode for module `OutputRange()`. Assume that the two numbers input",
+      "represent a valid error number range.",
+      "",
+      "为便于自动判分,不要输出输入提示;按示例格式输出标题、`<错误号> : <描述>`、缺失描述用 `Error Text Missing`,最后 `<个数> error numbers output`。",
+    ].join("\n"),
+    model: `PROCEDURE OutputRange()
+    DECLARE First : INTEGER
+    DECLARE Last : INTEGER
+    DECLARE Count : INTEGER
+    DECLARE Index : INTEGER
+    DECLARE ThisErr : INTEGER
+    DECLARE ThisMess : STRING
+    Count <- 0
+    INPUT First
+    INPUT Last
+    OUTPUT "List of error numbers from ", First, " to ", Last
+    Index <- 1
+    WHILE Index <= 500 AND ErrCode[Index] <= Last
+        ThisErr <- ErrCode[Index]
+        IF ThisErr >= First THEN
+            ThisMess <- ErrText[Index]
+            IF ThisMess = "" THEN
+                ThisMess <- "Error Text Missing"
+            ENDIF
+            OUTPUT ThisErr, " : ", ThisMess
+            Count <- Count + 1
+        ENDIF
+        Index <- Index + 1
+    ENDWHILE
+    OUTPUT Count, " error numbers output"
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "1 到 60",
+        codes: [10, 20, 50, 60],
+        texts: ["Invalid identifier name", "Bracket mismatch", "", "Type mismatch in assignment"],
+        inputs: ["1", "60"],
+      },
+      {
+        label: "1 到 10",
+        codes: [10, 20, 50, 60],
+        texts: ["Invalid identifier name", "Bracket mismatch", "", "Type mismatch in assignment"],
+        inputs: ["1", "10"],
+      },
+      {
+        label: "20 到 60",
+        codes: [10, 20, 50, 60],
+        texts: ["Invalid identifier name", "Bracket mismatch", "", "Type mismatch in assignment"],
+        inputs: ["20", "60"],
+      },
+      {
+        label: "10 到 40,另一组数据",
+        codes: [5, 15, 25, 35, 45],
+        texts: ["Unexpected token", "Missing bracket", "", "Unreachable code", "Type mismatch"],
+        inputs: ["10", "40"],
+      },
+    ].map((data) => ({
+      label: data.label,
+      setup: errorSetup(data.codes, data.texts),
+      inputs: data.inputs,
+      after: "CALL OutputRange()",
+    })),
+  },
 ];
 
 export function taskById(id) {
@@ -3644,4 +4484,61 @@ export function resultOf(output) {
   const index = output.indexOf(RESULT_MARKER);
   if (index === -1) return output.trimEnd();
   return output.slice(index + RESULT_MARKER.length).replace(/^\s*\n/, "").trimEnd();
+}
+
+// Setup builders for the tasks above whose array data is generated rather than typed out.
+// Function declarations are hoisted, so the tasks can use them during module evaluation.
+
+function secretSetup(rows) {
+  let code = `DECLARE Secret : ARRAY[1:500, 1:2] OF STRING
+DECLARE I : INTEGER
+FOR I <- 1 TO 500
+    Secret[I, 1] <- ""
+    Secret[I, 2] <- ""
+NEXT I
+FUNCTION Decrypt(Encrypted : STRING) RETURNS STRING
+    RETURN Encrypted
+ENDFUNCTION
+`;
+  rows.forEach(([domain, password], index) => {
+    const row = index + 1;
+    code += `Secret[${row}, 1] <- "${domain}"\nSecret[${row}, 2] <- "${password}"\n`;
+  });
+  return code;
+}
+
+function specialSetup(fillings, breads) {
+  let code = `DECLARE Filling : ARRAY[1:35] OF STRING
+DECLARE Bread : ARRAY[1:10] OF STRING
+DECLARE I : INTEGER
+FOR I <- 1 TO 35
+    Filling[I] <- ""
+NEXT I
+FOR I <- 1 TO 10
+    Bread[I] <- ""
+NEXT I
+`;
+  fillings.forEach(([index, name]) => {
+    code += `Filling[${index}] <- "${name}"\n`;
+  });
+  breads.forEach(([index, name]) => {
+    code += `Bread[${index}] <- "${name}"\n`;
+  });
+  return code;
+}
+
+function errorSetup(codes, texts) {
+  let code = `DECLARE ErrCode : ARRAY[1:500] OF INTEGER
+DECLARE ErrText : ARRAY[1:500] OF STRING
+DECLARE I : INTEGER
+FOR I <- 1 TO 500
+    ErrCode[I] <- 999
+    ErrText[I] <- ""
+NEXT I
+`;
+  codes.forEach((codeValue, index) => {
+    const row = index + 1;
+    code += `ErrCode[${row}] <- ${codeValue}\nErrText[${row}] <- "${texts[index]}"\n`;
+  });
+  return code;
 }
