@@ -59,6 +59,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab active" data-tab="trace" role="tab">Trace</button>
       <button class="tab" data-tab="vars" role="tab">Variables</button>
+      <button class="tab" data-tab="files" role="tab">Files</button>
       <button class="tab" data-tab="ref" role="tab">Reference</button>
     </nav>
 
@@ -69,6 +70,10 @@
       </div>
       <div id="tab-vars" class="tab-panel" role="tabpanel">
         <div class="table-scroll"><table id="vars"></table></div>
+      </div>
+      <div id="tab-files" class="tab-panel" role="tabpanel">
+        <div id="file-list" class="file-list"></div>
+        <div class="file-actions"><button id="add-file">＋ 新建文件</button></div>
       </div>
       <div id="tab-ref" class="tab-panel" role="tabpanel">
         <div id="reference"></div>

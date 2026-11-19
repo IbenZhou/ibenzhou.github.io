@@ -12,6 +12,7 @@ const dom = {
   reset: el("reset"), share: el("share"), download: el("download"), open: el("open"), file: el("file"),
   theme: el("theme"), inputs: el("inputs"), output: el("output"), diagnostics: el("diagnostics"),
   trace: el("trace"), traceNote: el("trace-note"), vars: el("vars"), reference: el("reference"),
+  fileList: el("file-list"), addFile: el("add-file"),
   divider: el("divider"), prompt: el("prompt"), promptVar: el("prompt-var"), promptValue: el("prompt-value"),
   promptOk: el("prompt-ok"), promptCancel: el("prompt-cancel"),
   fontIn: el("font-in"), fontOut: el("font-out"), fontPx: el("font-px"),
@@ -20,12 +21,13 @@ const dom = {
 const STORE = {
   doc: "pseudocode9618.doc", inputs: "pseudocode9618.inputs", theme: "pseudocode9618.theme",
   syllabus: "pseudocode9618.syllabus", fontSize: "pseudocode9618.fontSize",
+  files: "pseudocode9618.files",
 };
 
 const state = {
   dialect: "9618",
   running: false, paused: false, stepMode: false, stopRequested: false,
-  resume: null, lastLine: 0, renderedOutputs: 0, renderedTraceRows: -1, breakpoints: new Set(), decorations: [], currentDecorations: [],
+  resume: null, lastLine: 0, renderedOutputs: 0, renderedTraceRows: -1, breakpoints: new Set(), decorations: [], currentDecorations: [], files: {},
 };
 
 let editor = null;
@@ -258,6 +260,75 @@ function renderVariables(rows) {
   }
 }
 
+function loadFiles() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORE.files) || "{}");
+    return raw && typeof raw === "object" ? raw : {};
+  } catch { return {}; }
+}
+
+function saveFiles() {
+  try { localStorage.setItem(STORE.files, JSON.stringify(state.files)); } catch { /* private mode */ }
+}
+
+function renderFiles() {
+  dom.fileList.textContent = "";
+  const names = Object.keys(state.files);
+  if (!names.length) {
+    const empty = document.createElement("p");
+    empty.className = "note";
+    empty.textContent = "还没有文件。新建一个,程序就能用 OPENFILE 读写了。";
+    dom.fileList.appendChild(empty);
+    return;
+  }
+  for (const name of names) {
+    const block = document.createElement("div");
+    block.className = "file-block";
+    const head = document.createElement("div");
+    head.className = "file-head";
+    const nameInput = document.createElement("input");
+    nameInput.value = name;
+    nameInput.addEventListener("change", () => {
+      const next = nameInput.value.trim();
+      if (!next || next === name || state.files[next] !== undefined) { nameInput.value = name; return; }
+      state.files[next] = state.files[name];
+      delete state.files[name];
+      saveFiles();
+      renderFiles();
+    });
+    const remove = document.createElement("button");
+    remove.textContent = "删除";
+    remove.addEventListener("click", () => {
+      delete state.files[name];
+      saveFiles();
+      renderFiles();
+    });
+    head.append(nameInput, remove);
+    const body = document.createElement("textarea");
+    body.className = "file-body";
+    body.spellcheck = false;
+    body.value = state.files[name];
+    body.addEventListener("input", () => { state.files[name] = body.value; saveFiles(); });
+    block.append(head, body);
+    dom.fileList.appendChild(block);
+  }
+}
+
+function filesForRun() {
+  const out = {};
+  for (const [name, text] of Object.entries(state.files)) out[name] = String(text).split("\n");
+  return out;
+}
+
+function applyResultFiles(files) {
+  if (!files) return;
+  const names = Object.keys(files);
+  if (!names.length) return;
+  for (const name of names) state.files[name] = files[name].join("\n");
+  saveFiles();
+  renderFiles();
+}
+
 function renderReference() {
   dom.reference.textContent = "";
   for (const section of referenceFor(state.dialect)) {
@@ -403,6 +474,7 @@ async function run() {
   const started = Date.now();
   const result = await runInteractive(model.getValue(), {
     dialect: state.dialect,
+    files: filesForRun(),
     inputs: parseInputs(),
     onInput: askForInput,
     onTick: pace,
@@ -413,6 +485,7 @@ async function run() {
   renderOutput(result);
   renderTrace(result.trace);
   renderVariables(result.variables);
+  applyResultFiles(result.files);
   renderDiagnostics([...result.errors, ...result.notes]);
   monaco.editor.setModelMarkers(model, "pseudocode", [...result.errors, ...result.notes].map((d) => ({
     severity: d.level === "error" ? monaco.MarkerSeverity.Error : monaco.MarkerSeverity.Warning,
@@ -667,6 +740,16 @@ function boot() {
   wireFontSize();
   wireDivider();
   wireBreakpoints();
+  state.files = loadFiles();
+  renderFiles();
+  dom.addFile.addEventListener("click", () => {
+    let index = 1;
+    let name = "data.txt";
+    while (state.files[name] !== undefined) { index += 1; name = `data${index}.txt`; }
+    state.files[name] = "";
+    saveFiles();
+    renderFiles();
+  });
   restore();
   applyDialect(state.dialect, { silent: true });
   refresh();

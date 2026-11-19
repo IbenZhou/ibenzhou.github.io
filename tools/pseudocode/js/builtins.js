@@ -241,6 +241,13 @@ export const BUILTINS = {
       return V("CHAR", String.fromCharCode(code));
     },
   },
+  EOF: {
+    args: () => [["STRING"]],
+    returns: "BOOLEAN",
+    signature: "EOF(FileName : STRING) RETURNS BOOLEAN",
+    doc: "TRUE when there are no more lines to read from an open file",
+    call: (a, ctx) => V("BOOLEAN", ctx.eof(String(a[0].v))),
+  },
   DAY: {
     args: () => [["DATE"]],
     returns: "INTEGER",

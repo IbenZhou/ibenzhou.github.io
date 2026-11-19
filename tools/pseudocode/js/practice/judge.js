@@ -64,6 +64,7 @@ export function runCase(task, entry, code) {
     inputs: entry.inputs || [],
     maxSteps: PRACTICE_MAX_STEPS,
     seed: entry.seed,
+    files: entry.files || task.files,
   });
   if (result.errors.length) {
     const first = result.errors[0];
@@ -73,7 +74,7 @@ export function runCase(task, entry, code) {
   if (typeof entry.check === "function") {
     let ok = false;
     try { ok = entry.check(value) === true; } catch { ok = false; }
-    return { ok, note: ok ? "" : (entry.expect || "结果不符合题目要求"), value };
+    return { ok, note: ok ? "" : (entry.expect || "结果不符合题目要求"), value, files: result.files };
   }
-  return { ok: null, note: "", value };
+  return { ok: null, note: "", value, files: result.files };
 }

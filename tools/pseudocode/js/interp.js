@@ -88,6 +88,14 @@ export class Machine {
     this.recursionLimit = opts.recursionLimit ?? 200;
     this.seed = opts.seed ?? 12345;
     this.fixedNow = opts.now ?? null;
+    this.files = new Map();
+    for (const [name, lines] of Object.entries(opts.files || {})) {
+      this.files.set(name, {
+        lines: Array.isArray(lines) ? [...lines] : String(lines).split("\n"),
+        mode: null,
+        cursor: 0,
+      });
+    }
     this.state = this.seed;
     this.steps = 0;
     this.startedAt = Date.now();
@@ -169,6 +177,97 @@ export class Machine {
     for (const item of stmt.items) this.declareInto(item, scope);
   }
 
+  fileName(stmt, scope) {
+    return String(stmt.file && stmt.file.k === "str" ? stmt.file.v : "");
+  }
+
+  *execOpenFile(stmt, scope) {
+    const nameValue = yield* this.eval(stmt.file, scope);
+    if (nameValue.t !== "STRING") {
+      this.report("E_FILE_NAME", stmt.pos, {});
+      return;
+    }
+    const name = String(nameValue.v);
+    const existing = this.files.get(name);
+    if (stmt.mode === "READ" && !existing) {
+      this.report("E_FILE_MISSING", stmt.pos, { name });
+      return;
+    }
+    const entry = existing || { lines: [], mode: null, cursor: 0 };
+    if (entry.mode) {
+      this.report("E_FILE_ALREADY_OPEN", stmt.pos, { name });
+      return;
+    }
+    entry.mode = stmt.mode || "READ";
+    if (entry.mode === "WRITE") entry.lines = [];
+    entry.cursor = entry.mode === "APPEND" ? entry.lines.length : 0;
+    this.files.set(name, entry);
+  }
+
+  *execReadFile(stmt, scope) {
+    const nameValue = yield* this.eval(stmt.file, scope);
+    const name = String(nameValue.v);
+    const entry = this.files.get(name);
+    if (!entry || !entry.mode) {
+      this.report("E_FILE_NOT_OPEN", stmt.pos, { name });
+      return;
+    }
+    if (entry.mode !== "READ") {
+      this.report("E_FILE_MODE", stmt.pos, { name, mode: entry.mode, action: "read from" });
+      return;
+    }
+    if (entry.cursor >= entry.lines.length) {
+      this.report("E_FILE_EOF", stmt.pos, { name });
+      return;
+    }
+    const line = entry.lines[entry.cursor];
+    entry.cursor += 1;
+    if (stmt.target) yield* this.assignTo(stmt.target, V("STRING", line), scope, stmt.pos);
+  }
+
+  *execWriteFile(stmt, scope) {
+    const nameValue = yield* this.eval(stmt.file, scope);
+    const name = String(nameValue.v);
+    const entry = this.files.get(name);
+    if (!entry || !entry.mode) {
+      this.report("E_FILE_NOT_OPEN", stmt.pos, { name });
+      return;
+    }
+    if (entry.mode === "READ") {
+      this.report("E_FILE_MODE", stmt.pos, { name, mode: "READ", action: "write to" });
+      return;
+    }
+    const value = yield* this.eval(stmt.value, scope);
+    entry.lines.push(stringify(value));
+    entry.cursor = entry.lines.length;
+  }
+
+  *execCloseFile(stmt, scope) {
+    const nameValue = yield* this.eval(stmt.file, scope);
+    const name = String(nameValue.v);
+    const entry = this.files.get(name);
+    if (!entry || !entry.mode) {
+      this.report("E_FILE_NOT_OPEN", stmt.pos, { name });
+      return;
+    }
+    entry.mode = null;
+  }
+
+  eof(name, pos) {
+    const entry = this.files.get(name);
+    if (!entry || entry.mode !== "READ") {
+      this.report("E_FILE_MODE", pos, { name, mode: entry && entry.mode ? entry.mode : "closed", action: "test EOF on" });
+      return true;
+    }
+    return entry.cursor >= entry.lines.length;
+  }
+
+  filesResult() {
+    const out = {};
+    for (const [name, entry] of this.files) out[name] = entry.lines.slice();
+    return out;
+  }
+
   *execConstant(stmt, scope) {
     if (!stmt.name) return;
     const value = yield* this.eval(stmt.value, scope);
@@ -212,6 +311,10 @@ export class Machine {
   *dispatch(stmt, scope) {
     switch (stmt.k) {
       case "declare": return yield* this.execDeclare(stmt, scope);
+      case "openfile": return yield* this.execOpenFile(stmt, scope);
+      case "readfile": return yield* this.execReadFile(stmt, scope);
+      case "writefile": return yield* this.execWriteFile(stmt, scope);
+      case "closefile": return yield* this.execCloseFile(stmt, scope);
       case "constant": return yield* this.execConstant(stmt, scope);
       case "assign": return yield* this.execAssign(stmt, scope);
       case "output": return yield* this.execOutput(stmt, scope);
@@ -696,7 +799,7 @@ export class Machine {
       const fn = checkBuiltinCall(upper, args, node.pos, this.diag, this.dialect);
       if (!fn) { this.report("E_UNKNOWN_FUNC", node.pos, { name: node.name }); return V("INTEGER", 0); }
       if (this.diag.length > before) throw new RuntimeStop();
-      const ctx = { diag: this.diag, pos: node.pos, random: () => this.random(), now: () => (this.fixedNow == null ? Date.now() : this.fixedNow) };
+      const ctx = { diag: this.diag, pos: node.pos, random: () => this.random(), now: () => (this.fixedNow == null ? Date.now() : this.fixedNow), eof: (name) => this.eof(name, node.pos) };
       return fn.call(args, ctx);
     }
     const routine = this.routines.get(upper);

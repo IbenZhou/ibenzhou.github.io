@@ -9,6 +9,7 @@ const dom = {
   list: el("task-list"), count: el("count"), difficulty: el("difficulty"),
   theme: el("theme"), empty: el("empty"), task: el("task"), title: el("task-title"), meta: el("task-meta"),
   requirement: el("task-requirement"), prompt: el("task-prompt"), answer: el("task-answer"),
+  taskFiles: el("task-files"),
   showAnswer: el("show-answer"), editor: el("editor"), check: el("check"), clear: el("clear"),
   verdict: el("verdict"), cases: el("cases"),
 };
@@ -180,6 +181,27 @@ function renderList() {
   }
 }
 
+function renderTaskFiles(files) {
+  dom.taskFiles.textContent = "";
+  const names = Object.keys(files || {});
+  if (!names.length) { dom.taskFiles.hidden = true; return; }
+  dom.taskFiles.hidden = false;
+  const heading = document.createElement("h3");
+  heading.textContent = "题目给的文件";
+  dom.taskFiles.appendChild(heading);
+  for (const name of names) {
+    const block = document.createElement("div");
+    block.className = "file";
+    const label = document.createElement("span");
+    label.className = "file-name";
+    label.textContent = name;
+    const body = document.createElement("pre");
+    body.textContent = Array.isArray(files[name]) ? files[name].join("\n") : String(files[name]);
+    block.append(label, body);
+    dom.taskFiles.appendChild(block);
+  }
+}
+
 function select(id) {
   const task = taskById(id);
   if (!task) return;
@@ -198,6 +220,7 @@ function select(id) {
   dom.verdict.textContent = "";
   dom.verdict.className = "verdict";
   dom.cases.textContent = "";
+  renderTaskFiles(task.files);
   model.setValue(localStorage.getItem(STORE.draft(task.id)) || "");
   renderList();
   const url = new URL(location.href);

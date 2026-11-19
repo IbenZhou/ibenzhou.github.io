@@ -367,6 +367,38 @@ export const CODES = {
     () => `A Level declares a constant with equals: CONSTANT Name = 6.50`,
     () => `A Level 用 = 声明常量`,
   ),
+  E_FILE_NAME: d(
+    () => `A file is named by a STRING literal or a STRING variable, e.g. OPENFILE "data.txt" FOR READ`,
+    () => `文件要用字符串字面量或字符串变量表示`,
+  ),
+  E_FILE_MODE_MISSING: d(
+    () => `OPENFILE needs a mode: FOR READ, FOR WRITE or FOR APPEND`,
+    () => `OPENFILE 必须写 FOR READ / FOR WRITE / FOR APPEND`,
+  ),
+  E_FILE_ALREADY_OPEN: d(
+    (c) => `"${c.name}" is already open; close it before opening it again`,
+    (c) => `"${c.name}" 已经打开，请先 CLOSEFILE`,
+  ),
+  E_FILE_MISSING: d(
+    (c) => `"${c.name}" does not exist. Add it in the Files panel, or open it FOR WRITE first`,
+    (c) => `"${c.name}" 不存在，请在文件面板里先建立`,
+  ),
+  E_FILE_NOT_OPEN: d(
+    (c) => `"${c.name}" is not open; use OPENFILE first`,
+    (c) => `"${c.name}" 还没有打开，请先 OPENFILE`,
+  ),
+  E_FILE_MODE: d(
+    (c) => `"${c.name}" was opened FOR ${c.mode}, so you cannot ${c.action} it`,
+    (c) => `"${c.name}" 以 ${c.mode} 方式打开，不能${c.action}`,
+  ),
+  E_FILE_EOF: d(
+    (c) => `There are no more lines to read from "${c.name}"; test EOF() first`,
+    (c) => `"${c.name}" 已经读到文件末尾，请先用 EOF() 判断`,
+  ),
+  W_IGCSE_FILE_APPEND: d(
+    () => `IGCSE 0478 file modes are READ and WRITE only`,
+    () => `IGCSE 只有 READ 和 WRITE 两种打开方式`,
+  ),
   W_IGCSE_NO_LEFT: d(
     () => `IGCSE has no LEFT(); use SUBSTRING(s, 1, x)`,
     () => `IGCSE 没有 LEFT，请用 SUBSTRING(s, 1, x)`,

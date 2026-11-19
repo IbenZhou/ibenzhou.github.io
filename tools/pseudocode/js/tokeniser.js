@@ -17,8 +17,7 @@ export const KEYWORDS = new Set([
 
 export const NOT_IN_V1 = new Set([
   "TYPE", "ENDTYPE", "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW",
-  "OPENFILE", "CLOSEFILE", "READFILE", "WRITEFILE", "SEEK", "GETRECORD", "PUTRECORD",
-  "APPEND", "EOF", "SET", "DEFINE",
+  "SEEK", "GETRECORD", "PUTRECORD", "APPEND", "SET", "DEFINE",
 ]);
 
 export const ALEVEL_ONLY = new Set([

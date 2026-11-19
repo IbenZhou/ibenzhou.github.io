@@ -770,6 +770,60 @@ export function parse(tok, dialect) {
     return { k: "call", name, args, pos: start };
   }
 
+  function parseFileExpr() {
+    const t = peek();
+    if (t && t.type === "STR") { next(); return { k: "str", v: t.value, pos: posOf(t) }; }
+    if (t && t.type === "IDENT") { next(); return { k: "var", name: t.value, pos: posOf(t) }; }
+    err("E_FILE_NAME", posOf(here()), {});
+    return { k: "str", v: "", pos: posOf(here()) };
+  }
+
+  function parseOpenFile() {
+    const start = posOf(next());
+    const file = parseFileExpr();
+    let mode = null;
+    if (eatKey("FOR")) {
+      const t = peek();
+      const modeWord = t && t.type === "IDENT" ? t.value.toUpperCase() : "";
+      if (["READ", "WRITE", "APPEND"].includes(modeWord)) {
+        next();
+        mode = modeWord;
+        if (mode === "APPEND" && d.id === "0478") err("W_IGCSE_FILE_APPEND", start, {});
+      } else {
+        err("E_FILE_MODE_MISSING", start, {});
+      }
+    } else {
+      err("E_FILE_MODE_MISSING", start, {});
+    }
+    finishLine(start);
+    return { k: "openfile", file, mode, pos: start };
+  }
+
+  function parseReadFile() {
+    const start = posOf(next());
+    const file = parseFileExpr();
+    expectPunct(",");
+    const target = parseTarget();
+    finishLine(start);
+    return { k: "readfile", file, target, pos: start };
+  }
+
+  function parseWriteFile() {
+    const start = posOf(next());
+    const file = parseFileExpr();
+    expectPunct(",");
+    const value = parseExpression();
+    finishLine(start);
+    return { k: "writefile", file, value, pos: start };
+  }
+
+  function parseCloseFile() {
+    const start = posOf(next());
+    const file = parseFileExpr();
+    finishLine(start);
+    return { k: "closefile", file, pos: start };
+  }
+
   function parseStatement() {
     skipBlank();
     if (li >= lines.length) return null;
@@ -812,7 +866,14 @@ export function parse(tok, dialect) {
       advanceLine();
       return null;
     }
-    if (t.type === "IDENT") return parseAssignOrCall();
+    if (t.type === "IDENT") {
+      const word = t.value.toUpperCase();
+      if (word === "OPENFILE") return parseOpenFile();
+      if (word === "READFILE") return parseReadFile();
+      if (word === "WRITEFILE") return parseWriteFile();
+      if (word === "CLOSEFILE") return parseCloseFile();
+      return parseAssignOrCall();
+    }
     const p = posOf(t);
     err("E_UNEXPECTED", p, { what: JSON.stringify(String(t.value)) });
     advanceLine();

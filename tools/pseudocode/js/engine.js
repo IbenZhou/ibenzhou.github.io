@@ -68,6 +68,7 @@ function collect(machine, statics, limitError) {
     errors,
     notes,
     variables: machine.snapshot(),
+    files: machine.filesResult(),
     trace: { cols: machine.trace.cols, rows: machine.trace.rows, overflow: machine.trace.overflow },
     steps: machine.steps,
     askedForInput: machine.askedForInput || 0,
@@ -91,6 +92,7 @@ function prepare(text, opts) {
     now: opts.now ?? null,
     interactive: opts.interactive ?? false,
     dialect: analysed.dialect,
+    files: opts.files,
   });
   return { analysed, machine, iterator: machine.run() };
 }
