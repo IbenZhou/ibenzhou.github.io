@@ -384,8 +384,8 @@ export const CODES = {
     (c) => `${c.name}() 只在 A Level 的 inserts 里提供`,
   ),
   W_ALEVEL_INSERT_NAME: d(
-    (c) => `The 2026 inserts provide ${c.alt}(); ${c.name}() is the name used in the guide`,
-    (c) => `2026 年 inserts 提供的名字是 ${c.alt}()`,
+    (c) => `${c.name}() is the IGCSE spelling; A Level provides ${c.alt}()`,
+    (c) => `${c.name}() 是 IGCSE 写法，A Level 用 ${c.alt}()`,
   ),
   W_ALEVEL_CALL_PARENS: d(
     (c) => `A Level writes the call as CALL ${c.name}()`,

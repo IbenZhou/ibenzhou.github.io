@@ -1,3 +1,5 @@
+import { KEYWORDS } from "./tokeniser.js";
+
 export const REFERENCE = [
   {
     group: "Variables",
@@ -32,7 +34,7 @@ export const REFERENCE = [
       { syntax: "LENGTH(s)", note: "number of characters", zh: "长度", skeleton: "OUTPUT LENGTH(\"Happy Days\")\n" },
       { syntax: "MID(s, start, count)", note: "count characters from position start, 1-based", zh: "截取", skeleton: "OUTPUT MID(\"ABCDEFGH\", 2, 3)\n" },
       { syntax: "RIGHT(s, n)", note: "rightmost n characters", zh: "右侧", skeleton: "OUTPUT RIGHT(\"ABCDEFGH\", 3)\n" },
-      { syntax: "TO_UPPER(x)  TO_LOWER(x)", note: "a CHAR or a whole STRING; the guide calls these UCASE/LCASE", zh: "大小写", skeleton: "OUTPUT TO_UPPER('h')\n" },
+      { syntax: "TO_UPPER(x)  TO_LOWER(x)", note: "a CHAR or a whole STRING; IGCSE calls these UCASE/LCASE", zh: "大小写", skeleton: "OUTPUT TO_UPPER('h')\n" },
       { syntax: "INT(x)", note: "integer part of a REAL", zh: "取整", skeleton: "OUTPUT INT(27.5415)\n" },
       { syntax: "RAND(x)", note: "a REAL from 0 up to but not including x", zh: "随机数", skeleton: "OUTPUT INT(RAND(6) + 1)\n" },
     ],
@@ -90,14 +92,6 @@ export const REFERENCE = [
   },
 ];
 
-export const KEYWORD_LIST = [
-  "AND", "ARRAY", "BYREF", "BYVAL", "CALL", "CASE", "CHAR", "CONSTANT", "DATE", "DECLARE", "DIV",
-  "ELSE", "ENDCASE", "ENDFUNCTION", "ENDIF", "ENDPROCEDURE", "ENDWHILE", "FALSE", "FOR", "FUNCTION",
-  "IF", "INPUT", "INTEGER", "MOD", "NEXT", "NOT", "OF", "OTHERWISE", "OUTPUT", "PROCEDURE", "REAL",
-  "REPEAT", "RETURN", "RETURNS", "STEP", "STRING", "THEN", "TO", "TRUE", "UNTIL", "WHILE",
-];
-
-export const BUILTIN_LIST = ["LENGTH", "MID", "RIGHT", "LCASE", "UCASE", "INT", "RAND"];
 
 export const IGCSE_REFERENCE = [
   {
@@ -175,8 +169,8 @@ export function referenceFor(id) {
   return id === "0478" ? IGCSE_REFERENCE : REFERENCE;
 }
 
-export const KEYWORDS_9618 = KEYWORD_LIST;
-export const KEYWORDS_0478 = KEYWORD_LIST.filter((w) => w !== "DATE").concat(["DO"]);
+export const KEYWORDS_9618 = [...KEYWORDS];
+export const KEYWORDS_0478 = [...KEYWORDS].filter((w) => !["DATE", "BYREF", "BYVAL"].includes(w));
 
 export function keywordsFor(id) {
   return id === "0478" ? KEYWORDS_0478 : KEYWORDS_9618;
