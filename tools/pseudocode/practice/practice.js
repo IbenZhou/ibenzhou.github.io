@@ -1,6 +1,6 @@
-import { TASKS, taskById, buildProgram, resultOf } from "../js/practice/tasks.js";
+import { TASKS, taskById } from "../js/practice/tasks.js";
+import { checkSignature, runCase } from "../js/practice/judge.js";
 import { GOLDENS } from "../js/practice/goldens.js";
-import { runSync } from "../js/engine.js";
 import { defineThemes, registerLanguage, registerCompletion } from "../js/language.js";
 import { dialectOf } from "../js/dialect.js";
 
@@ -145,22 +145,15 @@ function check() {
     return;
   }
 
-  let passed = 0;
+  const sig = checkSignature(task, code);
   const rows = task.cases.map((entry, index) => {
-    const program = buildProgram(task, entry, code);
-    const result = runSync(program, { inputs: entry.inputs || [] });
-    let ok = false;
-    let note = "";
-    if (result.errors.length) {
-      const first = result.errors[0];
-      note = `第 ${first.line} 行:${first.en}`;
-    } else {
-      ok = resultOf(result.output) === goldens[index];
-      if (!ok) note = "输出与预期不符";
-    }
-    if (ok) passed++;
-    return { entry, ok, note, index };
+    if (!sig.ok) return { entry, ok: false, note: sig.note, index };
+    const run = runCase(task, entry, code);
+    const ok = run.ok === null ? run.value === goldens[index] : run.ok;
+    return { entry, ok, note: run.note || (ok ? "" : "输出与预期不符"), index };
   });
+  if (!rows.length) rows.push({ entry: { label: task.requirement }, ok: sig.ok, note: sig.note, index: 0 });
+  const passed = rows.filter((row) => row.ok).length;
 
   dom.cases.textContent = "";
   for (const row of rows) {

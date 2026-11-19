@@ -3512,6 +3512,120 @@ OUTPUT Line`,
       },
     ],
   },
+
+  {
+    id: "s2024_23-q6bi",
+    title: "Progress2() — module header",
+    source: "9618/23 Summer 2024 Q6(b)(i)",
+    marks: 2,
+    difficulty: 1,
+    chapter: "Ch12 Software development",
+    requirement: "FUNCTION Progress2(Percent : INTEGER, Root : STRING, TotalSteps : INTEGER) RETURNS STRING",
+    structure: { kind: "func", name: "Progress2", params: ["INTEGER", "STRING", "INTEGER"], returns: "STRING" },
+    prompt: [
+      "`Progress()` is to be rewritten as `Progress2()`:",
+      "- an additional INTEGER parameter gives the total number of steps",
+      "- the image filename is returned instead of calling `Display()`",
+      "",
+      "Write pseudocode for the new module header only.",
+      "本題只判函数头:名称、参数类型顺序和返回类型。",
+    ].join("\n"),
+    model: "FUNCTION Progress2(Percent : INTEGER, Root : STRING, TotalSteps : INTEGER) RETURNS STRING\nENDFUNCTION",
+    cases: [],
+  },
+
+  {
+    id: "s2025_22-q3",
+    title: "Two unique random integers",
+    source: "9618/22 Summer 2025 Q3",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "Write the whole program (no INPUT, only OUTPUT)",
+    prompt: [
+      "An algorithm generates and outputs two unique random integers, each between -10 and 10 inclusive.",
+      "If both are negative, a third random integer between 30 and 35 inclusive is generated and output.",
+      "",
+      "Write pseudocode for this algorithm.",
+      "",
+      "本题按性质判分:两个数必须在 -10..10 且互不相同;两数都为负时必须再输出一个 30..35 的整数。",
+    ].join("\n"),
+    kind: "program",
+    model: `DECLARE FirstNumber : INTEGER
+DECLARE SecondNumber : INTEGER
+DECLARE ThirdNumber : INTEGER
+FirstNumber <- INT(RAND(21)) - 10
+OUTPUT FirstNumber
+REPEAT
+    SecondNumber <- INT(RAND(21)) - 10
+UNTIL FirstNumber <> SecondNumber
+OUTPUT SecondNumber
+IF FirstNumber < 0 AND SecondNumber < 0 THEN
+    ThirdNumber <- INT(RAND(6)) + 30
+    OUTPUT ThirdNumber
+ENDIF`,
+    cases: [1, 2, 3, 4, 5, 6].map((seed) => ({
+      label: `随机种子 ${seed}`,
+      seed,
+      expect: "两个不重复的 -10..10 的整数;都为负时再输出 30..35",
+      check: (output) => {
+        const numbers = output.trim().split(/\s+/).filter(Boolean).map(Number);
+        if (numbers.length < 2 || numbers.length > 3) return false;
+        if (numbers.some((n) => !Number.isInteger(n))) return false;
+        const [a, b, c] = numbers;
+        if (a < -10 || a > 10 || b < -10 || b > 10 || a === b) return false;
+        const bothNegative = a < 0 && b < 0;
+        if (numbers.length === 3) return bothNegative && c >= 30 && c <= 35;
+        return !bothNegative;
+      },
+    })),
+  },
+
+  {
+    id: "w2023_22-q4a",
+    title: "Count() — odd and even totals",
+    source: "9618/22 Winter 2023 Q4(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE Count()",
+    prompt: [
+      "A procedure `Count()` will:",
+      "1. input a positive integer",
+      "2. count how many values are odd and how many are even",
+      "3. repeat until 99 is input; 99 must not be counted",
+      "4. output the two counts with a suitable message",
+      "",
+      "Write pseudocode for `Count()`.",
+      "",
+      "为便于自动判分,输出固定为两行:`Odd = <奇数个数>` 和 `Even = <偶数个数>`。",
+    ].join("\n"),
+    model: `PROCEDURE Count()
+    DECLARE COdd : INTEGER
+    DECLARE CEven : INTEGER
+    DECLARE ThisNum : INTEGER
+    COdd <- 0
+    CEven <- 0
+    INPUT ThisNum
+    WHILE ThisNum <> 99
+        IF ThisNum MOD 2 = 1 THEN
+            COdd <- COdd + 1
+        ELSE
+            CEven <- CEven + 1
+        ENDIF
+        INPUT ThisNum
+    ENDWHILE
+    OUTPUT "Odd = ", COdd
+    OUTPUT "Even = ", CEven
+ENDPROCEDURE`,
+    after: "CALL Count()",
+    cases: [
+      { label: "23, 5, 64, 100, 2002, 1, 8, 900, 99", inputs: ["23", "5", "64", "100", "2002", "1", "8", "900", "99"] },
+      { label: "1, 99", inputs: ["1", "99"] },
+      { label: "2, 4, 6, 99", inputs: ["2", "4", "6", "99"] },
+      { label: "7, 8, 99", inputs: ["7", "8", "99"] },
+    ],
+  },
 ];
 
 export function taskById(id) {
