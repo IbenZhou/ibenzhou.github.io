@@ -220,7 +220,7 @@ function select(id) {
   dom.verdict.textContent = "";
   dom.verdict.className = "verdict";
   dom.cases.textContent = "";
-  renderTaskFiles(task.files);
+  renderTaskFiles(task.files || (task.cases[0] && task.cases[0].files));
   model.setValue(localStorage.getItem(STORE.draft(task.id)) || "");
   renderList();
   const url = new URL(location.href);

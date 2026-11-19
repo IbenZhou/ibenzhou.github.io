@@ -435,5 +435,117 @@ export const GOLDENS = {
     "List of error numbers from 1 to 10\n10 : Invalid identifier name\n1 error numbers output",
     "List of error numbers from 20 to 60\n20 : Bracket mismatch\n50 : Error Text Missing\n60 : Type mismatch in assignment\n3 error numbers output",
     "List of error numbers from 10 to 40\n15 : Missing bracket\n25 : Error Text Missing\n35 : Unreachable code\n3 error numbers output"
+  ],
+  "s2021_21-q3b": [
+    "alpha\nbeta\ngamma",
+    "File is empty",
+    "l1\nl2\nl3\nl4\nl5",
+    "one\ntwo\nthree\nfour\nfive"
+  ],
+  "s2022_22-q4a": [
+    "one\ntwo\nthree",
+    "b\nc\nd",
+    "l4\nl5\nl6"
+  ],
+  "s2023_21-q8b": [
+    "FALSE",
+    "TRUE",
+    "TRUE",
+    "TRUE"
+  ],
+  "s2023_22-q8b": [
+    "0002ABCWidget 12 pack\n0004JKVUSB hub 4 port\n0007DEFCable 3 m\n0021GHIMouse mat",
+    "0001JKVKeyboard UK\n0002ABCWidget 12 pack\n0007DEFCable 3 m\n0021GHIMouse mat",
+    "0002ABCWidget 12 pack\n0007DEFCable 3 m\n0021GHIMouse mat\n5999JKVWeb camera HD"
+  ],
+  "s2023_23-q8a": [
+    "2\n0002XYZWidget 12 pack\n0007DEFCable 3 m\n0021XYZMouse mat",
+    "0\n0002ABCWidget 12 pack\n0007DEFCable 3 m",
+    "3\n0002QRSWidget 12 pack\n0007QRSCable 3 m\n0021QRSMouse mat"
+  ],
+  "s2023_23-q8b": [
+    "Report for Supplier: DRG\nItem        Description\n1234        USB Printer Cable 3 m\n1273        32GB USB Flash Drive\nNumber of items listed: 2",
+    "Report for Supplier: ABC\nItem        Description\n1350        Mouse mat 320x240\nNumber of items listed: 1",
+    "Report for Supplier: XYZ\nItem        Description\nNumber of items listed: 0"
+  ],
+  "s2024_21-q8b": [
+    "3\nIF X2 > 13 THEN   \nOUTPUT X2\nENDIF",
+    "2\nOUTPUT \"Hello\"\nOUTPUT \"World\"",
+    "0"
+  ],
+  "s2024_22-q8c": [
+    "3 blank lines were removed\nold line\nIF X2 > 13 THEN \nOUTPUT X2\nENDIF",
+    "0 blank lines were removed\nheader\nAlpha\nBeta",
+    "3 blank lines were removed\nkept"
+  ],
+  "s2024_23-q8b": [
+    "2|P|MyProc(Z : CHAR)\n4|F|MyFun(Y : CHAR) RETURNS BOOLEAN\n||\n||",
+    "1|F|Lower(A : INTEGER) RETURNS INTEGER\n2|F|Upper(X : CHAR) RETURNS CHAR\n3|P|Mixed(Y : INTEGER)\n4|P|Final(Z : STRING)",
+    "||\n||\n||\n||"
+  ],
+  "s2025_21-q7bi": [
+    "100004\n100001,12\n100002,0\n100003,5\n100004,0",
+    "100004\n100005\n100006\n100001,12\n100002,0\n100003,5\n100004,0\n100005,0\n100006,0",
+    "100106\n100107\n100101,7\n100102,0\n100103,11\n100104,2\n100105,9\n100106,0\n100107,0"
+  ],
+  "s2025_22-q5b": [
+    "Hour : 10  Total : 2\nHour : 15  Total : 2\nHour : 18  Total : 1",
+    "Hour : 23  Total : 1",
+    "Hour : 12  Total : 4",
+    "Hour : 11  Total : 1\nHour : 12  Total : 2\nHour : 13  Total : 2\nHour : 14  Total : 1"
+  ],
+  "s2026_21-q6c": [
+    "the fence length is too long\nwrong colour\nchipped edge\ntoo short",
+    "one over limit",
+    "",
+    "first bad part\nsecond bad part"
+  ],
+  "s2026_23-q5b": [
+    "Name found",
+    "Name not found",
+    "Name found",
+    "Name found"
+  ],
+  "w2021_21-q5c": [
+    "2\nOLD|entry\nCJL404Lib01|08:30, June 01, 2021\nCJL404Lib03|10:15, June 01, 2021\nA1=[]\nA3=[ABC123Lib02|09:00, June 01, 2021]\nA5=[]",
+    "0\nexisting\nA2=[ABC123Lib02|09:00, June 01, 2021]",
+    "3\nCJL404Lib02|09:00, June 01, 2021\nCJL404Lib04|11:20, June 01, 2021\nCJL404Lib09|23:59, June 01, 2021\nA2=[]\nA2000=[]"
+  ],
+  "w2021_22-q5a": [
+    "File Marketing.txt contained 4 employee details\n2 employee sets of details were written to file NewMarketingList.txt\nAnn\nann@co.uk\nActive\nCara\ncara@co.uk\nActive\nEND",
+    "File Marketing.txt contained 3 employee details\n3 employee sets of details were written to file NewMarketingList.txt\nAnn\nann@co.uk\nActive\nBob\nbob@co.uk\nActive\nCara\ncara@co.uk\nActive\nEND",
+    "File Sales.txt contained 2 employee details\n1 employee sets of details were written to file NewSales.txt\nEve\neve@co.uk\nLeft\nEND"
+  ],
+  "w2022_21-q8a": [
+    "FALSE",
+    "TRUE",
+    "TRUE",
+    "FALSE"
+  ],
+  "w2022_21-q8c": [
+    "That program file is not valid",
+    "There were 0 errors.",
+    "There were 3 errors.",
+    "Check terminated - too many errors"
+  ],
+  "w2023_21-q8a": [
+    "2|232|101|Hello Kevin\n2|232|101|Second line\n2|232|101|****",
+    "1|454|101|Only one line\n1|454|101|****",
+    "3|999|101|a\n3|999|101|bb\n3|999|101|ccc\n3|999|101|dddd\n3|999|101|****"
+  ],
+  "w2023_22-q6a": [
+    "This is File TestData.001\nThis is File TestData.002\nThis is File TestData.003",
+    "This is File Report.001",
+    "This is File Data.001\nThis is File Data.010\nThis is File Data.012"
+  ],
+  "w2023_23-q8a": [
+    "9 characters were written to received.txt\nalpha\nbeta\nEND",
+    "9 characters were written to received.txt\nonly line\nEND",
+    "0 characters were written to received.txt\nEND"
+  ],
+  "w2024_21-q8b": [
+    "There are 3 papers to check\n1074832\n3847561\n5938271\nEND",
+    "There are 1 papers to check\n6201845\nEND",
+    "There are 0 papers to check\nEND"
   ]
 };

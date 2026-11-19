@@ -4466,6 +4466,1840 @@ ENDPROCEDURE`,
       after: "CALL OutputRange()",
     })),
   },
+  {
+    id: "s2021_21-q3b",
+    title: "Preview() — first five lines",
+    source: "9618/21 Summer 2021 Q3(b)",
+    marks: 5,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Preview(ThisFile : STRING)",
+    prompt: [
+      "A procedure `Preview()` will:",
+      "- take the name of a text file as a parameter",
+      "- output a warning message if the file is empty",
+      "- otherwise output the first five lines from the file (or as many lines as there are in the file if this number is less than five).",
+      "",
+      "Write pseudocode for the procedure `Preview()`. The parameter is the file name as a `STRING`.",
+      "Use `OPENFILE`, `READFILE`, `EOF()` and `CLOSEFILE`.",
+      "",
+      "为便于自动判分,文件为空时只输出 `File is empty`;否则逐行输出前五行,不要输出其他文字。",
+    ].join("\n"),
+    model: `PROCEDURE Preview(ThisFile : STRING)
+    DECLARE LineNum : INTEGER
+    DECLARE ThisLine : STRING
+    OPENFILE ThisFile FOR READ
+    IF EOF(ThisFile) THEN
+        OUTPUT "File is empty"
+    ELSE
+        LineNum <- 1
+        WHILE LineNum < 6 AND NOT EOF(ThisFile)
+            READFILE ThisFile, ThisLine
+            OUTPUT ThisLine
+            LineNum <- LineNum + 1
+        ENDWHILE
+    ENDIF
+    CLOSEFILE ThisFile
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "3 行文件",
+        files: { "FileA.txt": ["alpha", "beta", "gamma"] },
+        after: `OUTPUT "===RESULT==="
+CALL Preview("FileA.txt")`,
+      },
+      {
+        label: "空文件",
+        files: { "Empty.txt": [] },
+        after: `OUTPUT "===RESULT==="
+CALL Preview("Empty.txt")`,
+      },
+      {
+        label: "7 行文件,只输出前 5 行",
+        files: { "FileB.txt": ["l1", "l2", "l3", "l4", "l5", "l6", "l7"] },
+        after: `OUTPUT "===RESULT==="
+CALL Preview("FileB.txt")`,
+      },
+      {
+        label: "刚好 5 行",
+        files: { "FileC.txt": ["one", "two", "three", "four", "five"] },
+        after: `OUTPUT "===RESULT==="
+CALL Preview("FileC.txt")`,
+      },
+    ],
+  },
+
+  {
+    id: "s2022_22-q4a",
+    title: "LastLines() — last three lines",
+    source: "9618/22 Summer 2022 Q4(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE LastLines(ThisFile : STRING)",
+    prompt: [
+      "A procedure `LastLines()` will:",
+      "- take the name of a text file as a parameter",
+      "- output the **last** three lines from that file, in the same order as they appear in the file.",
+      "",
+      "Note:",
+      "- Use local variables `LineX`, `LineY` and `LineZ` to store the three lines from the file.",
+      "- You may assume the file exists and contains **at least** three lines.",
+      "",
+      "Write pseudocode for the procedure `LastLines()`.",
+    ].join("\n"),
+    model: `PROCEDURE LastLines(ThisFile : STRING)
+    DECLARE ThisLine : STRING
+    DECLARE LineX : STRING
+    DECLARE LineY : STRING
+    DECLARE LineZ : STRING
+    OPENFILE ThisFile FOR READ
+    LineY <- ""
+    LineZ <- ""
+    WHILE NOT EOF(ThisFile)
+        READFILE ThisFile, ThisLine
+        LineX <- LineY
+        LineY <- LineZ
+        LineZ <- ThisLine
+    ENDWHILE
+    CLOSEFILE ThisFile
+    OUTPUT LineX
+    OUTPUT LineY
+    OUTPUT LineZ
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "刚好 3 行",
+        files: { "A.txt": ["one", "two", "three"] },
+        after: `OUTPUT "===RESULT==="
+CALL LastLines("A.txt")`,
+      },
+      {
+        label: "4 行",
+        files: { "B.txt": ["a", "b", "c", "d"] },
+        after: `OUTPUT "===RESULT==="
+CALL LastLines("B.txt")`,
+      },
+      {
+        label: "6 行",
+        files: { "C.txt": ["l1", "l2", "l3", "l4", "l5", "l6"] },
+        after: `OUTPUT "===RESULT==="
+CALL LastLines("C.txt")`,
+      },
+    ],
+  },
+
+  {
+    id: "s2023_21-q8b",
+    title: "CheckNewItem() — early exit search",
+    source: "9618/21 Summer 2023 Q8(b)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch12 Software development",
+    requirement: "FUNCTION CheckNewItem(NewLine : STRING) RETURNS BOOLEAN",
+    prompt: [
+      "A text file `Stock.txt` contains information about each item, one line per item in the format",
+      "`<ItemNum><SupplierCode><Description>`. `ItemNum` is 4 numeric characters and `SupplierCode`",
+      "is 5 alphabetic characters. The file is organised in ascending order of `ItemNum` and does",
+      "**not** contain all possible values in the range.",
+      "",
+      "A module `CheckNewItem()` will:",
+      "- be called with a parameter of type string representing a line of item information",
+      "- check whether an item with the same `ItemNum` already exists in the file",
+      "- return `TRUE` if the `ItemNum` is not already in the file, otherwise return `FALSE`.",
+      "",
+      "Write **efficient** pseudocode for module `CheckNewItem()`.",
+      "Your module must open and close `Stock.txt` itself.",
+      "",
+      "为便于自动判分,只返回 TRUE 或 FALSE,不要输出其他内容;测试代码会输出返回值。",
+    ].join("\n"),
+    model: `FUNCTION CheckNewItem(NewLine : STRING) RETURNS BOOLEAN
+    DECLARE NotFound : BOOLEAN
+    DECLARE NewItemNum : STRING
+    DECLARE ThisItemNum : STRING
+    DECLARE ThisLine : STRING
+    NotFound <- TRUE
+    OPENFILE "Stock.txt" FOR READ
+    NewItemNum <- LEFT(NewLine, 4)
+    ThisItemNum <- "0000"
+    WHILE NOT EOF("Stock.txt") AND NotFound = TRUE AND ThisItemNum < NewItemNum
+        READFILE "Stock.txt", ThisLine
+        ThisItemNum <- LEFT(ThisLine, 4)
+        IF ThisItemNum = NewItemNum THEN
+            NotFound <- FALSE
+        ENDIF
+    ENDWHILE
+    CLOSEFILE "Stock.txt"
+    RETURN NotFound
+ENDFUNCTION`,
+    cases: [
+      {
+        label: "已存在 0003",
+        files: { "Stock.txt": ["0003ABCDEPrinter Cable 3m", "0007ABCDEMouse Mat 320x240", "0021XYZABUSB Flash Drive"] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckNewItem("0003ABCDEScanner 1200")`,
+      },
+      {
+        label: "不存在 0005,应提前停止",
+        files: { "Stock.txt": ["0003ABCDEPrinter Cable 3m", "0007ABCDEMouse Mat 320x240", "0021XYZABUSB Flash Drive"] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckNewItem("0005ABCDEUSB Hub 4 port")`,
+      },
+      {
+        label: "小于文件中的第一个 0001",
+        files: { "Stock.txt": ["0003ABCDEPrinter Cable 3m", "0007ABCDEMouse Mat 320x240"] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckNewItem("0001ABCDEKeyboard UK")`,
+      },
+      {
+        label: "大于文件中的所有 5999",
+        files: { "Stock.txt": ["0003ABCDEPrinter Cable 3m", "0007ABCDEMouse Mat 320x240"] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckNewItem("5999ABCDEWeb Camera HD")`,
+      },
+    ],
+  },
+
+  {
+    id: "s2023_22-q8b",
+    title: "AddItem() — insert into sorted file",
+    source: "9618/22 Summer 2023 Q8(b)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE AddItem(NewLine : STRING)",
+    prompt: [
+      "A text file `Stock.txt` contains information about each item, one line per item in the format",
+      "`<ItemNum><SupplierCode><Description>`. `ItemNum` is 4 numeric characters and `SupplierCode`",
+      "is 3 alphabetic characters. The file is organised in ascending order of `ItemNum` and does",
+      "**not** contain all possible values in the range.",
+      "",
+      "A module `AddItem()` will:",
+      "- be called with a parameter of type string representing valid information for a new item",
+      "  that is not currently in the `Stock.txt` file",
+      "- create a new file `NewStock.txt` from the contents of `Stock.txt` and add the new item",
+      "  information at the appropriate place in `NewStock.txt`.",
+      "",
+      "Write pseudocode for module `AddItem()`.",
+      "Your module must open and close both files itself.",
+    ].join("\n"),
+    model: `PROCEDURE AddItem(NewLine : STRING)
+    DECLARE NewItemNum : STRING
+    DECLARE ThisItemNum : STRING
+    DECLARE ThisLine : STRING
+    OPENFILE "Stock.txt" FOR READ
+    OPENFILE "NewStock.txt" FOR WRITE
+    NewItemNum <- LEFT(NewLine, 4)
+    WHILE NOT EOF("Stock.txt")
+        READFILE "Stock.txt", ThisLine
+        ThisItemNum <- LEFT(ThisLine, 4)
+        IF ThisItemNum > NewItemNum THEN
+            WRITEFILE "NewStock.txt", NewLine
+            NewItemNum <- "9999"
+        ENDIF
+        WRITEFILE "NewStock.txt", ThisLine
+    ENDWHILE
+    IF NewItemNum <> "9999" THEN
+        WRITEFILE "NewStock.txt", NewLine
+    ENDIF
+    CLOSEFILE "Stock.txt"
+    CLOSEFILE "NewStock.txt"
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "插入中间 0004",
+        files: { "Stock.txt": ["0002ABCWidget 12 pack", "0007DEFCable 3 m", "0021GHIMouse mat"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL AddItem("0004JKVUSB hub 4 port")
+OPENFILE "NewStock.txt" FOR READ
+WHILE NOT EOF("NewStock.txt")
+    READFILE "NewStock.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewStock.txt"`,
+      },
+      {
+        label: "插入到最前 0001",
+        files: { "Stock.txt": ["0002ABCWidget 12 pack", "0007DEFCable 3 m", "0021GHIMouse mat"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL AddItem("0001JKVKeyboard UK")
+OPENFILE "NewStock.txt" FOR READ
+WHILE NOT EOF("NewStock.txt")
+    READFILE "NewStock.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewStock.txt"`,
+      },
+      {
+        label: "插入到最后 5999",
+        files: { "Stock.txt": ["0002ABCWidget 12 pack", "0007DEFCable 3 m", "0021GHIMouse mat"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL AddItem("5999JKVWeb camera HD")
+OPENFILE "NewStock.txt" FOR READ
+WHILE NOT EOF("NewStock.txt")
+    READFILE "NewStock.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewStock.txt"`,
+      },
+    ],
+  },
+
+  {
+    id: "s2023_23-q8a",
+    title: "ChangeSupp() — replace supplier code",
+    source: "9618/23 Summer 2023 Q8(a)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION ChangeSupp(Code1 : STRING, Code2 : STRING) RETURNS INTEGER",
+    prompt: [
+      "A text file `Stock.txt` contains information about each item, one line per item in the format",
+      "`<ItemNum><SupplierCode><Description>`. `ItemNum` is 4 numeric characters and `SupplierCode`",
+      "is 3 alphabetic characters.",
+      "",
+      "A module `ChangeSupp()` will:",
+      "- be called with two parameters `Code1` and `Code2` of type string that represent valid supplier codes",
+      "- create a new file `NewStock.txt` from the contents of `Stock.txt` where any reference to `Code1`",
+      "  is replaced by `Code2`",
+      "- return a count of the number of items that have had their supplier code changed.",
+      "",
+      "Write pseudocode for module `ChangeSupp()`.",
+      "Your module must open and close both files itself.",
+    ].join("\n"),
+    model: `FUNCTION ChangeSupp(Code1 : STRING, Code2 : STRING) RETURNS INTEGER
+    DECLARE Count : INTEGER
+    DECLARE ThisLine : STRING
+    DECLARE ThisCode : STRING
+    OPENFILE "Stock.txt" FOR READ
+    OPENFILE "NewStock.txt" FOR WRITE
+    Count <- 0
+    WHILE NOT EOF("Stock.txt")
+        READFILE "Stock.txt", ThisLine
+        ThisCode <- MID(ThisLine, 5, 3)
+        IF ThisCode = Code1 THEN
+            ThisLine <- LEFT(ThisLine, 4) & Code2 & RIGHT(ThisLine, LENGTH(ThisLine) - 7)
+            Count <- Count + 1
+        ENDIF
+        WRITEFILE "NewStock.txt", ThisLine
+    ENDWHILE
+    CLOSEFILE "Stock.txt"
+    CLOSEFILE "NewStock.txt"
+    RETURN Count
+ENDFUNCTION`,
+    cases: [
+      {
+        label: "两条 ABC 改为 XYZ",
+        files: { "Stock.txt": ["0002ABCWidget 12 pack", "0007DEFCable 3 m", "0021ABCMouse mat"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT ChangeSupp("ABC", "XYZ")
+OPENFILE "NewStock.txt" FOR READ
+WHILE NOT EOF("NewStock.txt")
+    READFILE "NewStock.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewStock.txt"`,
+      },
+      {
+        label: "没有匹配",
+        files: { "Stock.txt": ["0002ABCWidget 12 pack", "0007DEFCable 3 m"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT ChangeSupp("GHI", "XYZ")
+OPENFILE "NewStock.txt" FOR READ
+WHILE NOT EOF("NewStock.txt")
+    READFILE "NewStock.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewStock.txt"`,
+      },
+      {
+        label: "全部匹配",
+        files: { "Stock.txt": ["0002ABCWidget 12 pack", "0007ABCCable 3 m", "0021ABCMouse mat"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT ChangeSupp("ABC", "QRS")
+OPENFILE "NewStock.txt" FOR READ
+WHILE NOT EOF("NewStock.txt")
+    READFILE "NewStock.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewStock.txt"`,
+      },
+    ],
+  },
+
+  {
+    id: "s2023_23-q8b",
+    title: "Report_1() — supplier report",
+    source: "9618/23 Summer 2023 Q8(b)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE Report_1(Supp : STRING)",
+    prompt: [
+      "A text file `Stock.txt` contains information about each item, one line per item in the format",
+      "`<ItemNum><SupplierCode><Description>`. `ItemNum` is 4 numeric characters and `SupplierCode`",
+      "is 3 alphabetic characters.",
+      "",
+      "A module `Report_1()` will:",
+      "- take a parameter of type string that represents a `SupplierCode`",
+      "- search `Stock.txt` for each line of item information that contains the given `SupplierCode`",
+      "- produce a formatted report of items for the given `SupplierCode`.",
+      "",
+      "Example output for supplier `DRG`:",
+      "```text",
+      "Report for Supplier: DRG",
+      "Item        Description",
+      "1234        USB Printer Cable 3 m",
+      "1273        32GB USB Flash Drive",
+      "Number of items listed: 2",
+      "```",
+      "",
+      "Write pseudocode for module `Report_1()`.",
+      "Your module must open and close `Stock.txt` itself.",
+      "",
+      "为便于自动判分,请严格按示例输出(不留空行):标题 `Report for Supplier: <code>`,表头 `Item        Description`,每项 `<ItemNum>        <Description>`,最后 `Number of items listed: <n>`。",
+    ].join("\n"),
+    model: `PROCEDURE Report_1(Supp : STRING)
+    DECLARE Count : INTEGER
+    DECLARE ThisLine : STRING
+    DECLARE ThisCode : STRING
+    DECLARE ThisItemNum : STRING
+    DECLARE ThisDesc : STRING
+    Count <- 0
+    OPENFILE "Stock.txt" FOR READ
+    OUTPUT "Report for Supplier: ", Supp
+    OUTPUT "Item        Description"
+    WHILE NOT EOF("Stock.txt")
+        READFILE "Stock.txt", ThisLine
+        ThisCode <- MID(ThisLine, 5, 3)
+        IF ThisCode = Supp THEN
+            ThisItemNum <- LEFT(ThisLine, 4)
+            ThisDesc <- RIGHT(ThisLine, LENGTH(ThisLine) - 7)
+            OUTPUT ThisItemNum, "        ", ThisDesc
+            Count <- Count + 1
+        ENDIF
+    ENDWHILE
+    CLOSEFILE "Stock.txt"
+    OUTPUT "Number of items listed: ", Count
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "DRG 有 2 项",
+        files: { "Stock.txt": ["1234DRGUSB Printer Cable 3 m", "1273DRG32GB USB Flash Drive", "1350ABCKeyboard UK"] },
+        after: `OUTPUT "===RESULT==="
+CALL Report_1("DRG")`,
+      },
+      {
+        label: "ABC 有 1 项",
+        files: { "Stock.txt": ["1234DRGUSB Printer Cable 3 m", "1273DRG32GB USB Flash Drive", "1350ABCMouse mat 320x240"] },
+        after: `OUTPUT "===RESULT==="
+CALL Report_1("ABC")`,
+      },
+      {
+        label: "没有匹配",
+        files: { "Stock.txt": ["1234DRGUSB Printer Cable 3 m", "1273DRG32GB USB Flash Drive"] },
+        after: `OUTPUT "===RESULT==="
+CALL Report_1("XYZ")`,
+      },
+    ],
+  },
+
+  {
+    id: "s2024_21-q8b",
+    title: "Stage_1() — remove comments, skip blanks",
+    source: "9618/21 Summer 2024 Q8(b)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "FUNCTION Stage_1(StudentName : STRING) RETURNS INTEGER",
+    prompt: [
+      "Each student project is stored in a text file. The stage 1 file for student `MichaelAday`",
+      "is `MichaelAday_S1.txt`; the project file is `MichaelAday_src.txt`.",
+      "",
+      "A module `Stage_1()` will:",
+      "- be called with a parameter of type string representing a student name",
+      "- create a new stage 1 file",
+      "- copy each line from the student's project file to the stage 1 file after removing any",
+      "  comment from each line",
+      "- **not** write blank lines to the stage 1 file",
+      "- return the number of lines written to the stage 1 file.",
+      "",
+      "A comment starts with two forward slash characters and includes all the remaining characters",
+      "on the line. Module `DeleteComment()` has already been written and must be used in your solution.",
+      "",
+      "Write pseudocode for module `Stage_1()`.",
+      "Your module must open and close both files itself.",
+    ].join("\n"),
+    setup: `FUNCTION DeleteComment(Line : STRING) RETURNS STRING
+    DECLARE Index : INTEGER
+    DECLARE TwoChars : STRING
+    DECLARE Cut : INTEGER
+    Cut <- 0
+    Index <- 1
+    WHILE Index < LENGTH(Line) AND Cut = 0
+        TwoChars <- MID(Line, Index, 2)
+        IF TwoChars = "//" THEN
+            Cut <- Index
+        ENDIF
+        Index <- Index + 1
+    ENDWHILE
+    IF Cut > 0 THEN
+        Line <- LEFT(Line, Cut - 1)
+    ENDIF
+    RETURN Line
+ENDFUNCTION`,
+    model: `FUNCTION Stage_1(StudentName : STRING) RETURNS INTEGER
+    DECLARE OldFile : STRING
+    DECLARE NewFile : STRING
+    DECLARE Line : STRING
+    DECLARE Count : INTEGER
+    OldFile <- StudentName & "_src.txt"
+    NewFile <- StudentName & "_S1.txt"
+    OPENFILE OldFile FOR READ
+    OPENFILE NewFile FOR WRITE
+    Count <- 0
+    WHILE NOT EOF(OldFile)
+        READFILE OldFile, Line
+        Line <- DeleteComment(Line)
+        IF LENGTH(Line) <> 0 THEN
+            WRITEFILE NewFile, Line
+            Count <- Count + 1
+        ENDIF
+    ENDWHILE
+    CLOSEFILE OldFile
+    CLOSEFILE NewFile
+    RETURN Count
+ENDFUNCTION`,
+    cases: [
+      {
+        label: "Mia: 两条注释,一个空行",
+        files: { "Mia_src.txt": ["IF X2 > 13 THEN   //check if limit exceeded", "", "OUTPUT X2", "// whole line comment", "ENDIF"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT Stage_1("Mia")
+OPENFILE "Mia_S1.txt" FOR READ
+WHILE NOT EOF("Mia_S1.txt")
+    READFILE "Mia_S1.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Mia_S1.txt"`,
+      },
+      {
+        label: "JohnSmith: 没有注释",
+        files: { "JohnSmith_src.txt": ["OUTPUT \"Hello\"", "OUTPUT \"World\""] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT Stage_1("JohnSmith")
+OPENFILE "JohnSmith_S1.txt" FOR READ
+WHILE NOT EOF("JohnSmith_S1.txt")
+    READFILE "JohnSmith_S1.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "JohnSmith_S1.txt"`,
+      },
+      {
+        label: "Zoe: 全是空行和注释",
+        files: { "Zoe_src.txt": ["", "// only comment", ""] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT Stage_1("Zoe")
+OPENFILE "Zoe_S1.txt" FOR READ
+WHILE NOT EOF("Zoe_S1.txt")
+    READFILE "Zoe_S1.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Zoe_S1.txt"`,
+      },
+    ],
+  },
+
+  {
+    id: "s2024_22-q8c",
+    title: "Stage_2() — trim spaces and comments",
+    source: "9618/22 Summer 2024 Q8(c)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE Stage_2(F1 : STRING, F2 : STRING)",
+    prompt: [
+      "Two modules are defined:",
+      "",
+      "| Module | Description |",
+      "| --- | --- |",
+      "| `DeleteComment()` (already written) | called with a string, returns the line after removing any comment |",
+      "| `Stage_2()` | called with two strings: an input file name and an output file name; copies each line from the input file to the **existing** output file having first removed all leading spaces and comments from that line; does **not** write blank lines to the output file; outputs a final message giving the number of blank lines removed |",
+      "",
+      "Write pseudocode for module `Stage_2()`.",
+      "Modules `DeleteComment()` and `DeleteSpaces()` must be used in your solution.",
+      "Your module must open and close both files itself.",
+      "",
+      "为便于自动判分,最后只输出一行 `<n> blank lines were removed`。",
+    ].join("\n"),
+    setup: `FUNCTION DeleteSpaces(Line : STRING) RETURNS STRING
+    DECLARE Index : INTEGER
+    DECLARE FirstChar : INTEGER
+    DECLARE ThisChar : STRING
+    FirstChar <- 0
+    Index <- 1
+    WHILE Index <= LENGTH(Line) AND FirstChar = 0
+        ThisChar <- MID(Line, Index, 1)
+        IF ThisChar <> " " THEN
+            FirstChar <- Index
+        ENDIF
+        Index <- Index + 1
+    ENDWHILE
+    IF FirstChar = 0 THEN
+        Line <- ""
+    ELSE
+        IF FirstChar > 1 THEN
+            Line <- RIGHT(Line, LENGTH(Line) - FirstChar + 1)
+        ENDIF
+    ENDIF
+    RETURN Line
+ENDFUNCTION
+FUNCTION DeleteComment(Line : STRING) RETURNS STRING
+    DECLARE Index : INTEGER
+    DECLARE TwoChars : STRING
+    DECLARE Cut : INTEGER
+    Cut <- 0
+    Index <- 1
+    WHILE Index < LENGTH(Line) AND Cut = 0
+        TwoChars <- MID(Line, Index, 2)
+        IF TwoChars = "//" THEN
+            Cut <- Index
+        ENDIF
+        Index <- Index + 1
+    ENDWHILE
+    IF Cut > 0 THEN
+        Line <- LEFT(Line, Cut - 1)
+    ENDIF
+    RETURN Line
+ENDFUNCTION`,
+    model: `PROCEDURE Stage_2(F1 : STRING, F2 : STRING)
+    DECLARE Line : STRING
+    DECLARE Count : INTEGER
+    Count <- 0
+    OPENFILE F1 FOR READ
+    OPENFILE F2 FOR APPEND
+    WHILE NOT EOF(F1)
+        READFILE F1, Line
+        Line <- DeleteSpaces(Line)
+        Line <- DeleteComment(Line)
+        IF Line <> "" THEN
+            WRITEFILE F2, Line
+        ELSE
+            Count <- Count + 1
+        ENDIF
+    ENDWHILE
+    CLOSEFILE F1
+    CLOSEFILE F2
+    OUTPUT Count, " blank lines were removed"
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "混合:缩进、注释、空行",
+        files: {
+          "In1.txt": ["   IF X2 > 13 THEN //check", "", "      OUTPUT X2", "// whole line", "   ", "ENDIF"],
+          "Out1.txt": ["old line"],
+        },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL Stage_2("In1.txt", "Out1.txt")
+OPENFILE "Out1.txt" FOR READ
+WHILE NOT EOF("Out1.txt")
+    READFILE "Out1.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Out1.txt"`,
+      },
+      {
+        label: "没有空行",
+        files: {
+          "In2.txt": ["  Alpha", "Beta  "],
+          "Out2.txt": ["header"],
+        },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL Stage_2("In2.txt", "Out2.txt")
+OPENFILE "Out2.txt" FOR READ
+WHILE NOT EOF("Out2.txt")
+    READFILE "Out2.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Out2.txt"`,
+      },
+      {
+        label: "全是空行",
+        files: {
+          "In3.txt": ["", "   ", "  // note"],
+          "Out3.txt": ["kept"],
+        },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL Stage_2("In3.txt", "Out3.txt")
+OPENFILE "Out3.txt" FOR READ
+WHILE NOT EOF("Out3.txt")
+    READFILE "Out3.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Out3.txt"`,
+      },
+    ],
+  },
+
+  {
+    id: "s2024_23-q8b",
+    title: "FindModules() — fill ModInfo",
+    source: "9618/23 Summer 2024 Q8(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE FindModules(FileName : STRING)",
+    prompt: [
+      "A program analyses a student project and extracts information about each module (each",
+      "procedure or function). This information is stored in a global 2D array `ModInfo` of type string.",
+      "A module header is the first line of a module definition and starts with `PROCEDURE` or",
+      "`FUNCTION`. The keyword may appear in either upper or lower case and must be followed by a",
+      "space; a valid header is at least 13 characters long. Column 1 stores the line number,",
+      "column 2 `\"P\"` or `\"F\"`, and column 3 the module description (the header without the keyword).",
+      "",
+      "A module `FindModules()` will:",
+      "- be called with a parameter of type string representing a student project file name",
+      "- use module `Header()` to check each line of the project",
+      "- assign values to the `ModInfo` array for each module declaration in the student project.",
+      "",
+      "Module `Header()` has already been written: it returns `\"P<description>\"` or",
+      "`\"F<description>\"` for a valid header, otherwise an empty string.",
+      "Assume that the array contains enough rows for the number of modules in each project.",
+      "",
+      "Write pseudocode for module `FindModules()`.",
+      "Your module must open and close the project file itself.",
+    ].join("\n"),
+    setup: `DECLARE ModInfo : ARRAY[1:20, 1:3] OF STRING
+DECLARE FillRow : INTEGER
+FOR FillRow <- 1 TO 20
+    ModInfo[FillRow, 1] <- ""
+    ModInfo[FillRow, 2] <- ""
+    ModInfo[FillRow, 3] <- ""
+NEXT FillRow
+FUNCTION Header(Line : STRING) RETURNS STRING
+    IF LENGTH(Line) >= 13 THEN
+        IF TO_UPPER(LEFT(Line, 9)) = "FUNCTION " THEN
+            RETURN "F" & RIGHT(Line, LENGTH(Line) - 9)
+        ENDIF
+        IF TO_UPPER(LEFT(Line, 10)) = "PROCEDURE " THEN
+            RETURN "P" & RIGHT(Line, LENGTH(Line) - 10)
+        ENDIF
+    ENDIF
+    RETURN ""
+ENDFUNCTION`,
+    model: `PROCEDURE FindModules(FileName : STRING)
+    DECLARE Line : STRING
+    DECLARE Index : INTEGER
+    DECLARE LineNum : INTEGER
+    OPENFILE FileName FOR READ
+    Index <- 1
+    LineNum <- 0
+    WHILE NOT EOF(FileName)
+        READFILE FileName, Line
+        LineNum <- LineNum + 1
+        Line <- Header(Line)
+        IF Line <> "" THEN
+            ModInfo[Index, 1] <- NUM_TO_STR(LineNum)
+            ModInfo[Index, 2] <- LEFT(Line, 1)
+            ModInfo[Index, 3] <- RIGHT(Line, LENGTH(Line) - 1)
+            Index <- Index + 1
+        ENDIF
+    ENDWHILE
+    CLOSEFILE FileName
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "2 个模块,夹杂普通行",
+        files: { "Project.txt": ["DECLARE X : INTEGER", "PROCEDURE MyProc(Z : CHAR)", "    OUTPUT Z", "FUNCTION MyFun(Y : CHAR) RETURNS BOOLEAN", "    RETURN TRUE", "ENDFUNCTION"] },
+        after: `DECLARE Row : INTEGER
+OUTPUT "===RESULT==="
+CALL FindModules("Project.txt")
+FOR Row <- 1 TO 4
+    OUTPUT ModInfo[Row, 1], "|", ModInfo[Row, 2], "|", ModInfo[Row, 3]
+NEXT Row`,
+      },
+      {
+        label: "4 个模块,大小写混合",
+        files: { "Project2.txt": ["function Lower(A : INTEGER) RETURNS INTEGER", "FUNCTION Upper(X : CHAR) RETURNS CHAR", "procedure Mixed(Y : INTEGER)", "PROCEDURE Final(Z : STRING)"] },
+        after: `DECLARE Row : INTEGER
+OUTPUT "===RESULT==="
+CALL FindModules("Project2.txt")
+FOR Row <- 1 TO 4
+    OUTPUT ModInfo[Row, 1], "|", ModInfo[Row, 2], "|", ModInfo[Row, 3]
+NEXT Row`,
+      },
+      {
+        label: "没有模块头",
+        files: { "Project3.txt": ["DECLARE A : INTEGER", "A <- 1", "OUTPUT A", "ENDFUNCTION"] },
+        after: `DECLARE Row : INTEGER
+OUTPUT "===RESULT==="
+CALL FindModules("Project3.txt")
+FOR Row <- 1 TO 4
+    OUTPUT ModInfo[Row, 1], "|", ModInfo[Row, 2], "|", ModInfo[Row, 3]
+NEXT Row`,
+      },
+    ],
+  },
+
+  {
+    id: "s2025_21-q7bi",
+    title: "AddNewCustomers() — append loyalty records",
+    source: "9618/21 Summer 2025 Q7(b)(i)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE AddNewCustomers(NumToAdd : INTEGER)",
+    prompt: [
+      "A text file `Loyalty.txt` stores the data items for the loyalty scheme, one customer per line:",
+      "`<CustomerID>,<Points>`. The contents are always stored in ascending order by customer ID.",
+      "",
+      "Each customer has a unique six-digit ID starting at `\"100001\"`, increasing by one each time a",
+      "new customer joins. When a customer joins, they are assigned the next customer ID and their",
+      "points are set to 0.",
+      "",
+      "A module `AddNewCustomers()` will:",
+      "- be called with an integer parameter representing the number of new customers to be added",
+      "- add a new line, containing the required information, to `Loyalty.txt` for each customer added",
+      "- output each new customer ID added to the loyalty scheme.",
+      "",
+      "Write pseudocode for module `AddNewCustomers()`.",
+      "Assume that there is at least one customer already in the loyalty scheme.",
+      "",
+      "为便于自动判分,每个新 Customer ID 单独一行输出,不要加文字;模块需自行打开和关闭文件。",
+    ].join("\n"),
+    model: `PROCEDURE AddNewCustomers(NumToAdd : INTEGER)
+    DECLARE CustomerID : INTEGER
+    DECLARE Count : INTEGER
+    DECLARE Line : STRING
+    DECLARE NewLine : STRING
+    OPENFILE "Loyalty.txt" FOR READ
+    WHILE NOT EOF("Loyalty.txt")
+        READFILE "Loyalty.txt", Line
+    ENDWHILE
+    CLOSEFILE "Loyalty.txt"
+    CustomerID <- STR_TO_NUM(LEFT(Line, 6))
+    OPENFILE "Loyalty.txt" FOR APPEND
+    FOR Count <- 1 TO NumToAdd
+        CustomerID <- CustomerID + 1
+        OUTPUT CustomerID
+        NewLine <- NUM_TO_STR(CustomerID) & ",0"
+        WRITEFILE "Loyalty.txt", NewLine
+    NEXT Count
+    CLOSEFILE "Loyalty.txt"
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "加 1 人",
+        files: { "Loyalty.txt": ["100001,12", "100002,0", "100003,5"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL AddNewCustomers(1)
+OPENFILE "Loyalty.txt" FOR READ
+WHILE NOT EOF("Loyalty.txt")
+    READFILE "Loyalty.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Loyalty.txt"`,
+      },
+      {
+        label: "加 3 人",
+        files: { "Loyalty.txt": ["100001,12", "100002,0", "100003,5"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL AddNewCustomers(3)
+OPENFILE "Loyalty.txt" FOR READ
+WHILE NOT EOF("Loyalty.txt")
+    READFILE "Loyalty.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Loyalty.txt"`,
+      },
+      {
+        label: "加 2 人,原文件更长",
+        files: { "Loyalty.txt": ["100101,7", "100102,0", "100103,11", "100104,2", "100105,9"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL AddNewCustomers(2)
+OPENFILE "Loyalty.txt" FOR READ
+WHILE NOT EOF("Loyalty.txt")
+    READFILE "Loyalty.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "Loyalty.txt"`,
+      },
+    ],
+  },
+
+  {
+    id: "s2025_22-q5b",
+    title: "Count sequences per hour",
+    source: "9618/22 Summer 2025 Q5(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch12 Software development",
+    requirement: "Write the whole program (no INPUT, only OUTPUT)",
+    kind: "program",
+    prompt: [
+      "At the end of each sequence of pictures, the time is saved as a string in the format",
+      "`<HH><MM><SS>`. Each string is stored on a new line in the text file `TimeTaken.txt`.",
+      "",
+      "For each hour when pictures are taken, output a suitable message showing the hour and the total",
+      "number of sequences of pictures taken within that hour.",
+      "",
+      "Example outputs:",
+      "```text",
+      "Hour : 15  Total : 32",
+      "Hour : 18  Total : 1",
+      "```",
+      "",
+      "Write pseudocode for this algorithm.",
+      "Assume the text file `TimeTaken.txt` contains at least **one** line.",
+      "",
+      "为便于自动判分,每个小时只输出一行 `Hour : <HH>  Total : <n>`(Total 前两个空格),不要输出其他文字。",
+    ].join("\n"),
+    model: `DECLARE Count : INTEGER
+DECLARE Line : STRING
+DECLARE NextHour : STRING
+DECLARE Hour : STRING
+OPENFILE "TimeTaken.txt" FOR READ
+Count <- 1
+READFILE "TimeTaken.txt", Line
+Hour <- LEFT(Line, 2)
+WHILE NOT EOF("TimeTaken.txt")
+    READFILE "TimeTaken.txt", Line
+    NextHour <- LEFT(Line, 2)
+    IF NextHour = Hour THEN
+        Count <- Count + 1
+    ELSE
+        OUTPUT "Hour : ", Hour, "  Total : ", Count
+        Hour <- NextHour
+        Count <- 1
+    ENDIF
+ENDWHILE
+OUTPUT "Hour : ", Hour, "  Total : ", Count
+CLOSEFILE "TimeTaken.txt"`,
+    cases: [
+      {
+        label: "3 个小时",
+        files: { "TimeTaken.txt": ["101230", "101500", "152235", "150000", "180101"] },
+      },
+      {
+        label: "只有一行",
+        files: { "TimeTaken.txt": ["235959"] },
+      },
+      {
+        label: "全部同一小时",
+        files: { "TimeTaken.txt": ["120000", "121010", "122020", "123030"] },
+      },
+      {
+        label: "4 个小时",
+        files: { "TimeTaken.txt": ["111111", "121111", "121212", "131313", "131313", "141414"] },
+      },
+    ],
+  },
+
+  {
+    id: "s2026_21-q6c",
+    title: "Reject report — length and machine filter",
+    source: "9618/21 Summer 2026 Q6(c)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch12 Software development",
+    requirement: "Write the whole program (no INPUT, only OUTPUT)",
+    prompt: [
+      "The data packets for all rejected parts are saved in the text file `Rejects.txt`, one data",
+      "packet per line. The format of a data packet is `<length>/<machine ID>/<description of the fault>`.",
+      "The length is 3 digits in millimetres, and the machine ID is a single character `A`, `B` or `C`.",
+      "",
+      "Write pseudocode to:",
+      "- find all the rejected parts with a length greater than 560 millimetres and that were",
+      "  produced on machine `B` or machine `C`",
+      "- output the description for each matching rejected part.",
+      "",
+      "Your pseudocode will include a module call to `RejectDescription()` and the answers given",
+      "for **6(a)**: `PartLength <- LEFT(DataPacket, 3)` and `MachineID <- MID(DataPacket, 5, 1)`.",
+      "`RejectDescription()` is already written: it takes a data packet and returns the fault description.",
+      "",
+      "为便于自动判分,每匹配一条只输出故障描述一行,不要输出其他文字。",
+    ].join("\n"),
+    setup: `FUNCTION RejectDescription(ThisReject : STRING) RETURNS STRING
+    RETURN MID(ThisReject, 7, LENGTH(ThisReject) - 6)
+ENDFUNCTION`,
+    model: `DECLARE ThisPacket : STRING
+DECLARE ThisLength : STRING
+DECLARE ThisMachine : STRING
+DECLARE ThisDescription : STRING
+OPENFILE "Rejects.txt" FOR READ
+WHILE NOT EOF("Rejects.txt")
+    READFILE "Rejects.txt", ThisPacket
+    ThisLength <- LEFT(ThisPacket, 3)
+    ThisMachine <- MID(ThisPacket, 5, 1)
+    ThisDescription <- RejectDescription(ThisPacket)
+    IF STR_TO_NUM(ThisLength) > 560 AND (ThisMachine = 'B' OR ThisMachine = 'C') THEN
+        OUTPUT ThisDescription
+    ENDIF
+ENDWHILE
+CLOSEFILE "Rejects.txt"`,
+    cases: [
+      {
+        label: "长度 563/570/561/600,B 或 C",
+        files: { "Rejects.txt": ["563/B/the fence length is too long", "540/A/paint scratch", "570/C/wrong colour", "561/B/chipped edge", "600/C/too short"] },
+      },
+      {
+        label: "560 刚好不超限",
+        files: { "Rejects.txt": ["560/B/exactly at limit", "561/C/one over limit", "559/A/under limit"] },
+      },
+      {
+        label: "没有匹配",
+        files: { "Rejects.txt": ["540/B/short but machine B", "600/A/long but machine A"] },
+      },
+      {
+        label: "全部匹配",
+        files: { "Rejects.txt": ["600/C/first bad part", "999/B/second bad part"] },
+      },
+    ],
+  },
+
+  {
+    id: "s2026_23-q5b",
+    title: "Search() — find an applicant",
+    source: "9618/23 Summer 2026 Q5(b)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE Search(Initial : CHAR, ShortSurname : STRING)",
+    prompt: [
+      "The data for all interviews is saved in the text file `JobApps.txt`. Each line stores one data",
+      "packet: `<initial><shortened surname><office code><summary of the interview>`. The initial is a",
+      "single character and the shortened surname is the first five characters of the surname.",
+      "",
+      "A procedure `Search()` is written to search for a particular applicant. If the applicant is",
+      "found, the program outputs `Name found`, otherwise it outputs `Name not found`.",
+      "",
+      "The incomplete pseudocode is:",
+      "```text",
+      "PROCEDURE Search(Initial : CHAR, ShortSurname : STRING)",
+      "    DECLARE ThisApplicant, ThisSurname : STRING",
+      "    DECLARE ThisInitial : CHAR",
+      "    DECLARE Found : BOOLEAN",
+      "    OPENFILE \"JobApps.txt\" .........................",
+      "    Found <- FALSE",
+      "    REPEAT",
+      "        ......................... \"JobApps.txt\", ThisApplicant",
+      "        ThisInitial <- LEFT(ThisApplicant, 1)",
+      "        ThisSurname <- .........................",
+      "        IF ThisSurname = ShortSurname ......................... THEN",
+      "            .........................",
+      "            OUTPUT \"Name found\"",
+      "        ENDIF",
+      "    UNTIL Found = TRUE .........................",
+      "    IF Found = FALSE THEN",
+      "        OUTPUT \"Name not found\"",
+      "    ENDIF",
+      "    .........................",
+      "ENDPROCEDURE",
+      "```",
+      "",
+      "Complete the pseudocode for procedure `Search()`.",
+      "Your procedure must open and close `JobApps.txt` itself.",
+    ].join("\n"),
+    model: `PROCEDURE Search(Initial : CHAR, ShortSurname : STRING)
+    DECLARE ThisApplicant : STRING
+    DECLARE ThisSurname : STRING
+    DECLARE ThisInitial : CHAR
+    DECLARE Found : BOOLEAN
+    OPENFILE "JobApps.txt" FOR READ
+    Found <- FALSE
+    REPEAT
+        READFILE "JobApps.txt", ThisApplicant
+        ThisInitial <- LEFT(ThisApplicant, 1)
+        ThisSurname <- MID(ThisApplicant, 2, 5)
+        IF ThisSurname = ShortSurname AND ThisInitial = Initial THEN
+            Found <- TRUE
+            OUTPUT "Name found"
+        ENDIF
+    UNTIL Found = TRUE OR EOF("JobApps.txt")
+    IF Found = FALSE THEN
+        OUTPUT "Name not found"
+    ENDIF
+    CLOSEFILE "JobApps.txt"
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "第一个就找到",
+        files: { "JobApps.txt": ["PWatkiBSecond interview", "JSmithAFirst interview"] },
+        after: `OUTPUT "===RESULT==="
+CALL Search('P', "Watki")`,
+      },
+      {
+        label: "找不到",
+        files: { "JobApps.txt": ["PWatkiBSecond interview", "JSmithAFirst interview"] },
+        after: `OUTPUT "===RESULT==="
+CALL Search('P', "Brown")`,
+      },
+      {
+        label: "同姓但首字母不同",
+        files: { "JobApps.txt": ["ABrownAOne interview", "PBrownBTwo interview"] },
+        after: `OUTPUT "===RESULT==="
+CALL Search('P', "Brown")`,
+      },
+      {
+        label: "最后一个才找到",
+        files: { "JobApps.txt": ["ABrownAOne interview", "CChenCOne interview", "DGreenCOne interview", "PWatkiASecond interview"] },
+        after: `OUTPUT "===RESULT==="
+CALL Search('P', "Watki")`,
+      },
+    ],
+  },
+
+  {
+    id: "w2021_21-q5c",
+    title: "LogEvents() — append matching log entries",
+    source: "9618/21 Winter 2021 Q5(c)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "FUNCTION LogEvents(StudentID : STRING) RETURNS INTEGER",
+    prompt: [
+      "Each log entry is a single string formed by concatenating three data items: `Student ID`",
+      "(six characters), `Host ID`, and `Time and date`, with a separator character between the",
+      "second and third items. The entries are stored in the global 1D array `LogArray` that contains",
+      "2000 elements. Unused array elements contain an empty string.",
+      "",
+      "A function `LogEvents()` will:",
+      "- take a Student ID as a parameter",
+      "- for each element in the array that matches the Student ID parameter:",
+      "  - add the value of the array element to the existing text file `LogFile`",
+      "  - assign an empty string to the array element",
+      "- count the number of lines added to the file",
+      "- return this count.",
+      "",
+      "Write pseudocode for the function `LogEvents()`.",
+      "`LogArray` is global; your function must open and close `LogFile` itself.",
+    ].join("\n"),
+    model: `FUNCTION LogEvents(StudentID : STRING) RETURNS INTEGER
+    DECLARE FileData : STRING
+    DECLARE Index : INTEGER
+    DECLARE Count : INTEGER
+    CONSTANT LogFile = "LogFile"
+    Count <- 0
+    OPENFILE LogFile FOR APPEND
+    FOR Index <- 1 TO 2000
+        FileData <- LogArray[Index]
+        IF LEFT(FileData, 6) = StudentID THEN
+            WRITEFILE LogFile, FileData
+            Count <- Count + 1
+            LogArray[Index] <- ""
+        ENDIF
+    NEXT Index
+    CLOSEFILE LogFile
+    RETURN Count
+ENDFUNCTION`,
+    cases: [
+      {
+        label: "2 条匹配,文件已有 1 行",
+        setup: logArraySetup([
+          [1, "CJL404Lib01|08:30, June 01, 2021"],
+          [3, "ABC123Lib02|09:00, June 01, 2021"],
+          [5, "CJL404Lib03|10:15, June 01, 2021"],
+        ]),
+        files: { "LogFile": ["OLD|entry"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT LogEvents("CJL404")
+OPENFILE "LogFile" FOR READ
+WHILE NOT EOF("LogFile")
+    READFILE "LogFile", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "LogFile"
+OUTPUT "A1=[", LogArray[1], "]"
+OUTPUT "A3=[", LogArray[3], "]"
+OUTPUT "A5=[", LogArray[5], "]"`,
+      },
+      {
+        label: "没有匹配",
+        setup: logArraySetup([
+          [2, "ABC123Lib02|09:00, June 01, 2021"],
+          [4, "XYZ999Lib04|11:20, June 01, 2021"],
+        ]),
+        files: { "LogFile": ["existing"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT LogEvents("CJL404")
+OPENFILE "LogFile" FOR READ
+WHILE NOT EOF("LogFile")
+    READFILE "LogFile", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "LogFile"
+OUTPUT "A2=[", LogArray[2], "]"`,
+      },
+      {
+        label: "3 条匹配,末元素也匹配",
+        setup: logArraySetup([
+          [2, "CJL404Lib02|09:00, June 01, 2021"],
+          [4, "CJL404Lib04|11:20, June 01, 2021"],
+          [2000, "CJL404Lib09|23:59, June 01, 2021"],
+        ]),
+        files: { "LogFile": [] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+OUTPUT LogEvents("CJL404")
+OPENFILE "LogFile" FOR READ
+WHILE NOT EOF("LogFile")
+    READFILE "LogFile", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "LogFile"
+OUTPUT "A2=[", LogArray[2], "]"
+OUTPUT "A2000=[", LogArray[2000], "]"`,
+      },
+    ],
+  },
+
+  {
+    id: "w2021_22-q5a",
+    title: "MakeNewFile() — filter employee sets",
+    source: "9618/22 Winter 2021 Q5(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE MakeNewFile(OldFile : STRING, NewFile : STRING, Status : STRING)",
+    prompt: [
+      "Each department stores the name, email address and status of each employee in its own text",
+      "file. The three data strings are stored on three consecutive lines of the file.",
+      "",
+      "A procedure `MakeNewFile()` will:",
+      "- take three parameters as strings: an existing file name, a new file name, and a search status value",
+      "- create a new text file using the new file name",
+      "- write all employee details to the new file where the employee status is **not** equal to the",
+      "  search status value",
+      "- count the number of sets of employee details that were in the original file",
+      "- count the number of sets of employee details that were written to the new file",
+      "- produce a summary output.",
+      "",
+      "Example summary output:",
+      "```text",
+      "File Marketing contained 54 employee details",
+      "52 employee sets of details were written to file NewMarketingList",
+      "```",
+      "",
+      "Write pseudocode for the procedure `MakeNewFile()`.",
+      "Your procedure must open and close both files itself.",
+      "",
+      "为便于自动判分,最后两行固定为 `File <旧文件名> contained <组数> employee details` 和 `<写出组数> employee sets of details were written to file <新文件名>`。",
+    ].join("\n"),
+    model: `PROCEDURE MakeNewFile(OldFile : STRING, NewFile : STRING, Status : STRING)
+    DECLARE Line1 : STRING
+    DECLARE Line2 : STRING
+    DECLARE Line3 : STRING
+    DECLARE NumCopied : INTEGER
+    DECLARE NumRecs : INTEGER
+    NumRecs <- 0
+    NumCopied <- 0
+    OPENFILE OldFile FOR READ
+    OPENFILE NewFile FOR WRITE
+    WHILE NOT EOF(OldFile)
+        READFILE OldFile, Line1
+        READFILE OldFile, Line2
+        READFILE OldFile, Line3
+        NumRecs <- NumRecs + 1
+        IF Line3 <> Status THEN
+            WRITEFILE NewFile, Line1
+            WRITEFILE NewFile, Line2
+            WRITEFILE NewFile, Line3
+            NumCopied <- NumCopied + 1
+        ENDIF
+    ENDWHILE
+    CLOSEFILE OldFile
+    CLOSEFILE NewFile
+    OUTPUT "File ", OldFile, " contained ", NumRecs, " employee details"
+    OUTPUT NumCopied, " employee sets of details were written to file ", NewFile
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "4 组,剔除 2 组 Left",
+        files: {
+          "Marketing.txt": [
+            "Ann", "ann@co.uk", "Active",
+            "Bob", "bob@co.uk", "Left",
+            "Cara", "cara@co.uk", "Active",
+            "Dan", "dan@co.uk", "Left",
+          ],
+          "NewMarketingList.txt": ["stale", "data"],
+        },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL MakeNewFile("Marketing.txt", "NewMarketingList.txt", "Left")
+OPENFILE "NewMarketingList.txt" FOR READ
+WHILE NOT EOF("NewMarketingList.txt")
+    READFILE "NewMarketingList.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewMarketingList.txt"
+OUTPUT "END"`,
+      },
+      {
+        label: "3 组,全部 Active 保留",
+        files: {
+          "Marketing.txt": ["Ann", "ann@co.uk", "Active", "Bob", "bob@co.uk", "Active", "Cara", "cara@co.uk", "Active"],
+          "NewMarketingList.txt": ["stale"],
+        },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL MakeNewFile("Marketing.txt", "NewMarketingList.txt", "Left")
+OPENFILE "NewMarketingList.txt" FOR READ
+WHILE NOT EOF("NewMarketingList.txt")
+    READFILE "NewMarketingList.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewMarketingList.txt"
+OUTPUT "END"`,
+      },
+      {
+        label: "2 组,参数换文件名",
+        files: {
+          "Sales.txt": ["Eve", "eve@co.uk", "Left", "Finn", "finn@co.uk", "Active"],
+          "NewSales.txt": ["old"],
+        },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL MakeNewFile("Sales.txt", "NewSales.txt", "Active")
+OPENFILE "NewSales.txt" FOR READ
+WHILE NOT EOF("NewSales.txt")
+    READFILE "NewSales.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "NewSales.txt"
+OUTPUT "END"`,
+      },
+    ],
+  },
+
+  {
+    id: "w2022_21-q8a",
+    title: "CheckFile() — at least 10 non-blank lines",
+    source: "9618/21 Winter 2022 Q8(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "FUNCTION CheckFile(ThisFile : STRING) RETURNS BOOLEAN",
+    prompt: [
+      "Student programs are submitted as text files, known as project files. A project file may",
+      "contain blank lines.",
+      "",
+      "A module `CheckFile()` will:",
+      "- take the name of an existing project file as a parameter of type string",
+      "- return `TRUE` if the file is valid (it contains at least 10 non-blank lines), otherwise return `FALSE`.",
+      "",
+      "Write pseudocode for module `CheckFile()`.",
+      "Your module must open and close the project file itself.",
+      "",
+      "为便于自动判分,只返回 TRUE 或 FALSE,不要输出其他内容;测试代码会输出返回值。",
+    ].join("\n"),
+    model: `FUNCTION CheckFile(ThisFile : STRING) RETURNS BOOLEAN
+    DECLARE Valid : BOOLEAN
+    DECLARE ThisLine : STRING
+    DECLARE Count : INTEGER
+    Count <- 0
+    Valid <- FALSE
+    OPENFILE ThisFile FOR READ
+    WHILE NOT EOF(ThisFile) AND Valid = FALSE
+        READFILE ThisFile, ThisLine
+        IF ThisLine <> "" THEN
+            Count <- Count + 1
+            IF Count > 9 THEN
+                Valid <- TRUE
+            ENDIF
+        ENDIF
+    ENDWHILE
+    CLOSEFILE ThisFile
+    RETURN Valid
+ENDFUNCTION`,
+    cases: [
+      {
+        label: "9 个非空行 + 空行",
+        files: { "ProjA.txt": ["l1", "l2", "", "l3", "l4", "l5", "", "l6", "l7", "l8", "l9", ""] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckFile("ProjA.txt")`,
+      },
+      {
+        label: "刚好 10 个非空行",
+        files: { "ProjB.txt": ["l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8", "l9", "l10"] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckFile("ProjB.txt")`,
+      },
+      {
+        label: "12 个非空行 + 空行",
+        files: { "ProjC.txt": ["l1", "", "l2", "l3", "l4", "", "l5", "l6", "l7", "l8", "l9", "l10", "l11", "l12", ""] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckFile("ProjC.txt")`,
+      },
+      {
+        label: "4 个非空行",
+        files: { "ProjD.txt": ["l1", "", "l2", "l3", "", "l4"] },
+        after: `OUTPUT "===RESULT==="
+OUTPUT CheckFile("ProjD.txt")`,
+      },
+    ],
+  },
+
+  {
+    id: "w2022_21-q8c",
+    title: "CountErrors() — stop above the error limit",
+    source: "9618/21 Winter 2022 Q8(c)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE CountErrors(ThisFile : STRING, MaxErrors : INTEGER)",
+    prompt: [
+      "A module `CheckLine()` takes a line from a project file as a parameter and returns zero if the",
+      "line is blank or contains no syntax error, otherwise it returns an error number as an integer.",
+      "",
+      "A module `CountErrors()` will:",
+      "- take two parameters: the name of a project file as a string, and the maximum number of errors",
+      "  as an integer",
+      "- use `CheckFile()` to test the project file. Output an error message and end if the project file",
+      "  is not valid",
+      "- call `CheckLine()` for each line in the project file",
+      "- count the number of errors",
+      "- output the number of errors or a warning message if the maximum number of errors is exceeded.",
+      "",
+      "`CheckFile()` returns `TRUE` when the file contains at least 10 non-blank lines.",
+      "`CheckFile()` and `CheckLine()` have already been written and can be used in your solution.",
+      "Write pseudocode for module `CountErrors()`.",
+      "Your module must open and close the project file itself.",
+      "",
+      "为便于自动判分,文件无效时只输出 `That program file is not valid`;超过上限时只输出 `Check terminated - too many errors`;否则只输出 `There were <n> errors.`。",
+    ].join("\n"),
+    setup: `FUNCTION CheckFile(ThisFile : STRING) RETURNS BOOLEAN
+    DECLARE ThisLine : STRING
+    DECLARE Count : INTEGER
+    Count <- 0
+    OPENFILE ThisFile FOR READ
+    WHILE NOT EOF(ThisFile) AND Count < 10
+        READFILE ThisFile, ThisLine
+        IF ThisLine <> "" THEN
+            Count <- Count + 1
+        ENDIF
+    ENDWHILE
+    CLOSEFILE ThisFile
+    IF Count >= 10 THEN
+        RETURN TRUE
+    ENDIF
+    RETURN FALSE
+ENDFUNCTION
+FUNCTION CheckLine(ThisLine : STRING) RETURNS INTEGER
+    IF LENGTH(ThisLine) >= 5 AND LEFT(ThisLine, 5) = "ERROR" THEN
+        RETURN 1
+    ENDIF
+    RETURN 0
+ENDFUNCTION`,
+    model: `PROCEDURE CountErrors(ThisFile : STRING, MaxErrors : INTEGER)
+    DECLARE ErrCount : INTEGER
+    DECLARE ThisError : INTEGER
+    DECLARE ThisLine : STRING
+    ErrCount <- 0
+    IF CheckFile(ThisFile) = FALSE THEN
+        OUTPUT "That program file is not valid"
+    ELSE
+        OPENFILE ThisFile FOR READ
+        REPEAT
+            READFILE ThisFile, ThisLine
+            ThisError <- CheckLine(ThisLine)
+            IF ThisError <> 0 THEN
+                ErrCount <- ErrCount + 1
+            ENDIF
+        UNTIL ErrCount > MaxErrors OR EOF(ThisFile)
+        CLOSEFILE ThisFile
+        IF ErrCount > MaxErrors THEN
+            OUTPUT "Check terminated - too many errors"
+        ELSE
+            OUTPUT "There were ", ErrCount, " errors."
+        ENDIF
+    ENDIF
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "无效文件(少于 10 行)",
+        files: { "Short.txt": ["ERROR one", "l2", "l3", "ERROR four", "l5"] },
+        after: `OUTPUT "===RESULT==="
+CALL CountErrors("Short.txt", 5)`,
+      },
+      {
+        label: "10 行无错误",
+        files: { "Clean.txt": ["l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8", "l9", "l10"] },
+        after: `OUTPUT "===RESULT==="
+CALL CountErrors("Clean.txt", 5)`,
+      },
+      {
+        label: "12 行内 3 个错误,上限 5",
+        files: { "Some.txt": ["l1", "ERROR bad token", "l3", "l4", "ERROR missing ENDIF", "l6", "l7", "l8", "ERROR bad type", "l10", "l11", "l12"] },
+        after: `OUTPUT "===RESULT==="
+CALL CountErrors("Some.txt", 5)`,
+      },
+      {
+        label: "5 个错误,上限 2",
+        files: { "Many.txt": ["ERROR one", "l2", "ERROR two", "ERROR three", "l5", "l6", "l7", "l8", "ERROR four", "l10", "ERROR five", "l12"] },
+        after: `OUTPUT "===RESULT==="
+CALL CountErrors("Many.txt", 2)`,
+      },
+    ],
+  },
+  {
+    id: "w2023_21-q8a",
+    title: "SendFile() — transmit a file line by line",
+    source: "9618/21 Winter 2023 Q8(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE SendFile(FileName : STRING, DestID : STRING, Port : INTEGER)",
+    prompt: [
+      "Messages are sent between computers as a string of characters organised into fields:",
+      "`<STX><DestinationID><SourceID><Data><ETX>`. `STX` and `ETX` are single characters with",
+      "ASCII values 02 and 03. `DestinationID` and `SourceID` are three numeric characters, and",
+      "`Data` is a variable length string.",
+      "",
+      "Each program contains a global variable `MyID` of type string that contains the unique ID of",
+      "the computer in which the program is running.",
+      "",
+      "A module `SendFile()` will:",
+      "- take three parameters: a string containing a text file name, a string containing a",
+      "  Destination ID, and an integer containing a Port number",
+      "- transmit the file one line at a time",
+      "- transmit a final message with data string `\"****\"`.",
+      "",
+      "Module `Transmit()` has already been written: it takes a message string and a port number.",
+      "The file specified contains no blank lines and does not contain the line `\"****\"`.",
+      "",
+      "Write pseudocode for module `SendFile()`.",
+      "Your module must open and close the file itself.",
+    ].join("\n"),
+    setup: `DECLARE MyID : STRING
+MyID <- "101"
+PROCEDURE Transmit(Msg : STRING, Port : INTEGER)
+    OUTPUT Port, "|", MID(Msg, 2, 3), "|", MID(Msg, 5, 3), "|", MID(Msg, 8, LENGTH(Msg) - 8)
+ENDPROCEDURE`,
+    model: `PROCEDURE SendFile(FileName : STRING, DestID : STRING, Port : INTEGER)
+    DECLARE FileData : STRING
+    OPENFILE FileName FOR READ
+    WHILE NOT EOF(FileName)
+        READFILE FileName, FileData
+        FileData <- CHR(2) & DestID & MyID & FileData & CHR(3)
+        CALL Transmit(FileData, Port)
+    ENDWHILE
+    CLOSEFILE FileName
+    CALL Transmit(CHR(2) & DestID & MyID & "****" & CHR(3), Port)
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "2 行文件",
+        files: { "Msg.txt": ["Hello Kevin", "Second line"] },
+        after: `OUTPUT "===RESULT==="
+CALL SendFile("Msg.txt", "232", 2)`,
+      },
+      {
+        label: "1 行文件",
+        files: { "Msg.txt": ["Only one line"] },
+        after: `OUTPUT "===RESULT==="
+CALL SendFile("Msg.txt", "454", 1)`,
+      },
+      {
+        label: "4 行文件",
+        files: { "Msg.txt": ["a", "bb", "ccc", "dddd"] },
+        after: `OUTPUT "===RESULT==="
+CALL SendFile("Msg.txt", "999", 3)`,
+      },
+    ],
+  },
+
+  {
+    id: "w2023_22-q6a",
+    title: "CreateFiles() — numbered files",
+    source: "9618/22 Winter 2023 Q6(a)",
+    marks: 6,
+    difficulty: 1,
+    chapter: "Ch09 Algorithm design",
+    requirement: "PROCEDURE CreateFiles(NameRoot : STRING, NumFiles : INTEGER)",
+    prompt: [
+      "A procedure `CreateFiles()` will take two parameters:",
+      "- a string representing a file name",
+      "- an integer representing the number of files to be created.",
+      "",
+      "The procedure will create the number of text files specified. Each file is given a different",
+      "name, formed by concatenating the file name with a suffix based on the file number. The",
+      "suffix is always three characters.",
+      "",
+      "For example, the call `CreateFiles(\"TestData\", 3)` would create `TestData.001`,",
+      "`TestData.002` and `TestData.003`. Each file contains a single line. For example,",
+      "`TestData.002` contains `This is File TestData.002`.",
+      "",
+      "Write pseudocode for `CreateFiles()`.",
+      "Assume both parameters are valid and the integer value is between 1 and 999, inclusive.",
+    ].join("\n"),
+    model: `PROCEDURE CreateFiles(NameRoot : STRING, NumFiles : INTEGER)
+    DECLARE FileName : STRING
+    DECLARE Suffix : STRING
+    DECLARE Count : INTEGER
+    FOR Count <- 1 TO NumFiles
+        Suffix <- NUM_TO_STR(Count)
+        WHILE LENGTH(Suffix) <> 3
+            Suffix <- '0' & Suffix
+        ENDWHILE
+        FileName <- NameRoot & "." & Suffix
+        OPENFILE FileName FOR WRITE
+        WRITEFILE FileName, "This is File " & FileName
+        CLOSEFILE FileName
+    NEXT Count
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "3 个文件",
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL CreateFiles("TestData", 3)
+OPENFILE "TestData.001" FOR READ
+READFILE "TestData.001", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "TestData.001"
+OPENFILE "TestData.002" FOR READ
+READFILE "TestData.002", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "TestData.002"
+OPENFILE "TestData.003" FOR READ
+READFILE "TestData.003", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "TestData.003"`,
+      },
+      {
+        label: "1 个文件",
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL CreateFiles("Report", 1)
+OPENFILE "Report.001" FOR READ
+READFILE "Report.001", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "Report.001"`,
+      },
+      {
+        label: "12 个文件,检查补零",
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL CreateFiles("Data", 12)
+OPENFILE "Data.001" FOR READ
+READFILE "Data.001", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "Data.001"
+OPENFILE "Data.010" FOR READ
+READFILE "Data.010", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "Data.010"
+OPENFILE "Data.012" FOR READ
+READFILE "Data.012", CheckLine
+OUTPUT CheckLine
+CLOSEFILE "Data.012"`,
+      },
+    ],
+  },
+
+  {
+    id: "w2023_23-q8a",
+    title: "ReceiveFile() — write until terminator",
+    source: "9618/23 Winter 2023 Q8(a)",
+    marks: 7,
+    difficulty: 2,
+    chapter: "Ch11 Programming",
+    requirement: "PROCEDURE ReceiveFile(FileName : STRING)",
+    prompt: [
+      "`GetData()` has already been written. It returns the data field from a message that has been",
+      "received; if no message is available, the module waits until one has been received.",
+      "",
+      "A module `ReceiveFile()` will:",
+      "- take a file name as a parameter of type string",
+      "- create a text file with the given file name (no checking required)",
+      "- write the data field returned by `GetData()` to the file",
+      "- repeat until the data field is `\"****\"`, which is not written to the file",
+      "- output a final message giving the total number of characters written to the file, for example:",
+      "  `132456 characters were written to newfile.txt`.",
+      "",
+      "Write pseudocode for module `ReceiveFile()`.",
+      "Module `GetData()` must be used. Your module must open and close the file itself.",
+      "",
+      "为便于自动判分,最后只输出 `<字符数> characters were written to <文件名>`。",
+    ].join("\n"),
+    model: `PROCEDURE ReceiveFile(FileName : STRING)
+    DECLARE FileData : STRING
+    DECLARE CharCount : INTEGER
+    CONSTANT Terminator = "****"
+    OPENFILE FileName FOR WRITE
+    FileData <- GetData()
+    CharCount <- 0
+    WHILE FileData <> Terminator
+        WRITEFILE FileName, FileData
+        CharCount <- CharCount + LENGTH(FileData)
+        FileData <- GetData()
+    ENDWHILE
+    CLOSEFILE FileName
+    OUTPUT CharCount, " characters were written to ", FileName
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "2 行后终止",
+        setup: inboxSetup(["alpha", "beta", "****"]),
+        files: { "received.txt": ["old junk"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL ReceiveFile("received.txt")
+OPENFILE "received.txt" FOR READ
+WHILE NOT EOF("received.txt")
+    READFILE "received.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "received.txt"
+OUTPUT "END"`,
+      },
+      {
+        label: "1 行后终止",
+        setup: inboxSetup(["only line", "****"]),
+        files: { "received.txt": ["old junk"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL ReceiveFile("received.txt")
+OPENFILE "received.txt" FOR READ
+WHILE NOT EOF("received.txt")
+    READFILE "received.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "received.txt"
+OUTPUT "END"`,
+      },
+      {
+        label: "立即终止,空文件",
+        setup: inboxSetup(["****"]),
+        files: { "received.txt": ["old junk"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL ReceiveFile("received.txt")
+OPENFILE "received.txt" FOR READ
+WHILE NOT EOF("received.txt")
+    READFILE "received.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "received.txt"
+OUTPUT "END"`,
+      },
+    ],
+  },
+
+  {
+    id: "w2024_21-q8b",
+    title: "CheckAll() — list papers to check",
+    source: "9618/21 Winter 2024 Q8(b)",
+    marks: 8,
+    difficulty: 2,
+    chapter: "Ch10 Data types and structures",
+    requirement: "PROCEDURE CheckAll(CNum : INTEGER)",
+    prompt: [
+      "An exam paper has a maximum of 75 marks. The five grade boundaries are stored in a global",
+      "1D array `GradeBoundary` of type integer. A global 2D array `Result` contains candidate",
+      "marks for the exam; column 1 contains the candidate mark and column 2 contains the unique",
+      "candidate ID. There are more rows in the array than candidates who sit the exam.",
+      "",
+      "Candidate papers that are given a mark within two marks of any grade boundary must be checked.",
+      "",
+      "A module `CheckAll()` will:",
+      "- be called with a parameter of type integer representing the number of candidate marks in `Result`",
+      "- use `CheckMark()` to check each candidate mark",
+      "- for each paper that needs to be checked, write the corresponding candidate ID on a separate",
+      "  line in a new file named `GRList.txt`",
+      "- output a message with a count of how many papers need to be checked.",
+      "",
+      "`CheckMark()` has already been written: it returns `TRUE` if the mark is within 2 of any of the",
+      "five grade boundaries, otherwise `FALSE`. `CheckMark()` must be used for each individual mark.",
+      "",
+      "Write pseudocode for module `CheckAll()`.",
+      "Your module must open and close `GRList.txt` itself.",
+      "",
+      "为便于自动判分,最后只输出 `There are <n> papers to check`。",
+    ].join("\n"),
+    model: `PROCEDURE CheckAll(CNum : INTEGER)
+    DECLARE Index : INTEGER
+    DECLARE Count : INTEGER
+    DECLARE ThisMark : INTEGER
+    Count <- 0
+    OPENFILE "GRList.txt" FOR WRITE
+    FOR Index <- 1 TO CNum
+        ThisMark <- Result[Index, 1]
+        IF CheckMark(ThisMark) = TRUE THEN
+            WRITEFILE "GRList.txt", NUM_TO_STR(Result[Index, 2])
+            Count <- Count + 1
+        ENDIF
+    NEXT Index
+    CLOSEFILE "GRList.txt"
+    OUTPUT "There are ", Count, " papers to check"
+ENDPROCEDURE`,
+    cases: [
+      {
+        label: "5 人,3 人需查",
+        setup: gradeSetup([[64, 1074832], [40, 2573839], [42, 3847561], [70, 4829103], [35, 5938271]]),
+        files: { "GRList.txt": ["stale"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL CheckAll(5)
+OPENFILE "GRList.txt" FOR READ
+WHILE NOT EOF("GRList.txt")
+    READFILE "GRList.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "GRList.txt"
+OUTPUT "END"`,
+      },
+      {
+        label: "1 人,需查",
+        setup: gradeSetup([[67, 6201845]]),
+        files: { "GRList.txt": ["stale"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL CheckAll(1)
+OPENFILE "GRList.txt" FOR READ
+WHILE NOT EOF("GRList.txt")
+    READFILE "GRList.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "GRList.txt"
+OUTPUT "END"`,
+      },
+      {
+        label: "6 人,无人需查",
+        setup: gradeSetup([[70, 11], [60, 12], [50, 13], [40, 14], [30, 15], [20, 16]]),
+        files: { "GRList.txt": ["stale"] },
+        after: `DECLARE CheckLine : STRING
+OUTPUT "===RESULT==="
+CALL CheckAll(6)
+OPENFILE "GRList.txt" FOR READ
+WHILE NOT EOF("GRList.txt")
+    READFILE "GRList.txt", CheckLine
+    OUTPUT CheckLine
+ENDWHILE
+CLOSEFILE "GRList.txt"
+OUTPUT "END"`,
+      },
+    ],
+  },
+
 ];
 
 export function taskById(id) {
@@ -4540,5 +6374,71 @@ NEXT I
     const row = index + 1;
     code += `ErrCode[${row}] <- ${codeValue}\nErrText[${row}] <- "${texts[index]}"\n`;
   });
+  return code;
+}
+
+function logArraySetup(entries) {
+  let code = `DECLARE LogArray : ARRAY[1:2000] OF STRING
+DECLARE FillIndex : INTEGER
+FOR FillIndex <- 1 TO 2000
+    LogArray[FillIndex] <- ""
+NEXT FillIndex
+`;
+  for (const [index, value] of entries) {
+    code += `LogArray[${index}] <- "${value}"\n`;
+  }
+  return code;
+}
+
+function inboxSetup(messages) {
+  let code = `DECLARE Inbox : ARRAY[1:10] OF STRING
+DECLARE InboxPos : INTEGER
+DECLARE FillIndex : INTEGER
+FOR FillIndex <- 1 TO 10
+    Inbox[FillIndex] <- ""
+NEXT FillIndex
+`;
+  messages.forEach((message, index) => {
+    code += `Inbox[${index + 1}] <- "${message}"\n`;
+  });
+  code += `InboxPos <- 1
+FUNCTION GetData() RETURNS STRING
+    DECLARE Result : STRING
+    Result <- Inbox[InboxPos]
+    InboxPos <- InboxPos + 1
+    RETURN Result
+ENDFUNCTION
+`;
+  return code;
+}
+
+function gradeSetup(rows) {
+  let code = `DECLARE GradeBoundary : ARRAY[1:5] OF INTEGER
+DECLARE Result : ARRAY[1:20, 1:2] OF INTEGER
+DECLARE FillRow : INTEGER
+GradeBoundary[1] <- 65
+GradeBoundary[2] <- 57
+GradeBoundary[3] <- 43
+GradeBoundary[4] <- 35
+GradeBoundary[5] <- 27
+FOR FillRow <- 1 TO 20
+    Result[FillRow, 1] <- 0
+    Result[FillRow, 2] <- 0
+NEXT FillRow
+`;
+  rows.forEach(([mark, id], index) => {
+    const row = index + 1;
+    code += `Result[${row}, 1] <- ${mark}\nResult[${row}, 2] <- ${id}\n`;
+  });
+  code += `FUNCTION CheckMark(Mark : INTEGER) RETURNS BOOLEAN
+    DECLARE Index : INTEGER
+    FOR Index <- 1 TO 5
+        IF Mark >= GradeBoundary[Index] - 2 AND Mark <= GradeBoundary[Index] + 2 THEN
+            RETURN TRUE
+        ENDIF
+    NEXT Index
+    RETURN FALSE
+ENDFUNCTION
+`;
   return code;
 }
