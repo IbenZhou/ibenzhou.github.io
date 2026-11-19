@@ -5,16 +5,16 @@ export const browserRead = async (rel) => {
   return r.ok ? r.text() : null;
 };
 
-export async function loadTasks(read) {
-  const index = await read('tasks/index.txt');
-  if (index === null) throw new Error('tasks/index.txt is missing');
+export async function loadTasks(read, base = 'tasks') {
+  const index = await read(`${base}/index.txt`);
+  if (index === null) throw new Error(`${base}/index.txt is missing`);
 
   const ids = index.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#'));
   const tasks = [];
 
   for (const id of ids) {
-    const text = await read(`tasks/${id}.md`);
-    if (text === null) throw new Error(`tasks/index.txt lists ${id} but tasks/${id}.md does not exist`);
+    const text = await read(`${base}/${id}.md`);
+    if (text === null) throw new Error(`${base}/index.txt lists ${id} but ${base}/${id}.md does not exist`);
     tasks.push(buildTask(id, text));
   }
   return tasks;

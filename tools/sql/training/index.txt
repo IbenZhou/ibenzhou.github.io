@@ -1,0 +1,52 @@
+# Order here is the order within each difficulty band. One file per line, without .md.
+# basic
+s2025_13_q6b
+s2022_13_q6bii
+s2023_12_q2cii
+s2025_12_q5dii
+s2026_11_q4b
+s2026_11_q4c
+w2021_11_q5cii
+w2021_12_q6cii
+w2022_11_q4d
+w2022_13_q2d
+w2023_11_q3ci
+w2025_11_q2ci
+w2025_12_q4b
+# advanced
+s2022_11_q4cii
+s2022_12_q5c
+s2022_12_q5d
+s2022_13_q6bi
+s2023_11_q2a
+s2024_11_q6ci
+s2024_11_q6cii
+s2024_12_q4b
+s2024_12_q4c
+w2021_11_q5ci
+w2021_12_q6ci
+w2022_13_q2c
+w2024_11_q2c
+w2024_12_q6b
+w2024_13_q4b
+w2025_11_q2cii
+w2025_12_q4c
+w2025_13_q5b
+# challenge
+s2022_11_q4ci
+s2023_11_q2b
+s2023_12_q2ciii
+s2024_13_q4b
+s2024_13_q4c
+s2025_11_q5e
+s2025_12_q5di
+s2025_13_q6c
+s2026_11_q4a
+s2026_12_q3a
+s2026_12_q3b
+s2026_13_q4a
+s2026_13_q4b
+w2023_11_q3cii
+w2024_11_q2b
+w2024_13_q4c
+w2025_13_q5c

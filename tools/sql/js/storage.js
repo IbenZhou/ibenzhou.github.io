@@ -61,3 +61,22 @@ export function loadFontSize() {
 export function saveFontSize(px) {
   set('fontSize', String(Math.round(px)));
 }
+
+export function loadDoneList() {
+  try {
+    const raw = JSON.parse(get('training.done') || '[]');
+    return Array.isArray(raw) ? raw.filter(x => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+export function markDone(id) {
+  const done = new Set(loadDoneList());
+  done.add(id);
+  set('training.done', JSON.stringify([...done]));
+}
+
+export function clearDone() {
+  set('training.done', '[]');
+}

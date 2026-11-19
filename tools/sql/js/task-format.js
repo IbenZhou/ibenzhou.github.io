@@ -59,6 +59,9 @@ export function buildTask(id, text) {
     checkTable: (meta.checktable ?? meta.checkTable ?? '').trim(),
     expectName: (meta.expectname ?? meta.expectName ?? '').trim(),
     coverage: (meta.coverage ?? '').split(/[,;]/).map(s => s.trim()).filter(Boolean),
+    difficulty: (meta.difficulty ?? '').trim().toLowerCase(),
+    source: (meta.source ?? '').trim(),
+    suppress: (meta.suppress ?? '').split(/[,;]/).map(s => s.trim()).filter(Boolean),
     notes: meta.notes ?? '',
   };
 

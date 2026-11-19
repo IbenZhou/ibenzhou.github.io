@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9618 SQL Training Ground &middot; Cambridge International AS &amp; A Level Computer Science</title>
+<meta name="description" content="Practise the SQL skills from 9618 Paper 1 database questions, graded by difficulty, against a real Postgres database in the browser.">
+<link rel="stylesheet" href="../css/sql-editor.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="../../">iben.fun<span class="crumb"> / 器 / SQL 训练场</span></a>
+
+  <span id="progress" class="badge" title="Completed questions are remembered on this device">0 / 0 已完成</span>
+
+  <div class="run-group">
+    <button id="run" class="primary" title="Run (Ctrl/Cmd + Enter)">&#9654; Run</button>
+    <button id="check" title="Mark my answer against the model answer">&#10003; Check</button>
+    <button id="reset" title="Reset this question's database to its starting data">Reset</button>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="font-group" role="group" aria-label="Editor font size">
+    <button id="font-out" title="Smaller (Ctrl/Cmd + scroll down)" aria-label="Decrease font size">A&#8722;</button>
+    <span id="font-px" class="font-px" aria-live="off">14px</span>
+    <button id="font-in" title="Bigger (Ctrl/Cmd + scroll up)" aria-label="Increase font size">A+</button>
+  </div>
+  <a class="linkbtn" href="../" title="Back to the free SQL editor">编辑器</a>
+  <button id="theme" title="Toggle light or dark">&#9681;</button>
+</header>
+
+<main class="train">
+  <aside class="task-list" id="list" aria-label="Questions by difficulty"></aside>
+
+  <section class="pane editor-pane">
+    <div id="taskcard" class="taskcard">
+      <div class="taskcard-head">
+        <h2 id="task-title">Loading questions&#8230;</h2>
+        <span id="task-meta" class="task-meta"></span>
+      </div>
+      <p id="task-prompt" class="task-prompt"></p>
+      <pre id="task-schema" class="task-schema" hidden></pre>
+    </div>
+
+    <div id="editor" aria-label="SQL editor"></div>
+    <div id="diagnostics" class="diagnostics" aria-live="polite"></div>
+  </section>
+
+  <aside class="pane side-pane">
+    <div id="verdict" class="verdict" hidden></div>
+    <div id="results" class="results" aria-live="polite"></div>
+    <div id="tree" class="tree" hidden></div>
+  </aside>
+</main>
+
+<div id="boot" class="boot">
+  <div class="boot-card">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Starting a real Postgres database in your browser</p>
+    <p class="boot-sub">首次加载约 5&ndash;10&nbsp;MB，优先从国内镜像下载，失败会自动改用本站副本<br>Booting Postgres (WebAssembly) from a China mirror, falling back to this site.</p>
+  </div>
+</div>
+
+<script src="../vendor/monaco/vs/loader.js"></script>
+<script type="module" src="../js/training.js"></script>
+</body>
+</html>
