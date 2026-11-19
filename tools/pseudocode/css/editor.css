@@ -226,20 +226,6 @@ tr.current td { background: var(--sel); }
 .ref-item .desc { color: var(--fg-dim); font-size: 12px; flex: 1 1 auto; }
 .ref-item button { font-size: 11px; padding: 1px 6px; }
 
-.ref-legend {
-  margin: 0 0 10px; padding: 6px 8px;
-  font-size: 12px; color: var(--fg-dim);
-  background: var(--accent-soft); border-radius: 6px;
-}
-.ref-tag {
-  display: inline-block; flex: 0 0 auto;
-  font-size: 10px; letter-spacing: .04em; text-transform: uppercase;
-  padding: 0 6px; border-radius: 999px; line-height: 1.7;
-  background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent);
-}
-.ref-item .ref-tag { margin-right: 2px; }
-
-
 .modal {
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, .45);

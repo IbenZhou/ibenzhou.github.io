@@ -22,21 +22,7 @@ export const REFERENCE = [
   {
     group: "Operators",
     items: [
-      { syntax: "+  -  *  /  DIV  MOD", note: "/ always gives a REAL; DIV and MOD need INTEGERs", zh: "算术", skeleton: "OUTPUT 7 / 2\nOUTPUT 7 DIV 2\nOUTPUT 7 MOD 2\n" },
-      { syntax: ">  <  >=  <=  =  <>", note: "<> is not equal", zh: "比较", skeleton: "OUTPUT 3 <> 4\n" },
-      { syntax: "AND  OR  NOT", note: "both sides must be BOOLEAN", zh: "逻辑", skeleton: "DECLARE ok : BOOLEAN\nok <- TRUE\nOUTPUT ok AND NOT ok\n" },
-      { syntax: "\"Summer\" & \" Pudding\"", note: "& joins strings, not +", zh: "字符串拼接", skeleton: "OUTPUT \"Summer\" & \" Pudding\"\n" },
-    ],
-  },
-  {
-    group: "Built-in functions",
-    items: [
-      { syntax: "LENGTH(s)", note: "number of characters", zh: "长度", skeleton: "OUTPUT LENGTH(\"Happy Days\")\n" },
-      { syntax: "MID(s, start, count)", note: "count characters from position start, 1-based", zh: "截取", skeleton: "OUTPUT MID(\"ABCDEFGH\", 2, 3)\n" },
-      { syntax: "RIGHT(s, n)", note: "rightmost n characters", zh: "右侧", skeleton: "OUTPUT RIGHT(\"ABCDEFGH\", 3)\n" },
-      { syntax: "TO_UPPER(x)  TO_LOWER(x)", note: "a CHAR or a whole STRING; IGCSE calls these UCASE/LCASE", zh: "大小写", skeleton: "OUTPUT TO_UPPER('h')\n" },
-      { syntax: "INT(x)", note: "integer part of a REAL", zh: "取整", skeleton: "OUTPUT INT(27.5415)\n" },
-      { syntax: "RAND(x)", note: "a REAL from 0 up to but not including x", zh: "随机数", skeleton: "OUTPUT INT(RAND(6) + 1)\n" },
+      { syntax: "+  -  *  /", note: "/ always gives a REAL; MOD, DIV, AND, OR, NOT and the comparisons are listed with the insert below", zh: "四则运算", skeleton: "OUTPUT 7 / 2\n" },
     ],
   },
   {
@@ -64,25 +50,6 @@ export const REFERENCE = [
     ],
   },
   {
-    group: "Exam inserts: text and numbers",
-    items: [
-      { syntax: "LEFT(s, x)", note: "leftmost x characters", zh: "左侧截取", skeleton: 'OUTPUT LEFT("ABCDEFGH", 3)\n' },
-      { syntax: "NUM_TO_STR(x)", note: "a number as a string", zh: "数字转字符串", skeleton: "OUTPUT NUM_TO_STR(87.5)\n" },
-      { syntax: "STR_TO_NUM(s)", note: "a string as a number; whole if there is no decimal point", zh: "字符串转数字", skeleton: 'OUTPUT STR_TO_NUM("23.45") + 1\n' },
-      { syntax: "IS_NUM(s)", note: "TRUE if the string is a valid number", zh: "判断是否为数字", skeleton: 'OUTPUT IS_NUM("-12.36")\n' },
-      { syntax: "ASC(c)  CHR(n)", note: "ASCII value of a character, and back again", zh: "ASCII 互转", skeleton: "OUTPUT ASC('A')\nOUTPUT CHR(66)\n" },
-    ],
-  },
-  {
-    group: "Exam inserts: dates",
-    items: [
-      { syntax: "DAY(d)  MONTH(d)  YEAR(d)", note: "the three parts of a DATE", zh: "年月日", skeleton: "OUTPUT DAY(04/10/2003)\nOUTPUT MONTH(04/10/2003)\nOUTPUT YEAR(04/10/2003)\n" },
-      { syntax: "DAYINDEX(d)", note: "day of the week, Sunday = 1", zh: "星期几", skeleton: "OUTPUT DAYINDEX(09/05/2023)\n" },
-      { syntax: "SETDATE(day, month, year)", note: "build a DATE from three integers", zh: "构造日期", skeleton: "DECLARE D : DATE\nD <- SETDATE(26, 10, 2003)\nOUTPUT D\n" },
-      { syntax: "TODAY()", note: "today's date", zh: "今天", skeleton: "OUTPUT TODAY()\n" },
-    ],
-  },
-  {
     group: "Not in this editor yet",
     items: [
       { syntax: "TYPE ... ENDTYPE (records, enums)", note: "guide section 4 — recognised, but v1 cannot run it", zh: "自定义数据类型", skeleton: "" },
@@ -90,21 +57,61 @@ export const REFERENCE = [
       { syntax: "CLASS / INHERITS / PUBLIC / PRIVATE / NEW / SUPER", note: "guide section 10 — object-oriented programming", zh: "面向对象", skeleton: "" },
     ],
   },
+
+  // ---- Exactly what the exam paper hands to candidates, in the insert's own order ----
+  {
+    group: "Insert · 字符串与字符函数",
+    items: [
+      { syntax: "LEFT(ThisString, x)", note: "leftmost x characters — LEFT(\"ABCDEFGH\", 3) is \"ABC\"", zh: "左侧截取", skeleton: 'OUTPUT LEFT("ABCDEFGH", 3)\n' },
+      { syntax: "RIGHT(ThisString, x)", note: "rightmost x characters — RIGHT(\"ABCDEFGH\", 3) is \"FGH\"", zh: "右侧截取", skeleton: 'OUTPUT RIGHT("ABCDEFGH", 3)\n' },
+      { syntax: "MID(ThisString, x, y)", note: "y characters starting at position x — MID(\"ABCDEFGH\", 2, 3) is \"BCD\"", zh: "截取", skeleton: 'OUTPUT MID("ABCDEFGH", 2, 3)\n' },
+      { syntax: "LENGTH(ThisString)", note: "number of characters — LENGTH(\"Happy Days\") is 10", zh: "长度", skeleton: 'OUTPUT LENGTH("Happy Days")\n' },
+      { syntax: "TO_UPPER(x)  TO_LOWER(x)", note: "CHAR or STRING in, the same type out; IGCSE calls these UCASE/LCASE", zh: "大小写", skeleton: 'OUTPUT TO_UPPER("Error 803")\n' },
+      { syntax: "NUM_TO_STR(x)", note: "a number as a string; negatives start with -", zh: "数字转字符串", skeleton: "OUTPUT NUM_TO_STR(87.5)\n" },
+      { syntax: "STR_TO_NUM(x)", note: "a string as a number; whole if there is no decimal point", zh: "字符串转数字", skeleton: 'OUTPUT STR_TO_NUM("23.45") + 1\n' },
+      { syntax: "IS_NUM(ThisString)", note: "TRUE if the value is a valid number", zh: "判断是否为数字", skeleton: 'OUTPUT IS_NUM("-12.36")\n' },
+      { syntax: "ASC(ThisChar)", note: "the ASCII value — ASC('A') is 65", zh: "取 ASCII", skeleton: "OUTPUT ASC('A')\n" },
+      { syntax: "CHR(x)", note: "the character with that ASCII value — CHR(65) is 'A'", zh: "ASCII 转字符", skeleton: "OUTPUT CHR(66)\n" },
+    ],
+  },
+  {
+    group: "Insert · 数值函数",
+    items: [
+      { syntax: "INT(x)", note: "the integer part of a REAL — INT(27.5415) is 27", zh: "取整", skeleton: "OUTPUT INT(27.5415)\n" },
+      { syntax: "RAND(x)", note: "a REAL from 0 up to but not including x", zh: "随机数", skeleton: "OUTPUT INT(RAND(6) + 1)\n" },
+    ],
+  },
+  {
+    group: "Insert · 日期函数",
+    items: [
+      { syntax: "DAY(ThisDate)  MONTH(ThisDate)  YEAR(ThisDate)", note: "the three parts of a DATE — DAY(04/10/2003) is 4", zh: "年月日", skeleton: "OUTPUT DAY(04/10/2003)\nOUTPUT MONTH(04/10/2003)\nOUTPUT YEAR(04/10/2003)\n" },
+      { syntax: "DAYINDEX(ThisDate)", note: "day of the week, Sunday = 1", zh: "星期几", skeleton: "OUTPUT DAYINDEX(09/05/2023)\n" },
+      { syntax: "SETDATE(Day, Month, Year)", note: "build a DATE from three integers", zh: "构造日期", skeleton: "DECLARE D : DATE\nD <- SETDATE(26, 10, 2003)\nOUTPUT D\n" },
+      { syntax: "TODAY()", note: "today's date", zh: "今天", skeleton: "OUTPUT TODAY()\n" },
+    ],
+  },
+  {
+    group: "Insert · 文本文件函数",
+    items: [
+      { syntax: "EOF(FileName)", note: "TRUE when the file has no more lines; needs the file open in READ mode, which this editor cannot do yet", zh: "文件结束", skeleton: "" },
+    ],
+  },
+  {
+    group: "Insert · 运算符",
+    items: [
+      { syntax: "&", note: "joins two strings; a CHAR may also be joined to a STRING", zh: "字符串拼接", skeleton: 'OUTPUT "Summer" & " " & "Pudding"\n' },
+      { syntax: "AND  OR  NOT", note: "operate on BOOLEAN values", zh: "逻辑", skeleton: "OUTPUT TRUE AND NOT FALSE\n" },
+      { syntax: "MOD", note: "remainder — 10 MOD 3 is 1", zh: "取余", skeleton: "OUTPUT 10 MOD 3\n" },
+      { syntax: "DIV", note: "quotient — 10 DIV 3 is 3", zh: "整除", skeleton: "OUTPUT 10 DIV 3\n" },
+    ],
+  },
+  {
+    group: "Insert · 比较运算符",
+    items: [
+      { syntax: "=   <   >   <=   >=   <>", note: "same type on both sides; case sensitive for CHAR and STRING", zh: "比较", skeleton: 'OUTPUT "Program" = "program"\n' },
+    ],
+  },
 ];
-
-
-// Functions the 2026 exam insert hands to candidates, so their signatures
-// never have to be memorised. Used to badge the reference drawer.
-export const INSERT_PROVIDED = new Set([
-  "LEFT", "RIGHT", "MID", "LENGTH", "TO_UPPER", "TO_LOWER",
-  "NUM_TO_STR", "STR_TO_NUM", "IS_NUM", "ASC", "CHR", "INT", "RAND",
-  "DAY", "MONTH", "YEAR", "DAYINDEX", "SETDATE", "TODAY",
-]);
-
-export function functionNameOf(syntax) {
-  const match = /^([A-Z_]+)\s*\(/.exec(String(syntax));
-  return match ? match[1] : null;
-}
 
 export const IGCSE_REFERENCE = [
   {
