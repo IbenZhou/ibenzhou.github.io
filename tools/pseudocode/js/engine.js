@@ -18,6 +18,7 @@ export function analyse(text, opts = {}) {
   const maxSteps = opts.maxSteps ?? tok.pragmas.maxSteps ?? DEFAULTS.maxSteps;
   return {
     program: parsed.program,
+    types: parsed.types,
     diagnostics: parsed.diagnostics,
     pragmas: tok.pragmas,
     maxSteps,

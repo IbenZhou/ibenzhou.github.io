@@ -52,7 +52,7 @@ export const REFERENCE = [
   {
     group: "Not in this editor yet",
     items: [
-      { syntax: "TYPE ... ENDTYPE (records, enums)", note: "guide section 4 — recognised, but v1 cannot run it", zh: "自定义数据类型", skeleton: "" },
+      { syntax: "TYPE Name / DECLARE field : TYPE / ENDTYPE", note: "guide 4.1 — the declaration is checked and can be practised; record variables cannot be used at run time yet", zh: "记录与枚举", skeleton: "TYPE StudentRecord\n    DECLARE LastName : STRING\n    DECLARE YearGroup : INTEGER\nENDTYPE\n" },
       { syntax: "OPENFILE / READFILE / WRITEFILE / SEEK", note: "guide section 9 — file handling", zh: "文件处理", skeleton: "" },
       { syntax: "CLASS / INHERITS / PUBLIC / PRIVATE / NEW / SUPER", note: "guide section 10 — object-oriented programming", zh: "面向对象", skeleton: "" },
     ],

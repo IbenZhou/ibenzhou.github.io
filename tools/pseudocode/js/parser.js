@@ -298,6 +298,69 @@ export function parse(tok, dialect) {
 
   // ---------------------------------------------------------------- statements
 
+  const types = new Map();
+
+  function parseTypeBlock() {
+    const start = posOf(next());
+    if (d.id === "0478") err("E_IGCSE_NOT_IN_SYLLABUS", start, { kw: "TYPE" });
+    const nameTok = expectIdent("a type name");
+    const name = nameTok ? nameTok.value : "";
+
+    const eqTok = peek();
+    if (eqTok && eqTok.type === "OP" && eqTok.value === "=") {
+      next();
+      const values = [];
+      expectPunct("(");
+      for (;;) {
+        const valueTok = expectIdent("an enumerated value");
+        if (valueTok) values.push(valueTok.value);
+        if (eatPunct(",")) continue;
+        expectPunct(")");
+        break;
+      }
+      finishLine(start);
+      if (name) types.set(name.toUpperCase(), { kind: "enum", name, values, pos: start });
+      return { k: "typedecl", name, kind: "enum", values, pos: start };
+    }
+
+    restOfLineIsClean(start);
+    advanceLine();
+    const fields = [];
+    while (li < lines.length) {
+      const first = firstToken(lines[li]);
+      if (first && first.type === "IDENT" && first.value.toUpperCase() === "ENDTYPE") break;
+      const isDeclare = first && (first.type === "KEY" || first.type === "IDENT") && String(first.value).toUpperCase() === "DECLARE";
+      if (!lines[li].blank && !isDeclare) {
+        err("E_BAD_TYPE_BLOCK", posOf(first || here()), {});
+        advanceLine();
+        continue;
+      }
+      if (lines[li].blank) { advanceLine(); continue; }
+      next();
+      const fieldTok = expectIdent("a field name");
+      let type = null;
+      if (eatPunct(":")) {
+        const t2 = peek();
+        if (t2 && t2.type === "KEY" && DATA_TYPES.has(t2.value)) {
+          next();
+          type = t2.value;
+          if (type === "DATE" && !d.hasDate) err("E_IGCSE_NO_DATE", posOf(t2), {});
+        } else {
+          err("E_BAD_PARAM", posOf(here()), { name: fieldTok ? fieldTok.value : "field" });
+          if (t2) next();
+        }
+      } else {
+        err("E_BAD_PARAM", posOf(fieldTok || here()), { name: fieldTok ? fieldTok.value : "field" });
+      }
+      fields.push({ name: fieldTok ? fieldTok.value : "", type, pos: posOf(fieldTok || here()) });
+      finishLine(posOf(first));
+    }
+    if (li < lines.length) advanceLine();
+    else err("E_MISSING_END", start, { open: "TYPE", close: "ENDTYPE", line: start.line });
+    if (name) types.set(name.toUpperCase(), { kind: "record", name, fields, pos: start });
+    return { k: "typedecl", name, kind: "record", fields, pos: start };
+  }
+
   function parseDeclare() {
     const start = posOf(next());
     const items = [];
@@ -355,6 +418,11 @@ export function parse(tok, dialect) {
       next();
       if (t.value === "DATE" && !d.hasDate) err("E_IGCSE_NO_DATE", posOf(t), {});
       return { name: nameTok.value, type: t.value, pos: posOf(nameTok) };
+    }
+    if (t && t.type === "IDENT" && types.has(t.value.toUpperCase())) {
+      next();
+      err("E_UNSUPPORTED", posOf(t), { kw: `record variables (${t.value} can be declared as a TYPE but not used yet)` });
+      return { name: nameTok.value, type: "UNSUPPORTED", pos: posOf(nameTok) };
     }
     if (t && t.type === "IDENT") {
       err("E_UNSUPPORTED", posOf(t), { kw: `user-defined types (${t.value})` });
@@ -829,6 +897,7 @@ export function parse(tok, dialect) {
     if (li >= lines.length) return null;
     const t = peek();
     if (!t || t.type === "EOL") { advanceLine(); return null; }
+    if (t.type === "IDENT" && t.value.toUpperCase() === "TYPE") return parseTypeBlock();
     if (deferred(t)) {
       const p = posOf(t);
       const word = t.value.toUpperCase();
@@ -905,7 +974,9 @@ export function parse(tok, dialect) {
   }
 
   const { undeclared } = checkDeclarations(program, diagnostics, posOf);
-  return { program, diagnostics, pragmas: tok.pragmas, undeclared };
+  const declaredTypes = {};
+  for (const [key, value] of types) declaredTypes[key] = value;
+  return { program, diagnostics, pragmas: tok.pragmas, undeclared, types: declaredTypes };
 }
 
 // ------------------------------------------------------------- declarations

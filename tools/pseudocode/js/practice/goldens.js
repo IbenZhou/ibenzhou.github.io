@@ -547,5 +547,12 @@ export const GOLDENS = {
     "There are 3 papers to check\n1074832\n3847561\n5938271\nEND",
     "There are 1 papers to check\n6201845\nEND",
     "There are 0 papers to check\nEND"
-  ]
+  ],
+  "s2022_23-q5ai": [],
+  "s2024_22-q3ai": [],
+  "s2026_21-q9ci": [],
+  "s2026_23-q8bi": [],
+  "w2021_22-q3ai": [],
+  "w2023_23-q7bi": [],
+  "w2025_21-q3ai": []
 };

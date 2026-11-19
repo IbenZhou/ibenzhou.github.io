@@ -19,10 +19,37 @@ export function routineOf(code, name) {
   ) || null;
 }
 
+// Structure check for "write the record declaration" questions.
+export function checkRecord(task, code) {
+  const want = task.structure;
+  const analysed = analyse(code, { dialect: "9618" });
+  const type = analysed.types && analysed.types[String(want.record).toUpperCase()];
+  if (!type) return { ok: false, note: `没有找到 TYPE ${want.record} 的定义` };
+  if (type.kind !== "record") return { ok: false, note: `${want.record} 应该是记录类型` };
+
+  const got = new Map(type.fields.map((field) => [field.name.toUpperCase(), field.type]));
+  const missing = [];
+  const wrong = [];
+  for (const [name, expected] of want.fields) {
+    const key = name.toUpperCase();
+    if (!got.has(key)) missing.push(name);
+    else if (got.get(key) !== expected) wrong.push(`${name} 应为 ${expected}，你写的是 ${got.get(key)}`);
+  }
+  const wanted = new Set(want.fields.map(([name]) => name.toUpperCase()));
+  const extra = [...got.keys()].filter((name) => !wanted.has(name));
+
+  if (missing.length) return { ok: false, note: `缺少字段：${missing.join("、")}` };
+  if (wrong.length) return { ok: false, note: wrong.join("；") };
+  if (extra.length) return { ok: false, note: `多出字段：${extra.join("、")}` };
+  return { ok: true, note: "记录结构正确" };
+}
+
 // Structural check for questions that only ask for a module header.
 export function checkSignature(task, code) {
   const want = task.structure;
   if (!want) return { ok: true, note: "" };
+
+  if (want.record) return checkRecord(task, code);
 
   const found = routineOf(code, want.name);
   if (!found) return { ok: false, note: `没有找到 ${want.name}() 的定义` };

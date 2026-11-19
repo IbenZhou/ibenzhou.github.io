@@ -6300,6 +6300,313 @@ OUTPUT "END"`,
     ],
   },
 
+  {
+    id: "s2022_23-q5ai",
+    title: "Employee record",
+    source: "9618/23 Summer 2022 Q5(a)(i)",
+    marks: 4,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE Employee, with the five fields in the question's table",
+    structure: {
+      record: "Employee",
+      fields: [
+        ["EmployeeNumber", "INTEGER"],
+        ["Name", "STRING"],
+        ["Department", "STRING"],
+        ["Born", "DATE"],
+        ["Attendance", "REAL"],
+      ],
+    },
+    prompt: [
+      "A program will store attendance data about each employee of a company.",
+      "",
+      "The data will be held in a record structure of type `Employee`. The fields that will be needed are as shown:",
+      "",
+      "| Field | Typical value | Comment |",
+      "| --- | --- | --- |",
+      "| `EmployeeNumber` | 123 | A numeric value starting from 1 |",
+      "| `Name` | `\"Smith,Eric\"` | Format: `<last name>','<first name>` |",
+      "| `Department` | `\"1B\"` | May contain letters and numbers |",
+      "| `Born` | 13/02/2006 | Must not be before 04/02/1957 |",
+      "| `Attendance` | 97.40 | Represents a percentage |",
+      "",
+      "Write pseudocode to declare the record structure for type `Employee`.",
+      "",
+      "本题只判记录声明的结构:类型名、字段名和字段的数据类型。",
+    ].join("\n"),
+    model: `TYPE Employee
+    DECLARE EmployeeNumber : INTEGER
+    DECLARE Name : STRING
+    DECLARE Department : STRING
+    DECLARE Born : DATE
+    DECLARE Attendance : REAL
+ENDTYPE`,
+    cases: [],
+  },
+
+  {
+    id: "s2024_22-q3ai",
+    title: "Component record",
+    source: "9618/22 Summer 2024 Q3(a)(i)",
+    marks: 4,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE Component, with the five fields in the question's table",
+    structure: {
+      record: "Component",
+      fields: [
+        ["Item_Num", "INTEGER"],
+        ["Reject", "BOOLEAN"],
+        ["Stage", "CHAR"],
+        ["Limit_1", "REAL"],
+        ["Limit_2", "REAL"],
+      ],
+    },
+    prompt: [
+      "A factory needs a program to help manage its production of items.",
+      "",
+      "Data will be stored about each item. The data for each item will be held in a record structure of type `Component`.",
+      "",
+      "The programmer has started to define the fields that will be needed as shown in the table.",
+      "",
+      "| Field | Example value | Comment |",
+      "| --- | --- | --- |",
+      "| `Item_Num` | 123478 | a numeric value used as an array index |",
+      "| `Reject` | FALSE | TRUE if this item has been rejected |",
+      "| `Stage` | `'B'` | a letter to indicate the stage of production |",
+      "| `Limit_1` | 13.5 | any value in the range 0 to 100 inclusive |",
+      "| `Limit_2` | 26.4 | any value in the range 0 to 100 inclusive |",
+      "",
+      "Write pseudocode to declare the record structure for type `Component`.",
+      "",
+      "本题只判记录声明的结构:类型名、字段名和字段的数据类型。",
+    ].join("\n"),
+    model: `TYPE Component
+    DECLARE Item_Num : INTEGER
+    DECLARE Reject : BOOLEAN
+    DECLARE Stage : CHAR
+    DECLARE Limit_1 : REAL
+    DECLARE Limit_2 : REAL
+ENDTYPE`,
+    cases: [],
+  },
+
+  {
+    id: "s2026_21-q9ci",
+    title: "RoomData record",
+    source: "9618/21 Summer 2026 Q9(c)(i)",
+    marks: 3,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE RoomData, with a field for the room type, the view and the grade",
+    structure: {
+      record: "RoomData",
+      fields: [
+        ["RoomType", "CHAR"],
+        ["View", "BOOLEAN"],
+        ["Grade", "STRING"],
+      ],
+    },
+    prompt: [
+      "A hotel has three floors numbered 0 to 2 (floor 0 is the ground floor). There are 15 rooms on each floor.",
+      "",
+      "Customers are becoming more selective with their enquiries when searching for an available room.",
+      "",
+      "A new program design is required. It will create a record to define the data for a room.",
+      "",
+      "Each room:",
+      "- may have a sea view",
+      "- is classified as: single room (`'S'`), double room (`'D'`) or family room (`'F'`)",
+      "- is either standard (`'ST'`) or deluxe (`'DL'`).",
+      "",
+      "Complete the record declaration for type `RoomData`.",
+      "",
+      "为便于自动判分,字段名请使用 `RoomType`(房型)、`View`(海景)和 `Grade`(标准/豪华)。",
+    ].join("\n"),
+    model: `TYPE RoomData
+    DECLARE RoomType : CHAR
+    DECLARE View : BOOLEAN
+    DECLARE Grade : STRING
+ENDTYPE`,
+    cases: [],
+  },
+
+  {
+    id: "s2026_23-q8bi",
+    title: "BinData record",
+    source: "9618/23 Summer 2026 Q8(b)(i)",
+    marks: 2,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE BinData, with the four data items listed in the question",
+    structure: {
+      record: "BinData",
+      fields: [
+        ["Size", "STRING"],
+        ["Active", "BOOLEAN"],
+        ["StockCode", "STRING"],
+        ["StockLevel", "INTEGER"],
+      ],
+    },
+    prompt: [
+      "A warehouse stores stock in bins. The warehouse is organised on three different levels – level 0 (ground level), then level 1 and level 2. Each level has 120 bins, numbered 1 to 120.",
+      "",
+      "It is decided to change the 2D array `Bins` so that more information is available about each bin.",
+      "",
+      "Data items for each bin are:",
+      "- bin size (coded as `'Small'`, `'Medium'` or `'Large'`)",
+      "- active – is the bin currently in use?",
+      "- stock item code for the stock item stored (four-digit string)",
+      "- stock level (0 to 500 items).",
+      "",
+      "Complete the pseudocode to create a record structure with the identifier `BinData`.",
+      "",
+      "为便于自动判分,字段名请使用 `Size`、`Active`、`StockCode` 和 `StockLevel`。",
+    ].join("\n"),
+    model: `TYPE BinData
+    DECLARE Size : STRING
+    DECLARE Active : BOOLEAN
+    DECLARE StockCode : STRING
+    DECLARE StockLevel : INTEGER
+ENDTYPE`,
+    cases: [],
+  },
+
+  {
+    id: "w2021_22-q3ai",
+    title: "Student record",
+    source: "9618/22 Winter 2021 Q3(a)(i)",
+    marks: 3,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE Student, with the five fields in the question's table",
+    structure: {
+      record: "Student",
+      fields: [
+        ["StudentID", "STRING"],
+        ["Email", "STRING"],
+        ["Club_1", "INTEGER"],
+        ["Club_2", "INTEGER"],
+        ["Club_3", "INTEGER"],
+      ],
+    },
+    prompt: [
+      "A programmer is writing a program to help manage clubs in a school.",
+      "",
+      "Data will be stored about each student in the school and each student may join up to three clubs.",
+      "",
+      "The data will be held in a record structure of type `Student`.",
+      "",
+      "The programmer has started to define the fields that will be needed as shown in the following table.",
+      "",
+      "| Field | Typical value | Comment |",
+      "| --- | --- | --- |",
+      "| `StudentID` | `\"CF1234\"` | Unique to each student |",
+      "| `Email` | `\"Carmen47@xyzmail.com\"` | Contains letters, numbers and certain symbols |",
+      "| `Club_1` | 1 | Any value in the range 1 to 99 inclusive |",
+      "| `Club_2` | 14 | Any value in the range 1 to 99 inclusive |",
+      "| `Club_3` | 27 | Any value in the range 1 to 99 inclusive |",
+      "",
+      "Write pseudocode to declare the record structure for type `Student`.",
+      "",
+      "本题只判记录声明的结构:类型名、字段名和字段的数据类型。",
+    ].join("\n"),
+    model: `TYPE Student
+    DECLARE StudentID : STRING
+    DECLARE Email : STRING
+    DECLARE Club_1 : INTEGER
+    DECLARE Club_2 : INTEGER
+    DECLARE Club_3 : INTEGER
+ENDTYPE`,
+    cases: [],
+  },
+
+  {
+    id: "w2023_23-q7bi",
+    title: "MyType record",
+    source: "9618/23 Winter 2023 Q7(b)(i)",
+    marks: 3,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE MyType, with fields RA, RB and RC",
+    structure: {
+      record: "MyType",
+      fields: [
+        ["RA", "INTEGER"],
+        ["RB", "STRING"],
+        ["RC", "BOOLEAN"],
+      ],
+    },
+    prompt: [
+      "A structure chart shows the modular structure of a program. `Module-A()` repeatedly calls `Sub-Y1()`, `Sub-Y2()` and the function `Sub-9()`.",
+      "",
+      "A Boolean value is returned by `Sub-9()` for processing by `Module-A()`. The original parameter `RA` is of type integer and `RB` is of type string.",
+      "",
+      "A record type `MyType` will be defined with three fields to store the values passed between the two modules.",
+      "",
+      "Write pseudocode to define `MyType`.",
+      "",
+      "为便于自动判分,字段名请使用 `RA`、`RB` 和 `RC`,其中 `RC` 保存 `Sub-9()` 返回的 Boolean。",
+    ].join("\n"),
+    model: `TYPE MyType
+    DECLARE RA : INTEGER
+    DECLARE RB : STRING
+    DECLARE RC : BOOLEAN
+ENDTYPE`,
+    cases: [],
+  },
+
+  {
+    id: "w2025_21-q3ai",
+    title: "Rental record",
+    source: "9618/21 Winter 2025 Q3(a)(i)",
+    marks: 4,
+    difficulty: 1,
+    chapter: "Ch10 Data types and structures",
+    requirement: "TYPE RentalRecord, with the six items in the question's table",
+    structure: {
+      record: "RentalRecord",
+      fields: [
+        ["RentalID", "STRING"],
+        ["CarID", "INTEGER"],
+        ["DisCode", "CHAR"],
+        ["Start", "DATE"],
+        ["Duration", "INTEGER"],
+        ["Completed", "BOOLEAN"],
+      ],
+    },
+    prompt: [
+      "A program is needed to manage individual rentals in a car-hire business.",
+      "",
+      "The data items for each rental will be held in a record structure of type `RentalRecord`.",
+      "",
+      "The programmer has started to define the items that will be needed:",
+      "",
+      "| Item | Example value | Comment |",
+      "| --- | --- | --- |",
+      "| `RentalID` | `\"AB1234\"` | a unique alpha-numeric value |",
+      "| `CarID` | 241 | a numeric value used as an array index |",
+      "| `DisCode` | `'S'` | a letter indicating the type of discount offered |",
+      "| `Start` | 13/06/2025 | when the rental starts |",
+      "| `Duration` | 7 | the number of days of the rental |",
+      "| `Completed` | FALSE | TRUE when the car is returned and the rental charge paid |",
+      "",
+      "Write pseudocode to declare the record structure for type `RentalRecord`.",
+      "",
+      "本题只判记录声明的结构:类型名、字段名和字段的数据类型。",
+    ].join("\n"),
+    model: `TYPE RentalRecord
+    DECLARE RentalID : STRING
+    DECLARE CarID : INTEGER
+    DECLARE DisCode : CHAR
+    DECLARE Start : DATE
+    DECLARE Duration : INTEGER
+    DECLARE Completed : BOOLEAN
+ENDTYPE`,
+    cases: [],
+  },
+
 ];
 
 export function taskById(id) {

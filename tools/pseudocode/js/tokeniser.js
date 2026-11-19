@@ -16,12 +16,12 @@ export const KEYWORDS = new Set([
 ]);
 
 export const NOT_IN_V1 = new Set([
-  "TYPE", "ENDTYPE", "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW",
+  "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW",
   "SEEK", "GETRECORD", "PUTRECORD", "APPEND", "SET", "DEFINE",
 ]);
 
 export const ALEVEL_ONLY = new Set([
-  "TYPE", "ENDTYPE", "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW", "SET", "DEFINE",
+  "CLASS", "ENDCLASS", "PUBLIC", "PRIVATE", "INHERITS", "SUPER", "NEW", "SET", "DEFINE",
 ]);
 
 export const DATA_TYPES = new Set(["INTEGER", "REAL", "CHAR", "STRING", "BOOLEAN", "DATE"]);

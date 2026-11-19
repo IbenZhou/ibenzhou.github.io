@@ -367,6 +367,10 @@ export const CODES = {
     () => `A Level declares a constant with equals: CONSTANT Name = 6.50`,
     () => `A Level 用 = 声明常量`,
   ),
+  E_BAD_TYPE_BLOCK: d(
+    () => `Inside TYPE ... ENDTYPE every line is a field: DECLARE Name : TYPE`,
+    () => `TYPE 块里每行都要写成 DECLARE 字段名 : 类型`,
+  ),
   E_FILE_NAME: d(
     () => `A file is named by a STRING literal or a STRING variable, e.g. OPENFILE "data.txt" FOR READ`,
     () => `文件要用字符串字面量或字符串变量表示`,
