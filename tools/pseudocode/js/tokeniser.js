@@ -1,4 +1,5 @@
 import { CODES } from "./diagnostics.js";
+import { BUILTIN_WORDS } from "./dialect.js";
 
 export const KEYWORDS = new Set([
   "DECLARE", "CONSTANT", "ARRAY", "OF",
@@ -112,12 +113,12 @@ export function tokenise(text, dialect) {
           }
           push("KEY", upper, raw2.length, { raw: raw2 });
         } else {
-          if (!d.underscoreInNames && raw2.includes("_")) {
+          if (!BUILTIN_WORDS.has(upper) && !d.underscoreInNames && raw2.includes("_")) {
             errors.push(new Diagnostic("E_IGCSE_UNDERSCORE", { line: lineNo, col }, {
               name: raw2,
               fixed: raw2.replace(/_+([a-z])/g, (m, ch) => ch.toUpperCase()).replace(/_+/g, ""),
             }));
-          } else if (d.pascalStartNames === "note" && raw2.length > 1 && /^[a-z]/.test(raw2) && !notedPascal.has(upper)) {
+          } else if (!BUILTIN_WORDS.has(upper) && d.pascalStartNames === "note" && raw2.length > 1 && /^[a-z]/.test(raw2) && !notedPascal.has(upper)) {
             notedPascal.add(upper);
             errors.push(new Diagnostic("W_IGCSE_PASCAL", { line: lineNo, col }, {
               name: raw2,

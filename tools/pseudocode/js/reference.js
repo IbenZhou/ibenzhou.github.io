@@ -32,7 +32,7 @@ export const REFERENCE = [
       { syntax: "LENGTH(s)", note: "number of characters", zh: "长度", skeleton: "OUTPUT LENGTH(\"Happy Days\")\n" },
       { syntax: "MID(s, start, count)", note: "count characters from position start, 1-based", zh: "截取", skeleton: "OUTPUT MID(\"ABCDEFGH\", 2, 3)\n" },
       { syntax: "RIGHT(s, n)", note: "rightmost n characters", zh: "右侧", skeleton: "OUTPUT RIGHT(\"ABCDEFGH\", 3)\n" },
-      { syntax: "LCASE(c)  UCASE(c)", note: "change the case of one CHAR", zh: "大小写", skeleton: "OUTPUT UCASE('h')\n" },
+      { syntax: "TO_UPPER(x)  TO_LOWER(x)", note: "a CHAR or a whole STRING; the guide calls these UCASE/LCASE", zh: "大小写", skeleton: "OUTPUT TO_UPPER('h')\n" },
       { syntax: "INT(x)", note: "integer part of a REAL", zh: "取整", skeleton: "OUTPUT INT(27.5415)\n" },
       { syntax: "RAND(x)", note: "a REAL from 0 up to but not including x", zh: "随机数", skeleton: "OUTPUT INT(RAND(6) + 1)\n" },
     ],
@@ -59,6 +59,25 @@ export const REFERENCE = [
       { syntax: "PROCEDURE name(p : INTEGER) ... ENDPROCEDURE", note: "called with CALL name(value)", zh: "过程", skeleton: "PROCEDURE greet(name : STRING)\n    OUTPUT \"Hello \", name\nENDPROCEDURE\n\nCALL greet(\"Amara\")\n" },
       { syntax: "FUNCTION name(p : INTEGER) RETURNS INTEGER ... ENDFUNCTION", note: "used inside an expression, must RETURN", zh: "函数", skeleton: "FUNCTION double(n : INTEGER) RETURNS INTEGER\n    RETURN n * 2\nENDFUNCTION\n\nOUTPUT double(4)\n" },
       { syntax: "PROCEDURE swap(BYREF a : INTEGER, b : INTEGER)", note: "BYREF lets the caller's variable change; BYVAL is the default", zh: "传引用", skeleton: "PROCEDURE swap(BYREF x : INTEGER, y : INTEGER)\n    DECLARE temp : INTEGER\n    temp <- x\n    x <- y\n    y <- temp\nENDPROCEDURE\n\nDECLARE a : INTEGER\nDECLARE b : INTEGER\na <- 1\nb <- 2\nCALL swap(a, b)\nOUTPUT a\nOUTPUT b\n" },
+    ],
+  },
+  {
+    group: "Exam inserts: text and numbers",
+    items: [
+      { syntax: "LEFT(s, x)", note: "leftmost x characters", zh: "左侧截取", skeleton: 'OUTPUT LEFT("ABCDEFGH", 3)\n' },
+      { syntax: "NUM_TO_STR(x)", note: "a number as a string", zh: "数字转字符串", skeleton: "OUTPUT NUM_TO_STR(87.5)\n" },
+      { syntax: "STR_TO_NUM(s)", note: "a string as a number; whole if there is no decimal point", zh: "字符串转数字", skeleton: 'OUTPUT STR_TO_NUM("23.45") + 1\n' },
+      { syntax: "IS_NUM(s)", note: "TRUE if the string is a valid number", zh: "判断是否为数字", skeleton: 'OUTPUT IS_NUM("-12.36")\n' },
+      { syntax: "ASC(c)  CHR(n)", note: "ASCII value of a character, and back again", zh: "ASCII 互转", skeleton: "OUTPUT ASC('A')\nOUTPUT CHR(66)\n" },
+    ],
+  },
+  {
+    group: "Exam inserts: dates",
+    items: [
+      { syntax: "DAY(d)  MONTH(d)  YEAR(d)", note: "the three parts of a DATE", zh: "年月日", skeleton: "OUTPUT DAY(04/10/2003)\nOUTPUT MONTH(04/10/2003)\nOUTPUT YEAR(04/10/2003)\n" },
+      { syntax: "DAYINDEX(d)", note: "day of the week, Sunday = 1", zh: "星期几", skeleton: "OUTPUT DAYINDEX(09/05/2023)\n" },
+      { syntax: "SETDATE(day, month, year)", note: "build a DATE from three integers", zh: "构造日期", skeleton: "DECLARE D : DATE\nD <- SETDATE(26, 10, 2003)\nOUTPUT D\n" },
+      { syntax: "TODAY()", note: "today's date", zh: "今天", skeleton: "OUTPUT TODAY()\n" },
     ],
   },
   {
@@ -163,7 +182,11 @@ export function keywordsFor(id) {
   return id === "0478" ? KEYWORDS_0478 : KEYWORDS_9618;
 }
 
-export const BUILTINS_9618 = BUILTIN_LIST;
+export const BUILTINS_9618 = [
+  "LEFT", "RIGHT", "MID", "LENGTH", "TO_UPPER", "TO_LOWER",
+  "NUM_TO_STR", "STR_TO_NUM", "IS_NUM", "ASC", "CHR", "INT", "RAND",
+  "DAY", "MONTH", "YEAR", "DAYINDEX", "SETDATE", "TODAY",
+];
 export const BUILTINS_0478 = ["LENGTH", "SUBSTRING", "LCASE", "UCASE", "ROUND", "RANDOM"];
 
 export function builtinListFor(id) {

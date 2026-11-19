@@ -72,7 +72,7 @@ FOR Row <- 1 TO 3
 NEXT Row
 `, []),
 
-  ex("String functions", "Data", "Guide 5.5: LENGTH, MID, RIGHT, LCASE, UCASE", `
+  ex("String functions", "Data", "The 2026 inserts provide LENGTH, MID, RIGHT, TO_UPPER, TO_LOWER", `
 DECLARE Word : STRING
 DECLARE Letter : CHAR
 
@@ -81,8 +81,8 @@ OUTPUT LENGTH(Word)
 OUTPUT MID(Word, 2, 3)
 OUTPUT RIGHT(Word, 3)
 Letter <- 'w'
-OUTPUT LCASE(Letter)
-OUTPUT UCASE(Letter)
+OUTPUT TO_LOWER(Letter)
+OUTPUT TO_UPPER(Letter)
 OUTPUT Word & "!"
 `, []),
 

@@ -166,7 +166,147 @@ export const BUILTINS = {
       return V("INTEGER", Math.trunc(Number(a[0].v) / Number(a[1].v)));
     },
   },
+
+  LEFT: {
+    args: () => [["STRING"], ["INTEGER"]],
+    returns: "STRING",
+    signature: "LEFT(ThisString : STRING, x : INTEGER) RETURNS STRING",
+    doc: "leftmost x characters",
+    call: (a) => {
+      const s = String(a[0].v);
+      const x = Number(a[1].v);
+      return V("STRING", x <= 0 ? "" : s.slice(0, x));
+    },
+  },
+  TO_UPPER: {
+    args: () => [["CHAR", "STRING"]],
+    returns: "CHAR",
+    signature: "TO_UPPER(x : CHAR or STRING) RETURNS same type",
+    doc: "all characters converted to upper case",
+    call: (a) => V(a[0].t, String(a[0].v).toUpperCase()),
+  },
+  TO_LOWER: {
+    args: () => [["CHAR", "STRING"]],
+    returns: "CHAR",
+    signature: "TO_LOWER(x : CHAR or STRING) RETURNS same type",
+    doc: "all characters converted to lower case",
+    call: (a) => V(a[0].t, String(a[0].v).toLowerCase()),
+  },
+  NUM_TO_STR: {
+    args: () => [["INTEGER", "REAL"]],
+    returns: "STRING",
+    signature: "NUM_TO_STR(x : INTEGER or REAL) RETURNS STRING",
+    doc: "a string representation of a number, using - for negatives",
+    call: (a) => V("STRING", a[0].t === "REAL" ? fmtNumber(Number(a[0].v)) : String(a[0].v)),
+  },
+  STR_TO_NUM: {
+    args: () => [["CHAR", "STRING"]],
+    returns: "REAL",
+    signature: "STR_TO_NUM(x : CHAR or STRING) RETURNS REAL or INTEGER",
+    doc: "a numeric value, whole if the string has no decimal point",
+    call: (a, ctx) => {
+      const text = String(a[0].v).trim();
+      if (!/^-?[0-9]+(\.[0-9]+)?$/.test(text)) {
+        ctx.diag.push(new Diagnostic("E_TYPE_ARG", ctx.pos, { name: "STR_TO_NUM", want: "a string that represents a number", got: JSON.stringify(a[0].v) }));
+        return V("REAL", 0);
+      }
+      return text.includes(".") ? V("REAL", parseFloat(text)) : V("INTEGER", parseInt(text, 10));
+    },
+  },
+  IS_NUM: {
+    args: () => [["CHAR", "STRING"]],
+    returns: "BOOLEAN",
+    signature: "IS_NUM(ThisString : CHAR or STRING) RETURNS BOOLEAN",
+    doc: "TRUE if the value is a valid number",
+    call: (a) => V("BOOLEAN", /^-?[0-9]+(\.[0-9]+)?$/.test(String(a[0].v).trim())),
+  },
+  ASC: {
+    args: () => [["CHAR"]],
+    returns: "INTEGER",
+    signature: "ASC(ThisChar : CHAR) RETURNS INTEGER",
+    doc: "the ASCII value of a character",
+    call: (a) => V("INTEGER", String(a[0].v).charCodeAt(0)),
+  },
+  CHR: {
+    args: () => [["INTEGER"]],
+    returns: "CHAR",
+    signature: "CHR(x : INTEGER) RETURNS CHAR",
+    doc: "the character with that ASCII value",
+    call: (a, ctx) => {
+      const code = Number(a[0].v);
+      if (code < 0 || code > 0x10ffff) {
+        ctx.diag.push(new Diagnostic("E_TYPE_ARG", ctx.pos, { name: "CHR", want: "a value from 0 to 1114111", got: String(code) }));
+        return V("CHAR", " ");
+      }
+      return V("CHAR", String.fromCharCode(code));
+    },
+  },
+  DAY: {
+    args: () => [["DATE"]],
+    returns: "INTEGER",
+    signature: "DAY(ThisDate : DATE) RETURNS INTEGER",
+    doc: "the day number from a date",
+    call: (a) => V("INTEGER", a[0].v.day),
+  },
+  MONTH: {
+    args: () => [["DATE"]],
+    returns: "INTEGER",
+    signature: "MONTH(ThisDate : DATE) RETURNS INTEGER",
+    doc: "the month number from a date",
+    call: (a) => V("INTEGER", a[0].v.month),
+  },
+  YEAR: {
+    args: () => [["DATE"]],
+    returns: "INTEGER",
+    signature: "YEAR(ThisDate : DATE) RETURNS INTEGER",
+    doc: "the year number from a date",
+    call: (a) => V("INTEGER", a[0].v.year),
+  },
+  DAYINDEX: {
+    args: () => [["DATE"]],
+    returns: "INTEGER",
+    signature: "DAYINDEX(ThisDate : DATE) RETURNS INTEGER",
+    doc: "Sunday = 1, Monday = 2, and so on",
+    call: (a) => {
+      const { day, month, year } = a[0].v;
+      return V("INTEGER", new Date(Date.UTC(year, month - 1, day)).getUTCDay() + 1);
+    },
+  },
+  SETDATE: {
+    args: () => [["INTEGER"], ["INTEGER"], ["INTEGER"]],
+    returns: "DATE",
+    signature: "SETDATE(Day, Month, Year : INTEGER) RETURNS DATE",
+    doc: "a date value built from three integers",
+    call: (a, ctx) => {
+      const day = Number(a[0].v);
+      const month = Number(a[1].v);
+      const year = Number(a[2].v);
+      if (!validDate(day, month, year)) {
+        ctx.diag.push(new Diagnostic("E_TYPE_ARG", ctx.pos, { name: "SETDATE", want: "a real calendar date", got: `${day}/${month}/${year}` }));
+        return V("DATE", { day: 1, month: 1, year: 1900 });
+      }
+      return V("DATE", { day, month, year });
+    },
+  },
+  TODAY: {
+    args: () => [],
+    returns: "DATE",
+    signature: "TODAY() RETURNS DATE",
+    doc: "the current date",
+    call: (a, ctx) => {
+      const now = new Date(ctx.now ? ctx.now() : Date.now());
+      return V("DATE", { day: now.getDate(), month: now.getMonth() + 1, year: now.getFullYear() });
+    },
+  },
 };
+
+function validDate(day, month, year) {
+  if (month < 1 || month > 12 || day < 1 || year < 1000) return false;
+  const lengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  if (leap) lengths[1] = 29;
+  return day <= lengths[month - 1];
+}
 
 function substring(a, ctx, name) {
   const s = String(a[0].v);

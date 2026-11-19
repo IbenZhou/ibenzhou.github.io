@@ -367,6 +367,26 @@ export const CODES = {
     () => `A Level declares a constant with equals: CONSTANT Name = 6.50`,
     () => `A Level 用 = 声明常量`,
   ),
+  W_IGCSE_NO_LEFT: d(
+    () => `IGCSE has no LEFT(); use SUBSTRING(s, 1, x)`,
+    () => `IGCSE 没有 LEFT，请用 SUBSTRING(s, 1, x)`,
+  ),
+  W_IGCSE_UCASE: d(
+    () => `IGCSE converts case with UCASE()`,
+    () => `IGCSE 用 UCASE()`,
+  ),
+  W_IGCSE_LCASE: d(
+    () => `IGCSE converts case with LCASE()`,
+    () => `IGCSE 用 LCASE()`,
+  ),
+  W_ALEVEL_ONLY_FUNCTION: d(
+    (c) => `${c.name}() is provided in the A Level inserts; IGCSE 0478 has no such function`,
+    (c) => `${c.name}() 只在 A Level 的 inserts 里提供`,
+  ),
+  W_ALEVEL_INSERT_NAME: d(
+    (c) => `The 2026 inserts provide ${c.alt}(); ${c.name}() is the name used in the guide`,
+    (c) => `2026 年 inserts 提供的名字是 ${c.alt}()`,
+  ),
   W_ALEVEL_CALL_PARENS: d(
     (c) => `A Level writes the call as CALL ${c.name}()`,
     (c) => `A Level 的无参调用要写括号`,

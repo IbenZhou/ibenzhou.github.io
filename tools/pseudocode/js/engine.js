@@ -88,6 +88,7 @@ function prepare(text, opts) {
     traceLimit: opts.traceLimit ?? DEFAULTS.traceLimit,
     recursionLimit: opts.recursionLimit ?? DEFAULTS.recursionLimit,
     seed: opts.seed ?? 12345,
+    now: opts.now ?? null,
     interactive: opts.interactive ?? false,
     dialect: analysed.dialect,
   });

@@ -87,6 +87,7 @@ export class Machine {
     this.traceLimit = opts.traceLimit ?? 500;
     this.recursionLimit = opts.recursionLimit ?? 200;
     this.seed = opts.seed ?? 12345;
+    this.fixedNow = opts.now ?? null;
     this.state = this.seed;
     this.steps = 0;
     this.startedAt = Date.now();
@@ -678,7 +679,7 @@ export class Machine {
       const fn = checkBuiltinCall(upper, args, node.pos, this.diag, this.dialect);
       if (!fn) { this.report("E_UNKNOWN_FUNC", node.pos, { name: node.name }); return V("INTEGER", 0); }
       if (this.diag.length > before) throw new RuntimeStop();
-      const ctx = { diag: this.diag, pos: node.pos, random: () => this.random() };
+      const ctx = { diag: this.diag, pos: node.pos, random: () => this.random(), now: () => (this.fixedNow == null ? Date.now() : this.fixedNow) };
       return fn.call(args, ctx);
     }
     const routine = this.routines.get(upper);
