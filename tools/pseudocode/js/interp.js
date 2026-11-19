@@ -127,7 +127,7 @@ export class Machine {
         continue;
       }
       if (node.k === "declare") {
-        for (const item of node.items) this.declareGlobal(item);
+        for (const item of node.items) this.declareInto(item, this.globals);
         continue;
       }
       if (node.k === "constant") {
@@ -141,31 +141,46 @@ export class Machine {
     this.trace.commit(0);
   }
 
-  declareGlobal(item) {
+  declareInto(item, scope) {
     if (item.type === "ARRAY") {
-      const dims = [];
-      let size = 1;
-      for (const [loExpr, hiExpr] of item.bounds) {
-        const lo = Number(this.constNum(loExpr));
-        const hi = Number(this.constNum(hiExpr));
-        dims.push([lo, hi]);
-        size *= Math.max(0, hi - lo + 1);
-      }
-      if (dims.length > 2) this.report("E_UNSUPPORTED", item.pos, { kw: "arrays with more than two dimensions" });
-      const data = new Array(size).fill(null).map(() => V(item.of === "UNSUPPORTED" ? "INTEGER" : item.of, defaultValue(item.of)));
-      this.globals.define(item.name, newSlot(item.name, V("ARRAY", { of: item.of, dims, data })));
+      const of = item.of === "UNSUPPORTED" ? "INTEGER" : item.of;
+      scope.define(item.name, newSlot(item.name, this.makeArray(of, item.bounds, scope, item.pos)));
       return;
     }
     const t = item.type === "UNSUPPORTED" ? "INTEGER" : item.type;
-    this.globals.define(item.name, newSlot(item.name, V(t, defaultValue(t))));
+    scope.define(item.name, newSlot(item.name, V(t, defaultValue(t))));
   }
 
-  constNum(expr) {
+  makeArray(of, bounds, scope, pos) {
+    const dims = [];
+    let size = 1;
+    for (const [loExpr, hiExpr] of bounds) {
+      const lo = Number(this.constNum(loExpr, scope));
+      const hi = Number(this.constNum(hiExpr, scope));
+      dims.push([lo, hi]);
+      size *= Math.max(0, hi - lo + 1);
+    }
+    if (dims.length > 2) this.report("E_UNSUPPORTED", pos || { line: 1, col: 1 }, { kw: "arrays with more than two dimensions" });
+    const data = new Array(size).fill(null).map(() => V(of, defaultValue(of)));
+    return V("ARRAY", { of, dims, data });
+  }
+
+  *execDeclare(stmt, scope) {
+    for (const item of stmt.items) this.declareInto(item, scope);
+  }
+
+  *execConstant(stmt, scope) {
+    if (!stmt.name) return;
+    const value = yield* this.eval(stmt.value, scope);
+    scope.define(stmt.name, newSlot(stmt.name, value, "const"));
+  }
+
+  constNum(expr, scope) {
     if (!expr) return 0;
     if (expr.k === "num") return expr.v;
-    if (expr.k === "un" && expr.op === "-") return -this.constNum(expr.e);
+    if (expr.k === "un" && expr.op === "-") return -this.constNum(expr.e, scope);
     if (expr.k === "var") {
-      const slot = this.globals.lookup(expr.name);
+      const slot = (scope || this.globals).lookup(expr.name);
       if (slot) return Number(slot.value.v) || 0;
       this.report("E_UNDECLARED", expr.pos, { name: expr.name, suggested: "INTEGER" });
       return 0;
@@ -196,6 +211,8 @@ export class Machine {
 
   *dispatch(stmt, scope) {
     switch (stmt.k) {
+      case "declare": return yield* this.execDeclare(stmt, scope);
+      case "constant": return yield* this.execConstant(stmt, scope);
       case "assign": return yield* this.execAssign(stmt, scope);
       case "output": return yield* this.execOutput(stmt, scope);
       case "input": return yield* this.execInput(stmt, scope);
@@ -700,6 +717,37 @@ export class Machine {
     return result || V(routine.retType || "INTEGER", defaultValue(routine.retType));
   }
 
+  validateByrefArray(param, slot, pos) {
+    const want = param.type;
+    if (!slot.value || slot.value.t !== "ARRAY") {
+      this.report("E_TYPE_ARG", pos, { name: param.name, want: `${want.of} array`, got: typeName(slot.value) });
+      return;
+    }
+    if (slot.value.v.of !== want.of) {
+      this.report("E_TYPE_ARG", pos, { name: param.name, want: `${want.of} elements`, got: `${slot.value.v.of} elements` });
+    }
+  }
+
+  bindArrayParam(param, arg, pos) {
+    const want = param.type;
+    const target = this.makeArray(want.of, want.bounds, this.globals, pos);
+    const shape = (v) => v.v.dims.map(([lo, hi]) => `${lo}:${hi}`).join(",");
+    if (!arg || arg.t !== "ARRAY") {
+      this.report("E_TYPE_ARG", pos, { name: param.name, want: `${want.of} array`, got: typeName(arg) });
+      return target;
+    }
+    if (arg.v.of !== want.of) {
+      this.report("E_TYPE_ARG", pos, { name: param.name, want: `${want.of} elements`, got: `${arg.v.of} elements` });
+      return target;
+    }
+    if (shape(arg) !== shape(target)) {
+      this.report("E_TYPE_ARG", pos, { name: param.name, want: `ARRAY[${shape(target)}]`, got: `ARRAY[${shape(arg)}]` });
+      return target;
+    }
+    target.v.data = arg.v.data.map((element) => ({ ...element }));
+    return target;
+  }
+
   *invokeWithValues(routine, argValues, argNodes, callerScope, pos) {
     const key = String(routine.name).toUpperCase();
     this.callStack.push(key);
@@ -717,6 +765,7 @@ export class Machine {
       if (param.byref && argNode) {
         const target = callerScope.lookup(argNode.name);
         if (argNode.k === "var" && target) {
+          if (isArrayParam(param)) this.validateByrefArray(param, target, pos);
           frame.define(param.name, target);
           bound = true;
         } else if (argNode.k === "index" && target && target.value.t === "ARRAY") {
@@ -728,6 +777,10 @@ export class Machine {
           frame.define(param.name, this.elementProxy(target, idx, pos));
           bound = true;
         }
+      }
+      if (!bound && isArrayParam(param)) {
+        frame.define(param.name, newSlot(param.name, this.bindArrayParam(param, argValues[i], pos)));
+        bound = true;
       }
       if (!bound) {
         frame.define(param.name, newSlot(param.name, argValues[i] || V(typeOfParam(param), defaultValue(typeOfParam(param)))));
@@ -774,6 +827,10 @@ export class Machine {
     }
     return rows;
   }
+}
+
+function isArrayParam(param) {
+  return Boolean(param.type) && typeof param.type === "object" && param.type.kind === "ARRAY";
 }
 
 function typeOfParam(param) {

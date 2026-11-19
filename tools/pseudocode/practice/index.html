@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>伪代码练习场 · 9618 Paper 2 · iben.fun</title>
+<meta name="description" content="按难度分类的 9618 Paper 2 伪代码真题练习,写完直接判分。">
+<link rel="stylesheet" href="practice.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="../">iben.fun<span class="crumb"> / 器 / 伪代码练习场</span></a>
+  <span class="count" id="count"></span>
+  <span class="spacer"></span>
+  <select id="difficulty" aria-label="按难度筛选">
+    <option value="0">全部难度</option>
+    <option value="1">★ 基础</option>
+    <option value="2">★★ 进阶</option>
+    <option value="3">★★★ 综合</option>
+  </select>
+  <select id="chapter" aria-label="按章节筛选"></select>
+  <button id="theme" title="切换明暗">◑</button>
+  <a class="back" href="../">编辑器 →</a>
+</header>
+
+<main class="split">
+  <aside class="list-pane">
+    <ul id="task-list"></ul>
+  </aside>
+
+  <section class="work-pane">
+    <div id="empty" class="empty">
+      <h1>选择左侧的一道题开始</h1>
+      <p>每道题都来自 9618 Paper 2 真题,写完点「检查」直接判分。</p>
+    </div>
+
+    <div id="task" class="task" hidden>
+      <div class="task-card">
+        <div class="task-head">
+          <h2 id="task-title"></h2>
+          <span id="task-meta" class="task-meta"></span>
+        </div>
+        <p id="task-requirement" class="requirement"></p>
+        <div id="task-prompt" class="prompt"></div>
+        <button id="show-answer" class="link">查看参考答案</button>
+        <pre id="task-answer" class="answer" hidden></pre>
+      </div>
+
+      <div id="editor"></div>
+
+      <div class="actions">
+        <button id="check" class="primary">检查</button>
+        <button id="clear">清空</button>
+        <span id="verdict" class="verdict"></span>
+      </div>
+
+      <ul id="cases" class="cases"></ul>
+    </div>
+  </section>
+</main>
+
+<script src="../vendor/monaco/vs/loader.js"></script>
+<script type="module" src="practice.js"></script>
+</body>
+</html>

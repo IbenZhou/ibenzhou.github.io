@@ -84,6 +84,12 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 [data-theme="dark"] .syllabus button.active { color: #17120f; }
 
 .run-group, .file-group { display: flex; gap: 6px; }
+.practice-link {
+  display: inline-block; padding: 5px 11px; border-radius: 6px;
+  border: 1px solid var(--accent); color: var(--accent);
+  text-decoration: none; font-size: 13px; white-space: nowrap;
+}
+.practice-link:hover { background: var(--accent-soft); }
 select#examples { max-width: 240px; }
 
 .font-group {

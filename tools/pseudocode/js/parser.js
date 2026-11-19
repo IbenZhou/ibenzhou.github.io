@@ -301,17 +301,21 @@ export function parse(tok, dialect) {
   function parseDeclare() {
     const start = posOf(next());
     const items = [];
+    const names = [];
     for (;;) {
       const nameTok = expectIdent("a variable name");
       if (!nameTok) break;
+      names.push(nameTok);
       if (eatPunct(",")) {
         err("W_MULTI_DECLARE", start, {});
         continue;
       }
-      expectPunct(":");
-      const item = parseTypeOf(nameTok);
-      items.push(item);
       break;
+    }
+    if (names.length) {
+      expectPunct(":");
+      const declared = parseTypeOf(names[0]);
+      for (const tok of names) items.push({ ...declared, name: tok.value, pos: posOf(tok) });
     }
     finishLine(start);
     return { k: "declare", items, pos: start };
@@ -674,6 +678,29 @@ export function parse(tok, dialect) {
       if (eatPunct(":")) {
         const t = peek();
         if (t && t.type === "KEY" && DATA_TYPES.has(t.value)) { next(); type = t.value; }
+        else if (t && t.type === "KEY" && t.value === "ARRAY") {
+          next();
+          expectPunct("[");
+          const bounds = [];
+          for (;;) {
+            const lo = parseExpression();
+            expectPunct(":");
+            const hi = parseExpression();
+            bounds.push([lo, hi]);
+            if (eatPunct(",")) continue;
+            expectPunct("]");
+            break;
+          }
+          let of = "INTEGER";
+          if (eatKey("OF")) {
+            const ofTok = peek();
+            if (ofTok && ofTok.type === "KEY" && DATA_TYPES.has(ofTok.value)) { next(); of = ofTok.value; }
+            else err("E_BAD_ARRAY", posOf(here()), {});
+          } else {
+            err("E_BAD_ARRAY", posOf(here()), {});
+          }
+          type = { kind: "ARRAY", of, bounds };
+        }
         else if (t && (t.type === "IDENT" || t.type === "UNSUPPORTED")) {
           err("E_UNSUPPORTED", posOf(t), { kw: `user-defined types (${t.value})` });
           next();
