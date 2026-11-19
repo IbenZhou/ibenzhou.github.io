@@ -6,7 +6,7 @@ import { dialectOf } from "../js/dialect.js";
 
 const el = (id) => document.getElementById(id);
 const dom = {
-  list: el("task-list"), count: el("count"), difficulty: el("difficulty"), chapter: el("chapter"),
+  list: el("task-list"), count: el("count"), difficulty: el("difficulty"),
   theme: el("theme"), empty: el("empty"), task: el("task"), title: el("task-title"), meta: el("task-meta"),
   requirement: el("task-requirement"), prompt: el("task-prompt"), answer: el("task-answer"),
   showAnswer: el("show-answer"), editor: el("editor"), check: el("check"), clear: el("clear"),
@@ -67,20 +67,9 @@ function applyTheme(name) {
   if (window.monaco) monaco.editor.setTheme(`pc-${name}`);
 }
 
-function buildChapterFilter() {
-  const chapters = [...new Set(TASKS.map((task) => task.chapter))].sort();
-  for (const chapter of chapters) {
-    const option = document.createElement("option");
-    option.value = chapter;
-    option.textContent = chapter;
-    dom.chapter.appendChild(option);
-  }
-}
-
 function visibleTasks() {
   return TASKS
     .filter((task) => !state.difficulty || task.difficulty === state.difficulty)
-    .filter((task) => !state.chapter || task.chapter === state.chapter)
     .sort((a, b) => a.difficulty - b.difficulty || a.id.localeCompare(b.id));
 }
 
@@ -102,7 +91,7 @@ function renderList() {
     row.append(name, star);
     const meta = document.createElement("div");
     meta.className = "meta";
-    meta.textContent = `${task.marks} marks · ${task.chapter}`;
+    meta.textContent = `${task.marks} marks`;
     item.append(row, meta);
     item.addEventListener("click", () => select(task.id));
     dom.list.appendChild(item);
@@ -122,6 +111,7 @@ function select(id) {
   dom.prompt.appendChild(renderInline(task.prompt));
   dom.answer.textContent = task.model;
   dom.answer.hidden = true;
+  dom.showAnswer.hidden = true;
   dom.showAnswer.textContent = "查看参考答案";
   dom.verdict.textContent = "";
   dom.verdict.className = "verdict";
@@ -191,6 +181,7 @@ function check() {
     dom.cases.appendChild(li);
   }
 
+  dom.showAnswer.hidden = false;
   const all = passed === rows.length;
   dom.verdict.textContent = all ? `全部通过（${rows.length} 组用例）` : `通过 ${passed} / ${rows.length} 组`;
   dom.verdict.className = `verdict ${all ? "ok" : "bad"}`;
@@ -219,7 +210,6 @@ function boot() {
     padding: { top: 8 },
   });
 
-  buildChapterFilter();
   renderList();
 
   model.onDidChangeContent(() => {
@@ -229,10 +219,6 @@ function boot() {
 
   dom.difficulty.addEventListener("change", () => {
     state.difficulty = Number(dom.difficulty.value);
-    renderList();
-  });
-  dom.chapter.addEventListener("change", () => {
-    state.chapter = dom.chapter.value;
     renderList();
   });
   dom.theme.addEventListener("click", () => {

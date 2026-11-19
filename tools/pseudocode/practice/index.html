@@ -18,7 +18,6 @@
     <option value="2">★★ 进阶</option>
     <option value="3">★★★ 综合</option>
   </select>
-  <select id="chapter" aria-label="按章节筛选"></select>
   <button id="theme" title="切换明暗">◑</button>
   <a class="back" href="../">编辑器 →</a>
 </header>
@@ -42,11 +41,13 @@
         </div>
         <p id="task-requirement" class="requirement"></p>
         <div id="task-prompt" class="prompt"></div>
-        <button id="show-answer" class="link">查看参考答案</button>
-        <pre id="task-answer" class="answer" hidden></pre>
+        <button id="show-answer" class="link" hidden>查看参考答案</button>
       </div>
 
-      <div id="editor"></div>
+      <div class="work-row">
+        <div id="editor"></div>
+        <pre id="task-answer" class="answer" hidden></pre>
+      </div>
 
       <div class="actions">
         <button id="check" class="primary">检查</button>
