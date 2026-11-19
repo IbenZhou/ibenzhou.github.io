@@ -1,6 +1,6 @@
 import { analyse, runInteractive, formatDiagnostics } from "./engine.js";
 import { examplesFor } from "./examples.js";
-import { referenceFor, keywordsFor, builtinListFor } from "./reference.js";
+import { referenceFor, keywordsFor, builtinListFor, INSERT_PROVIDED, functionNameOf } from "./reference.js";
 import { BUILTINS } from "./builtins.js";
 import { DIALECTS, dialectOf } from "./dialect.js";
 import { clampFont, accumulateZoom, readFontSize } from "./font-zoom.js";
@@ -429,6 +429,15 @@ function renderVariables(rows) {
 
 function renderReference() {
   dom.reference.textContent = "";
+  if (state.dialect === "9618") {
+    const legend = document.createElement("p");
+    legend.className = "ref-legend";
+    const pill = document.createElement("span");
+    pill.className = "ref-tag";
+    pill.textContent = "考试提供";
+    legend.append(pill, " 带此标记的函数会印在试卷的 insert 里，不用背签名");
+    dom.reference.appendChild(legend);
+  }
   for (const section of referenceFor(state.dialect)) {
     const heading = document.createElement("h3");
     heading.textContent = section.group;
@@ -436,6 +445,13 @@ function renderReference() {
     for (const item of section.items) {
       const row = document.createElement("div");
       row.className = "ref-item";
+      const name = functionNameOf(item.syntax);
+      if (state.dialect === "9618" && name && INSERT_PROVIDED.has(name)) {
+        const pill = document.createElement("span");
+        pill.className = "ref-tag";
+        pill.textContent = "考试提供";
+        row.appendChild(pill);
+      }
       const code = document.createElement("code");
       code.textContent = item.syntax;
       const desc = document.createElement("span");

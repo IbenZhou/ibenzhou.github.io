@@ -93,6 +93,19 @@ export const REFERENCE = [
 ];
 
 
+// Functions the 2026 exam insert hands to candidates, so their signatures
+// never have to be memorised. Used to badge the reference drawer.
+export const INSERT_PROVIDED = new Set([
+  "LEFT", "RIGHT", "MID", "LENGTH", "TO_UPPER", "TO_LOWER",
+  "NUM_TO_STR", "STR_TO_NUM", "IS_NUM", "ASC", "CHR", "INT", "RAND",
+  "DAY", "MONTH", "YEAR", "DAYINDEX", "SETDATE", "TODAY",
+]);
+
+export function functionNameOf(syntax) {
+  const match = /^([A-Z_]+)\s*\(/.exec(String(syntax));
+  return match ? match[1] : null;
+}
+
 export const IGCSE_REFERENCE = [
   {
     group: "Variables",
