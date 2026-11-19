@@ -554,5 +554,511 @@ export const GOLDENS = {
   "s2026_23-q8bi": [],
   "w2021_22-q3ai": [],
   "w2023_23-q7bi": [],
-  "w2025_21-q3ai": []
+  "w2025_21-q3ai": [],
+  "ob-var-assign-chain": [
+    "155",
+    "65",
+    "560",
+    "965"
+  ],
+  "ob-var-real-div": [
+    "21.0\n21",
+    "22.5\n22",
+    "15.1\n15",
+    "12.5\n12"
+  ],
+  "ob-var-div-mod": [
+    "7 full boxes, 3 left over",
+    "5 full boxes, 0 left over",
+    "0 full boxes, 3 left over",
+    "10 full boxes, 1 left over"
+  ],
+  "ob-var-concat": [
+    "P-2024-17",
+    "N-2023-5",
+    "O-2026-104"
+  ],
+  "ob-var-boolean": [
+    "TRUE",
+    "TRUE",
+    "FALSE",
+    "FALSE"
+  ],
+  "ob-var-swap": [
+    "8 3",
+    "0 -4",
+    "100 99"
+  ],
+  "ob-sel-nested-if": [
+    "0",
+    "24",
+    "72",
+    "90"
+  ],
+  "ob-sel-else-chain": [
+    "A",
+    "B",
+    "C",
+    "U"
+  ],
+  "ob-sel-case-values": [
+    "120",
+    "75",
+    "40"
+  ],
+  "ob-sel-case-ranges": [
+    "Child",
+    "Teenager",
+    "Adult",
+    "Senior"
+  ],
+  "ob-sel-case-otherwise": [
+    "Open new account",
+    "Close account",
+    "Print statement",
+    "Invalid choice"
+  ],
+  "ob-sel-guard": [
+    "70",
+    "-1",
+    "-1",
+    "250"
+  ],
+  "ob-loop-for-count": [
+    "101\n102\n103",
+    "1\n2\n3\n4\n5",
+    "500\n501",
+    "7"
+  ],
+  "ob-loop-for-step": [
+    "1\n4\n7\n10",
+    "10\n7\n4\n1",
+    "0\n2\n4",
+    "5"
+  ],
+  "ob-loop-nested-for": [
+    "1 2 3\n2 4 6",
+    "1 2 3 4\n2 4 6 8\n3 6 9 12",
+    "1 2\n2 4\n3 6\n4 8"
+  ],
+  "ob-loop-accumulator": [
+    "17",
+    "7",
+    "30",
+    "0"
+  ],
+  "ob-loop-count-matches": [
+    "3",
+    "3",
+    "0",
+    "4"
+  ],
+  "ob-loop-while-sentinel": [
+    "15",
+    "7",
+    "0",
+    "9"
+  ],
+  "ob-loop-repeat-until": [
+    "2",
+    "1",
+    "4"
+  ],
+  "ob-loop-build-string": [
+    "C-A-T",
+    "h-e-l-l-o",
+    "A",
+    "1-2-3-4-5"
+  ],
+  "ob-loop-mod-multiples": [
+    "3\n6\n9",
+    "5\n10",
+    "7\n14",
+    "6"
+  ],
+  "ob-loop-pattern": [
+    "*\n**\n***",
+    "*",
+    "*\n**\n***\n****\n*****"
+  ],
+  "orig-1d-fill-formula": [
+    "21\n44\n69\n96\n125\n156",
+    "36\n74\n114\n156\n200\n246",
+    "51\n104\n159\n216\n275\n336"
+  ],
+  "orig-1d-total-average": [
+    "700\n116.7",
+    "430\n71.7",
+    "1190\n198.3",
+    "150\n25.0"
+  ],
+  "orig-1d-max-index": [
+    "27\n4",
+    "31\n1",
+    "26\n6"
+  ],
+  "orig-1d-min-position": [
+    "29\n4",
+    "12\n1",
+    "21\n6"
+  ],
+  "orig-1d-count-above": [
+    "4",
+    "1",
+    "0",
+    "6"
+  ],
+  "orig-1d-reverse": [
+    "42\n23\n16\n15\n8\n4",
+    "5\n3\n9\n1\n7\n7",
+    "600\n500\n400\n300\n200\n100"
+  ],
+  "orig-1d-shift": [
+    "18\n3\n6\n9\n12\n15",
+    "66\n11\n22\n33\n44\n55",
+    "0\n5\n4\n3\n2\n1"
+  ],
+  "orig-1d-compare": [
+    "0\n0",
+    "2\n2",
+    "1\n6",
+    "6\n1"
+  ],
+  "orig-2d-row-totals": [
+    "45\n41\n55",
+    "18\n40\n2",
+    "90\n80\n150"
+  ],
+  "orig-2d-col-totals": [
+    "35\n33\n34",
+    "16\n12\n17",
+    "75\n64\n56"
+  ],
+  "orig-2d-diagonal": [
+    "24",
+    "4",
+    "8"
+  ],
+  "orig-2d-transpose": [
+    "1 5 9\n2 6 10\n3 7 11\n4 8 12",
+    "2 1 9\n4 3 11\n6 5 13\n8 7 15",
+    "10 50 90\n20 60 100\n30 70 110\n40 80 120"
+  ],
+  "orig-2d-largest-cell": [
+    "12\n2\n3",
+    "25\n2\n2",
+    "9\n2\n2"
+  ],
+  "orig-2d-count-value": [
+    "3",
+    "5",
+    "0",
+    "7"
+  ],
+  "orig-2d-update-cell": [
+    "14 9 22 13 11",
+    "3 8 1 0 7",
+    "2 5 0 1 9"
+  ],
+  "orig-2d-border-sum": [
+    "102",
+    "36",
+    "104"
+  ],
+  "orig-param-byref-scale": [
+    "6\n-4\n18\n-8\n30\n36",
+    "5\n0\n7\n1\n9\n4",
+    "-2\n8\n-6\n16\n20\n-12"
+  ],
+  "orig-param-byvalue-mean": [
+    "3\n4\n8\n6\n10\n2\n12",
+    "0\n5\n5\n5\n5\n5\n5",
+    "1\n1\n2\n3\n4\n5\n21",
+    "3\n9\n3\n7\n5\n11\n1"
+  ],
+  "orig-param-fill": [
+    "1 2 3\n4 5 6\n7 8 9",
+    "10 11 12\n13 14 15\n16 17 18",
+    "0 1 2\n3 4 5\n6 7 8"
+  ],
+  "orig-param-2d-stat": [
+    "3",
+    "0",
+    "2",
+    "4"
+  ],
+  "orig-str-01": [
+    "6-a",
+    "1-A",
+    "16-e",
+    "4-6"
+  ],
+  "orig-str-02": [
+    "[Prog]",
+    "[Hi]",
+    "[]",
+    "[Algorithm]"
+  ],
+  "orig-str-03": [
+    "[inat]",
+    "[Examination]",
+    "[]",
+    "[]"
+  ],
+  "orig-str-04": [
+    "cOMPUTER",
+    "fORUMNAME",
+    "a",
+    "bANANA"
+  ],
+  "orig-str-05": [
+    "4",
+    "0",
+    "3",
+    "2"
+  ],
+  "orig-str-06": [
+    "2",
+    "2",
+    "2",
+    "0"
+  ],
+  "orig-str-07": [
+    "[5-4-3-2-1]",
+    "[1]",
+    "[]",
+    "[9-8-7-6-5-4-3-2-1]"
+  ],
+  "orig-str-08": [
+    "B",
+    "N",
+    "A",
+    "R"
+  ],
+  "orig-str-09": [
+    "TRUE",
+    "TRUE",
+    "FALSE",
+    "TRUE"
+  ],
+  "orig-str-10": [
+    "retupmoC",
+    "A",
+    "leveL",
+    "54321"
+  ],
+  "orig-str-11": [
+    "[ABC]",
+    "[padded]",
+    "[NoGaps]",
+    "[1234]"
+  ],
+  "orig-str-12": [
+    "bonono",
+    "MiSSiSSippi",
+    "hello",
+    "bbbb"
+  ],
+  "orig-str-13": [
+    "AL",
+    "GBMH",
+    "AT",
+    "P"
+  ],
+  "orig-str-14": [
+    "AAABB",
+    "XYYYY",
+    "CCCCC",
+    "ZZZZZZZZZ"
+  ],
+  "orig-str-15": [
+    "200",
+    "290",
+    "730",
+    "1010"
+  ],
+  "orig-str-16": [
+    "1 25",
+    "0 1",
+    "0 0",
+    "37 66"
+  ],
+  "orig-str-17": [
+    "TRUE",
+    "FALSE",
+    "FALSE",
+    "FALSE"
+  ],
+  "orig-str-18": [
+    "246",
+    "1018",
+    "140",
+    "8012"
+  ],
+  "orig-str-19": [
+    "22",
+    "8",
+    "1",
+    "-1"
+  ],
+  "orig-str-20": [
+    "6",
+    "1",
+    "25",
+    "7"
+  ],
+  "orig-linear-first-index": [
+    "2",
+    "7",
+    "-1",
+    "1"
+  ],
+  "orig-linear-count-matches": [
+    "4",
+    "8",
+    "3",
+    "0"
+  ],
+  "orig-linear-first-in-range": [
+    "3",
+    "6",
+    "5",
+    "-1"
+  ],
+  "orig-linear-strings": [
+    "4",
+    "7",
+    "-1",
+    "1"
+  ],
+  "orig-binary-index": [
+    "5",
+    "1",
+    "-1",
+    "8"
+  ],
+  "orig-binary-comparison-count": [
+    "3",
+    "3",
+    "4",
+    "-1"
+  ],
+  "orig-binary-insert-position": [
+    "4",
+    "1",
+    "9",
+    "7"
+  ],
+  "orig-binary-strings": [
+    "4",
+    "8",
+    "5",
+    "-1"
+  ],
+  "orig-bubble-swap-count": [
+    "1\n2\n3\n5\n6\n7\n8\n9\nSwaps: 13",
+    "2\n4\n6\n8\n10\n12\n14\n16\nSwaps: 0",
+    "1\n2\n3\n4\n5\n6\n7\n8\nSwaps: 28",
+    "1\n2\n2\n3\n4\n4\n4\n4\nSwaps: 14"
+  ],
+  "orig-bubble-descending": [
+    "71\n63\n55\n42\n36\n29\n17\n8",
+    "8\n7\n6\n5\n4\n3\n2\n1",
+    "39\n39\n25\n25\n25\n18\n14\n7",
+    "90\n78\n56\n45\n21\n12\n12\n3"
+  ],
+  "orig-insertion-ascending": [
+    "7\n12\n15\n22\n31\n38\n45",
+    "0\n1\n2\n3\n4\n5\n6",
+    "10\n20\n30\n40\n50\n60\n70",
+    "1\n1\n2\n4\n4\n9\n9"
+  ],
+  "orig-insertion-strings": [
+    "Adams\nBaker\nClark\nNguyen\nOlsen\nPatel\nYoung",
+    "Reid\nSmith\nTran\nVega\nWong\nYates\nZimmer",
+    "Ahmed\nBrown\nChen\nDiaz\nEvans\nFischer\nGrant",
+    "Ali\nAli\nBegum\nKhan\nKhan\nKhan\nZafar"
+  ],
+  "orig-sort-then-search": [
+    "9\n12\n23\n34\n45\n56\n67\n78\nIndex: 4",
+    "1\n2\n3\n4\n5\n6\n7\n8\nIndex: 8",
+    "20\n40\n60\n80\n100\n120\n140\n160\nIndex: -1",
+    "11\n22\n33\n44\n55\n66\n77\n88\nIndex: 1"
+  ],
+  "orig-frequency-no-sort": [
+    "1\n0\n3\n0\n1\n0\n2\n0\n1\n0\nMost frequent: 3 with a count of 3",
+    "1\n2\n0\n0\n2\n0\n0\n2\n0\n1\nMost frequent: 2 with a count of 2",
+    "0\n0\n0\n0\n0\n0\n0\n0\n0\n8\nMost frequent: 10 with a count of 8",
+    "1\n1\n1\n1\n1\n1\n1\n1\n0\n0\nMost frequent: 1 with a count of 1"
+  ],
+  "orig-proj-01": [
+    "Booked 2 seat(s) in row 3\nOccupancy 60%\nX . X . X\n. X . X .\nX X X X .\n. X X . X",
+    "Booked 1 seat(s) in row 2\nOccupancy 55%\n. . X . .\nX X X X X\n. X . X .\nX . X . X",
+    "Booking rejected\nX . X . X\n. X . X .\nX . . X .\n. X X . X"
+  ],
+  "orig-proj-02": [
+    "Restocked 4 item(s)\nRestock cost = 65.5\nStock value = 160.0",
+    "Restocked 3 item(s)\nRestock cost = 32.5\nStock value = 89.0",
+    "Invalid threshold"
+  ],
+  "orig-proj-03": [
+    "Amir: 85 A*\nBea: 72 A\nChen: 64 B\nDev: 55 C\nElla: 41 D\nFinn: 28 U\nAverage = 57.5\nPasses = 5",
+    "Amir: 90 A*\nBea: 80 A*\nChen: 70 A\nDev: 60 B\nElla: 50 C\nFinn: 40 D\nAverage = 65.0\nPasses = 6",
+    "Amir: 39 E\nBea: 29 U\nChen: 18 U\nDev: 7 U\nElla: 0 U\nFinn: 100 A*\nAverage = 32.2\nPasses = 1"
+  ],
+  "orig-proj-04": [
+    "Transaction 1 accepted\nTransaction 2 accepted\nTransaction 3 rejected\nTransaction 4 accepted\nTransaction 5 rejected\nBalance = 775.25",
+    "Transaction 1 accepted\nTransaction 2 accepted\nTransaction 3 rejected\nTransaction 4 accepted\nTransaction 5 accepted\nBalance = 40.0",
+    "Transaction 1 accepted\nTransaction 2 rejected\nTransaction 3 accepted\nTransaction 4 accepted\nTransaction 5 accepted\nBalance = 150.5"
+  ],
+  "orig-proj-05": [
+    "THE 3\nCAT 1\nAND 2\nDOG 1\nBIRD 1\nMost common: THE 3",
+    "ONE 2\nTWO 2\nTHREE 1\nMost common: ONE 2",
+    "A 3\nB 2\nC 1\nMost common: A 3"
+  ],
+  "orig-proj-06": [
+    "A\nB\nEMPTY\nC",
+    "X\nY\nZ\nW\nV\nEMPTY",
+    "Queue full\nC\nD\nE\nF"
+  ],
+  "orig-proj-07": [
+    "Invalid value\n56\n34\n12\nUnderflow\n-1",
+    "Stack full\nInvalid value\n60\n50\n40\n30\n20\n10\nUnderflow\n-1",
+    "99\n7\nUnderflow\n-1"
+  ],
+  "orig-proj-08": [
+    "Clean Code: 0p\nDune: 60p\nEmma: 50p\nUlysses: 110p\nBeloved: 140p\nTotal = 360p\nHighest = 140p",
+    "Clean Code: 20p\nDune: 120p\nEmma: 70p\nUlysses: 100p\nBeloved: 150p\nTotal = 460p\nHighest = 150p",
+    "Clean Code: 40p\nDune: 100p\nEmma: 90p\nUlysses: 170p\nBeloved: 240p\nTotal = 640p\nHighest = 240p"
+  ],
+  "orig-proj-09": [
+    "North,300\nSouth,270\nEast,300\nWest,150\nTOTAL,1020\nBEST,North",
+    "North,60\nSouth,150\nEast,240\nWest,330\nTOTAL,780\nBEST,West",
+    "North,0\nSouth,15\nEast,35\nWest,24\nTOTAL,74\nBEST,East"
+  ],
+  "orig-proj-10": [
+    "INFO = 3\nWARN = 1\nERROR = 1\nBusiest = INFO",
+    "INFO = 1\nWARN = 2\nERROR = 3\nBusiest = ERROR",
+    "INFO = 2\nWARN = 3\nERROR = 1\nBusiest = WARN"
+  ],
+  "orig-proj-11": [
+    "Week 1 average: 24.1\nWeek 2 average: 27.1\nWeek 3 average: 22.1\nHottest: 30.0 week 2 day 3\nDays above 25: 7",
+    "Week 1 average: 20.0\nWeek 2 average: 30.0\nWeek 3 average: 25.0\nHottest: 30.0 week 2 day 1\nDays above 25: 7",
+    "Week 1 average: 18.2\nWeek 2 average: 25.0\nWeek 3 average: 26.0\nHottest: 29.0 week 3 day 1\nDays above 25: 7"
+  ],
+  "orig-proj-12": [
+    "Length: PASS\nUpper: PASS\nLower: PASS\nDigit: PASS\nSpace: PASS\nResult: ACCEPT",
+    "Length: PASS\nUpper: FAIL\nLower: PASS\nDigit: PASS\nSpace: PASS\nResult: REJECT",
+    "Length: PASS\nUpper: PASS\nLower: PASS\nDigit: PASS\nSpace: FAIL\nResult: REJECT"
+  ],
+  "orig-proj-13": [
+    "Next bus: 08:30",
+    "No more buses",
+    "Invalid request"
+  ],
+  "orig-proj-14": [
+    "1. Rovers 10\n2. City 10\n3. United 10\n4. Athletic 7\n5. Wanderers 4\n6. Town 1",
+    "1. City 13\n2. Rovers 10\n3. Athletic 10\n4. United 4\n5. Town 4\n6. Wanderers 1",
+    "1. City 11\n2. United 11\n3. Rovers 7\n4. Wanderers 7\n5. Athletic 6\n6. Town 0"
+  ]
 };
