@@ -53,6 +53,88 @@ function renderInline(text) {
   return fragment;
 }
 
+function isTableRow(line) { return /^\s*\|.*\|\s*$/.test(line); }
+function isBullet(line) { return /^\s*[-*]\s+/.test(line); }
+function isNumbered(line) { return /^\s*\d+\.\s+/.test(line); }
+
+function cellText(cell) {
+  return cell.trim();
+}
+
+function buildTable(rows) {
+  const table = document.createElement("table");
+  const parsed = rows.map((row) => row.replace(/^\s*\||\|\s*$/g, "").split("|").map(cellText));
+  const separator = parsed.length > 1 && parsed[1].every((cell) => /^:?-{2,}:?$/.test(cell));
+  const header = parsed[0];
+  const body = separator ? parsed.slice(2) : parsed.slice(1);
+  const head = document.createElement("tr");
+  for (const cell of header) {
+    const th = document.createElement("th");
+    th.appendChild(renderInline(cell));
+    head.appendChild(th);
+  }
+  table.appendChild(head);
+  for (const row of body) {
+    const tr = document.createElement("tr");
+    for (const cell of row) {
+      const td = document.createElement("td");
+      td.appendChild(renderInline(cell));
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  return table;
+}
+
+// Prompts carry tables, bullet lists and numbered steps; render them as blocks
+// instead of showing the markdown.
+function renderPrompt(text) {
+  const fragment = document.createDocumentFragment();
+  const lines = text.split("\n");
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (isTableRow(line)) {
+      const rows = [];
+      while (i < lines.length && isTableRow(lines[i])) rows.push(lines[i++]);
+      fragment.appendChild(buildTable(rows));
+      continue;
+    }
+    if (isBullet(line)) {
+      const list = document.createElement("ul");
+      while (i < lines.length && isBullet(lines[i])) {
+        const li = document.createElement("li");
+        li.appendChild(renderInline(lines[i].replace(/^\s*[-*]\s+/, "")));
+        list.appendChild(li);
+        i += 1;
+      }
+      fragment.appendChild(list);
+      continue;
+    }
+    if (isNumbered(line)) {
+      const list = document.createElement("ol");
+      while (i < lines.length && isNumbered(lines[i])) {
+        const li = document.createElement("li");
+        li.appendChild(renderInline(lines[i].replace(/^\s*\d+\.\s+/, "")));
+        list.appendChild(li);
+        i += 1;
+      }
+      fragment.appendChild(list);
+      continue;
+    }
+    if (line.trim() === "") { i += 1; continue; }
+    const paragraph = [];
+    while (i < lines.length && lines[i].trim() !== "" && !isTableRow(lines[i]) && !isBullet(lines[i]) && !isNumbered(lines[i])) {
+      paragraph.push(lines[i]);
+      i += 1;
+    }
+    const p = document.createElement("p");
+    p.appendChild(renderInline(paragraph.join("\n")));
+    fragment.appendChild(p);
+  }
+  return fragment;
+}
+
 function stars(level) {
   return "★".repeat(level) + "☆".repeat(3 - level);
 }
@@ -108,7 +190,7 @@ function select(id) {
   dom.meta.textContent = `${task.source} · ${task.marks} marks · ${stars(task.difficulty)}`;
   dom.requirement.textContent = task.requirement;
   dom.prompt.textContent = "";
-  dom.prompt.appendChild(renderInline(task.prompt));
+  dom.prompt.appendChild(renderPrompt(task.prompt));
   dom.answer.textContent = task.model;
   dom.answer.hidden = true;
   dom.showAnswer.hidden = true;
