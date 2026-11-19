@@ -51,9 +51,10 @@ button, select {
 button:hover:not(:disabled), select:hover { border-color: var(--accent); }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 [data-theme="dark"] button.primary { color: #17120f; }
-button.link {
-  background: none; border: none; color: var(--accent); padding: 4px 0; font-size: 13px;
+#show-answer {
+  margin-left: auto; border-color: var(--accent); color: var(--accent); font-size: 13px;
 }
+#show-answer:hover { background: var(--accent-soft); }
 
 .split { flex: 1 1 auto; display: grid; grid-template-columns: 300px minmax(0, 1fr); min-height: 0; }
 
