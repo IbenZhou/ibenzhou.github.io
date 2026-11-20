@@ -5,6 +5,7 @@ import { registerLanguage, splitStatements } from './lexicon.js';
 import { loadTasks, browserRead } from './tasks.js';
 import { GROUPS, ENTRIES } from './reference.js';
 import { formatValue } from './format.js';
+import { renderPrompt } from './prompt.js';
 import * as store from './storage.js';
 import { clampFont, accumulateZoom } from './font-zoom.js';
 
@@ -39,9 +40,7 @@ function el(tag, className, text) {
 
 function renderRich(node, text) {
   node.textContent = '';
-  text.split('**').forEach((part, i) => {
-    node.append(i % 2 ? el('strong', undefined, part) : document.createTextNode(part));
-  });
+  node.append(renderPrompt(text));
 }
 
 function renderTaskCard(task) {

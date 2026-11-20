@@ -4,6 +4,7 @@ import { checkAnswer } from './checker.js';
 import { registerLanguage, splitStatements } from './lexicon.js';
 import { loadTasks } from './tasks.js';
 import { formatValue } from './format.js';
+import { renderPrompt } from './prompt.js';
 import * as store from './storage.js';
 import { clampFont, accumulateZoom } from './font-zoom.js';
 
@@ -22,6 +23,7 @@ let current = null;
 let busy = false;
 let fontSize = store.loadFontSize();
 let done = new Set(store.loadDoneList());
+let order = new Map();
 
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -41,9 +43,7 @@ const oneLine = (sql) => sql.replace(/\s+/g, ' ').trim();
 
 function renderRich(node, text) {
   node.textContent = '';
-  text.split('**').forEach((part, i) => {
-    node.append(i % 2 ? el('strong', undefined, part) : document.createTextNode(part));
-  });
+  node.append(renderPrompt(text));
 }
 
 function setBusy(value) {
@@ -58,12 +58,15 @@ function bufferKey(task) {
 
 /* ---------------------------------------------------------------- list */
 
+const bandIndex = (id) => BANDS.findIndex(b => b.id === id);
+const sortTasks = (list) => [...list].sort((a, b) => bandIndex(a.difficulty) - bandIndex(b.difficulty) || a.id.localeCompare(b.id));
+
 function renderList() {
   const host = $('list');
   host.textContent = '';
 
   for (const band of BANDS) {
-    const group = tasks.filter(t => t.difficulty === band.id);
+    const group = sortTasks(tasks).filter(t => t.difficulty === band.id);
     if (!group.length) continue;
 
     const box = el('div', 'band');
@@ -73,8 +76,9 @@ function renderList() {
     for (const task of group) {
       const btn = el('button', `task-item${task.id === current?.id ? ' active' : ''}${done.has(task.id) ? ' passed' : ''}`);
       btn.type = 'button';
-      btn.append(el('span', 'tick', done.has(task.id) ? '✓' : ''));
+      btn.append(el('span', 'no', String(order.get(task.id) ?? '').padStart(2, '0')));
       const name = el('span', 'name', task.title);
+      if (done.has(task.id)) name.append(el('span', 'tick', ' ✓'));
       name.append(el('span', 'meta', `${task.source} · ${task.marks} marks`));
       btn.append(name);
       btn.addEventListener('click', () => selectTask(task.id));
@@ -93,7 +97,7 @@ function renderProgress() {
 function renderTaskCard(task) {
   $('task-title').textContent = task.title;
   const band = BANDS.find(b => b.id === task.difficulty);
-  const bits = [`§${task.section}`, band ? `${band.label} · ${band.en}` : '', task.source, task.marks ? `${task.marks} marks` : ''];
+  const bits = [`第 ${order.get(task.id) ?? '?'} 题`, `§${task.section}`, band ? `${band.label} · ${band.en}` : '', task.source, task.marks ? `${task.marks} marks` : ''];
   $('task-meta').textContent = bits.filter(Boolean).join(' · ');
 
   const prompt = $('task-prompt');
@@ -418,6 +422,7 @@ async function start() {
   try {
     await Promise.all([editorReady, engine.boot()]);
     tasks = await loadTasks(readFromModuleDir, 'training');
+    order = new Map(sortTasks(tasks).map((task, index) => [task.id, index + 1]));
     done = new Set(store.loadDoneList());
 
     wireUi();

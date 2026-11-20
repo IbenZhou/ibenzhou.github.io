@@ -12,10 +12,12 @@ export function analyze(sql) {
 
   const tables = [];
   const joinKinds = [];
+  const createObjects = [];
   let mode = null;
   let depth = 0;
   let subqueries = 0;
   let starSelects = 0;
+  let inLists = 0;
 
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
@@ -53,6 +55,18 @@ export function analyze(sql) {
       const later = tokens.slice(i + 1, i + 4).map(x => x.text.toUpperCase());
       if (later.includes('JOIN')) joinKinds.push(w);
     }
+
+    if (w === 'CREATE') {
+      const next = tokens[i + 1];
+      const kind = next ? next.text.toUpperCase() : '';
+      if (['INDEX', 'VIEW', 'PROCEDURE', 'FUNCTION', 'TRIGGER'].includes(kind)) createObjects.push(kind);
+    }
+
+    if (w === 'IN') {
+      const next = tokens[i + 1];
+      const after = tokens[i + 2];
+      if (next && next.text === '(' && after && after.text.toUpperCase() !== 'SELECT') inLists++;
+    }
   }
 
   return {
@@ -60,8 +74,10 @@ export function analyze(sql) {
     has,
     tables: [...new Set(tables)],
     joinKinds: [...new Set(joinKinds)],
+    createObjects: [...new Set(createObjects)],
     subqueries,
     starSelects,
+    inLists,
     leading: words.slice(0, 3).join(' '),
   };
 }
@@ -101,6 +117,14 @@ export const RULES = [
     fix: 'Use only CREATE DATABASE / CREATE TABLE / ALTER TABLE and SELECT / INSERT / UPDATE / DELETE.',
   },
   {
+    id: 'outside-create', tier: 'reject', code: 'POL-OUTSIDE-CREATE',
+    test: a => a.createObjects.length > 0,
+    found: a => `CREATE ${a.createObjects[0]}`,
+    en: '{found} creates an object outside the 9618 subset — only CREATE DATABASE and CREATE TABLE are in scope.',
+    zh: '{found} 创建的对象不在考纲范围内（只要求 CREATE DATABASE 与 CREATE TABLE）。',
+    fix: 'Drop it, or use CREATE TABLE if a table was intended.',
+  },
+  {
     id: 'max-min', tier: 'warn', code: 'POL-AGGREGATE',
     test: a => ['MAX', 'MIN'].some(f => a.words.includes(f)),
     found: a => a.words.find(w => ['MAX', 'MIN'].includes(w)) ?? '',
@@ -134,6 +158,13 @@ export const RULES = [
     found: a => ['LIKE', 'ILIKE', 'BETWEEN'].find(w => a.has(w)) ?? '',
     en: '{found} is a valid condition but is not one of the listed 9618 clauses.',
     zh: '{found} 语法有效，但不在考纲列出的子句之内。',
+  },
+  {
+    id: 'in-list', tier: 'warn', code: 'POL-IN-LIST',
+    test: a => a.inLists > 0,
+    found: () => 'IN ( ... )',
+    en: 'IN ( ... ) with a list of values is valid but is not one of the listed 9618 clauses.',
+    zh: 'IN (…) 列表语法有效，但不在考纲列出的子句之内。',
   },
   {
     id: 'outer-join', tier: 'warn', code: 'POL-JOIN-KIND',
