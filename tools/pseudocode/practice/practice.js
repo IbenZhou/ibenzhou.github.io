@@ -6,7 +6,7 @@ import { dialectOf } from "../js/dialect.js";
 
 const el = (id) => document.getElementById(id);
 const dom = {
-  list: el("task-list"), count: el("count"), difficulty: el("difficulty"),
+  list: el("task-list"), count: el("count"), progress: el("progress"), difficulty: el("difficulty"),
   theme: el("theme"), empty: el("empty"), task: el("task"), title: el("task-title"), meta: el("task-meta"),
   requirement: el("task-requirement"), prompt: el("task-prompt"), answer: el("task-answer"),
   taskFiles: el("task-files"),
@@ -20,6 +20,11 @@ const STORE = {
   theme: "pseudocode9618.theme",
 };
 
+const ORDER = new Map(
+  [...TASKS]
+    .sort((a, b) => a.difficulty - b.difficulty || a.id.localeCompare(b.id))
+    .map((task, index) => [task.id, index + 1]),
+);
 const state = { current: null, solved: readSolved() };
 let editor = null;
 let model = null;
@@ -160,18 +165,24 @@ function renderList() {
   dom.list.textContent = "";
   const tasks = visibleTasks();
   dom.count.textContent = `${tasks.length} / ${TASKS.length} 题`;
+  const solved = TASKS.filter((task) => state.solved[task.id]).length;
+  if (dom.progress) dom.progress.textContent = `已通过 ${solved} / ${TASKS.length}`;
   for (const task of tasks) {
     const item = document.createElement("li");
     if (state.current && state.current.id === task.id) item.classList.add("active");
+    if (state.solved[task.id]) item.classList.add("done");
     const row = document.createElement("div");
     row.className = "row";
+    const no = document.createElement("span");
+    no.className = "no";
+    no.textContent = String(ORDER.get(task.id) || "").padStart(2, "0");
     const name = document.createElement("span");
-    name.className = "name" + (state.solved[task.id] ? " done" : "");
+    name.className = "name";
     name.textContent = task.title;
     const star = document.createElement("span");
     star.className = "stars";
     star.textContent = stars(task.difficulty);
-    row.append(name, star);
+    row.append(no, name, star);
     const meta = document.createElement("div");
     meta.className = "meta";
     meta.textContent = `${task.marks} marks`;
@@ -209,7 +220,7 @@ function select(id) {
   dom.empty.hidden = true;
   dom.task.hidden = false;
   dom.title.textContent = task.title;
-  dom.meta.textContent = `${task.source} · ${task.marks} marks · ${stars(task.difficulty)}`;
+  dom.meta.textContent = `第 ${ORDER.get(task.id) || "?"} 题 · ${task.source} · ${task.marks} marks · ${stars(task.difficulty)}`;
   dom.requirement.textContent = task.requirement;
   dom.prompt.textContent = "";
   dom.prompt.appendChild(renderPrompt(task.prompt));

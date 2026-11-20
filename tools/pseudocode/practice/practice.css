@@ -26,6 +26,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { height: 100%; margin: 0; }
 body {
   display: flex; flex-direction: column;
@@ -65,11 +66,16 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 }
 #task-list li:hover { background: var(--bg-raised); }
 #task-list li.active { background: var(--accent-soft); border-color: var(--accent); }
-#task-list .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
-#task-list .name { font-weight: 600; }
+#task-list .row { display: flex; gap: 8px; align-items: baseline; }
+.no { width: 2.1em; flex: 0 0 auto; text-align: right; font-family: var(--mono); font-size: 11.5px; color: var(--fg-dim); }
+#task-list li.done .no { color: var(--ok); }
+#task-list .name { font-weight: 600; flex: 1 1 auto; }
 #task-list .meta { color: var(--fg-dim); font-size: 12px; }
-#task-list .stars { color: var(--accent); letter-spacing: 1px; }
-#task-list .done::after { content: " ✓"; color: var(--ok); font-weight: 700; }
+#task-list .stars { color: var(--accent); letter-spacing: 1px; flex: 0 0 auto; margin-left: auto; }
+#task-list li.done .name { color: var(--ok); }
+#task-list li.done .name::after { content: " ✓"; color: var(--ok); font-weight: 700; }
+#task-list li.done { background: color-mix(in srgb, var(--ok) 8%, transparent); }
+#task-list li.done.active { background: var(--accent-soft); }
 
 .work-pane { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 .empty { margin: auto; text-align: center; color: var(--fg-dim); padding: 40px; }
