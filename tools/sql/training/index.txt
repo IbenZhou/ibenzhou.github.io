@@ -13,6 +13,23 @@ w2022_13_q2d
 w2023_11_q3ci
 w2025_11_q2ci
 w2025_12_q4b
+orig_ddl_alter_char
+orig_ddl_alter_time
+orig_ddl_alter_real
+orig_ddl_create_db_club
+orig_ddl_create_db_exam
+orig_dml_insert_list
+orig_dml_insert_two_rows
+orig_dml_update_two
+orig_dml_update_bool
+orig_dml_delete_bool
+orig_dml_delete_two
+orig_dml_delete_string
+orig_ddl_create_db_surgery
+orig_ddl_alter_bool
+orig_dml_insert_boolean
+orig_dml_delete_type
+orig_dml_update_string
 # advanced
 s2022_11_q4cii
 s2022_12_q5c
@@ -32,6 +49,18 @@ w2024_13_q4b
 w2025_11_q2cii
 w2025_12_q4c
 w2025_13_q5b
+orig_ddl_lesson
+orig_ddl_sensor
+orig_dml_avg_fee
+orig_dml_avg_group
+orig_dml_avg_two_conditions
+orig_dml_insert_types
+orig_dml_update_range
+orig_dml_delete_range
+orig_dml_order_where
+orig_dml_order_real
+orig_ddl_create_table_boolean
+orig_dml_order_group
 # challenge
 s2022_11_q4ci
 s2023_11_q2b
@@ -50,3 +79,7 @@ w2023_11_q3cii
 w2024_11_q2b
 w2024_13_q4c
 w2025_13_q5c
+orig_ddl_db_and_table
+orig_ddl_db_and_table2
+orig_dml_avg_join
+orig_dml_avg_join_where
