@@ -213,14 +213,17 @@ function renderList() {
     const name = document.createElement("span");
     name.className = "name";
     name.textContent = task.title;
+    const right = document.createElement("span");
+    right.className = "right";
     const star = document.createElement("span");
     star.className = "stars";
     star.textContent = stars(task.difficulty);
-    row.append(no, name, star);
-    const meta = document.createElement("div");
-    meta.className = "meta";
-    meta.textContent = `${task.marks} marks`;
-    item.append(row, meta);
+    const marks = document.createElement("span");
+    marks.className = "marks";
+    marks.textContent = `${task.marks} marks`;
+    right.append(star, marks);
+    row.append(no, name, right);
+    item.append(row);
     item.addEventListener("click", () => select(task.id));
     dom.list.appendChild(item);
   }

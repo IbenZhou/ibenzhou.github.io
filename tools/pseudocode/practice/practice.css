@@ -70,8 +70,12 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .no { width: 2.1em; flex: 0 0 auto; text-align: right; font-family: var(--mono); font-size: 11.5px; color: var(--fg-dim); }
 #task-list li.done .no { color: var(--ok); }
 #task-list .name { font-weight: 600; flex: 1 1 auto; }
-#task-list .meta { color: var(--fg-dim); font-size: 12px; }
-#task-list .stars { color: var(--accent); letter-spacing: 1px; flex: 0 0 auto; margin-left: auto; }
+#task-list .right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  flex: 0 0 auto; margin-left: auto; padding-top: 1px;
+}
+#task-list .stars { color: var(--accent); letter-spacing: 1px; line-height: 1.2; }
+#task-list .marks { color: var(--fg-dim); font-size: 11.5px; line-height: 1.2; }
 #task-list li.done .name { color: var(--ok); }
 #task-list li.done .name::after { content: " ✓"; color: var(--ok); font-weight: 700; }
 #task-list li.done { background: color-mix(in srgb, var(--ok) 8%, transparent); }
