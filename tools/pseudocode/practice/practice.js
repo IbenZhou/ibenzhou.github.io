@@ -40,7 +40,7 @@ function markSolved(id) {
 // Prompts use `code` and **bold**; render them instead of showing the markers.
 function renderInline(text) {
   const fragment = document.createDocumentFragment();
-  const pattern = /(`([^`]+)`|\*\*([^*]+)\*\*)/g;
+  const pattern = /(`([^`\n]+)`|\*\*([^*\n]+)\*\*)/g;
   let last = 0;
   for (const match of text.matchAll(pattern)) {
     if (match.index > last) fragment.append(text.slice(last, match.index));
@@ -94,6 +94,29 @@ function buildTable(rows) {
 
 // Prompts carry tables, bullet lists and numbered steps; render them as blocks
 // instead of showing the markdown.
+// Prompts were hard-wrapped at the source; join a broken sentence back up but keep
+// breaks that carry meaning: after a colon and around short data lines.
+function looksLikeData(line) {
+  const text = line.trim();
+  if (!text || text.length > 24) return false;
+  if (/\s/.test(text)) return false;
+  return !/[.,;:!?]$/.test(text);
+}
+
+function joinSoft(lines) {
+  let out = "";
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+    if (i > 0) {
+      const previous = lines[i - 1].trim();
+      const keepBreak = previous.endsWith(":") || looksLikeData(previous) || looksLikeData(line);
+      out += keepBreak ? "\n" : " ";
+    }
+    out += line;
+  }
+  return out;
+}
+
 function renderPrompt(text) {
   const fragment = document.createDocumentFragment();
   const lines = text.split("\n");
@@ -104,6 +127,17 @@ function renderPrompt(text) {
       const rows = [];
       while (i < lines.length && isTableRow(lines[i])) rows.push(lines[i++]);
       fragment.appendChild(buildTable(rows));
+      continue;
+    }
+    if (/^\s*```/.test(line)) {
+      i += 1;
+      const code = [];
+      while (i < lines.length && !/^\s*```/.test(lines[i])) { code.push(lines[i]); i += 1; }
+      if (i < lines.length) i += 1;
+      const pre = document.createElement("pre");
+      pre.className = "code-block";
+      pre.textContent = code.join("\n");
+      fragment.appendChild(pre);
       continue;
     }
     if (isBullet(line)) {
@@ -135,7 +169,7 @@ function renderPrompt(text) {
       i += 1;
     }
     const p = document.createElement("p");
-    p.appendChild(renderInline(paragraph.join("\n")));
+    p.appendChild(renderInline(joinSoft(paragraph)));
     fragment.appendChild(p);
   }
   return fragment;
