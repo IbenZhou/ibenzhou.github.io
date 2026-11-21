@@ -320,6 +320,10 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .task-item.passed .name { color: var(--ok); }
 .task-item .tick { color: var(--ok); font-weight: 700; }
 
+.bar #wrong.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+[data-theme="dark"] .bar #wrong.active { color: #17181c; }
+.list-note { margin: 12px 14px; color: var(--fg-dim); font-size: 13px; line-height: 1.6; }
+
 .linkbtn {
   display: inline-block;
   border: 1px solid var(--line);

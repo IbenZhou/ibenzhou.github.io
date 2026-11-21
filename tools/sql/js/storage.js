@@ -80,3 +80,46 @@ export function markDone(id) {
 export function clearDone() {
   set('training.done', '[]');
 }
+
+// The wrong-answer book: { [taskId]: { attempts, last } }, never uploaded.
+export function loadWrongBook() {
+  try {
+    const raw = JSON.parse(get('training.wrong') || '{}');
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+    const book = {};
+    for (const [id, entry] of Object.entries(raw)) {
+      if (!entry || typeof entry !== 'object') continue;
+      book[id] = {
+        attempts: Number.isFinite(entry.attempts) ? entry.attempts : 1,
+        last: Number.isFinite(entry.last) ? entry.last : 0,
+      };
+    }
+    return book;
+  } catch {
+    return {};
+  }
+}
+
+export function saveWrongBook(book) {
+  set('training.wrong', JSON.stringify(book));
+}
+
+export function recordWrong(id) {
+  const book = loadWrongBook();
+  const previous = book[id];
+  book[id] = { attempts: (previous ? previous.attempts : 0) + 1, last: Date.now() };
+  saveWrongBook(book);
+  return book;
+}
+
+export function clearWrong(id) {
+  const book = loadWrongBook();
+  if (!(id in book)) return book;
+  delete book[id];
+  saveWrongBook(book);
+  return book;
+}
+
+export function clearWrongBook() {
+  set('training.wrong', '{}');
+}

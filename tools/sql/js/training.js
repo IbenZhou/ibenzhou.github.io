@@ -23,6 +23,8 @@ let current = null;
 let busy = false;
 let fontSize = store.loadFontSize();
 let done = new Set(store.loadDoneList());
+let wrongBook = store.loadWrongBook();
+let wrongOnly = false;
 let order = new Map();
 
 const el = (tag, className, text) => {
@@ -65,8 +67,19 @@ function renderList() {
   const host = $('list');
   host.textContent = '';
 
+  const visible = sortTasks(tasks).filter(t => !wrongOnly || wrongBook[t.id]);
+  const mistakes = Object.keys(wrongBook).length;
+  $('wrong').textContent = mistakes ? `错题本 ${mistakes}` : '错题本';
+  $('wrong').classList.toggle('active', wrongOnly);
+
+  const note = $('list-note');
+  note.hidden = !(wrongOnly && visible.length === 0);
+  note.textContent = wrongOnly && visible.length === 0
+    ? '错题本是空的。做错的题会自动收进来，通过后自动移出。'
+    : '';
+
   for (const band of BANDS) {
-    const group = sortTasks(tasks).filter(t => t.difficulty === band.id);
+    const group = visible.filter(t => t.difficulty === band.id);
     if (!group.length) continue;
 
     const box = el('div', 'band');
@@ -79,7 +92,8 @@ function renderList() {
       btn.append(el('span', 'no', String(order.get(task.id) ?? '').padStart(2, '0')));
       const name = el('span', 'name', task.title);
       if (done.has(task.id)) name.append(el('span', 'tick', ' ✓'));
-      name.append(el('span', 'meta', `${task.source} · ${task.marks} marks`));
+      const wrong = wrongBook[task.id];
+      name.append(el('span', 'meta', `${task.source} · ${task.marks} marks` + (wrong ? ` · 错题 ×${wrong.attempts}` : '')));
       btn.append(name);
       btn.addEventListener('click', () => selectTask(task.id));
       box.append(btn);
@@ -308,9 +322,12 @@ async function check() {
     if (res.ok) {
       done.add(current.id);
       store.markDone(current.id);
-      renderList();
+      wrongBook = store.clearWrong(current.id);
       renderProgress();
+    } else {
+      wrongBook = store.recordWrong(current.id);
     }
+    renderList();
     await renderTree();
   } finally {
     setBusy(false);
@@ -372,14 +389,22 @@ function wireUi() {
   $('check').addEventListener('click', check);
   $('reset').addEventListener('click', reset);
   $('reset-progress').addEventListener('click', () => {
-    if (!done.size) return;
-    const message = `清除本机记录的 ${done.size} 道已通过题目？草稿不会被删除。`;
+    const mistakes = Object.keys(wrongBook).length;
+    if (!done.size && !mistakes) return;
+    const message = `清除本机记录的 ${done.size} 道已通过题目和 ${mistakes} 道错题？草稿不会被删除。`;
     if (!window.confirm(message)) return;
     store.clearDone();
+    store.clearWrongBook();
     done = new Set();
+    wrongBook = {};
+    wrongOnly = false;
     $('verdict').hidden = true;
     renderList();
     renderProgress();
+  });
+  $('wrong').addEventListener('click', () => {
+    wrongOnly = !wrongOnly;
+    renderList();
   });
   $('theme').addEventListener('click', () => {
     applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
