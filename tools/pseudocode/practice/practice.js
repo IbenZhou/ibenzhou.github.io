@@ -7,6 +7,7 @@ import { dialectOf } from "../js/dialect.js";
 const el = (id) => document.getElementById(id);
 const dom = {
   list: el("task-list"), count: el("count"), progress: el("progress"), difficulty: el("difficulty"),
+  wrong: el("wrong"), listNote: el("list-note"),
   theme: el("theme"), empty: el("empty"), task: el("task"), title: el("task-title"), meta: el("task-meta"),
   requirement: el("task-requirement"), prompt: el("task-prompt"), answer: el("task-answer"),
   taskFiles: el("task-files"),
@@ -16,6 +17,7 @@ const dom = {
 
 const STORE = {
   solved: "pseudocode9618.practice.solved",
+  wrong: "pseudocode9618.practice.wrong",
   draft: (id) => `pseudocode9618.practice.draft.${id}`,
   theme: "pseudocode9618.theme",
 };
@@ -25,9 +27,29 @@ const ORDER = new Map(
     .sort((a, b) => a.difficulty - b.difficulty || a.id.localeCompare(b.id))
     .map((task, index) => [task.id, index + 1]),
 );
-const state = { current: null, solved: readSolved() };
+const state = { current: null, solved: readSolved(), wrong: readWrong(), wrongOnly: false };
 let editor = null;
 let model = null;
+
+function readWrong() {
+  try { return JSON.parse(localStorage.getItem(STORE.wrong) || "{}"); } catch { return {}; }
+}
+function saveWrong() {
+  try { localStorage.setItem(STORE.wrong, JSON.stringify(state.wrong)); } catch { /* private mode */ }
+}
+function recordWrong(id) {
+  const previous = state.wrong[id];
+  state.wrong[id] = { attempts: (previous ? previous.attempts : 0) + 1, last: Date.now() };
+  saveWrong();
+}
+function clearWrong(id) {
+  if (state.wrong[id] === undefined) return;
+  delete state.wrong[id];
+  saveWrong();
+}
+function wrongCount() {
+  return Object.keys(state.wrong).length;
+}
 
 function readSolved() {
   try { return JSON.parse(localStorage.getItem(STORE.solved) || "{}"); } catch { return {}; }
@@ -192,6 +214,7 @@ function applyTheme(name) {
 function visibleTasks() {
   return TASKS
     .filter((task) => !state.difficulty || task.difficulty === state.difficulty)
+    .filter((task) => !state.wrongOnly || state.wrong[task.id] !== undefined)
     .sort((a, b) => a.difficulty - b.difficulty || a.id.localeCompare(b.id));
 }
 
@@ -199,6 +222,13 @@ function renderList() {
   dom.list.textContent = "";
   const tasks = visibleTasks();
   dom.count.textContent = `${tasks.length} / ${TASKS.length} 题`;
+  const mistakes = wrongCount();
+  dom.wrong.textContent = mistakes ? `错题本 ${mistakes}` : "错题本";
+  dom.wrong.classList.toggle("active", state.wrongOnly);
+  dom.listNote.hidden = !(state.wrongOnly && tasks.length === 0);
+  dom.listNote.textContent = state.wrongOnly && tasks.length === 0
+    ? "错题本是空的。做错的题会自动收进来,通过后自动移出。"
+    : "";
   const solved = TASKS.filter((task) => state.solved[task.id]).length;
   if (dom.progress) dom.progress.textContent = `已通过 ${solved} / ${TASKS.length}`;
   for (const task of tasks) {
@@ -329,12 +359,12 @@ function check() {
 
   dom.showAnswer.hidden = false;
   const all = passed === rows.length;
+  if (all) clearWrong(task.id);
+  else recordWrong(task.id);
   dom.verdict.textContent = all ? `全部通过（${rows.length} 组用例）` : `通过 ${passed} / ${rows.length} 组`;
   dom.verdict.className = `verdict ${all ? "ok" : "bad"}`;
-  if (all) {
-    markSolved(task.id);
-    renderList();
-  }
+  if (all) markSolved(task.id);
+  renderList();
 }
 
 function boot() {
@@ -363,6 +393,10 @@ function boot() {
     try { localStorage.setItem(STORE.draft(state.current.id), model.getValue()); } catch { /* private mode */ }
   });
 
+  dom.wrong.addEventListener("click", () => {
+    state.wrongOnly = !state.wrongOnly;
+    renderList();
+  });
   dom.difficulty.addEventListener("change", () => {
     state.difficulty = Number(dom.difficulty.value);
     renderList();

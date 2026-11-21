@@ -145,6 +145,11 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .cases .fail { color: var(--err); font-weight: 600; }
 .cases .note { color: var(--fg-dim); font-size: 12px; }
 
+.bar #wrong.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+[data-theme="dark"] .bar #wrong.active { color: #17120f; }
+.list-note { margin: 10px 14px; color: var(--fg-dim); font-size: 13px; line-height: 1.6; }
+#task-list .wrong-count { color: var(--err); font-size: 11px; }
+
 @media (max-width: 820px) {
   .split { grid-template-columns: 1fr; grid-template-rows: 190px minmax(0, 1fr); }
   .list-pane { border-right: none; border-bottom: 1px solid var(--line); }
