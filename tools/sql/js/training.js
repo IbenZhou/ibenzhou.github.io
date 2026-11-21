@@ -5,7 +5,9 @@ import { registerLanguage, splitStatements } from './lexicon.js';
 import { loadTasks } from './tasks.js';
 import { formatValue } from './format.js';
 import { renderPrompt } from './prompt.js';
-import * as store from './storage.js';
+// Versioned import: Cloudflare caches modules for 4 hours, and this deploy changes
+// storage.js. Bump this query together with the ?v= stamps in the HTML.
+import * as store from './storage.js?v=20261121c';
 import { clampFont, accumulateZoom } from './font-zoom.js';
 
 const $ = (id) => document.getElementById(id);
