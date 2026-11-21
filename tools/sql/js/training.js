@@ -371,6 +371,16 @@ function wireUi() {
   $('run').addEventListener('click', run);
   $('check').addEventListener('click', check);
   $('reset').addEventListener('click', reset);
+  $('reset-progress').addEventListener('click', () => {
+    if (!done.size) return;
+    const message = `清除本机记录的 ${done.size} 道已通过题目？草稿不会被删除。`;
+    if (!window.confirm(message)) return;
+    store.clearDone();
+    done = new Set();
+    $('verdict').hidden = true;
+    renderList();
+    renderProgress();
+  });
   $('theme').addEventListener('click', () => {
     applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
   });
